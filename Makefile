@@ -38,7 +38,7 @@ MAIN_CMXFILES=\
 MAIN_CMOFILES=$(MAIN_CMXFILES:.cmx=.cmo)
 MAIN_CMIFILES=$(MAIN_CMXFILES:.cmx=.cmi)
 
-MAIN=odb-server
+MAIN=stog
 MAIN_BYTE=$(MAIN).byte
 
 all: opt byte
