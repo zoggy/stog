@@ -24,7 +24,8 @@ SYSLIBS=unix.cmxa dynlink.cmxa
 SYSLIBS_BYTE=unix.cma dynlink.cma
 
 LIB_CMXFILES=stog_config.cmx \
-	stog_misc.cmx
+	stog_misc.cmx \
+	stog_types.cmx
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)
 LIB_CMIFILES=$(LIB_CMXFILES:.cmx=.cmi)
