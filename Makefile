@@ -28,7 +28,8 @@ LIB_CMXFILES=stog_config.cmx \
 	stog_tmap.cmx \
 	stog_types.cmx \
 	stog_find.cmx \
-	stog_io.cmx
+	stog_io.cmx \
+	stog_html.cmx
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)
 LIB_CMIFILES=$(LIB_CMXFILES:.cmx=.cmi)
