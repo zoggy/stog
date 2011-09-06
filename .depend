@@ -1,6 +1,14 @@
 stog_config.cmo:
 stog_config.cmx:
-stog_main.cmo:
-stog_main.cmx:
-stog_misc.cmo:
-stog_misc.cmx:
+stog_find.cmo: stog_find.cmi
+stog_find.cmx: stog_find.cmi
+stog_io.cmo: stog_types.cmo stog_tmap.cmi stog_find.cmi
+stog_io.cmx: stog_types.cmx stog_tmap.cmx stog_find.cmx
+stog_main.cmo: stog_misc.cmi stog_io.cmo
+stog_main.cmx: stog_misc.cmx stog_io.cmx
+stog_misc.cmo: stog_misc.cmi
+stog_misc.cmx: stog_misc.cmi
+stog_tmap.cmo: stog_tmap.cmi
+stog_tmap.cmx: stog_tmap.cmi
+stog_types.cmo: stog_tmap.cmi
+stog_types.cmx: stog_tmap.cmx

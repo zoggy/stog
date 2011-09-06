@@ -15,7 +15,8 @@ type message = {
 type 'a tree = 'a * 'a list ;;
 
 type article =
-  { art_id : string;
+  {
+    art_human_id : string;
     art_kind : contents_kind ;
     art_body : string ;
     art_date : date ;
@@ -23,6 +24,34 @@ type article =
     art_topics : string list ;
     art_title : string ;
     art_location : string ;
-    art_comments : message tree ;
+    art_files : string list ; (** list of files in [art_location] *)
+    art_comments : message tree list ;
+  }
+and article_id = article Stog_tmap.key
+
+let dummy_article =
+  { art_human_id = "dummy" ;
+    art_kind = Text ;
+    art_body = "" ;
+    art_date = (01, 01, 2011) ;
+    art_keywords = [] ;
+    art_topics = [] ;
+    art_title = "Dummy title";
+    art_location = "/tmp" ;
+    art_files = [] ;
+    art_comments = [] ;
+  }
+;;
+
+module Str_map = Map.Make (struct type t = string let compare = compare end);;
+
+type stog = {
+  stog_articles : (article, article) Stog_tmap.t ;
+  stog_art_by_human_id : article Str_map.t ;
   }
 
+let create_stog () = {
+  stog_articles = Stog_tmap.create dummy_article;
+  stog_art_by_human_id = Str_map.empty ;
+  }
+;;

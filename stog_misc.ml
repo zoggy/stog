@@ -26,3 +26,14 @@ let strip_string s =
         None -> String.sub s first 1
       |	Some last -> String.sub s first ((last-first)+1)
 (*/c==v=[String.strip_string]=1.0====*)
+
+(*c==v=[Misc.safe_main]=1.0====*)
+let safe_main main =
+  try main ()
+  with
+    Failure s
+  | Sys_error s ->
+      prerr_endline s;
+      exit 1
+(*/c==v=[Misc.safe_main]=1.0====*)
+
