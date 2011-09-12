@@ -65,9 +65,17 @@ div.blogbody {
 
 div.article_item {
   margin-bottom: 1em;
+/*
+  border-width: 0 0 0 2px ;
+  border-style: solid ;
+  border-color: #550000;
+*/
 }
+div.article_item:hover { background-color: #CCCCCC ; }
 
 div.article_item_title { font-size: 120% ; }
-div.article_item div.date { display: inline ; margin-left: 1em;}
-div.article_item a { text-decoration: inherit ; color: inherit ;  }
-div.article_item a:hover { text-decoration: inherit ; color: white ; background-color: red ;  }
+div.article_item_title a { text-decoration: inherit }
+div.article_intro { margin-top: 4px }
+a:hover { text-decoration: inherit ; color: white ; background-color: #444444 ;  }
+
+img.photo { border-width: 0 ; text-align: center ; }

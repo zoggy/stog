@@ -70,6 +70,16 @@ let read_article_main art file =
   read_article_header art header
 ;;
 
+let get_article_files dir =
+  let files = Stog_find.find_list
+    (Stog_find.Ignore)
+    [dir]
+    [ Stog_find.Maxdepth 1 ;
+      Stog_find.Type Unix.S_REG ;
+    ]
+  in
+  files
+;;
 
 let read_article dir =
   let file_opt =
@@ -81,6 +91,8 @@ let read_article dir =
   match file_opt with
     None -> failwith ("No index file in "^dir)
   | Some (file, kind) ->
+      let art_files = get_article_files dir in
+      let art_files = List.filter ((<>) file) art_files in
       let a =
         { art_human_id = Filename.basename dir ;
           art_kind = kind ;
@@ -90,7 +102,7 @@ let read_article dir =
           art_topics = [] ;
           art_title = ("title for "^(Filename.basename dir)) ;
           art_location = file ;
-          art_files = [] ;
+          art_files = art_files ;
           art_comments = [] ;
         }
       in

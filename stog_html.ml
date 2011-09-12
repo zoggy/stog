@@ -14,6 +14,19 @@ let fun_include tmpl_file args =
   in
   Stog_misc.string_of_file file;;
 
+let fun_photo args =
+  if Array.length args < 2 then
+    ""
+  else
+    Printf.sprintf "<img class=\"photo\" src=\"%s\" width=\"%s\"/>" args.(0) args.(1)
+;;
+
+let default_commands tmpl_file =
+  [ "include", fun_include tmpl_file ;
+    "photo", fun_photo ;
+  ]
+;;
+
 let link_to_article ?(from=`Article) article =
   let pref = match from with
       `Article -> "../"
@@ -57,24 +70,38 @@ let string_of_date (y,m,d) =
     days.(tm.Unix.tm_wday) d months.(m-1) y
 ;;
 
+let string_of_body s =
+  Str.global_replace (Str.regexp_string "<-->") "" s
+;;
+
 let generate_article outdir stog art_id article =
   let html_file = Filename.concat outdir
     (link_to_article ~from: `Index article)
   in
   let tmpl = Filename.concat stog.stog_tmpl_dir "article.tmpl" in
-  mkdir (Filename.dirname html_file);
+  let art_dir = Filename.dirname html_file in
+  mkdir art_dir;
+  List.iter (fun f -> copy_file f art_dir) article.art_files;
+
   Stog_tmpl.apply
-  [ "include", (fun_include tmpl) ;
-    "title", (fun _ -> article.art_title) ;
-    "stylefile", (fun _ -> "../style.css") ;
-    "blogtitle", (fun _ -> stog.stog_title) ;
-    "body", (fun _ -> article.art_body);
-    "date", (fun _ -> string_of_date article.art_date) ;
-  ]
+  ([
+     "title", (fun _ -> article.art_title) ;
+     "stylefile", (fun _ -> "../style.css") ;
+     "blogtitle", (fun _ -> stog.stog_title) ;
+     "body", (fun _ -> string_of_body article.art_body);
+     "date", (fun _ -> string_of_date article.art_date) ;
+   ] @ (default_commands tmpl))
   tmpl html_file
 ;;
 
-let intro_of_article art = "intro" ;;
+let intro_of_article art =
+  let re_sep = Str.regexp_string "<-->" in
+  try
+    let p = Str.search_forward re_sep art.art_body 0 in
+    Printf.sprintf "%s ..." (String.sub art.art_body 0 p)
+  with
+    Not_found -> art.art_body
+;;
 
 
 let article_list stog =
@@ -94,11 +121,11 @@ let article_list stog =
   in
   let f_article (_, art) =
     Stog_tmpl.apply_string
-    [ "include", (fun_include tmpl) ;
-      "date", (fun _ -> string_of_date art.art_date) ;
-      "title", (fun _ -> link art );
-      "intro", (fun _ -> intro_of_article art) ;
-    ]
+    ([
+       "date", (fun _ -> string_of_date art.art_date) ;
+       "title", (fun _ -> link art );
+       "intro", (fun _ -> intro_of_article art) ;
+     ] @ (default_commands tmpl))
     tmpl
   in
   String.concat "" (List.map f_article arts)
@@ -108,13 +135,13 @@ let generate_index_file outdir stog =
   let html_file = Filename.concat outdir "index.html" in
   let tmpl = Filename.concat stog.stog_tmpl_dir "index.tmpl" in
   Stog_tmpl.apply
-  [ "include", (fun_include tmpl) ;
+  ([
     "stylefile", (fun _ -> "style.css") ;
     "blogtitle", (fun _ -> stog.stog_title) ;
     "blogbody", (fun _ -> stog.stog_body);
     "blogdescription", (fun _ -> stog.stog_desc) ;
     "articles", (fun _ -> article_list stog);
-  ]
+  ] @ (default_commands tmpl))
   tmpl html_file
 ;;
 let generate_index outdir stog =
