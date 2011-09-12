@@ -62,3 +62,12 @@ div.blogdesc {
 div.blogbody {
 
 }
+
+div.article_item {
+  margin-bottom: 1em;
+}
+
+div.article_item_title { font-size: 120% ; }
+div.article_item div.date { display: inline ; margin-left: 1em;}
+div.article_item a { text-decoration: inherit ; color: inherit ;  }
+div.article_item a:hover { text-decoration: inherit ; color: white ; background-color: red ;  }

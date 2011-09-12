@@ -74,6 +74,35 @@ let generate_article outdir stog art_id article =
   tmpl html_file
 ;;
 
+let intro_of_article art = "intro" ;;
+
+
+let article_list stog =
+  let arts = Stog_tmap.fold
+    (fun id art acc -> (id, art) :: acc)
+    stog.stog_articles []
+  in
+  let arts = List.sort
+    (fun (_,a1) (_,a2) ->
+      Pervasives.compare a2.art_date a1.art_date)
+    arts
+  in
+  let tmpl = Filename.concat stog.stog_tmpl_dir "article_list.tmpl" in
+  let link art =
+    Printf.sprintf "<a href=\"%s\">%s</a>"
+      (link_to_article ~from: `Index art) art.art_title
+  in
+  let f_article (_, art) =
+    Stog_tmpl.apply_string
+    [ "include", (fun_include tmpl) ;
+      "date", (fun _ -> string_of_date art.art_date) ;
+      "title", (fun _ -> link art );
+      "intro", (fun _ -> intro_of_article art) ;
+    ]
+    tmpl
+  in
+  String.concat "" (List.map f_article arts)
+;;
 
 let generate_index_file outdir stog =
   let html_file = Filename.concat outdir "index.html" in
@@ -84,7 +113,7 @@ let generate_index_file outdir stog =
     "blogtitle", (fun _ -> stog.stog_title) ;
     "blogbody", (fun _ -> stog.stog_body);
     "blogdescription", (fun _ -> stog.stog_desc) ;
-    "articles", (fun _ -> "[articles]");
+    "articles", (fun _ -> article_list stog);
   ]
   tmpl html_file
 ;;

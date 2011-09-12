@@ -5,7 +5,7 @@ let rec fix_point f x =
   if y = x then x else fix_point f y
 ;;
 
-let apply funs file out_file =
+let apply_string funs file =
   let s = Stog_misc.string_of_file file in
   let re = Str.regexp
     "<<\\([-a-zA-Z0-9_.\"' ]+\\)>>"
@@ -26,6 +26,11 @@ let apply funs file out_file =
     let s = Str.global_substitute re (subst s) s in
     s
   in
-  let s = fix_point f s in
+  fix_point f s
+;;
+
+let apply funs file out_file =
+  let s = apply_string funs file in
   Stog_misc.file_of_string ~file: out_file s
 ;;
+
