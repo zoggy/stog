@@ -50,6 +50,8 @@ type stog = {
   stog_art_by_human_id : article Str_map.t ;
   stog_tmpl_dir : string ;
   stog_title : string ;
+  stog_body : string ;
+  stog_desc : string ;
   }
 
 let create_stog () = {
@@ -57,5 +59,7 @@ let create_stog () = {
   stog_art_by_human_id = Str_map.empty ;
   stog_tmpl_dir = "tmpl" ;
   stog_title = "Blog title" ;
+  stog_body = "" ;
+  stog_desc = "" ;
   }
 ;;

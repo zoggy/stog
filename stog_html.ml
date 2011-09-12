@@ -42,6 +42,21 @@ let copy_file src dest =
       failwith (Printf.sprintf "command failed: %s" com)
 ;;
 
+let days = [| "dimanche" ; "lundi" ; "mardi" ; "mercredi" ; "jeudi" ; "vendredi" ; "samedi" |]
+let months = [|
+   "janvier" ; "février" ; "mars" ; "avril" ; "mai" ; "juin" ;
+   "juillet" ; "août" ; "septembre" ; "octobre" ; "novembre" ; "décembre" |];;
+
+let string_of_date (y,m,d) =
+  let tm = { Unix.tm_mday = d ; tm_mon = (m-1) ; tm_year = (y - 1900) ;
+             tm_sec = 0 ; tm_min = 0 ; tm_hour = 0 ; tm_wday = 0 ;
+             tm_yday = 0 ; tm_isdst = false ; }
+  in
+  let (_, tm) = Unix.mktime tm in
+  Printf.sprintf "%s %d %s %d"
+    days.(tm.Unix.tm_wday) d months.(m-1) y
+;;
+
 let generate_article outdir stog art_id article =
   let html_file = Filename.concat outdir
     (link_to_article ~from: `Index article)
@@ -54,14 +69,29 @@ let generate_article outdir stog art_id article =
     "stylefile", (fun _ -> "../style.css") ;
     "blogtitle", (fun _ -> stog.stog_title) ;
     "body", (fun _ -> article.art_body);
+    "date", (fun _ -> string_of_date article.art_date) ;
   ]
   tmpl html_file
 ;;
 
 
+let generate_index_file outdir stog =
+  let html_file = Filename.concat outdir "index.html" in
+  let tmpl = Filename.concat stog.stog_tmpl_dir "index.tmpl" in
+  Stog_tmpl.apply
+  [ "include", (fun_include tmpl) ;
+    "stylefile", (fun _ -> "style.css") ;
+    "blogtitle", (fun _ -> stog.stog_title) ;
+    "blogbody", (fun _ -> stog.stog_body);
+    "blogdescription", (fun _ -> stog.stog_desc) ;
+    "articles", (fun _ -> "[articles]");
+  ]
+  tmpl html_file
+;;
 let generate_index outdir stog =
   mkdir outdir;
-  copy_file (Filename.concat stog.stog_tmpl_dir "style.css") outdir
+  copy_file (Filename.concat stog.stog_tmpl_dir "style.css") outdir;
+  generate_index_file outdir stog
 ;;
 
 let generate outdir stog =
