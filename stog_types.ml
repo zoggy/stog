@@ -48,10 +48,14 @@ module Str_map = Map.Make (struct type t = string let compare = compare end);;
 type stog = {
   stog_articles : (article, article) Stog_tmap.t ;
   stog_art_by_human_id : article Str_map.t ;
+  stog_tmpl_dir : string ;
+  stog_title : string ;
   }
 
 let create_stog () = {
   stog_articles = Stog_tmap.create dummy_article;
   stog_art_by_human_id = Str_map.empty ;
+  stog_tmpl_dir = "tmpl" ;
+  stog_title = "Blog title" ;
   }
 ;;

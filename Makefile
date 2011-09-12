@@ -29,6 +29,8 @@ LIB_CMXFILES=stog_config.cmx \
 	stog_types.cmx \
 	stog_find.cmx \
 	stog_io.cmx \
+	stog_coms.cmx \
+	stog_tmpl.cmx \
 	stog_html.cmx
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)
@@ -80,6 +82,11 @@ clean:
 #############
 .SUFFIXES: .mli .ml .cmi .cmo .cmx .mll .mly
 
+stog_coms.cmo stog_coms.cmi: stog_coms.ml
+	$(OCAMLC) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
+stog_coms.cmx stog_coms.cmi: stog_coms.ml
+	$(OCAMLOPT) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
+
 %.cmi:%.mli
 	$(OCAMLC) $(OCAMLPP) $(COMPFLAGS) -c $<
 
@@ -95,6 +102,8 @@ clean:
 
 %.cmx %.o:%.ml
 	$(OCAMLOPT) $(OCAMLPP) $(COMPFLAGS) -c $<
+
+
 
 %.o: %.c
 	$(OCAMLOPT) $(COMPFLAGS) -c $< && $(MV) `basename $@` `dirname $@`

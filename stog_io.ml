@@ -44,14 +44,17 @@ let add_article stog art =
     art
     stog.stog_art_by_human_id
   in
-  { stog_articles = articles ;
+  { stog with
+    stog_articles = articles ;
     stog_art_by_human_id = map ;
   }
 ;;
 
 let ignore_dot_entries =
   List.filter
-  (fun s -> String.length s > 0 && s.[0] <> '.')
+  (fun s ->
+    let f = Filename.basename s in
+    String.length f > 0 && f.[0] <> '.')
 ;;
 let read_stog dir =
   let stog = Stog_types.create_stog () in
@@ -68,6 +71,7 @@ let read_stog dir =
       Stog_find.Type Unix.S_DIR ;
     ]
   in
+  let dirs = List.filter ((<>) dir) dirs in
   let dirs = ignore_dot_entries dirs in
 
   List.iter prerr_endline dirs;

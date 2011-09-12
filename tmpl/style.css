@@ -1,0 +1,21 @@
+div#page {
+  width: 800px;
+  margin-left: auto ;
+  margin-right: auto;
+  border-width: 0 2px 0 2px ;
+  border-style: solid ;
+  border-color: #DDDDDD;
+}
+
+div#header {
+
+}
+
+div#blogtitle {
+  text-align: center;
+  font-size: 18pt;
+  }
+
+div#articlebody {
+
+}
