@@ -26,9 +26,11 @@ SYSLIBS_BYTE=unix.cma dynlink.cma
 LIB_CMXFILES=stog_config.cmx \
 	stog_misc.cmx \
 	stog_tmap.cmx \
+	stog_graph.cmx \
 	stog_types.cmx \
 	stog_find.cmx \
 	stog_io.cmx \
+	stog_info.cmx \
 	stog_coms.cmx \
 	stog_tmpl.cmx \
 	stog_html.cmx

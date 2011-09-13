@@ -19,6 +19,7 @@ let main () =
     [] -> failwith usage
   | dir :: _ ->
       let stog = Stog_io.read_stog dir in
+      let stog = Stog_info.compute stog in
       Stog_html.generate !output_dir stog
 ;;
 

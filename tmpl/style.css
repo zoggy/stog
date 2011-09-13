@@ -47,8 +47,8 @@ div#page {
 }
 
 
-div#header {
-
+div#header {
+  padding-bottom: 1em;
 }
 
 div#leftpane {
@@ -57,6 +57,37 @@ div#leftpane {
 div#rightpane {
 
 }
+
+div.navbar {
+  width: 100%;
+  border-width: 0 0 1px 0;
+  border-style: solid ;
+  border-color: #DDDDDD ;
+  padding-bottom: 0.5em;
+  text-align: justify;
+  overlfow: auto;
+  height: 20px;
+  }
+
+div.navleft {
+  position: relative;
+  float: left;
+  background-image: url('left.png') ;
+  background-repeat: no-repeat;
+  background-position:left top;
+  padding-left: 18px;
+}
+
+div.navright {
+  position: relative;
+  float: right;
+  text-align: right ;
+  background-image: url('right.png') ;
+  background-repeat: no-repeat;
+  background-position:right top;
+  padding-right: 18px;
+    }
+
 a:link {
   text-decoration:none;
   color: #2288bb;
@@ -80,9 +111,11 @@ div#articlebody {
   text-align: justify;
 }
 
-div#article {
+div#article {
+/*
   margin-left: 1em;
   margin-right: 1em;
+*/
 }
 
 h1 { font-size: 20pt;

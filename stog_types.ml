@@ -44,6 +44,15 @@ let dummy_article =
 ;;
 
 module Str_map = Map.Make (struct type t = string let compare = compare end);;
+module Art_set = Set.Make (struct type t = article_id let compare = Stog_tmap.compare_key end);;
+
+module Graph = Stog_graph.Make_with_map
+  (struct
+     type t = article_id
+     let compare = Stog_tmap.compare_key
+   end
+  )
+  (struct type t = string option let compare = Pervasives.compare end);;
 
 type stog = {
   stog_articles : (article, article) Stog_tmap.t ;
@@ -52,6 +61,9 @@ type stog = {
   stog_title : string ;
   stog_body : string ;
   stog_desc : string ;
+  stog_graph : Graph.t ;
+  stog_arts_by_kw : Art_set.t Str_map.t ;
+  stog_arts_by_topic : Art_set.t Str_map.t ;
   }
 
 let create_stog () = {
@@ -61,5 +73,10 @@ let create_stog () = {
   stog_title = "Blog title" ;
   stog_body = "" ;
   stog_desc = "" ;
+  stog_graph = Graph.create () ;
+  stog_arts_by_kw = Str_map.empty ;
+  stog_arts_by_topic = Str_map.empty ;
   }
 ;;
+
+let article stog id = Stog_tmap.get stog.stog_articles id;;

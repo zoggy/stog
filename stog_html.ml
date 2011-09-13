@@ -84,6 +84,15 @@ let generate_article outdir stog art_id article =
   mkdir art_dir;
   List.iter (fun f -> copy_file f art_dir) article.art_files;
 
+  let next f _ =
+    match f stog art_id with
+      None -> ""
+    | Some id ->
+        let a = Stog_types.article stog id in
+        let link = link_to_article a in
+        Printf.sprintf "<a href=\"%s\">%s</a>"
+          link a.art_title
+  in
   Stog_tmpl.apply
   ([
      "title", (fun _ -> article.art_title) ;
@@ -92,6 +101,8 @@ let generate_article outdir stog art_id article =
      "blogdescription", (fun _ -> stog.stog_desc) ;
      "body", (fun _ -> string_of_body article.art_body);
      "date", (fun _ -> string_of_date article.art_date) ;
+     "next", (next Stog_info.succ_by_date) ;
+     "previous", (next Stog_info.pred_by_date) ;
    ] @ (default_commands tmpl))
   tmpl html_file
 ;;
@@ -107,14 +118,8 @@ let intro_of_article art =
 
 
 let article_list stog =
-  let arts = Stog_tmap.fold
-    (fun id art acc -> (id, art) :: acc)
-    stog.stog_articles []
-  in
-  let arts = List.sort
-    (fun (_,a1) (_,a2) ->
-      Pervasives.compare a2.art_date a1.art_date)
-    arts
+  let arts = List.rev
+    (Stog_info.sort_articles_by_date (Stog_info.article_list stog))
   in
   let tmpl = Filename.concat stog.stog_tmpl_dir "article_list.tmpl" in
   let link art =
