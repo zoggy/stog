@@ -51,3 +51,22 @@ val split_string : ?keep_empty:bool -> string -> char list -> string list
 val strip_string : string -> string
 (*/i==v=[String.strip_string]=1.0====*)
 
+
+(*i==v=[String.lowercase]=1.0====*)
+(** [lowercase s] lowers the case of the given string, including accentuated characters.
+@author Maxence Guesdon
+@version 1.0
+@cgname String.lowercase*)
+val lowercase : string -> string
+(*/i==v=[String.lowercase]=1.0====*)
+
+
+(*i==v=[List.list_chop]=1.0====*)
+(** [list_chop n l] returns the [n] first elements of list [l] or the whole
+   list if [n >= List.length l].
+@author Maxence Guesdon
+@version 1.0
+@cgname List.list_chop*)
+val list_chop : int -> 'h list -> 'h list
+(*/i==v=[List.list_chop]=1.0====*)
+

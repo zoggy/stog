@@ -26,6 +26,17 @@ let default_commands tmpl_file =
     "photo", fun_photo ;
   ]
 ;;
+
+let url_compat s =
+ let s = Stog_misc.lowercase s in
+ for i = 0 to String.length s - 1 do
+   match s.[i] with
+     'a'..'z' | 'A'..'Z' | '0'..'9' | '-' | '_' | '.' -> ()
+    | _  -> s.[i] <- '+'
+ done;
+ s
+;;
+
 let link_to ?(from=`Article) file =
   let pref = match from with
       `Article -> "../"
@@ -40,10 +51,10 @@ let link_to_article ?(from=`Article) article =
 ;;
 
 let topic_index_file topic =
-  Printf.sprintf "topic_%s.html" topic
+  url_compat (Printf.sprintf "topic_%s.html" topic)
 ;;
 let keyword_index_file kw =
-  Printf.sprintf "kw_%s.html" kw
+  url_compat (Printf.sprintf "kw_%s.html" kw)
 ;;
 
 
@@ -149,7 +160,13 @@ let intro_of_article art =
 ;;
 
 
-let article_list ?set stog =
+let article_list ?set stog args =
+  let max =
+    if Array.length args >= 1 then
+      Some (int_of_string args.(0))
+    else
+      None
+  in
   let arts =
     match set with
       None -> Stog_info.article_list stog
@@ -159,6 +176,11 @@ let article_list ?set stog =
   in
   let arts = List.rev
     (Stog_info.sort_articles_by_date arts)
+  in
+  let arts =
+    match max with
+      None -> arts
+    | Some n -> Stog_misc.list_chop n arts
   in
   let tmpl = Filename.concat stog.stog_tmpl_dir "article_list.tmpl" in
   let link art =
@@ -186,7 +208,7 @@ let generate_by_word_indexes outdir stog tmpl map f_html_file =
        "stylefile", (fun _ -> "style.css") ;
        "blogtitle", (fun _ -> stog.stog_title) ;
        "blogdescription", (fun _ -> stog.stog_desc) ;
-       "articles", (fun _ -> article_list ~set stog);
+       "articles", (article_list ~set stog);
        "title", (fun _ -> word) ;
      ] @ (default_commands tmpl))
     tmpl html_file
@@ -215,10 +237,11 @@ let generate_index_file outdir stog =
     "blogtitle", (fun _ -> stog.stog_title) ;
     "blogbody", (fun _ -> stog.stog_body);
     "blogdescription", (fun _ -> stog.stog_desc) ;
-    "articles", (fun _ -> article_list stog);
+    "articles", (article_list stog);
   ] @ (default_commands tmpl))
   tmpl html_file
 ;;
+
 let generate_index outdir stog =
   mkdir outdir;
   copy_file (Filename.concat stog.stog_tmpl_dir "style.css") outdir;

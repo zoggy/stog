@@ -94,3 +94,35 @@ let split_string ?(keep_empty=false) s chars =
   iter "" 0
 (*/c==v=[String.split_string]=1.1====*)
 
+
+(*c==v=[String.lowercase]=1.0====*)
+let lowercase s =
+  let len = String.length s in
+  let b = Buffer.create len in
+  for i = 0 to len - 1 do
+    let c =
+      match s.[i] with
+      | 'à' | 'â' | 'ä' -> 'a'
+      | 'é' | 'è' | 'ê' | 'ë' -> 'e'
+      | 'î' | 'ï' -> 'i'
+      | 'ô' | 'ö' -> 'o'
+      | 'ù' | 'û' | 'ü' -> 'u'
+      | 'ç' -> 'c'
+      | c -> Char.lowercase c
+    in
+    Buffer.add_char b c
+  done;
+  Buffer.contents b
+(*/c==v=[String.lowercase]=1.0====*)
+
+
+(*c==v=[List.list_chop]=1.0====*)
+let rec list_chop n = function
+    [] -> []
+  | h :: q ->
+      if n > 0 then
+	h :: (list_chop (n-1) q)
+      else
+	[]
+(*/c==v=[List.list_chop]=1.0====*)
+
