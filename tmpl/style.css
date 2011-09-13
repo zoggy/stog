@@ -9,6 +9,7 @@ body {
   padding: 0 ;
 
 }
+
 div#topbar {
   height: 30 px ;
   background-color: black ;
@@ -109,6 +110,7 @@ div#blogtitle a { text-decoration: inherit ; }
 
 div#articlebody {
   text-align: justify;
+  margin-bottom: 2em;
 }
 
 div#article {
@@ -118,7 +120,7 @@ div#article {
 */
 }
 
-h1 { font-size: 20pt;
+h1 { font-size: 18pt;
   color: #222222 ;
   margin-bottom: 0.2em;
   margin-top: 0.2em;
@@ -161,3 +163,21 @@ div.article_item_title { font-size: 120% ; }
 div.article_intro { margin-top: 4px }
 
 img.photo { border-width: 0 ; text-align: center ; }
+
+div.bloc_keywords {
+  font-size: 80% ;
+/*
+  margin-top: 1em;
+  border-width: 1px 0 0 1px;
+  border-style: solid ;
+  border-color: #DDDDDD ;
+*/
+  padding: 4px;
+  color: #555555 ;
+  margin-left: 1em;
+
+}
+div.keywords {
+  font-style: italic ;
+  display: inline ;
+}

@@ -1,9 +1,16 @@
+<[set navbar true]>
 <<include "header.tmpl">>
 <div id="article">
 <div class="date"><<date>></div>
 <h1><<title>></h1>
 <div id="articlebody">
 <<body>>
+</div>
+<div class="bloc_keywords">
+Thèmes: <div class="keywords"><<topics>></div>
+</div>
+<div class="bloc_keywords">
+Mots-clés: <div class="keywords"><<keywords>></div>
 </div>
 </div>
 <<include "footer.tmpl">>

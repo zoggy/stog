@@ -26,15 +26,26 @@ let default_commands tmpl_file =
     "photo", fun_photo ;
   ]
 ;;
-
-let link_to_article ?(from=`Article) article =
+let link_to ?(from=`Article) file =
   let pref = match from with
       `Article -> "../"
     | `Index -> ""
   in
-  Printf.sprintf "%s%s/index.html"
-      pref article.art_human_id
+  Printf.sprintf "%s%s" pref file
 ;;
+
+let link_to_article ?(from=`Article) article =
+  link_to ~from
+    (Printf.sprintf "%s/index.html" article.art_human_id)
+;;
+
+let topic_index_file topic =
+  Printf.sprintf "topic_%s.html" topic
+;;
+let keyword_index_file kw =
+  Printf.sprintf "kw_%s.html" kw
+;;
+
 
 let mkdir dir =
   try Unix.mkdir dir 0o755
@@ -75,6 +86,25 @@ let string_of_body s =
   Str.global_replace (Str.regexp_string "<-->") "" s
 ;;
 
+let html_of_topics stog art =
+  String.concat ", "
+  (List.map (fun w ->
+    Printf.sprintf "<a href=\"%s\">%s</a>"
+      (link_to (topic_index_file w))
+      w
+   ) art.art_topics)
+;;
+
+let html_of_keywords stog art =
+  String.concat ", "
+  (List.map (fun w ->
+    Printf.sprintf "<a href=\"%s\">%s</a>"
+      (link_to (keyword_index_file w))
+      w
+   ) art.art_keywords)
+;;
+
+
 let generate_article outdir stog art_id article =
   let html_file = Filename.concat outdir
     (link_to_article ~from: `Index article)
@@ -103,6 +133,8 @@ let generate_article outdir stog art_id article =
      "date", (fun _ -> string_of_date article.art_date) ;
      "next", (next Stog_info.succ_by_date) ;
      "previous", (next Stog_info.pred_by_date) ;
+     "keywords", (fun _ -> html_of_keywords stog article) ;
+     "topics", (fun _ -> html_of_topics stog article) ;
    ] @ (default_commands tmpl))
   tmpl html_file
 ;;
@@ -117,9 +149,16 @@ let intro_of_article art =
 ;;
 
 
-let article_list stog =
+let article_list ?set stog =
+  let arts =
+    match set with
+      None -> Stog_info.article_list stog
+    | Some set ->
+        let l = Stog_types.Art_set.elements set in
+        List.map (fun id -> (id, Stog_types.article stog id)) l
+  in
   let arts = List.rev
-    (Stog_info.sort_articles_by_date (Stog_info.article_list stog))
+    (Stog_info.sort_articles_by_date arts)
   in
   let tmpl = Filename.concat stog.stog_tmpl_dir "article_list.tmpl" in
   let link art =
@@ -136,6 +175,35 @@ let article_list stog =
     tmpl
   in
   String.concat "" (List.map f_article arts)
+;;
+
+let generate_by_word_indexes outdir stog tmpl map f_html_file =
+  let f word set =
+    let html_file = Filename.concat outdir (f_html_file word) in
+    let tmpl = Filename.concat stog.stog_tmpl_dir tmpl in
+    Stog_tmpl.apply
+    ([
+       "stylefile", (fun _ -> "style.css") ;
+       "blogtitle", (fun _ -> stog.stog_title) ;
+       "blogdescription", (fun _ -> stog.stog_desc) ;
+       "articles", (fun _ -> article_list ~set stog);
+       "title", (fun _ -> word) ;
+     ] @ (default_commands tmpl))
+    tmpl html_file
+  in
+  Stog_types.Str_map.iter f map
+;;
+
+let generate_topic_indexes outdir stog =
+  generate_by_word_indexes outdir stog
+  "by_topic.tmpl" stog.stog_arts_by_topic
+  topic_index_file
+;;
+
+let generate_keyword_indexes outdir stog =
+  generate_by_word_indexes outdir stog
+  "by_kw.tmpl" stog.stog_arts_by_kw
+  keyword_index_file
 ;;
 
 let generate_index_file outdir stog =
@@ -155,7 +223,9 @@ let generate_index outdir stog =
   mkdir outdir;
   copy_file (Filename.concat stog.stog_tmpl_dir "style.css") outdir;
   copy_file ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.png") outdir;
-  generate_index_file outdir stog
+  generate_index_file outdir stog;
+  generate_topic_indexes outdir stog;
+  generate_keyword_indexes outdir stog
 ;;
 
 let generate outdir stog =
