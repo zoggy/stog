@@ -87,11 +87,36 @@ let add_topics_in_graph stog =
   { stog with stog_graph = g }
 ;;
 
+let compute_archives stog =
+  let f_mon art_id m mmap =
+    let set =
+      try Stog_types.Int_map.find m mmap
+      with Not_found -> Stog_types.Art_set.empty
+    in
+    let set = Stog_types.Art_set.add art_id set in
+    Stog_types.Int_map.add m set mmap
+  in
+  let f_art art_id article ymap =
+    let (year,mon, _) = article.art_date in
+    let mmap =
+      try Stog_types.Int_map.find year ymap
+      with Not_found -> Stog_types.Int_map.empty
+    in
+    let mmap = f_mon art_id mon mmap in
+    Stog_types.Int_map.add year mmap ymap
+  in
+  let arch = Stog_tmap.fold f_art
+    stog.stog_articles Stog_types.Int_map.empty
+  in
+  { stog with stog_archives = arch }
+;;
+
 let compute stog =
   let stog = compute_keyword_map stog in
   let stog = compute_topic_map stog in
   let stog = compute_graph_with_dates stog in
   let stog = add_topics_in_graph stog in
+  let stog = compute_archives stog in
   stog
 ;;
 

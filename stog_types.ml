@@ -45,6 +45,7 @@ let dummy_article =
 
 module Str_map = Map.Make (struct type t = string let compare = compare end);;
 module Art_set = Set.Make (struct type t = article_id let compare = Stog_tmap.compare_key end);;
+  module Int_map = Map.Make (struct type t = int let compare = compare end);;
 
 module Graph = Stog_graph.Make_with_map
   (struct
@@ -64,6 +65,7 @@ type stog = {
   stog_graph : Graph.t ;
   stog_arts_by_kw : Art_set.t Str_map.t ;
   stog_arts_by_topic : Art_set.t Str_map.t ;
+  stog_archives : Art_set.t Int_map.t Int_map.t ; (* year -> month -> article set *)
   }
 
 let create_stog () = {
@@ -76,6 +78,7 @@ let create_stog () = {
   stog_graph = Graph.create () ;
   stog_arts_by_kw = Str_map.empty ;
   stog_arts_by_topic = Str_map.empty ;
+  stog_archives = Int_map.empty ;
   }
 ;;
 

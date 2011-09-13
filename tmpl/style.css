@@ -111,6 +111,7 @@ div#blogtitle a { text-decoration: inherit ; }
 div#articlebody {
   text-align: justify;
   margin-bottom: 2em;
+  margin-right: 190px;
 }
 
 div#article {
@@ -180,4 +181,19 @@ div.bloc_keywords {
 div.keywords {
   font-style: italic ;
   display: inline ;
+}
+
+div#archives {
+  width: 150px;
+  float: right ;
+  border-width: 1px ;
+  border-style: solid ;
+  border-color: #DDDDDD;
+  padding: 0.5em;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+div#archives ul {
+  padding-left: 1em;
 }
