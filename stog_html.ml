@@ -45,9 +45,10 @@ let mkdir dir =
        (Unix.error_message e) s1 s2)
 ;;
 
-let copy_file src dest =
+let copy_file ?(quote_src=true) ?(quote_dst=true) src dest =
   let com = Printf.sprintf "cp -f %s %s"
-    (Filename.quote src) (Filename.quote dest)
+    (if quote_src then Filename.quote src else src)
+    (if quote_dst then Filename.quote dest else dest)
   in
   match Sys.command com with
     0 -> ()
@@ -88,6 +89,7 @@ let generate_article outdir stog art_id article =
      "title", (fun _ -> article.art_title) ;
      "stylefile", (fun _ -> "../style.css") ;
      "blogtitle", (fun _ -> stog.stog_title) ;
+     "blogdescription", (fun _ -> stog.stog_desc) ;
      "body", (fun _ -> string_of_body article.art_body);
      "date", (fun _ -> string_of_date article.art_date) ;
    ] @ (default_commands tmpl))
@@ -147,6 +149,7 @@ let generate_index_file outdir stog =
 let generate_index outdir stog =
   mkdir outdir;
   copy_file (Filename.concat stog.stog_tmpl_dir "style.css") outdir;
+  copy_file ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.png") outdir;
   generate_index_file outdir stog
 ;;
 
