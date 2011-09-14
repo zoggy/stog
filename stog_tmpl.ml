@@ -38,6 +38,9 @@ let apply_string funs file =
   let re_env = Str.regexp
     "<\\[\\([^]]+\\)\\]>"
   in
+  let re_pre = Str.regexp
+    "<§\\([a-zA-Z0-9]+\\)\\([^§]*\\)§>"
+  in
   let env = ref env_empty in
   let subst_with_env s matched =
     let com = Str.matched_group 1 s in
@@ -65,9 +68,22 @@ let apply_string funs file =
         (Printf.sprintf "File %s: command %s not found" file com.(0));
         ""
   in
+  let subst_pre s matched =
+    let com = Str.matched_group 1 s in
+    let text = Str.matched_group 2 s in
+    try
+      let f = List.assoc com funs in
+      f [|Stog_misc.strip_string text|]
+    with
+      Not_found ->
+        prerr_endline
+        (Printf.sprintf "File %s: command %s not found" file com);
+        ""
+  in
   let f s =
     let s = Str.global_substitute re_env (subst_with_env s) s in
     let s = Str.global_substitute re (subst s) s in
+    let s = Str.global_substitute re_pre (subst_pre s) s in
     s
   in
   fix_point f s

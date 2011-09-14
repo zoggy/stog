@@ -28,6 +28,21 @@ let url_compat s =
  s
 ;;
 
+let escape_html s =
+  let b = Buffer.create 256 in
+  for i = 0 to String.length s - 1 do
+    let s =
+      match s.[i] with
+        '<' -> "&lt;"
+      | '>' -> "&gt;"
+      | '&' -> "&amp;"
+      | c -> String.make 1 c
+    in
+    Buffer.add_string b s
+  done;
+  Buffer.contents b
+;;
+
 let link_to ?(from=`Article) file =
   let pref = match from with
       `Article -> "../"
@@ -88,10 +103,30 @@ let fun_archive_tree ?from stog =
   Buffer.contents b
 ;;
 
+let fun_code language args =
+  let code = args.(0) in
+  let temp_file = Filename.temp_file "stog" "highlight" in
+  let com = Printf.sprintf
+    "echo %s | highlight --syntax=%s -f > %s"
+    (Filename.quote code) language (Filename.quote temp_file)
+  in
+  match Sys.command com with
+    0 ->
+      let code = Stog_misc.string_of_file temp_file in
+      Sys.remove temp_file;
+      Printf.sprintf "<pre class=\"code-%s\">%s</pre>"
+        language code
+  | _ ->
+      failwith (Printf.sprintf "command failed: %s" com)
+;;
+
+let fun_ocaml = fun_code "ocaml";;
+
 let default_commands tmpl_file ?from stog =
   [ "include", fun_include tmpl_file ;
     "photo", fun_photo ;
     "archive_tree", (fun _ -> fun_archive_tree ?from stog) ;
+    "ocaml", fun_ocaml ;
   ]
 ;;
 

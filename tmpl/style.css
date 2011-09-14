@@ -198,3 +198,30 @@ div#archives {
 div#archives ul {
   padding-left: 1em;
 }
+
+pre.code-ocaml {
+  border-width: 0 0 0 2px;
+  border-style: solid;
+  border-color: #BBBBBB;
+  padding-left: 0.7em;
+  background-color: #efefef;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+body.hl { background-color:#efefef; }
+pre.hl  { color:#000000; background-color:#efefef; font-size:10pt; font-family:'Courier New';}
+.hl.num { color:#000000; }
+.hl.esc { color:#bd8d8b; }
+.hl.str { color:#bd8d8b; }
+.hl.pps { color:#bd8d8b; }
+.hl.slc { color:#ac2020; font-style:italic; }
+.hl.com { color:#ac2020; font-style:italic; }
+.hl.ppc { color:#000000; }
+.hl.opt { color:#232323; }
+.hl.lin { color:#555555; }
+.hl.kwa { color:#9c20ee; font-weight:bold; }
+.hl.kwb { color:#208920; }
+.hl.kwc { color:#0000ff; font-weight:bold; }
+.hl.kwd { color:#ddbb00; font-weight:bold; }
+
