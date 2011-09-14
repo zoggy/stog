@@ -32,18 +32,19 @@ let env_funs = ["set", fun_set ; "if", fun_if ];;
 
 let apply_string funs file =
   let s = Stog_misc.string_of_file file in
-  let re = Str.regexp
-    "<<\\([^>]+\\)>>"
+  let re = Pcre.regexp ~flags: [`MULTILINE ; `DOTALL]
+    "<<((.(?!>>))+.)>>"
   in
-  let re_env = Str.regexp
-    "<\\[\\([^]]+\\)\\]>"
+  let re_env = Pcre.regexp ~flags: [`MULTILINE ; `DOTALL]
+    "<\\[((.(?!\\]>))+.)\\]>"
   in
-  let re_pre = Str.regexp
-    "<§\\([a-zA-Z0-9]+\\)\\([^§]*\\)§>"
+  let re_pre = Pcre.regexp ~flags: [`MULTILINE ; `DOTALL]
+    "<§([a-zA-Z0-9]+)((.(?!§>))*.)§>"
   in
   let env = ref env_empty in
-  let subst_with_env s matched =
-    let com = Str.matched_group 1 s in
+  let subst_with_env substrings =
+    let substrings = Pcre.get_substrings substrings in
+    let com = substrings.(1) in
     let com = Stog_coms.command_of_string com in
     try
       let f = List.assoc com.(0) env_funs in
@@ -56,8 +57,9 @@ let apply_string funs file =
         (Printf.sprintf "File %s: command %s not found" file com.(0));
         ""
   in
-  let subst s matched =
-    let com = Str.matched_group 1 s in
+  let subst substrings =
+    let substrings = Pcre.get_substrings substrings in
+    let com = substrings.(1) in
     let com = Stog_coms.command_of_string com in
     try
       let f = List.assoc com.(0) funs in
@@ -68,9 +70,10 @@ let apply_string funs file =
         (Printf.sprintf "File %s: command %s not found" file com.(0));
         ""
   in
-  let subst_pre s matched =
-    let com = Str.matched_group 1 s in
-    let text = Str.matched_group 2 s in
+  let subst_pre substrings =
+    let substrings = Pcre.get_substrings substrings in
+    let com = substrings.(1) in
+    let text = substrings.(2) in
     try
       let f = List.assoc com funs in
       f [|Stog_misc.strip_string text|]
@@ -81,9 +84,9 @@ let apply_string funs file =
         ""
   in
   let f s =
-    let s = Str.global_substitute re_env (subst_with_env s) s in
-    let s = Str.global_substitute re (subst s) s in
-    let s = Str.global_substitute re_pre (subst_pre s) s in
+    let s = Pcre.substitute_substrings ~rex: re_env ~subst: subst_with_env s in
+    let s = Pcre.substitute_substrings ~rex: re ~subst s in
+    let s = Pcre.substitute_substrings ~rex: re_pre ~subst: subst_pre s in
     s
   in
   fix_point f s

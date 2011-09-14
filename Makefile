@@ -1,7 +1,7 @@
 #
 
 INCLUDES=
-COMPFLAGS=$(INCLUDES) -annot
+COMPFLAGS=$(INCLUDES) -annot -I `ocamlfind query pcre`
 OCAMLPP=
 
 OCAMLC=ocamlc -g
@@ -20,8 +20,8 @@ RM=rm -f
 CP=cp -f
 MKDIR=mkdir -p
 
-SYSLIBS=unix.cmxa dynlink.cmxa
-SYSLIBS_BYTE=unix.cma dynlink.cma
+SYSLIBS=unix.cmxa dynlink.cmxa pcre.cmxa
+SYSLIBS_BYTE=unix.cma dynlink.cma pcre.cma
 
 LIB_CMXFILES=stog_config.cmx \
 	stog_misc.cmx \
