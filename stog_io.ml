@@ -114,7 +114,7 @@ let add_article stog art =
   let (id, articles) = Stog_tmap.add stog.stog_articles art in
   let map = Stog_types.Str_map.add
     art.art_human_id
-    art
+    id
     stog.stog_art_by_human_id
   in
   { stog with

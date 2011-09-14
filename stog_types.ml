@@ -57,7 +57,7 @@ module Graph = Stog_graph.Make_with_map
 
 type stog = {
   stog_articles : (article, article) Stog_tmap.t ;
-  stog_art_by_human_id : article Str_map.t ;
+  stog_art_by_human_id : article_id Str_map.t ;
   stog_tmpl_dir : string ;
   stog_title : string ;
   stog_body : string ;
@@ -83,3 +83,7 @@ let create_stog () = {
 ;;
 
 let article stog id = Stog_tmap.get stog.stog_articles id;;
+let article_by_human_id stog h =
+  let id = Str_map.find h stog.stog_art_by_human_id in
+  (id, article stog id)
+;;

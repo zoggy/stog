@@ -33,7 +33,7 @@ let env_funs = ["set", fun_set ; "if", fun_if ];;
 let apply_string funs file =
   let s = Stog_misc.string_of_file file in
   let re = Str.regexp
-    "<<\\([-a-zA-Z0-9_.\"' ]+\\)>>"
+    "<<\\([^>]+\\)>>"
   in
   let re_env = Str.regexp
     "<\\[\\([^]]+\\)\\]>"

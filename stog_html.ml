@@ -85,6 +85,25 @@ let fun_photo args =
     Printf.sprintf "<img class=\"photo\" src=\"%s\" width=\"%s\"/>" args.(0) args.(1)
 ;;
 
+let fun_ref ?from stog args =
+  let article, text =
+    try
+      match Array.length args with
+        n when n < 1 -> failwith "Missing argument for 'ref' command"
+      | 1 ->
+          let (_, a) = Stog_types.article_by_human_id stog args.(0) in
+          (a, Printf.sprintf "\"%s\"" a.art_title)
+      | _ ->
+            let (_, a) = Stog_types.article_by_human_id stog args.(0) in
+          (a, args.(1))
+    with
+      Not_found -> failwith (Printf.sprintf "Unknown article '%s'" args.(0))
+  in
+  Printf.sprintf "<a href=\"%s\">%s</a>"
+    (link_to_article ?from article)
+    text
+;;
+
 let fun_archive_tree ?from stog =
   let b = Buffer.create 256 in
   let f_mon year month set =
@@ -127,6 +146,7 @@ let default_commands tmpl_file ?from stog =
     "photo", fun_photo ;
     "archive_tree", (fun _ -> fun_archive_tree ?from stog) ;
     "ocaml", fun_ocaml ;
+    "ref", fun_ref ?from stog;
   ]
 ;;
 
