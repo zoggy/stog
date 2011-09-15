@@ -80,9 +80,18 @@ let fun_include tmpl_file args =
 
 let fun_photo args =
   if Array.length args < 2 then
-    ""
+    failwith "Missing file for photo command"
   else
     Printf.sprintf "<img class=\"photo\" src=\"%s\" width=\"%s\"/>" args.(0) args.(1)
+;;
+
+let fun_photo_legend args =
+  if Array.length args < 3 then
+    failwith "Missing file for photo-legend command"
+  else
+    Printf.sprintf
+     "<div class=\"photo-legend\"><img class=\"photo\" title=\"%s\" src=\"%s\" width=\"%s\"/><div class=\"legend\">%s</div></div>"
+      args.(1) args.(0) args.(2) args.(1)
 ;;
 
 let fun_ref ?from stog args =
@@ -144,6 +153,7 @@ let fun_ocaml = fun_code "ocaml";;
 let default_commands tmpl_file ?from stog =
   [ "include", fun_include tmpl_file ;
     "photo", fun_photo ;
+    "photo-legend", fun_photo_legend ;
     "archive_tree", (fun _ -> fun_archive_tree ?from stog) ;
     "ocaml", fun_ocaml ;
     "ref", fun_ref ?from stog;

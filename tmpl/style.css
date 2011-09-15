@@ -199,6 +199,14 @@ div#archives ul {
   padding-left: 1em;
 }
 
+div.photo-legend {
+  margin-bottom: 0.8em;
+}
+div.legend {
+  margin-top: 1px;
+  text-align: center;
+  font-style: italic ; font-size: 80M }
+
 pre.code-ocaml {
   border-width: 0 0 0 2px;
   border-style: solid;
