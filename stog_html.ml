@@ -80,14 +80,14 @@ let fun_include tmpl_file args =
 
 let fun_photo args =
   if Array.length args < 2 then
-    failwith "Missing file for photo command"
+    failwith "Missing argument for photo command"
   else
     Printf.sprintf "<img class=\"photo\" src=\"%s\" width=\"%s\"/>" args.(0) args.(1)
 ;;
 
 let fun_photo_legend args =
   if Array.length args < 3 then
-    failwith "Missing file for photo-legend command"
+    failwith "Missing argument for photo-legend command"
   else
     Printf.sprintf
      "<div class=\"photo-legend\"><img class=\"photo\" title=\"%s\" src=\"%s\" width=\"%s\"/><div class=\"legend\">%s</div></div>"

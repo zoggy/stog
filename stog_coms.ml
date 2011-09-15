@@ -25,6 +25,7 @@ let rec parse_dquote = parser
 
 let rec parse_noquote = parser
   | [< '' ' >] -> ""
+  | [< ''\n' >] -> ""
   | [< ''\\'; 'c; word = parse_noquote >] ->
       concat c word
   | [< ''"'; subword = parse_dquote; word = parse_noquote >] ->
@@ -38,6 +39,8 @@ let rec parse_noquote = parser
 
 let rec parse_words = parser
     [< '' '; words = parse_words >] ->
+      words
+  | [< ''\n'; words = parse_words >] ->
       words
   | [< ''"'; word = parse_dquote; words = parse_words >] ->
       word :: words

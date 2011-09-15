@@ -87,3 +87,27 @@ let article_by_human_id stog h =
   let id = Str_map.find h stog.stog_art_by_human_id in
   (id, article stog id)
 ;;
+
+let merge_stogs stogs =
+  match stogs with
+    [] -> assert false
+  | stog :: q ->
+      let f acc stog =
+        let (articles, by_hid) =
+          Stog_tmap.fold
+          (fun _ art (arts, by_hid) ->
+             let (id, arts) = Stog_tmap.add arts art in
+             let by_hid = Str_map.add art.art_human_id id by_hid in
+             (arts, by_hid)
+          )
+          stog.stog_articles
+          (acc.stog_articles, acc.stog_art_by_human_id)
+        in
+        { acc with
+          stog_articles = articles ;
+          stog_art_by_human_id = by_hid ;
+        }
+      in
+      List.fold_left f stog q
+;;
+  
