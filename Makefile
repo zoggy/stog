@@ -1,6 +1,6 @@
 #
 
-INCLUDES=
+INCLUDES=-I +lablgtk2
 COMPFLAGS=$(INCLUDES) -annot -I `ocamlfind query pcre`
 OCAMLPP=
 
@@ -22,6 +22,9 @@ MKDIR=mkdir -p
 
 SYSLIBS=unix.cmxa dynlink.cmxa pcre.cmxa
 SYSLIBS_BYTE=unix.cma dynlink.cma pcre.cma
+
+GUI_SYSLIBS=lablgtk.cmxa
+GUI_SYSLIBS_BYTE=lablgtk.cma
 
 LIB_CMXFILES=stog_config.cmx \
 	stog_misc.cmx \
@@ -50,10 +53,19 @@ MAIN_CMIFILES=$(MAIN_CMXFILES:.cmx=.cmi)
 MAIN=stog
 MAIN_BYTE=$(MAIN).byte
 
+GUI_MAIN_CMXFILES=\
+	stog_gui.cmx
+
+GUI_MAIN_CMOFILES=$(Gui_MAIN_CMXFILES:.cmx=.cmo)
+GUI_MAIN_CMIFILES=$(GUi_MAIN_CMXFILES:.cmx=.cmi)
+
+GUI_MAIN=$(MAIN)-gui
+GUI_MAIN_BYTE=$(GUI_MAIN).byte
+
 all: opt byte
 
-opt: $(LIB) $(MAIN) $(CLIENT)
-byte: $(LIB_BYTE) $(MAIN_BYTE) $(CLIENT_BYTE)
+opt: $(LIB) $(MAIN) $(GUI_MAIN)
+byte: $(LIB_BYTE) $(MAIN_BYTE) $(GUI_MAIN_BYTE)
 
 $(MAIN): $(LIB) $(MAIN_CMIFILES) $(MAIN_CMXFILES)
 	$(OCAMLOPT) -verbose -linkall -o $@ $(COMPFLAGS) $(SYSLIBS) \
@@ -69,6 +81,14 @@ $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 
 $(LIB_BYTE): $(LIB_CMIFILES) $(LIB_CMOFILES)
 	$(OCAMLC) -a -o $@ $(LIB_CMOFILES)
+
+$(GUI_MAIN): $(LIB) $(GUI_MAIN_CMIFILES) $(GUI_MAIN_CMXFILES)
+	$(OCAMLOPT) -verbose -linkall -o $@ $(COMPFLAGS) $(SYSLIBS) \
+	$(ADDITIONAL_LIBS) $(LIB) $(GUI_SYSLIBS) $(GUI_MAIN_CMXFILES)
+
+$(GUI_MAIN_BYTE): $(LIB_BYTE) $(GUI_MAIN_CMIFILES) $(GUI_MAIN_CMOFILES)
+	$(OCAMLC) -linkall -o $@ $(COMPFLAGS) $(SYSLIBS_BYTE) \
+	$(ADDITIONAL_LIBS_BYTE) $(LIB_BYTE) $(GUI_SYSLIBS_BYTE) $(GUI_MAIN_CMOFILES)
 
 ##########
 install:
