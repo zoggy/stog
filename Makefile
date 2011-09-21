@@ -54,6 +54,7 @@ MAIN=stog
 MAIN_BYTE=$(MAIN).byte
 
 GUI_MAIN_CMXFILES=\
+	stog_gui_main.cmx \
 	stog_gui.cmx
 
 GUI_MAIN_CMOFILES=$(Gui_MAIN_CMXFILES:.cmx=.cmo)
