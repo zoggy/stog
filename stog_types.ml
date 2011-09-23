@@ -56,6 +56,7 @@ module Graph = Stog_graph.Make_with_map
   (struct type t = string option let compare = Pervasives.compare end);;
 
 type stog = {
+  stog_dir : string ;
   stog_articles : (article, article) Stog_tmap.t ;
   stog_art_by_human_id : article_id Str_map.t ;
   stog_tmpl_dir : string ;
@@ -68,7 +69,8 @@ type stog = {
   stog_archives : Art_set.t Int_map.t Int_map.t ; (* year -> month -> article set *)
   }
 
-let create_stog () = {
+let create_stog dir = {
+  stog_dir = dir ;
   stog_articles = Stog_tmap.create dummy_article;
   stog_art_by_human_id = Str_map.empty ;
   stog_tmpl_dir = "tmpl" ;
@@ -86,6 +88,13 @@ let article stog id = Stog_tmap.get stog.stog_articles id;;
 let article_by_human_id stog h =
   let id = Str_map.find h stog.stog_art_by_human_id in
   (id, article stog id)
+;;
+
+let article_list stog =
+  Stog_tmap.fold
+    (fun id art acc -> (id, art) :: acc)
+    stog.stog_articles
+    []
 ;;
 
 let merge_stogs stogs =
@@ -110,4 +119,19 @@ let merge_stogs stogs =
       in
       List.fold_left f stog q
 ;;
-  
+
+
+let days = [| "dimanche" ; "lundi" ; "mardi" ; "mercredi" ; "jeudi" ; "vendredi" ; "samedi" |]
+let months = [|
+   "janvier" ; "février" ; "mars" ; "avril" ; "mai" ; "juin" ;
+   "juillet" ; "août" ; "septembre" ; "octobre" ; "novembre" ; "décembre" |];;
+
+let string_of_date (y,m,d) =
+  let tm = { Unix.tm_mday = d ; tm_mon = (m-1) ; tm_year = (y - 1900) ;
+             tm_sec = 0 ; tm_min = 0 ; tm_hour = 0 ; tm_wday = 0 ;
+             tm_yday = 0 ; tm_isdst = false ; }
+  in
+  let (_, tm) = Unix.mktime tm in
+  Printf.sprintf "%s %d %s %d"
+    days.(tm.Unix.tm_wday) d months.(m-1) y
+;;

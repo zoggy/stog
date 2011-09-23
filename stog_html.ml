@@ -3,21 +3,6 @@
 open Stog_types;;
 
 
-let days = [| "dimanche" ; "lundi" ; "mardi" ; "mercredi" ; "jeudi" ; "vendredi" ; "samedi" |]
-let months = [|
-   "janvier" ; "février" ; "mars" ; "avril" ; "mai" ; "juin" ;
-   "juillet" ; "août" ; "septembre" ; "octobre" ; "novembre" ; "décembre" |];;
-
-let string_of_date (y,m,d) =
-  let tm = { Unix.tm_mday = d ; tm_mon = (m-1) ; tm_year = (y - 1900) ;
-             tm_sec = 0 ; tm_min = 0 ; tm_hour = 0 ; tm_wday = 0 ;
-             tm_yday = 0 ; tm_isdst = false ; }
-  in
-  let (_, tm) = Unix.mktime tm in
-  Printf.sprintf "%s %d %s %d"
-    days.(tm.Unix.tm_wday) d months.(m-1) y
-;;
-
 let url_compat s =
  let s = Stog_misc.lowercase s in
  for i = 0 to String.length s - 1 do
@@ -228,7 +213,7 @@ let generate_article outdir stog art_id article =
      "blogtitle", (fun _ -> stog.stog_title) ;
      "blogdescription", (fun _ -> stog.stog_desc) ;
      "body", (fun _ -> string_of_body article.art_body);
-     "date", (fun _ -> string_of_date article.art_date) ;
+     "date", (fun _ -> Stog_types.string_of_date article.art_date) ;
      "next", (next Stog_info.succ_by_date) ;
      "previous", (next Stog_info.pred_by_date) ;
      "keywords", (fun _ -> html_of_keywords stog article) ;
@@ -277,7 +262,7 @@ let article_list ?set stog args =
   let f_article (_, art) =
     Stog_tmpl.apply_string
     ([
-       "date", (fun _ -> string_of_date art.art_date) ;
+       "date", (fun _ -> Stog_types.string_of_date art.art_date) ;
        "title", (fun _ -> link art );
        "intro", (fun _ -> intro_of_article art) ;
      ] @ (default_commands tmpl ~from:`Index stog))

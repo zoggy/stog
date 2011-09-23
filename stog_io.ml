@@ -180,7 +180,7 @@ let read_stog_index stog dir =
 ;;
 
 let read_stog dir =
-  let stog = Stog_types.create_stog () in
+  let stog = Stog_types.create_stog dir in
   let stog = read_stog_index stog dir in
   let on_error (e,s1,s2) =
     let msg =  Printf.sprintf "%s: %s %s"
