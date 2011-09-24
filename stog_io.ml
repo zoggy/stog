@@ -19,7 +19,9 @@ let re_separator = Str.regexp_string separator;;
 
 let date_of_string s =
   try Scanf.sscanf s "%d/%d/%d" (fun d m y -> (d, m, y))
-  with Scanf.Scan_failure _ -> failwith ("Invalid date: "^s)
+  with
+  | Scanf.Scan_failure _ -> failwith ("Invalid date: "^s)
+  | End_of_file -> failwith (Printf.sprintf "Incomplete date \"%s\"" s)
 ;;
 
 let topics_of_string s =
@@ -57,17 +59,25 @@ let read_article_header art header =
   List.fold_left f art lines
 ;;
 
-let read_article_main art file =
-  let contents = Stog_misc.string_of_file file in
+let read_article_main art ?loc contents =
+  let loc = match loc with None -> "..." | Some loc -> loc in
   let p_sep =
     try Str.search_forward re_separator contents 0
-    with Not_found -> failwith ("no <-> separator in "^file)
+    with Not_found -> failwith ("no <-> separator in "^loc)
   in
   let p = p_sep + String.length separator in
-  let body = String.sub contents p (String.length contents - p) in
+  let body =
+    Stog_misc.strip_string
+    (String.sub contents p (String.length contents - p))
+  in
   let art = { art with art_body = body } in
   let header = String.sub contents 0 p_sep in
   read_article_header art header
+;;
+
+let read_article_main_of_file art file =
+  let contents = Stog_misc.string_of_file file in
+  read_article_main art ~loc: file contents
 ;;
 
 let get_article_files dir =
@@ -106,21 +116,7 @@ let read_article dir =
           art_comments = [] ;
         }
       in
-      read_article_main a file
-;;
-
-
-let add_article stog art =
-  let (id, articles) = Stog_tmap.add stog.stog_articles art in
-  let map = Stog_types.Str_map.add
-    art.art_human_id
-    id
-    stog.stog_art_by_human_id
-  in
-  { stog with
-    stog_articles = articles ;
-    stog_art_by_human_id = map ;
-  }
+      read_article_main_of_file a file
 ;;
 
 let ignore_dot_entries =
@@ -206,3 +202,37 @@ let read_stog dir =
   dirs
 ;;
 
+let write_stog_article stog _ art =
+  let dir = Filename.concat stog.stog_dir art.art_human_id in
+  Stog_misc.mkdir dir;
+  let file = Filename.concat dir "index.html" in
+  let list l = String.concat ", " l in
+  let contents =
+    Printf.sprintf
+    "title: %s\ndate: %s\ntopics: %s\nkeywords: %s\n<->\n%s"
+    art.art_title
+    (let (y, m, d) = art.art_date in Printf.sprintf "%04d/%02d/%02d" y m d)
+    (list art.art_topics)
+    (list art.art_keywords)
+    art.art_body
+  in
+  Stog_misc.file_of_string ~file contents
+;;
+
+let write_stog_index stog =
+  let file = Filename.concat stog.stog_dir "index.html" in
+  let contents = Printf.sprintf
+    "title: %s\ndescription: %s\n<->\n%s"
+    stog.stog_title
+    stog.stog_desc
+    stog.stog_body
+  in
+  Stog_misc.file_of_string ~file contents
+;;
+
+let write_stog stog =
+  Stog_misc.mkdir stog.stog_dir;
+  write_stog_index stog;
+  Stog_tmap.iter (write_stog_article stog) stog.stog_articles
+;;
+  

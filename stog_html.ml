@@ -146,14 +146,6 @@ let default_commands tmpl_file ?from stog =
 ;;
 
 
-let mkdir dir =
-  try Unix.mkdir dir 0o755
-  with
-  | Unix.Unix_error (Unix.EEXIST, _, _) -> ()
-  | Unix.Unix_error (e, s1, s2) ->
-      failwith (Printf.sprintf "%s: %s %s"
-       (Unix.error_message e) s1 s2)
-;;
 
 let copy_file ?(quote_src=true) ?(quote_dst=true) src dest =
   let com = Printf.sprintf "cp -f %s %s"
@@ -194,7 +186,7 @@ let generate_article outdir stog art_id article =
   in
   let tmpl = Filename.concat stog.stog_tmpl_dir "article.tmpl" in
   let art_dir = Filename.dirname html_file in
-  mkdir art_dir;
+  Stog_misc.mkdir art_dir;
   List.iter (fun f -> copy_file f art_dir) article.art_files;
 
   let next f _ =
@@ -335,7 +327,7 @@ let generate_index_file outdir stog =
 ;;
 
 let generate_index outdir stog =
-  mkdir outdir;
+  Stog_misc.mkdir outdir;
   copy_file (Filename.concat stog.stog_tmpl_dir "style.css") outdir;
   copy_file ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.png") outdir;
   generate_index_file outdir stog;

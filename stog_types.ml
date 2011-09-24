@@ -29,11 +29,16 @@ type article =
   }
 and article_id = article Stog_tmap.key
 
-let dummy_article =
+let today () =
+  let t = Unix.gmtime (Unix.time()) in
+  (t.Unix.tm_year + 1900, t.Unix.tm_mon+1,  t.Unix.tm_mday)
+;;
+
+let dummy_article () =
   { art_human_id = "dummy" ;
-    art_kind = Text ;
+    art_kind = Html ;
     art_body = "" ;
-    art_date = (01, 01, 2011) ;
+    art_date = today () ;
     art_keywords = [] ;
     art_topics = [] ;
     art_title = "Dummy title";
@@ -71,7 +76,7 @@ type stog = {
 
 let create_stog dir = {
   stog_dir = dir ;
-  stog_articles = Stog_tmap.create dummy_article;
+  stog_articles = Stog_tmap.create (dummy_article ());
   stog_art_by_human_id = Str_map.empty ;
   stog_tmpl_dir = "tmpl" ;
   stog_title = "Blog title" ;
@@ -88,6 +93,24 @@ let article stog id = Stog_tmap.get stog.stog_articles id;;
 let article_by_human_id stog h =
   let id = Str_map.find h stog.stog_art_by_human_id in
   (id, article stog id)
+;;
+
+let set_article stog id article =
+  {  stog with
+    stog_articles = Stog_tmap.modify stog.stog_articles id article }
+;;
+
+let add_article stog art =
+  let (id, articles) = Stog_tmap.add stog.stog_articles art in
+  let map = Str_map.add
+    art.art_human_id
+    id
+    stog.stog_art_by_human_id
+  in
+  { stog with
+    stog_articles = articles ;
+    stog_art_by_human_id = map ;
+  }
 ;;
 
 let article_list stog =
@@ -134,4 +157,35 @@ let string_of_date (y,m,d) =
   let (_, tm) = Unix.mktime tm in
   Printf.sprintf "%s %d %s %d"
     days.(tm.Unix.tm_wday) d months.(m-1) y
+;;
+
+let make_human_id stog str =
+  let str = Stog_misc.lowercase str in
+  let len = String.length str in
+  let b = Buffer.create len in
+  let rec iter dash i =
+    if i >= len then
+      Buffer.contents b
+    else
+      match str.[i] with
+        'a'..'z' | 'A'..'Z' | '0'..'9' | '_' | '-' ->
+          Buffer.add_char b str.[i];
+          iter false (i+1)
+      | c ->
+          if dash then
+            iter dash (i+1)
+          else
+          (Buffer.add_char b '-' ; iter true (i+1))
+  in
+  let hid0 = iter true 0 in
+  let rec iter n =
+    let hid = Printf.sprintf "%s%s"
+      hid0 (if n = 1 then "" else string_of_int n)
+    in
+    try
+      ignore(Str_map.find hid stog.stog_art_by_human_id);
+      iter (n+1)
+    with Not_found -> hid
+  in
+  iter 1
 ;;

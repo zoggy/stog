@@ -126,3 +126,11 @@ let rec list_chop n = function
 	[]
 (*/c==v=[List.list_chop]=1.0====*)
 
+let mkdir dir =
+  try Unix.mkdir dir 0o755
+  with
+  | Unix.Unix_error (Unix.EEXIST, _, _) -> ()
+  | Unix.Unix_error (e, s1, s2) ->
+      failwith (Printf.sprintf "%s: %s %s"
+       (Unix.error_message e) s1 s2)
+;;
