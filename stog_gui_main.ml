@@ -115,8 +115,7 @@ class main_window stogs =
 
     method on_save stog_box =
       stog_box#update_selected_article_from_edit_box ;
-      let stog = { stog_box#stog with stog_dir = "/tmp" } in
-      Stog_io.write_stog stog
+      Stog_io.write_stog stog_box#stog
 
     method on_current_stog f () =
       let page = notebook#current_page in
