@@ -1,0 +1,8 @@
+- menus to insert paragraphs, lists, ...
+OK- file box to handle files in each post directory
+- display list of keywords and topics, allow drag and drop to
+  select some for the selected post
+- menu to generate the html pages
+- support for git
+- field "published" for each article; handle field in gui
+  and html generation

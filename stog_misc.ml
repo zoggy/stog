@@ -134,3 +134,12 @@ let mkdir dir =
       failwith (Printf.sprintf "%s: %s %s"
        (Unix.error_message e) s1 s2)
 ;;
+
+(*c==v=[String.is_prefix]=1.0====*)
+let is_prefix s1 s2 =
+  let len1 = String.length s1 in
+  let len2 = String.length s2 in
+  (len1 <= len2) &&
+    (String.sub s2 0 len1) = s1
+(*/c==v=[String.is_prefix]=1.0====*)
+

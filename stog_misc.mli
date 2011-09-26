@@ -71,3 +71,11 @@ val list_chop : int -> 'h list -> 'h list
 (*/i==v=[List.list_chop]=1.0====*)
 
 val mkdir : string -> unit
+
+(*i==v=[String.is_prefix]=1.0====*)
+(** [is_prefix pattern s] returns true if string [s] begins with [pattern].
+@author Maxence Guesdon
+@version 1.0
+@cgname String.is_prefix*)
+val is_prefix : string -> string -> bool
+(*/i==v=[String.is_prefix]=1.0====*)

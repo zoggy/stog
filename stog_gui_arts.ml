@@ -189,6 +189,104 @@ let make_field_table ?packing fields =
   table
 ;;
 
+let targets = [
+  { Gtk.target = "STRING"; flags = []; info = 0};
+  { Gtk.target = "text/plain"; flags = []; info = 0};
+  ];;
+
+class file_box ?packing () =
+  object(self)
+    inherit [string] Gmylist.plist `SINGLE
+      [None, Gmylist.String Filename.basename] false
+    val mutable dir = None
+    method set_dir d =
+      dir <- d;
+      self#update
+
+    method update =
+      match dir with
+        None -> self#update_data []
+      | Some dir ->
+          let l = Stog_io.get_article_files dir in
+          let pred s =
+            not (Stog_misc.is_prefix "index." (Filename.basename s))
+          in
+          let l = List.filter pred l in
+          self#update_data l
+
+    method copy_to_dir f =
+      match dir with
+        None -> false
+      | Some dir ->
+          let com = Printf.sprintf "cp %s %s/"
+            (Filename.quote f) (Filename.quote dir)
+          in
+          match Sys.command com with
+            0 -> self#update; true
+          | n ->
+              GToolbox.message_box "Error"
+              (Printf.sprintf "command failed: %s" com);
+              false
+
+    method remove_file file =
+      match GToolbox.question_box ~title: "Question"
+        ~buttons: ["Yes" ; "No"]
+        (Stog_gui_misc.to_utf8
+         (Printf.sprintf "Remove file %s ?" file))
+      with
+        1 -> Sys.remove file; self#update
+      | _ -> ()
+
+    method on_delete () =
+      match self#selection with
+        [] -> ()
+      | fname :: _ -> self#remove_file fname
+
+    initializer
+      let data_get _ sel ~info ~time =
+        match self#selection with
+          fname :: _ -> sel#return ?typ: None ?format: None fname
+        | [] -> ()
+      in
+      let drop context ~x ~y ~time =
+        match context#targets with
+        | [] -> false
+        | d :: _ -> view#drag#get_data ~target:d ~time context ; false
+      in
+      let data_received context ~x ~y data ~info ~time =
+        if data#format = 8 then
+          begin
+            let success = self#copy_to_dir data#data in
+            context#finish ~success ~del:false ~time
+          end
+        else
+          context#finish ~success:false ~del:false ~time
+      in
+      view#drag#source_set targets
+        ~modi:[`BUTTON1 ] ~actions:[`COPY ];
+      ignore(self#view#drag#connect#data_get ~callback: data_get);
+
+      view#drag#dest_set targets ~actions:[`COPY;`MOVE];
+      ignore(view#drag#connect#drop ~callback:drop);
+      ignore(view#drag#connect#data_received ~callback:data_received);
+
+      ignore
+        (view#event#connect#key_press
+         (fun t ->
+            (List.mem (GdkEvent.Key.keyval t)
+             [
+               GdkKeysyms._Delete ;
+             ]
+            ) && (self#on_delete (); true)
+         )
+        );
+
+      match packing with
+        None -> ()
+      | Some f -> f self#box
+  end
+;;
+
 class edition_box ?packing () =
   let vbox = GPack.vbox ?packing () in
   let we_title = GEdit.entry () in
@@ -199,7 +297,9 @@ class edition_box ?packing () =
       "Title", we_title ; "Date", we_date ;
       "Topics", we_topics; "Keywords", we_keywords ]
   in
-  let _table = make_field_table ~packing: vbox#pack fields in
+  let paned = GPack.paned `HORIZONTAL ~packing: vbox#pack () in
+  let _table = make_field_table ~packing: paned#add1 fields in
+  let file_box = new file_box ~packing: paned#add2 () in
   let wscroll = GBin.scrolled_window
     ~hpolicy: `AUTOMATIC ~vpolicy: `AUTOMATIC
     ~packing: (vbox#pack ~expand: true ~fill: true) ()
@@ -214,7 +314,8 @@ class edition_box ?packing () =
       we_topics#set_text "";
       we_keywords#set_text "";
       let b = body_view#source_buffer in
-      b#delete ~start: b#start_iter ~stop: b#end_iter
+      b#delete ~start: b#start_iter ~stop: b#end_iter;
+      file_box#set_dir None
 
     method set_article a =
       we_title#set_text (Stog_gui_misc.to_utf8 a.art_title);
@@ -225,8 +326,11 @@ class edition_box ?packing () =
       we_keywords#set_text
       (Stog_gui_misc.to_utf8 (String.concat ", " a.art_keywords));
       let b = body_view#source_buffer in
+      b#begin_not_undoable_action ();
       b#delete ~start: b#start_iter ~stop: b#end_iter;
       b#insert (Stog_gui_misc.to_utf8 (Printf.sprintf "<->\n%s" a.art_body));
+      b#end_not_undoable_action ();
+      file_box#set_dir (Some (Filename.dirname a.art_location))
 
     method get_article a =
       let contents =
@@ -239,6 +343,9 @@ class edition_box ?packing () =
         (Stog_gui_misc.of_utf8 (body_view#source_buffer#get_text ()))
       in
       Stog_io.read_article_main a contents
+
+    method insert_into_body s =
+      body_view#source_buffer#insert s
 
     initializer
       (*List.iter
@@ -257,6 +364,8 @@ class edition_box ?packing () =
 
   end
 ;;
+
+
 
 
 

@@ -4,10 +4,10 @@ open Stog_types;;
 
 class menubar () =
   let menubar = GMenu.menu_bar () in
-  let m_journal =
+  let (mi_journal, m_journal) =
     let m = GMenu.menu_item ~label: "Journal" () in
     ignore(menubar#insert m ~pos: 0);
-    GMenu.menu ~packing: m#set_submenu ()
+    (m, GMenu.menu ~packing: m#set_submenu ())
   in
   let mi_new_art = GMenu.image_menu_item ~label: "New article" ~stock: `NEW
     ~packing: m_journal#add ()
@@ -19,16 +19,27 @@ class menubar () =
   let mi_quit = GMenu.image_menu_item ~label: "Quit" ~stock: `QUIT
     ~packing: m_journal#add ()
   in
+
+  let (mi_article, m_article) =
+    let m = GMenu.menu_item ~label: "Article" () in
+    ignore(menubar#insert m ~pos: 1);
+    (m, GMenu.menu ~packing: m#set_submenu ())
+  in
+  let mi_insert_p = GMenu.image_menu_item ~label: "Insert paragraph"
+    ~packing: m_article#add ()
+  in
   object(self)
     method menubar = menubar
     method mi_new_art = mi_new_art
     method mi_save = mi_save
     method mi_quit = mi_quit
+    method mi_article = mi_article
+    method mi_insert_p = mi_insert_p
   end
 ;;
 
-class stog_box stog =
-  let box = GPack.vbox () in
+class stog_box menubar stog =
+  let box = GPack.vbox  () in
   let paned = GPack.paned `HORIZONTAL ~packing: (box#pack ~expand: true) () in
   let art_box = new Stog_gui_arts.articles_box ~packing: paned#add1 () in
   let edit_box = new Stog_gui_arts.edition_box ~packing: paned#add2 () in
@@ -62,7 +73,8 @@ class stog_box stog =
        | Some id -> prerr_endline "selected_art <> art_id in on_unselect");
       self#update_selected_article_from_edit_box ;
       edit_box#clear ();
-      selected_art <- None
+      selected_art <- None;
+      menubar#mi_article#misc#set_sensitive false
 
     method set_stog st =
       stog <- st ;
@@ -74,25 +86,28 @@ class stog_box stog =
       end;
       art_box#set_articles (Stog_types.article_list stog)
 
+    method insert_into_body = edit_box#insert_into_body
+
     initializer
       art_box#set_articles (Stog_types.article_list stog);
 
       art_box#set_on_select
       (fun id ->
          selected_art <- Some id;
+         menubar#mi_article#misc#set_sensitive true;
          let a = Stog_types.article stog id in
          edit_box#set_article a
       );
 
-      art_box#set_on_unselect self#on_unselect
+      art_box#set_on_unselect self#on_unselect;
   end
 ;;
 
 class main_window stogs =
   let window = GWindow.window ~width: 1100 ~height: 700 () in
-  let stog_boxes = Array.of_list (List.map (new stog_box) stogs) in
   let vbox = GPack.vbox ~packing: window#add () in
   let menubar = new menubar () in
+  let stog_boxes = Array.of_list (List.map (new stog_box menubar) stogs) in
   let () = vbox#pack ~expand: false ~fill: true menubar#menubar#coerce in
   let notebook = GPack.notebook ~packing: (vbox#pack ~expand: true) () in
   object (self)
@@ -126,6 +141,9 @@ class main_window stogs =
       in
       f stog_box
 
+    method on_insert s =
+      self#on_current_stog (fun sb -> sb#insert_into_body s)
+
     initializer
       let f_append st_box =
         let label = GMisc.label
@@ -140,5 +158,12 @@ class main_window stogs =
       ignore(menubar#mi_save#connect#activate (self#on_current_stog self#on_save));
       ignore(menubar#mi_new_art#connect#activate (self#on_current_stog self#on_new_article));
 
+      ignore(menubar#mi_insert_p#connect#activate
+       (self#on_insert "<p>\n\n</p>"));
+
+      ignore(notebook#connect#switch_page
+        (fun n -> let sb = stog_boxes.(n) in
+          menubar#mi_article#misc#set_sensitive
+          (sb#selected_art <> None)))
   end
 ;;
