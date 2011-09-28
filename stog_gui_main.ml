@@ -147,7 +147,7 @@ class main_window stogs =
     initializer
       let f_append st_box =
         let label = GMisc.label
-          ~text: (Stog_gui_misc.to_utf8 st_box#dir)
+          ~text: (Stog_gui_misc.to_utf8 st_box#stog.stog_title)
           ()
         in
         ignore(notebook#append_page ~tab_label: label#coerce st_box#box)
