@@ -166,8 +166,6 @@ let default_commands tmpl_file ?from stog =
   ]
 ;;
 
-
-
 let copy_file ?(quote_src=true) ?(quote_dst=true) src dest =
   let com = Printf.sprintf "cp -f %s %s"
     (if quote_src then Filename.quote src else src)
@@ -201,6 +199,28 @@ let html_of_keywords stog art =
    ) art.art_keywords)
 ;;
 
+let rec html_of_comments stog tmpl comments =
+  let f (Node (message, subs)) =
+    Stog_tmpl.apply_string
+    ([
+       "date", (fun _ -> Stog_date.mk_mail_date (Stog_date.since_epoch message.mes_time)) ;
+       "subject", (fun _ -> escape_html message.mes_subject );
+       "from", (fun _ -> escape_html message.mes_from);
+       "to", (fun _ -> escape_html (String.concat ", " message.mes_to)) ;
+       "body", (fun _ -> escape_html message.mes_body);
+       "comments", (fun _ -> html_of_comments stog tmpl subs) ;
+     ] @ (default_commands tmpl ~from:`Index stog)
+    )
+    tmpl
+  in
+  String.concat "\n" (List.map f comments)
+;;
+
+let html_of_comments stog article =
+  let tmpl = Filename.concat stog.stog_tmpl_dir "comment.tmpl" in
+  html_of_comments stog tmpl article.art_comments
+;;
+
 let generate_article outdir stog art_id article =
   let html_file = Filename.concat outdir
     (link_to_article ~from: `Index article)
@@ -231,6 +251,7 @@ let generate_article outdir stog art_id article =
      "previous", (next Stog_info.pred_by_date) ;
      "keywords", (fun _ -> html_of_keywords stog article) ;
      "topics", (fun _ -> html_of_topics stog article) ;
+     "comments", (fun _ -> html_of_comments stog article) ;
    ] @ (default_commands tmpl stog))
   tmpl html_file
 ;;

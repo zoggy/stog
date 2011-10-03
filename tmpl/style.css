@@ -243,6 +243,32 @@ div.quote {
   color: #777777;
   }
 
+div.subcomments {
+  margin-left: 3em ;
+}
+
+div.comment-info {
+  font-weight: bold;
+  background-color: #EEEEEE ;
+  }
+div.comment {
+  font-family: courier ;
+  font-size: 8pt;
+  border-style: solid ;
+  border-width: 0 0 0 2px ;
+  border-color: #555555;
+  padding-left: 1em;
+}
+
+div.comment-subject {
+  font-weight: bold ;
+  color: green ;
+}
+div.comment-date {
+
+}
+
+
 body.hl { background-color:#efefef; }
 pre.hl  { color:#000000; background-color:#efefef; font-size:10pt; font-family:'Courier New';}
 .hl.num { color:#000000; }

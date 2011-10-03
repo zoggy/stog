@@ -2,7 +2,7 @@
 
 type contents_kind = Text | Html
 type date = int * int * int (** day 1..31 * month 1..12 * year *)
-type time = Unix.tm ;;
+type time = Stog_date.t ;;
 
 type message = {
     mes_time : time ;
@@ -10,9 +10,11 @@ type message = {
     mes_from : string ;
     mes_to : string list ;
     mes_body : string ;
+    mes_id : string;
   }
 
-type 'a tree = 'a * 'a list ;;
+type 'a tree = 'a tree_node
+and 'a tree_node = Node of 'a * 'a tree list
 
 type article =
   {
@@ -74,6 +76,8 @@ type stog = {
   stog_arts_by_kw : Art_set.t Str_map.t ;
   stog_arts_by_topic : Art_set.t Str_map.t ;
   stog_archives : Art_set.t Int_map.t Int_map.t ; (* year -> month -> article set *)
+  stog_base_url : string ;
+  stog_email : string ;
   }
 
 let create_stog dir = {
@@ -88,6 +92,8 @@ let create_stog dir = {
   stog_arts_by_kw = Str_map.empty ;
   stog_arts_by_topic = Str_map.empty ;
   stog_archives = Int_map.empty ;
+  stog_base_url = "http://yourblog.net" ;
+  stog_email = "foo@bar.com" ;
   }
 ;;
 

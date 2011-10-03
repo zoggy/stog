@@ -97,6 +97,14 @@ let get_article_files dir =
   files
 ;;
 
+let read_article_comments dir =
+  let messages = Stog_mailparse.messages_from_dir
+    (Filename.concat dir "comments")
+  in
+  prerr_endline (Printf.sprintf "%s: %d messages" dir (List.length messages));
+  Stog_mailparse.build_message_tree messages
+;;
+
 let read_article dir =
   let file_opt =
     first_that_exists [
@@ -109,6 +117,8 @@ let read_article dir =
   | Some (file, kind) ->
       let art_files = get_article_files dir in
       let art_files = List.filter ((<>) file) art_files in
+      let comments = read_article_comments  dir in
+      prerr_endline (Printf.sprintf "%s: %d messages" dir (List.length comments));
       let a =
         { art_human_id = Filename.basename dir ;
           art_kind = kind ;
@@ -120,7 +130,7 @@ let read_article dir =
           art_published = true ;
           art_location = file ;
           art_files = art_files ;
-          art_comments = [] ;
+          art_comments = comments ;
         }
       in
       read_article_main_of_file a file
@@ -145,6 +155,8 @@ let read_stog_header stog header =
       match String.lowercase field with
       | "title" -> { stog with stog_title = value }
       | "description" -> { stog with stog_desc = value }
+      | "email" -> { stog with stog_email = value }
+      | "url" -> { stog with stog_base_url = value }
       | _ -> stog
     with
       Not_found ->

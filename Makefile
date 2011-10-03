@@ -40,8 +40,10 @@ LIB_CMXFILES=stog_config.cmx \
 	stog_misc.cmx \
 	stog_tmap.cmx \
 	stog_graph.cmx \
+	stog_date.cmx \
 	stog_types.cmx \
 	stog_find.cmx \
+	stog_mailparse.cmx \
 	stog_io.cmx \
 	stog_info.cmx \
 	stog_coms.cmx \
