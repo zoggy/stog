@@ -1,7 +1,8 @@
 html { margin: 0 ; padding: 0 ; height: 100% ; }
 body {
-  font-family: sans-serif ;
-  font-size: 1em;
+  font: normal normal 12px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+/*  font-family: sans-serif ;
+  font-size: 1em;*/
   background: url(gradient.png); background-repeat: repeat-x;
   background-color: #c2e4f1 ;
   height: 100%;
@@ -27,12 +28,13 @@ div#bottombar {
 
 div#page {
   background-color: white;
-  color: #222222 ;
-  width: 800px;
+  color: #666666 ;
+  width: 760px;
   margin-left: auto ;
   margin-right: auto;
-  padding-left: 1em;
-  padding-right: 1em;
+  padding-left: 2em;
+  padding-right: 2em;
+  line-height: 1.4;
   /*
     border-width: 0 5px 0 5px ;
     border-color: #DDDDDD;
@@ -122,9 +124,21 @@ div#article {
 }
 
 h1 { font-size: 18pt;
-  color: #222222 ;
+  color: #555555 ;
   margin-bottom: 0.2em;
   margin-top: 0.2em;
+  }
+
+div.section {
+  font-size: 14pt;
+  margin-bottom: 1em;
+  margin-top: 1.5em;
+}
+
+div.subsection {
+  font-size: 11pt ;
+  font-weight: bold;
+  margin-bottom: -0.8em;
   }
 
 div.date {
@@ -221,6 +235,13 @@ pre.code-ocaml {
   padding-top: 2px;
   padding-bottom: 2px;
 }
+
+div.quote {
+  margin-left: 3em;
+  margin-right: 3em ;
+  font-style: italic ;
+  color: #777777;
+  }
 
 body.hl { background-color:#efefef; }
 pre.hl  { color:#000000; background-color:#efefef; font-size:10pt; font-family:'Courier New';}

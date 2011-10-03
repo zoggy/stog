@@ -146,6 +146,14 @@ let fun_code language args =
 
 let fun_ocaml = fun_code "ocaml";;
 
+let fun_div cls args =
+  Printf.sprintf "<div class=\"%s\">%s</div>"
+  cls (String.concat " " (Array.to_list args))
+;;
+
+let fun_section = fun_div "section";;
+let fun_subsection = fun_div "subsection";;
+
 let default_commands tmpl_file ?from stog =
   [ "include", fun_include tmpl_file ;
     "img", fun_img ;
@@ -153,6 +161,8 @@ let default_commands tmpl_file ?from stog =
     "archive_tree", (fun _ -> fun_archive_tree ?from stog) ;
     "ocaml", fun_ocaml ;
     "ref", fun_ref ?from stog;
+    "section", fun_section ;
+    "subsection", fun_subsection ;
   ]
 ;;
 
