@@ -8,10 +8,12 @@ stog_graph.cmo: stog_graph.cmi
 stog_graph.cmx: stog_graph.cmi
 stog_gui.cmo: stog_misc.cmi stog_io.cmo stog_gui_main.cmo
 stog_gui.cmx: stog_misc.cmx stog_io.cmx stog_gui_main.cmx
-stog_gui_arts.cmo: stog_types.cmo stog_gui_misc.cmo
-stog_gui_arts.cmx: stog_types.cmx stog_gui_misc.cmx
-stog_gui_main.cmo: stog_types.cmo stog_gui_misc.cmo stog_gui_arts.cmo
-stog_gui_main.cmx: stog_types.cmx stog_gui_misc.cmx stog_gui_arts.cmx
+stog_gui_arts.cmo: stog_types.cmo stog_misc.cmi stog_io.cmo stog_gui_misc.cmo
+stog_gui_arts.cmx: stog_types.cmx stog_misc.cmx stog_io.cmx stog_gui_misc.cmx
+stog_gui_main.cmo: stog_types.cmo stog_misc.cmi stog_io.cmo stog_gui_misc.cmo \
+    stog_gui_arts.cmo
+stog_gui_main.cmx: stog_types.cmx stog_misc.cmx stog_io.cmx stog_gui_misc.cmx \
+    stog_gui_arts.cmx
 stog_gui_misc.cmo:
 stog_gui_misc.cmx:
 stog_html.cmo: stog_types.cmo stog_tmpl.cmo stog_tmap.cmi stog_misc.cmi \
@@ -32,5 +34,5 @@ stog_tmap.cmo: stog_tmap.cmi
 stog_tmap.cmx: stog_tmap.cmi
 stog_tmpl.cmo: stog_types.cmo stog_misc.cmi stog_coms.cmo
 stog_tmpl.cmx: stog_types.cmx stog_misc.cmx stog_coms.cmx
-stog_types.cmo: stog_tmap.cmi stog_graph.cmi
-stog_types.cmx: stog_tmap.cmx stog_graph.cmx
+stog_types.cmo: stog_tmap.cmi stog_misc.cmi stog_graph.cmi
+stog_types.cmx: stog_tmap.cmx stog_misc.cmx stog_graph.cmx

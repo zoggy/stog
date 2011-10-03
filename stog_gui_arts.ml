@@ -310,9 +310,12 @@ class edition_box ?packing () =
   let we_date = GEdit.entry () in
   let we_topics = GEdit.entry () in
   let we_keywords = GEdit.entry () in
+  let wchk_published = GButton.check_button () in
   let fields = [
-      "Title", we_title ; "Date", we_date ;
-      "Topics", we_topics; "Keywords", we_keywords ]
+      "Title", we_title#coerce ; "Date", we_date#coerce ;
+      "Topics", we_topics#coerce; "Keywords", we_keywords#coerce ;
+      "Published", wchk_published#coerce ;
+    ]
   in
   let paned = GPack.paned `HORIZONTAL ~packing: vbox#pack () in
   let _table = make_field_table ~packing: paned#add1 fields in
@@ -330,6 +333,7 @@ class edition_box ?packing () =
       we_date#set_text "";
       we_topics#set_text "";
       we_keywords#set_text "";
+      wchk_published#set_active false ;
       let b = body_view#source_buffer in
       b#delete ~start: b#start_iter ~stop: b#end_iter;
       file_box#set_dir None
@@ -342,6 +346,7 @@ class edition_box ?packing () =
       (Stog_gui_misc.to_utf8 (String.concat ", " a.art_topics));
       we_keywords#set_text
       (Stog_gui_misc.to_utf8 (String.concat ", " a.art_keywords));
+      wchk_published#set_active a.art_published;
       let b = body_view#source_buffer in
       b#begin_not_undoable_action ();
       b#delete ~start: b#start_iter ~stop: b#end_iter;
@@ -352,11 +357,12 @@ class edition_box ?packing () =
     method get_article a =
       let contents =
         Printf.sprintf
-          "title: %s\ndate: %s\ntopics: %s\nkeywords: %s\n%s"
+          "title: %s\ndate: %s\ntopics: %s\nkeywords: %s\npublished: %s\n%s"
         (Stog_gui_misc.of_utf8 we_title#text)
         (Stog_gui_misc.of_utf8 we_date#text)
         (Stog_gui_misc.of_utf8 we_topics#text)
         (Stog_gui_misc.of_utf8 we_keywords#text)
+        (if wchk_published#active then "true" else "false")
         (Stog_gui_misc.of_utf8 (body_view#source_buffer#get_text ()))
       in
       Stog_io.read_article_main a contents

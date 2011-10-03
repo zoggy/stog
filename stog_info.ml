@@ -120,3 +120,24 @@ let compute stog =
   stog
 ;;
 
+let remove_not_published stog =
+  let (arts, removed) = Stog_tmap.fold
+    (fun id art (acc, removed) ->
+       if art.art_published then
+         (acc, removed)
+       else
+         (Stog_tmap.remove acc id, art.art_human_id :: removed)
+    )
+   stog.stog_articles
+   (stog.stog_articles, [])
+  in
+  let by_hid = List.fold_left
+    (fun acc k -> Stog_types.Str_map.remove k acc)
+    stog.stog_art_by_human_id removed
+  in
+  { stog with
+    stog_articles = arts ;
+    stog_art_by_human_id = by_hid ;
+  }
+;;
+  

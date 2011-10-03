@@ -166,6 +166,8 @@ div.article_intro { margin-top: 4px }
 img.img { border-width: 0 }
 div.img { text-align: center ; }
 
+span.unknown-ref { color: #AAAAAA ; }
+
 div.bloc_keywords {
   font-size: 80% ;
 /*

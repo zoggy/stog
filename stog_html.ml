@@ -81,21 +81,32 @@ let fun_img_legend args =
 
 let fun_ref ?from stog args =
   let article, text =
-    try
-      match Array.length args with
-        n when n < 1 -> failwith "Missing argument for 'ref' command"
-      | 1 ->
-          let (_, a) = Stog_types.article_by_human_id stog args.(0) in
-          (a, Printf.sprintf "\"%s\"" a.art_title)
-      | _ ->
+    match Array.length args with
+      n when n < 1 -> failwith "Missing argument for 'ref' command"
+    | n ->
+        let a =
+          try
             let (_, a) = Stog_types.article_by_human_id stog args.(0) in
-          (a, args.(1))
-    with
-      Not_found -> failwith (Printf.sprintf "Unknown article '%s'" args.(0))
+            Some a
+          with
+            Not_found ->
+              prerr_endline (Printf.sprintf "Unknown article '%s'" args.(0));
+              None
+        in
+        let text =
+          match a, n with
+            None, 1 -> "??"
+          | Some a, 1 -> Printf.sprintf "\"%s\"" a.art_title
+          | _, _ -> args.(1)
+        in
+        (a, text)
   in
-  Printf.sprintf "<a href=\"%s\">%s</a>"
-    (link_to_article ?from article)
-    text
+  match article with
+    None -> Printf.sprintf "<span class=\"unknown-ref\">%s</span>" (escape_html text)
+  | Some a ->
+      Printf.sprintf "<a href=\"%s\">%s</a>"
+      (link_to_article ?from a)
+      (escape_html text)
 ;;
 
 let fun_archive_tree ?from stog =

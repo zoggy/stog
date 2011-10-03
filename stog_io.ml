@@ -29,6 +29,11 @@ let topics_of_string s =
     (Stog_misc.split_string s [','; ';'])
 ;;
 let keywords_of_string = topics_of_string ;;
+let bool_of_string s =
+  match String.lowercase s with
+    "0" | "false" -> false
+  | _ -> true
+;;
 
 let read_article_header art header =
   let lines = Stog_misc.split_string header ['\n'] in
@@ -44,6 +49,7 @@ let read_article_header art header =
       | "title" -> { art with art_title = value }
       | "topics" -> { art with art_topics = topics_of_string value }
       | "keywords" -> { art with art_keywords = keywords_of_string value }
+      | "published" -> { art with art_published = bool_of_string value }
       | _ -> art
     with
       Not_found ->
@@ -111,6 +117,7 @@ let read_article dir =
           art_keywords = [] ;
           art_topics = [] ;
           art_title = ("title for "^(Filename.basename dir)) ;
+          art_published = true ;
           art_location = file ;
           art_files = art_files ;
           art_comments = [] ;
@@ -209,11 +216,12 @@ let write_stog_article stog _ art =
   let list l = String.concat ", " l in
   let contents =
     Printf.sprintf
-    "title: %s\ndate: %s\ntopics: %s\nkeywords: %s\n<->\n%s"
+    "title: %s\ndate: %s\ntopics: %s\nkeywords: %s\npublished: %s\n<->\n%s"
     art.art_title
     (let (y, m, d) = art.art_date in Printf.sprintf "%04d/%02d/%02d" y m d)
     (list art.art_topics)
     (list art.art_keywords)
+    (if art.art_published then "true" else "false")
     art.art_body
   in
   Stog_misc.file_of_string ~file contents

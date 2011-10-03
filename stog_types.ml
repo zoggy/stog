@@ -22,6 +22,7 @@ type article =
     art_date : date ;
     art_keywords : string list ;
     art_topics : string list ;
+    art_published : bool ;
     art_title : string ;
     art_location : string ;
     art_files : string list ; (** list of files in [art_location] *)
@@ -41,6 +42,7 @@ let dummy_article () =
     art_date = today () ;
     art_keywords = [] ;
     art_topics = [] ;
+    art_published = true ;
     art_title = "Dummy title";
     art_location = "/tmp" ;
     art_files = [] ;

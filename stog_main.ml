@@ -20,6 +20,7 @@ let main () =
   | dirs ->
       let stogs = List.map Stog_io.read_stog dirs in
       let stog = Stog_types.merge_stogs stogs in
+      let stog = Stog_info.remove_not_published stog in
       let stog = Stog_info.compute stog in
       Stog_html.generate !output_dir stog
 ;;
