@@ -125,6 +125,9 @@ class main_window stogs =
           let human_id = Stog_types.make_human_id stog title in
           let art = Stog_types.dummy_article () in
           let art = { art with art_title = title ; art_human_id = human_id } in
+          let art = { art with art_location =
+            Filename.concat (Filename.concat stog_box#stog.stog_dir human_id) "index.html" }
+          in
           let stog = Stog_types.add_article stog art in
           stog_box#set_stog stog
 

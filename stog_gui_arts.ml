@@ -214,19 +214,25 @@ class file_box ?packing () =
           let l = List.filter pred l in
           self#update_data l
 
-    method copy_to_dir f =
+    method copy_to_dir ?resize f =
       match dir with
-        None -> false
+        None -> ()
       | Some dir ->
-          let com = Printf.sprintf "cp %s %s/"
+          let com = Printf.sprintf "%s %s %s/%s"
+            (
+             match resize with
+               None -> "cp"
+             | Some (w, h) ->
+                 Printf.sprintf "convert -scale %dx%d" w h
+            )
             (Filename.quote f) (Filename.quote dir)
+            (Filename.quote (Filename.basename f))
           in
           match Sys.command com with
-            0 -> self#update; true
+            0 -> self#update
           | n ->
               GToolbox.message_box "Error"
-              (Printf.sprintf "command failed: %s" com);
-              false
+              (Printf.sprintf "command failed: %s" com)
 
     method remove_file file =
       match GToolbox.question_box ~title: "Question"
@@ -253,11 +259,22 @@ class file_box ?packing () =
         | [] -> false
         | d :: _ -> view#drag#get_data ~target:d ~time context ; false
       in
+      let drop_menu data =
+        let entries =
+          [
+            `I ("Copy and resize 500x400",
+             (fun () -> self#copy_to_dir ~resize: (500, 400) data)) ;
+
+            `I ("Copy", (fun () -> self#copy_to_dir data)) ;
+          ]
+        in
+        GToolbox.popup_menu ~entries ~button: 1 ~time: Int32.zero
+      in
       let data_received context ~x ~y data ~info ~time =
         if data#format = 8 then
           begin
-            let success = self#copy_to_dir data#data in
-            context#finish ~success ~del:false ~time
+            drop_menu data#data;
+            context#finish ~success: true ~del:false ~time
           end
         else
           context#finish ~success:false ~del:false ~time

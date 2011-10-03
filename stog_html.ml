@@ -65,9 +65,9 @@ let fun_include tmpl_file args =
 
 let fun_img args =
   if Array.length args < 2 then
-    failwith "Missing argument for imp command"
+    failwith "Missing argument for img command"
   else
-    Printf.sprintf "<img class=\"imp\" src=\"%s\" width=\"%s\"/>" args.(0) args.(1)
+    Printf.sprintf "<div class=\"img\"><img class=\"img\" src=\"%s\" width=\"%s\"/></div>" args.(0) args.(1)
 ;;
 
 let fun_img_legend args =
@@ -75,7 +75,7 @@ let fun_img_legend args =
     failwith "Missing argument for img-legend command"
   else
     Printf.sprintf
-     "<div class=\"img-legend\"><img class=\"img\" title=\"%s\" src=\"%s\" width=\"%s\"/><div class=\"legend\">%s</div></div>"
+     "<div class=\"img\"><img class=\"img\" title=\"%s\" src=\"%s\" width=\"%s\"/><div class=\"legend\">%s</div></div>"
       args.(1) args.(0) args.(2) args.(1)
 ;;
 

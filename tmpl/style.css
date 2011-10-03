@@ -163,7 +163,8 @@ div.article_item:hover { background-color: #CCCCCC ; }
 div.article_item_title { font-size: 120% ; }
 div.article_intro { margin-top: 4px }
 
-img.photo { border-width: 0 ; text-align: center ; }
+img.img { border-width: 0 }
+div.img { text-align: center ; }
 
 div.bloc_keywords {
   font-size: 80% ;
