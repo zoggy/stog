@@ -143,3 +143,12 @@ let is_prefix s1 s2 =
     (String.sub s2 0 len1) = s1
 (*/c==v=[String.is_prefix]=1.0====*)
 
+
+(*c==v=[List.list_remove_doubles]=1.0====*)
+let list_remove_doubles ?(pred=(=)) l =
+  List.fold_left
+    (fun acc e -> if List.exists (pred e) acc then acc else e :: acc)
+    []
+    (List.rev l)
+(*/c==v=[List.list_remove_doubles]=1.0====*)
+

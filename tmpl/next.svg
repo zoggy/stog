@@ -14,7 +14,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.1 r9760"
-   sodipodi:docname="next.svg">
+   sodipodi:docname="next.svg"
+   inkscape:export-filename="/home/guesdon/Personal/stog/tmpl/next.png"
+   inkscape:export-xdpi="10.92"
+   inkscape:export-ydpi="10.92">
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -70,7 +73,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>

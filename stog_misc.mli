@@ -79,3 +79,13 @@ val mkdir : string -> unit
 @cgname String.is_prefix*)
 val is_prefix : string -> string -> bool
 (*/i==v=[String.is_prefix]=1.0====*)
+
+(*i==v=[List.list_remove_doubles]=1.0====*)
+(** [list_remove_doubles ?pred l] remove doubles in the given list [l], according
+   to the optional equality function [pred]. Default equality function is [(=)].
+@author Maxence Guesdon
+@version 1.0
+@cgname List.list_remove_doubles*)
+val list_remove_doubles : ?pred:('k -> 'k -> bool) -> 'k list -> 'k list
+(*/i==v=[List.list_remove_doubles]=1.0====*)
+

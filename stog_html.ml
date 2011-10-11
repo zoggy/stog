@@ -199,7 +199,72 @@ let html_of_keywords stog art =
    ) art.art_keywords)
 ;;
 
-let rec html_of_comments stog tmpl comments =
+let remove_re s =
+  let re = Str.regexp "^Re:[ ]?" in
+  let rec iter s =
+    let p =
+      try Some (Str.search_forward re s 0)
+      with Not_found -> None
+    in
+    match p with
+      None -> s
+    | Some p ->
+        assert (p=0);
+        let matched_len = String.length (Str.matched_string s) in
+        let s = String.sub s matched_len (String.length s - matched_len) in
+        iter s
+  in
+  iter s
+;;
+
+let escape_mailto_arg s =
+  let len = String.length s in
+  let b = Buffer.create len in
+  for i = 0 to len - 1 do
+    match s.[i] with
+      '&' -> Buffer.add_string b "%26"
+    | ' ' -> Buffer.add_string b "%20"
+    | '?' -> Buffer.add_string b "%3F"
+    | '%' -> Buffer.add_string b "%25"
+    | ',' -> Buffer.add_string b "%2C"
+    | c -> Buffer.add_char b c
+  done;
+  Buffer.contents b
+;;
+
+let build_mailto stog ?message article =
+  let emails =
+    Stog_misc.list_remove_doubles
+    (match message with
+       None -> [stog.stog_email]
+     | Some message -> [stog.stog_email ; message.mes_from]
+    )
+  in
+  let hid = article.art_human_id in
+  let in_reply_to =
+    match message with None -> "" | Some m -> m.mes_id
+  in
+  let subject =
+    match message with
+      None -> article.art_title
+    | Some m -> Printf.sprintf "Re: %s" (remove_re m.mes_subject)
+  in
+  Printf.sprintf
+    "mailto:%s?subject=%s&amp;x-stog-article-id=%s&amp;in-reply-to=%s&amp"
+    (escape_mailto_arg (String.concat ", " emails))
+    (escape_mailto_arg subject)
+    (escape_mailto_arg hid)
+    (escape_mailto_arg in_reply_to)
+;;
+
+
+let html_comment_actions stog article message =
+  Printf.sprintf
+    "<a href=\"%s\"><img src=\"../comment_reply.png\" alt=\"reply to comment\" title=\"reply to comment\"/></a>"
+  (build_mailto stog ~message article)
+;;
+
+let rec html_of_comments stog article tmpl comments =
   let f (Node (message, subs)) =
     Stog_tmpl.apply_string
     ([
@@ -208,7 +273,8 @@ let rec html_of_comments stog tmpl comments =
        "from", (fun _ -> escape_html message.mes_from);
        "to", (fun _ -> escape_html (String.concat ", " message.mes_to)) ;
        "body", (fun _ -> escape_html message.mes_body);
-       "comments", (fun _ -> html_of_comments stog tmpl subs) ;
+       "comment-actions", (fun _ -> html_comment_actions stog article message) ;
+       "comments", (fun _ -> html_of_comments stog article tmpl subs) ;
      ] @ (default_commands tmpl ~from:`Index stog)
     )
     tmpl
@@ -218,7 +284,7 @@ let rec html_of_comments stog tmpl comments =
 
 let html_of_comments stog article =
   let tmpl = Filename.concat stog.stog_tmpl_dir "comment.tmpl" in
-  html_of_comments stog tmpl article.art_comments
+  html_of_comments stog article tmpl article.art_comments
 ;;
 
 let generate_article outdir stog art_id article =
@@ -239,6 +305,11 @@ let generate_article outdir stog art_id article =
         Printf.sprintf "<a href=\"%s\">%s</a>"
           link a.art_title
   in
+  let comment_actions =
+    Printf.sprintf
+    "<a href=\"%s\"><img src=\"../comment.png\" alt=\"Post a comment\" title=\"Post a comment\"/></a>"
+    (build_mailto stog article)
+  in
   Stog_tmpl.apply
   ([
      "title", (fun _ -> article.art_title) ;
@@ -251,6 +322,7 @@ let generate_article outdir stog art_id article =
      "previous", (next Stog_info.pred_by_date) ;
      "keywords", (fun _ -> html_of_keywords stog article) ;
      "topics", (fun _ -> html_of_topics stog article) ;
+     "comment-actions", (fun _ -> comment_actions);
      "comments", (fun _ -> html_of_comments stog article) ;
    ] @ (default_commands tmpl stog))
   tmpl html_file

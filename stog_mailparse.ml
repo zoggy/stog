@@ -215,13 +215,16 @@ let build_message_tree messages =
   let f acc m =
     match header "message-id:" m with
       "" -> acc
-    | s ->
-        Str_map.add s (stog_message m) acc
+    | s -> Str_map.add s (stog_message m) acc
   in
   let ids = List.fold_left f Str_map.empty messages in
   let f g m =
     match header "in-reply-to:" m with
-      "" -> g
+      "" ->
+        let id = header "message-id:" m in
+        (* add and remove node so that it is present in the graph *)
+        let g = G.add g (id, id, ()) in
+        G.rem_all g (id, id)
     | s ->
         try
           ignore(Str_map.find s ids);
