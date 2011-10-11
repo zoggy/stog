@@ -157,6 +157,7 @@ let read_stog_header stog header =
       | "description" -> { stog with stog_desc = value }
       | "email" -> { stog with stog_email = value }
       | "url" -> { stog with stog_base_url = value }
+      | "rss-length" -> { stog with stog_rss_length = int_of_string value }
       | _ -> stog
     with
       Not_found ->

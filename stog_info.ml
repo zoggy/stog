@@ -2,19 +2,6 @@
 
 open Stog_types;;
 
-let article_list stog =
-  Stog_tmap.fold
-  (fun id art acc -> (id, art) :: acc)
-  stog.stog_articles []
-;;
-
-let sort_articles_by_date arts =
-  List.sort
-  (fun (_,a2) (_,a1) ->
-     Pervasives.compare a2.art_date a1.art_date)
-  arts
-;;
-
 let compute_map f_words f_update stog =
   let f art_id article map =
     let on_word map w =
@@ -46,7 +33,7 @@ let compute_keyword_map stog =
 ;;
 
 let compute_graph_with_dates stog =
-  let arts = sort_articles_by_date (article_list stog) in
+  let arts = Stog_types.article_list ~by_date:true stog in
   let g = Stog_types.Graph.create () in
   let rec iter g = function
     [] | [_] -> g

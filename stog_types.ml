@@ -78,6 +78,7 @@ type stog = {
   stog_archives : Art_set.t Int_map.t Int_map.t ; (* year -> month -> article set *)
   stog_base_url : string ;
   stog_email : string ;
+  stog_rss_length : int ;
   }
 
 let create_stog dir = {
@@ -94,6 +95,7 @@ let create_stog dir = {
   stog_archives = Int_map.empty ;
   stog_base_url = "http://yourblog.net" ;
   stog_email = "foo@bar.com" ;
+  stog_rss_length = 10 ;
   }
 ;;
 
@@ -121,12 +123,30 @@ let add_article stog art =
   }
 ;;
 
-let article_list stog =
-  Stog_tmap.fold
+let sort_articles_by_date arts =
+  List.sort
+  (fun a1 a2 ->
+     Pervasives.compare a1.art_date a2.art_date)
+  arts
+;;
+
+let sort_ids_articles_by_date arts =
+  List.sort
+  (fun (_,a1) (_,a2) ->
+     Pervasives.compare a1.art_date a2.art_date)
+  arts
+;;
+
+let article_list ?(by_date=false) stog =
+  let l =
+    Stog_tmap.fold
     (fun id art acc -> (id, art) :: acc)
     stog.stog_articles
     []
+  in
+  if by_date then sort_ids_articles_by_date l else l
 ;;
+
 
 let merge_stogs stogs =
   match stogs with

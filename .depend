@@ -18,10 +18,6 @@ stog_gui_main.cmx: stog_types.cmx stog_misc.cmx stog_io.cmx stog_gui_misc.cmx \
     stog_gui_arts.cmx
 stog_gui_misc.cmo:
 stog_gui_misc.cmx:
-stog_html.cmo: stog_types.cmo stog_tmpl.cmo stog_tmap.cmi stog_misc.cmi \
-    stog_info.cmo
-stog_html.cmx: stog_types.cmx stog_tmpl.cmx stog_tmap.cmx stog_misc.cmx \
-    stog_info.cmx
 stog_info.cmo: stog_types.cmo stog_tmap.cmi
 stog_info.cmx: stog_types.cmx stog_tmap.cmx
 stog_io.cmo: stog_types.cmo stog_tmap.cmi stog_misc.cmi stog_mailparse.cmi \

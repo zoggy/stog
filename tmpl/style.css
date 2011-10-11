@@ -273,9 +273,13 @@ div.comment-subject {
   color: green ;
 }
 div.comment-date {
-
 }
 
+
+div.rss-button {
+  position: relative;
+  float: right;
+}
 
 body.hl { background-color:#efefef; }
 pre.hl  { color:#000000; background-color:#efefef; font-size:10pt; font-family:'Courier New';}

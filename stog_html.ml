@@ -127,6 +127,12 @@ let fun_archive_tree ?from stog =
   Buffer.contents b
 ;;
 
+let fun_rss_feed file args =
+  Printf.sprintf
+  "<link href=\"%s\" type=\"application/rss+xml\" rel=\"alternate\" title=\"RSS feed\"/>"
+  file
+;;
+
 let fun_code language args =
   let code = args.(0) in
   let temp_file = Filename.temp_file "stog" "highlight" in
@@ -154,7 +160,7 @@ let fun_div cls args =
 let fun_section = fun_div "section";;
 let fun_subsection = fun_div "subsection";;
 
-let default_commands tmpl_file ?from stog =
+let default_commands tmpl_file ?from ?rss stog =
   [ "include", fun_include tmpl_file ;
     "img", fun_img ;
     "img-legend", fun_img_legend ;
@@ -163,7 +169,54 @@ let default_commands tmpl_file ?from stog =
     "ref", fun_ref ?from stog;
     "section", fun_section ;
     "subsection", fun_subsection ;
+    "rssfeed", (match rss with None -> fun _ -> "" | Some file -> fun_rss_feed file);
   ]
+;;
+
+let rss_date_of_article article =
+    let (y, m, d) = article.art_date in
+    {
+      Rss.year = y ; month = m ; day = d ;
+      hour = 8 ; minute = 0 ; second = 0 ;
+      zone = 0 ; week_day = -1 ;
+    }
+;;
+
+let article_to_rss_item stog article =
+  let link = link_to_article ~from: `Index article in
+  let link = Printf.sprintf "%s/%s" stog.stog_base_url link in
+  let pubdate = rss_date_of_article article in
+  Rss.item ~title: article.art_title
+  ~link
+  ~pubdate
+  (*       ?cats:category list ->*)
+  ~guid: { Rss.guid_name = link ; guid_permalink = true }
+  ()
+;;
+
+let generate_rss_feed_file stog ?title link articles file =
+  let arts = Stog_types.sort_articles_by_date articles in
+  let items = List.map (article_to_rss_item stog) arts in
+  let title = Printf.sprintf "%s%s"
+    stog.stog_title
+    (match title with None -> "" | Some t -> Printf.sprintf ": %s" t)
+  in
+  let link = stog.stog_base_url ^ link in
+  let pubdate =
+    match arts with
+      [] -> None
+    | h :: _ -> Some (rss_date_of_article h)
+  in
+  let channel =
+    Rss.channel ~title ~link
+    ~desc: stog.stog_desc
+    ~managing_editor: stog.stog_email
+    ?pubdate ?last_build_date: pubdate
+    ~generator: "Stog"
+    items
+  in
+  let channel = Rss.keep_n_items stog.stog_rss_length channel in
+  Rss.print_file file channel
 ;;
 
 let copy_file ?(quote_src=true) ?(quote_dst=true) src dest =
@@ -340,7 +393,7 @@ let intro_of_article art =
 ;;
 
 
-let article_list ?set stog args =
+let article_list ?rss ?set stog args =
   let max =
     if Array.length args >= 1 then
       Some (int_of_string args.(0))
@@ -349,14 +402,12 @@ let article_list ?set stog args =
   in
   let arts =
     match set with
-      None -> Stog_info.article_list stog
+      None -> Stog_types.article_list stog
     | Some set ->
         let l = Stog_types.Art_set.elements set in
         List.map (fun id -> (id, Stog_types.article stog id)) l
   in
-  let arts = List.rev
-    (Stog_info.sort_articles_by_date arts)
-  in
+  let arts = List.rev (Stog_types.sort_ids_articles_by_date arts) in
   let arts =
     match max with
       None -> arts
@@ -376,21 +427,33 @@ let article_list ?set stog args =
      ] @ (default_commands tmpl ~from:`Index stog))
     tmpl
   in
-  String.concat "" (List.map f_article arts)
+  let html = String.concat "" (List.map f_article arts) in
+  match rss with
+    None -> html
+  | Some link ->
+      Printf.sprintf
+      "<div class=\"rss-button\"><a href=\"%s\"><img src=\"rss.png\" alt=\"Rss feed\"/></a></div>%s"
+      link html
 ;;
 
 let generate_by_word_indexes outdir stog tmpl map f_html_file =
   let f word set =
-    let html_file = Filename.concat outdir (f_html_file word) in
+    let base_html_file = f_html_file word in
+    let html_file = Filename.concat outdir base_html_file in
     let tmpl = Filename.concat stog.stog_tmpl_dir tmpl in
+    let rss_basefile = (Filename.chop_extension base_html_file)^".rss" in
+    let rss_file = Filename.concat outdir rss_basefile in
+    generate_rss_feed_file stog ~title: word base_html_file
+    (List.map (Stog_types.article stog) (Stog_types.Art_set.elements set))
+    rss_file;
     Stog_tmpl.apply
     ([
        "stylefile", (fun _ -> "style.css") ;
        "blogtitle", (fun _ -> stog.stog_title) ;
        "blogdescription", (fun _ -> stog.stog_desc) ;
-       "articles", (article_list ~set stog);
+       "articles", (article_list ~set ~rss: rss_basefile stog);
        "title", (fun _ -> word) ;
-     ] @ (default_commands tmpl ~from:`Index stog))
+     ] @ (default_commands tmpl ~from:`Index ~rss: rss_basefile stog))
     tmpl html_file
   in
   Stog_types.Str_map.iter f map
@@ -429,16 +492,21 @@ let generate_archive_index outdir stog =
 ;;
 
 let generate_index_file outdir stog =
-  let html_file = Filename.concat outdir "index.html" in
+  let basefile = "index.html" in
+  let html_file = Filename.concat outdir basefile in
   let tmpl = Filename.concat stog.stog_tmpl_dir "index.tmpl" in
+  let rss_basefile = "index.rss" in
+  let rss_file = Filename.concat outdir rss_basefile in
+  generate_rss_feed_file stog basefile
+    (List.map snd (Stog_types.article_list stog)) rss_file;
   Stog_tmpl.apply
   ([
     "stylefile", (fun _ -> "style.css") ;
     "blogtitle", (fun _ -> stog.stog_title) ;
     "blogbody", (fun _ -> stog.stog_body);
     "blogdescription", (fun _ -> stog.stog_desc) ;
-    "articles", (article_list stog);
-  ] @ (default_commands tmpl ~from:`Index stog))
+    "articles", (article_list ~rss: rss_basefile stog);
+  ] @ (default_commands tmpl ~from:`Index ~rss: rss_basefile stog))
   tmpl html_file
 ;;
 

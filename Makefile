@@ -1,6 +1,6 @@
 #
 
-INCLUDES=-I +lablgtk2 -I +lablgtk-extras
+INCLUDES=-I +lablgtk2 -I +lablgtk-extras -I +cameleon2
 COMPFLAGS=$(INCLUDES) -annot -I `ocamlfind query pcre`
 OCAMLPP=
 
@@ -20,18 +20,16 @@ RM=rm -f
 CP=cp -f
 MKDIR=mkdir -p
 
-SYSLIBS=unix.cmxa dynlink.cmxa pcre.cmxa
-SYSLIBS_BYTE=unix.cma dynlink.cma pcre.cma
+SYSLIBS=unix.cmxa dynlink.cmxa pcre.cmxa xml-light.cmxa rss.cmxa
+SYSLIBS_BYTE=unix.cma dynlink.cma pcre.cma xml-light.cma rss.cma
 
 GUI_SYSLIBS=lablgtk.cmxa \
 	lablgtksourceview2.cmxa \
 	config_file.cmx \
-	xml-light.cmxa \
 	gtksv_utils.cmx \
 	gmylist.cmx
 GUI_SYSLIBS_BYTE=lablgtk.cma \
 	lablgtksourceview2.cma \
-	xml-light.cma \
 	config_file.cmo \
 	gtksv_utils.cmo \
 	gmylist.cmo
