@@ -260,7 +260,9 @@ let intro_of_article art =
   let re_sep = Str.regexp_string "<-->" in
   try
     let p = Str.search_forward re_sep art.art_body 0 in
-    Printf.sprintf "%s ..." (String.sub art.art_body 0 p)
+    Printf.sprintf "%s <a href=\"%s\"><img src=\"next.png\" alt=\"next\"/></a>"
+    (String.sub art.art_body 0 p)
+    (link_to_article ~from:`Index art)
   with
     Not_found -> art.art_body
 ;;

@@ -92,7 +92,7 @@ div.navright {
     }
 
 a:link {
-  text-decoration:none;
+  text-decoration:underline;
   color: #2288bb;
 }
 a:visited {
@@ -100,15 +100,22 @@ a:visited {
   color: #666666;
 }
 a:hover {
-  text-decoration:underline;
+  /*text-decoration:underline;*/
   color: #33aaff;
 }
 
 div#blogtitle {
   text-align: center;
-  font-size: 18pt;
+  font-size: 22pt;
+}
+div#blogtitle a {
+  text-decoration: none ;
+  border-width: 0 ;
   }
-div#blogtitle a { text-decoration: inherit ; }
+
+div.center {
+  text-align: center ;
+}
 
 div#articlebody {
   text-align: justify;
@@ -172,13 +179,14 @@ div.article_item {
   border-color: #550000;
 */
 }
-div.article_item:hover { background-color: #CCCCCC ; }
+/*div.article_item:hover { background-color: #CCCCCC ; }*/
 
-div.article_item_title { font-size: 120% ; }
+div.article_item_title { font-size: 150% ; }
 div.article_intro { margin-top: 4px }
 
 img.img { border-width: 0 }
 div.img { text-align: center ; }
+a img { border-width: 0 }
 
 span.unknown-ref { color: #AAAAAA ; }
 
