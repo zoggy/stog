@@ -324,6 +324,25 @@ let html_comment_actions stog article message =
   (build_mailto stog ~message article)
 ;;
 
+let re_citation = Str.regexp "\\(\\(^&gt;[^\n]+\n\\)+\\)";;
+let gen_id = let id = ref 0 in (fun () -> incr id; !id);;
+
+let html_of_message_body body =
+  let body = escape_html (Stog_misc.strip_string body) in
+  let subst s =
+    let id = gen_id () in
+    let s = Str.matched_group 1 body in
+    if Stog_misc.count_char s '\n' <= 2 then
+      Printf.sprintf "<div class=\"comment-citation\">%s</div>" s
+    else
+      Printf.sprintf "<div class=\"comment-citation\" onclick=\"if(document.getElementById('comment%d').style.display=='none') {document.getElementById('comment%d').style.display='block';} else {document.getElementById('comment%d').style.display='none';}\">&gt; ... <img src=\"../expand_collapse.png\" alt=\"+/-\"/></div><div class=\"comment-expand\" id=\"comment%d\">%s</div>"
+      id id id id
+      s
+  in
+  let body = Str.global_substitute re_citation subst body in
+  body
+;;
+
 let rec html_of_comments stog article tmpl comments =
   let f (Node (message, subs)) =
     Stog_tmpl.apply_string
@@ -332,7 +351,7 @@ let rec html_of_comments stog article tmpl comments =
        "subject", (fun _ -> escape_html message.mes_subject );
        "from", (fun _ -> escape_html message.mes_from);
        "to", (fun _ -> escape_html (String.concat ", " message.mes_to)) ;
-       "body", (fun _ -> escape_html (Stog_misc.strip_string message.mes_body));
+       "body", (fun _ -> html_of_message_body message.mes_body) ;
        "comment-actions", (fun _ -> html_comment_actions stog article message) ;
        "comments", (fun _ -> html_of_comments stog article tmpl subs) ;
      ] @ (default_commands tmpl ~from:`Index stog)

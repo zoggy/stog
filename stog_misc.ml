@@ -153,3 +153,11 @@ let list_remove_doubles ?(pred=(=)) l =
 (*/c==v=[List.list_remove_doubles]=1.0====*)
 
 let md5 s = Digest.to_hex (Digest.string s);;
+
+let count_char s c =
+  let r = ref 0 in
+  for i = 0 to String.length s - 1 do
+    if s.[i] = c then incr r
+  done;
+  !r
+;;

@@ -283,13 +283,25 @@ div.comment-subject {
   /*font-weight: bold ;*/
   color: green ;
 }
+
 div.comment-date {
 }
+
 pre.comment-body {
   white-space: pre-line ;
   padding-left: 0.5em;
   padding-top: 0.3em;
   margin-bottom: 0;
+}
+
+div.comment-expand {
+  display: none ;
+}
+
+div.comment-citation {
+  white-space: pre-line ;
+  background-color: #EEE ;
+  font-style: italic;
 }
 
 div.rss-button {
