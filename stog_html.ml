@@ -303,20 +303,18 @@ let build_mailto stog ?message article =
     )
   in
   let hid = article.art_human_id in
-  let in_reply_to =
-    match message with None -> "" | Some m -> m.mes_id
-  in
   let subject =
     match message with
-      None -> article.art_title
-    | Some m -> Printf.sprintf "Re: %s" (remove_re m.mes_subject)
+      None -> Printf.sprintf "%s [%s]" article.art_title (Stog_misc.md5 hid)
+    | Some m ->
+        Printf.sprintf "Re: %s [%s/%s]"
+        (remove_re m.mes_subject)
+        (Stog_misc.md5 hid) (Stog_misc.md5 m.mes_id)
   in
   Printf.sprintf
-    "mailto:%s?subject=%s&amp;x-stog-article-id=%s&amp;in-reply-to=%s&amp"
+    "mailto:%s?subject=%s"
     (escape_mailto_arg (String.concat ", " emails))
     (escape_mailto_arg subject)
-    (escape_mailto_arg hid)
-    (escape_mailto_arg in_reply_to)
 ;;
 
 
@@ -334,7 +332,7 @@ let rec html_of_comments stog article tmpl comments =
        "subject", (fun _ -> escape_html message.mes_subject );
        "from", (fun _ -> escape_html message.mes_from);
        "to", (fun _ -> escape_html (String.concat ", " message.mes_to)) ;
-       "body", (fun _ -> escape_html message.mes_body);
+       "body", (fun _ -> escape_html (Stog_misc.strip_string message.mes_body));
        "comment-actions", (fun _ -> html_comment_actions stog article message) ;
        "comments", (fun _ -> html_of_comments stog article tmpl subs) ;
      ] @ (default_commands tmpl ~from:`Index stog)
@@ -384,10 +382,10 @@ let generate_article outdir stog art_id article =
      "previous", (next Stog_info.pred_by_date) ;
      "keywords", (fun _ -> html_of_keywords stog article) ;
      "topics", (fun _ -> html_of_topics stog article) ;
-(*
+
      "comment-actions", (fun _ -> comment_actions);
      "comments", (fun _ -> html_of_comments stog article) ;
-*)   ] @ (default_commands tmpl stog))
+   ] @ (default_commands tmpl stog))
   tmpl html_file
 ;;
 

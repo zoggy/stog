@@ -202,10 +202,51 @@ module G = Stog_graph.Make_with_map
   (struct type t = unit let compare = compare end)
 ;;
 
+let re_subject = Str.regexp "\\[\\([0-9a-f]+\\)\\(/\\([0-9a-f]+\\)\\)\\]";;
+
+let cut_subject m =
+  let s = header "subject:" m in
+  let (sub, hid,irt) =
+    try
+      let p = Str.search_forward re_subject s 0 in
+      let subject = String.sub s 0 p in
+      let hid =
+        try Some (Str.matched_group 1 s)
+        with _ -> None
+      in
+      let in_rep =
+        try Some (Str.matched_group 3 s)
+        with _ -> None
+      in
+      (subject, hid, in_rep)
+    with
+      Not_found -> (s, None, None)
+  in
+  prerr_endline
+  (Printf.sprintf "cut(%s)= (%s, %s, %s)"
+   s sub
+   (match hid with None -> "NONE" | Some h -> h)
+   (match irt with None -> "NONE" | Some h -> h)
+  );
+  (sub, hid, irt)
+;;
+
+let get_in_reply_to m =
+  match header "in-reply-to:" m with
+    "" ->
+      begin
+        (* get the information in the subject *)
+        let (_,_,irt) = cut_subject m in
+        irt
+      end
+  | s -> Some (Stog_misc.md5 s)
+;;
+
 let build_message_tree messages =
   let stog_message m =
+    let (subject, _, _) = cut_subject m in
     { Stog_types.mes_time = Stog_date.parse (header "date:" m) ;
-      mes_subject = header "subject:" m ;
+      mes_subject = subject ;
       mes_from = header "from:" m ;
       mes_to = Stog_misc.split_string (header "to:" m) [','] ;
       mes_body = m.body ;
@@ -215,27 +256,32 @@ let build_message_tree messages =
   let f acc m =
     match header "message-id:" m with
       "" -> acc
-    | s -> Str_map.add s (stog_message m) acc
+    | s -> Str_map.add (Stog_misc.md5 s) (stog_message m) acc
   in
   let ids = List.fold_left f Str_map.empty messages in
   let f g m =
-    match header "in-reply-to:" m with
-      "" ->
-        let id = header "message-id:" m in
+    match get_in_reply_to m with
+      None ->
+        let id = Stog_misc.md5 (header "message-id:" m) in
         (* add and remove node so that it is present in the graph *)
         let g = G.add g (id, id, ()) in
         G.rem_all g (id, id)
-    | s ->
+    | Some s ->
         try
           ignore(Str_map.find s ids);
-          G.add g (s, header "message-id:" m, ())
-        with Not_found -> g
+          let id = Stog_misc.md5 (header "message-id:" m) in
+          G.add g (s, id, ())
+        with Not_found ->
+            prerr_endline (Printf.sprintf "Not_found in_reply_to id: %s" s);
+            g
   in
   let g = List.fold_left f (G.create ()) messages in
   let roots = G.pred_roots g in
   let rec f node =
+    prerr_endline (Printf.sprintf "f node = %s" node);
     let succs = G.succ g node in
     let subs = List.map (fun (n, _) -> f n) succs in
+    prerr_endline (Printf.sprintf "%d subs" (List.length subs));
     Stog_types.Node (Str_map.find node ids, subs)
   in
   List.map f roots

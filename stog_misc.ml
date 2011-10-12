@@ -152,3 +152,4 @@ let list_remove_doubles ?(pred=(=)) l =
     (List.rev l)
 (*/c==v=[List.list_remove_doubles]=1.0====*)
 
+let md5 s = Digest.to_hex (Digest.string s);;

@@ -5,7 +5,7 @@ COMPFLAGS=$(INCLUDES) -annot -I `ocamlfind query pcre`
 OCAMLPP=
 
 OCAMLC=ocamlc -g
-OCAMLOPT=ocamlopt
+OCAMLOPT=ocamlopt -g
 OCAMLLEX=ocamllex
 OCAMLYACC=ocamlyacc
 CAMLP4O=camlp4o

@@ -1,6 +1,6 @@
 html { margin: 0 ; padding: 0 ; height: 100% ; }
 body {
-  font: normal normal 12px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+  font: normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
 /*  font-family: sans-serif ;
   font-size: 1em;*/
   background: url(gradient.png); background-repeat: repeat-x;
@@ -191,7 +191,7 @@ a img { border-width: 0 }
 span.unknown-ref { color: #AAAAAA ; }
 
 div.bloc_keywords {
-  font-size: 80% ;
+/*  font-size: 80% ;*/
 /*
   margin-top: 1em;
   border-width: 1px 0 0 1px;
@@ -256,25 +256,41 @@ div.subcomments {
 }
 
 div.comment-info {
+  padding-left: 0.5em;
+  padding-top: 0.3em;
   font-weight: bold;
   background-color: #EEEEEE ;
   }
+
+div.comment-actions {
+  position: relative ;
+  float: right ;
+  }
+div.root-comment-actions {
+  position: relative ;
+/*  float: left ;*/
+  display: inline ;
+  }
 div.comment {
-  font-family: courier ;
-  font-size: 8pt;
-  border-style: solid ;
-  border-width: 0 0 0 2px ;
+  font-family: arial ;
+  font-size: 9pt;
+  border-style: dashed solid solid solid ;
+  border-width: 1px 0 0 2px ;
   border-color: #555555;
-  padding-left: 1em;
 }
 
 div.comment-subject {
-  font-weight: bold ;
+  /*font-weight: bold ;*/
   color: green ;
 }
 div.comment-date {
 }
-
+pre.comment-body {
+  white-space: pre-line ;
+  padding-left: 0.5em;
+  padding-top: 0.3em;
+  margin-bottom: 0;
+}
 
 div.rss-button {
   position: relative;
