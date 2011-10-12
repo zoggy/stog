@@ -160,6 +160,13 @@ let fun_div cls args =
 let fun_section = fun_div "section";;
 let fun_subsection = fun_div "subsection";;
 
+let fun_search_form stog _ =
+  let tmpl = Filename.concat stog.stog_tmpl_dir "search.tmpl" in
+  Stog_misc.string_of_file tmpl
+;;
+
+let fun_blog_url stog _ = stog.stog_base_url;;
+
 let default_commands tmpl_file ?from ?rss stog =
   [ "include", fun_include tmpl_file ;
     "img", fun_img ;
@@ -170,6 +177,8 @@ let default_commands tmpl_file ?from ?rss stog =
     "section", fun_section ;
     "subsection", fun_subsection ;
     "rssfeed", (match rss with None -> fun _ -> "" | Some file -> fun_rss_feed file);
+    "blog-url", fun_blog_url stog ;
+    "search-form", fun_search_form stog
   ]
 ;;
 
@@ -201,7 +210,7 @@ let generate_rss_feed_file stog ?title link articles file =
     stog.stog_title
     (match title with None -> "" | Some t -> Printf.sprintf ": %s" t)
   in
-  let link = stog.stog_base_url ^ link in
+  let link = stog.stog_base_url ^"/" ^ link in
   let pubdate =
     match arts with
       [] -> None
@@ -375,9 +384,10 @@ let generate_article outdir stog art_id article =
      "previous", (next Stog_info.pred_by_date) ;
      "keywords", (fun _ -> html_of_keywords stog article) ;
      "topics", (fun _ -> html_of_topics stog article) ;
+(*
      "comment-actions", (fun _ -> comment_actions);
      "comments", (fun _ -> html_of_comments stog article) ;
-   ] @ (default_commands tmpl stog))
+*)   ] @ (default_commands tmpl stog))
   tmpl html_file
 ;;
 

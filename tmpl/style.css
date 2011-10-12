@@ -209,13 +209,13 @@ div.keywords {
 }
 
 div#archives {
-  width: 150px;
-  float: right ;
+  /*width: 150px;*/
+  /*float: right ;*/
   border-width: 1px ;
   border-style: solid ;
   border-color: #DDDDDD;
   padding: 0.5em;
-  margin-left: 1em;
+  /*margin-left: 1em;*/
   margin-bottom: 1em;
   background-color: white;
 }
@@ -280,6 +280,42 @@ div.rss-button {
   position: relative;
   float: right;
 }
+
+div.search {
+  font-size: 10pt ;
+  margin-bottom: 1em;
+}
+
+input.button {
+  border-width: 0;
+  color: #2288bb;
+  text-decoration: underline;
+  background-color: transparent ;
+  margin-bottom: 3px;
+  margin-left: 0;
+  padding-left: 0;
+  }
+input.search-text {
+  width: 125px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #d2f4f1;
+  color: #555555;
+}
+div.search {
+  border-width: 1px ;
+  border-style: solid ;
+  border-color: #DDDDDD;
+  padding: 0.5em;
+  margin-bottom: 1em;
+  background-color: white;
+}
+div.sidebar {
+  position: relative ;
+  float: right ;
+  width: 150px;
+  margin-left: 1em;
+  }
 
 body.hl { background-color:#efefef; }
 pre.hl  { color:#000000; background-color:#efefef; font-size:10pt; font-family:'Courier New';}
