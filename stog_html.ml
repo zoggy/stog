@@ -317,7 +317,7 @@ let build_mailto stog ?message article =
   in
   Printf.sprintf
     "mailto:%s?subject=%s&amp;body=%s"
-    (escape_mailto_arg (String.concat ", " emails))
+    (Stog_misc.encode_string (escape_mailto_arg (String.concat ", " emails)))
     (escape_mailto_arg subject)
     (escape_mailto_arg body)
 ;;

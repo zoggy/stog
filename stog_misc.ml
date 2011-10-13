@@ -161,3 +161,13 @@ let count_char s c =
   done;
   !r
 ;;
+
+let encode_char c = Printf.sprintf "&#%03d;" (Char.code c);;
+let encode_string s =
+  let len = String.length s in
+  let b = Buffer.create (6 * len) in
+  for i = 0 to len - 1 do
+    Buffer.add_string b (encode_char s.[i])
+  done;
+  Buffer.contents b
+;;

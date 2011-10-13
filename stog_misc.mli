@@ -92,3 +92,5 @@ val list_remove_doubles : ?pred:('k -> 'k -> bool) -> 'k list -> 'k list
 val md5 : string -> string
 
 val count_char : string -> char -> int
+
+val encode_string : string -> string
