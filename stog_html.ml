@@ -289,6 +289,7 @@ let escape_mailto_arg s =
     | '?' -> Buffer.add_string b "%3F"
     | '%' -> Buffer.add_string b "%25"
     | ',' -> Buffer.add_string b "%2C"
+    | '\n' -> Buffer.add_string b "%0D%0A"
     | c -> Buffer.add_char b c
   done;
   Buffer.contents b
@@ -311,10 +312,14 @@ let build_mailto stog ?message article =
         (remove_re m.mes_subject)
         (Stog_misc.md5 hid) (Stog_misc.md5 m.mes_id)
   in
+  let body = Stog_misc.string_of_file
+    (Filename.concat stog.stog_tmpl_dir "comment_body.tmpl")
+  in
   Printf.sprintf
-    "mailto:%s?subject=%s"
+    "mailto:%s?subject=%s&amp;body=%s"
     (escape_mailto_arg (String.concat ", " emails))
     (escape_mailto_arg subject)
+    (escape_mailto_arg body)
 ;;
 
 
