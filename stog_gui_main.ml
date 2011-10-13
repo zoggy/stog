@@ -78,13 +78,14 @@ class stog_box menubar stog =
 
     method set_stog st =
       stog <- st ;
-      begin
+      let hid =
         match selected_art with
-          None -> ()
+          None -> None
         | Some id ->
-            self#on_unselect id
-      end;
-      art_box#set_articles (Stog_types.article_list stog)
+            let a = Stog_types.article stog id in
+            Some a.art_human_id
+      in
+      art_box#set_articles ?hid (Stog_types.article_list stog)
 
     method insert_into_body = edit_box#insert_into_body
 

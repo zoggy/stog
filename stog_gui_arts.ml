@@ -108,15 +108,25 @@ class articles_box ?packing () =
     val mutable selection = None
 
     method view = view
-    method private insert_article (id, art) =
+    method private insert_article ?(select=false) (id, art) =
       let row = model.store#append () in
+      let path = model.store#get_path row in
       model.store#set ~row ~column:model.col_id id;
       model.store#set ~row ~column:model.col_title (Stog_gui_misc.to_utf8 art.art_title) ;
-      model.store#set ~row ~column:model.col_date art.art_date
+      model.store#set ~row ~column:model.col_date art.art_date;
+      if select then view#selection#select_path path
 
-    method set_articles l =
+    method set_articles ?hid l =
       model.store#clear () ;
-      List.iter self#insert_article l
+      match hid with
+        None -> List.iter self#insert_article l;
+      | Some hid ->
+          List.iter
+          (fun (id, a) ->
+             let select = a.art_human_id = hid in
+             self#insert_article ~select (id, a)
+          )
+          l
 
     val mutable on_select = (fun _ -> ())
     method set_on_select
