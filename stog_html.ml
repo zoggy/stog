@@ -295,13 +295,18 @@ let escape_mailto_arg s =
   Buffer.contents b
 ;;
 
+let normalize_email s = s;;
+
+
 let build_mailto stog ?message article =
   let emails =
+    match message with
+      None -> [stog.stog_email]
+    | Some message -> [stog.stog_email ; message.mes_from]
+  in
+  let emails =
     Stog_misc.list_remove_doubles
-    (match message with
-       None -> [stog.stog_email]
-     | Some message -> [stog.stog_email ; message.mes_from]
-    )
+    (List.map normalize_email emails)
   in
   let hid = article.art_human_id in
   let subject =

@@ -202,7 +202,7 @@ module G = Stog_graph.Make_with_map
   (struct type t = unit let compare = compare end)
 ;;
 
-let re_subject = Str.regexp "\\[\\([0-9a-f]+\\)\\(/\\([0-9a-f]+\\)\\)\\]";;
+let re_subject = Str.regexp "\\[\\([0-9a-f]+\\)\\(/\\([0-9a-f]+\\)\\)?\\]";;
 
 let cut_subject m =
   let s = header "subject:" m in

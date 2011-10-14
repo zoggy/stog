@@ -243,9 +243,12 @@ let write_stog_article stog _ art =
 let write_stog_index stog =
   let file = Filename.concat stog.stog_dir "index.html" in
   let contents = Printf.sprintf
-    "title: %s\ndescription: %s\n<->\n%s"
+    "title: %s\ndescription: %s\nemail: %s\nurl: %s\nrss-length: %d\n<->\n%s"
     stog.stog_title
     stog.stog_desc
+    stog.stog_email
+    stog.stog_base_url
+    stog.stog_rss_length
     stog.stog_body
   in
   Stog_misc.file_of_string ~file contents
