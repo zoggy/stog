@@ -295,7 +295,20 @@ let escape_mailto_arg s =
   Buffer.contents b
 ;;
 
-let normalize_email s = s;;
+let normalize_email s =
+  let s2 =
+    try
+      let p = String.index s '<' in
+      try
+        let p1 = String.index_from s p '>' in
+        String.sub s (p+1) (p1-p-1)
+      with Not_found -> s
+    with
+      Not_found -> s
+  in
+  prerr_endline (Printf.sprintf "normalize(%s) = %s" s s2);
+  s2
+;;
 
 
 let build_mailto stog ?message article =
