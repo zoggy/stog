@@ -74,7 +74,7 @@ let make_view ?packing art_model =
   let col_title =
     let col = GTree.view_column ~title:"Title" () in
 
-    let str_renderer = GTree.cell_renderer_text [ `FAMILY "monospace" ; `XALIGN 0. ] in
+    let str_renderer = GTree.cell_renderer_text [ (*`FAMILY "monospace" ; *)`XALIGN 0. ] in
     col#pack str_renderer ;
     col#add_attribute str_renderer "text" art_model.col_title ;
 
