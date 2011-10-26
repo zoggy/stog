@@ -170,7 +170,7 @@ class main_window stogs =
       in
       Array.iter f_append stog_boxes;
       ignore(window#connect#destroy self#on_quit);
-      ignore(menubar#mi_quit#connect#activate window#destroy);
+      ignore(menubar#mi_quit#connect#activate self#on_quit);
       ignore(menubar#mi_save#connect#activate (self#on_current_stog self#on_save));
       ignore(menubar#mi_new_art#connect#activate (self#on_current_stog self#on_new_article));
 
