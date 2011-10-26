@@ -27,12 +27,14 @@ GUI_SYSLIBS=lablgtk.cmxa \
 	lablgtksourceview2.cmxa \
 	config_file.cmx \
 	gtksv_utils.cmx \
-	gmylist.cmx
+	gmylist.cmx \
+	okey.cmx
 GUI_SYSLIBS_BYTE=lablgtk.cma \
 	lablgtksourceview2.cma \
 	config_file.cmo \
 	gtksv_utils.cmo \
-	gmylist.cmo
+	gmylist.cmo \
+	okey.cmo
 
 LIB_CMXFILES=stog_config.cmx \
 	stog_misc.cmx \

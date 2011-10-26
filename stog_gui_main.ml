@@ -148,6 +148,18 @@ class main_window stogs =
     method on_insert s =
       self#on_current_stog (fun sb -> sb#insert_into_body s)
 
+    method on_quit () =
+      match GToolbox.question_box
+        ~title: "Question"
+        ~buttons: ["Yes" ; "No"; "Cancel quit"]
+        "Save all stogs before quit ?"
+      with
+        1 ->
+           Array.iter (fun st -> self#on_save st) stog_boxes;
+           GMain.Main.quit ()
+      | 2 -> GMain.Main.quit ()
+      | _ -> ()
+
     initializer
       let f_append st_box =
         let label = GMisc.label
@@ -157,7 +169,7 @@ class main_window stogs =
         ignore(notebook#append_page ~tab_label: label#coerce st_box#box)
       in
       Array.iter f_append stog_boxes;
-      ignore(window#connect#destroy GMain.Main.quit);
+      ignore(window#connect#destroy self#on_quit);
       ignore(menubar#mi_quit#connect#activate window#destroy);
       ignore(menubar#mi_save#connect#activate (self#on_current_stog self#on_save));
       ignore(menubar#mi_new_art#connect#activate (self#on_current_stog self#on_new_article));
@@ -168,6 +180,17 @@ class main_window stogs =
       ignore(notebook#connect#switch_page
         (fun n -> let sb = stog_boxes.(n) in
           menubar#mi_article#misc#set_sensitive
-          (sb#selected_art <> None)))
+          (sb#selected_art <> None)));
+
+      let callbacks =
+        [
+          GdkKeysyms._s, [`CONTROL], "Ctrl-s", "Save", (self#on_current_stog self#on_save) ;
+          GdkKeysyms._q, [`CONTROL], "Ctrl-q", "Quit", self#on_quit ;
+        ]
+      in
+      List.iter
+      (fun (k,mods,_,_,f) -> Okey.add window ~mods k f)
+      callbacks
+
   end
 ;;
