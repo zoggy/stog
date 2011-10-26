@@ -188,6 +188,17 @@ img.img { border-width: 0 }
 div.img { text-align: center ; }
 a img { border-width: 0 }
 
+div.img-float-left {
+  position: relative ;
+  float: left ;
+  margin-right: 1em;
+  }
+div.img-float-right {
+  position: relative ;
+  float: right ;
+  margin-left: 1em ;
+  }
+
 span.unknown-ref { color: #AAAAAA ; }
 
 div.bloc_keywords {
@@ -361,3 +372,18 @@ pre.hl  { color:#000000; background-color:#efefef; font-size:10pt; font-family:'
 .hl.kwc { color:#0000ff; font-weight:bold; }
 .hl.kwd { color:#ddbb00; font-weight:bold; }
 
+@media print {
+div.sidebar {
+  display: none ;
+  position: normal;
+  }
+div#page {
+  /*width: 100% ;*/
+  }
+div.navbar {
+  display: none
+  }
+div#articlebody {
+  margin-right: 0 ;
+  }
+}

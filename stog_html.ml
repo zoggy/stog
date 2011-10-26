@@ -79,6 +79,16 @@ let fun_img_legend args =
       args.(1) args.(0) args.(2) args.(1)
 ;;
 
+
+let fun_img_float position args =
+  if Array.length args < 2 then
+    failwith (Printf.sprintf "Missing argument for img-%s command" position)
+  else
+    Printf.sprintf
+     "<div class=\"img-float-%s\"><img class=\"img\" src=\"%s\" width=\"%s\"/></div>"
+      position args.(0) args.(1)
+;;
+
 let fun_ref ?from stog args =
   let article, text =
     match Array.length args with
@@ -171,6 +181,8 @@ let default_commands tmpl_file ?from ?rss stog =
   [ "include", fun_include tmpl_file ;
     "img", fun_img ;
     "img-legend", fun_img_legend ;
+    "img-left", fun_img_float "left" ;
+    "img-right", fun_img_float "right" ;
     "archive_tree", (fun _ -> fun_archive_tree ?from stog) ;
     "ocaml", fun_ocaml ;
     "ref", fun_ref ?from stog;
