@@ -182,6 +182,9 @@ div.article_item {
 /*div.article_item:hover { background-color: #CCCCCC ; }*/
 
 div.article_item_title { font-size: 150% ; }
+div.article_item p {
+  display: inline ;
+  }
 div.article_intro { margin-top: 4px }
 
 img.img { border-width: 0 }
