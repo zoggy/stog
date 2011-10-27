@@ -259,6 +259,7 @@ pre.code-ocaml {
 }
 
 div.quote {
+  margin-top: 2em;
   margin-left: 3em;
   margin-right: 3em ;
   font-style: italic ;
@@ -357,6 +358,10 @@ div.sidebar {
   float: right ;
   width: 150px;
   margin-left: 1em;
+  }
+
+span.striked {
+  text-decoration: line-through ;
   }
 
 body.hl { background-color:#efefef; }
