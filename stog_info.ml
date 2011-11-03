@@ -148,15 +148,23 @@ let color_of_text s =
   done;
   let g = ref 0 in
   for i = 0 to len - 1 do
-    g := !g * Char.code s.[i]
+    g := !g + (abs (lnot (Char.code s.[i])))
   done;
   let b = ref 0 in
   for i = 0 to len - 1 do
-    b := !r + 2 * (Char.code s.[i])
+    b := !b + ((Char.code s.[i]) lsl 2)
   done;
-  (50 + !r mod 150,
-   50 + !g mod 150,
-   50 + !b mod 150)
+  let (br, bg, bb) =
+    if len <= 2 then
+      (true, true, true)
+    else
+      ((Char.code s.[0]) land 5 > 0,
+       (Char.code s.[1]) land 5 > 0,
+       (Char.code s.[2]) land 5 > 0)
+  in
+  ((if br then 20 + !r mod 180 else 0),
+   (if bg then 20 + !g mod 180 else 0),
+   (if bb then 20 + !b mod 180 else 0))
 ;;
 
 
@@ -184,9 +192,16 @@ let dot_of_graph stog =
   in
   let f_node id =
     let art = Stog_types.article stog id in
+    let col =
+      match art.art_topics with
+        [] -> "black"
+      | w :: _ ->
+          let (r,g,b) = color_of_text w in
+          Printf.sprintf "#%x%x%x" r g b
+    in
     (Printf.sprintf "id%d" (Stog_tmap.int id),
      art.art_title,
-     [])
+     ["shape", "rect"; "color", col; "fontcolor", col])
   in
   Stog_types.Graph.dot_of_graph ~f_edge ~f_node g
 ;;
