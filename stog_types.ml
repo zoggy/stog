@@ -56,13 +56,20 @@ module Str_map = Map.Make (struct type t = string let compare = compare end);;
 module Art_set = Set.Make (struct type t = article_id let compare = Stog_tmap.compare_key end);;
   module Int_map = Map.Make (struct type t = int let compare = compare end);;
 
+type edge_type =
+  Date
+| Topic of string
+| Keyword of string
+| Ref
+;;
+
 module Graph = Stog_graph.Make_with_map
   (struct
      type t = article_id
      let compare = Stog_tmap.compare_key
    end
   )
-  (struct type t = string option let compare = Pervasives.compare end);;
+  (struct type t = edge_type let compare = Pervasives.compare end);;
 
 type stog = {
   stog_dir : string ;

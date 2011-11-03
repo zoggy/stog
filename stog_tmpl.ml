@@ -30,8 +30,7 @@ let fun_if env args =
 
 let env_funs = ["set", fun_set ; "if", fun_if ];;
 
-let apply_string funs file =
-  let s = Stog_misc.string_of_file file in
+let apply_string funs ?(file="") s =
   let re = Pcre.regexp ~flags: [`MULTILINE ; `DOTALL]
     "<<((.(?!>>))+.)>>"
   in
@@ -92,8 +91,13 @@ let apply_string funs file =
   fix_point f s
 ;;
 
+let apply_file funs file =
+  let s = Stog_misc.string_of_file file in
+  apply_string funs s
+;;
+
 let apply funs file out_file =
-  let s = apply_string funs file in
+  let s = apply_file funs file in
   Stog_misc.file_of_string ~file: out_file s
 ;;
 

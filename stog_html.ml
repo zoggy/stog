@@ -380,7 +380,7 @@ let html_of_message_body body =
 
 let rec html_of_comments stog article tmpl comments =
   let f (Node (message, subs)) =
-    Stog_tmpl.apply_string
+    Stog_tmpl.apply_file
     ([
        "date", (fun _ -> Stog_date.mk_mail_date (Stog_date.since_epoch message.mes_time)) ;
        "subject", (fun _ -> escape_html message.mes_subject );
@@ -481,7 +481,7 @@ let article_list ?rss ?set stog args =
       (link_to_article ~from: `Index art) art.art_title
   in
   let f_article (_, art) =
-    Stog_tmpl.apply_string
+    Stog_tmpl.apply_file
     ([
        "date", (fun _ -> Stog_types.string_of_date art.art_date) ;
        "title", (fun _ -> link art );

@@ -38,7 +38,7 @@ let compute_graph_with_dates stog =
   let rec iter g = function
     [] | [_] -> g
   | (art_id, _) :: (next_id, next) :: q ->
-      let g = Stog_types.Graph.add g (art_id, next_id, None) in
+      let g = Stog_types.Graph.add g (art_id, next_id, Stog_types.Date) in
       iter g ((next_id, next) :: q)
   in
   { stog with stog_graph = iter g arts }
@@ -46,7 +46,7 @@ let compute_graph_with_dates stog =
 
 let next_by_date f_next stog art_id =
   let next = f_next stog.stog_graph art_id in
-  let next = List.filter (function (_,None) -> true | _ -> false) next in
+  let next = List.filter (function (_,Stog_types.Date) -> true | _ -> false) next in
   match next with
     [] -> None
   | (id,_) :: _ -> Some id
@@ -54,7 +54,7 @@ let next_by_date f_next stog art_id =
 let succ_by_date = next_by_date Stog_types.Graph.succ;;
 let pred_by_date = next_by_date Stog_types.Graph.pred;;
 
-let add_words_in_graph stog f =
+let add_words_in_graph stog f edge_data =
   let get_last table word =
     try Some(Stog_types.Str_map.find word table)
     with Not_found -> None
@@ -68,7 +68,7 @@ let add_words_in_graph stog f =
          match get_last table word with
            None -> g
          | Some id0 ->
-             Stog_types.Graph.add g (id0, id, Some word)
+             Stog_types.Graph.add g (id0, id, (edge_data word))
       )
       g
       words
@@ -85,7 +85,7 @@ let add_words_in_graph stog f =
      let (g, table) = add_for_node g table id in
      let succs = Stog_types.Graph.succ g id in
     let succs = List.filter
-      (fun (_,data) -> data = None) succs
+      (fun (_,data) -> data = Date) succs
     in
     let succs = Stog_misc.list_remove_doubles
       (List.map fst succs)
@@ -115,6 +115,27 @@ let add_keywords_in_graph stog =
   )
 ;;
 
+let add_refs_in_graph stog =
+  let g = ref stog.stog_graph in
+  let f_ref id args =
+    if Array.length args < 1 then
+      ()
+    else
+      (
+       let (id2, _) = Stog_types.article_by_human_id stog args.(0) in
+       g := Stog_types.Graph.add !g (id, id2, Stog_types.Ref)
+      );
+    ""
+  in
+  let f_art id art =
+    let funs = [ "ref", f_ref id ] in
+    let art = Stog_types.article stog id in
+    ignore(Stog_tmpl.apply_string funs art.art_body)
+  in
+  Stog_tmap.iter f_art stog.stog_articles;
+  { stog with stog_graph = !g }
+;;
+
 let compute_archives stog =
   let f_mon art_id m mmap =
     let set =
@@ -138,7 +159,6 @@ let compute_archives stog =
   in
   { stog with stog_archives = arch }
 ;;
-
 
 let color_of_text s =
   let len = String.length s in
@@ -167,7 +187,6 @@ let color_of_text s =
    (if bb then 20 + !b mod 180 else 0))
 ;;
 
-
 let dot_of_graph stog =
   let g =
     Stog_types.Graph.fold_succ
@@ -176,19 +195,21 @@ let dot_of_graph stog =
        List.fold_left
        (fun g (id2, edge) ->
           match edge with
-            None -> g
-          | Some w -> Stog_types.Graph.add g (id, id2, Some w)
+            Date -> g
+          | d -> Stog_types.Graph.add g (id, id2, d)
        )
        g succs
     )
     (Stog_types.Graph.create ())
   in
   let f_edge = function
-    None -> assert false
-  | Some word ->
+    Date -> assert false
+  | Topic word | Keyword word ->
       let (r,g,b) = color_of_text word in
       let col = Printf.sprintf "#%x%x%x" r g b in
       (word, ["fontcolor", col ; "color", col])
+  | Ref ->
+      ("", ["style", "dashed"])
   in
   let f_node id =
     let art = Stog_types.article stog id in
@@ -210,8 +231,9 @@ let compute stog =
   let stog = compute_keyword_map stog in
   let stog = compute_topic_map stog in
   let stog = compute_graph_with_dates stog in
-  let stog = add_topics_in_graph stog in
-  let stog = add_keywords_in_graph stog in
+  let stog = add_topics_in_graph stog (fun w -> Stog_types.Topic w) in
+  let stog = add_keywords_in_graph stog (fun w -> Stog_types.Keyword w) in
+  let stog = add_refs_in_graph stog in
   let stog = compute_archives stog in
   stog
 ;;
