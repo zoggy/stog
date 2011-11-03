@@ -54,24 +54,65 @@ let next_by_date f_next stog art_id =
 let succ_by_date = next_by_date Stog_types.Graph.succ;;
 let pred_by_date = next_by_date Stog_types.Graph.pred;;
 
-
-let add_topics_in_graph stog =
-  let f word art_id g =
+let add_words_in_graph stog f =
+  let get_last table word =
+    try Some(Stog_types.Str_map.find word table)
+    with Not_found -> None
+  in
+  let roots = Stog_types.Graph.pred_roots stog.stog_graph in
+  let add_for_node g table id =
+    let words = f id in
     let g =
-      match succ_by_date stog art_id with
-        None -> g
-      | Some id ->
-          Stog_types.Graph.add g (art_id, id, Some word)
+      List.fold_left
+      (fun g word ->
+         match get_last table word with
+           None -> g
+         | Some id0 ->
+             Stog_types.Graph.add g (id0, id, Some word)
+      )
+      g
+      words
     in
-    g
+    let table =
+      List.fold_left
+        (fun t word ->
+          Stog_types.Str_map.add word id t)
+      table words
+    in
+    (g, table)
   in
-  let f_topic topic set g =
-    Stog_types.Art_set.fold (f topic) set g
+  let rec f (g, table) id =
+     let (g, table) = add_for_node g table id in
+     let succs = Stog_types.Graph.succ g id in
+    let succs = List.filter
+      (fun (_,data) -> data = None) succs
+    in
+    let succs = Stog_misc.list_remove_doubles
+      (List.map fst succs)
+    in
+    List.fold_left f (g, table) succs
   in
-  let g = Stog_types.Str_map.fold f_topic
-    stog.stog_arts_by_topic stog.stog_graph
+  let (g, _) = List.fold_left f
+    (stog.stog_graph, Stog_types.Str_map.empty)
+    roots
   in
   { stog with stog_graph = g }
+;;
+
+let add_topics_in_graph stog =
+  add_words_in_graph stog
+  (fun id ->
+     let art = Stog_types.article stog id in
+     art.art_topics
+  )
+;;
+
+let add_keywords_in_graph stog =
+  add_words_in_graph stog
+  (fun id ->
+     let art = Stog_types.article stog id in
+     art.art_keywords
+  )
 ;;
 
 let compute_archives stog =
@@ -98,11 +139,64 @@ let compute_archives stog =
   { stog with stog_archives = arch }
 ;;
 
+
+let color_of_text s =
+  let len = String.length s in
+  let r = ref 0 in
+  for i = 0 to len - 1 do
+    r := !r + Char.code s.[i]
+  done;
+  let g = ref 0 in
+  for i = 0 to len - 1 do
+    g := !g * Char.code s.[i]
+  done;
+  let b = ref 0 in
+  for i = 0 to len - 1 do
+    b := !r + 2 * (Char.code s.[i])
+  done;
+  (50 + !r mod 150,
+   50 + !g mod 150,
+   50 + !b mod 150)
+;;
+
+
+let dot_of_graph stog =
+  let g =
+    Stog_types.Graph.fold_succ
+    stog.stog_graph
+    (fun id succs g ->
+       List.fold_left
+       (fun g (id2, edge) ->
+          match edge with
+            None -> g
+          | Some w -> Stog_types.Graph.add g (id, id2, Some w)
+       )
+       g succs
+    )
+    (Stog_types.Graph.create ())
+  in
+  let f_edge = function
+    None -> assert false
+  | Some word ->
+      let (r,g,b) = color_of_text word in
+      let col = Printf.sprintf "#%x%x%x" r g b in
+      (word, ["fontcolor", col ; "color", col])
+  in
+  let f_node id =
+    let art = Stog_types.article stog id in
+    (Printf.sprintf "id%d" (Stog_tmap.int id),
+     art.art_title,
+     [])
+  in
+  Stog_types.Graph.dot_of_graph ~f_edge ~f_node g
+;;
+
 let compute stog =
   let stog = compute_keyword_map stog in
   let stog = compute_topic_map stog in
   let stog = compute_graph_with_dates stog in
   let stog = add_topics_in_graph stog in
+  let stog = add_keywords_in_graph stog in
   let stog = compute_archives stog in
   stog
 ;;

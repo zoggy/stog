@@ -246,7 +246,9 @@ div.photo-legend {
 div.legend {
   margin-top: 1px;
   text-align: center;
-  font-style: italic ; font-size: 80M }
+  font-style: italic ; font-size: 80% ;
+  margin-bottom: 1.5em;
+  }
 
 pre.code-ocaml {
   border-width: 0 0 0 2px;
