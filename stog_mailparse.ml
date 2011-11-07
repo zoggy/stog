@@ -222,12 +222,13 @@ let cut_subject m =
     with
       Not_found -> (s, None, None)
   in
-  prerr_endline
+  (*prerr_endline
   (Printf.sprintf "cut(%s)= (%s, %s, %s)"
    s sub
    (match hid with None -> "NONE" | Some h -> h)
    (match irt with None -> "NONE" | Some h -> h)
   );
+  *)
   (sub, hid, irt)
 ;;
 
@@ -272,16 +273,16 @@ let build_message_tree messages =
           let id = Stog_misc.md5 (header "message-id:" m) in
           G.add g (s, id, ())
         with Not_found ->
-            prerr_endline (Printf.sprintf "Not_found in_reply_to id: %s" s);
+            (*prerr_endline (Printf.sprintf "Not_found in_reply_to id: %s" s);*)
             g
   in
   let g = List.fold_left f (G.create ()) messages in
   let roots = G.pred_roots g in
   let rec f node =
-    prerr_endline (Printf.sprintf "f node = %s" node);
+    (*prerr_endline (Printf.sprintf "f node = %s" node);*)
     let succs = G.succ g node in
     let subs = List.map (fun (n, _) -> f n) succs in
-    prerr_endline (Printf.sprintf "%d subs" (List.length subs));
+    (*prerr_endline (Printf.sprintf "%d subs" (List.length subs));*)
     Stog_types.Node (Str_map.find node ids, subs)
   in
   List.map f roots

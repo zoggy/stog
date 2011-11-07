@@ -177,20 +177,59 @@ let fun_search_form stog _ =
 
 let fun_blog_url stog _ = stog.stog_base_url;;
 
-let default_commands tmpl_file ?from ?rss stog =
+let fun_graph =
+  let generated = ref false in
+  fun outdir ?from stog _ ->
+    let name = "blog-graph.png" in
+    let src = link_to ?from name in
+    let small_src = link_to ?from ("small-"^name) in
+    begin
+      match !generated with
+        true -> ()
+      | false ->
+          generated := true;
+          let tmp = Filename.temp_file "stog" "dot" in
+          Stog_misc.file_of_string ~file: tmp
+          (Stog_info.dot_of_graph stog);
+          let com = Printf.sprintf "dot -Gcharset=latin1 -Tpng -o %s %s"
+            (Filename.quote (Filename.concat outdir src))
+            (Filename.quote tmp)
+          in
+          match Sys.command com with
+            0 ->
+              begin
+                (try Sys.remove tmp with _ -> ());
+                let com = Printf.sprintf "convert -scale 120x120 %s %s"
+                  (Filename.quote (Filename.concat outdir src))
+                  (Filename.quote (Filename.concat outdir small_src))
+                in
+                match Sys.command com with
+                  0 -> ()
+                | _ ->
+                    prerr_endline (Printf.sprintf "Command failed: %s" com)
+              end
+          | _ ->
+              prerr_endline (Printf.sprintf "Command failed: %s" com)
+    end;
+    Printf.sprintf "<a href=\"%s\"><img src=\"%s\" alt=\"Graph\"/></a>"
+    src small_src
+;;
+
+let default_commands outdir tmpl_file ?from ?rss stog =
   [ "include", fun_include tmpl_file ;
     "img", fun_img ;
     "img-legend", fun_img_legend ;
     "img-left", fun_img_float "left" ;
     "img-right", fun_img_float "right" ;
-    "archive_tree", (fun _ -> fun_archive_tree ?from stog) ;
+    "archive-tree", (fun _ -> fun_archive_tree ?from stog) ;
     "ocaml", fun_ocaml ;
     "ref", fun_ref ?from stog;
     "section", fun_section ;
     "subsection", fun_subsection ;
     "rssfeed", (match rss with None -> fun _ -> "" | Some file -> fun_rss_feed file);
     "blog-url", fun_blog_url stog ;
-    "search-form", fun_search_form stog
+    "search-form", fun_search_form stog ;
+    "graph", fun_graph outdir ?from stog ;
   ]
 ;;
 
@@ -318,7 +357,7 @@ let normalize_email s =
     with
       Not_found -> s
   in
-  prerr_endline (Printf.sprintf "normalize(%s) = %s" s s2);
+  (*prerr_endline (Printf.sprintf "normalize(%s) = %s" s s2);*)
   s2
 ;;
 
@@ -378,7 +417,7 @@ let html_of_message_body body =
   body
 ;;
 
-let rec html_of_comments stog article tmpl comments =
+let rec html_of_comments outdir stog article tmpl comments =
   let f (Node (message, subs)) =
     Stog_tmpl.apply_file
     ([
@@ -388,17 +427,17 @@ let rec html_of_comments stog article tmpl comments =
        "to", (fun _ -> escape_html (String.concat ", " message.mes_to)) ;
        "body", (fun _ -> html_of_message_body message.mes_body) ;
        "comment-actions", (fun _ -> html_comment_actions stog article message) ;
-       "comments", (fun _ -> html_of_comments stog article tmpl subs) ;
-     ] @ (default_commands tmpl ~from:`Index stog)
+       "comments", (fun _ -> html_of_comments outdir stog article tmpl subs) ;
+     ] @ (default_commands outdir tmpl ~from:`Index stog)
     )
     tmpl
   in
   String.concat "\n" (List.map f comments)
 ;;
 
-let html_of_comments stog article =
+let html_of_comments outdir stog article =
   let tmpl = Filename.concat stog.stog_tmpl_dir "comment.tmpl" in
-  html_of_comments stog article tmpl article.art_comments
+  html_of_comments outdir stog article tmpl article.art_comments
 ;;
 
 let generate_article outdir stog art_id article =
@@ -438,8 +477,8 @@ let generate_article outdir stog art_id article =
      "topics", (fun _ -> html_of_topics stog article) ;
 
      "comment-actions", (fun _ -> comment_actions);
-     "comments", (fun _ -> html_of_comments stog article) ;
-   ] @ (default_commands tmpl stog))
+     "comments", (fun _ -> html_of_comments outdir stog article) ;
+   ] @ (default_commands outdir tmpl stog))
   tmpl html_file
 ;;
 
@@ -455,7 +494,7 @@ let intro_of_article art =
 ;;
 
 
-let article_list ?rss ?set stog args =
+let article_list outdir ?rss ?set stog args =
   let max =
     if Array.length args >= 1 then
       Some (int_of_string args.(0))
@@ -486,7 +525,7 @@ let article_list ?rss ?set stog args =
        "date", (fun _ -> Stog_types.string_of_date art.art_date) ;
        "title", (fun _ -> link art );
        "intro", (fun _ -> intro_of_article art) ;
-     ] @ (default_commands tmpl ~from:`Index stog))
+     ] @ (default_commands outdir tmpl ~from:`Index stog))
     tmpl
   in
   let html = String.concat "" (List.map f_article arts) in
@@ -513,9 +552,9 @@ let generate_by_word_indexes outdir stog tmpl map f_html_file =
        "stylefile", (fun _ -> "style.css") ;
        "blogtitle", (fun _ -> stog.stog_title) ;
        "blogdescription", (fun _ -> stog.stog_desc) ;
-       "articles", (article_list ~set ~rss: rss_basefile stog);
+       "articles", (article_list outdir ~set ~rss: rss_basefile stog);
        "title", (fun _ -> word) ;
-     ] @ (default_commands tmpl ~from:`Index ~rss: rss_basefile stog))
+     ] @ (default_commands outdir tmpl ~from:`Index ~rss: rss_basefile stog))
     tmpl html_file
   in
   Stog_types.Str_map.iter f map
@@ -542,9 +581,9 @@ let generate_archive_index outdir stog =
        "stylefile", (fun _ -> "style.css") ;
        "blogtitle", (fun _ -> stog.stog_title) ;
        "blogdescription", (fun _ -> stog.stog_desc) ;
-       "articles", (article_list ~set stog);
+       "articles", (article_list outdir ~set stog);
        "title", (fun _ -> Printf.sprintf "%s %d" months.(month-1) year) ;
-     ] @ (default_commands tmpl ~from:`Index stog))
+     ] @ (default_commands outdir tmpl ~from:`Index stog))
     tmpl html_file
   in
   let f_year year mmap =
@@ -567,8 +606,8 @@ let generate_index_file outdir stog =
     "blogtitle", (fun _ -> stog.stog_title) ;
     "blogbody", (fun _ -> stog.stog_body);
     "blogdescription", (fun _ -> stog.stog_desc) ;
-    "articles", (article_list ~rss: rss_basefile stog);
-  ] @ (default_commands tmpl ~from:`Index ~rss: rss_basefile stog))
+    "articles", (article_list outdir ~rss: rss_basefile stog);
+  ] @ (default_commands outdir tmpl ~from:`Index ~rss: rss_basefile stog))
   tmpl html_file
 ;;
 

@@ -22,9 +22,7 @@ let main () =
       let stog = Stog_types.merge_stogs stogs in
       let stog = Stog_info.remove_not_published stog in
       let stog = Stog_info.compute stog in
-      Stog_html.generate !output_dir stog;
-      Stog_misc.file_of_string ~file: "stog.dot"
-        (Stog_info.dot_of_graph stog)
+      Stog_html.generate !output_dir stog
 ;;
 
 Stog_misc.safe_main main;;

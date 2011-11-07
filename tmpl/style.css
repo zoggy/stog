@@ -190,7 +190,6 @@ div.article_intro { margin-top: 4px }
 img.img { border-width: 0 }
 div.img { text-align: center ; }
 a img { border-width: 0 }
-
 div.img-float-left {
   position: relative ;
   float: left ;
@@ -223,6 +222,18 @@ div.keywords {
 }
 
 div#archives {
+  /*width: 150px;*/
+  /*float: right ;*/
+  border-width: 1px ;
+  border-style: solid ;
+  border-color: #DDDDDD;
+  padding: 0.5em;
+  /*margin-left: 1em;*/
+  margin-bottom: 1em;
+  background-color: white;
+}
+
+div#graph {
   /*width: 150px;*/
   /*float: right ;*/
   border-width: 1px ;

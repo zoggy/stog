@@ -130,7 +130,7 @@ let add_refs_in_graph stog =
   let f_art id art =
     let funs = [ "ref", f_ref id ] in
     let art = Stog_types.article stog id in
-    ignore(Stog_tmpl.apply_string funs art.art_body)
+    ignore(Stog_tmpl.apply_string ~prerr: false funs art.art_body)
   in
   Stog_tmap.iter f_art stog.stog_articles;
   { stog with stog_graph = !g }
@@ -206,7 +206,7 @@ let dot_of_graph stog =
     Date -> assert false
   | Topic word | Keyword word ->
       let (r,g,b) = color_of_text word in
-      let col = Printf.sprintf "#%x%x%x" r g b in
+      let col = Printf.sprintf "#%02x%02x%02x" r g b in
       (word, ["fontcolor", col ; "color", col])
   | Ref ->
       ("", ["style", "dashed"])
@@ -218,7 +218,7 @@ let dot_of_graph stog =
         [] -> "black"
       | w :: _ ->
           let (r,g,b) = color_of_text w in
-          Printf.sprintf "#%x%x%x" r g b
+          Printf.sprintf "#%02x%02x%02x" r g b
     in
     (Printf.sprintf "id%d" (Stog_tmap.int id),
      art.art_title,

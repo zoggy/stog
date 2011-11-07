@@ -101,7 +101,7 @@ let read_article_comments dir =
   let messages = Stog_mailparse.messages_from_dir
     (Filename.concat dir "comments")
   in
-  prerr_endline (Printf.sprintf "%s: %d messages" dir (List.length messages));
+  (*prerr_endline (Printf.sprintf "%s: %d messages" dir (List.length messages));*)
   Stog_mailparse.build_message_tree messages
 ;;
 
@@ -118,7 +118,7 @@ let read_article dir =
       let art_files = get_article_files dir in
       let art_files = List.filter ((<>) file) art_files in
       let comments = read_article_comments  dir in
-      prerr_endline (Printf.sprintf "%s: %d messages" dir (List.length comments));
+      (*prerr_endline (Printf.sprintf "%s: %d messages" dir (List.length comments));*)
       let a =
         { art_human_id = Filename.basename dir ;
           art_kind = kind ;

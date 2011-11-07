@@ -30,7 +30,7 @@ let fun_if env args =
 
 let env_funs = ["set", fun_set ; "if", fun_if ];;
 
-let apply_string funs ?(file="") s =
+let apply_string funs ?(prerr=true) ?(file="") s =
   let re = Pcre.regexp ~flags: [`MULTILINE ; `DOTALL]
     "<<((.(?!>>))+.)>>"
   in
@@ -52,8 +52,9 @@ let apply_string funs ?(file="") s =
       s
     with
       Not_found ->
-        prerr_endline
-        (Printf.sprintf "File %s: command %s not found" file com.(0));
+        if prerr then
+          prerr_endline
+          (Printf.sprintf "File %s: command %s not found" file com.(0));
         ""
   in
   let subst substrings =
@@ -65,8 +66,9 @@ let apply_string funs ?(file="") s =
       f (Array.sub com 1 ((Array.length com) - 1))
     with
       Not_found ->
-        prerr_endline
-        (Printf.sprintf "File %s: command %s not found" file com.(0));
+        if prerr then
+          prerr_endline
+          (Printf.sprintf "File %s: command %s not found" file com.(0));
         ""
   in
   let subst_pre substrings =
@@ -78,8 +80,9 @@ let apply_string funs ?(file="") s =
       f [|Stog_misc.strip_string text|]
     with
       Not_found ->
-        prerr_endline
-        (Printf.sprintf "File %s: command %s not found" file com);
+        if prerr then
+          prerr_endline
+          (Printf.sprintf "File %s: command %s not found" file com);
         ""
   in
   let f s =
