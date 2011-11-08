@@ -85,7 +85,7 @@ let fun_img_float position args =
     failwith (Printf.sprintf "Missing argument for img-%s command" position)
   else
     Printf.sprintf
-     "<div class=\"img-float-%s\"><img class=\"img\" src=\"%s\" width=\"%s\"/></div>"
+     "<div class=\"img-float-%s\"><img class=\"img\" alt=\"\" src=\"%s\" width=\"%s\"/></div>"
       position args.(0) args.(1)
 ;;
 
@@ -162,13 +162,13 @@ let fun_code language args =
 
 let fun_ocaml = fun_code "ocaml";;
 
-let fun_div cls args =
-  Printf.sprintf "<div class=\"%s\">%s</div>"
+let fun_section cls args =
+  Printf.sprintf "<section class=\"%s\">%s</section>"
   cls (String.concat " " (Array.to_list args))
 ;;
 
-let fun_section = fun_div "section";;
-let fun_subsection = fun_div "subsection";;
+let fun_subsection = fun_section "subsection";;
+let fun_section = fun_section "section";;
 
 let fun_search_form stog _ =
   let tmpl = Filename.concat stog.stog_tmpl_dir "search.tmpl" in

@@ -6,3 +6,22 @@ OK- file box to handle files in each post directory
 - support for git
 - field "published" for each article; handle field in gui
   and html generation
+
+microdata:
+- datetime
+- blog image
+- blog url
+- blogposting url
+- comment url ?
+- date published
+
+html5:
+OK- section
+OK- article
+- time
+OK- nav
+OK- footer
+- header
+OK- aside
+- figure
+- figcaption

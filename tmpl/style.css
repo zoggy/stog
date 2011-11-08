@@ -18,10 +18,10 @@ div#topbar {
   width: 100%;
 }
 
-div#bottombar {
+footer#bottombar {
   position: fixed ;
   bottom: 0px;
-  height: 30px;
+/*  height: 30px;*/
   width: 100%;
   }
 
@@ -46,7 +46,7 @@ div#page {
   border-style: solid ;
   min-height: 100%;
   margin-bottom: -1em;;
-  padding-bottom: 30px; ;
+  /*padding-bottom: 30px; ;*/
 }
 
 
@@ -61,7 +61,7 @@ div#rightpane {
 
 }
 
-div.navbar {
+nav.navbar {
   width: 100%;
   border-width: 0 0 1px 0;
   border-style: solid ;
@@ -123,7 +123,7 @@ div#articlebody {
   margin-right: 190px;
 }
 
-div#article {
+article#article {
 /*
   margin-left: 1em;
   margin-right: 1em;
@@ -136,13 +136,13 @@ h1 { font-size: 16pt;
   margin-top: 0.2em;
   }
 
-div.section {
+section.section {
   font-size: 14pt;
   margin-bottom: 1em;
   margin-top: 1.5em;
 }
 
-div.subsection {
+section.subsection {
   font-size: 11pt ;
   font-weight: bold;
   margin-bottom: -0.8em;
@@ -401,7 +401,7 @@ div.sidebar {
 div#page {
   /*width: 100% ;*/
   }
-div.navbar {
+nav.navbar {
   display: none
   }
 div#articlebody {
