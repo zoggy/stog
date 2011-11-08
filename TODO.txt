@@ -4,14 +4,12 @@ OK- file box to handle files in each post directory
   select some for the selected post
 - menu to generate the html pages
 - support for git
-- field "published" for each article; handle field in gui
-  and html generation
 
 microdata:
 - datetime
 - blog image
-- blog url
-- blogposting url
+OK- blog url
+OK- blogposting url
 - comment url ?
 - date published
 
