@@ -28,6 +28,10 @@ let escape_html s =
   Buffer.contents b
 ;;
 
+let article_url stog art =
+  Printf.sprintf "%s/%s" stog.stog_base_url art.art_human_id
+;;
+
 let link_to ?(from=`Article) file =
   let pref = match from with
       `Article -> "../"
@@ -294,22 +298,37 @@ let string_of_body s =
   Str.global_replace (Str.regexp_string "<-->") "" s
 ;;
 
-let html_of_topics stog art =
-  String.concat ", "
+let html_of_topics stog art args =
+  let sep =
+    if Array.length args < 1 then ", " else args.(0)
+  in
+  let tmpl = Filename.concat stog.stog_tmpl_dir "topic.tmpl" in
+  let f w =
+    Stog_tmpl.apply_file [ "topic", (fun _ -> w) ] tmpl
+  in
+  String.concat sep
   (List.map (fun w ->
     Printf.sprintf "<a href=\"%s\">%s</a>"
       (link_to (topic_index_file w))
-      w
+      (f w)
    ) art.art_topics)
 ;;
 
-let html_of_keywords stog art =
-  String.concat ", "
+let html_of_keywords stog art args =
+  let sep =
+    if Array.length args < 1 then ", " else args.(0)
+  in
+  let tmpl = Filename.concat stog.stog_tmpl_dir "keyword.tmpl" in
+  let f w =
+    Stog_tmpl.apply_file [ "keyword", (fun _ -> w) ] tmpl
+  in
+  String.concat sep
   (List.map (fun w ->
-    Printf.sprintf "<a href=\"%s\">%s</a>"
+      Printf.sprintf "<a href=\"%s\">%s</a>"
       (link_to (keyword_index_file w))
-      w
-   ) art.art_keywords)
+      (f w)
+   )
+   art.art_keywords)
 ;;
 
 let remove_re s =
@@ -446,6 +465,7 @@ let generate_article outdir stog art_id article =
   in
   let tmpl = Filename.concat stog.stog_tmpl_dir "article.tmpl" in
   let art_dir = Filename.dirname html_file in
+  let url = article_url stog article in
   Stog_misc.mkdir art_dir;
   List.iter (fun f -> copy_file f art_dir) article.art_files;
 
@@ -466,16 +486,17 @@ let generate_article outdir stog art_id article =
   Stog_tmpl.apply
   ([
      "title", (fun _ -> article.art_title) ;
+     "article-title", (fun _ -> article.art_title) ;
+     "article-url", (fun _ -> url) ;
      "stylefile", (fun _ -> "../style.css") ;
-     "blogtitle", (fun _ -> stog.stog_title) ;
-     "blogdescription", (fun _ -> stog.stog_desc) ;
-     "body", (fun _ -> string_of_body article.art_body);
-     "date", (fun _ -> Stog_types.string_of_date article.art_date) ;
+     "blog-title", (fun _ -> stog.stog_title) ;
+     "blog-description", (fun _ -> stog.stog_desc) ;
+     "article-body", (fun _ -> string_of_body article.art_body);
+     "article-date", (fun _ -> Stog_types.string_of_date article.art_date) ;
      "next", (next Stog_info.succ_by_date) ;
      "previous", (next Stog_info.pred_by_date) ;
-     "keywords", (fun _ -> html_of_keywords stog article) ;
-     "topics", (fun _ -> html_of_topics stog article) ;
-
+     "article-keywords", html_of_keywords stog article ;
+     "article-topics", html_of_topics stog article ;
      "comment-actions", (fun _ -> comment_actions);
      "comments", (fun _ -> html_of_comments outdir stog article) ;
    ] @ (default_commands outdir tmpl stog))
@@ -515,16 +536,14 @@ let article_list outdir ?rss ?set stog args =
     | Some n -> Stog_misc.list_chop n arts
   in
   let tmpl = Filename.concat stog.stog_tmpl_dir "article_list.tmpl" in
-  let link art =
-    Printf.sprintf "<a href=\"%s\">%s</a>"
-      (link_to_article ~from: `Index art) art.art_title
-  in
   let f_article (_, art) =
+    let url = article_url stog art in
     Stog_tmpl.apply_file
     ([
-       "date", (fun _ -> Stog_types.string_of_date art.art_date) ;
-       "title", (fun _ -> link art );
-       "intro", (fun _ -> intro_of_article art) ;
+       "article-date", (fun _ -> Stog_types.string_of_date art.art_date) ;
+       "article-title", (fun _ -> art.art_title );
+       "article-url", (fun _ -> url );
+       "article-intro", (fun _ -> intro_of_article art) ;
      ] @ (default_commands outdir tmpl ~from:`Index stog))
     tmpl
   in
@@ -550,8 +569,8 @@ let generate_by_word_indexes outdir stog tmpl map f_html_file =
     Stog_tmpl.apply
     ([
        "stylefile", (fun _ -> "style.css") ;
-       "blogtitle", (fun _ -> stog.stog_title) ;
-       "blogdescription", (fun _ -> stog.stog_desc) ;
+       "blog-title", (fun _ -> stog.stog_title) ;
+       "blog-description", (fun _ -> stog.stog_desc) ;
        "articles", (article_list outdir ~set ~rss: rss_basefile stog);
        "title", (fun _ -> word) ;
      ] @ (default_commands outdir tmpl ~from:`Index ~rss: rss_basefile stog))
@@ -579,8 +598,8 @@ let generate_archive_index outdir stog =
     Stog_tmpl.apply
     ([
        "stylefile", (fun _ -> "style.css") ;
-       "blogtitle", (fun _ -> stog.stog_title) ;
-       "blogdescription", (fun _ -> stog.stog_desc) ;
+       "blog-title", (fun _ -> stog.stog_title) ;
+       "blog-description", (fun _ -> stog.stog_desc) ;
        "articles", (article_list outdir ~set stog);
        "title", (fun _ -> Printf.sprintf "%s %d" months.(month-1) year) ;
      ] @ (default_commands outdir tmpl ~from:`Index stog))
@@ -603,9 +622,10 @@ let generate_index_file outdir stog =
   Stog_tmpl.apply
   ([
     "stylefile", (fun _ -> "style.css") ;
-    "blogtitle", (fun _ -> stog.stog_title) ;
-    "blogbody", (fun _ -> stog.stog_body);
-    "blogdescription", (fun _ -> stog.stog_desc) ;
+    "blog-title", (fun _ -> stog.stog_title) ;
+    "blog-body", (fun _ -> stog.stog_body);
+    "blog-description", (fun _ -> stog.stog_desc) ;
+    "blog-url", (fun _ -> stog.stog_base_url) ;
     "articles", (article_list outdir ~rss: rss_basefile stog);
   ] @ (default_commands outdir tmpl ~from:`Index ~rss: rss_basefile stog))
   tmpl html_file

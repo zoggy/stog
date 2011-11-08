@@ -1,10 +1,11 @@
 <[set navbar true]>
 <<include "header.tmpl">>
 <article itemscope itemtype="http://schema.org/BlogPosting" id="article">
-<div class="date"><<date>></div>
-<h1 itemprop="name"><<title>></h1>
+<div class="date"><<article-date>></div>
+<h1 itemprop="name"><<article-title>></h1>
+<link itemprop="url" href="<<article-url>>"/> </link>
 <div itemprop="articleBody" id="articlebody">
-<<body>>
+<<article-body>>
 </div>
 <div itemprop="articleSection" class="section">
 Commentaires <div class="root-comment-actions"><<comment-actions>></div>
@@ -12,11 +13,11 @@ Commentaires <div class="root-comment-actions"><<comment-actions>></div>
 <div class="comments">
 <<comments>>
 </div>
-<div itemprop="keywords" class="bloc_keywords">
-Thèmes: <div class="keywords"><<topics>></div>
+<div class="bloc_keywords">
+Thèmes: <div class="keywords"><<article-topics ', '>></div>
 </div>
-<div itemprop="keywords" class="bloc_keywords">
-Mots-clés: <div class="keywords"><<keywords>></div>
+<div class="bloc_keywords">
+Mots-clés: <div class="keywords"><<article-keywords ', '>></div>
 </div>
 </article>
 <<include "footer.tmpl">>

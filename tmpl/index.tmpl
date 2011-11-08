@@ -1,6 +1,7 @@
 <<include "index_header.tmpl">>
-<div itemprop="description" class="blogdesc"><<blogdescription>></div>
-<div class="blogbody"><<blogbody>></div>
+<div itemprop="description" class="blogdesc"><<blog-description>></div>
+<link itemprop="url" href="<<blog-url>>" />
+<div class="blogbody"><<blog-body>></div>
 <aside><<include sidebar.tmpl>></aside>
 <<articles 10 >>
 <<include "footer.tmpl">>
