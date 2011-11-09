@@ -219,22 +219,39 @@ let fun_graph =
     src small_src
 ;;
 
-let default_commands outdir tmpl_file ?from ?rss stog =
-  [ "include", fun_include tmpl_file ;
-    "img", fun_img ;
-    "img-legend", fun_img_legend ;
-    "img-left", fun_img_float "left" ;
-    "img-right", fun_img_float "right" ;
-    "archive-tree", (fun _ -> fun_archive_tree ?from stog) ;
-    "ocaml", fun_ocaml ;
-    "ref", fun_ref ?from stog;
-    "section", fun_section ;
-    "subsection", fun_subsection ;
-    "rssfeed", (match rss with None -> fun _ -> "" | Some file -> fun_rss_feed file);
-    "blog-url", fun_blog_url stog ;
-    "search-form", fun_search_form stog ;
-    "graph", fun_graph outdir ?from stog ;
-  ]
+let default_commands ?outdir ?(tmpl="") ?from ?rss stog =
+  let l =
+    [ "include", fun_include tmpl ;
+      "img", fun_img ;
+      "img-legend", fun_img_legend ;
+      "img-left", fun_img_float "left" ;
+      "img-right", fun_img_float "right" ;
+      "archive-tree", (fun _ -> fun_archive_tree ?from stog) ;
+      "ocaml", fun_ocaml ;
+      "ref", fun_ref ?from stog;
+      "section", fun_section ;
+      "subsection", fun_subsection ;
+      "rssfeed", (match rss with None -> fun _ -> "" | Some file -> fun_rss_feed file);
+      "blog-url", fun_blog_url stog ;
+      "search-form", fun_search_form stog ;
+    ]
+  in
+  match outdir with
+    None -> l
+    | Some outdir ->
+      l @ ["graph", fun_graph outdir ?from stog ]
+;;
+
+let intro_of_article stog art =
+  let re_sep = Str.regexp_string "<-->" in
+  try
+    let p = Str.search_forward re_sep art.art_body 0 in
+    Printf.sprintf "%s <a href=\"%s/%s\"><img src=\"%s/next.png\" alt=\"next\"/></a>"
+    (String.sub art.art_body 0 p)
+    stog.stog_base_url art.art_human_id
+    stog.stog_base_url
+  with
+    Not_found -> art.art_body
 ;;
 
 let rss_date_of_article article =
@@ -250,10 +267,24 @@ let article_to_rss_item stog article =
   let link = link_to_article ~from: `Index article in
   let link = Printf.sprintf "%s/%s" stog.stog_base_url link in
   let pubdate = rss_date_of_article article in
+  let f_word w =
+    { Rss.cat_name = w ; Rss.cat_domain = None }
+  in
+  let cats =
+    (List.map f_word article.art_topics) @
+    (List.map f_word article.art_keywords)
+  in
+  let desc = intro_of_article stog article in
+  let desc =
+    Stog_tmpl.apply_string
+    (default_commands stog)
+    desc
+  in
   Rss.item ~title: article.art_title
+  ~desc
   ~link
   ~pubdate
-  (*       ?cats:category list ->*)
+  ~cats
   ~guid: { Rss.guid_name = link ; guid_permalink = true }
   ()
 ;;
@@ -447,7 +478,7 @@ let rec html_of_comments outdir stog article tmpl comments =
        "body", (fun _ -> html_of_message_body message.mes_body) ;
        "comment-actions", (fun _ -> html_comment_actions stog article message) ;
        "comments", (fun _ -> html_of_comments outdir stog article tmpl subs) ;
-     ] @ (default_commands outdir tmpl ~from:`Index stog)
+     ] @ (default_commands ~outdir ~tmpl ~from:`Index stog)
     )
     tmpl
   in
@@ -499,19 +530,8 @@ let generate_article outdir stog art_id article =
      "article-topics", html_of_topics stog article ;
      "comment-actions", (fun _ -> comment_actions);
      "comments", (fun _ -> html_of_comments outdir stog article) ;
-   ] @ (default_commands outdir tmpl stog))
+   ] @ (default_commands ~outdir ~tmpl stog))
   tmpl html_file
-;;
-
-let intro_of_article art =
-  let re_sep = Str.regexp_string "<-->" in
-  try
-    let p = Str.search_forward re_sep art.art_body 0 in
-    Printf.sprintf "%s <a href=\"%s\"><img src=\"next.png\" alt=\"next\"/></a>"
-    (String.sub art.art_body 0 p)
-    (link_to_article ~from:`Index art)
-  with
-    Not_found -> art.art_body
 ;;
 
 
@@ -543,8 +563,8 @@ let article_list outdir ?rss ?set stog args =
        "article-date", (fun _ -> Stog_types.string_of_date art.art_date) ;
        "article-title", (fun _ -> art.art_title );
        "article-url", (fun _ -> url );
-       "article-intro", (fun _ -> intro_of_article art) ;
-     ] @ (default_commands outdir tmpl ~from:`Index stog))
+       "article-intro", (fun _ -> intro_of_article stog art) ;
+     ] @ (default_commands ~outdir ~tmpl ~from:`Index stog))
     tmpl
   in
   let html = String.concat "" (List.map f_article arts) in
@@ -573,7 +593,7 @@ let generate_by_word_indexes outdir stog tmpl map f_html_file =
        "blog-description", (fun _ -> stog.stog_desc) ;
        "articles", (article_list outdir ~set ~rss: rss_basefile stog);
        "title", (fun _ -> word) ;
-     ] @ (default_commands outdir tmpl ~from:`Index ~rss: rss_basefile stog))
+     ] @ (default_commands ~outdir ~tmpl ~from:`Index ~rss: rss_basefile stog))
     tmpl html_file
   in
   Stog_types.Str_map.iter f map
@@ -602,7 +622,7 @@ let generate_archive_index outdir stog =
        "blog-description", (fun _ -> stog.stog_desc) ;
        "articles", (article_list outdir ~set stog);
        "title", (fun _ -> Printf.sprintf "%s %d" months.(month-1) year) ;
-     ] @ (default_commands outdir tmpl ~from:`Index stog))
+     ] @ (default_commands ~outdir ~tmpl ~from:`Index stog))
     tmpl html_file
   in
   let f_year year mmap =
@@ -627,7 +647,7 @@ let generate_index_file outdir stog =
     "blog-description", (fun _ -> stog.stog_desc) ;
     "blog-url", (fun _ -> stog.stog_base_url) ;
     "articles", (article_list outdir ~rss: rss_basefile stog);
-  ] @ (default_commands outdir tmpl ~from:`Index ~rss: rss_basefile stog))
+  ] @ (default_commands ~outdir ~tmpl ~from:`Index ~rss: rss_basefile stog))
   tmpl html_file
 ;;
 
