@@ -1,10 +1,23 @@
 
 let output_dir = ref "stog-output";;
 
+let base_url = ref None ;;
+
+let set_stog_options stog =
+  let stog =
+    match !base_url with
+      None -> stog
+    | Some s -> { stog with Stog_types.stog_base_url = s }
+  in
+  stog
+;;
+
 let options = [
     "-d", Arg.Set_string output_dir,
     "<dir> set output directory instead of "^ !output_dir ;
 
+    "--base-url", Arg.String (fun s -> base_url := Some s),
+    " <s> use <s> as base url instead of the one specified in the input stog" ;
   ];;
 
 let usage = Printf.sprintf
@@ -22,6 +35,7 @@ let main () =
       let stog = Stog_types.merge_stogs stogs in
       let stog = Stog_info.remove_not_published stog in
       let stog = Stog_info.compute stog in
+      let stog = set_stog_options stog in
       Stog_html.generate !output_dir stog
 ;;
 
