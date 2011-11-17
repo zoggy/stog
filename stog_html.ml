@@ -290,7 +290,7 @@ let article_to_rss_item stog article =
 ;;
 
 let generate_rss_feed_file stog ?title link articles file =
-  let arts = Stog_types.sort_articles_by_date articles in
+  let arts = List.rev (Stog_types.sort_articles_by_date articles) in
   let items = List.map (article_to_rss_item stog) arts in
   let title = Printf.sprintf "%s%s"
     stog.stog_title
