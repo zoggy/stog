@@ -125,18 +125,34 @@ let fun_ref ?from stog args =
 
 let fun_archive_tree ?from stog =
   let b = Buffer.create 256 in
-  let f_mon year month set =
+  let mk_months map =
+    List.sort (fun (m1, _) (m2, _) -> compare m2 m1)
+    (Stog_types.Int_map.fold
+     (fun month data acc -> (month, data) :: acc)
+     map
+     []
+    )
+  in
+  let years =
+    Stog_types.Int_map.fold
+      (fun year data acc -> (year, mk_months data) :: acc)
+      stog.stog_archives
+      []
+  in
+  let years = List.sort (fun (y1,_) (y2,_) -> compare y2 y1) years in
+
+  let f_mon year (month, set) =
     let link = link_to ?from (month_index_file ~year ~month) in
     Printf.bprintf b "<li><a href=\"%s\">%s</a>(%d)</li>"
       link months.(month-1) (Stog_types.Art_set.cardinal set)
   in
-  let f_year year mmap =
+  let f_year (year, data) =
     Printf.bprintf b "<li>%d<ul>" year;
-    Stog_types.Int_map.iter (f_mon year) mmap;
+    List.iter (f_mon year) data;
     Buffer.add_string b "</ul></li>"
   in
   Buffer.add_string b "<ul>";
-  Stog_types.Int_map.iter f_year stog.stog_archives ;
+  List.iter f_year years;
   Buffer.add_string b "</ul>";
   Buffer.contents b
 ;;
