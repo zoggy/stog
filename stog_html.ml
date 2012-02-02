@@ -669,7 +669,8 @@ let generate_index_file outdir stog =
 
 let generate_index outdir stog =
   Stog_misc.mkdir outdir;
-  copy_file (Filename.concat stog.stog_tmpl_dir "style.css") outdir;
+  copy_file ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.less") outdir;
+  copy_file (Filename.concat stog.stog_tmpl_dir "less.js") outdir;
   copy_file ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.png") outdir;
   generate_index_file outdir stog;
   generate_topic_indexes outdir stog;
