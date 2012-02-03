@@ -94,3 +94,5 @@ val md5 : string -> string
 val count_char : string -> char -> int
 
 val encode_string : string -> string
+
+val map_opt : ('a -> 'b) -> 'a option -> 'b option

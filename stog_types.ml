@@ -29,8 +29,18 @@ type article =
     art_location : string ;
     art_files : string list ; (** list of files in [art_location] *)
     art_comments : message tree list ;
+    art_vars : (string * string) list
   }
 and article_id = article Stog_tmap.key
+
+type page =
+  { page_id : string ;
+    page_kind : contents_kind ;
+    page_body : string ;
+    page_title : string ;
+    page_vars : (string * string) list ;
+  }
+and page_id = page Stog_tmap.key
 
 let today () =
   let t = Unix.gmtime (Unix.time()) in
@@ -49,12 +59,22 @@ let dummy_article () =
     art_location = "/tmp" ;
     art_files = [] ;
     art_comments = [] ;
+    art_vars = [] ;
+  }
+;;
+let  dummy_page () =
+  { page_id = "dummypage" ;
+    page_kind = Html ;
+    page_body = "" ;
+    page_title  = "" ;
+    page_vars = [] ;
   }
 ;;
 
 module Str_map = Map.Make (struct type t = string let compare = compare end);;
 module Art_set = Set.Make (struct type t = article_id let compare = Stog_tmap.compare_key end);;
-  module Int_map = Map.Make (struct type t = int let compare = compare end);;
+module Page_set = Set.Make (struct type t = page_id let compare = Stog_tmap.compare_key end);;
+module Int_map = Map.Make (struct type t = int let compare = compare end);;
 
 type edge_type =
   Date
@@ -75,6 +95,9 @@ type stog = {
   stog_dir : string ;
   stog_articles : (article, article) Stog_tmap.t ;
   stog_art_by_human_id : article_id Str_map.t ;
+  stog_pages : (page, page) Stog_tmap.t ;
+  stog_page_by_human_id : page_id Str_map.t ;
+  stog_vars : (string * string) list ;
   stog_tmpl_dir : string ;
   stog_title : string ;
   stog_body : string ;
@@ -92,6 +115,8 @@ let create_stog dir = {
   stog_dir = dir ;
   stog_articles = Stog_tmap.create (dummy_article ());
   stog_art_by_human_id = Str_map.empty ;
+  stog_pages = Stog_tmap.create (dummy_page ());
+  stog_page_by_human_id = Str_map.empty ;
   stog_tmpl_dir = "tmpl" ;
   stog_title = "Blog title" ;
   stog_body = "" ;
@@ -103,6 +128,7 @@ let create_stog dir = {
   stog_base_url = "http://yourblog.net" ;
   stog_email = "foo@bar.com" ;
   stog_rss_length = 10 ;
+  stog_vars = [] ;
   }
 ;;
 

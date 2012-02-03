@@ -1,7 +1,7 @@
 #
 
 INCLUDES=-I +lablgtk2 -I +lablgtk-extras -I +cameleon2
-COMPFLAGS=$(INCLUDES) -annot -I `ocamlfind query pcre`
+COMPFLAGS=$(INCLUDES) -annot -I `ocamlfind query pcre` -rectypes -g
 OCAMLPP=
 
 OCAMLC=ocamlc -g
@@ -47,6 +47,7 @@ LIB_CMXFILES=stog_config.cmx \
 	stog_io.cmx \
 	stog_coms.cmx \
 	stog_tmpl.cmx \
+	stog_xtmpl.cmx \
 	stog_info.cmx \
 	stog_html.cmx
 

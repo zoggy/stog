@@ -171,3 +171,6 @@ let encode_string s =
   done;
   Buffer.contents b
 ;;
+
+let map_opt f = function None -> None | Some x -> Some (f x);;
+

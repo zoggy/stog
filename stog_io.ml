@@ -50,7 +50,7 @@ let read_article_header art header =
       | "topics" -> { art with art_topics = topics_of_string value }
       | "keywords" -> { art with art_keywords = keywords_of_string value }
       | "published" -> { art with art_published = bool_of_string value }
-      | _ -> art
+      | other -> { art with art_vars = (other, value) :: art.art_vars }
     with
       Not_found ->
         prerr_endline
@@ -131,6 +131,7 @@ let read_article dir =
           art_location = file ;
           art_files = art_files ;
           art_comments = comments ;
+          art_vars = [] ;
         }
       in
       read_article_main_of_file a file
