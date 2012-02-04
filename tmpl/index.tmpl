@@ -1,7 +1,24 @@
-<<include "index_header.tmpl">>
-<div itemprop="description" class="blogdesc"><<blog-description>></div>
-<link itemprop="url" href="<<blog-url>>" />
-<div class="blogbody"><<blog-body>></div>
-<aside><<include sidebar.tmpl>></aside>
-<<articles 30 >>
-<<include "footer.tmpl">>
+<html>
+<head><title><blog-title/></title><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<link rel="stylesheet/less" type="text/css" href="style.less"/>
+<rssfeed/>
+<script src="less.js" type="text/javascript">foo</script>
+</head>
+<body>
+<include file="topbar.tmpl"/>
+<div itemscope="" itemtype="http://schema.org/Blog" id="page">
+<div id="header">
+<image float="right" src="toplogo.png" width="50"/>
+<div id="blogtitle">
+<span itemprop="name"><blog-title/></span></div>
+</div>
+<div itemprop="description" class="blogdesc"><blog-description/></div>
+<a itemprop="url" href="<blog-url/>" />
+<div class="blogbody"><blog-body/></div>
+<aside><include file="sidebar.tmpl"/></aside>
+<articles max="30"/>
+</div>
+<footer id="bottombar">
+</footer>
+</body>
+</html>

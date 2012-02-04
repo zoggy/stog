@@ -1,0 +1,21 @@
+<html>
+<head>
+<title><blog-title/> : <pagetitle/></title><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<link rel="stylesheet/less" type="text/css" href="../style.less"></link>
+<script src="../less.js" type="text/javascript">foo</script>
+<rssfeed/>
+</head><body>
+<include file="topbar.tmpl"/>
+<div id="page">
+<div id="header">
+<image float="right" src="<base-url/>/toplogo.png" width="50"/><div id="blogtitle"><a href="<base-url/>/index.html"><blog-title/></a></div>
+<div class="blogdesc"><blog-description/></div>
+<!--<[if navbar true '<nav class="navbar"><div class="navleft"><previous/></div><div class="navright"><next/></div></nav>']>-->
+</div>
+<aside><include file="sidebar.tmpl"/></aside>
+<contents/>
+</div>
+<footer id="bottombar">
+</footer>
+</body>
+</html>

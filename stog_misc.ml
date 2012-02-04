@@ -174,3 +174,17 @@ let encode_string s =
 
 let map_opt f = function None -> None | Some x -> Some (f x);;
 
+let list_concat ?sep l =
+  match sep with
+    None -> l
+  | Some sep ->
+      let rec iter acc = function
+        [] -> List.rev acc
+      | h :: q ->
+          match acc with
+            [] -> iter [h] q
+          | acc -> iter (h :: sep :: acc) q
+      in
+      iter [] l
+;;
+

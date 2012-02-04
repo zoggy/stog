@@ -96,3 +96,5 @@ val count_char : string -> char -> int
 val encode_string : string -> string
 
 val map_opt : ('a -> 'b) -> 'a option -> 'b option
+
+val list_concat : ?sep: 'a -> 'a list -> 'a list

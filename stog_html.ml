@@ -55,34 +55,37 @@ let month_index_file ~year ~month =
   url_compat (Printf.sprintf "%04d_%02d.html" year month)
 ;;
 
-let fun_include tmpl_file _env args _ =
+let fun_include tmpl_dir _env args _ =
   match Stog_xtmpl.get_arg args "file" with
     None -> failwith "Missing 'file' argument for include command";
   | Some file ->
       let file =
         if Filename.is_relative file then
-          Filename.concat (Filename.dirname tmpl_file) file
+          Filename.concat tmpl_dir file
         else
           file
       in
-      [Stog_misc.string_of_file file]
+      [Stog_xtmpl.xml_of_string (Stog_misc.string_of_file file)]
 ;;
 
 let fun_image _env args legend =
   let width = Stog_xtmpl.opt_arg args "width" in
   let src = Stog_xtmpl.opt_arg args "src" in
-  [
-    Printf.sprintf "<div class=\"img%s\"><image class=\"img\" src=\"%s\" width=\"%s\"/>%s</div>"
+  let cls = Printf.sprintf "img%s"
     (match Stog_xtmpl.get_arg args "float" with
        Some "left" -> "-float-left"
      | Some "right" -> "-float-right"
      | Some s -> failwith (Printf.sprintf "unhandled image position: %s" s)
-   | None -> ""
+     | None -> ""
     )
-    src width
-    (match legend with
-       [] -> ""
-     | l -> Printf.sprintf "<div class=\"legend\">%s</div>" (String.concat "" l)
+  in
+  [
+    Xml.Element ("div", [ "class", cls ],
+     (Xml.Element ("img", [ "class", "img" ; "src", src; "width", width ], [])) ::
+     (match legend with
+        [] -> []
+      | xml -> [ Xml.Element ("div", ["class", "legend"], xml) ]
+     )
     )
   ]
 ;;
@@ -113,17 +116,14 @@ let fun_ref ?from stog env args _ =
     (a, text)
   in
   match article with
-    None -> [Printf.sprintf "<span class=\"unknown-ref\">%s</span>" (escape_html text)]
+    None -> [Xml.Element ("span", ["class", "unknown-ref"], [Xml.PCData text])]
   | Some a ->
       [
-        Printf.sprintf "<a href=\"%s\">%s</a>"
-        (link_to_article ?from a)
-        (escape_html text)
+        Xml.Element ("a", ["href", (link_to_article ?from a)], [Xml.PCData text])
       ]
 ;;
 
 let fun_archive_tree ?from stog _env _ =
-  let b = Buffer.create 256 in
   let mk_months map =
     List.sort (fun (m1, _) (m2, _) -> compare m2 m1)
     (Stog_types.Int_map.fold
@@ -142,30 +142,37 @@ let fun_archive_tree ?from stog _env _ =
 
   let f_mon year (month, set) =
     let link = link_to ?from (month_index_file ~year ~month) in
-    Printf.bprintf b "<li><a href=\"%s\">%s</a>(%d)</li>"
-      link months.(month-1) (Stog_types.Art_set.cardinal set)
+    Xml.Element ("li", [], [
+       Xml.Element ("a", ["href", link], [ Xml.PCData (months.(month-1)) ]) ;
+       Xml.PCData (Printf.sprintf "(%d)" (Stog_types.Art_set.cardinal set))
+     ]
+    )
   in
   let f_year (year, data) =
-    Printf.bprintf b "<li>%d<ul>" year;
-    List.iter (f_mon year) data;
-    Buffer.add_string b "</ul></li>"
+    Xml.Element ("li", [], [
+       Xml.PCData (string_of_int year) ;
+       Xml.Element ("ul", [], List.map (f_mon year) data) ;
+      ]
+    )
   in
-  Buffer.add_string b "<ul>";
-  List.iter f_year years;
-  Buffer.add_string b "</ul>";
-  [Buffer.contents b]
+  [ Xml.Element ("ul", [], List.map f_year years) ]
 ;;
 
 let fun_rss_feed file args _env _ =
   [
-    Printf.sprintf
-    "<link href=\"%s\" type=\"application/rss+xml\" rel=\"alternate\" title=\"RSS feed\"/>"
-    file
+    Xml.Element ("link",
+     [ "href", file ; "type", "application/rss+xml" ; "rel", "alternate" ; "title", "RSS feed"],
+     [])
   ]
 ;;
 
 let fun_code language _env args code =
-  let code = String.concat "" code in
+  let code =
+    match code with
+      [Xml.PCData code] -> code
+    | _ -> failwith (Printf.sprintf "Invalid code: %s"
+         (String.concat "" (List.map Xml.to_string code)))
+  in
   let temp_file = Filename.temp_file "stog" "highlight" in
   let com = Printf.sprintf
     "echo %s | highlight --syntax=%s -f > %s"
@@ -175,9 +182,10 @@ let fun_code language _env args code =
     0 ->
       let code = Stog_misc.string_of_file temp_file in
       Sys.remove temp_file;
-      [
-        Printf.sprintf "<pre class=\"code-%s\">%s</pre>"
-        language code
+      [ Xml.Element ("pre",
+         ["class", Printf.sprintf "code-%s" language],
+         [Stog_xtmpl.xml_of_string code]
+        )
       ]
   | _ ->
       failwith (Printf.sprintf "command failed: %s" com)
@@ -187,10 +195,11 @@ let fun_ocaml = fun_code "ocaml";;
 
 let fun_section cls _env args body =
   let title = Stog_xtmpl.opt_arg args "title" in
-  let body = String.concat "" body in
   [
-    Printf.sprintf "<section class=\"%s\"><div class=\"%s-title\">%s</div>%s</section>"
-    cls cls title body
+    Xml.Element ("div", ["class", cls],
+     (Xml.Element ("div", ["class", cls^"-title"], [Xml.PCData title])) ::
+     body
+    )
   ]
 ;;
 
@@ -199,10 +208,10 @@ let fun_section = fun_section "section";;
 
 let fun_search_form stog _env _ _ =
   let tmpl = Filename.concat stog.stog_tmpl_dir "search.tmpl" in
-  [ Stog_misc.string_of_file tmpl ]
+  [ Stog_xtmpl.xml_of_string (Stog_misc.string_of_file tmpl) ]
 ;;
 
-let fun_blog_url stog _env _ _ = [ stog.stog_base_url ];;
+let fun_blog_url stog _env _ _ = [ Xml.PCData stog.stog_base_url ];;
 
 let fun_graph =
   let generated = ref false in
@@ -239,21 +248,22 @@ let fun_graph =
               prerr_endline (Printf.sprintf "Command failed: %s" com)
     end;
     [
-      Printf.sprintf "<a href=\"%s\"><img src=\"%s\" alt=\"Graph\"/></a>"
-      src small_src
+      Xml.Element ("a", ["href", src], [
+        Xml.Element ("img", ["src", small_src ; "alt", "Graph"], [])
+       ])
     ]
 ;;
 
-let default_commands ?outdir ?(tmpl="") ?from ?rss stog =
+let default_commands ?outdir ?from ?rss stog =
   let l =
-    [ "include", fun_include tmpl ;
+    [ "include", fun_include stog.stog_tmpl_dir ;
       "image", fun_image ;
       "archive-tree", (fun _ -> fun_archive_tree ?from stog) ;
       "ocaml", fun_ocaml ;
       "ref", fun_ref ?from stog;
       "section", fun_section ;
       "subsection", fun_subsection ;
-      "rssfeed", (match rss with None -> fun _env _ _ -> [""] | Some file -> fun_rss_feed file);
+      "rssfeed", (match rss with None -> fun _env _ _ -> [] | Some file -> fun_rss_feed file);
       "blog-url", fun_blog_url stog ;
       "search-form", fun_search_form stog ;
     ]
@@ -265,15 +275,15 @@ let default_commands ?outdir ?(tmpl="") ?from ?rss stog =
 ;;
 
 let intro_of_article stog art =
-  let re_sep = Str.regexp_string "<-->" in
+  let re_sep = Str.regexp_string "<-/>" in
   try
     let p = Str.search_forward re_sep art.art_body 0 in
-    Printf.sprintf "%s <a href=\"%s/%s\"><img src=\"%s/next.png\" alt=\"next\"/></a>"
-    (String.sub art.art_body 0 p)
-    stog.stog_base_url art.art_human_id
-    stog.stog_base_url
+    [ Stog_xtmpl.xml_of_string (String.sub art.art_body 0 p) ;
+     Xml.Element ("a", ["href", Printf.sprintf "%s/%s" stog.stog_base_url art.art_human_id],
+       [ Xml.Element ("img", [ "src", Printf.sprintf "%s/next.png" stog.stog_base_url; "alt", "next"], [])])
+    ]
   with
-    Not_found -> art.art_body
+    Not_found -> [ Stog_xtmpl.xml_of_string art.art_body ]
 ;;
 
 let rss_date_of_article article =
@@ -298,10 +308,11 @@ let article_to_rss_item stog article =
   in
   let desc = intro_of_article stog article in
   let desc =
-    Stog_xtmpl.apply
+    Stog_xtmpl.apply_to_xmls
     (Stog_xtmpl.env_of_list (default_commands stog))
     desc
   in
+  let desc = String.concat "" (List.map Xml.to_string desc) in
   Rss.item ~title: article.art_title
   ~desc
   ~link
@@ -347,43 +358,37 @@ let copy_file ?(quote_src=true) ?(quote_dst=true) src dest =
       failwith (Printf.sprintf "command failed: %s" com)
 ;;
 
-let string_of_body s =
-  Str.global_replace (Str.regexp_string "<-->") "" s
+let xml_of_article_body s =
+  let s = Str.global_replace (Str.regexp_string "<-/>") "" s in
+  Stog_xtmpl.xml_of_string s
 ;;
 
 let html_of_topics stog art env args _ =
-  let sep = Stog_xtmpl.opt_arg args ~def: ", " "set" in
+  let sep = Stog_xtmpl.xml_of_string (Stog_xtmpl.opt_arg args ~def: ", " "set") in
   let tmpl = Filename.concat stog.stog_tmpl_dir "topic.tmpl" in
   let f w =
-    let env = Stog_xtmpl.env_of_list ~env [ "topic", (fun _ _ _ -> [w]) ] in
-    Stog_xtmpl.apply_from_file env tmpl
+    let env = Stog_xtmpl.env_of_list ~env [ "topic", (fun _ _ _ -> [Xml.PCData w]) ] in
+    Stog_xtmpl.xml_of_string (Stog_xtmpl.apply_from_file env tmpl)
   in
-  [
-    String.concat sep
-    (List.map (fun w ->
-        Printf.sprintf "<a href=\"%s\">%s</a>"
-        (link_to (topic_index_file w))
-        (f w)
-     ) art.art_topics)
-  ]
+  Stog_misc.list_concat ~sep
+  (List.map (fun w ->
+      Xml.Element ("a", ["href", link_to (topic_index_file w)], [ f w ]))
+   art.art_topics
+  )
 ;;
 
 let html_of_keywords stog art env args _ =
-  let sep = Stog_xtmpl.opt_arg args ~def: ", " "set" in
+  let sep = Stog_xtmpl.xml_of_string (Stog_xtmpl.opt_arg args ~def: ", " "set") in
   let tmpl = Filename.concat stog.stog_tmpl_dir "keyword.tmpl" in
   let f w =
-    let env = Stog_xtmpl.env_of_list ~env [ "keyword", (fun _ _ _ -> [w]) ] in
-    Stog_xtmpl.apply_from_file env tmpl
+    let env = Stog_xtmpl.env_of_list ~env [ "keyword", (fun _ _ _ -> [Xml.PCData w]) ] in
+    Stog_xtmpl.xml_of_string (Stog_xtmpl.apply_from_file env tmpl)
   in
-  [
-    String.concat sep
-    (List.map (fun w ->
-        Printf.sprintf "<a href=\"%s\">%s</a>"
-        (link_to (keyword_index_file w))
-        (f w)
-     )
-     art.art_keywords)
-  ]
+  Stog_misc.list_concat ~sep
+  (List.map (fun w ->
+      Xml.Element ("a", ["href", link_to (keyword_index_file w)], [ f w ]))
+   art.art_keywords
+  )
 ;;
 
 let remove_re s =
@@ -467,9 +472,13 @@ let build_mailto stog ?message article =
 
 
 let html_comment_actions stog article message =
-  Printf.sprintf
-    "<a href=\"%s\"><img src=\"../comment_reply.png\" alt=\"reply to comment\" title=\"reply to comment\"/></a>"
-  (build_mailto stog ~message article)
+  Xml.Element ("a", ["href",  (build_mailto stog ~message article)],
+   [ Xml.Element ("img", [
+        "src", "../comment_reply.png" ;
+        "alt", "reply to comment" ;
+        "title", "reply to comment" ; ], [])
+   ]
+  )
 ;;
 
 let re_citation = Str.regexp "\\(\\(^&gt;[^\n]+\n\\)+\\)";;
@@ -488,26 +497,26 @@ let html_of_message_body body =
       s
   in
   let body = Str.global_substitute re_citation subst body in
-  body
+  Stog_xtmpl.xml_of_string body
 ;;
 
 let rec html_of_comments outdir stog article tmpl comments env _ _ =
   let f (Node (message, subs)) =
     let env = Stog_xtmpl.env_of_list ~env
       ([
-         "date", (fun _ _ _ -> [Stog_date.mk_mail_date (Stog_date.since_epoch message.mes_time)]) ;
-         "subject", (fun _ _ _ -> [escape_html message.mes_subject] );
-         "from", (fun _ _ _ -> [escape_html message.mes_from]);
-         "to", (fun _ _ _ -> [escape_html (String.concat ", " message.mes_to)]) ;
+         "date", (fun _ _ _ -> [Xml.PCData (Stog_date.mk_mail_date (Stog_date.since_epoch message.mes_time))]) ;
+         "subject", (fun _ _ _ -> [Xml.PCData message.mes_subject] );
+         "from", (fun _ _ _ -> [Xml.PCData message.mes_from ]);
+         "to", (fun _ _ _ -> [ Xml.PCData (String.concat ", " message.mes_to)]) ;
          "body", (fun _ _ _ -> [html_of_message_body message.mes_body]) ;
          "comment-actions", (fun _ _ _ -> [html_comment_actions stog article message]) ;
          "comments", html_of_comments outdir stog article tmpl subs ;
-       ] @ (default_commands ~outdir ~tmpl ~from:`Index stog)
+       ] @ (default_commands ~outdir ~from:`Index stog)
       )
     in
-    Stog_xtmpl.apply_from_file env tmpl
+    Stog_xtmpl.xml_of_string (Stog_xtmpl.apply_from_file env tmpl)
   in
-  [ String.concat "\n" (List.map f comments)]
+  List.map f comments
 ;;
 
 let html_of_comments outdir stog article =
@@ -515,11 +524,18 @@ let html_of_comments outdir stog article =
   html_of_comments outdir stog article tmpl article.art_comments
 ;;
 
+let generate_page stog env contents =
+  let tmpl = Filename.concat stog.stog_tmpl_dir "page.tmpl" in
+  let f env args body = contents in
+  let env = Stog_xtmpl.env_of_list ~env ["contents", f] in
+  Stog_xtmpl.apply env (Stog_misc.string_of_file tmpl)
+;;
+
 let generate_article outdir stog art_id article =
   let html_file = Filename.concat outdir
     (link_to_article ~from: `Index article)
   in
-  let tmpl = Filename.concat stog.stog_tmpl_dir "article.tmpl" in
+  let tmpl = (*Filename.concat stog.stog_tmpl_dir*) "article.tmpl" in
   let art_dir = Filename.dirname html_file in
   let url = article_url stog article in
   Stog_misc.mkdir art_dir;
@@ -527,38 +543,40 @@ let generate_article outdir stog art_id article =
 
   let next f _ _ _ =
     match f stog art_id with
-      None -> [""]
+      None -> []
     | Some id ->
         let a = Stog_types.article stog id in
         let link = link_to_article a in
-        [ Printf.sprintf "<a href=\"%s\">%s</a>"
-          link a.art_title]
+        [ Xml.Element ("a", ["href", link], [ Xml.PCData a.art_title ]) ]
   in
   let comment_actions =
     [
-      Printf.sprintf
-      "<a href=\"%s\"><img src=\"../comment.png\" alt=\"Post a comment\" title=\"Post a comment\"/></a>"
-      (build_mailto stog article)
+      Xml.Element ("a", ["href", (build_mailto stog article)],
+       [Xml.Element ("img", [
+            "src", "../comment.png" ;
+            "alt", "Post a comment" ;
+            "title", "Post a comment"], [])])
     ]
   in
   let env = Stog_xtmpl.env_of_list
     ([
-     "title", (fun _ _ _ -> [article.art_title]) ;
-     "article-title", (fun _ _ _ -> [ article.art_title ]) ;
-     "article-url", (fun _ _ _ -> [ url ]) ;
-     "blog-title", (fun _ _ _ -> [ stog.stog_title ]) ;
-     "blog-description", (fun _ _ _ -> [ stog.stog_desc ]) ;
-     "article-body", (fun _ _ _ -> [ string_of_body article.art_body ]);
-     "article-date", (fun _ _ _ -> [ Stog_types.string_of_date article.art_date ]) ;
+     "pagetitle", (fun _ _ _ -> [Xml.PCData article.art_title]) ;
+     "article-title", (fun _ _ _ -> [ Xml.PCData article.art_title ]) ;
+     "article-url", (fun _ _ _ -> [ Xml.PCData url ]) ;
+     "blog-title", (fun _ _ _ -> [ Xml.PCData stog.stog_title ]) ;
+     "blog-description", (fun _ _ _ -> [ Stog_xtmpl.xml_of_string stog.stog_desc ]) ;
+     "article-body", (fun _ _ _ -> [ xml_of_article_body article.art_body ]);
+     "article-date", (fun _ _ _ -> [ Xml.PCData (Stog_types.string_of_date article.art_date) ]) ;
      "next", (next Stog_info.succ_by_date) ;
      "previous", (next Stog_info.pred_by_date) ;
      "article-keywords", html_of_keywords stog article ;
      "article-topics", html_of_topics stog article ;
      "comment-actions", (fun _ _ _ -> comment_actions);
      "comments", html_of_comments outdir stog article ;
-   ] @ (default_commands ~outdir ~tmpl stog))
+   ] @ (default_commands ~outdir stog))
   in
-  Stog_xtmpl.apply_to_file env tmpl html_file
+  let s = generate_page stog env [Xml.Element ("include", ["file", tmpl], [])] in
+  Stog_xtmpl.apply_string_to_file env s html_file
 ;;
 
 
@@ -584,29 +602,29 @@ let article_list outdir ?rss ?set stog env args _ =
     let url = article_url stog art in
     let env = Stog_xtmpl.env_of_list ~env
     ([
-       "article-date", (fun _ _ _ -> [ Stog_types.string_of_date art.art_date ]) ;
-       "article-title", (fun _ _ _ -> [ art.art_title ] );
-       "article-url", (fun _ _ _ -> [ url ]);
-       "article-intro", (fun _ _ _ -> [intro_of_article stog art]) ;
-     ] @ (default_commands ~outdir ~tmpl ~from:`Index stog))
+       "article-date", (fun _ _ _ -> [ Xml.PCData (Stog_types.string_of_date art.art_date) ]) ;
+       "article-title", (fun _ _ _ -> [ Xml.PCData art.art_title ] );
+       "article-url", (fun _ _ _ -> [ Xml.PCData url ]);
+       "article-intro", (fun _ _ _ -> intro_of_article stog art) ;
+     ] @ (default_commands ~outdir ~from:`Index stog))
     in
-    Stog_xtmpl.apply_from_file env tmpl
+    Stog_xtmpl.xml_of_string (Stog_xtmpl.apply_from_file env tmpl)
   in
-  let html = String.concat "" (List.map f_article arts) in
+  let xml = List.map f_article arts in
   match rss with
-    None -> [ html ]
+    None -> xml
   | Some link ->
-      [ Printf.sprintf
-        "<div class=\"rss-button\"><a href=\"%s\"><img src=\"rss.png\" alt=\"Rss feed\"/></a></div>%s"
-        link html
-      ]
+      (Xml.Element ("div", ["class", "rss-button"], [
+          Xml.Element ("a", ["href", link], [
+             Xml.Element ("img", ["src", "rss.png" ; "alt", "Rss feed"], [])]) ;
+        ])
+      ) :: xml
 ;;
 
 let generate_by_word_indexes outdir stog tmpl map f_html_file =
   let f word set =
     let base_html_file = f_html_file word in
     let html_file = Filename.concat outdir base_html_file in
-    let tmpl = Filename.concat stog.stog_tmpl_dir tmpl in
     let rss_basefile = (Filename.chop_extension base_html_file)^".rss" in
     let rss_file = Filename.concat outdir rss_basefile in
     generate_rss_feed_file stog ~title: word base_html_file
@@ -614,13 +632,14 @@ let generate_by_word_indexes outdir stog tmpl map f_html_file =
     rss_file;
     let env = Stog_xtmpl.env_of_list
       ([
-         "blog-title", (fun _ _ _ -> [stog.stog_title]) ;
-         "blog-description", (fun _ _ _ -> [stog.stog_desc]) ;
+         "blog-title", (fun _ _ _ -> [Xml.PCData stog.stog_title]) ;
+         "blog-description", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_desc]) ;
          "articles", (article_list outdir ~set ~rss: rss_basefile stog);
-         "title", (fun _ _ _ -> [word]) ;
-       ] @ (default_commands ~outdir ~tmpl ~from:`Index ~rss: rss_basefile stog))
+         "pagetitle", (fun _ _ _ -> [Xml.PCData word]) ;
+       ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
     in
-    Stog_xtmpl.apply_to_file env tmpl html_file
+    let s = generate_page stog env [Xml.Element ("include", ["file", tmpl], [])] in
+    Stog_xtmpl.apply_string_to_file env s html_file
   in
   Stog_types.Str_map.iter f map
 ;;
@@ -639,17 +658,18 @@ let generate_keyword_indexes outdir stog =
 
 let generate_archive_index outdir stog =
   let f_month year month set =
-    let tmpl = Filename.concat stog.stog_tmpl_dir "archive_month.tmpl" in
+    let tmpl = "archive_month.tmpl" in
     let html_file = Filename.concat outdir (month_index_file ~year ~month) in
     let env = Stog_xtmpl.env_of_list
       ([
-         "blog-title", (fun _ _ _ -> [stog.stog_title]) ;
-         "blog-description", (fun _ _ _ -> [stog.stog_desc]) ;
+         "blog-title", (fun _ _ _ -> [Xml.PCData stog.stog_title]) ;
+         "blog-description", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_desc]) ;
          "articles", (article_list outdir ~set stog);
-         "title", (fun _ _ _ -> [Printf.sprintf "%s %d" months.(month-1) year]) ;
-       ] @ (default_commands ~outdir ~tmpl ~from:`Index stog))
+         "pagetitle", (fun _ _ _ -> [Xml.PCData (Printf.sprintf "%s %d" months.(month-1) year)]) ;
+       ] @ (default_commands ~outdir ~from:`Index stog))
     in
-    Stog_xtmpl.apply_to_file env tmpl html_file
+    let s = generate_page stog env [Xml.Element ("include", ["file", tmpl], [])] in
+    Stog_xtmpl.apply_string_to_file env s html_file
   in
   let f_year year mmap =
     Stog_types.Int_map.iter (f_month year) mmap
@@ -667,12 +687,12 @@ let generate_index_file outdir stog =
     (List.map snd (Stog_types.article_list stog)) rss_file;
   let env = Stog_xtmpl.env_of_list
     ([
-       "blog-title", (fun _ _ _ -> [stog.stog_title]) ;
-       "blog-body", (fun _ _ _ -> [stog.stog_body]);
-       "blog-description", (fun _ _ _ -> [stog.stog_desc]) ;
-       "blog-url", (fun _ _ _ -> [stog.stog_base_url]) ;
+       "blog-title", (fun _ _ _ -> [Xml.PCData stog.stog_title]) ;
+       "blog-body", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_body]);
+       "blog-description", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_desc]) ;
+       "blog-url", (fun _ _ _ -> [Xml.PCData stog.stog_base_url]) ;
        "articles", (article_list outdir ~rss: rss_basefile stog);
-     ] @ (default_commands ~outdir ~tmpl ~from:`Index ~rss: rss_basefile stog))
+     ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
   in
   Stog_xtmpl.apply_to_file env tmpl html_file
 ;;
