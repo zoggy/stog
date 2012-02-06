@@ -207,8 +207,8 @@ let merge_stogs stogs =
 
 let days = [| "dimanche" ; "lundi" ; "mardi" ; "mercredi" ; "jeudi" ; "vendredi" ; "samedi" |]
 let months = [|
-   "janvier" ; "février" ; "mars" ; "avril" ; "mai" ; "juin" ;
-   "juillet" ; "août" ; "septembre" ; "octobre" ; "novembre" ; "décembre" |];;
+   "janvier" ; "fÃ©vrier" ; "mars" ; "avril" ; "mai" ; "juin" ;
+   "juillet" ; "aoÃ»t" ; "septembre" ; "octobre" ; "novembre" ; "dÃ©cembre" |];;
 
 let string_of_date (y,m,d) =
   let tm = { Unix.tm_mday = d ; tm_mon = (m-1) ; tm_year = (y - 1900) ;
