@@ -604,6 +604,7 @@ let generate_article outdir stog art_id article =
      "article-topics", html_of_topics stog article ;
      "comment-actions", (fun _ _ _ -> comment_actions);
      "comments", html_of_comments outdir stog article ;
+     "navbar", fun _ _ _ -> [Stog_xtmpl.D "true"] ;
    ] @ (default_commands ~outdir stog))
   in
   let s = generate_page stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
