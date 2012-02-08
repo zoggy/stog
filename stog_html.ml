@@ -726,7 +726,7 @@ let generate_index_file outdir stog =
        "articles", (article_list outdir ~rss: rss_basefile stog);
      ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
   in
-  Stog_xtmpl.apply_to_file env tmpl html_file
+  Stog_xtmpl.apply_to_file ~head: "<!DOCTYPE HTML>" env tmpl html_file
 ;;
 
 let generate_index outdir stog =

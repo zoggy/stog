@@ -144,8 +144,9 @@ let apply_to_xmls env l =
   List.flatten (List.map (eval_xml env) l)
 ;;
 
-let apply_to_file env file out_file =
+let apply_to_file ?(head="") env file out_file =
   let s = apply_from_file env file in
+  let s = head^s in
   Stog_misc.file_of_string ~file: out_file s
 ;;
 
