@@ -608,7 +608,7 @@ let generate_article outdir stog art_id article =
    ] @ (default_commands ~outdir stog))
   in
   let s = generate_page stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
-  Stog_xtmpl.apply_string_to_file env s html_file
+  Stog_xtmpl.apply_string_to_file ~head: "<!DOCTYPE HTML>" env s html_file
 ;;
 
 
@@ -671,7 +671,7 @@ let generate_by_word_indexes outdir stog tmpl map f_html_file =
        ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
     in
     let s = generate_page stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
-    Stog_xtmpl.apply_string_to_file env s html_file
+    Stog_xtmpl.apply_string_to_file ~head: "<!DOCTYPE HTML>" env s html_file
   in
   Stog_types.Str_map.iter f map
 ;;
@@ -701,7 +701,7 @@ let generate_archive_index outdir stog =
        ] @ (default_commands ~outdir ~from:`Index stog))
     in
     let s = generate_page stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
-    Stog_xtmpl.apply_string_to_file env s html_file
+    Stog_xtmpl.apply_string_to_file ~head: "<!DOCTYPE HTML>" env s html_file
   in
   let f_year year mmap =
     Stog_types.Int_map.iter (f_month year) mmap
