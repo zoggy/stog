@@ -465,16 +465,21 @@ let build_mailto stog ?message article =
   let body = Stog_misc.string_of_file
     (Filename.concat stog.stog_tmpl_dir "comment_body.tmpl")
   in
-  Printf.sprintf
+  let mailto =
+    Printf.sprintf
     "mailto:%s?subject=%s&amp;body=%s"
     (Stog_misc.encode_string (escape_mailto_arg (String.concat ", " emails)))
     (escape_mailto_arg subject)
     (escape_mailto_arg body)
+  in
+  mailto
 ;;
 
 
 let html_comment_actions stog article message =
-  Stog_xtmpl.T ("a", ["href",  (build_mailto stog ~message article)],
+  let href = build_mailto stog ~message article in
+  (*let href = Stog_xtmpl.string_of_xml (Stog_xtmpl.D href) in*)
+  Stog_xtmpl.T ("a", ["href",  href],
    [ Stog_xtmpl.T ("img", [
         "src", "../comment_reply.png" ;
         "alt", "reply to comment" ;
@@ -552,8 +557,10 @@ let generate_article outdir stog art_id article =
         [ Stog_xtmpl.T ("a", ["href", link], [ Stog_xtmpl.D a.art_title ]) ]
   in
   let comment_actions =
+    let href = build_mailto stog article in
+    (*let href = Stog_xtmpl.string_of_xml (Stog_xtmpl.D href) in*)
     [
-      Stog_xtmpl.T ("a", ["href", (build_mailto stog article)],
+      Stog_xtmpl.T ("a", ["href", href],
        [Stog_xtmpl.T ("img", [
             "src", "../comment.png" ;
             "alt", "Post a comment" ;
