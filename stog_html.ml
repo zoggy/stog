@@ -261,9 +261,25 @@ let fun_graph =
     ]
 ;;
 
+let fun_if env args subs =
+  let pred (att, v) =
+    let s = Stog_xtmpl.apply env (Printf.sprintf "<%s/>" att) in
+    s = v
+  in
+  let cond = List.for_all pred args in
+  match cond, subs with
+  | true, [] -> failwith "<if>: missing children"
+  | true, h :: _
+  | false, _ :: h :: _ -> [h]
+  | false, []
+  | false, [_] -> []
+;;
+
 let default_commands ?outdir ?from ?rss stog =
   let l =
-    [ "include", fun_include stog.stog_tmpl_dir ;
+    [
+      "if", fun_if ;
+      "include", fun_include stog.stog_tmpl_dir ;
       "image", fun_image ;
       "archive-tree", (fun _ -> fun_archive_tree ?from stog) ;
       "code", fun_code ?lang: None;

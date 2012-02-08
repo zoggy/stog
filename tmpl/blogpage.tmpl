@@ -10,7 +10,9 @@
 <div id="header">
 <image float="right" src="&lt;blog-url/&gt;/toplogo.png" width="50"/><div id="blogtitle"><a href="&lt;blog-url/&gt;/index.html"><blog-title/></a></div>
 <div class="blogdesc"><blog-description/></div>
-<!--<[if navbar true '<nav class="navbar"><div class="navleft"><previous/></div><div class="navright"><next/></div></nav>']>-->
+<env_ navbar="true">
+<if navbar="true"><nav class="navbar"><div class="navleft"><previous/></div><div class="navright"><next/></div></nav></if>
+</env_>
 </div>
 <aside><include file="sidebar.tmpl"/></aside>
 <contents/>
