@@ -87,8 +87,14 @@ let env_add_att a v env =
 
 
 let rec eval_env ?(margin="")env atts subs =
+(*  prerr_endline
+    (Printf.sprintf "env: subs=%s"
+      (String.concat "" (List.map string_of_xml subs)));
+*)
   let env = List.fold_left
-    (fun acc ((_,s),v) -> env_add_att s v acc)
+    (fun acc ((_,s),v) ->
+(*       prerr_endline (Printf.sprintf "env: %s=%s" s v);*)
+       env_add_att s v acc)
     env atts
   in
   List.flatten (List.map (eval_xml ~margin env) subs)
@@ -120,7 +126,10 @@ and eval_xml ?(margin="") env = function
               let subs = List.flatten
                 (List.map (eval_xml ~margin env) subs)
               in
-              f env (List.map (fun ((_,s),v) -> (s,v)) atts) subs
+              List.flatten
+              (List.map (eval_xml ~margin env)
+               (f env (List.map (fun ((_,s),v) -> (s,v)) atts) subs)
+              )
             end
         | _ ->
             let subs = List.flatten (List.map (eval_xml ~margin env) subs) in

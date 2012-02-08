@@ -1,5 +1,5 @@
 <div class="sidebar">
-<search-form/>
-<div id="archives">Archives: <archive-tree/></div>
-<div id="graph">Graphe: <graph/></div>
+<if searchform="false"><span/><search-form/></if>
+<if archivetree="false"><span/><div><div id="archives">Archives: <archive-tree/></div></div></if>
+<if bloggraph="false"><span/><div id="graph">Graphe: <graph/></div></if>
 </div>

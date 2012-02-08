@@ -56,6 +56,8 @@ let month_index_file ~year ~month =
   url_compat (Printf.sprintf "%04d_%02d.html" year month)
 ;;
 
+let page_file page = Printf.sprintf "%s.html" page.page_human_id;;
+
 let fun_include tmpl_dir _env args _ =
   match Stog_xtmpl.get_arg args "file" with
     None -> failwith "Missing 'file' argument for include command";
@@ -92,20 +94,15 @@ let fun_image _env args legend =
 ;;
 
 
-let fun_ref ?from stog env args _ =
+let fun_article_href hid ?from stog env args _ =
   let article, text =
-    let id =
-      match Stog_xtmpl.get_arg args "id" with
-        None -> failwith "Missing id for 'ref' command"
-      | Some id -> id
-    in
     let a =
       try
-        let (_, a) = Stog_types.article_by_human_id stog id in
+        let (_, a) = Stog_types.article_by_human_id stog hid in
         Some a
       with
         Not_found ->
-          prerr_endline (Printf.sprintf "Unknown article '%s'" id);
+          prerr_endline (Printf.sprintf "Unknown article '%s'" hid);
           None
     in
     let text =
@@ -123,6 +120,16 @@ let fun_ref ?from stog env args _ =
         Stog_xtmpl.T ("a", ["href", (link_to_article ?from a)], [Stog_xtmpl.D text])
       ]
 ;;
+
+let fun_article ?from stog env args subs =
+  let hid =
+    match Stog_xtmpl.get_arg args "href" with
+      None -> failwith "Missing href for <article>"
+    | Some id -> id
+  in
+  fun_article_href hid ?from stog env args subs
+;;
+
 
 let fun_archive_tree ?from stog _env _ =
   let mk_months map =
@@ -264,6 +271,7 @@ let fun_graph =
 let fun_if env args subs =
   let pred (att, v) =
     let s = Stog_xtmpl.apply env (Printf.sprintf "<%s/>" att) in
+    (*prerr_endline (Printf.sprintf "fun_if: pred: att=%s, s=%s, v=%s" att s v);*)
     s = v
   in
   let cond = List.for_all pred args in
@@ -284,12 +292,14 @@ let default_commands ?outdir ?from ?rss stog =
       "archive-tree", (fun _ -> fun_archive_tree ?from stog) ;
       "code", fun_code ?lang: None;
       "ocaml", fun_ocaml ;
-      "ref", fun_ref ?from stog;
+      "article", fun_article ?from stog;
       "section", fun_section ;
       "subsection", fun_subsection ;
       "rssfeed", (match rss with None -> fun _env _ _ -> [] | Some file -> fun_rss_feed file);
       "blog-url", fun_blog_url stog ;
       "search-form", fun_search_form stog ;
+      "blog-title", (fun _ _ _ -> [ Stog_xtmpl.D stog.stog_title ]) ;
+      "blog-description", (fun _ _ _ -> [ Stog_xtmpl.xml_of_string stog.stog_desc ]) ;
     ]
   in
   match outdir with
@@ -553,7 +563,7 @@ let html_of_comments outdir stog article =
   html_of_comments outdir stog article tmpl article.art_comments
 ;;
 
-let generate_page stog env contents =
+let generate_blogpage stog env contents =
   let tmpl = Filename.concat stog.stog_tmpl_dir "blogpage.tmpl" in
   let f env args body = contents in
   let env = Stog_xtmpl.env_of_list ~env ["contents", f] in
@@ -594,8 +604,7 @@ let generate_article outdir stog art_id article =
      "pagetitle", (fun _ _ _ -> [Stog_xtmpl.D article.art_title]) ;
      "article-title", (fun _ _ _ -> [ Stog_xtmpl.D article.art_title ]) ;
      "article-url", (fun _ _ _ -> [ Stog_xtmpl.D url ]) ;
-     "blog-title", (fun _ _ _ -> [ Stog_xtmpl.D stog.stog_title ]) ;
-     "blog-description", (fun _ _ _ -> [ Stog_xtmpl.xml_of_string stog.stog_desc ]) ;
+
      "article-body", (fun _ _ _ -> [ xml_of_article_body article.art_body ]);
      "article-date", (fun _ _ _ -> [ Stog_xtmpl.D (Stog_types.string_of_date article.art_date) ]) ;
      "next", (next Stog_info.succ_by_date) ;
@@ -607,7 +616,7 @@ let generate_article outdir stog art_id article =
      "navbar", fun _ _ _ -> [Stog_xtmpl.D "true"] ;
    ] @ (default_commands ~outdir stog))
   in
-  let s = generate_page stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
+  let s = generate_blogpage stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
   Stog_xtmpl.apply_string_to_file ~head: "<!DOCTYPE HTML>" env s html_file
 ;;
 
@@ -670,7 +679,7 @@ let generate_by_word_indexes outdir stog tmpl map f_html_file =
          "pagetitle", (fun _ _ _ -> [Stog_xtmpl.D word]) ;
        ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
     in
-    let s = generate_page stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
+    let s = generate_blogpage stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
     Stog_xtmpl.apply_string_to_file ~head: "<!DOCTYPE HTML>" env s html_file
   in
   Stog_types.Str_map.iter f map
@@ -700,7 +709,7 @@ let generate_archive_index outdir stog =
          "pagetitle", (fun _ _ _ -> [Stog_xtmpl.D (Printf.sprintf "%s %d" months.(month-1) year)]) ;
        ] @ (default_commands ~outdir ~from:`Index stog))
     in
-    let s = generate_page stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
+    let s = generate_blogpage stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
     Stog_xtmpl.apply_string_to_file ~head: "<!DOCTYPE HTML>" env s html_file
   in
   let f_year year mmap =
@@ -708,6 +717,56 @@ let generate_archive_index outdir stog =
   in
   Stog_types.Int_map.iter f_year stog.stog_archives
 ;;
+
+let get_page stog hid =
+    try snd(Stog_types.page_by_human_id stog hid)
+    with Not_found -> failwith (Printf.sprintf "No such page: %s" hid)
+;;
+
+let generate_page stog env contents =
+  let tmpl = Filename.concat stog.stog_tmpl_dir "page.tmpl" in
+  let f env args body = contents in
+  let env = Stog_xtmpl.env_of_list ~env ["contents", f] in
+  Stog_xtmpl.apply env (Stog_misc.string_of_file tmpl)
+;;
+
+let fun_page_ref hid stog env args subs =
+  let page = get_page stog hid in
+  let file = page_file page in
+  let link = link_to ~from: `Index file in
+  let text =
+    match subs with
+      [] -> [ Stog_xtmpl.xml_of_string page.page_title ]
+    | l -> l
+  in
+  [ Stog_xtmpl.T ("a", ["href", link], text) ]
+;;
+
+let fun_page_id hid outdir stog env args subs =
+  let page = get_page stog hid in
+  let file = Filename.concat outdir (page_file page) in
+  let xml = Stog_xtmpl.xml_of_string page.page_body in
+  let env = Stog_xtmpl.env_of_list (default_commands ~outdir ~from: `Index stog) in
+  let env = List.fold_left
+    (fun env (s,v) -> Stog_xtmpl.env_add_att s v env)
+    env
+    (("pagetitle", page.page_title) :: args)
+  in
+  let s = generate_page stog env [xml] in
+  Stog_xtmpl.apply_string_to_file ~head: "<!DOCTYPE html>" env s file;
+  []
+;;
+
+
+let fun_page outdir stog env args subs =
+    match Stog_xtmpl.get_arg args "id" with
+    | Some hid -> fun_page_id hid outdir stog env args subs
+    | None ->
+      match Stog_xtmpl.get_arg args "href" with
+      | Some id -> fun_page_ref id stog env args subs
+      | None -> failwith "Missing id or href for <page>"
+;;
+
 
 let generate_index_file outdir stog =
   let basefile = "index.html" in
@@ -724,6 +783,7 @@ let generate_index_file outdir stog =
        "blog-description", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_desc]) ;
        "blog-url", (fun _ _ _ -> [Stog_xtmpl.D stog.stog_base_url]) ;
        "articles", (article_list outdir ~rss: rss_basefile stog);
+       "page", fun_page outdir stog ;
      ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
   in
   Stog_xtmpl.apply_to_file ~head: "<!DOCTYPE HTML>" env tmpl html_file
