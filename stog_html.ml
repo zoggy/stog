@@ -538,7 +538,7 @@ let html_of_comments outdir stog article =
 ;;
 
 let generate_page stog env contents =
-  let tmpl = Filename.concat stog.stog_tmpl_dir "page.tmpl" in
+  let tmpl = Filename.concat stog.stog_tmpl_dir "blogpage.tmpl" in
   let f env args body = contents in
   let env = Stog_xtmpl.env_of_list ~env ["contents", f] in
   Stog_xtmpl.apply env (Stog_misc.string_of_file tmpl)
