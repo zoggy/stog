@@ -167,7 +167,12 @@ let fun_rss_feed file args _env _ =
   ]
 ;;
 
-let fun_code language _env args code =
+let fun_code ?lang _env args code =
+  let language =
+    match lang with
+      None -> Stog_xtmpl.opt_arg args ~def: "txt" "lang"
+    | Some lang -> lang
+  in
   let code =
     match code with
       [ Stog_xtmpl.D code ] -> code
@@ -192,7 +197,7 @@ let fun_code language _env args code =
       failwith (Printf.sprintf "command failed: %s" com)
 ;;
 
-let fun_ocaml = fun_code "ocaml";;
+let fun_ocaml = fun_code ~lang: "ocaml";;
 
 let fun_section cls _env args body =
   let title = Stog_xtmpl.opt_arg args "title" in
@@ -261,6 +266,7 @@ let default_commands ?outdir ?from ?rss stog =
     [ "include", fun_include stog.stog_tmpl_dir ;
       "image", fun_image ;
       "archive-tree", (fun _ -> fun_archive_tree ?from stog) ;
+      "code", fun_code ?lang: None;
       "ocaml", fun_ocaml ;
       "ref", fun_ref ?from stog;
       "section", fun_section ;
