@@ -174,6 +174,85 @@ let read_stog_header stog header =
   List.fold_left f stog lines
 ;;
 
+let read_page_header page header =
+  let lines = Stog_misc.split_string header ['\n'] in
+  let f page line =
+    try
+      ignore(Str.string_match re_field line 0);
+      let field = Str.matched_group 1 line in
+      let value = Str.matched_group 2 line in
+      let field = Stog_misc.strip_string field in
+      let value = Stog_misc.strip_string value in
+      match String.lowercase field with
+      | "title" -> { page with page_title = value }
+      | field -> { page with page_vars = (field, value) :: page.page_vars }
+      | _ -> page
+    with
+      Not_found ->
+        prerr_endline
+        (Printf.sprintf "Line not handled in page: %s"
+         line);
+        page
+    | Invalid_argument s ->
+        prerr_endline
+        (Printf.sprintf "Invalid_argument(%s): %s" s line);
+        page
+  in
+  List.fold_left f page lines
+;;
+
+let read_page_main page ?loc contents =
+ let loc = match loc with None -> "..." | Some loc -> loc in
+  let p_sep =
+    try Str.search_forward re_separator contents 0
+    with Not_found -> failwith ("no <-> separator in "^loc)
+  in
+  let p = p_sep + String.length separator in
+  let body =
+    Stog_misc.strip_string
+    (String.sub contents p (String.length contents - p))
+  in
+  let page = { page with page_body = body } in
+  let header = String.sub contents 0 p_sep in
+  read_page_header page header
+;;
+
+let read_page stog file =
+  let hid = Filename.chop_extension (Filename.basename file) in
+  let page =
+    { page_human_id = hid ;
+      page_kind = Html ;
+      page_body = "" ;
+      page_title  = "" ;
+      page_vars = [] ;
+    }
+  in
+  let contents = Stog_misc.string_of_file file in
+  let page = read_page_main page ~loc: file contents in
+  Stog_types.add_page stog page
+;;
+
+let read_stog_pages stog dir =
+  let pred_name name =
+    name <> "index.html" && Filename.check_suffix name ".html"
+  in
+  let on_error (e,s1,s2) =
+    let msg =  Printf.sprintf "%s: %s %s"
+      (Unix.error_message e) s1 s2
+    in
+    prerr_endline msg
+  in
+  let page_files = Stog_find.find_list
+    (Stog_find.Custom on_error)
+    [dir]
+    [ Stog_find.Predicate pred_name ;
+      Stog_find.Maxdepth 1 ;
+      Stog_find.Type Unix.S_REG ;
+    ]
+  in
+  List.fold_left read_page stog page_files
+;;
+
 let read_stog_index stog dir =
   let file_opt =
     first_that_exists [
@@ -216,11 +295,14 @@ let read_stog dir =
   let dirs = ignore_dot_entries dirs in
 
   List.iter prerr_endline dirs;
-  List.fold_left
-  (fun stog dir ->
-     add_article stog (read_article dir))
-  stog
-  dirs
+  let stog =
+    List.fold_left
+    (fun stog dir ->
+       add_article stog (read_article dir))
+    stog
+    dirs
+  in
+  read_stog_pages stog dir
 ;;
 
 let write_stog_article stog _ art =

@@ -34,7 +34,7 @@ type article =
 and article_id = article Stog_tmap.key
 
 type page =
-  { page_id : string ;
+  { page_human_id : string ;
     page_kind : contents_kind ;
     page_body : string ;
     page_title : string ;
@@ -63,7 +63,7 @@ let dummy_article () =
   }
 ;;
 let  dummy_page () =
-  { page_id = "dummypage" ;
+  { page_human_id = "dummypage" ;
     page_kind = Html ;
     page_body = "" ;
     page_title  = "" ;
@@ -180,6 +180,35 @@ let article_list ?(by_date=false) stog =
   if by_date then sort_ids_articles_by_date l else l
 ;;
 
+let page stog id = Stog_tmap.get stog.stog_pages id;;
+let page_by_human_id stog h =
+  let id = Str_map.find h stog.stog_page_by_human_id in
+  (id, page stog id)
+;;
+
+let set_page stog id page =
+  { stog with
+    stog_pages = Stog_tmap.modify stog.stog_pages id page }
+;;
+
+let add_page stog page =
+  let (id, pages) = Stog_tmap.add stog.stog_pages page in
+  let map = Str_map.add
+    page.page_human_id
+    id
+    stog.stog_page_by_human_id
+  in
+  { stog with
+    stog_pages = pages ;
+    stog_page_by_human_id = map ;
+  }
+;;
+let page_list stog =
+  Stog_tmap.fold
+  (fun id page acc -> (id, page) :: acc)
+  stog.stog_pages
+  []
+;;
 
 let merge_stogs stogs =
   match stogs with
