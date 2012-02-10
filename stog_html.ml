@@ -750,7 +750,7 @@ let fun_page_id hid outdir stog env args subs =
   let env = List.fold_left
     (fun env (s,v) -> Stog_xtmpl.env_add_att s v env)
     env
-    (("pagetitle", page.page_title) :: args)
+    (("page-title", page.page_title) :: args)
   in
   let s = generate_page stog env [xml] in
   Stog_xtmpl.apply_string_to_file ~head: "<!DOCTYPE html>" env s file;
