@@ -230,7 +230,7 @@ let fun_blog_url stog _env _ _ = [ Stog_xtmpl.D stog.stog_base_url ];;
 let fun_graph =
   let generated = ref false in
   fun outdir ?from stog _env _ _ ->
-    let name = "blog-graph.png" in
+    let name = "site-graph.png" in
     let src = link_to ?from name in
     let small_src = link_to ?from ("small-"^name) in
     begin
@@ -296,10 +296,10 @@ let default_commands ?outdir ?from ?rss stog =
       "section", fun_section ;
       "subsection", fun_subsection ;
       "rssfeed", (match rss with None -> fun _env _ _ -> [] | Some file -> fun_rss_feed file);
-      "blog-url", fun_blog_url stog ;
+      "site-url", fun_blog_url stog ;
       "search-form", fun_search_form stog ;
-      "blog-title", (fun _ _ _ -> [ Stog_xtmpl.D stog.stog_title ]) ;
-      "blog-description", (fun _ _ _ -> [ Stog_xtmpl.xml_of_string stog.stog_desc ]) ;
+      "site-title", (fun _ _ _ -> [ Stog_xtmpl.D stog.stog_title ]) ;
+      "site-description", (fun _ _ _ -> [ Stog_xtmpl.xml_of_string stog.stog_desc ]) ;
     ]
   in
   match outdir with
@@ -601,7 +601,7 @@ let generate_article outdir stog art_id article =
   in
   let env = Stog_xtmpl.env_of_list
     ([
-     "pagetitle", (fun _ _ _ -> [Stog_xtmpl.D article.art_title]) ;
+     "page-title", (fun _ _ _ -> [Stog_xtmpl.D article.art_title]) ;
      "article-title", (fun _ _ _ -> [ Stog_xtmpl.D article.art_title ]) ;
      "article-url", (fun _ _ _ -> [ Stog_xtmpl.D url ]) ;
 
@@ -673,10 +673,10 @@ let generate_by_word_indexes outdir stog tmpl map f_html_file =
     rss_file;
     let env = Stog_xtmpl.env_of_list
       ([
-         "blog-title", (fun _ _ _ -> [Stog_xtmpl.D stog.stog_title]) ;
-         "blog-description", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_desc]) ;
+         "site-title", (fun _ _ _ -> [Stog_xtmpl.D stog.stog_title]) ;
+         "site-description", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_desc]) ;
          "articles", (article_list outdir ~set ~rss: rss_basefile stog);
-         "pagetitle", (fun _ _ _ -> [Stog_xtmpl.D word]) ;
+         "page-title", (fun _ _ _ -> [Stog_xtmpl.D word]) ;
        ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
     in
     let s = generate_blogpage stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
@@ -703,10 +703,10 @@ let generate_archive_index outdir stog =
     let html_file = Filename.concat outdir (month_index_file ~year ~month) in
     let env = Stog_xtmpl.env_of_list
       ([
-         "blog-title", (fun _ _ _ -> [Stog_xtmpl.D stog.stog_title]) ;
-         "blog-description", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_desc]) ;
+         "site-title", (fun _ _ _ -> [Stog_xtmpl.D stog.stog_title]) ;
+         "site-description", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_desc]) ;
          "articles", (article_list outdir ~set stog);
-         "pagetitle", (fun _ _ _ -> [Stog_xtmpl.D (Printf.sprintf "%s %d" months.(month-1) year)]) ;
+         "page-title", (fun _ _ _ -> [Stog_xtmpl.D (Printf.sprintf "%s %d" months.(month-1) year)]) ;
        ] @ (default_commands ~outdir ~from:`Index stog))
     in
     let s = generate_blogpage stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
@@ -778,10 +778,10 @@ let generate_index_file outdir stog =
     (List.map snd (Stog_types.article_list stog)) rss_file;
   let env = Stog_xtmpl.env_of_list
     ([
-       "blog-title", (fun _ _ _ -> [Stog_xtmpl.D stog.stog_title]) ;
-       "blog-body", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_body]);
-       "blog-description", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_desc]) ;
-       "blog-url", (fun _ _ _ -> [Stog_xtmpl.D stog.stog_base_url]) ;
+       "site-title", (fun _ _ _ -> [Stog_xtmpl.D stog.stog_title]) ;
+       "site-body", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_body]);
+       "site-description", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_desc]) ;
+       "site-url", (fun _ _ _ -> [Stog_xtmpl.D stog.stog_base_url]) ;
        "articles", (article_list outdir ~rss: rss_basefile stog);
        "page", fun_page outdir stog ;
      ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
