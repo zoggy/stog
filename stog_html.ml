@@ -68,7 +68,8 @@ let fun_include tmpl_dir _env args _ =
         else
           file
       in
-      [Stog_xtmpl.xml_of_string (Stog_misc.string_of_file file)]
+      let xml = [Stog_xtmpl.xml_of_string (Stog_misc.string_of_file file)] in
+      [Stog_xtmpl.T (Stog_xtmpl.tag_env, args, xml)]
 ;;
 
 let fun_image _env args legend =
@@ -283,7 +284,53 @@ let fun_if env args subs =
   | false, [_] -> []
 ;;
 
-let default_commands ?outdir ?from ?rss stog =
+let get_page stog hid =
+    try snd(Stog_types.page_by_human_id stog hid)
+    with Not_found -> failwith (Printf.sprintf "No such page: %s" hid)
+;;
+
+let generate_page stog env contents =
+  let tmpl = Filename.concat stog.stog_tmpl_dir "page.tmpl" in
+  let f env args body = contents in
+  let env = Stog_xtmpl.env_of_list ~env ["contents", f] in
+  Stog_xtmpl.apply env (Stog_misc.string_of_file tmpl)
+;;
+
+let fun_page_ref hid stog env args subs =
+  let page = get_page stog hid in
+  let file = page_file page in
+  let link = link_to ~from: `Index file in
+  let text =
+    match subs with
+      [] -> [ Stog_xtmpl.xml_of_string page.page_title ]
+    | l -> l
+  in
+  [ Stog_xtmpl.T ("a", ["href", link], text) ]
+;;
+
+let rec fun_page_id hid outdir stog env args subs =
+  let page = get_page stog hid in
+  let file = Filename.concat outdir (page_file page) in
+  let xml = Stog_xtmpl.xml_of_string page.page_body in
+  let env = Stog_xtmpl.env_of_list ~env (default_commands ~outdir ~from: `Index stog) in
+  let env = List.fold_left
+    (fun env (s,v) -> Stog_xtmpl.env_add_att s v env)
+    env
+    (("page-title", page.page_title) :: args)
+  in
+  let s = generate_page stog env [xml] in
+  Stog_xtmpl.apply_string_to_file ~head: "<!DOCTYPE html>" env s file;
+  []
+
+and fun_page outdir stog env args subs =
+    match Stog_xtmpl.get_arg args "id" with
+    | Some hid -> fun_page_id hid outdir stog env args subs
+    | None ->
+      match Stog_xtmpl.get_arg args "href" with
+      | Some id -> fun_page_ref id stog env args subs
+      | None -> failwith "Missing id or href for <page>"
+
+and default_commands ?outdir ?from ?rss stog =
   let l =
     [
       "if", fun_if ;
@@ -305,7 +352,10 @@ let default_commands ?outdir ?from ?rss stog =
   match outdir with
     None -> l
   | Some outdir ->
-      l @ ["graph", fun_graph outdir ?from stog ]
+              l @ ["graph", fun_graph outdir ?from stog ;
+                "page", (fun_page outdir stog)
+              ]
+
 ;;
 
 let intro_of_article stog art =
@@ -718,56 +768,6 @@ let generate_archive_index outdir stog =
   Stog_types.Int_map.iter f_year stog.stog_archives
 ;;
 
-let get_page stog hid =
-    try snd(Stog_types.page_by_human_id stog hid)
-    with Not_found -> failwith (Printf.sprintf "No such page: %s" hid)
-;;
-
-let generate_page stog env contents =
-  let tmpl = Filename.concat stog.stog_tmpl_dir "page.tmpl" in
-  let f env args body = contents in
-  let env = Stog_xtmpl.env_of_list ~env ["contents", f] in
-  Stog_xtmpl.apply env (Stog_misc.string_of_file tmpl)
-;;
-
-let fun_page_ref hid stog env args subs =
-  let page = get_page stog hid in
-  let file = page_file page in
-  let link = link_to ~from: `Index file in
-  let text =
-    match subs with
-      [] -> [ Stog_xtmpl.xml_of_string page.page_title ]
-    | l -> l
-  in
-  [ Stog_xtmpl.T ("a", ["href", link], text) ]
-;;
-
-let fun_page_id hid outdir stog env args subs =
-  let page = get_page stog hid in
-  let file = Filename.concat outdir (page_file page) in
-  let xml = Stog_xtmpl.xml_of_string page.page_body in
-  let env = Stog_xtmpl.env_of_list (default_commands ~outdir ~from: `Index stog) in
-  let env = List.fold_left
-    (fun env (s,v) -> Stog_xtmpl.env_add_att s v env)
-    env
-    (("page-title", page.page_title) :: args)
-  in
-  let s = generate_page stog env [xml] in
-  Stog_xtmpl.apply_string_to_file ~head: "<!DOCTYPE html>" env s file;
-  []
-;;
-
-
-let fun_page outdir stog env args subs =
-    match Stog_xtmpl.get_arg args "id" with
-    | Some hid -> fun_page_id hid outdir stog env args subs
-    | None ->
-      match Stog_xtmpl.get_arg args "href" with
-      | Some id -> fun_page_ref id stog env args subs
-      | None -> failwith "Missing id or href for <page>"
-;;
-
-
 let generate_index_file outdir stog =
   let basefile = "index.html" in
   let html_file = Filename.concat outdir basefile in
@@ -783,7 +783,6 @@ let generate_index_file outdir stog =
        "site-description", (fun _ _ _ -> [Stog_xtmpl.xml_of_string stog.stog_desc]) ;
        "site-url", (fun _ _ _ -> [Stog_xtmpl.D stog.stog_base_url]) ;
        "articles", (article_list outdir ~rss: rss_basefile stog);
-       "page", fun_page outdir stog ;
      ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
   in
   Stog_xtmpl.apply_to_file ~head: "<!DOCTYPE HTML>" env tmpl html_file

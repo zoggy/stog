@@ -113,7 +113,7 @@ let read_article dir =
     ]
   in
   match file_opt with
-    None -> failwith ("No index file in "^dir)
+    None -> None
   | Some (file, kind) ->
       let art_files = get_article_files dir in
       let art_files = List.filter ((<>) file) art_files in
@@ -134,7 +134,7 @@ let read_article dir =
           art_vars = [] ;
         }
       in
-      read_article_main_of_file a file
+      Some (read_article_main_of_file a file)
 ;;
 
 let ignore_dot_entries =
@@ -298,7 +298,10 @@ let read_stog dir =
   let stog =
     List.fold_left
     (fun stog dir ->
-       add_article stog (read_article dir))
+       match read_article dir with
+         None -> stog
+       | Some art -> add_article stog art
+    )
     stog
     dirs
   in
