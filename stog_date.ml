@@ -200,6 +200,7 @@ let parse str =
           | Some false when h = 12 -> Some 0
           | Some true when h > 0 && h <= 11 -> Some (h + 12)
           | Some true when h = 12 -> Some 12
+          | _ -> assert false
     in
     let y =
       match y with

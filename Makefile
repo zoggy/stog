@@ -4,8 +4,8 @@ INCLUDES=-I +lablgtk2 -I +lablgtk-extras -I +cameleon2 -I +xmlm
 COMPFLAGS=$(INCLUDES) -annot -I `ocamlfind query pcre` -rectypes -g
 OCAMLPP=
 
-OCAMLC=ocamlc -g
-OCAMLOPT=ocamlopt -g
+OCAMLC=ocamlc.opt -g
+OCAMLOPT=ocamlopt.opt -g
 OCAMLLEX=ocamllex
 OCAMLYACC=ocamlyacc
 CAMLP4O=camlp4o

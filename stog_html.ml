@@ -2,6 +2,8 @@
 
 open Stog_types;;
 
+let languages = ["fr" ; "en" ];;
+
 let url_compat s =
  let s = Stog_misc.lowercase s in
  for i = 0 to String.length s - 1 do
@@ -27,6 +29,15 @@ let escape_html s =
   Buffer.contents b
 ;;
 
+let html_file stog name =
+  let ext_pref =
+    match stog.stog_lang with
+      None -> ""
+    | Some lang -> "."^lang
+  in
+  Printf.sprintf "%s%s.html" name ext_pref
+;;
+
 let tag_sep = "<sep_/>";;
 
 let article_url stog art =
@@ -41,22 +52,34 @@ let link_to ?(from=`Article) file =
   Printf.sprintf "%s%s" pref file
 ;;
 
-let link_to_article ?(from=`Article) article =
+let link_to_article stog ?(from=`Article) article =
   link_to ~from
-    (Printf.sprintf "%s/index.html" article.art_human_id)
+  (Printf.sprintf "%s/%s"
+   article.art_human_id (html_file stog "index"))
 ;;
 
-let topic_index_file topic =
-  url_compat (Printf.sprintf "topic_%s.html" topic)
+let topic_index_file stog topic =
+  url_compat (html_file stog (Printf.sprintf "topic_%s" topic))
 ;;
-let keyword_index_file kw =
-  url_compat (Printf.sprintf "kw_%s.html" kw)
+let keyword_index_file stog kw =
+  url_compat (html_file stog (Printf.sprintf "kw_%s" kw))
 ;;
-let month_index_file ~year ~month =
-  url_compat (Printf.sprintf "%04d_%02d.html" year month)
+let month_index_file stog ~year ~month =
+  url_compat (html_file stog (Printf.sprintf "%04d_%02d" year month))
 ;;
 
-let page_file page = Printf.sprintf "%s.html" page.page_human_id;;
+let page_file stog page = html_file stog page.page_human_id;;
+
+let make_lang_funs stog =
+  match stog.stog_lang with
+    None -> []
+  | Some lang ->
+      let to_remove = List.filter ((<>) lang) languages in
+      let f_keep _env _args subs = subs in
+      let f_remove _env _args _subs = [] in
+      (lang, f_keep) ::
+      (List.map (fun lang -> (lang, f_remove)) to_remove)
+;;
 
 let fun_include tmpl_dir _env args _ =
   match Stog_xtmpl.get_arg args "file" with
@@ -118,7 +141,7 @@ let fun_article_href hid ?from stog env args _ =
     None -> [Stog_xtmpl.T ("span", ["class", "unknown-ref"], [Stog_xtmpl.D text])]
   | Some a ->
       [
-        Stog_xtmpl.T ("a", ["href", (link_to_article ?from a)], [Stog_xtmpl.D text])
+        Stog_xtmpl.T ("a", ["href", (link_to_article stog ?from a)], [Stog_xtmpl.D text])
       ]
 ;;
 
@@ -150,7 +173,7 @@ let fun_archive_tree ?from stog _env _ =
   let years = List.sort (fun (y1,_) (y2,_) -> compare y2 y1) years in
 
   let f_mon year (month, set) =
-    let link = link_to ?from (month_index_file ~year ~month) in
+    let link = link_to ?from (month_index_file stog ~year ~month) in
     Stog_xtmpl.T ("li", [], [
        Stog_xtmpl.T ("a", ["href", link], [ Stog_xtmpl.D (months.(month-1)) ]) ;
        Stog_xtmpl.D (Printf.sprintf "(%d)" (Stog_types.Art_set.cardinal set))
@@ -208,14 +231,13 @@ let fun_code ?lang _env args code =
 let fun_ocaml = fun_code ~lang: "ocaml";;
 
 let fun_section cls _env args body =
-  let title = Stog_xtmpl.opt_arg args "title" in
-  let title = Stog_xtmpl.xml_of_string title in
-  [
-    Stog_xtmpl.T ("div", ["class", cls],
-     (Stog_xtmpl.T ("div", ["class", cls^"-title"], [title])) ::
-     body
-    )
-  ]
+  let title =
+    match Stog_xtmpl.get_arg args "title" with
+      None -> []
+    | Some t ->
+        [Stog_xtmpl.T ("div", ["class", cls^"-title"], [Stog_xtmpl.xml_of_string t])]
+  in
+  [ Stog_xtmpl.T ("div", ["class", cls], title @ body) ]
 ;;
 
 let fun_subsection = fun_section "subsection";;
@@ -298,7 +320,7 @@ let generate_page stog env contents =
 
 let fun_page_ref hid stog env args subs =
   let page = get_page stog hid in
-  let file = page_file page in
+  let file = page_file stog page in
   let link = link_to ~from: `Index file in
   let text =
     match subs with
@@ -308,11 +330,64 @@ let fun_page_ref hid stog env args subs =
   [ Stog_xtmpl.T ("a", ["href", link], text) ]
 ;;
 
+let env_add_langswitch env stog html_f =
+  let name = "langswitch" in
+  match stog.stog_lang with
+    None ->
+      Stog_xtmpl.env_add name (fun _ _ _ -> []) env
+  | Some lang ->
+      let map_lang lang =
+         let basename = Filename.chop_extension (Filename.chop_extension html_f) in
+         let html_file = html_file { stog with stog_lang = Some lang } basename in
+         let html_file = Filename.basename html_file in
+         let img_url = Printf.sprintf "%s/%s.png" stog.stog_base_url lang in
+         Stog_xtmpl.T ("a", ["href", html_file], [
+           Stog_xtmpl.T ("img", ["src", img_url ; "title", lang ; "alt", lang], [])])
+      in
+      let f _env args _subs =
+        let languages =
+          match Stog_xtmpl.get_arg args "languages" with
+            Some s -> Stog_misc.split_string s [','; ';' ; ' ']
+          | None -> languages
+        in
+        let languages = List.filter ((<>) lang) languages in
+        List.map map_lang languages
+      in
+      Stog_xtmpl.env_add name f env
+;;
+
+let fun_twocolumns env args subs =
+  prerr_endline (Printf.sprintf "two-columns, length(subs)=%d" (List.length subs));
+  let empty = [] in
+  let subs = List.fold_right
+    (fun xml acc ->
+       match xml with
+         Stog_xtmpl.D _ -> acc
+       | Stog_xtmpl.T (_,_,subs)
+       | Stog_xtmpl.E (_, subs) -> subs :: acc
+    ) subs []
+  in
+  let left, right =
+    match subs with
+      [] -> empty, empty
+    | [left] -> left, empty
+    | left :: right :: _ -> left, right
+  in
+  [ Stog_xtmpl.T ("table", ["class", "two-columns"],
+     [ Stog_xtmpl.T ("tr", [],
+        [ Stog_xtmpl.T ("td", ["class", "two-columns-left"], left) ;
+          Stog_xtmpl.T ("td", ["class", "two-columns-right"], right) ;
+        ]);
+     ])
+  ]
+;;
+
 let rec fun_page_id hid outdir stog env args subs =
   let page = get_page stog hid in
-  let file = Filename.concat outdir (page_file page) in
+  let file = Filename.concat outdir (page_file stog page) in
   let xml = Stog_xtmpl.xml_of_string page.page_body in
   let env = Stog_xtmpl.env_of_list ~env (default_commands ~outdir ~from: `Index stog) in
+  let env = env_add_langswitch env stog file in
   let env = List.fold_left
     (fun env (s,v) -> Stog_xtmpl.env_add_att s v env)
     env
@@ -347,15 +422,18 @@ and default_commands ?outdir ?from ?rss stog =
       "search-form", fun_search_form stog ;
       "site-title", (fun _ _ _ -> [ Stog_xtmpl.D stog.stog_title ]) ;
       "site-description", (fun _ _ _ -> [ Stog_xtmpl.xml_of_string stog.stog_desc ]) ;
+      "two-columns", fun_twocolumns ;
     ]
   in
-  match outdir with
-    None -> l
-  | Some outdir ->
-              l @ ["graph", fun_graph outdir ?from stog ;
-                "page", (fun_page outdir stog)
-              ]
-
+  let l =
+     match outdir with
+            | None -> l
+            | Some outdir ->
+                l @ ["graph", fun_graph outdir ?from stog ;
+                  "page", (fun_page outdir stog)
+                ]
+  in
+  (make_lang_funs stog) @ l
 ;;
 
 let intro_of_article stog art =
@@ -380,7 +458,7 @@ let rss_date_of_article article =
 ;;
 
 let article_to_rss_item stog article =
-  let link = link_to_article ~from: `Index article in
+  let link = link_to_article stog ~from: `Index article in
   let link = Printf.sprintf "%s/%s" stog.stog_base_url link in
   let pubdate = rss_date_of_article article in
   let f_word w =
@@ -431,7 +509,7 @@ let generate_rss_feed_file stog ?title link articles file =
   Rss.print_file file channel
 ;;
 
-let copy_file ?(quote_src=true) ?(quote_dst=true) src dest =
+let copy_file ?(ignerr=false) ?(quote_src=true) ?(quote_dst=true) src dest =
   let com = Printf.sprintf "cp -f %s %s"
     (if quote_src then Filename.quote src else src)
     (if quote_dst then Filename.quote dest else dest)
@@ -439,7 +517,8 @@ let copy_file ?(quote_src=true) ?(quote_dst=true) src dest =
   match Sys.command com with
     0 -> ()
   | _ ->
-      failwith (Printf.sprintf "command failed: %s" com)
+      let msg = Printf.sprintf "command failed: %s" com in
+      (if ignerr then prerr_endline else failwith) msg
 ;;
 
 let xml_of_article_body s =
@@ -456,7 +535,7 @@ let html_of_topics stog art env args _ =
   in
   Stog_misc.list_concat ~sep
   (List.map (fun w ->
-      Stog_xtmpl.T ("a", ["href", link_to (topic_index_file w)], [ f w ]))
+      Stog_xtmpl.T ("a", ["href", link_to (topic_index_file stog w)], [ f w ]))
    art.art_topics
   )
 ;;
@@ -470,7 +549,7 @@ let html_of_keywords stog art env args _ =
   in
   Stog_misc.list_concat ~sep
   (List.map (fun w ->
-      Stog_xtmpl.T ("a", ["href", link_to (keyword_index_file w)], [ f w ]))
+      Stog_xtmpl.T ("a", ["href", link_to (keyword_index_file stog w)], [ f w ]))
    art.art_keywords
   )
 ;;
@@ -622,7 +701,7 @@ let generate_blogpage stog env contents =
 
 let generate_article outdir stog art_id article =
   let html_file = Filename.concat outdir
-    (link_to_article ~from: `Index article)
+    (link_to_article stog ~from: `Index article)
   in
   let tmpl = (*Filename.concat stog.stog_tmpl_dir*) "article.tmpl" in
   let art_dir = Filename.dirname html_file in
@@ -635,7 +714,7 @@ let generate_article outdir stog art_id article =
       None -> []
     | Some id ->
         let a = Stog_types.article stog id in
-        let link = link_to_article a in
+        let link = link_to_article stog a in
         [ Stog_xtmpl.T ("a", ["href", link], [ Stog_xtmpl.D a.art_title ]) ]
   in
   let comment_actions =
@@ -666,6 +745,7 @@ let generate_article outdir stog art_id article =
      "navbar", fun _ _ _ -> [Stog_xtmpl.D "true"] ;
    ] @ (default_commands ~outdir stog))
   in
+  let env = env_add_langswitch env stog html_file in
   let s = generate_blogpage stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
   Stog_xtmpl.apply_string_to_file ~head: "<!DOCTYPE HTML>" env s html_file
 ;;
@@ -729,6 +809,7 @@ let generate_by_word_indexes outdir stog tmpl map f_html_file =
          "page-title", (fun _ _ _ -> [Stog_xtmpl.D word]) ;
        ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
     in
+    let env = env_add_langswitch env stog html_file in
     let s = generate_blogpage stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
     Stog_xtmpl.apply_string_to_file ~head: "<!DOCTYPE HTML>" env s html_file
   in
@@ -738,19 +819,19 @@ let generate_by_word_indexes outdir stog tmpl map f_html_file =
 let generate_topic_indexes outdir stog =
   generate_by_word_indexes outdir stog
   "by_topic.tmpl" stog.stog_arts_by_topic
-  topic_index_file
+  (topic_index_file stog)
 ;;
 
 let generate_keyword_indexes outdir stog =
   generate_by_word_indexes outdir stog
   "by_kw.tmpl" stog.stog_arts_by_kw
-  keyword_index_file
+  (keyword_index_file stog)
 ;;
 
 let generate_archive_index outdir stog =
   let f_month year month set =
     let tmpl = "archive_month.tmpl" in
-    let html_file = Filename.concat outdir (month_index_file ~year ~month) in
+    let html_file = Filename.concat outdir (month_index_file stog ~year ~month) in
     let env = Stog_xtmpl.env_of_list
       ([
          "site-title", (fun _ _ _ -> [Stog_xtmpl.D stog.stog_title]) ;
@@ -759,6 +840,7 @@ let generate_archive_index outdir stog =
          "page-title", (fun _ _ _ -> [Stog_xtmpl.D (Printf.sprintf "%s %d" months.(month-1) year)]) ;
        ] @ (default_commands ~outdir ~from:`Index stog))
     in
+    let env = env_add_langswitch env stog html_file in
     let s = generate_blogpage stog env [Stog_xtmpl.T ("include", ["file", tmpl], [])] in
     Stog_xtmpl.apply_string_to_file ~head: "<!DOCTYPE HTML>" env s html_file
   in
@@ -769,7 +851,7 @@ let generate_archive_index outdir stog =
 ;;
 
 let generate_index_file outdir stog =
-  let basefile = "index.html" in
+  let basefile = html_file stog "index" in
   let html_file = Filename.concat outdir basefile in
   let tmpl = Filename.concat stog.stog_tmpl_dir "index.tmpl" in
   let rss_basefile = "index.rss" in
@@ -785,6 +867,7 @@ let generate_index_file outdir stog =
        "articles", (article_list outdir ~rss: rss_basefile stog);
      ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
   in
+  let env = env_add_langswitch env stog html_file in
   Stog_xtmpl.apply_to_file ~head: "<!DOCTYPE HTML>" env tmpl html_file
 ;;
 
@@ -792,7 +875,10 @@ let generate_index outdir stog =
   Stog_misc.mkdir outdir;
   copy_file ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.less") outdir;
   copy_file (Filename.concat stog.stog_tmpl_dir "less.js") outdir;
-  copy_file ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.png") outdir;
+  copy_file ~ignerr: true ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.png") outdir;
+  copy_file ~ignerr: true ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.jpg") outdir;
+  copy_file ~ignerr: true ~quote_src: false (Filename.concat stog.stog_dir "*.png") outdir;
+  copy_file ~ignerr: true ~quote_src: false (Filename.concat stog.stog_dir "*.jpg") outdir;
   generate_index_file outdir stog;
   generate_topic_indexes outdir stog;
   generate_keyword_indexes outdir stog;
@@ -800,6 +886,11 @@ let generate_index outdir stog =
 ;;
 
 let generate outdir stog =
+  begin
+    match stog.stog_lang with
+      None -> ()
+    | Some lang -> prerr_endline (Printf.sprintf "Generating pages for language %s" lang);
+  end;
   generate_index outdir stog ;
   Stog_tmap.iter (generate_article outdir stog)
     stog.stog_articles

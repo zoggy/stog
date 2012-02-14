@@ -186,7 +186,6 @@ let read_page_header page header =
       match String.lowercase field with
       | "title" -> { page with page_title = value }
       | field -> { page with page_vars = (field, value) :: page.page_vars }
-      | _ -> page
     with
       Not_found ->
         prerr_endline

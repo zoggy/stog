@@ -4,6 +4,8 @@ let output_dir = ref "stog-output";;
 let base_url = ref None ;;
 let tmpl_dir = ref None ;;
 
+let lang = ref None;;
+
 let set_stog_options stog =
   let stog =
     match !base_url with
@@ -15,6 +17,11 @@ let set_stog_options stog =
       None -> stog
     | Some s -> { stog with Stog_types.stog_tmpl_dir = s }
   in
+  let stog =
+    match !lang with
+      None -> stog
+    | Some s -> { stog with Stog_types.stog_lang = Some s }
+  in
   stog
 ;;
 
@@ -23,10 +30,13 @@ let options = [
     "<dir> set output directory instead of "^ !output_dir ;
 
     "--base-url", Arg.String (fun s -> base_url := Some s),
-    " <s> use <s> as base url instead of the one specified in the input stog" ;
+    "<s> use <s> as base url instead of the one specified in the input stog" ;
 
     "--tmpl", Arg.String (fun s -> tmpl_dir := Some s),
-    " <dir> use <dir> as template directory instead tmpl of stog dir";
+    "<dir> use <dir> as template directory instead tmpl of stog dir";
+
+    "--lang", Arg.String (fun s -> lang := Some s),
+    "<s> generate pages for language <s>" ;
   ];;
 
 let usage = Printf.sprintf

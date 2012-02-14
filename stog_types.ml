@@ -109,6 +109,7 @@ type stog = {
   stog_base_url : string ;
   stog_email : string ;
   stog_rss_length : int ;
+  stog_lang : string option ;
   }
 
 let create_stog dir = {
@@ -129,6 +130,7 @@ let create_stog dir = {
   stog_email = "foo@bar.com" ;
   stog_rss_length = 10 ;
   stog_vars = [] ;
+  stog_lang = None ;
   }
 ;;
 
