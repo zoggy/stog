@@ -202,7 +202,7 @@ let fun_rss_feed file args _env _ =
   ]
 ;;
 
-let fun_code ?lang _env args code =
+let fun_hcode ?(inline=false) ?lang _env args code =
   let language, language_option =
     match lang with
       None ->
@@ -215,7 +215,7 @@ let fun_code ?lang _env args code =
   in
   let code =
     match code with
-      [ Stog_xtmpl.D code ] -> Stog_misc.strip_string code
+      [ Stog_xtmpl.D code ] -> code
     | _ -> failwith (Printf.sprintf "Invalid code: %s"
          (String.concat "" (List.map Stog_xtmpl.string_of_xml code)))
   in
@@ -227,18 +227,24 @@ let fun_code ?lang _env args code =
   match Sys.command com with
     0 ->
       let code = Stog_misc.string_of_file temp_file in
+      let code = Stog_misc.strip_string code in
       Sys.remove temp_file;
-      [ Stog_xtmpl.T ("pre",
-         ["class", Printf.sprintf "code-%s" language],
-         [Stog_xtmpl.xml_of_string code]
-        )
-      ]
+      if inline then
+        [ Stog_xtmpl.T ("span", ["class","icode"],
+           [Stog_xtmpl.xml_of_string code]) ]
+      else
+        [ Stog_xtmpl.T ("pre",
+           ["class", Printf.sprintf "code-%s" language],
+           [Stog_xtmpl.xml_of_string code]
+          )
+        ]
   | _ ->
       failwith (Printf.sprintf "command failed: %s" com)
 ;;
 
-let fun_ocaml = fun_code ~lang: "ocaml";;
-let fun_command_line = fun_code ~lang: "sh";;
+let fun_ocaml = fun_hcode ~lang: "ocaml";;
+let fun_command_line = fun_hcode ~lang: "sh";;
+let fun_icode = fun_hcode ~inline: true ;;
 
 let fun_section cls _env args body =
   let id =
@@ -301,7 +307,7 @@ let fun_graph =
     end;
     [
       Stog_xtmpl.T ("a", ["href", src], [
-        Stog_xtmpl.T ("img", ["src", small_src ; "alt", "Graph"], [])
+         Stog_xtmpl.T ("img", ["src", small_src ; "alt", "Graph"], [])
        ])
     ]
 ;;
@@ -494,9 +500,10 @@ and default_commands ?outdir ?from ?rss stog =
       "include", fun_include stog.stog_tmpl_dir ;
       "image", fun_image ;
       "archive-tree", (fun _ -> fun_archive_tree ?from stog) ;
-      "code", fun_code ?lang: None;
-      "ocaml", fun_ocaml ;
-      "command-line", fun_command_line ;
+      "hcode", fun_hcode ~inline: false ?lang: None;
+      "icode", fun_icode ?lang: None;
+      "ocaml", fun_ocaml ~inline: false ;
+      "command-line", fun_command_line ~inline: false ;
       "article", fun_article ?from stog;
       "section", fun_section ;
       "subsection", fun_subsection ;
