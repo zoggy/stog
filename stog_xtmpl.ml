@@ -20,7 +20,7 @@ let string_of_env env =
   String.concat ", " (Str_map.fold (fun s _ acc -> s :: acc) env [])
 ;;
 
-let tag_main = "main_";;
+let tag_main = "main";;
 let tag_env = "env_";;
 
 type tree =
@@ -146,15 +146,21 @@ and eval_xml ?(margin="") env = function
     | (uri, tag) ->
         match uri, env_get tag env with
         | "", Some f ->
-            begin
-              let subs = List.flatten
-                (List.map (eval_xml ~margin env) subs)
-              in
-              List.flatten
-              (List.map (eval_xml ~margin env)
-               (f env (List.map (fun ((_,s),v) -> (s,v)) atts) subs)
+            if tag.[String.length tag - 1] = '_' then
+            (* defer evaluation, evaluate subs first *)
+              (
+               let subs = List.flatten
+                 (List.map (eval_xml ~margin env) subs)
+               in
+               let tag = String.sub tag 0 (String.length tag - 1) in
+               [ E (((uri, tag), atts), subs) ]
               )
-            end
+            else
+              (
+               let xml = f env (List.map (fun ((_,s),v) -> (s,v)) atts) subs in
+               List.flatten (List.map (eval_xml ~margin env) xml)
+              )
+              (* eval f before subs *)
         | _ ->
             let subs = List.flatten (List.map (eval_xml ~margin env) subs) in
             [ E (((uri, tag), atts), subs) ]

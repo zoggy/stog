@@ -199,10 +199,15 @@ let fun_rss_feed file args _env _ =
 ;;
 
 let fun_code ?lang _env args code =
-  let language =
+  let language, language_option =
     match lang with
-      None -> Stog_xtmpl.opt_arg args ~def: "txt" "lang"
-    | Some lang -> lang
+      None ->
+        let lang = Stog_xtmpl.opt_arg args ~def: "txt" "lang" in
+        (lang, Printf.sprintf "--syntax=%s" lang)
+    | Some "ocaml" ->
+        ("ocaml", Printf.sprintf "--config-file=%s/ocaml.lang" (Filename.dirname Sys.argv.(0)))
+    | Some lang ->
+        (lang, Printf.sprintf "--syntax=%s" lang)
   in
   let code =
     match code with
@@ -212,8 +217,8 @@ let fun_code ?lang _env args code =
   in
   let temp_file = Filename.temp_file "stog" "highlight" in
   let com = Printf.sprintf
-    "echo %s | highlight --syntax=%s -f > %s"
-    (Filename.quote code) language (Filename.quote temp_file)
+    "echo %s | highlight %s -f > %s"
+    (Filename.quote code) language_option (Filename.quote temp_file)
   in
   match Sys.command com with
     0 ->
@@ -231,11 +236,16 @@ let fun_code ?lang _env args code =
 let fun_ocaml = fun_code ~lang: "ocaml";;
 
 let fun_section cls _env args body =
+  let id =
+    match Stog_xtmpl.get_arg args "name" with
+      None -> []
+    | Some name -> ["id", name]
+  in
   let title =
     match Stog_xtmpl.get_arg args "title" with
       None -> []
     | Some t ->
-        [Stog_xtmpl.T ("div", ["class", cls^"-title"], [Stog_xtmpl.xml_of_string t])]
+        [Stog_xtmpl.T ("div", ["class", cls^"-title"] @ id, [Stog_xtmpl.xml_of_string t])]
   in
   [ Stog_xtmpl.T ("div", ["class", cls], title @ body) ]
 ;;
@@ -382,6 +392,73 @@ let fun_twocolumns env args subs =
   ]
 ;;
 
+let fun_exta env args subs =
+  [ Stog_xtmpl.T ("span", ["class","ext-a"],
+     [ Stog_xtmpl.T ("a",args, subs) ])
+  ]
+;;
+
+type toc = Toc of string * string * string * toc list (* name, title, class, subs *)
+
+let fun_prepare_toc env args subs =
+  let depth =
+    match Stog_xtmpl.get_arg args "depth" with
+      None -> max_int
+    | Some s -> int_of_string s
+  in
+  let rec iter d acc = function
+  | Stog_xtmpl.D _ -> acc
+  | Stog_xtmpl.T ("section" as cl, atts, subs)
+  | Stog_xtmpl.T ("subsection" as cl, atts, subs) ->
+      begin
+        match Stog_xtmpl.get_arg atts "name", Stog_xtmpl.get_arg atts "title" with
+          None, _ | _, None ->
+            prerr_endline "no name nor title";
+            acc
+        | Some name, Some title ->
+            let subs =
+              if d >= depth
+              then []
+              else List.rev (List.fold_left (iter (d+1)) [] subs)
+            in
+            (Toc (name, title, cl, subs)) :: acc
+      end
+  | Stog_xtmpl.T (_,_,subs) -> List.fold_left (iter d) acc subs
+  | Stog_xtmpl.E (tag, subs) ->
+      match tag with
+      | (("", t), atts) ->
+          iter d acc (Stog_xtmpl.T (t, List.map (fun ((_,a),v) -> (a, v)) atts, subs))
+      | _ -> acc
+  in
+  let toc = List.rev (List.fold_left (iter 1) [] subs) in
+  (
+   match toc with
+     [] -> prerr_endline "empty toc!"
+   | _ -> prerr_endline (Printf.sprintf "toc is %d long" (List.length toc));
+  );
+  let rec xml_of_toc = function
+    Toc (name, title, cl, subs) ->
+      Stog_xtmpl.T ("li", ["class", "toc-"^cl],
+       [ Stog_xtmpl.T ("a", ["href", "#"^name],
+         [ Stog_xtmpl.xml_of_string title ] @
+          ( match subs with
+            [] -> []
+           | _ ->
+               [ Stog_xtmpl.T ("ul", ["class", "toc"], List.map xml_of_toc subs) ]
+          )
+         )
+       ]
+      )
+  in
+  let xml = Stog_xtmpl.T ("ul", ["class", "toc"], List.map xml_of_toc toc) in
+  let atts = [ "toc-contents", Stog_xtmpl.string_of_xml xml ] in
+  [ Stog_xtmpl.T (Stog_xtmpl.tag_env, atts, subs) ]
+;;
+
+let fun_toc env args subs =
+  subs @ [Stog_xtmpl.T ("toc-contents", [], [])]
+;;
+
 let rec fun_page_id hid outdir stog env args subs =
   let page = get_page stog hid in
   let file = Filename.concat outdir (page_file stog page) in
@@ -423,6 +500,9 @@ and default_commands ?outdir ?from ?rss stog =
       "site-title", (fun _ _ _ -> [ Stog_xtmpl.D stog.stog_title ]) ;
       "site-description", (fun _ _ _ -> [ Stog_xtmpl.xml_of_string stog.stog_desc ]) ;
       "two-columns", fun_twocolumns ;
+      "ext-a", fun_exta ;
+      "prepare-toc", fun_prepare_toc ;
+      "toc", fun_toc ;
     ]
   in
   let l =
