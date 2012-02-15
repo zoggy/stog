@@ -81,7 +81,7 @@ let make_lang_funs stog =
       (List.map (fun lang -> (lang, f_remove)) to_remove)
 ;;
 
-let fun_include tmpl_dir _env args _ =
+let fun_include tmpl_dir _env args subs =
   match Stog_xtmpl.get_arg args "file" with
     None -> failwith "Missing 'file' argument for include command";
   | Some file ->
@@ -92,6 +92,10 @@ let fun_include tmpl_dir _env args _ =
           file
       in
       let xml = [Stog_xtmpl.xml_of_string (Stog_misc.string_of_file file)] in
+      let args =
+        ("include-contents", String.concat "" (List.map Stog_xtmpl.string_of_xml subs)) ::
+        args
+      in
       [Stog_xtmpl.T (Stog_xtmpl.tag_env, args, xml)]
 ;;
 
@@ -211,7 +215,7 @@ let fun_code ?lang _env args code =
   in
   let code =
     match code with
-      [ Stog_xtmpl.D code ] -> code
+      [ Stog_xtmpl.D code ] -> Stog_misc.strip_string code
     | _ -> failwith (Printf.sprintf "Invalid code: %s"
          (String.concat "" (List.map Stog_xtmpl.string_of_xml code)))
   in
@@ -234,6 +238,7 @@ let fun_code ?lang _env args code =
 ;;
 
 let fun_ocaml = fun_code ~lang: "ocaml";;
+let fun_command_line = fun_code ~lang: "sh";;
 
 let fun_section cls _env args body =
   let id =
@@ -491,6 +496,7 @@ and default_commands ?outdir ?from ?rss stog =
       "archive-tree", (fun _ -> fun_archive_tree ?from stog) ;
       "code", fun_code ?lang: None;
       "ocaml", fun_ocaml ;
+      "command-line", fun_command_line ;
       "article", fun_article ?from stog;
       "section", fun_section ;
       "subsection", fun_subsection ;
