@@ -439,7 +439,7 @@ let fun_prepare_toc env args subs =
             else
               (
                let subs = List.rev (List.fold_left (iter (d+1)) [] subs) in
-               prerr_endline (Printf.sprintf "depth=%d, d=%d, title=%s" depth d title);
+               (*prerr_endline (Printf.sprintf "depth=%d, d=%d, title=%s" depth d title);*)
                (Toc (name, title, cl, subs)) :: acc
               )
       end
