@@ -460,15 +460,14 @@ let fun_prepare_toc env args subs =
     Toc (name, title, cl, subs) ->
       Stog_xtmpl.T ("li", ["class", "toc-"^cl],
        [ Stog_xtmpl.T ("a", ["href", "#"^name],
-         [ Stog_xtmpl.xml_of_string title ] @
-          ( match subs with
-            [] -> []
-           | _ ->
+         [ Stog_xtmpl.xml_of_string title ]) ]
+       @
+       ( match subs with
+          [] -> []
+        | _ ->
                [ Stog_xtmpl.T ("ul", ["class", "toc"], List.map xml_of_toc subs) ]
-          )
-         )
-       ]
-      )
+       )
+       )
   in
   let xml = Stog_xtmpl.T ("ul", ["class", "toc"], List.map xml_of_toc toc) in
   let atts = [ "toc-contents", Stog_xtmpl.string_of_xml xml ] in
