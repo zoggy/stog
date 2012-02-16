@@ -206,12 +206,16 @@ let fun_hcode ?(inline=false) ?lang _env args code =
   let language, language_option =
     match lang with
       None ->
-        let lang = Stog_xtmpl.opt_arg args ~def: "txt" "lang" in
-        (lang, Printf.sprintf "--syntax=%s" lang)
+        (
+         let lang = Stog_xtmpl.opt_arg args ~def: "txt" "lang" in
+         match lang with
+           "txt" -> (lang, None)
+         | _ -> (lang, Some (Printf.sprintf "--syntax=%s" lang))
+        )
     | Some "ocaml" ->
-        ("ocaml", Printf.sprintf "--config-file=%s/ocaml.lang" (Filename.dirname Sys.argv.(0)))
+        ("ocaml", Some (Printf.sprintf "--config-file=%s/ocaml.lang" (Filename.dirname Sys.argv.(0))))
     | Some lang ->
-        (lang, Printf.sprintf "--syntax=%s" lang)
+        (lang, Some (Printf.sprintf "--syntax=%s" lang))
   in
   let code =
     match code with
@@ -219,27 +223,30 @@ let fun_hcode ?(inline=false) ?lang _env args code =
     | _ -> failwith (Printf.sprintf "Invalid code: %s"
          (String.concat "" (List.map Stog_xtmpl.string_of_xml code)))
   in
-  let temp_file = Filename.temp_file "stog" "highlight" in
-  let com = Printf.sprintf
-    "echo %s | highlight %s -f > %s"
-    (Filename.quote code) language_option (Filename.quote temp_file)
+  let code = Stog_misc.strip_string code in
+  let xml_code =
+    match language_option with
+      None -> Stog_xtmpl.D code
+    | Some option ->
+        let temp_file = Filename.temp_file "stog" "highlight" in
+        let com = Printf.sprintf
+          "echo %s | highlight -O xhtml %s -f > %s"
+          (Filename.quote code) option (Filename.quote temp_file)
+        in
+        match Sys.command com with
+          0 ->
+            let code = Stog_misc.string_of_file temp_file in
+            Sys.remove temp_file;
+            Stog_xtmpl.xml_of_string code
+        | _ ->
+            failwith (Printf.sprintf "command failed: %s" com)
   in
-  match Sys.command com with
-    0 ->
-      let code = Stog_misc.string_of_file temp_file in
-      let code = Stog_misc.strip_string code in
-      Sys.remove temp_file;
-      if inline then
-        [ Stog_xtmpl.T ("span", ["class","icode"],
-           [Stog_xtmpl.xml_of_string code]) ]
-      else
-        [ Stog_xtmpl.T ("pre",
-           ["class", Printf.sprintf "code-%s" language],
-           [Stog_xtmpl.xml_of_string code]
-          )
-        ]
-  | _ ->
-      failwith (Printf.sprintf "command failed: %s" com)
+  if inline then
+    [ Stog_xtmpl.T ("span", ["class","icode"], [xml_code]) ]
+  else
+    [ Stog_xtmpl.T ("pre",
+       ["class", Printf.sprintf "code-%s" language], [xml_code])
+    ]
 ;;
 
 let fun_ocaml = fun_hcode ~lang: "ocaml";;
@@ -427,12 +434,14 @@ let fun_prepare_toc env args subs =
             prerr_endline "no name nor title";
             acc
         | Some name, Some title ->
-            let subs =
-              if d >= depth
-              then []
-              else List.rev (List.fold_left (iter (d+1)) [] subs)
-            in
-            (Toc (name, title, cl, subs)) :: acc
+            if d > depth
+            then acc
+            else
+              (
+               let subs = List.rev (List.fold_left (iter (d+1)) [] subs) in
+               prerr_endline (Printf.sprintf "depth=%d, d=%d, title=%s" depth d title);
+               (Toc (name, title, cl, subs)) :: acc
+              )
       end
   | Stog_xtmpl.T (_,_,subs) -> List.fold_left (iter d) acc subs
   | Stog_xtmpl.E (tag, subs) ->
