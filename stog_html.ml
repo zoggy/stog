@@ -616,7 +616,7 @@ let generate_rss_feed_file stog ?title link articles file =
     items
   in
   let channel = Rss.keep_n_items stog.stog_rss_length channel in
-  Rss.print_file file channel
+  Rss.print_file ~encoding: "UTF-8" file channel
 ;;
 
 let copy_file ?(ignerr=false) ?(quote_src=true) ?(quote_dst=true) src dest =
@@ -1003,7 +1003,7 @@ let generate outdir stog =
   end;
   generate_index outdir stog ;
   Stog_tmap.iter (generate_article outdir stog)
-    stog.stog_articles
+  stog.stog_articles
 ;;
 
   
