@@ -118,7 +118,7 @@ let add_keywords_in_graph stog =
 let add_refs_in_graph stog =
   let g = ref stog.stog_graph in
   let f_ref id env args body =
-      match Stog_xtmpl.get_arg args "id" with
+      match Xtmpl.get_arg args "id" with
       None ->
         []
     | Some hid ->
@@ -132,8 +132,8 @@ let add_refs_in_graph stog =
   let f_art id art =
     let funs = [ "ref", f_ref id ] in
     let art = Stog_types.article stog id in
-    let env = Stog_xtmpl.env_of_list funs in
-    ignore(Stog_xtmpl.apply env art.art_body)
+    let env = Xtmpl.env_of_list funs in
+    ignore(Xtmpl.apply env art.art_body)
   in
   Stog_tmap.iter f_art stog.stog_articles;
   { stog with stog_graph = !g }

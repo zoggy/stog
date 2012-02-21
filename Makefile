@@ -1,6 +1,6 @@
 #
 
-INCLUDES=-I +lablgtk2 -I +lablgtk-extras -I +cameleon2 -I +xmlm
+INCLUDES=-I +lablgtk2 -I +lablgtk-extras -I +cameleon2 -I +xmlm $(OCAML_INCLUDES)
 COMPFLAGS=$(INCLUDES) -annot -I `ocamlfind query pcre` -rectypes -g
 OCAMLPP=
 
@@ -11,8 +11,6 @@ OCAMLYACC=ocamlyacc
 CAMLP4O=camlp4o
 OCAMLLIB:=`$(OCAMLC) -where`
 
-ADDITIONAL_LIBS=str.cmxa
-ADDITIONAL_LIBS_BYTE=str.cma
 
 INSTALLDIR=$(OCAMLLIB)/stog
 
@@ -20,8 +18,8 @@ RM=rm -f
 CP=cp -f
 MKDIR=mkdir -p
 
-SYSLIBS=unix.cmxa dynlink.cmxa pcre.cmxa xmlm.cmx xml-light.cmxa rss.cmxa
-SYSLIBS_BYTE=unix.cma dynlink.cma pcre.cma xmlm.cmo xml-light.cma rss.cma
+SYSLIBS=unix.cmxa dynlink.cmxa pcre.cmxa str.cmxa xmlm.cmx xtmpl.cmx xml-light.cmxa rss.cmxa
+SYSLIBS_BYTE=unix.cma dynlink.cma pcre.cma str.cma xmlm.cmo xtmpl.cmo xml-light.cma rss.cma
 
 GUI_SYSLIBS=lablgtk.cmxa \
 	lablgtksourceview2.cmxa \
@@ -46,8 +44,6 @@ LIB_CMXFILES=stog_config.cmx \
 	stog_mailparse.cmx \
 	stog_io.cmx \
 	stog_coms.cmx \
-	stog_tmpl.cmx \
-	stog_xtmpl.cmx \
 	stog_info.cmx \
 	stog_html.cmx
 
@@ -56,12 +52,6 @@ LIB_CMIFILES=$(LIB_CMXFILES:.cmx=.cmi)
 
 LIB=stog.cmxa
 LIB_BYTE=$(LIB:.cmxa=.cma)
-
-MAIN_CMXFILES=\
-	stog_main.cmx
-
-MAIN_CMOFILES=$(MAIN_CMXFILES:.cmx=.cmo)
-MAIN_CMIFILES=$(MAIN_CMXFILES:.cmx=.cmi)
 
 MAIN=stog
 MAIN_BYTE=$(MAIN).byte
@@ -78,33 +68,48 @@ GUI_MAIN_CMIFILES=$(GUi_MAIN_CMXFILES:.cmx=.cmi)
 GUI_MAIN=$(MAIN)-gui
 GUI_MAIN_BYTE=$(GUI_MAIN).byte
 
+OCAML_SRC_DIR=/home/guesdon/devel/ocaml-3.12/
+OCAML_INCLUDES= \
+	-I $(OCAML_SRC_DIR)parsing \
+	-I $(OCAML_SRC_DIR)typing \
+	-I $(OCAML_SRC_DIR)toplevel \
+	-I $(OCAML_SRC_DIR)utils \
+	-I $(OCAML_SRC_DIR)driver
+
+OCAMLTOP_CMXFILES=$(OCAMLTOP_CMOFILES:.cmo=.cmx)
+
 all: opt byte
+ocaml: stog_ocaml.cma
+ocamlopt: stog_ocaml.cmxs
 
 opt: $(LIB) $(MAIN) $(GUI_MAIN)
 byte: $(LIB_BYTE) $(MAIN_BYTE) $(GUI_MAIN_BYTE)
 
-$(MAIN): $(LIB) $(MAIN_CMIFILES) $(MAIN_CMXFILES)
+$(MAIN): $(LIB) stog_main.cmx
 	$(OCAMLOPT) -verbose -linkall -o $@ $(COMPFLAGS) $(SYSLIBS) \
-	$(ADDITIONAL_LIBS) $(LIB) $(MAIN_CMXFILES)
+	$^
 
-$(MAIN_BYTE): $(LIB_BYTE) $(MAIN_CMIFILES) $(MAIN_CMOFILES)
+$(MAIN_BYTE): $(LIB_BYTE) stog_ocaml.cmo stog_main.cmo
 	$(OCAMLC) -linkall -o $@ $(COMPFLAGS) $(SYSLIBS_BYTE) \
-	$(ADDITIONAL_LIBS_BYTE) $(LIB_BYTE) $(MAIN_CMOFILES)
+	toplevellib.cma $^
 
 $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 	$(OCAMLOPT) -a -o $@ $(LIB_CMXFILES)
-
 
 $(LIB_BYTE): $(LIB_CMIFILES) $(LIB_CMOFILES)
 	$(OCAMLC) -a -o $@ $(LIB_CMOFILES)
 
 $(GUI_MAIN): $(LIB) $(GUI_MAIN_CMIFILES) $(GUI_MAIN_CMXFILES)
 	$(OCAMLOPT) -verbose -linkall -o $@ $(COMPFLAGS) $(SYSLIBS) \
-	$(ADDITIONAL_LIBS) $(LIB) $(GUI_SYSLIBS) $(GUI_MAIN_CMXFILES)
+	$(LIB) $(GUI_SYSLIBS) $(GUI_MAIN_CMXFILES)
 
 $(GUI_MAIN_BYTE): $(LIB_BYTE) $(GUI_MAIN_CMIFILES) $(GUI_MAIN_CMOFILES)
 	$(OCAMLC) -linkall -o $@ $(COMPFLAGS) $(SYSLIBS_BYTE) \
-	$(ADDITIONAL_LIBS_BYTE) $(LIB_BYTE) $(GUI_SYSLIBS_BYTE) $(GUI_MAIN_CMOFILES)
+	$(LIB_BYTE) $(GUI_SYSLIBS_BYTE) $(GUI_MAIN_CMOFILES)
+
+stog_ocaml.cmo: stog_ocaml.ml
+	$(OCAMLC) $(COMPFLAGS) -c $(OCAML_INCLUDES) $<
+
 
 ##########
 install:

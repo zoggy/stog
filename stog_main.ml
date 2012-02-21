@@ -6,6 +6,8 @@ let tmpl_dir = ref None ;;
 
 let lang = ref None;;
 
+let plugins = ref [];;
+
 let set_stog_options stog =
   let stog =
     match !base_url with
@@ -37,6 +39,9 @@ let options = [
 
     "--lang", Arg.String (fun s -> lang := Some s),
     "<s> generate pages for language <s>" ;
+
+    "--plugin", Arg.String (fun s -> plugins := !plugins @ [s]),
+    "<file> load plugin (ocaml object file)" ;
   ];;
 
 let usage = Printf.sprintf
@@ -47,6 +52,13 @@ let usage = Printf.sprintf
 let main () =
   let remain = ref [] in
   Arg.parse options (fun s -> remain := s :: !remain) usage ;
+  begin
+    try
+      Dynlink.allow_unsafe_modules true ;
+      List.iter Dynlink.loadfile !plugins
+    with Dynlink.Error e ->
+    failwith (Dynlink.error_message e)
+  end;
   match List.rev !remain with
     [] -> failwith usage
   | dirs ->
@@ -61,5 +73,4 @@ let main () =
       let stog = set_stog_options stog in
       Stog_html.generate !output_dir stog
 ;;
-
 Stog_misc.safe_main main;;
