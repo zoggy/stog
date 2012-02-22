@@ -984,7 +984,7 @@ let generate_index_file outdir stog =
 let generate_index outdir stog =
   Stog_misc.mkdir outdir;
   copy_file ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.less") outdir;
-  copy_file (Filename.concat stog.stog_tmpl_dir "less.js") outdir;
+  copy_file ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.js") outdir;
   copy_file ~ignerr: true ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.png") outdir;
   copy_file ~ignerr: true ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.jpg") outdir;
   copy_file ~ignerr: true ~quote_src: false (Filename.concat stog.stog_dir "*.png") outdir;
