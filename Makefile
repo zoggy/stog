@@ -45,6 +45,7 @@ LIB_CMXFILES=stog_config.cmx \
 	stog_io.cmx \
 	stog_coms.cmx \
 	stog_info.cmx \
+	stog_latex.cmx \
 	stog_html.cmx
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)

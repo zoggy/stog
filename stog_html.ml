@@ -536,11 +536,13 @@ and default_commands ?outdir ?from ?rss stog =
     ]
   in
   let l =
-     match outdir with
+            match outdir with
             | None -> l
             | Some outdir ->
-                l @ ["graph", fun_graph outdir ?from stog ;
-                  "page", (fun_page outdir stog)
+                l @
+                ["graph", fun_graph outdir ?from stog ;
+                  "page", (fun_page outdir stog) ;
+                  "latex", (Stog_latex.fun_latex outdir stog) ;
                 ]
   in
   (make_lang_funs stog) @ l
