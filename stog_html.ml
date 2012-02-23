@@ -354,9 +354,18 @@ let generate_page stog env contents =
 ;;
 
 let fun_page_ref hid stog env args subs =
+  let (hid, anchor) =
+    try
+      let p = String.index hid '#' in
+      let len = String.length hid in
+      (String.sub hid 0 p, "#"^(String.sub hid (p+1) (len - (p+1))))
+    with
+      Not_found -> (hid, "")
+  in
   let page = get_page stog hid in
   let file = page_file stog page in
-  let link = link_to ~from: `Index file in
+  let url = Printf.sprintf "%s%s" file anchor in
+  let link = link_to ~from: `Index url in
   let text =
     match subs with
       [] -> [ Xtmpl.xml_of_string page.page_title ]
