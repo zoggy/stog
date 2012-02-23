@@ -111,6 +111,15 @@ $(GUI_MAIN_BYTE): $(LIB_BYTE) $(GUI_MAIN_CMIFILES) $(GUI_MAIN_CMOFILES)
 stog_ocaml.cmo: stog_ocaml.ml
 	$(OCAMLC) $(COMPFLAGS) -c $(OCAML_INCLUDES) $<
 
+##########
+.PHONY: doc
+
+doc:
+	rm -fr doc-output
+	(cd doc && ../$(MAIN_BYTE) -d ../doc-output .)
+
+webdoc:
+	(cd doc && ../$(MAIN_BYTE) -d ../../stog-pages .)
 
 ##########
 install:
