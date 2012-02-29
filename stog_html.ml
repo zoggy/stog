@@ -205,14 +205,17 @@ let fun_rss_feed file args _env _ =
 ;;
 
 let highlight ~opts code =
+  let code_file = Filename.temp_file "stog" "code" in
+  Stog_misc.file_of_string ~file: code_file code;
   let temp_file = Filename.temp_file "stog" "highlight" in
   let com = Printf.sprintf
-    "echo %s | highlight -O xhtml %s -f > %s"
-    (Filename.quote code) opts (Filename.quote temp_file)
+    "highlight -O xhtml %s -f %s > %s"
+    opts (Filename.quote code_file)(Filename.quote temp_file)
   in
   match Sys.command com with
     0 ->
       let code = Stog_misc.string_of_file temp_file in
+      Sys.remove code_file;
       Sys.remove temp_file;
       code
   | _ ->
