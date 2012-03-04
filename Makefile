@@ -58,7 +58,6 @@ MAIN=stog
 MAIN_BYTE=$(MAIN).byte
 
 GUI_MAIN_CMXFILES=\
-	stog_gui_misc.cmx \
 	stog_gui_arts.cmx \
 	stog_gui_main.cmx \
 	stog_gui.cmx

@@ -90,7 +90,7 @@ let make_view ?packing art_model =
       (fun model row ->
        let date = model#get ~row ~column:art_model.col_date in
        str_renderer#set_properties
-       [ `TEXT (Stog_gui_misc.to_utf8 (Stog_types.string_of_date date)) ]) ;
+       [ `TEXT (Stog_types.string_of_date date) ]) ;
     col#set_sort_column_id 2 ;
     col
   in
@@ -112,7 +112,7 @@ class articles_box ?packing () =
       let row = model.store#append () in
       let path = model.store#get_path row in
       model.store#set ~row ~column:model.col_id id;
-      model.store#set ~row ~column:model.col_title (Stog_gui_misc.to_utf8 art.art_title) ;
+      model.store#set ~row ~column:model.col_title art.art_title ;
       model.store#set ~row ~column:model.col_date art.art_date;
       if select then view#selection#select_path path
 
@@ -160,8 +160,7 @@ class articles_box ?packing () =
                            Failure msg -> msg
                          | e -> Printexc.to_string e
                        in
-                       GToolbox.message_box "Error"
-                       (Stog_gui_misc.to_utf8 msg);
+                       GToolbox.message_box "Error" msg;
                        view#selection#select_path path;
                        false
                   )
@@ -247,8 +246,7 @@ class file_box ?packing () =
     method remove_file file =
       match GToolbox.question_box ~title: "Question"
         ~buttons: ["Yes" ; "No"]
-        (Stog_gui_misc.to_utf8
-         (Printf.sprintf "Remove file %s ?" file))
+         (Printf.sprintf "Remove file %s ?" file)
       with
         1 -> Sys.remove file; self#update
       | _ -> ()
@@ -349,18 +347,16 @@ class edition_box ?packing () =
       file_box#set_dir None
 
     method set_article a =
-      we_title#set_text (Stog_gui_misc.to_utf8 a.art_title);
+      we_title#set_text a.art_title;
       let (y,m,d) = a.art_date in
       we_date#set_text (Printf.sprintf "%04d/%02d/%02d" y m d);
-      we_topics#set_text
-      (Stog_gui_misc.to_utf8 (String.concat ", " a.art_topics));
-      we_keywords#set_text
-      (Stog_gui_misc.to_utf8 (String.concat ", " a.art_keywords));
+      we_topics#set_text (String.concat ", " a.art_topics);
+      we_keywords#set_text (String.concat ", " a.art_keywords);
       wchk_published#set_active a.art_published;
       let b = body_view#source_buffer in
       b#begin_not_undoable_action ();
       b#delete ~start: b#start_iter ~stop: b#end_iter;
-      b#insert (Stog_gui_misc.to_utf8 (Printf.sprintf "<->\n%s" a.art_body));
+      b#insert (Printf.sprintf "<->\n%s" a.art_body);
       b#end_not_undoable_action ();
       file_box#set_dir (Some (Filename.dirname a.art_location))
 
@@ -368,12 +364,9 @@ class edition_box ?packing () =
       let contents =
         Printf.sprintf
           "title: %s\ndate: %s\ntopics: %s\nkeywords: %s\npublished: %s\n%s"
-        (Stog_gui_misc.of_utf8 we_title#text)
-        (Stog_gui_misc.of_utf8 we_date#text)
-        (Stog_gui_misc.of_utf8 we_topics#text)
-        (Stog_gui_misc.of_utf8 we_keywords#text)
+        we_title#text we_date#text we_topics#text we_keywords#text
         (if wchk_published#active then "true" else "false")
-        (Stog_gui_misc.of_utf8 (body_view#source_buffer#get_text ()))
+        (body_view#source_buffer#get_text ())
       in
       Stog_io.read_article_main a contents
 

@@ -10,24 +10,22 @@ stog_graph.cmo: stog_graph.cmi
 stog_graph.cmx: stog_graph.cmi
 stog_gui.cmo: stog_misc.cmi stog_io.cmo stog_gui_main.cmo
 stog_gui.cmx: stog_misc.cmx stog_io.cmx stog_gui_main.cmx
-stog_gui_arts.cmo: stog_types.cmo stog_misc.cmi stog_io.cmo stog_gui_misc.cmo
-stog_gui_arts.cmx: stog_types.cmx stog_misc.cmx stog_io.cmx stog_gui_misc.cmx
-stog_gui_main.cmo: stog_types.cmo stog_misc.cmi stog_io.cmo stog_gui_misc.cmo \
-    stog_gui_arts.cmo
-stog_gui_main.cmx: stog_types.cmx stog_misc.cmx stog_io.cmx stog_gui_misc.cmx \
-    stog_gui_arts.cmx
-stog_gui_misc.cmo:
-stog_gui_misc.cmx:
-stog_html.cmo: stog_xtmpl.cmo stog_types.cmo stog_tmap.cmi stog_misc.cmi \
+stog_gui_arts.cmo: stog_types.cmo stog_misc.cmi stog_io.cmo
+stog_gui_arts.cmx: stog_types.cmx stog_misc.cmx stog_io.cmx
+stog_gui_main.cmo: stog_types.cmo stog_misc.cmi stog_io.cmo stog_gui_arts.cmo
+stog_gui_main.cmx: stog_types.cmx stog_misc.cmx stog_io.cmx stog_gui_arts.cmx
+stog_html.cmo: stog_types.cmo stog_tmap.cmi stog_misc.cmi stog_latex.cmo \
     stog_info.cmo stog_date.cmi
-stog_html.cmx: stog_xtmpl.cmx stog_types.cmx stog_tmap.cmx stog_misc.cmx \
+stog_html.cmx: stog_types.cmx stog_tmap.cmx stog_misc.cmx stog_latex.cmx \
     stog_info.cmx stog_date.cmx
-stog_info.cmo: stog_xtmpl.cmo stog_types.cmo stog_tmap.cmi stog_misc.cmi
-stog_info.cmx: stog_xtmpl.cmx stog_types.cmx stog_tmap.cmx stog_misc.cmx
+stog_info.cmo: stog_types.cmo stog_tmap.cmi stog_misc.cmi
+stog_info.cmx: stog_types.cmx stog_tmap.cmx stog_misc.cmx
 stog_io.cmo: stog_types.cmo stog_tmap.cmi stog_misc.cmi stog_mailparse.cmi \
     stog_find.cmi
 stog_io.cmx: stog_types.cmx stog_tmap.cmx stog_misc.cmx stog_mailparse.cmx \
     stog_find.cmx
+stog_latex.cmo: stog_types.cmo stog_misc.cmi
+stog_latex.cmx: stog_types.cmx stog_misc.cmx
 stog_mailparse.cmo: stog_types.cmo stog_misc.cmi stog_graph.cmi stog_find.cmi \
     stog_date.cmi stog_mailparse.cmi
 stog_mailparse.cmx: stog_types.cmx stog_misc.cmx stog_graph.cmx stog_find.cmx \
@@ -38,15 +36,11 @@ stog_main.cmx: stog_types.cmx stog_misc.cmx stog_io.cmx stog_info.cmx \
     stog_html.cmx
 stog_misc.cmo: stog_misc.cmi
 stog_misc.cmx: stog_misc.cmi
+stog_ocaml.cmo: stog_misc.cmi stog_html.cmo
+stog_ocaml.cmx: stog_misc.cmx stog_html.cmx
 stog_tmap.cmo: stog_tmap.cmi
 stog_tmap.cmx: stog_tmap.cmi
-stog_tmpl.cmo: stog_types.cmo stog_misc.cmi stog_coms.cmo
-stog_tmpl.cmx: stog_types.cmx stog_misc.cmx stog_coms.cmx
 stog_types.cmo: stog_tmap.cmi stog_misc.cmi stog_graph.cmi stog_date.cmi
 stog_types.cmx: stog_tmap.cmx stog_misc.cmx stog_graph.cmx stog_date.cmx
-stog_xtmpl.cmo: stog_misc.cmi
-stog_xtmpl.cmx: stog_misc.cmx
-t.cmo:
-t.cmx:
-test_xtmpl.cmo: stog_xtmpl.cmo
-test_xtmpl.cmx: stog_xtmpl.cmx
+test_xtmpl.cmo:
+test_xtmpl.cmx:

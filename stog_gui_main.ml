@@ -121,7 +121,7 @@ class main_window stogs =
       with
         None -> ()
       | Some title ->
-          let title = Stog_misc.strip_string (Stog_gui_misc.of_utf8 title) in
+          let title = Stog_misc.strip_string title in
           let stog = stog_box#stog in
           let human_id = Stog_types.make_human_id stog title in
           let art = Stog_types.dummy_article () in
@@ -163,7 +163,7 @@ class main_window stogs =
     initializer
       let f_append st_box =
         let label = GMisc.label
-          ~text: (Stog_gui_misc.to_utf8 st_box#stog.stog_title)
+          ~text: st_box#stog.stog_title
           ()
         in
         ignore(notebook#append_page ~tab_label: label#coerce st_box#box)
