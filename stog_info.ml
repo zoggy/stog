@@ -190,7 +190,7 @@ let color_of_text s =
    (if bb then 20 + !b mod 180 else 0))
 ;;
 
-let dot_of_graph stog =
+let dot_of_graph f_href stog =
   let g =
     Stog_types.Graph.fold_succ
     stog.stog_graph
@@ -223,9 +223,10 @@ let dot_of_graph stog =
           let (r,g,b) = color_of_text w in
           Printf.sprintf "#%02x%02x%02x" r g b
     in
+    let href = f_href art in
     (Printf.sprintf "id%d" (Stog_tmap.int id),
      art.art_title,
-     ["shape", "rect"; "color", col; "fontcolor", col])
+     ["shape", "rect"; "color", col; "fontcolor", col; "href", href])
   in
   Stog_types.Graph.dot_of_graph ~f_edge ~f_node g
 ;;

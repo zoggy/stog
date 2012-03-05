@@ -291,27 +291,36 @@ let fun_blog_url stog _env _ _ = [ Xtmpl.D stog.stog_base_url ];;
 let fun_graph =
   let generated = ref false in
   fun outdir ?from stog _env _ _ ->
-    let name = "site-graph.png" in
-    let src = link_to ?from name in
-    let small_src = link_to ?from ("small-"^name) in
+    let png_name = "site-graph.png" in
+    let svg_file = (Filename.chop_extension png_name) ^ ".svg" in
+    let src = link_to ?from svg_file in
+    let small_src = link_to ?from ("small-"^png_name) in
     begin
       match !generated with
         true -> ()
       | false ->
           generated := true;
+          let f_href art =
+            let link = link_to ~from: `Index art.Stog_types.art_human_id in
+            Printf.sprintf "%s/%s" stog.stog_base_url link
+          in
+          let dot_code = Stog_info.dot_of_graph f_href stog in
+
           let tmp = Filename.temp_file "stog" "dot" in
-          Stog_misc.file_of_string ~file: tmp
-          (Stog_info.dot_of_graph stog);
+          Stog_misc.file_of_string ~file: tmp dot_code;
+
           let com = Printf.sprintf "dot -Gcharset=utf-8 -Tpng -o %s %s"
-            (Filename.quote (Filename.concat outdir src))
+            (Filename.quote (Filename.concat outdir png_name))
             (Filename.quote tmp)
           in
+          let svg_code = Stog_misc.dot_to_svg dot_code in
+          Stog_misc.file_of_string ~file: (Filename.concat outdir svg_file) svg_code;
           match Sys.command com with
             0 ->
               begin
                 (try Sys.remove tmp with _ -> ());
                 let com = Printf.sprintf "convert -scale 120x120 %s %s"
-                  (Filename.quote (Filename.concat outdir src))
+                  (Filename.quote (Filename.concat outdir png_name))
                   (Filename.quote (Filename.concat outdir small_src))
                 in
                 match Sys.command com with

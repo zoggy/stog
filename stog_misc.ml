@@ -188,3 +188,19 @@ let list_concat ?sep l =
       iter [] l
 ;;
 
+let dot_to_svg dot =
+  let temp_file = Filename.temp_file "genet" "svg" in
+  let com = Printf.sprintf "echo %s | dot -Tsvg | tail --lines=+7 > %s"
+    (Filename.quote dot) (Filename.quote temp_file)
+  in
+  match Sys.command com with
+    0 ->
+      let svg = string_of_file temp_file in
+      Sys.remove temp_file;
+      svg
+  | n ->
+      let msg = Printf.sprintf "Execution failed (%d): %s" n com in
+      failwith msg
+;;
+
+
