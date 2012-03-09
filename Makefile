@@ -134,6 +134,16 @@ install:
 clean:
 	$(RM) $(MAIN) $(MAIN_BYTE) $(GUI_MAIN) $(GUI_MAIN_BYTE) *.cm* *.o *.a *.x *.annot
 
+# headers :
+###########
+HEADFILES= Makefile *.ml *.mli doc/Makefile
+headers:
+	echo $(HEADFILES)
+	headache -h header -c .headache_config `ls $(HEADFILES)`
+
+noheaders:
+	headache -r -c .headache_config `ls $(HEADFILES)`
+
 #############
 .SUFFIXES: .mli .ml .cmi .cmo .cmx .mll .mly
 
