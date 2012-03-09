@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
   <channel>
-    <title>Stog</title>
-    <link>http://zoggy.github.com/stog/index.html</link>
+    <title>Stog: svg</title>
+    <link>http://zoggy.github.com/stog/kw_svg.html</link>
     <description>Static blog and web site generator</description>
     <managingEditor>zoggy &apos;AT&apos; bat8 &apos;DOT&apos; org</managingEditor>
     <pubDate>09 Mar 2012 08:00:00 +0000</pubDate>

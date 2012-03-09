@@ -1,0 +1,117 @@
+<!DOCTYPE HTML><html>
+<head>
+<title>Stog : LaTeX in stog</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.com/stog/style.css"/>
+
+</head><body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+
+
+  <a class="brand" href="http://zoggy.github.com/stog/index.html">Stog</a>
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.com/stog/index.html">Home</a></li>
+    <li class="&lt;navbar-doc-install/&gt;"><a href="http://zoggy.github.com/stog/doc-install.html">Installation</a></li>
+    <li class="&lt;navbar-doc-user/&gt;"><a href="http://zoggy.github.com/stog/doc-user.html">User documentation</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.com/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+  </div>
+
+</div>
+</div>
+
+<div id="header">
+
+<nav class="navbar"><div class="navleft"/><div class="navright"/></nav>
+</div>
+<aside><aside>
+<div class="sidebar">
+<div id="archives">Archives: <ul><li>2012<ul><li><a href="../2012_03.html">mars</a>(1)</li></ul></li></ul></div>
+</div>
+</aside>
+</aside>
+<div itemscope="" itemtype="http://schema.org/BlogPosting" id="article">
+<div class="date">vendredi 9 mars 2012</div>
+<h1 itemprop="name">LaTeX in stog</h1>
+<link itemprop="url" href="http://zoggy.github.com/stog/latex-in-stog"/>
+<div itemprop="articleBody" id="article-body">
+<p>
+Stog handles <span class="icode"><span class="hl kwa">&lt;latex&gt;</span> ... <span class="hl kwa">&lt;/latex&gt;</span>
+</span>.
+</p>
+
+<p>
+Just put some LaTeX code inside and Stog will
+compile it to a SVG file, to show the result in your page.
+</p>
+<p>The big advantage is that you can zoom in or out and the result
+will scale accordingly.
+</p>
+<p>How does this work ? The LaTeX code is compiled
+with <span class="icode">latex -interaction=batchmode</span> to get a <span class="icode">.dvi</span> file.
+This file is sent to <span class="ext-a"><a href="http://dvisvgm.sourceforge.net/"><span class="icode">dvisvgm</span></a></span>
+to generate a SVG file.
+</p>
+<p>
+Example:
+<pre class="code-xml"><span class="hl kwa">&lt;latex&gt;</span>$a x^<span class="hl num">2</span> + <span class="hl esc">\f</span>rac{<span class="hl num">3</span>}{<span class="hl num">2</span>} x - <span class="hl num">1</span> = \pi$<span class="hl kwa">&lt;/latex&gt;</span>
+</pre>
+will display this: <img class="latex" src="http://zoggy.github.com/stog/_latex1.svg" alt="$a x^2 + \frac{3}{2} x - 1 = \pi$" title="$a x^2 + \frac{3}{2} x - 1 = \pi$"/>
+</p>
+<p>
+Another example:
+</p>
+<p>
+<img class="latex" src="http://zoggy.github.com/stog/_latex2.svg" alt="\centerline{\begin{tikzpicture}[scale=1.8] \draw (0,0) -- (0,4) ; \draw [&amp;gt;=stealth,-&amp;gt;] (0,0) -- (0,1) ; \draw (0,0) -- (3,0) ; \draw [dotted, very thin, gray] (0,0) grid (3,4); \draw (3,0) node[right]{$X_n$} ; \draw (0,4) node[left]{$M_n$} ; \draw (1,0) node[below]{0}; \draw (2,0) node[below]{1};\draw (1, 1) node {$\bullet$}; \draw [&amp;gt;=stealth, -&amp;gt;] (1, 1) -- (1, 2) node[midway,above,sloped]{$q_{0}(0)$}; \draw (1, 2) node {$\bullet$}; \draw [&amp;gt;=stealth, -&amp;gt;] (1, 2) -- (2, 1) node[midway,below,sloped]{$q_{00}(1)$}; \draw (2, 1) node {$\bullet$}; \draw [&amp;gt;=stealth, -&amp;gt;] (2, 1) -- (2, 2) node[midway,below,sloped]{$q_{100}(1)$}; \draw (2, 2) node {$\bullet$}; \draw [&amp;gt;=stealth, -&amp;gt;] (2, 2) -- (2, 3) node[midway,below,sloped]{$q_{1100}(1)$}; \draw (2, 3) node {$\bullet$}; \draw [draw=red, fill=red, -&amp;gt;, double,thick] (2, 3) -- (1, 1) node[midway,above,sloped]{{\color{red}$q_{11100}(0)$}}; \draw [draw=red, fill=red, -&amp;gt;, double,thick] (2, 3) -- (2, 4) node[midway,above,sloped]{{\color{red}$q_{11100}(1)$}}; \draw (2, 3) node {{\color{red}$\bullet$}}; \end{tikzpicture}} \centerline{...100111}" title="\centerline{\begin{tikzpicture}[scale=1.8] \draw (0,0) -- (0,4) ; \draw [&amp;gt;=stealth,-&amp;gt;] (0,0) -- (0,1) ; \draw (0,0) -- (3,0) ; \draw [dotted, very thin, gray] (0,0) grid (3,4); \draw (3,0) node[right]{$X_n$} ; \draw (0,4) node[left]{$M_n$} ; \draw (1,0) node[below]{0}; \draw (2,0) node[below]{1};\draw (1, 1) node {$\bullet$}; \draw [&amp;gt;=stealth, -&amp;gt;] (1, 1) -- (1, 2) node[midway,above,sloped]{$q_{0}(0)$}; \draw (1, 2) node {$\bullet$}; \draw [&amp;gt;=stealth, -&amp;gt;] (1, 2) -- (2, 1) node[midway,below,sloped]{$q_{00}(1)$}; \draw (2, 1) node {$\bullet$}; \draw [&amp;gt;=stealth, -&amp;gt;] (2, 1) -- (2, 2) node[midway,below,sloped]{$q_{100}(1)$}; \draw (2, 2) node {$\bullet$}; \draw [&amp;gt;=stealth, -&amp;gt;] (2, 2) -- (2, 3) node[midway,below,sloped]{$q_{1100}(1)$}; \draw (2, 3) node {$\bullet$}; \draw [draw=red, fill=red, -&amp;gt;, double,thick] (2, 3) -- (1, 1) node[midway,above,sloped]{{\color{red}$q_{11100}(0)$}}; \draw [draw=red, fill=red, -&amp;gt;, double,thick] (2, 3) -- (2, 4) node[midway,above,sloped]{{\color{red}$q_{11100}(1)$}}; \draw (2, 3) node {{\color{red}$\bullet$}}; \end{tikzpicture}} \centerline{...100111}"/>
+</p>
+<p>The code:
+<pre class="code-xml"><span class="hl kwa">&lt;latex</span> <span class="hl kwb">packages</span>=<span class="hl str">&quot;{tikz}&quot;</span> <span class="hl kwa">&gt;</span>&lt;![CDATA[
+\centerline{<span class="hl esc">\b</span>egin{tikzpicture}[scale=<span class="hl num">1.8</span>]
+\draw (<span class="hl num">0</span>,<span class="hl num">0</span>) -- (<span class="hl num">0</span>,<span class="hl num">4</span>) ;
+\draw [<span class="hl kwa">&gt;</span>=stealth,-<span class="hl kwa">&gt;</span>] (<span class="hl num">0</span>,<span class="hl num">0</span>) -- (<span class="hl num">0</span>,<span class="hl num">1</span>) ;
+\draw (<span class="hl num">0</span>,<span class="hl num">0</span>) -- (<span class="hl num">3</span>,<span class="hl num">0</span>) ;
+\draw [dotted, very thin, gray] (<span class="hl num">0</span>,<span class="hl num">0</span>) grid (<span class="hl num">3</span>,<span class="hl num">4</span>);
+\draw (<span class="hl num">3</span>,<span class="hl num">0</span>) node[right]{$X_n$} ;
+\draw (<span class="hl num">0</span>,<span class="hl num">4</span>) node[left]{$M_n$} ;
+\draw (<span class="hl num">1</span>,<span class="hl num">0</span>) node[below]{<span class="hl num">0</span>};
+\draw (<span class="hl num">2</span>,<span class="hl num">0</span>) node[below]{<span class="hl num">1</span>};\draw (<span class="hl num">1</span>, <span class="hl num">1</span>) node {$<span class="hl esc">\b</span>ullet$};
+\draw [<span class="hl kwa">&gt;</span>=stealth, -<span class="hl kwa">&gt;</span>] (<span class="hl num">1</span>, <span class="hl num">1</span>) -- (<span class="hl num">1</span>, <span class="hl num">2</span>) node[midway,above,sloped]{$q_{<span class="hl num">0</span>}(<span class="hl num">0</span>)$};
+\draw (<span class="hl num">1</span>, <span class="hl num">2</span>) node {$<span class="hl esc">\b</span>ullet$};
+\draw [<span class="hl kwa">&gt;</span>=stealth, -<span class="hl kwa">&gt;</span>] (<span class="hl num">1</span>, <span class="hl num">2</span>) -- (<span class="hl num">2</span>, <span class="hl num">1</span>) node[midway,below,sloped]{$q_{<span class="hl num">00</span>}(<span class="hl num">1</span>)$};
+\draw (<span class="hl num">2</span>, <span class="hl num">1</span>) node {$<span class="hl esc">\b</span>ullet$};
+\draw [<span class="hl kwa">&gt;</span>=stealth, -<span class="hl kwa">&gt;</span>] (<span class="hl num">2</span>, <span class="hl num">1</span>) -- (<span class="hl num">2</span>, <span class="hl num">2</span>) node[midway,below,sloped]{$q_{<span class="hl num">100</span>}(<span class="hl num">1</span>)$};
+\draw (<span class="hl num">2</span>, <span class="hl num">2</span>) node {$<span class="hl esc">\b</span>ullet$};
+\draw [<span class="hl kwa">&gt;</span>=stealth, -<span class="hl kwa">&gt;</span>] (<span class="hl num">2</span>, <span class="hl num">2</span>) -- (<span class="hl num">2</span>, <span class="hl num">3</span>) node[midway,below,sloped]{$q_{<span class="hl num">1100</span>}(<span class="hl num">1</span>)$};
+\draw (<span class="hl num">2</span>, <span class="hl num">3</span>) node {$<span class="hl esc">\b</span>ullet$};
+\draw [draw=red, fill=red, -<span class="hl kwa">&gt;</span>, double,thick] (<span class="hl num">2</span>, <span class="hl num">3</span>) -- (<span class="hl num">1</span>, <span class="hl num">1</span>) node[midway,above,sloped]{{\color{red}$q_{<span class="hl num">11100</span>}(<span class="hl num">0</span>)$}};
+\draw [draw=red, fill=red, -<span class="hl kwa">&gt;</span>, double,thick] (<span class="hl num">2</span>, <span class="hl num">3</span>) -- (<span class="hl num">2</span>, <span class="hl num">4</span>) node[midway,above,sloped]{{\color{red}$q_{<span class="hl num">11100</span>}(<span class="hl num">1</span>)$}};
+\draw (<span class="hl num">2</span>, <span class="hl num">3</span>) node {{\color{red}$<span class="hl esc">\b</span>ullet$}};
+\end{tikzpicture}}
+\centerline{..<span class="hl num">.100111</span>}]]<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;/latex&gt;</span>
+</pre>
+</p>
+</div>
+<div itemprop="articleSection" class="section">
+Commentaires <div class="root-comment-actions"><a href="mailto:zoggy%20'AT'%20bat8%20'DOT'%20org?subject=LaTeX%20in%20stog%20[09db5eae7221b85d0b9a8492573c34ac]&amp;body=Les%20commentaires%20fonctionnent%20par%20mail%2C%20ce%20qui%20est%20plus%20aisé%20pour%0D%0As'exprimer%2C%20se%20relire%2C%20prendre%20le%20temps.%0D%0A%0D%0AMerci%20de%20laisser%20les%20informations%20entre%20crochets%20dans%20le%20sujet%0D%0Adu%20message.%0D%0A%0D%0ASi%20vous%20ne%20souhaitez%20pas%20que%20votre%20commentaire%20soit%20publié%2C%20merci%0D%0Ade%20me%20l'indiquer%20dans%20votre%20message.%0D%0A%0D%0AVous%20pouvez%20(et%20ce%20serait%20mieux%20de)%20supprimer%20ce%20texte%20explicatif%0D%0Adans%20votre%20message."><img src="../comment.png" alt="Post a comment" title="Post a comment"/></a></div>
+</div>
+<div class="comments">
+
+</div>
+<div class="bloc_keywords">
+Thèmes: <div class="keywords"><a href="../topic_stog.html"><span itemprop="keywords">stog</span>
+</a></div>
+</div>
+<div class="bloc_keywords">
+Mots-clés: <div class="keywords"><a href="../kw_latex.html"><span itemprop="keywords">latex</span></a>, <a href="../kw_svg.html"><span itemprop="keywords">svg</span></a></div>
+</div>
+</div>
+
+</div>
+<footer id="bottombar">
+</footer>
+</body>
+</html>

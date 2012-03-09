@@ -1158,7 +1158,7 @@ table .span12 {
 }
 .sidebox {
   padding: 0 3px 2px;
-  border: 1px solid #000000;
+  border: 1px solid #666666;
   display: block;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1166,7 +1166,7 @@ table .span12 {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background-color: #996dc9;
+  background-color: #f4eff9;
   padding: 0.5em;
   margin-bottom: 1em;
 }
@@ -1392,7 +1392,7 @@ div.keywords {
 }
 div#archives {
   padding: 0 3px 2px;
-  border: 1px solid #000000;
+  border: 1px solid #666666;
   display: block;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1400,13 +1400,13 @@ div#archives {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background-color: #996dc9;
+  background-color: #f4eff9;
   padding: 0.5em;
   margin-bottom: 1em;
 }
 div#graph {
   padding: 0 3px 2px;
-  border: 1px solid #000000;
+  border: 1px solid #666666;
   display: block;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1414,7 +1414,7 @@ div#graph {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background-color: #996dc9;
+  background-color: #f4eff9;
   padding: 0.5em;
   margin-bottom: 1em;
 }
@@ -1510,7 +1510,7 @@ input.search-text {
 }
 div.search {
   padding: 0 3px 2px;
-  border: 1px solid #000000;
+  border: 1px solid #666666;
   display: block;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1518,7 +1518,7 @@ div.search {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background-color: #996dc9;
+  background-color: #f4eff9;
   padding: 0.5em;
   margin-bottom: 1em;
 }
@@ -1697,7 +1697,7 @@ span.icode {
 }
 table.release {
   padding: 0 3px 2px;
-  border: 1px solid #000000;
+  border: 1px solid #666666;
   display: block;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1705,7 +1705,7 @@ table.release {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background-color: #996dc9;
+  background-color: #f4eff9;
   padding: 0.5em;
   margin-bottom: 1em;
 }
