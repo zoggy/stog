@@ -79,11 +79,14 @@ OCAML_INCLUDES= \
 OCAMLTOP_CMXFILES=$(OCAMLTOP_CMOFILES:.cmo=.cmx)
 
 all: opt byte
+gui: guiopt guibyte
 ocaml: stog_ocaml.cma
 ocamlopt: stog_ocaml.cmxs
 
-opt: $(LIB) $(MAIN) $(GUI_MAIN)
-byte: $(LIB_BYTE) $(MAIN_BYTE) $(GUI_MAIN_BYTE)
+opt: $(LIB) $(MAIN)
+guiopt: $(GUI_MAIN)
+byte: $(LIB_BYTE) $(MAIN_BYTE)
+guibyte: $(GUI_MAIN_BYTE)
 
 $(MAIN): $(LIB) stog_main.cmx
 	$(OCAMLOPT) -verbose -linkall -o $@ $(COMPFLAGS) $(SYSLIBS) \
@@ -115,10 +118,10 @@ stog_ocaml.cmo: stog_ocaml.ml
 
 doc:
 	rm -fr doc-output
-	(cd doc && ../$(MAIN_BYTE) -d ../doc-output .)
+	(cd doc && $(MAKE) test)
 
 webdoc:
-	(cd doc && ../$(MAIN_BYTE) -d ../../stog-pages .)
+	(cd doc && $(MAKE) $(DEST_DIR) `pwd`/../stog-pages .)
 
 ##########
 install:
@@ -129,7 +132,7 @@ install:
 
 #####
 clean:
-	$(RM) $(MAIN) $(MAIN_BYTE) *.cm* *.o *.a *.x *.annot
+	$(RM) $(MAIN) $(MAIN_BYTE) $(GUI_MAIN) $(GUI_MAIN_BYTE) *.cm* *.o *.a *.x *.annot
 
 #############
 .SUFFIXES: .mli .ml .cmi .cmo .cmx .mll .mly

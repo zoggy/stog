@@ -94,7 +94,11 @@ let fun_include tmpl_dir _env args subs =
         else
           file
       in
-      let xml = [Xtmpl.xml_of_string (Stog_misc.string_of_file file)] in
+      let xml =
+        match Xtmpl.get_arg args "raw" with
+        | Some "true" -> [Xtmpl.D (Stog_misc.string_of_file file)]
+        | _ -> [Xtmpl.xml_of_string (Stog_misc.string_of_file file)]
+      in
       let args =
         ("include-contents", String.concat "" (List.map Xtmpl.string_of_xml subs)) ::
         args
@@ -346,6 +350,10 @@ let fun_if env args subs =
     s = v
   in
   let cond = List.for_all pred args in
+  let subs = List.filter
+    (function Xtmpl.D _ -> false | _ -> true)
+    subs
+  in
   match cond, subs with
   | true, [] -> failwith "<if>: missing children"
   | true, h :: _
@@ -460,7 +468,7 @@ let fun_prepare_toc env args subs =
       begin
         match Xtmpl.get_arg atts "name", Xtmpl.get_arg atts "title" with
           None, _ | _, None ->
-            prerr_endline "no name nor title";
+            (*prerr_endline "no name nor title";*)
             acc
         | Some name, Some title ->
             if d > depth
@@ -833,7 +841,7 @@ let generate_blogpage stog env contents =
   Xtmpl.apply env (Stog_misc.string_of_file tmpl)
 ;;
 
-let generate_article outdir stog art_id article =
+let generate_article outdir stog env art_id article =
   let html_file = Filename.concat outdir
     (link_to_article stog ~from: `Index article)
   in
@@ -926,7 +934,7 @@ let article_list outdir ?rss ?set stog env args _ =
       ) :: xml
 ;;
 
-let generate_by_word_indexes outdir stog tmpl map f_html_file =
+let generate_by_word_indexes outdir stog env tmpl map f_html_file =
   let f word set =
     let base_html_file = f_html_file word in
     let html_file = Filename.concat outdir base_html_file in
@@ -935,7 +943,7 @@ let generate_by_word_indexes outdir stog tmpl map f_html_file =
     generate_rss_feed_file stog ~title: word base_html_file
     (List.map (Stog_types.article stog) (Stog_types.Art_set.elements set))
     rss_file;
-    let env = Xtmpl.env_of_list
+    let env = Xtmpl.env_of_list ~env
       ([
          "site-title", (fun _ _ _ -> [Xtmpl.D stog.stog_title]) ;
          "site-description", (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_desc]) ;
@@ -950,23 +958,23 @@ let generate_by_word_indexes outdir stog tmpl map f_html_file =
   Stog_types.Str_map.iter f map
 ;;
 
-let generate_topic_indexes outdir stog =
-  generate_by_word_indexes outdir stog
+let generate_topic_indexes outdir stog env =
+  generate_by_word_indexes outdir stog env
   "by_topic.tmpl" stog.stog_arts_by_topic
   (topic_index_file stog)
 ;;
 
-let generate_keyword_indexes outdir stog =
-  generate_by_word_indexes outdir stog
+let generate_keyword_indexes outdir stog env =
+  generate_by_word_indexes outdir stog env
   "by_kw.tmpl" stog.stog_arts_by_kw
   (keyword_index_file stog)
 ;;
 
-let generate_archive_index outdir stog =
+let generate_archive_index outdir stog env =
   let f_month year month set =
     let tmpl = "archive_month.tmpl" in
     let html_file = Filename.concat outdir (month_index_file stog ~year ~month) in
-    let env = Xtmpl.env_of_list
+    let env = Xtmpl.env_of_list ~env
       ([
          "site-title", (fun _ _ _ -> [Xtmpl.D stog.stog_title]) ;
          "site-description", (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_desc]) ;
@@ -984,7 +992,7 @@ let generate_archive_index outdir stog =
   Stog_types.Int_map.iter f_year stog.stog_archives
 ;;
 
-let generate_index_file outdir stog =
+let generate_index_file outdir stog env =
   let basefile = html_file stog "index" in
   let html_file = Filename.concat outdir basefile in
   let tmpl = Filename.concat stog.stog_tmpl_dir "index.tmpl" in
@@ -992,7 +1000,7 @@ let generate_index_file outdir stog =
   let rss_file = Filename.concat outdir rss_basefile in
   generate_rss_feed_file stog basefile
     (List.map snd (Stog_types.article_list stog)) rss_file;
-  let env = Xtmpl.env_of_list
+  let env = Xtmpl.env_of_list ~env
     ([
        "site-title", (fun _ _ _ -> [Xtmpl.D stog.stog_title]) ;
        "site-body", (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_body]);
@@ -1005,7 +1013,7 @@ let generate_index_file outdir stog =
   Xtmpl.apply_to_file ~head: "<!DOCTYPE HTML>" env tmpl html_file
 ;;
 
-let generate_index outdir stog =
+let generate_index outdir stog env =
   Stog_misc.mkdir outdir;
   copy_file ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.less") outdir;
   copy_file ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.js") outdir;
@@ -1013,10 +1021,10 @@ let generate_index outdir stog =
   copy_file ~ignerr: true ~quote_src: false (Filename.concat stog.stog_tmpl_dir "*.jpg") outdir;
   copy_file ~ignerr: true ~quote_src: false (Filename.concat stog.stog_dir "*.png") outdir;
   copy_file ~ignerr: true ~quote_src: false (Filename.concat stog.stog_dir "*.jpg") outdir;
-  generate_index_file outdir stog;
-  generate_topic_indexes outdir stog;
-  generate_keyword_indexes outdir stog;
-  generate_archive_index outdir stog
+  generate_index_file outdir stog env;
+  generate_topic_indexes outdir stog env;
+  generate_keyword_indexes outdir stog env;
+  generate_archive_index outdir stog env
 ;;
 
 let generate outdir stog =
@@ -1026,9 +1034,13 @@ let generate outdir stog =
     | Some lang -> prerr_endline (Printf.sprintf "Generating pages for language %s" lang);
   end;
   current_stog := Some stog;
-  generate_index outdir stog ;
-  Stog_tmap.iter (generate_article outdir stog)
-  stog.stog_articles
+  let env = List.fold_left
+    (fun env (name, v) -> Xtmpl.env_add name (fun _ _ _ -> [Xtmpl.D v]) env)
+    Xtmpl.env_empty
+    stog.stog_vars
+  in
+  generate_index outdir stog env ;
+  Stog_tmap.iter (generate_article outdir stog env) stog.stog_articles
 ;;
 
   
