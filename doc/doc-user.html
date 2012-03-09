@@ -64,7 +64,7 @@ knowing the title of articles, pages, ...
 </subsection>
 <subsection name="principles:xtmpl" title="Computing page contents">
 <p>
-When it comes to really create the <icode>.html</icode> for each of your
+When it comes to generate the <icode>.html</icode> for each of your
 article or static page, the XML body is interpreted in the following way.
 </p>
 <p>
@@ -103,11 +103,11 @@ Here are some.
 </p>
 <p>A special tag, "env_" can be used to modify the environment
 before analysing children. For example, here we add an association
-between "user" and "zoggy". This will add to the environment
-an association between the key "user" and
-the function returning the singleton list of XML "zoggy", which is user
+between "login" and "zoggy". This will add to the environment
+an association between the key "login" and
+the function returning the one-element list ["zoggy"], which is user
 later in the "login" attribute:
-<hcode lang="xml"><![CDATA[<env_ user="zoggy">...<user login="&lt;user/&gt;">...</user></env_>]]></hcode>
+<hcode lang="xml"><![CDATA[<env_ login="zoggy">...<user login="&lt;login/&gt;">...</user></env_>]]></hcode>
 </p>
 <p>
 Another construction is used to include templates:
@@ -115,7 +115,7 @@ Another construction is used to include templates:
 will search for the file "foo.tmpl" in the template directory. This file must be valid
 XML. To include a "raw" file, you can add the <icode>raw</icode> attribute. This can
 be useful to include code. You can also put additional attributes, which will
-be used as in the <icode>&lt;env_ ...&gt;</icode> to extend the environment used to
+be used as in the <icode>&lt;env_ ...&gt;</icode> node to extend the environment used to
 analyse the included tree.
 </p>
 </section>
@@ -155,7 +155,7 @@ Then you can run <icode>stog</icode> with the <icode>--lang fr</icode>
 to generate the "fr" part of your web site.
 </p>
 <p>
-If your need more languages, just define "languages" in the main file header
+If you need more languages, just define "languages" in the main file header
 this way:
 <hcode>languages: es,de,fr,en</hcode>
 </p>
