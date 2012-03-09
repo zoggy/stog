@@ -131,11 +131,11 @@ Here are some.
 </p>
 <p>A special tag, &quot;env_&quot; can be used to modify the environment
 before analysing children. For example, here we add an association
-between &quot;user&quot; and &quot;zoggy&quot;. This will add to the environment
-an association between the key &quot;user&quot; and
-the function returning the singleton list of XML &quot;zoggy&quot;, which is user
+between &quot;login&quot; and &quot;zoggy&quot;. This will add to the environment
+an association between the key &quot;login&quot; and
+the function returning the one-element list [&quot;zoggy&quot;], which is user
 later in the &quot;login&quot; attribute:
-<pre class="code-xml"><span class="hl kwa">&lt;env_</span> <span class="hl kwb">user</span>=<span class="hl str">&quot;zoggy&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;user</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;&amp;lt;user/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/user&gt;&lt;/env_&gt;</span>
+<pre class="code-xml"><span class="hl kwa">&lt;env_</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;zoggy&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;user</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;&amp;lt;login/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/user&gt;&lt;/env_&gt;</span>
 </pre>
 </p>
 <p>
@@ -145,7 +145,7 @@ Another construction is used to include templates:
 will search for the file &quot;foo.tmpl&quot; in the template directory. This file must be valid
 XML. To include a &quot;raw&quot; file, you can add the <span class="icode">raw</span> attribute. This can
 be useful to include code. You can also put additional attributes, which will
-be used as in the <span class="icode">&lt;env_ ...&gt;</span> to extend the environment used to
+be used as in the <span class="icode">&lt;env_ ...&gt;</span> node to extend the environment used to
 analyse the included tree.
 </p>
 </div>
@@ -187,7 +187,7 @@ Then you can run <span class="icode">stog</span> with the <span class="icode">--
 to generate the &quot;fr&quot; part of your web site.
 </p>
 <p>
-If your need more languages, just define &quot;languages&quot; in the main file header
+If you need more languages, just define &quot;languages&quot; in the main file header
 this way:
 <pre class="code-txt">languages: es,de,fr,en</pre>
 </p>
