@@ -4,6 +4,7 @@ open Stog_types;;
 
 let languages = ["fr" ; "en" ];;
 
+let current_stog = ref None;;
 let plugin_funs = ref [];;
 
 let url_compat s =
@@ -1024,6 +1025,7 @@ let generate outdir stog =
       None -> ()
     | Some lang -> prerr_endline (Printf.sprintf "Generating pages for language %s" lang);
   end;
+  current_stog := Some stog;
   generate_index outdir stog ;
   Stog_tmap.iter (generate_article outdir stog)
   stog.stog_articles
