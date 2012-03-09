@@ -377,7 +377,7 @@ let fun_page_ref hid stog env args subs =
   let page = get_page stog hid in
   let file = page_file stog page in
   let url = Printf.sprintf "%s%s" file anchor in
-  let link = link_to ~from: `Index url in
+  let link = Printf.sprintf "%s/%s" stog.stog_base_url url in
   let text =
     match subs with
       [] -> [ Xtmpl.xml_of_string page.page_title ]
