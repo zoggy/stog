@@ -1,0 +1,67 @@
+<!DOCTYPE html><html>
+<head>
+<title>Stog : Installation</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="style.css"/>
+
+</head><body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+
+
+  <a class="brand" href="http://zoggy.github.com/stog/index.html">Stog</a>
+  <ul class="nav">
+    <li class=""><a href="http://zoggy.github.com/stog/index.html">Home</a></li>
+    <li class="active"><a href="http://zoggy.github.com/stog/doc-install.html">Installation</a></li>
+    <li class="&lt;navbar-doc-user/&gt;"><a href="http://zoggy.github.com/stog/doc-user.html">User documentation</a></li>
+    <li class=""><a href="http://zoggy.github.com/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+  </div>
+
+</div>
+</div>
+
+<div id="header">
+<div class="page-title">Installation</div>
+</div>
+
+
+<ul class="toc"><li class="toc-section"><a href="#deps">Dependencies</a></li><li class="toc-section"><a href="#download">Get the sources</a></li><li class="toc-section"><a href="#compilation">Compilation</a></li></ul>
+<div class="section"><div class="section-title" id="deps">Dependencies</div>
+<p>
+To build Stog, you will need:
+</p>
+<ul>
+<li><span class="ext-a"><a href="http://caml.inria.fr/">OCaml &gt;= 3.12</a></span> installed
+(not tested with prior versions, but it should be ok),</li>
+<li><span class="ext-a"><a href="http://erratique.ch/software/xmlm">Xmlm &gt;= 1.0.2</a></span>
+(not tested with prior versions),</li>
+<li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl</a></span>.</li>
+</ul>
+</div>
+
+<div class="section"><div class="section-title" id="download">Get the sources</div>
+<p>Get the sources from git repository:
+<pre class="code-sh">git clone https<span class="hl opt">://</span>github.com<span class="hl opt">/</span>zoggy<span class="hl opt">/</span>stog.git
+</pre>
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="compilation">Compilation</div>
+<p>
+Just type
+<pre class="code-sh"><span class="hl kwc">make</span> <span class="hl opt">&amp;&amp;</span> <span class="hl kwc">make install</span>
+</pre>
+This will install <span class="icode">stog</span> in the same directory as <span class="icode">ocamlc</span>
+and libraries in <span class="icode">`ocamlc -where`/stog/</span>.
+</p>
+</div>
+
+
+</div>
+<footer id="bottombar">
+</footer>
+</body>
+</html>

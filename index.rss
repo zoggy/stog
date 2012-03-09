@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>Stog</title>
+    <link>http://zoggy.github.com/stog/index.html</link>
+    <description>Static blog and web site generator</description>
+    <managingEditor>zoggy &apos;AT&apos; bat8 &apos;DOT&apos; org</managingEditor>
+    <generator>Stog</generator>
+  </channel>
+</rss>
