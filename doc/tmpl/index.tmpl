@@ -1,21 +1,20 @@
 <html>
 <head><title><site-title/></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet/less" type="text/css" href="style.less"/>
+<link rel="stylesheet" type="text/css" href="style.css"/>
 <rssfeed/>
-<script src="less.js" type="text/javascript">foo</script>
 </head>
 <body>
-<include file="topbar.tmpl"/>
 <div itemscope="" itemtype="http://schema.org/Blog" id="page">
+<include file="menubar.tmpl" navbar-home="active"/>
 <div id="header">
 <div id="site-title">
 <a itemprop="url" href="&lt;site-url/&gt;">
 <span itemprop="name"><site-title/></span></a></div>
-<div itemprop="description" class="site-desc"><site-description/></div>
+<!--<div itemprop="description" class="site-desc"><site-description/></div>-->
 </div>
 <div class="site-body"><site-body/></div>
-</div>
 <footer id="bottombar">
 </footer>
+</div>
 </body>
 </html>

@@ -1,18 +1,15 @@
 <html>
 <head>
 <title><site-title/> : <page-title/></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet/less" type="text/css" href="style.less"></link>
-<script src="less.js" type="text/javascript">foo</script>
+<link rel="stylesheet" type="text/css" href="style.css"></link>
 <rssfeed/>
 </head><body>
-<include file="topbar.tmpl"/>
 <div id="page">
+<include file="menubar.tmpl"/>
 <div id="header">
-<div id="site-title"><a href="&lt;site-url/&gt;/index.html"><site-title/></a></div>
-<div class="site-desc"><site-description/></div>
-</div>
-<aside><env_ archivetree="false" sitegraph="false"><include file="sidebar.tmpl"/></env_></aside>
 <div class="page-title"><page-title/></div>
+</div>
+<!--<aside>><include file="sidebar.tmpl"/></aside>-->
 <contents/>
 </div>
 <footer id="bottombar">

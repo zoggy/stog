@@ -1,0 +1,33 @@
+title:Installation
+<->
+<prepare-toc depth="2">
+<toc></toc>
+<section name="deps" title="Dependencies">
+<p>
+To build Stog, you will need:
+</p>
+<ul>
+<li><ext-a href="http://caml.inria.fr/">OCaml >= 3.12</ext-a> installed
+(not tested with prior versions, but it should be ok),</li>
+<li><ext-a href="http://erratique.ch/software/xmlm">Xmlm >= 1.0.2</ext-a>
+(not tested with prior versions),</li>
+<li><ext-a href="https://github.com/zoggy/xtmpl">Xtmpl</ext-a>.</li>
+</ul>
+</section>
+
+<section name="download" title="Get the sources">
+<p>Get the sources from git repository:
+<command-line>git clone https://github.com/zoggy/stog.git</command-line>
+</p>
+</section>
+
+<section name="compilation" title="Compilation">
+<p>
+Just type
+<command-line>make &amp;&amp; make install</command-line>
+This will install <icode>stog</icode> in the same directory as <icode>ocamlc</icode>
+and libraries in <icode>`ocamlc -where`/stog/</icode>.
+</p>
+</section>
+
+</prepare-toc>
