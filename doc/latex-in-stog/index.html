@@ -1,0 +1,38 @@
+title: LaTeX in stog
+date: 2012/03/09
+topics: stog
+keywords: latex, svg
+published: true
+<->
+<p>
+Stog handles <icode lang="xml"><![CDATA[<latex> ... </latex>]]></icode>.
+</p>
+<sep_/>
+<p>
+Just put some LaTeX code inside and Stog will
+compile it to a SVG file, to show the result in your page.
+</p>
+<p>The big advantage is that you can zoom in or out and the result
+will scale accordingly.
+</p>
+<p>How does this work ? The LaTeX code is compiled
+with <icode>latex -interaction=batchmode</icode> to get a <icode>.dvi</icode> file.
+This file is sent to <ext-a href="http://dvisvgm.sourceforge.net/"><icode>dvisvgm</icode></ext-a>
+to generate a SVG file.
+</p>
+<p>
+Example:
+<hcode lang="xml"><![CDATA[<latex>$a x^2 + \frac{3}{2} x - 1 = \pi$</latex>]]></hcode>
+will display this: <latex>$a x^2 + \frac{3}{2} x - 1 = \pi$</latex>
+</p>
+<p>
+Another example:
+</p>
+<p>
+<include file="../latex-in-stog/example.tex"/>
+</p>
+<p>The code:
+<hcode defer_="1" lang="xml">
+<include file="../latex-in-stog/example.tex" raw="true"/>
+</hcode>
+</p>
