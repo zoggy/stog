@@ -143,14 +143,14 @@ stog_ocaml.cmo: stog_ocaml.ml
 	$(OCAMLC) $(COMPFLAGS) -c $(OCAML_INCLUDES) $<
 
 ##########
-.PHONY: doc
+.PHONY: doc webdoc
 
 doc:
 	rm -fr doc-output
 	(cd doc && $(MAKE) test)
 
 webdoc:
-	(cd doc && $(MAKE) $(DEST_DIR) `pwd`/../stog-pages .)
+	(cd doc && $(MAKE) DEST_DIR=`pwd`/../../stog-pages)
 
 ##########
 install:

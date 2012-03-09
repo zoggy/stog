@@ -34,8 +34,10 @@ BASE_URL_OPTION=
 STOG_OPTIONS=-d $(DEST_DIR) $(BASE_URL_OPTION)
 LESSC=lessc
 
+.PHONY: build site test
+
 build:
-	rm -fr $(DEST_DIR)
+	rm -fr $(DEST_DIR)/*
 	$(MAKE) site
 
 
