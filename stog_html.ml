@@ -549,6 +549,13 @@ let rec fun_page_id hid outdir stog env args subs =
   let page = get_page stog hid in
   let file = Filename.concat outdir (page_file stog page) in
   let xml = Xtmpl.xml_of_string page.page_body in
+  let env = Xtmpl.env_of_list ~env
+    (List.map
+     (fun (key, value) ->
+       (key, fun _ _ _ -> [Xtmpl.xml_of_string value]))
+     page.page_vars
+    )
+  in
   let env = Xtmpl.env_of_list ~env (default_commands ~outdir ~from: `Index stog) in
   let env = env_add_langswitch env stog file in
   let env = List.fold_left
