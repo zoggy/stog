@@ -42,7 +42,7 @@ let first_that_exists =
   iter
 ;;
 
-let re_field = Str.regexp "^\\([^:]+\\):\\([^\n]*\\)";;
+let re_field = Str.regexp "^\\([^=]+\\)=\\([^\n]*\\)";;
 let separator = "<->";;
 let re_separator = Str.regexp_string separator;;
 
@@ -74,11 +74,11 @@ let read_article_header art header =
       let field = Stog_misc.strip_string field in
       let value = Stog_misc.strip_string value in
       match String.lowercase field with
-        "date" -> { art with art_date = date_of_string value }
-      | "title" -> { art with art_title = value }
-      | "topics" -> { art with art_topics = topics_of_string value }
-      | "keywords" -> { art with art_keywords = keywords_of_string value }
-      | "published" -> { art with art_published = bool_of_string value }
+        s when s = Stog_cst.article_date -> { art with art_date = date_of_string value }
+      | s when s = Stog_cst.article_title -> { art with art_title = value }
+      | s when s = Stog_cst.topics -> { art with art_topics = topics_of_string value }
+      | s when s = Stog_cst.keywords -> { art with art_keywords = keywords_of_string value }
+      | s when s = Stog_cst.article_published -> { art with art_published = bool_of_string value }
       | other -> { art with art_vars = (other, value) :: art.art_vars }
     with
       Not_found ->
@@ -183,12 +183,12 @@ let read_stog_header stog header =
       let field = Stog_misc.strip_string field in
       let value = Stog_misc.strip_string value in
       match String.lowercase field with
-      | "title" -> { stog with stog_title = value }
-      | "description" -> { stog with stog_desc = value }
-      | "email" -> { stog with stog_email = value }
-      | "url" -> { stog with stog_base_url = value }
-      | "rss-length" -> { stog with stog_rss_length = int_of_string value }
-      | _ -> stog
+      | s when s = Stog_cst.site_title -> { stog with stog_title = value }
+      | s when s = Stog_cst.site_desc -> { stog with stog_desc = value }
+      | s when s = Stog_cst.site_email -> { stog with stog_email = value }
+      | s when s = Stog_cst.site_url -> { stog with stog_base_url = value }
+      | s when s = Stog_cst.rss_length -> { stog with stog_rss_length = int_of_string value }
+      | field -> { stog with stog_vars = (field, value) :: stog.stog_vars }
     with
       Not_found ->
         prerr_endline
@@ -213,7 +213,7 @@ let read_page_header page header =
       let field = Stog_misc.strip_string field in
       let value = Stog_misc.strip_string value in
       match String.lowercase field with
-      | "title" -> { page with page_title = value }
+      | s when s = Stog_cst.page_title -> { page with page_title = value }
       | field -> { page with page_vars = (field, value) :: page.page_vars }
     with
       Not_found ->

@@ -561,7 +561,7 @@ let rec fun_page_id hid outdir stog env args subs =
   let env = List.fold_left
     (fun env (s,v) -> Xtmpl.env_add_att s v env)
     env
-    (("page-title", page.page_title) :: args)
+    ((Stog_cst.page_title, page.page_title) :: args)
   in
   let s = generate_page stog env [xml] in
   Xtmpl.apply_string_to_file ~head: "<!DOCTYPE html>" env s file;
@@ -591,10 +591,10 @@ and default_commands ?outdir ?from ?rss stog =
       "section", fun_section ;
       "subsection", fun_subsection ;
       "rssfeed", (match rss with None -> fun _env _ _ -> [] | Some file -> fun_rss_feed file);
-      "site-url", fun_blog_url stog ;
+      Stog_cst.site_url, fun_blog_url stog ;
       "search-form", fun_search_form stog ;
-      "site-title", (fun _ _ _ -> [ Xtmpl.D stog.stog_title ]) ;
-      "site-description", (fun _ _ _ -> [ Xtmpl.xml_of_string stog.stog_desc ]) ;
+      Stog_cst.site_title, (fun _ _ _ -> [ Xtmpl.D stog.stog_title ]) ;
+      Stog_cst.site_desc, (fun _ _ _ -> [ Xtmpl.xml_of_string stog.stog_desc ]) ;
       "two-columns", fun_twocolumns ;
       "ext-a", fun_exta ;
       "prepare-toc", fun_prepare_toc ;
@@ -908,16 +908,14 @@ let generate_article outdir stog env art_id article =
   in
   let env = Xtmpl.env_of_list
     ([
-     "page-title", (fun _ _ _ -> [Xtmpl.D article.art_title]) ;
-     "article-title", (fun _ _ _ -> [ Xtmpl.D article.art_title ]) ;
+     Stog_cst.article_title, (fun _ _ _ -> [ Xtmpl.D article.art_title ]) ;
      "article-url", (fun _ _ _ -> [ Xtmpl.D url ]) ;
-
      "article-body", (fun _ _ _ -> [ xml_of_article_body article.art_body ]);
-     "article-date", (fun _ _ _ -> [ Xtmpl.D (Stog_types.string_of_date article.art_date) ]) ;
+     Stog_cst.article_date, (fun _ _ _ -> [ Xtmpl.D (Stog_types.string_of_date article.art_date) ]) ;
      "next", (next Stog_info.succ_by_date) ;
      "previous", (next Stog_info.pred_by_date) ;
-     "article-keywords", html_of_keywords stog article ;
-     "article-topics", html_of_topics stog article ;
+     "keywords", html_of_keywords stog article ;
+     "topics", html_of_topics stog article ;
      "comment-actions", (fun _ _ _ -> comment_actions);
      "comments", html_of_comments outdir stog article ;
      "navbar", fun _ _ _ -> [Xtmpl.D "true"] ;
@@ -981,10 +979,10 @@ let generate_by_word_indexes outdir stog env tmpl map f_html_file =
     rss_file;
     let env = Xtmpl.env_of_list ~env
       ([
-         "site-title", (fun _ _ _ -> [Xtmpl.D stog.stog_title]) ;
-         "site-description", (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_desc]) ;
+         Stog_cst.site_title, (fun _ _ _ -> [Xtmpl.D stog.stog_title]) ;
+         Stog_cst.site_desc, (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_desc]) ;
          "articles", (article_list outdir ~set ~rss: rss_basefile stog);
-         "page-title", (fun _ _ _ -> [Xtmpl.D word]) ;
+         Stog_cst.page_title, (fun _ _ _ -> [Xtmpl.D word]) ;
        ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
     in
     let env = env_add_langswitch env stog html_file in
@@ -1012,10 +1010,10 @@ let generate_archive_index outdir stog env =
     let html_file = Filename.concat outdir (month_index_file stog ~year ~month) in
     let env = Xtmpl.env_of_list ~env
       ([
-         "site-title", (fun _ _ _ -> [Xtmpl.D stog.stog_title]) ;
-         "site-description", (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_desc]) ;
+         Stog_cst.site_title, (fun _ _ _ -> [Xtmpl.D stog.stog_title]) ;
+         Stog_cst.site_desc, (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_desc]) ;
          "articles", (article_list outdir ~set stog);
-         "page-title", (fun _ _ _ -> [Xtmpl.D (Printf.sprintf "%s %d" months.(month-1) year)]) ;
+         Stog_cst.page_title, (fun _ _ _ -> [Xtmpl.D (Printf.sprintf "%s %d" months.(month-1) year)]) ;
        ] @ (default_commands ~outdir ~from:`Index stog))
     in
     let env = env_add_langswitch env stog html_file in
@@ -1038,10 +1036,10 @@ let generate_index_file outdir stog env =
     (List.map snd (Stog_types.article_list stog)) rss_file;
   let env = Xtmpl.env_of_list ~env
     ([
-       "site-title", (fun _ _ _ -> [Xtmpl.D stog.stog_title]) ;
+       Stog_cst.site_title, (fun _ _ _ -> [Xtmpl.D stog.stog_title]) ;
        "site-body", (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_body]);
-       "site-description", (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_desc]) ;
-       "site-url", (fun _ _ _ -> [Xtmpl.D stog.stog_base_url]) ;
+       Stog_cst.site_desc, (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_desc]) ;
+       Stog_cst.site_url, (fun _ _ _ -> [Xtmpl.D stog.stog_base_url]) ;
        "articles", (article_list outdir ~rss: rss_basefile stog);
      ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
   in

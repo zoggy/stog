@@ -23,3 +23,11 @@ OK- footer
 OK- aside
 - figure
 - figcaption
+
+
+do not use index.tmpl any more, bu rather page.tmpl like any other page
+headers: use page-title, site-url, etc. instead of actual names, so that
+we use the name which will be ine the environment
+
+doc: make a separate page for pre-defined functions
+doc: explain subsitution will formulas
