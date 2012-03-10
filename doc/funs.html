@@ -4,7 +4,7 @@ page-title=Predefined functions
 The following functions are pre-defined and can be used in your pages,
 articles and templates:
 </p>
-<prepare-toc depth="1">
+<prepare-toc depth="2">
 <toc/>
 
 <p>For most of the functions, you should look at the generated XML to modify
@@ -12,11 +12,13 @@ your CSS stylesheet according to the classes used. You can start from
 the <icode>.less</icode> files in the <icode>doc</icode> directory
 of the stog sources.
 </p>
-<section name="archive-tree" title="archive-tree">
-<icode lang="xml">&lt;archive-tree/&gt;</icode> inserts the articles archive tree.
-</section>
 
-<section name="article" title="article">
+<section name="common" title="Common functions">
+<subsection name="archive-tree" title="archive-tree">
+<icode lang="xml">&lt;archive-tree/&gt;</icode> inserts the articles archive tree.
+</subsection>
+
+<subsection name="article" title="article">
 <include file="syntax.tmpl"><![CDATA[<article href="...">text</article>]]></include>
 <p>
 This will return a link to the article specified by its id. The id of an article
@@ -26,22 +28,29 @@ article will raise an error.
 <p>
 If no text is given for the link, the title of the article will be used instead.
 </p>
-</section>
+</subsection>
 
-<section name="comand-line" title="command-line">
+<subsection name="articles" title="articles">
+<icode lang="xml">&lt;articles max="..."/&gt;</icode> inserts the list of
+published articles.
+The optional <icode>max="n"</icode> attribute can be used to list only
+the <icode>n</icode> last articles.
+</subsection>
+
+<subsection name="comand-line" title="command-line">
 <icode lang="xml">&lt;command-line&gt;</icode> works like
 <a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a>
 with the <icode>lang</icode>
 attribute already set to "sh".
-</section>
+</subsection>
 
-<section name="ext-a" title="ext-a">
+<subsection name="ext-a" title="ext-a">
 <icode lang="xml">&lt;ext-a attributes&gt;...&lt;/ext-a&gt;</icode> is reduced
 to <icode lang="xml">&lt;span class="ext-a"&gt;&lt;a attributes&gt;...&lt;/&gt;&lt;/ext-a&gt;</icode>.
 This can be used to add specific style link to external sites.
-</section>
+</subsection>
 
-<section name="hcode" title="hcode">
+<subsection name="hcode" title="hcode">
 <include file="syntax.tmpl"><![CDATA[<hcode lang="...">your code</hcode>]]></include>
 <p>
 This function inserts the given pre-formatted code. It uses the
@@ -49,15 +58,15 @@ This function inserts the given pre-formatted code. It uses the
 tool to add syntax highlighting. For example, the code examples of this page are
 inserted using <hcode lang="xml"><![CDATA[<hcode lang="xml">...</hcode>]]></hcode>
 </p>
-</section>
+</subsection>
 
-<section name="icode" title="icode">
+<subsection name="icode" title="icode">
 <icode lang="xml">&lt;icode&gt;</icode> works like
 <a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a> but is used to
 generate inline highlighted code instead of using a box.
-</section>
+</subsection>
 
-<section name="if" title="if">
+<subsection name="if" title="if">
 <include file="syntax.tmpl"><![CDATA[
 <if attr1="value1" attr2="value2" ...>
 <XML tree used when all conditions are verified>
@@ -82,9 +91,9 @@ a block or not:
 <div>The list is not empty, let's print it:<ul><list/></ul></div>
 </if>]]></hcode>
 </p>
-</section>
+</subsection>
 
-<section name="include" title="include">
+<subsection name="include" title="include">
 <include file="syntax.tmpl"><![CDATA[<include file="template">...</include>]]></include>
 <p>
 This function will load the file <icode>template</icode> from the template directory
@@ -108,9 +117,9 @@ The following code
 will be reduced to
 <hcode lang="xml"><![CDATA[<p> key=bar value=the value of bar </p>]]></hcode>
 </p>
-</section>
+</subsection>
 
-<section name="image" title="image">
+<subsection name="image" title="image">
 <include file="syntax.tmpl"><![CDATA[<image float="[left|right]" src="..." ...>legend</image>]]></include>
 <p>
 This generates an image using an <icode>&lt;img .../&gt;</icode> node. The legend is optional.
@@ -122,44 +131,72 @@ so you can set the style of the image to be left or right floating.
 <p>
 Additional attributes are passed to the generated <icode>img</icode> node.
 </p>
-</section>
+</subsection>
 
-<section name="ocaml" title="ocaml">
+<subsection name="ocaml" title="ocaml">
 <icode lang="xml">&lt;ocaml&gt;</icode> works like
 <a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a>
 with the <icode>lang</icode>
 attribute already set to "ocaml".
-</section>
+</subsection>
 
-<section name="rssfeedx" title="rssfeed">
+<subsection name="rssfeedx" title="rssfeed">
 <icode lang="xml">&lt;rssfeed/&gt;</icode> is available in pages an RSS feed is associated to,
 like keywords page, ... It returns the url of the RSS feed.
-</section>
+</subsection>
 
-<section name="section" title="section and subsection">
+<subsection name="section" title="section and subsection">
 <include file="syntax.tmpl"><![CDATA[<section name="..." title="...">...</section>
 <subsection name="..." title="...">...</subsection>
  ]]></include>
 This is used to insert sections and subsections, with a given title. The name,
 if given, is used as id in the section title node.
-</section>
+</subsection>
 
-<section name="site-descx" title="site-desc">
+<subsection name="site-descx" title="site-desc">
 <icode lang="xml">&lt;site-desc&gt;</icode> returns the site description as specified in the
 main file.
-</section>
+</subsection>
 
-<section name="site-titlex" title="site-title">
+<subsection name="site-titlex" title="site-title">
 <icode lang="xml">&lt;site-title&gt;</icode> returns the site title as specified in the
 main file.
-</section>
+</subsection>
 
-<section name="site-url" title="site-url">
+<subsection name="site-url" title="site-url">
 <icode lang="xml">&lt;site-url&gt;</icode> returns the site url as specified in the
 main file.
-</section>
+</subsection>
 
-<section name="two-columns" title="two-columns">
+<subsection name="toc" title="toc and prepare-toc">
+<include file="syntax.tmpl"><![CDATA[<prepare-toc depth="[1|2|...]">
+...
+<toc>text</toc>
+...
+<section ...>
+  <subsection ...>
+
+  </subsection>
+  ...
+</section>
+...
+</prepare-toc>]]></include>
+<p>
+The <icode lang="xml">&lt;toc&gt;</icode> node is used to insert a table of contents.
+If a text is given, it is added ahead of the table of contents.
+</p>
+<p>
+Since the <icode>toc</icode> node does not include the sections and subsections, it is
+not sufficient to build the table of contents. So it will use what is returned by
+the function associated to "toc-contents" in its environment.
+</p>
+<p>This function is added to the environment by the <icode>prepare-toc</icode> node,
+which includes all the sections and subsections. The <icode>depth</icode> attribute
+is used to specify the depth of the table of contents.
+</p>
+</subsection>
+
+<subsection name="two-columns" title="two-columns">
 <include file="syntax.tmpl"><![CDATA[<two-columns>
 <XML for left column/>
 <XML for right column/>
@@ -167,6 +204,17 @@ main file.
 <p>
 This will put the two given XML nodes in a two-column layout.
 </p>
+</subsection>
+</section>
+
+<section name="in-articles" title="Functions available in &quot;article.tmpl&quot; template">
+<subsection name="article-url" title="article-url">
+<icode lang="xml">&lt;article-url&gt;</icode> returns the final url of the current article.
+</subsection>
+
+<subsection name="article-bodyx" title="article-body">
+<icode lang="xml">&lt;article-body&gt;</icode> returns the body of the current article.
+</subsection>
 </section>
 
 
