@@ -1,0 +1,32 @@
+page-title=Predefined functions
+<->
+<prepare-toc depth="1">
+<toc/>
+<section name="if" title="if">
+<include file="syntax.tmpl"><![CDATA[
+<if attr1="value1" attr2="value2" ...>
+<XML tree used when all conditions are verified>
+<optional XML tree used when at least one condition is not verified>
+</if>
+]]></include>
+<p>
+The <icode>if</icode> function tests whether each condition expressed as <icode>attr="value"</icode>
+is verified. If so, the first XML child is returned, else the second one is returned.
+To test the value of <icode>attr</icode>, <icode>attr</icode> is looked up in the current
+environment. It its value is the same as the given value, the condition is verified.
+</p>
+<p>
+The <icode>"value"</icode> part of the condition must be valid XML, and can contain
+calls to functions, as in:
+<hcode lang="xml"><![CDATA[<if page-title="&lt;site-title&gt;">....</if>]]></hcode>
+</p>
+<p>Other example: Testing whether a variable is empty to known whether to output
+a block or not:
+<hcode lang="xml"><![CDATA[<if list="">
+<span/>
+<div>The list is not empty, let's print it:<ul><list/></ul></div>
+</if>]]></hcode>
+</p>
+</section>
+
+</prepare-toc>
