@@ -129,7 +129,7 @@ let fun_include tmpl_dir _env args subs =
         | _ -> [Xtmpl.xml_of_string (Stog_misc.string_of_file file)]
       in
       let args =
-        ("include-contents", String.concat "" (List.map Xtmpl.string_of_xml subs)) ::
+        ("contents", String.concat "" (List.map Xtmpl.string_of_xml subs)) ::
         args
       in
       [Xtmpl.T (Xtmpl.tag_env, args, xml)]
@@ -146,9 +146,11 @@ let fun_image _env args legend =
      | None -> ""
     )
   in
+  let pred (s,_) = not (List.mem s ["width" ; "src" ; "float"]) in
+  let atts = List.filter pred args in
   [
     Xtmpl.T ("div", [ "class", cls ],
-     (Xtmpl.T ("img", [ "class", "img" ; "src", src; "width", width ], [])) ::
+     (Xtmpl.T ("img", [ "class", "img" ; "src", src; "width", width ] @ atts, [])) ::
      (match legend with
         [] -> []
       | xml -> [ Xtmpl.T ("div", ["class", "legend"], xml) ]
@@ -602,8 +604,8 @@ and default_commands ?outdir ?from ?rss stog =
     ]
   in
   let l =
-            match outdir with
-            | None -> l
+     match outdir with
+       | None -> l
             | Some outdir ->
                 l @
                 ["graph", fun_graph outdir ?from stog ;
