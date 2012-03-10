@@ -322,7 +322,7 @@ let read_stog dir =
   let dirs = List.filter ((<>) dir) dirs in
   let dirs = ignore_dot_entries dirs in
 
-  List.iter prerr_endline dirs;
+  (*List.iter prerr_endline dirs;*)
   let stog =
     List.fold_left
     (fun stog dir ->

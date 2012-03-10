@@ -517,11 +517,11 @@ let fun_prepare_toc env args subs =
       | _ -> acc
   in
   let toc = List.rev (List.fold_left (iter 1) [] subs) in
-  (
+  (*(
    match toc with
      [] -> prerr_endline "empty toc!"
    | _ -> prerr_endline (Printf.sprintf "toc is %d long" (List.length toc));
-  );
+  );*)
   let rec xml_of_toc = function
     Toc (name, title, cl, subs) ->
       Xtmpl.T ("li", ["class", "toc-"^cl],

@@ -91,13 +91,13 @@ let main () =
     [] -> failwith usage
   | dirs ->
       let stogs = List.map Stog_io.read_stog dirs in
-      prerr_endline "directories read";
+      (*prerr_endline "directories read";*)
       let stog = Stog_types.merge_stogs stogs in
-      prerr_endline "directories merged";
+      (*prerr_endline "directories merged";*)
       let stog = Stog_info.remove_not_published stog in
-      prerr_endline "removed not published articles";
+      (*prerr_endline "removed not published articles";*)
       let stog = Stog_info.compute stog in
-      prerr_endline "graph computed";
+      (*prerr_endline "graph computed";*)
       let stog = set_stog_options stog in
       Stog_html.generate !output_dir stog
 ;;
