@@ -1037,7 +1037,7 @@ let generate_index_file outdir stog env =
   let env = Xtmpl.env_of_list ~env
     ([
        Stog_cst.site_title, (fun _ _ _ -> [Xtmpl.D stog.stog_title]) ;
-       "site-body", (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_body]);
+       "contents", (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_body]);
        Stog_cst.site_desc, (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_desc]) ;
        Stog_cst.site_url, (fun _ _ _ -> [Xtmpl.D stog.stog_base_url]) ;
        "articles", (article_list outdir ~rss: rss_basefile stog);
