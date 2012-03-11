@@ -265,25 +265,25 @@
   color: rgba(255, 255, 255, 0.75);
 }
 .btn-primary {
-  background-color: #8943b6;
-  background-image: -moz-linear-gradient(top, #7a43b6, #a043b6);
-  background-image: -ms-linear-gradient(top, #7a43b6, #a043b6);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7a43b6), to(#a043b6));
-  background-image: -webkit-linear-gradient(top, #7a43b6, #a043b6);
-  background-image: -o-linear-gradient(top, #7a43b6, #a043b6);
-  background-image: linear-gradient(top, #7a43b6, #a043b6);
+  background-color: #f8b406;
+  background-image: -moz-linear-gradient(top, #f89406, #f8e506);
+  background-image: -ms-linear-gradient(top, #f89406, #f8e506);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f89406), to(#f8e506));
+  background-image: -webkit-linear-gradient(top, #f89406, #f8e506);
+  background-image: -o-linear-gradient(top, #f89406, #f8e506);
+  background-image: linear-gradient(top, #f89406, #f8e506);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7a43b6', endColorstr='#a043b6', GradientType=0);
-  background-color: #8943b6;
-  background-image: -moz-linear-gradient(top, #7a43b6, #a043b6);
-  background-image: -ms-linear-gradient(top, #7a43b6, #a043b6);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7a43b6), to(#a043b6));
-  background-image: -webkit-linear-gradient(top, #7a43b6, #a043b6);
-  background-image: -o-linear-gradient(top, #7a43b6, #a043b6);
-  background-image: linear-gradient(top, #7a43b6, #a043b6);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f89406', endColorstr='#f8e506', GradientType=0);
+  background-color: #f8b406;
+  background-image: -moz-linear-gradient(top, #f89406, #f8e506);
+  background-image: -ms-linear-gradient(top, #f89406, #f8e506);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f89406), to(#f8e506));
+  background-image: -webkit-linear-gradient(top, #f89406, #f8e506);
+  background-image: -o-linear-gradient(top, #f89406, #f8e506);
+  background-image: linear-gradient(top, #f89406, #f8e506);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7a43b6', endColorstr='#a043b6', GradientType=0);
-  border-color: #a043b6 #a043b6 #6f2e7e;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f89406', endColorstr='#f8e506', GradientType=0);
+  border-color: #f8e506 #f8e506 #ada004;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
@@ -292,10 +292,10 @@
 .btn-primary.active,
 .btn-primary.disabled,
 .btn-primary[disabled] {
-  background-color: #a043b6;
+  background-color: #f8e506;
 }
 .btn-primary:active, .btn-primary.active {
-  background-color: #7f3591 \9;
+  background-color: #c6b705 \9;
 }
 .btn-warning {
   background-color: #faa732;
@@ -1166,7 +1166,7 @@ table .span12 {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background-color: #f4eff9;
+  background-color: #ffecb0;
   padding: 0.5em;
   margin-bottom: 1em;
 }
@@ -1177,25 +1177,25 @@ html {
 }
 body {
   font: normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
-  background-color: #49286d;
-  background-image: -moz-linear-gradient(top, #7a43b6, #000000);
-  background-image: -ms-linear-gradient(top, #7a43b6, #000000);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7a43b6), to(#000000));
-  background-image: -webkit-linear-gradient(top, #7a43b6, #000000);
-  background-image: -o-linear-gradient(top, #7a43b6, #000000);
-  background-image: linear-gradient(top, #7a43b6, #000000);
+  background-color: #b38908;
+  background-image: -moz-linear-gradient(top, #ffc40d, #403000);
+  background-image: -ms-linear-gradient(top, #ffc40d, #403000);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffc40d), to(#403000));
+  background-image: -webkit-linear-gradient(top, #ffc40d, #403000);
+  background-image: -o-linear-gradient(top, #ffc40d, #403000);
+  background-image: linear-gradient(top, #ffc40d, #403000);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7a43b6', endColorstr='#000000', GradientType=0);
-  background-color: #49286d;
-  background-image: -moz-linear-gradient(top, #7a43b6, #000000);
-  background-image: -ms-linear-gradient(top, #7a43b6, #000000);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7a43b6), to(#000000));
-  background-image: -webkit-linear-gradient(top, #7a43b6, #000000);
-  background-image: -o-linear-gradient(top, #7a43b6, #000000);
-  background-image: linear-gradient(top, #7a43b6, #000000);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc40d', endColorstr='#403000', GradientType=0);
+  background-color: #b38908;
+  background-image: -moz-linear-gradient(top, #ffc40d, #403000);
+  background-image: -ms-linear-gradient(top, #ffc40d, #403000);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffc40d), to(#403000));
+  background-image: -webkit-linear-gradient(top, #ffc40d, #403000);
+  background-image: -o-linear-gradient(top, #ffc40d, #403000);
+  background-image: linear-gradient(top, #ffc40d, #403000);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7a43b6', endColorstr='#000000', GradientType=0);
-  background-color: #000000;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc40d', endColorstr='#403000', GradientType=0);
+  background-color: #403000;
   color: #666666;
   height: 100%;
   margin: 0 ;
@@ -1249,16 +1249,16 @@ div#navpath {
 }
 a:link {
   text-decoration: underline;
-  color: #7a43b6;
+  color: #f89406;
 }
 a:visited {
   text-decoration: none;
-  color: #663898;
+  color: #d07c05;
 }
 a:hover {
   /*text-decoration:underline;*/
 
-  color: #552e7e;
+  color: #ad6704;
 }
 div#site-title {
   text-align: left;
@@ -1391,7 +1391,9 @@ div.article-keywords {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background-color: #f4eff9;
+  background-color: #ffecb0;
+  padding: 0.5em;
+  margin-bottom: 1em;
   margin-left: 1em;
   margin-right: 190px;
 }
@@ -1405,7 +1407,7 @@ div#archives {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background-color: #f4eff9;
+  background-color: #ffecb0;
   padding: 0.5em;
   margin-bottom: 1em;
 }
@@ -1419,7 +1421,7 @@ div#graph {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background-color: #f4eff9;
+  background-color: #ffecb0;
   padding: 0.5em;
   margin-bottom: 1em;
 }
@@ -1443,6 +1445,10 @@ div.quote {
   margin-right: 3em ;
   font-style: italic ;
   color: #777777;
+}
+div.comments {
+  margin-top: 1.5em;
+  margin-right: 190px;
 }
 div.subcomments {
   margin-left: 3em ;
@@ -1489,6 +1495,9 @@ div.comment-citation {
   background-color: #EEE ;
   font-style: italic;
 }
+div.dsq-clearfix::after {
+  clear: none;
+}
 div.rss-button {
   position: relative;
   float: right;
@@ -1523,7 +1532,7 @@ div.search {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background-color: #f4eff9;
+  background-color: #ffecb0;
   padding: 0.5em;
   margin-bottom: 1em;
 }
@@ -1683,7 +1692,7 @@ ul.toc li {
 }
 ul.toc li:before {
   content: "\00BB \0020";
-  color: #000000;
+  color: #403000;
 }
 ul.toc li a {
   text-decoration: none;
@@ -1710,7 +1719,7 @@ table.release {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background-color: #f4eff9;
+  background-color: #ffecb0;
   padding: 0.5em;
   margin-bottom: 1em;
 }
@@ -1726,7 +1735,7 @@ td.release-desc {
 ul.links {
   min-width: 50px;
   padding: 0 3px 2px;
-  border: 1px solid #000000;
+  border: 1px solid #403000;
   display: block;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1734,7 +1743,7 @@ ul.links {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background-color: #996dc9;
+  background-color: #ffd34a;
 }
 ul.links li {
   margin-left: 2em;
