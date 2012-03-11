@@ -911,6 +911,7 @@ let generate_article outdir stog env art_id article =
   let env = Xtmpl.env_of_list
     ([
      Stog_cst.article_title, (fun _ _ _ -> [ Xtmpl.D article.art_title ]) ;
+     Stog_cst.page_title, (fun _ _ _ -> [ Xtmpl.D article.art_title ]) ;
      "article-url", (fun _ _ _ -> [ Xtmpl.D url ]) ;
      "article-body", (fun _ _ _ -> [ xml_of_article_body article.art_body ]);
      Stog_cst.article_date, (fun _ _ _ -> [ Xtmpl.D (Stog_types.string_of_date article.art_date) ]) ;
