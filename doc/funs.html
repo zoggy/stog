@@ -211,13 +211,66 @@ This will put the two given XML nodes in a two-column layout.
 </section>
 
 <section name="in-articles" title="Functions available in &quot;article.tmpl&quot; template">
+<subsection name="article-navbar" title="article-navbar">
+<p>
+<icode lang="xml">&lt;article-navbar/&gt;</icode> contains "true" when
+we are "in" an article page. It is not defined if we are for example in
+another blog page, like article list by topic, by keyword, or by month.
+This can be used in the <icode>blogpage.tmpl</icode> template file
+to display of not the navigation bar, that is the bar with links to
+next and previous article.
+</p>
+</subsection>
+
 <subsection name="article-url" title="article-url">
-<icode lang="xml">&lt;article-url&gt;</icode> returns the final url of the current article.
+<p>
+<icode lang="xml">&lt;article-url/&gt;</icode> returns the final url of the current article.
+</p>
 </subsection>
 
 <subsection name="article-bodyx" title="article-body">
-<icode lang="xml">&lt;article-body&gt;</icode> returns the body of the current article.
+<p>
+<icode lang="xml">&lt;article-body/&gt;</icode> returns the body of the current article.
+</p>
 </subsection>
+
+<subsection name="comments" title="comments">
+<p>
+<icode lang="xml">&lt;comments/&gt;</icode> inserts the comments of the article.
+By default, the comments are taken from email files in the directory of the
+article. It is possible to override the <icode>comments</icode> function with
+a plugin to use another comment system, like <ext-a href="http://disqus.com">Disqus</ext-a>.
+</p>
+</subsection>
+
+<subsection name="comment-actions" title="comment-actions">
+<p>
+<icode lang="xml">&lt;comment-actions/&gt;</icode> inserts the action to
+add a comment or reply to a comment. By default, it creates a "mailto:" link
+with some fields pre-defined.
+</p>
+</subsection>
+
+<subsection name="keywords" title="keywords and topics">
+<p>
+<icode lang="xml">&lt;keywords sep="..."/&gt;</icode> and
+<icode lang="xml">&lt;topics sep="..."/&gt;</icode> respectively return the keyword and topic list of
+the current article, as defined in the article file. The optional <icode>sep</icode> attribute
+can be used to specify a separator oe each keyword or topic.
+</p>
+<p>Each keyword will be displayed using a <icode>keyword.tmpl</icode> template file.
+Each topic will be displayed using a <icode>topic.tmpl</icode> template file.
+</p>
+</subsection>
+
+<subsection name="prev" title="prev and next">
+<p>
+<icode lang="xml">&lt;prev/&gt;</icode> and
+<icode lang="xml">&lt;next/&gt;</icode> respectively return a link to the previous and next
+article according to the chronological order of article dates.
+</p>
+</subsection>
+
 </section>
 
 

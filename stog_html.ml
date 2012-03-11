@@ -920,7 +920,7 @@ let generate_article outdir stog env art_id article =
      "topics", html_of_topics stog article ;
      "comment-actions", (fun _ _ _ -> comment_actions);
      "comments", html_of_comments outdir stog article ;
-     "navbar", fun _ _ _ -> [Xtmpl.D "true"] ;
+     "article-navbar", fun _ _ _ -> [Xtmpl.D "true"] ;
    ] @ (default_commands ~outdir stog))
   in
   let env = env_add_langswitch env stog html_file in
