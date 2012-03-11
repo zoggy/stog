@@ -28,7 +28,7 @@
 #################################################################################
 
 STOGDIR=..
-STOG=$(STOGDIR)/stog
+STOG=$(STOGDIR)/stog --plugin ../plugin_example.cmxs
 DEST_DIR=`pwd`/../doc-output
 BASE_URL_OPTION=
 STOG_OPTIONS=-d $(DEST_DIR) $(BASE_URL_OPTION)

@@ -112,9 +112,9 @@ gui: guiopt guibyte
 ocaml: stog_ocaml.cma
 ocamlopt: stog_ocaml.cmxs
 
-opt: $(LIB) $(MAIN)
+opt: $(LIB) $(MAIN) plugin_example.cmxs
 guiopt: $(GUI_MAIN)
-byte: $(LIB_BYTE) $(MAIN_BYTE)
+byte: $(LIB_BYTE) $(MAIN_BYTE) plugin_example.cmo
 guibyte: $(GUI_MAIN_BYTE)
 
 $(MAIN): $(LIB) stog_main.cmx
@@ -197,7 +197,8 @@ stog_coms.cmx stog_coms.cmi: stog_coms.ml
 %.cmx %.o:%.ml
 	$(OCAMLOPT) $(OCAMLPP) $(COMPFLAGS) -c $<
 
-
+%.cmxs: %.ml
+	$(OCAMLOPT) $(OCAMLPP) $(COMPFLAGS) -shared -o $@ $<
 
 %.o: %.c
 	$(OCAMLOPT) $(COMPFLAGS) -c $< && $(MV) `basename $@` `dirname $@`
