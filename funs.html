@@ -28,29 +28,125 @@
 <div class="page-title">Predefined functions</div>
 </div>
 <span/>
-<div class="alert alert-warning">
-This list is not yet complete.
-</div>
 <p>
-The following functions are pre-defined and can be used in your pages,
-articles and templates:
+Some functions are pre-defined and can be used in your pages, articles and templates.
+The following common functions are available everywhere:
+<a href="#archive-tree">archive-tree</a>,
+<a href="#article">article</a>,
+<a href="#articles">articles</a>,
+<a href="#command-line">command-line</a>,
+<a href="#ext-a">ext-a</a>,
+<a href="#graphx">graph</a>,
+<a href="#hcode">hcode</a>,
+<a href="#icode">icode</a>,
+<a href="#if">if</a>,
+<a href="#include">include</a>,
+<a href="#image">image</a>,
+<a href="#langswitch">langswitch</a>,
+<a href="#latex">latex</a>,
+<a href="#ocaml">ocaml</a>,
+<a href="#pagex">page</a>,
+<a href="#rssfeedx">rssfeed</a>,
+<a href="#section">section and subsection</a>,
+<a href="#site-descx">site-desc</a>,
+<a href="#site-titlex">site-title</a>,
+<a href="#site-url">site-url</a>,
+<a href="#toc">toc and prepare-toc</a>,
+<a href="#two-columns">two-columns</a>.
 </p>
-
-<ul class="toc"><li class="toc-section"><a href="#common">Common functions</a><ul class="toc"><li class="toc-subsection"><a href="#archive-tree">archive-tree</a></li><li class="toc-subsection"><a href="#article">article</a></li><li class="toc-subsection"><a href="#articles">articles</a></li><li class="toc-subsection"><a href="#comand-line">command-line</a></li><li class="toc-subsection"><a href="#ext-a">ext-a</a></li><li class="toc-subsection"><a href="#hcode">hcode</a></li><li class="toc-subsection"><a href="#icode">icode</a></li><li class="toc-subsection"><a href="#if">if</a></li><li class="toc-subsection"><a href="#include">include</a></li><li class="toc-subsection"><a href="#image">image</a></li><li class="toc-subsection"><a href="#ocaml">ocaml</a></li><li class="toc-subsection"><a href="#rssfeedx">rssfeed</a></li><li class="toc-subsection"><a href="#section">section and subsection</a></li><li class="toc-subsection"><a href="#site-descx">site-desc</a></li><li class="toc-subsection"><a href="#site-titlex">site-title</a></li><li class="toc-subsection"><a href="#site-url">site-url</a></li><li class="toc-subsection"><a href="#toc">toc and prepare-toc</a></li><li class="toc-subsection"><a href="#two-columns">two-columns</a></li></ul></li><li class="toc-section"><a href="#in-articles">Functions available in &quot;article.tmpl&quot; template</a><ul class="toc"><li class="toc-subsection"><a href="#article-url">article-url</a></li><li class="toc-subsection"><a href="#article-bodyx">article-body</a></li></ul></li></ul>
-
 <p>For most of the functions, you should look at the generated XML to modify
 your CSS stylesheet according to the classes used. You can start from
 the <span class="icode">.less</span> files in the <span class="icode">doc</span> directory
 of the stog sources.
 </p>
+<p>
+Some functions are available in some templates only (and in templates
+&quot;called&quot; from these templates):
+<table class="table table-bordered table-stripped">
+<thead>
+<tr><th>Template</th><th>Functions</th></tr>
+</thead>
+<tr><td>index.tmpl</td>
+<td>
+<a href="#contents">contents</a>
+</td></tr>
 
-<div class="section"><div class="section-title" id="common">Common functions</div>
-<div class="subsection"><div class="subsection-title" id="archive-tree">archive-tree</div>
+<tr><td>page.tmpl</td>
+<td>
+<a href="#contents">contents</a>,
+<a href="#page-titlex">page-title</a>
+</td></tr>
+
+<tr><td>blogpage.tmpl</td><td>
+<a href="#article-navbar">article-navbar</a>,
+<a href="#contents">contents</a>,
+<a href="#page-title">page-title</a>,
+<a href="#previous">previous and next</a>
+</td></tr>
+
+<tr><td>article.tmpl</td>
+<td>
+<a href="#article-body">article-body</a>,
+<a href="#article-date">article-date</a>,
+<a href="#article-navbar">article-navbar</a>,
+<a href="#article-title">article-title</a>,
+<a href="#article-url">article-url</a>,
+<a href="comment-actions">comment-actions</a>,
+<a href="comments">comments</a>,
+<a href="keywords">keywords and topics</a>,
+<a href="#previous">previous and next</a>
+</td></tr>
+
+<tr><td>article_list.tmpl</td>
+<td>
+<a href="#article-date">article-date</a>,
+<a href="#article-intro">article-intro</a>,
+<a href="#article-title">article-title</a>,
+<a href="#article-url">article-url</a>
+</td></tr>
+
+<tr><td>by_topic.tmpl</td>
+<td>
+<a href="#articles">articles</a>,
+<a href="#page-title">page-title</a>,
+<a href="#topic">topic</a>
+</td></tr>
+
+<tr><td>by_kw.tmpl</td>
+<td>
+<a href="#articles">articles</a>,
+<a href="#keyword">keyword</a>,
+<a href="#page-title">page-title</a>
+</td></tr>
+
+<tr><td>archive_month.tmpl</td>
+<td>
+<a href="#articles">articles</a>,
+<a href="#page-title">page-title</a>
+</td></tr>
+
+<tr><td>topic.tmpl</td><td><a href="#topic">topic</a></td></tr>
+<tr><td>keyword.tmpl</td><td><a href="#keyword">keyword</a></td></tr>
+
+<tr><td>comment.tmpl</td><td>
+body,
+<a href="#comment-actions">comment-actions</a>,
+<a href="#comments">comments</a>,
+date, from, subject, to
+</td></tr>
+
+</table>
+</p>
+
+
+<div class="section"><div class="section-title" id="archive-tree">archive-tree</div>
+<p>
 <span class="icode"><span class="hl kwa">&lt;archive-tree/&gt;</span>
 </span> inserts the articles archive tree.
+</p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="article">article</div>
+<div class="section"><div class="section-title" id="article">article</div>
 <p>
 <strong>Syntax:</strong>
 <pre class="code-xml"><span class="hl kwa">&lt;article</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>text<span class="hl kwa">&lt;/article&gt;</span>
@@ -66,32 +162,123 @@ If no text is given for the link, the title of the article will be used instead.
 </p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="articles">articles</div>
+<div class="section"><div class="section-title" id="article-bodyx">article-body</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;article-body/&gt;</span>
+</span> returns the body of the current article.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="article-date">article-date</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;article-date/&gt;</span>
+</span> returns the date of the current article.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="article-intro">article-intro</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;article-intro/&gt;</span>
+</span> returns the inroduction of an article,
+that is the boy code before the <span class="icode">&lt;sep_/&gt;</span> marker.
+</p>
+<p>
+<span class="icode"><span class="hl kwa">&lt;article-intro/&gt;</span>
+</span> is only available in the template
+<span class="icode">article_list.tmpl</span> template file, used to compute the
+<a href="#articles"><span class="icode">&lt;articles.../&gt;</span></a> function.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="article-navbar">article-navbar</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;article-navbar/&gt;</span>
+</span> contains &quot;true&quot; when
+we are &quot;in&quot; an article page. It is not defined if we are for example in
+another blog page, like article list by topic, by keyword, or by month.
+This can be used in the <span class="icode">blogpage.tmpl</span> template file
+to display of not the navigation bar, that is the bar with links to
+next and previous article.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="article-url">article-url</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;article-url/&gt;</span>
+</span> returns the final url of the current article.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="articles">articles</div>
+<p>
 <span class="icode"><span class="hl kwa">&lt;articles</span> <span class="hl kwb">max</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
 </span> inserts the list of
 published articles.
 The optional <span class="icode">max=&quot;n&quot;</span> attribute can be used to list only
 the <span class="icode">n</span> last articles.
+</p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="comand-line">command-line</div>
+<div class="section"><div class="section-title" id="command-line">command-line</div>
+<p>
 <span class="icode"><span class="hl kwa">&lt;command-line&gt;</span>
 </span> works like
 <a href="#hcode"><span class="icode"><span class="hl kwa">&lt;hcode&gt;</span>
 </span></a>
 with the <span class="icode">lang</span>
 attribute already set to &quot;sh&quot;.
+</p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="ext-a">ext-a</div>
+<div class="section"><div class="section-title" id="comment-actions">comment-actions</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;comment-actions/&gt;</span>
+</span> inserts the action to
+add a comment or reply to a comment. By default, it creates a &quot;mailto:&quot; link
+with some fields pre-defined.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="comments">comments</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;comments/&gt;</span>
+</span> inserts the comments of the article.
+By default, the comments are taken from email files in the directory of the
+article. It is possible to override the <span class="icode">comments</span> function with
+a plugin to use another comment system, like <span class="ext-a"><a href="http://disqus.com">Disqus</a></span>.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="contents">contents</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;contents/&gt;</span>
+</span> is the generic function to insert some
+contents in an included file or template. It is used for example in
+<span class="icode">blogpage.tmpl</span>, in <a href="#include"><span class="icode"><span class="hl kwa">&lt;include&gt;</span>
+</span></a>, ...
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="ext-a">ext-a</div>
+<p>
 <span class="icode"><span class="hl kwa">&lt;ext-a</span> attributes<span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/ext-a&gt;</span>
 </span> is reduced
 to <span class="icode"><span class="hl kwa">&lt;span</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;ext-a&quot;</span><span class="hl kwa">&gt;&lt;a</span> attributes<span class="hl kwa">&gt;</span>...&lt;<span class="hl kwa">/&gt;&lt;/ext-a&gt;</span>
 </span>.
 This can be used to add specific style link to external sites.
+</p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="hcode">hcode</div>
+<div class="section"><div class="section-title" id="graphx">graph</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;graph/&gt;</span>
+</span> computes the graph of articles in SVG format, and returns
+a link to this graph displayed as a small graph. One can click on an article in the generated SVG
+graph to jump to the article.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="hcode">hcode</div>
 <p>
 <strong>Syntax:</strong>
 <pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>your code<span class="hl kwa">&lt;/hcode&gt;</span>
@@ -106,15 +293,17 @@ inserted using <pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span
 </p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="icode">icode</div>
+<div class="section"><div class="section-title" id="icode">icode</div>
+<p>
 <span class="icode"><span class="hl kwa">&lt;icode&gt;</span>
 </span> works like
 <a href="#hcode"><span class="icode"><span class="hl kwa">&lt;hcode&gt;</span>
 </span></a> but is used to
 generate inline highlighted code instead of using a box.
+</p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="if">if</div>
+<div class="section"><div class="section-title" id="if">if</div>
 <p>
 <strong>Syntax:</strong>
 <pre class="code-xml"><span class="hl kwa">&lt;if</span> <span class="hl kwb">attr1</span>=<span class="hl str">&quot;value1&quot;</span> <span class="hl kwb">attr2</span>=<span class="hl str">&quot;value2&quot;</span> ...<span class="hl kwa">&gt;</span>
@@ -145,7 +334,7 @@ a block or not:
 </p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="include">include</div>
+<div class="section"><div class="section-title" id="include">include</div>
 <p>
 <strong>Syntax:</strong>
 <pre class="code-xml"><span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;template&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/include&gt;</span>
@@ -178,14 +367,15 @@ will be reduced to
 </p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="image">image</div>
+<div class="section"><div class="section-title" id="image">image</div>
 <p>
 <strong>Syntax:</strong>
 <pre class="code-xml"><span class="hl kwa">&lt;image</span> <span class="hl kwb">float</span>=<span class="hl str">&quot;[left|right]&quot;</span> <span class="hl kwb">src</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>legend<span class="hl kwa">&lt;/image&gt;</span>
 </pre>
 </p>
 <p>
-This generates an image using an <span class="icode">&lt;img .../&gt;</span> node. The legend is optional.
+This generates an image using an <span class="icode"><span class="hl kwa">&lt;img</span> ...<span class="hl kwa">/&gt;</span>
+</span> node. The legend is optional.
 </p>
 <p>
 The <span class="icode">float</span> attribute can be used to change a class in the generated code,
@@ -196,51 +386,144 @@ Additional attributes are passed to the generated <span class="icode">img</span>
 </p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="ocaml">ocaml</div>
+<div class="section"><div class="section-title" id="keyword">keyword</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;keyword/&gt;</span>
+</span> inserts the name of the current keyword,
+when computing topic list (in template <span class="icode">keyword.tmpl</span>.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="keywords">keywords and topics</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;keywords</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
+</span> and
+<span class="icode"><span class="hl kwa">&lt;topics</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
+</span> respectively return the keyword and topic list of
+the current article, as defined in the article file. The optional <span class="icode">sep</span> attribute
+can be used to specify a separator oe each keyword or topic.
+</p>
+<p>Each keyword will be displayed using a <span class="icode">keyword.tmpl</span> template file.
+Each topic will be displayed using a <span class="icode">topic.tmpl</span> template file.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="langswitch">langswitch</div>
+<p>
+If <span class="icode">stog</span> is launched with option <span class="icode">--lang language</span>, the
+<span class="icode"><span class="hl kwa">&lt;langswitch&gt;</span>
+</span> function returns some code to access
+to pages in other languages than <span class="icode">language</span>.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="latex">latex</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;latex&gt;</span>...<span class="hl kwa">&lt;/latex&gt;</span>
+</span> is used to compile
+latex code and display it as SVG in the page. Read <a href="latex-in-stog/index.html">this article</a>
+for details.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="previous">previous and next</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;previous/&gt;</span>
+</span> and
+<span class="icode"><span class="hl kwa">&lt;next/&gt;</span>
+</span> respectively return a link to the previous and next
+article according to the chronological order of article dates.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="ocaml">ocaml</div>
+<p>
 <span class="icode"><span class="hl kwa">&lt;ocaml&gt;</span>
 </span> works like
 <a href="#hcode"><span class="icode"><span class="hl kwa">&lt;hcode&gt;</span>
 </span></a>
 with the <span class="icode">lang</span>
 attribute already set to &quot;ocaml&quot;.
+</p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="rssfeedx">rssfeed</div>
+<div class="section"><div class="section-title" id="pagex">page</div>
+<p>
+<strong>Syntax:</strong>
+<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/page&gt;</span>
+</pre>
+</p>
+<p>
+<span class="icode"><span class="hl kwa">&lt;page</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
+</span> is used to trigger the generation of the
+page with the given <span class="icode">id</span>. The page is generated from the original
+page file, whose body is evaluated in the current environment. This allows
+set of pages to be generated with an environment, while other ones are generated
+with a different environment. This is what is used in this doc to highlight
+the part of the site the current page belongs to in the top navigation bar.
+<p>
+The page id is the filename of the source page, without extension.
+</p>
+<span class="icode"><span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>some text<span class="hl kwa">&lt;/page&gt;</span>
+</span> returns a link
+to the indicated page. If no text is given, the page title is used as text
+for the link.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="page-titlex">page-title</div>
+<p><span class="icode"><span class="hl kwa">&lt;page-title&gt;</span>
+</span> returns the page title as specified in the
+page file.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="rssfeedx">rssfeed</div>
+<p>
 <span class="icode"><span class="hl kwa">&lt;rssfeed/&gt;</span>
 </span> is available in pages an RSS feed is associated to,
 like keywords page, ... It returns the url of the RSS feed.
+</p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="section">section and subsection</div>
+<div class="section"><div class="section-title" id="section">section and subsection</div>
 <p>
 <strong>Syntax:</strong>
 <pre class="code-xml"><span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/section&gt;</span>
 <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/subsection&gt;</span>
 </pre>
 </p>
-This is used to insert sections and subsections, with a given title. The name,
+<p>This is used to insert sections and subsections, with a given title. The name,
 if given, is used as id in the section title node.
+</p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="site-descx">site-desc</div>
+<div class="section"><div class="section-title" id="site-descx">site-desc</div>
+<p>
 <span class="icode"><span class="hl kwa">&lt;site-desc&gt;</span>
 </span> returns the site description as specified in the
 main file.
+</p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="site-titlex">site-title</div>
+<div class="section"><div class="section-title" id="site-titlex">site-title</div>
+<p>
 <span class="icode"><span class="hl kwa">&lt;site-title&gt;</span>
 </span> returns the site title as specified in the
 main file.
+</p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="site-url">site-url</div>
+<div class="section"><div class="section-title" id="site-url">site-url</div>
+<p>
 <span class="icode"><span class="hl kwa">&lt;site-url&gt;</span>
 </span> returns the site url as specified in the
 main file.
+</p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="toc">toc and prepare-toc</div>
+<div class="section"><div class="section-title" id="toc">toc and prepare-toc</div>
 <p>
 <strong>Syntax:</strong>
 <pre class="code-xml"><span class="hl kwa">&lt;prepare-toc</span> <span class="hl kwb">depth</span>=<span class="hl str">&quot;[1|2|...]&quot;</span><span class="hl kwa">&gt;</span>
@@ -273,7 +556,15 @@ is used to specify the depth of the table of contents.
 </p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="two-columns">two-columns</div>
+<div class="section"><div class="section-title" id="topic">topic</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;topic/&gt;</span>
+</span> inserts the name of the current topic,
+when computing topic list (in template <span class="icode">topic.tmpl</span>.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="two-columns">two-columns</div>
 <p>
 <strong>Syntax:</strong>
 <pre class="code-xml"><span class="hl kwa">&lt;two-columns&gt;</span>
@@ -286,22 +577,6 @@ is used to specify the depth of the table of contents.
 This will put the two given XML nodes in a two-column layout.
 </p>
 </div>
-</div>
-
-<div class="section"><div class="section-title" id="in-articles">Functions available in &quot;article.tmpl&quot; template</div>
-<div class="subsection"><div class="subsection-title" id="article-url">article-url</div>
-<span class="icode"><span class="hl kwa">&lt;article-url&gt;</span>
-</span> returns the final url of the current article.
-</div>
-
-<div class="subsection"><div class="subsection-title" id="article-bodyx">article-body</div>
-<span class="icode"><span class="hl kwa">&lt;article-body&gt;</span>
-</span> returns the body of the current article.
-</div>
-</div>
-
-
-
 </div>
 <footer id="bottombar">
 </footer>
