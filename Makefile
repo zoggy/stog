@@ -112,9 +112,9 @@ gui: guiopt guibyte
 ocaml: stog_ocaml.cma
 ocamlopt: stog_ocaml.cmxs
 
-opt: $(LIB) $(MAIN) plugin_example.cmxs
+opt: $(LIB) $(MAIN) plugin_example.cmxs disqus_plugin.cmxs
 guiopt: $(GUI_MAIN)
-byte: $(LIB_BYTE) $(MAIN_BYTE) plugin_example.cmo
+byte: $(LIB_BYTE) $(MAIN_BYTE) plugin_example.cmo disqus_plugin.cmo
 guibyte: $(GUI_MAIN_BYTE)
 
 $(MAIN): $(LIB) stog_main.cmx

@@ -24,7 +24,7 @@
 }
 
 .sidebox {
-  .rounded-box (@fgcolor, lighten(@color3, 35)) ;
+  .rounded-box  (@fgcolor, lighten(@color3, 20)) ;
   padding: 0.5em;
   margin-bottom: 1em;
 }
@@ -230,7 +230,7 @@ div.keywords {
 }
 
 div.article-keywords {
-  .rounded-box (@fgcolor, lighten(@color3, 35)) ;
+  .sidebox ;
   margin-left: 1em;
   margin-right: @articleRightMargin ;
 }
@@ -267,6 +267,11 @@ div.quote {
   font-style: italic ;
   color: #777777;
   }
+
+div.comments {
+  margin-top: 1.5em;
+  margin-right: @articleRightMargin;
+}
 
 div.subcomments {
   margin-left: 3em ;
@@ -319,6 +324,10 @@ div.comment-citation {
   white-space: pre-line ;
   background-color: #EEE ;
   font-style: italic;
+}
+
+div.dsq-clearfix::after {
+  clear: none;
 }
 
 div.rss-button {
