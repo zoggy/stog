@@ -1,0 +1,188 @@
+<!DOCTYPE html><html>
+<head>
+<title>Stog : Getting started</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="style.css"/>
+
+</head><body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+
+
+  <a class="brand" href="http://zoggy.github.com/stog/index.html">Stog</a>
+  <ul class="nav">
+    <li class=""><a href="http://zoggy.github.com/stog/index.html">Home</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.com/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.com/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.com/stog/blog.html">Blog</a></li>
+    <li class=""><a href="http://zoggy.github.com/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+  </div>
+
+</div>
+</div>
+
+<div id="header">
+<div class="page-title">Getting started</div>
+</div>
+<span/>
+
+Sections:<ul class="toc"><li class="toc-section"><a href="#structure">Directory structure</a></li><li class="toc-section"><a href="#howitworks">How it works</a></li><li class="toc-section"><a href="#running">Running Stog</a></li><li class="toc-section"><a href="#templates">Evaluation and templating</a></li></ul>
+<div class="section"><div class="section-title" id="structure">Directory structure</div>
+<p>
+A stog website directory has the following structure:
+</p>
+<ul>
+<li><span class="icode">index.html</span>: This is the main file of the web site,
+containing information like site name, base url, contact email...
+It has the following syntax:
+<pre class="code-xml">site-title= your blog title
+site-description= your blog/site description
+site-email= foo@bar.org
+site-url= http://the.base.url/where/your/site/will/be/
+rss-length: <span class="hl num">10</span> (optional: the number of items in generated rss channels)
+[optional other key=value pairs]
+<span class="hl kwa">&lt;-&gt;</span>
+Some xml code as starting point when generating your site
+(and called <span class="hl str">&quot;site-body&quot;</span>).
+</pre>
+</li>
+
+<li><span class="icode">tmpl/</span>: This is the template directory. This is where
+<span class="icode">stog</span> will lookup for template files by default; another
+directory can be indicated with the <span class="icode">--tmpl</span> command line option.</li>
+
+<li><span class="icode">xxx.html</span>: any <span class="icode">.html</span> file in the directory
+will be considered as a static page of the site. Each of these files have the following
+syntax:
+<pre class="code-xml">page-title= your page title
+[optional other key=value pairs]
+<span class="hl kwa">&lt;-&gt;</span>
+Some xml code which will be the page contents.
+</pre>
+</li>
+
+<li><span class="icode">yyy/index.html</span>: any subdirectory containing a <span class="icode">index.html</span>
+file is considered as an article (= a blog post). Here is the syntax of
+such <span class="icode">index.html</span> files:
+<pre class="code-xml">article-title= your article title
+article-date= <span class="hl num">2012</span>/<span class="hl num">03</span>/<span class="hl num">09</span>
+topics= bar, foo, important one
+keywords= latex, hello world, xml
+article-published= true
+[optional other key=value pairs]
+<span class="hl kwa">&lt;-&gt;</span>
+Some xml code which will be the article contents.
+</pre>
+</li>
+</ul>
+<p>If you're impatient and want to start from another site, you can start
+from the <span class="ext-a"><a href="https://github.com/zoggy/stog/tree/master/doc"><span class="icode">doc</span> directory
+in the Stog sources</a></span>. It contains the
+sources of the Stog web site (the one you're just reading).
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="howitworks">How it works</div>
+<p>
+When launched, <span class="icode">stog</span> performs the following actions:
+</p>
+<ol>
+<li>Read the given directory structure;</li>
+<li>Create the output directory;</li>
+<li>Generate article pages in this directory, each article in its own directory,
+as in the source directory; to generate the article page, <span class="icode">stog</span>
+uses the <span class="icode">blogpage.tmpl</span> template file from the <span class="icode">tmpl</span>
+directory; generate also the pages with article lists: by keyword, by topic,
+by month;</li>
+<li>Generate the main page of the site in the output directory; while doing so,
+the <span class="icode"><span class="hl kwa">&lt;page</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
+</span> nodes trigger the generation
+of other pages. The main page is generated using the <span class="icode">index.tmpl</span>
+template, while other pages are generated using the <span class="icode">page.tmpl</span>
+template;</li>
+<li>For each article directory, copy all files (except <span class="icode">index.html</span>)
+to the article output directory.</li>
+</ol>
+</div>
+
+<div class="section"><div class="section-title" id="running">Running Stog</div>
+<p>
+To compile your web site, use the following command:
+<pre class="code-sh">stog <span class="hl opt">&lt;</span>your<span class="hl opt">-</span>directory<span class="hl opt">&gt;</span>
+</pre>
+</p>
+<p>Stog will generate your web site in <span class="icode">./stog-output</span>,
+except if you use the <span class="icode">-d</span> option to specify another
+output directory.
+</p>
+<p>You can specify a template directory with the <span class="icode">--tmpl</span>
+option. By default, the <span class="icode">tmpl</span> directory is
+<span class="icode">your-directory/tmpl</span>.
+</p>
+<p>
+It is possible to give more than one directory to <span class="icode">stog</span>. In this case,
+all pages and articles are merged as if all were defined in the last directory
+given. It may be useful to gather blogs or page to generate one big site. Or not.
+</p>
+<p>The <span class="icode">--site-url</span> option is used to override the <span class="icode">url</span>
+field of the main file. It it useful to generate a local site, for example
+<pre class="code-sh">stog <span class="hl opt">--</span>site<span class="hl opt">-</span>url <span class="hl kwc">file</span><span class="hl opt">:///</span>tmp<span class="hl opt">/</span>website your<span class="hl opt">-</span>directory
+</pre>
+to test your site locally with correct links.
+</p>
+<p>The <span class="icode">--plugin</span> option makes <span class="icode">stog</span> dynamically
+load the given OCaml object file. The loaded plugin can define new functions
+to associate to some tags, or even override some pre-defined functions.
+See <a href="http://zoggy.github.com/stog/plugins.html">Developing plugins</a>.
+</p>
+<p>At last, the <span class="icode">--lang</span> option is used to generate the website
+for one language. By default, the only known languages are &quot;en&quot; and &quot;fr&quot;.
+If you use the <span class="icode">--lang en</span> option, then pages will be generated
+in <span class="icode">.en.html</span> files and all &quot;fr&quot; nodes will be removed.
+Then you can run <span class="icode">stog</span> with the <span class="icode">--lang fr</span>
+to generate the &quot;fr&quot; part of your web site.
+</p>
+<p>
+If you need more languages, just define &quot;languages&quot; in the main file header
+this way:
+<pre class="code-txt">languages= es,de,fr,en</pre>
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="templates">Evaluation and templating</div>
+<p>
+When it comes to generate the <span class="icode">.html</span> for each of your
+article or static page, the XML body is interpreted in the following way.
+</p>
+<p>
+For each encountered tag <span class="icode">t</span>, <span class="icode">t</span> is looked up
+in the environment for its associated <em>function</em> <span class="icode">f</span>.
+</p>
+<p>If no <span class="icode">f</span> is found, then the XML tag if left untouched
+and the children of the tag are then analysed.
+</p>
+<p>If <span class="icode">f</span> is found, then it is called, given the environment,
+the tag attributes and the children of the tag. Then the function returns
+a list of XML trees which must then be analysed.
+</p>
+<p>When this analyze reaches a fixpoint, the final XML tree is written
+to the <span class="icode">.html</span> file.
+</p>
+<p>This work is performed by the <span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl</a></span>
+library.</p>
+<p>Besides, the contents of the attributes are also analysed to perform such substitutions,
+before looking up for the tag in the environment.
+</p>
+<p>Stog comes with <a href="http://zoggy.github.com/stog/funs.html">predefined functions</a>
+associated to some tags, but more can be created in plugins.
+</p>
+</div>
+
+</div>
+<footer id="bottombar">
+</footer>
+</body>
+</html>
