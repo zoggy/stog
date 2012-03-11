@@ -160,7 +160,7 @@ let fun_image _env args legend =
 ;;
 
 
-let fun_article_href hid ?from stog env args _ =
+let fun_article_href hid ?from stog env args subs =
   let article, text =
     let a =
       try
@@ -172,18 +172,18 @@ let fun_article_href hid ?from stog env args _ =
           None
     in
     let text =
-      match a, Xtmpl.get_arg args "text" with
-        None, _ -> "??"
-            | Some a, None -> Printf.sprintf "\"%s\"" a.art_title
-      | Some _, Some text -> text
+      match a, subs with
+        None, _ -> [Xtmpl.D "??"]
+      | Some a, [] -> [Xtmpl.D (Printf.sprintf "\"%s\"" a.art_title)]
+      | Some _, text -> text
     in
     (a, text)
   in
   match article with
-    None -> [Xtmpl.T ("span", ["class", "unknown-ref"], [Xtmpl.D text])]
+    None -> [Xtmpl.T ("span", ["class", "unknown-ref"], text)]
   | Some a ->
       [
-        Xtmpl.T ("a", ["href", (link_to_article stog ?from a)], [Xtmpl.D text])
+        Xtmpl.T ("a", ["href", (link_to_article stog ?from a)], text)
       ]
 ;;
 
@@ -981,8 +981,6 @@ let generate_by_word_indexes outdir stog env tmpl map f_html_file =
     rss_file;
     let env = Xtmpl.env_of_list ~env
       ([
-         Stog_cst.site_title, (fun _ _ _ -> [Xtmpl.D stog.stog_title]) ;
-         Stog_cst.site_desc, (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_desc]) ;
          "articles", (article_list outdir ~set ~rss: rss_basefile stog);
          Stog_cst.page_title, (fun _ _ _ -> [Xtmpl.D word]) ;
        ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
@@ -1012,8 +1010,6 @@ let generate_archive_index outdir stog env =
     let html_file = Filename.concat outdir (month_index_file stog ~year ~month) in
     let env = Xtmpl.env_of_list ~env
       ([
-         Stog_cst.site_title, (fun _ _ _ -> [Xtmpl.D stog.stog_title]) ;
-         Stog_cst.site_desc, (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_desc]) ;
          "articles", (article_list outdir ~set stog);
          Stog_cst.page_title, (fun _ _ _ -> [Xtmpl.D (Printf.sprintf "%s %d" months.(month-1) year)]) ;
        ] @ (default_commands ~outdir ~from:`Index stog))
@@ -1038,10 +1034,7 @@ let generate_index_file outdir stog env =
     (List.map snd (Stog_types.article_list stog)) rss_file;
   let env = Xtmpl.env_of_list ~env
     ([
-       Stog_cst.site_title, (fun _ _ _ -> [Xtmpl.D stog.stog_title]) ;
        "contents", (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_body]);
-       Stog_cst.site_desc, (fun _ _ _ -> [Xtmpl.xml_of_string stog.stog_desc]) ;
-       Stog_cst.site_url, (fun _ _ _ -> [Xtmpl.D stog.stog_base_url]) ;
        "articles", (article_list outdir ~rss: rss_basefile stog);
      ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
   in

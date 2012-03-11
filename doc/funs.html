@@ -4,24 +4,120 @@ page-title=Predefined functions
 This list is not yet complete.
 </div>
 <p>
-The following functions are pre-defined and can be used in your pages,
-articles and templates:
+Some functions are pre-defined and can be used in your pages, articles and templates.
+The following common functions are available everywhere:
+<a href="#archive-tree">archive-tree</a>,
+<a href="#article">article</a>,
+<a href="#articles">articles</a>,
+<a href="#command-line">command-line</a>,
+<a href="#ext-a">ext-a</a>,
+<a href="#graphx">graph</a>,
+<a href="#hcode">hcode</a>,
+<a href="#icode">icode</a>,
+<a href="#if">if</a>,
+<a href="#include">include</a>,
+<a href="#image">image</a>,
+<a href="#langswitch">langswitch</a>,
+<a href="#latex">latex</a>,
+<a href="#ocaml">ocaml</a>,
+<a href="#pagex">page</a>,
+<a href="#rssfeedx">rssfeed</a>,
+<a href="#section">section and subsection</a>,
+<a href="#site-descx">site-desc</a>,
+<a href="#site-titlex">site-title</a>,
+<a href="#site-url">site-url</a>,
+<a href="#toc">toc and prepare-toc</a>,
+<a href="#two-columns">two-columns</a>.
 </p>
-<prepare-toc depth="2">
-<toc/>
-
 <p>For most of the functions, you should look at the generated XML to modify
 your CSS stylesheet according to the classes used. You can start from
 the <icode>.less</icode> files in the <icode>doc</icode> directory
 of the stog sources.
 </p>
+<p>
+Some functions are available in some templates only (and in templates
+"called" from these templates):
+<table class="table table-bordered table-stripped">
+<thead>
+<tr><th>Template</th><th>Functions</th></tr>
+</thead>
+<tr><td>index.tmpl</td>
+<td>
+<a href="#contents">contents</a>
+</td></tr>
 
-<section name="common" title="Common functions">
-<subsection name="archive-tree" title="archive-tree">
+<tr><td>page.tmpl</td>
+<td>
+<a href="#contents">contents</a>,
+<a href="#page-titlex">page-title</a>
+</td></tr>
+
+<tr><td>blogpage.tmpl</td><td>
+<a href="#contents">contents</a>
+</td></tr>
+
+<tr><td>article.tmpl</td>
+<td>
+<a href="#article-body">article-body</a>,
+<a href="#article-date">article-date</a>,
+<a href="#article-navbar">article-navbar</a>,
+<a href="#article-title">article-title</a>,
+<a href="#article-url">article-url</a>,
+<a href="comment-actions">comment-actions</a>,
+<a href="comments">comments</a>,
+<a href="keywords">keywords and topics</a>,
+<a href="#previous">previous and next</a>
+</td></tr>
+
+<tr><td>article_list.tmpl</td>
+<td>
+<a href="#article-date">article-date</a>,
+<a href="#article-intro">article-intro</a>,
+<a href="#article-title">article-title</a>,
+<a href="#article-url">article-url</a>
+</td></tr>
+
+<tr><td>by_topic.tmpl</td>
+<td>
+<a href="#articles">articles</a>,
+<a href="#page-title">page-title</a>,
+<a href="#topic">topic</a>
+</td></tr>
+
+<tr><td>by_kw.tmpl</td>
+<td>
+<a href="#articles">articles</a>,
+<a href="#keyword">keyword</a>,
+<a href="#page-title">page-title</a>
+</td></tr>
+
+<tr><td>archive_month.tmpl</td>
+<td>
+<a href="#articles">articles</a>,
+<a href="#page-title">page-title</a>
+</td></tr>
+
+<tr><td>topic.tmpl</td><td><a href="#topic">topic</a></td></tr>
+<tr><td>keyword.tmpl</td><td><a href="#keyword">keyword</a></td></tr>
+
+<tr><td>comment.tmpl</td><td>
+body,
+<a href="#comment-actions">comment-actions</a>,
+<a href="#comments">comments</a>,
+date, from, subject, to
+</td></tr>
+
+</table>
+</p>
+
+
+<section name="archive-tree" title="archive-tree">
+<p>
 <icode lang="xml">&lt;archive-tree/&gt;</icode> inserts the articles archive tree.
-</subsection>
+</p>
+</section>
 
-<subsection name="article" title="article">
+<section name="article" title="article">
 <include file="syntax.tmpl"><![CDATA[<article href="...">text</article>]]></include>
 <p>
 This will return a link to the article specified by its id. The id of an article
@@ -31,29 +127,109 @@ article will raise an error.
 <p>
 If no text is given for the link, the title of the article will be used instead.
 </p>
-</subsection>
+</section>
 
-<subsection name="articles" title="articles">
+<section name="article-bodyx" title="article-body">
+<p>
+<icode lang="xml">&lt;article-body/&gt;</icode> returns the body of the current article.
+</p>
+</section>
+
+<section name="article-date" title="article-date">
+<p>
+<icode lang="xml">&lt;article-date/&gt;</icode> returns the date of the current article.
+</p>
+</section>
+
+<section name="article-intro" title="article-intro">
+<p>
+<icode lang="xml">&lt;article-intro/&gt;</icode> returns the inroduction of an article,
+that is the boy code before the <icode>&lt;sep_/&gt;</icode> marker.
+</p>
+<p>
+<icode lang="xml">&lt;article-intro/&gt;</icode> is only available in the template
+<icode>article_list.tmpl</icode> template file, used to compute the
+<a href="#articles"><icode>&lt;articles.../&gt;</icode></a> function.
+</p>
+</section>
+
+<section name="article-navbar" title="article-navbar">
+<p>
+<icode lang="xml">&lt;article-navbar/&gt;</icode> contains "true" when
+we are "in" an article page. It is not defined if we are for example in
+another blog page, like article list by topic, by keyword, or by month.
+This can be used in the <icode>blogpage.tmpl</icode> template file
+to display of not the navigation bar, that is the bar with links to
+next and previous article.
+</p>
+</section>
+
+<section name="article-url" title="article-url">
+<p>
+<icode lang="xml">&lt;article-url/&gt;</icode> returns the final url of the current article.
+</p>
+</section>
+
+<section name="articles" title="articles">
+<p>
 <icode lang="xml">&lt;articles max="..."/&gt;</icode> inserts the list of
 published articles.
 The optional <icode>max="n"</icode> attribute can be used to list only
 the <icode>n</icode> last articles.
-</subsection>
+</p>
+</section>
 
-<subsection name="comand-line" title="command-line">
+<section name="command-line" title="command-line">
+<p>
 <icode lang="xml">&lt;command-line&gt;</icode> works like
 <a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a>
 with the <icode>lang</icode>
 attribute already set to "sh".
-</subsection>
+</p>
+</section>
 
-<subsection name="ext-a" title="ext-a">
+<section name="comment-actions" title="comment-actions">
+<p>
+<icode lang="xml">&lt;comment-actions/&gt;</icode> inserts the action to
+add a comment or reply to a comment. By default, it creates a "mailto:" link
+with some fields pre-defined.
+</p>
+</section>
+
+<section name="comments" title="comments">
+<p>
+<icode lang="xml">&lt;comments/&gt;</icode> inserts the comments of the article.
+By default, the comments are taken from email files in the directory of the
+article. It is possible to override the <icode>comments</icode> function with
+a plugin to use another comment system, like <ext-a href="http://disqus.com">Disqus</ext-a>.
+</p>
+</section>
+
+<section name="contents" title="contents">
+<p>
+<icode lang="xml">&lt;contents/&gt;</icode> is the generic function to insert some
+contents in an included file or template. It is used for example in
+<icode>blogpage.tmpl</icode>, in <a href="#include"><icode lang="xml">&lt;include&gt;</icode></a>, ...
+</p>
+</section>
+
+<section name="ext-a" title="ext-a">
+<p>
 <icode lang="xml">&lt;ext-a attributes&gt;...&lt;/ext-a&gt;</icode> is reduced
 to <icode lang="xml">&lt;span class="ext-a"&gt;&lt;a attributes&gt;...&lt;/&gt;&lt;/ext-a&gt;</icode>.
 This can be used to add specific style link to external sites.
-</subsection>
+</p>
+</section>
 
-<subsection name="hcode" title="hcode">
+<section name="graphx" title="graph">
+<p>
+<icode lang="xml">&lt;graph/&gt;</icode> computes the graph of articles in SVG format, and returns
+a link to this graph displayed as a small graph. One can click on an article in the generated SVG
+graph to jump to the article.
+</p>
+</section>
+
+<section name="hcode" title="hcode">
 <include file="syntax.tmpl"><![CDATA[<hcode lang="...">your code</hcode>]]></include>
 <p>
 This function inserts the given pre-formatted code. It uses the
@@ -61,15 +237,17 @@ This function inserts the given pre-formatted code. It uses the
 tool to add syntax highlighting. For example, the code examples of this page are
 inserted using <hcode lang="xml"><![CDATA[<hcode lang="xml">...</hcode>]]></hcode>
 </p>
-</subsection>
+</section>
 
-<subsection name="icode" title="icode">
+<section name="icode" title="icode">
+<p>
 <icode lang="xml">&lt;icode&gt;</icode> works like
 <a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a> but is used to
 generate inline highlighted code instead of using a box.
-</subsection>
+</p>
+</section>
 
-<subsection name="if" title="if">
+<section name="if" title="if">
 <include file="syntax.tmpl"><![CDATA[
 <if attr1="value1" attr2="value2" ...>
 <XML tree used when all conditions are verified>
@@ -94,9 +272,9 @@ a block or not:
 <div>The list is not empty, let's print it:<ul><list/></ul></div>
 </if>]]></hcode>
 </p>
-</subsection>
+</section>
 
-<subsection name="include" title="include">
+<section name="include" title="include">
 <include file="syntax.tmpl"><![CDATA[<include file="template">...</include>]]></include>
 <p>
 This function will load the file <icode>template</icode> from the template directory
@@ -120,12 +298,12 @@ The following code
 will be reduced to
 <hcode lang="xml"><![CDATA[<p> key=bar value=the value of bar </p>]]></hcode>
 </p>
-</subsection>
+</section>
 
-<subsection name="image" title="image">
+<section name="image" title="image">
 <include file="syntax.tmpl"><![CDATA[<image float="[left|right]" src="..." ...>legend</image>]]></include>
 <p>
-This generates an image using an <icode>&lt;img .../&gt;</icode> node. The legend is optional.
+This generates an image using an <icode lang="xml">&lt;img .../&gt;</icode> node. The legend is optional.
 </p>
 <p>
 The <icode>float</icode> attribute can be used to change a class in the generated code,
@@ -134,44 +312,123 @@ so you can set the style of the image to be left or right floating.
 <p>
 Additional attributes are passed to the generated <icode>img</icode> node.
 </p>
-</subsection>
+</section>
 
-<subsection name="ocaml" title="ocaml">
+<section name="keyword" title="keyword">
+<p>
+<icode lang="xml">&lt;keyword/&gt;</icode> inserts the name of the current keyword,
+when computing topic list (in template <icode>keyword.tmpl</icode>.
+</p>
+</section>
+
+<section name="keywords" title="keywords and topics">
+<p>
+<icode lang="xml">&lt;keywords sep="..."/&gt;</icode> and
+<icode lang="xml">&lt;topics sep="..."/&gt;</icode> respectively return the keyword and topic list of
+the current article, as defined in the article file. The optional <icode>sep</icode> attribute
+can be used to specify a separator oe each keyword or topic.
+</p>
+<p>Each keyword will be displayed using a <icode>keyword.tmpl</icode> template file.
+Each topic will be displayed using a <icode>topic.tmpl</icode> template file.
+</p>
+</section>
+
+<section name="langswitch" title="langswitch">
+<p>
+If <icode>stog</icode> is launched with option <icode>--lang language</icode>, the
+<icode lang="xml">&lt;langswitch&gt;</icode> function returns some code to access
+to pages in other languages than <icode>language</icode>.
+</p>
+</section>
+
+<section name="latex" title="latex">
+<p>
+<icode lang="xml">&lt;latex&gt;...&lt;/latex&gt;</icode> is used to compile
+latex code and display it as SVG in the page. Read <article href="latex-in-stog">this article</article>
+for details.
+</p>
+</section>
+
+<section name="previous" title="previous and next">
+<p>
+<icode lang="xml">&lt;previous/&gt;</icode> and
+<icode lang="xml">&lt;next/&gt;</icode> respectively return a link to the previous and next
+article according to the chronological order of article dates.
+</p>
+</section>
+
+<section name="ocaml" title="ocaml">
+<p>
 <icode lang="xml">&lt;ocaml&gt;</icode> works like
 <a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a>
 with the <icode>lang</icode>
 attribute already set to "ocaml".
-</subsection>
+</p>
+</section>
 
-<subsection name="rssfeedx" title="rssfeed">
+<section name="pagex" title="page">
+<include file="syntax.tmpl"><![CDATA[<page id="..."/>
+<page href="...">...</page>]]></include>
+<p>
+<icode lang="xml">&lt;page id="..."/&gt;</icode> is used to trigger the generation of the
+page with the given <icode>id</icode>. The page is generated from the original
+page file, whose body is evaluated in the current environment. This allows
+set of pages to be generated with an environment, while other ones are generated
+with a different environment. This is what is used in this doc to highlight
+the part of the site the current page belongs to in the top navigation bar.
+<p>
+The page id is the filename of the source page, without extension.
+</p>
+<icode lang="xml">&lt;page href="..."/&gt;some text&lt;/page&gt;</icode> returns a link
+to the indicated page. If no text is given, the page title is used as text
+for the link.
+</p>
+</section>
+
+<section name="page-titlex" title="page-title">
+<p><icode lang="xml">&lt;page-title&gt;</icode> returns the page title as specified in the
+page file.
+</p>
+</section>
+
+<section name="rssfeedx" title="rssfeed">
+<p>
 <icode lang="xml">&lt;rssfeed/&gt;</icode> is available in pages an RSS feed is associated to,
 like keywords page, ... It returns the url of the RSS feed.
-</subsection>
+</p>
+</section>
 
-<subsection name="section" title="section and subsection">
+<section name="section" title="section and subsection">
 <include file="syntax.tmpl"><![CDATA[<section name="..." title="...">...</section>
 <subsection name="..." title="...">...</subsection>
  ]]></include>
-This is used to insert sections and subsections, with a given title. The name,
+<p>This is used to insert sections and subsections, with a given title. The name,
 if given, is used as id in the section title node.
-</subsection>
+</p>
+</section>
 
-<subsection name="site-descx" title="site-desc">
+<section name="site-descx" title="site-desc">
+<p>
 <icode lang="xml">&lt;site-desc&gt;</icode> returns the site description as specified in the
 main file.
-</subsection>
+</p>
+</section>
 
-<subsection name="site-titlex" title="site-title">
+<section name="site-titlex" title="site-title">
+<p>
 <icode lang="xml">&lt;site-title&gt;</icode> returns the site title as specified in the
 main file.
-</subsection>
+</p>
+</section>
 
-<subsection name="site-url" title="site-url">
+<section name="site-url" title="site-url">
+<p>
 <icode lang="xml">&lt;site-url&gt;</icode> returns the site url as specified in the
 main file.
-</subsection>
+</p>
+</section>
 
-<subsection name="toc" title="toc and prepare-toc">
+<section name="toc" title="toc and prepare-toc">
 <include file="syntax.tmpl"><![CDATA[<prepare-toc depth="[1|2|...]">
 ...
 <toc>text</toc>
@@ -197,9 +454,16 @@ the function associated to "toc-contents" in its environment.
 which includes all the sections and subsections. The <icode>depth</icode> attribute
 is used to specify the depth of the table of contents.
 </p>
-</subsection>
+</section>
 
-<subsection name="two-columns" title="two-columns">
+<section name="topic" title="topic">
+<p>
+<icode lang="xml">&lt;topic/&gt;</icode> inserts the name of the current topic,
+when computing topic list (in template <icode>topic.tmpl</icode>.
+</p>
+</section>
+
+<section name="two-columns" title="two-columns">
 <include file="syntax.tmpl"><![CDATA[<two-columns>
 <XML for left column/>
 <XML for right column/>
@@ -207,71 +471,12 @@ is used to specify the depth of the table of contents.
 <p>
 This will put the two given XML nodes in a two-column layout.
 </p>
-</subsection>
-</section>
-
-<section name="in-articles" title="Functions available in &quot;article.tmpl&quot; template">
-<subsection name="article-navbar" title="article-navbar">
-<p>
-<icode lang="xml">&lt;article-navbar/&gt;</icode> contains "true" when
-we are "in" an article page. It is not defined if we are for example in
-another blog page, like article list by topic, by keyword, or by month.
-This can be used in the <icode>blogpage.tmpl</icode> template file
-to display of not the navigation bar, that is the bar with links to
-next and previous article.
-</p>
-</subsection>
-
-<subsection name="article-url" title="article-url">
-<p>
-<icode lang="xml">&lt;article-url/&gt;</icode> returns the final url of the current article.
-</p>
-</subsection>
-
-<subsection name="article-bodyx" title="article-body">
-<p>
-<icode lang="xml">&lt;article-body/&gt;</icode> returns the body of the current article.
-</p>
-</subsection>
-
-<subsection name="comments" title="comments">
-<p>
-<icode lang="xml">&lt;comments/&gt;</icode> inserts the comments of the article.
-By default, the comments are taken from email files in the directory of the
-article. It is possible to override the <icode>comments</icode> function with
-a plugin to use another comment system, like <ext-a href="http://disqus.com">Disqus</ext-a>.
-</p>
-</subsection>
-
-<subsection name="comment-actions" title="comment-actions">
-<p>
-<icode lang="xml">&lt;comment-actions/&gt;</icode> inserts the action to
-add a comment or reply to a comment. By default, it creates a "mailto:" link
-with some fields pre-defined.
-</p>
-</subsection>
-
-<subsection name="keywords" title="keywords and topics">
-<p>
-<icode lang="xml">&lt;keywords sep="..."/&gt;</icode> and
-<icode lang="xml">&lt;topics sep="..."/&gt;</icode> respectively return the keyword and topic list of
-the current article, as defined in the article file. The optional <icode>sep</icode> attribute
-can be used to specify a separator oe each keyword or topic.
-</p>
-<p>Each keyword will be displayed using a <icode>keyword.tmpl</icode> template file.
-Each topic will be displayed using a <icode>topic.tmpl</icode> template file.
-</p>
-</subsection>
-
-<subsection name="prev" title="prev and next">
-<p>
-<icode lang="xml">&lt;prev/&gt;</icode> and
-<icode lang="xml">&lt;next/&gt;</icode> respectively return a link to the previous and next
-article according to the chronological order of article dates.
-</p>
-</subsection>
-
 </section>
 
 
-</prepare-toc>
+
+
+
+
+
+
