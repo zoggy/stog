@@ -7,7 +7,7 @@
 <div id="page">
 <include navbar-blog="active" file="menubar.tmpl"/>
 <div id="header">
-<if article-navbar="true"><nav class="navbar"><div class="navleft"><previous/></div><div class="navright"><next/></div></nav></if>
+<if article-navbar="true"><div class="article-navbar"><if previous=""><span/><div class="navleft"><previous/></div></if><if next=""><span/><div class="navright"><next/></div></if></div></if>
 </div>
 <aside><include file="sidebar.tmpl"/></aside>
 <contents/>
