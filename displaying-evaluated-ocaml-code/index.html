@@ -1,0 +1,122 @@
+<!DOCTYPE HTML><html>
+<head>
+<title>Stog : Displaying evaluated OCaml code</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.com/stog/style.css"/>
+
+</head><body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+
+
+  <a class="brand" href="http://zoggy.github.com/stog/index.html">Stog</a>
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.com/stog/index.html">Home</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.com/stog/install.html">Installation</a></li>
+    <li class="&lt;navbar-doc/&gt;"><a href="http://zoggy.github.com/stog/doc.html">Documentation</a></li>
+    <li class="active"><a href="http://zoggy.github.com/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.com/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+  </div>
+
+</div>
+</div>
+
+<div id="header">
+<nav class="navbar"><div class="navleft"><a href="../latex-in-stog/index.html">LaTeX in stog</a></div><div class="navright"/></nav>
+</div>
+<aside><aside>
+<div class="sidebar">
+<div id="archives">Archives: <ul><li>2012<ul><li><a href="../2012_03.html">mars</a>(2)</li></ul></li></ul></div>
+</div>
+</aside>
+</aside>
+<div itemscope="" itemtype="http://schema.org/BlogPosting" id="article">
+<div class="date">dimanche 11 mars 2012</div>
+<h1 itemprop="name">Displaying evaluated OCaml code</h1>
+<link itemprop="url" href="http://zoggy.github.com/stog/displaying-evaluated-ocaml-code"/>
+<div itemprop="articleBody" id="article-body">
+<p>
+Bytecode version of Stog, <span class="icode">stog.byte</span>,
+offers the <span class="icode"><span class="hl kwa">&lt;ocaml-eval&gt;</span> ... <span class="hl kwa">&lt;/ocaml-eval&gt;</span>
+</span>
+function to evaluate code and display the result. This is nice to provide
+verified code examples on your pages.
+</p>
+
+<p>
+Example:
+<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval&gt;</span>
+let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;
+<span class="hl kwa">&lt;/ocaml-eval&gt;</span>
+</pre>
+will display this: <pre class="code-ocaml"><div><span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span>
+</div></pre>
+</p>
+<p>Adding the <span class="icode">toplevel=&quot;true&quot;</span> attribute will enable printing of the
+toplevel result, so
+<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>
+let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;<span class="hl kwa">&lt;/ocaml-eval&gt;</span>
+</pre>
+will display this: <pre class="code-ocaml"><div># <span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span>
+</div><div class="ocaml-toplevel">val mylist : int list = [1; 2; 3; 4]</div></pre>
+</p>
+<p>
+By default, <span class="icode">ocaml-eval</span> will stop Stog if an exception is
+raised when evaluating code.
+The <span class="icode">error-exc</span> attribute can be used to change this behaviour.
+By default it is <span class="icode">&quot;true&quot;</span>, but
+giving this attribute another value will result in printing the raised exception instead
+of stopping Stog. This is useful when you want to show code raising exceptions, but still
+don't want to let other piece of code fail silently.
+<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">error-exc</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&gt;</span>
+let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;
+let mylist2 = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl str">&quot;hello&quot;</span>];;
+<span class="hl kwa">&lt;/ocaml-eval&gt;</span>
+</pre>
+will display this: <pre class="code-ocaml"><div># <span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span>
+</div><div class="ocaml-toplevel">val mylist : int list = [1; 2; 3; 4]</div><div># <span class="hl kwa">let</span> mylist2 <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl str">&quot;hello&quot;</span><span class="hl opt">];;</span>
+</div><div class="ocaml-toplevel ocaml-exc">Line 1, characters 28-35:
+Error: This expression has type string but an expression was expected of type
+         int</div></pre>
+Without <span class="icode">error-exc=&quot;false&quot;</span>, Stog would have failed with the
+OCaml error message.
+</p>
+</div>
+<div class="article-keywords">
+<div class="bloc-keywords">
+Domains: <div class="keywords"><a href="../topic_stog.html"><span itemprop="keywords">stog</span>
+</a></div>
+</div>
+<div class="bloc-keywords">
+Keywords: <div class="keywords"><a href="../kw_ocaml.html"><span itemprop="keywords">ocaml</span></a>, <a href="../kw_evaluation.html"><span itemprop="keywords">evaluation</span></a>, <a href="../kw_code.html"><span itemprop="keywords">code</span></a></div>
+</div>
+</div>
+
+<div class="comments">
+<div id="disqus_thread"/>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'stog'; // required: replace example with your forum shortname
+    var disqus_url = 'http://zoggy.github.com/stog/displaying-evaluated-ocaml-code' ;
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</div>
+
+</div>
+
+</div>
+<footer id="bottombar">
+</footer>
+</body>
+</html>
