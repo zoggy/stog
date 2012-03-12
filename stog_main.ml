@@ -80,13 +80,8 @@ let usage = Printf.sprintf
 let main () =
   let remain = ref [] in
   Arg.parse options (fun s -> remain := s :: !remain) usage ;
-  begin
-    try
-      Dynlink.allow_unsafe_modules true ;
-      List.iter Dynlink.loadfile !plugins
-    with Dynlink.Error e ->
-    failwith (Dynlink.error_message e)
-  end;
+
+  !Stog_dyn.load_files !plugins;
   match List.rev !remain with
     [] -> failwith usage
   | dirs ->

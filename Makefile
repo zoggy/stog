@@ -48,7 +48,7 @@ CP=cp -f
 MKDIR=mkdir -p
 
 SYSLIBS=unix.cmxa dynlink.cmxa pcre.cmxa str.cmxa xmlm.cmx xtmpl.cmx xml-light.cmxa rss.cmxa
-SYSLIBS_BYTE=unix.cma dynlink.cma pcre.cma str.cma xmlm.cmo xtmpl.cmo xml-light.cma rss.cma
+SYSLIBS_BYTE=unix.cma pcre.cma str.cma xmlm.cmo xtmpl.cmo xml-light.cma rss.cma
 
 GUI_SYSLIBS=lablgtk.cmxa \
 	lablgtksourceview2.cmxa \
@@ -75,7 +75,8 @@ LIB_CMXFILES=stog_config.cmx \
 	stog_io.cmx \
 	stog_info.cmx \
 	stog_latex.cmx \
-	stog_html.cmx
+	stog_html.cmx \
+	stog_dyn.cmx \
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)
 LIB_CMIFILES=$(LIB_CMXFILES:.cmx=.cmi)
@@ -117,11 +118,11 @@ guiopt: $(GUI_MAIN)
 byte: $(LIB_BYTE) $(MAIN_BYTE) plugin_example.cmo disqus_plugin.cmo
 guibyte: $(GUI_MAIN_BYTE)
 
-$(MAIN): $(LIB) stog_main.cmx
+$(MAIN): $(LIB) stog_dyn_opt.cmx stog_main.cmx
 	$(OCAMLOPT) -verbose -linkall -o $@ $(COMPFLAGS) $(SYSLIBS) \
 	$^
 
-$(MAIN_BYTE): $(LIB_BYTE) stog_ocaml.cmo stog_main.cmo
+$(MAIN_BYTE): $(LIB_BYTE) stog_ocaml.cmo stog_dyn_byte.cmo stog_main.cmo
 	$(OCAMLC) -linkall -o $@ $(COMPFLAGS) $(SYSLIBS_BYTE) \
 	toplevellib.cma $^
 
@@ -157,7 +158,7 @@ install:
 	$(MKDIR) $(INSTALLDIR)
 	$(CP) $(LIB_CMIFILES) $(LIB) $(LIB_BYTE) $(LIB:.cmxa=.a) \
 	$(INSTALLDIR)
-	$(CP) $(MAIN) $(CLIENT)  `dirname \`which $(OCAMLC)\``/
+	$(CP) $(MAIN) $(MAIN_BYTE)  `dirname \`which $(OCAMLC)\``/
 
 #####
 clean:

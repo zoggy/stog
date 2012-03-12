@@ -134,10 +134,9 @@ let fun_new_env env args subs =
 ;;
 
 let fun_eval env args code =
-(*
   let original_stderr = Unix.dup Unix.stderr in
   let original_stdout = Unix.dup Unix.stdout in
-*)  try
+  try
     let exc = Xtmpl.opt_arg args ~def: "true" "error-exc" = "true" in
     let toplevel = Xtmpl.opt_arg args ~def: "false" "toplevel" = "true" in
     let code =
@@ -151,7 +150,20 @@ let fun_eval env args code =
     let rec iter acc = function
       [] -> List.rev acc
     | phrase :: q ->
-        let code = Stog_html.highlight ~opts: "--config-file=ocaml.lang" phrase in
+        let lang_file =
+          let d =
+            match !Stog_html.current_stog with
+              None -> Filename.dirname Sys.argv.(0)
+            | Some stog -> stog.Stog_types.stog_dir
+          in
+          Filename.concat d "ocaml.lang"
+        in
+        let opts = if Sys.file_exists lang_file then
+            Printf.sprintf "--config-file=%s" lang_file
+          else
+            "--syntax=ocaml"
+        in
+        let code = Stog_html.highlight ~opts phrase in
         let code = if toplevel then Printf.sprintf "# %s" code else code in
         let code = Xtmpl.T ("div", [], [Xtmpl.xml_of_string code]) in
         let (output, raised_exc) =
@@ -174,13 +186,14 @@ let fun_eval env args code =
         iter acc q
     in
     let xml = iter [] phrases in
+    Unix.dup2 original_stdout Unix.stdout;
+    Unix.dup2 original_stderr Unix.stderr;
     [ Xtmpl.T ("pre", ["class", "code-ocaml"], xml) ]
   with
     e ->
-(*
+
       Unix.dup2 original_stdout Unix.stdout;
       Unix.dup2 original_stderr Unix.stderr;
-  *)
       raise e
 ;;
 

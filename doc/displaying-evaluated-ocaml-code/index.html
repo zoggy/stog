@@ -1,0 +1,42 @@
+article-title= Displaying evaluated OCaml code
+article-date= 2012/03/11
+topics= stog
+keywords= ocaml, evaluation, code
+article-published= true
+<->
+<p>
+Bytecode version of Stog, <icode>stog.byte</icode>,
+offers the <icode lang="xml"><![CDATA[<ocaml-eval> ... </ocaml-eval>]]></icode>
+function to evaluate code and display the result. This is nice to provide
+verified code examples on your pages.
+</p>
+<sep_/>
+<p>
+Example:
+<hcode lang="xml"><![CDATA[<ocaml-eval>
+let mylist = [ 1 ; 2 ; 3 ; 4];;
+</ocaml-eval>]]></hcode>
+will display this: <ocaml-eval>let mylist = [ 1 ; 2 ; 3 ; 4];;</ocaml-eval>
+</p>
+<p>Adding the <icode>toplevel="true"</icode> attribute will enable printing of the
+toplevel result, so
+<hcode lang="xml"><![CDATA[<ocaml-eval toplevel="true">
+let mylist = [ 1 ; 2 ; 3 ; 4];;</ocaml-eval>
+]]></hcode>
+will display this: <ocaml-eval toplevel="true">let mylist = [ 1 ; 2 ; 3 ; 4];;</ocaml-eval>
+</p>
+<p>
+The <icode>error-exc</icode> attribute can be used to make Stog fails in an exception
+is raised by the evaluated code. By default it is <icode>"true"</icode>, but
+giving this attribute another value will result in printing the raised exception instead
+of stopping Stog. This is useful when you want to show code raising exceptions, but still
+don't want to let other piece of code fail silently.
+<hcode lang="xml"><![CDATA[<ocaml-eval toplevel="true" error-exc="false">
+let mylist = [ 1 ; 2 ; 3 ; 4];;
+let mylist2 = [ 1 ; 2 ; 3 ; "hello"];;
+</ocaml-eval>]]></hcode>
+will display this: <ocaml-eval toplevel="true" error-exc="false">
+let mylist = [ 1 ; 2 ; 3 ; 4];;
+let mylist2 = [ 1 ; 2 ; 3 ; "hello"];;</ocaml-eval>
+</p>
+

@@ -258,7 +258,7 @@ let highlight ~opts code =
       failwith (Printf.sprintf "command failed: %s" com)
 ;;
 
-let fun_hcode ?(inline=false) ?lang _env args code =
+let fun_hcode ?(inline=false) ?lang stog _env args code =
   let language, language_options =
     match lang with
       None ->
@@ -269,7 +269,13 @@ let fun_hcode ?(inline=false) ?lang _env args code =
          | _ -> (lang, Some (Printf.sprintf "--syntax=%s" lang))
         )
     | Some "ocaml" ->
-        ("ocaml", Some (Printf.sprintf "--config-file=%s/ocaml.lang" (Filename.dirname Sys.argv.(0))))
+        let lang_file = Filename.concat stog.stog_dir "ocaml.lang" in
+        let opts = if Sys.file_exists lang_file then
+            Printf.sprintf "--config-file=%s" lang_file
+          else
+            "--syntax=ocaml"
+        in
+        ("ocaml", Some opts)
     | Some lang ->
         (lang, Some (Printf.sprintf "--syntax=%s" lang))
   in
@@ -587,10 +593,10 @@ and default_commands ?outdir ?from ?rss stog =
       "include", fun_include stog.stog_tmpl_dir ;
       "image", fun_image ;
       "archive-tree", (fun _ -> fun_archive_tree ?from stog) ;
-      "hcode", fun_hcode ~inline: false ?lang: None;
-      "icode", fun_icode ?lang: None;
-      "ocaml", fun_ocaml ~inline: false ;
-      "command-line", fun_command_line ~inline: false ;
+      "hcode", fun_hcode stog ~inline: false ?lang: None;
+      "icode", fun_icode ?lang: None stog;
+      "ocaml", fun_ocaml ~inline: false stog;
+      "command-line", fun_command_line ~inline: false stog ;
       "article", fun_article ?from stog;
       "section", fun_section ;
       "subsection", fun_subsection ;
