@@ -613,13 +613,13 @@ and default_commands ?outdir ?from ?rss stog =
   in
   let l =
      match outdir with
-       | None -> l
-            | Some outdir ->
-                l @
-                ["graph", fun_graph outdir ?from stog ;
-                  "page", (fun_page outdir stog) ;
-                  "latex", (Stog_latex.fun_latex outdir stog) ;
-                ]
+     | None -> l
+     | Some outdir ->
+         l @
+         ["graph", fun_graph outdir ?from stog ;
+          "page", (fun_page outdir stog) ;
+          "latex", (Stog_latex.fun_latex outdir stog) ;
+         ]
   in
   (make_lang_funs stog) @ l
 ;;
@@ -916,7 +916,14 @@ let generate_article outdir stog env art_id article =
             "title", "Post a comment"], [])])
     ]
   in
-  let env = Xtmpl.env_of_list
+  let env = Xtmpl.env_of_list ~env
+    (List.map
+     (fun (key, value) ->
+        (key, fun _ _ _ -> [Xtmpl.xml_of_string value]))
+     article.art_vars
+    )
+  in
+  let env = Xtmpl.env_of_list ~env
     ([
      Stog_cst.article_title, (fun _ _ _ -> [ Xtmpl.D article.art_title ]) ;
      Stog_cst.page_title, (fun _ _ _ -> [ Xtmpl.D article.art_title ]) ;
