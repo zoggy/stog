@@ -71,8 +71,12 @@ Here is an example:
 <div class="section"><div class="section-title" id="compiling">Compilation</div>
 <p>
 The plugin is simply compiled with
-<pre class="code-sh">ocamlopt <span class="hl opt">-</span>shared <span class="hl opt">-</span>o plugin_example.cmxs plugin_example.ml
+<pre class="code-sh">ocamlopt <span class="hl opt">-</span>I <span class="hl opt">+</span>stog <span class="hl opt">-</span>shared <span class="hl opt">-</span>o plugin_example.cmxs plugin_example.ml
 </pre>
+for native code or
+<pre class="code-sh">ocamlc <span class="hl opt">-</span>I <span class="hl opt">+</span>stog <span class="hl opt">-</span>c plugin_example.ml
+</pre>
+for bytecode.
 </p>
 </div>
 
