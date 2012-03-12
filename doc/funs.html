@@ -7,6 +7,7 @@ The following common functions are available everywhere:
 <a href="#article">article</a>,
 <a href="#articles">articles</a>,
 <a href="#command-line">command-line</a>,
+<a href="#env_">env_</a>,
 <a href="#ext-a">ext-a</a>,
 <a href="#graphx">graph</a>,
 <a href="#hcode">hcode</a>,
@@ -210,6 +211,26 @@ a plugin to use another comment system, like <ext-a href="http://disqus.com">Dis
 <icode lang="xml">&lt;contents/&gt;</icode> is the generic function to insert some
 contents in an included file or template. It is used for example in
 <icode>blogpage.tmpl</icode>, in <a href="#include"><icode lang="xml">&lt;include&gt;</icode></a>, ...
+</p>
+</section>
+
+<section name="env_" title="env_">
+<p>The special tag <icode>env_</icode> can be used to modify the environment
+before analysing children. For example, here we add an association
+between "login" and "zoggy". This will add to the environment
+an association between the key "login" and
+the function returning the one-element list ["zoggy"], which is used
+later in the "login" attribute:
+<hcode lang="xml"><![CDATA[<env_ login="zoggy">
+  ...
+  <user login="&lt;login/&gt;">...</user>
+  ...
+</env_>]]></hcode>
+</p>
+<p>Such a function cannot be created in plugins, since functions only return
+XML trees, not a new environment. But your functions can return XML trees
+containing <icode>env_</icode> tags to modify the environment used to
+evaluate the returned XML trees.
 </p>
 </section>
 

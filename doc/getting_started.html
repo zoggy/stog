@@ -29,7 +29,7 @@ Some xml code as starting point when generating your site
 directory can be indicated with the <icode>--tmpl</icode> command line option.</li>
 
 <li><icode>xxx.html</icode>: any <icode>.html</icode> file in the directory
-will be considered as a static page of the site. Each of these files have the following
+will be considered as a static page of the site. Each of these files has the following
 syntax:
 <hcode lang="xml"><![CDATA[
 page-title= your page title
@@ -134,7 +134,7 @@ article or static page, the XML body is interpreted in the following way.
 For each encountered tag <icode>t</icode>, <icode>t</icode> is looked up
 in the environment for its associated <em>function</em> <icode>f</icode>.
 </p>
-<p>If no <icode>f</icode> is found, then the XML tag if left untouched
+<p>If no <icode>f</icode> is found, then the XML tag is left untouched
 and the children of the tag are then analysed.
 </p>
 <p>If <icode>f</icode> is found, then it is called, given the environment,
