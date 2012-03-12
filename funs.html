@@ -35,6 +35,7 @@ The following common functions are available everywhere:
 <a href="#article">article</a>,
 <a href="#articles">articles</a>,
 <a href="#command-line">command-line</a>,
+<a href="#env_">env_</a>,
 <a href="#ext-a">ext-a</a>,
 <a href="#graphx">graph</a>,
 <a href="#hcode">hcode</a>,
@@ -256,6 +257,27 @@ a plugin to use another comment system, like <span class="ext-a"><a href="http:/
 contents in an included file or template. It is used for example in
 <span class="icode">blogpage.tmpl</span>, in <a href="#include"><span class="icode"><span class="hl kwa">&lt;include&gt;</span>
 </span></a>, ...
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="env_">env_</div>
+<p>The special tag <span class="icode">env_</span> can be used to modify the environment
+before analysing children. For example, here we add an association
+between &quot;login&quot; and &quot;zoggy&quot;. This will add to the environment
+an association between the key &quot;login&quot; and
+the function returning the one-element list [&quot;zoggy&quot;], which is used
+later in the &quot;login&quot; attribute:
+<pre class="code-xml"><span class="hl kwa">&lt;env_</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;zoggy&quot;</span><span class="hl kwa">&gt;</span>
+  ...
+  <span class="hl kwa">&lt;user</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;&amp;lt;login/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/user&gt;</span>
+  ...
+<span class="hl kwa">&lt;/env_&gt;</span>
+</pre>
+</p>
+<p>Such a function cannot be created in plugins, since functions only return
+XML trees, not a new environment. But your functions can return XML trees
+containing <span class="icode">env_</span> tags to modify the environment used to
+evaluate the returned XML trees.
 </p>
 </div>
 
