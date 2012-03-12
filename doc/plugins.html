@@ -17,7 +17,10 @@ Here is an example:
 <section name="compiling" title="Compilation">
 <p>
 The plugin is simply compiled with
-<command-line>ocamlopt -shared -o plugin_example.cmxs plugin_example.ml</command-line>
+<command-line>ocamlopt -I +stog -shared -o plugin_example.cmxs plugin_example.ml</command-line>
+for native code or
+<command-line>ocamlc -I +stog -c plugin_example.ml</command-line>
+for bytecode.
 </p>
 </section>
 
