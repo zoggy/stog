@@ -26,8 +26,10 @@ let mylist = [ 1 ; 2 ; 3 ; 4];;</ocaml-eval>
 will display this: <ocaml-eval toplevel="true">let mylist = [ 1 ; 2 ; 3 ; 4];;</ocaml-eval>
 </p>
 <p>
-The <icode>error-exc</icode> attribute can be used to make Stog fails in an exception
-is raised by the evaluated code. By default it is <icode>"true"</icode>, but
+By default, <icode>ocaml-eval</icode> will stop Stog if an exception is
+raised when evaluating code.
+The <icode>error-exc</icode> attribute can be used to change this behaviour.
+By default it is <icode>"true"</icode>, but
 giving this attribute another value will result in printing the raised exception instead
 of stopping Stog. This is useful when you want to show code raising exceptions, but still
 don't want to let other piece of code fail silently.
@@ -38,5 +40,7 @@ let mylist2 = [ 1 ; 2 ; 3 ; "hello"];;
 will display this: <ocaml-eval toplevel="true" error-exc="false">
 let mylist = [ 1 ; 2 ; 3 ; 4];;
 let mylist2 = [ 1 ; 2 ; 3 ; "hello"];;</ocaml-eval>
+Without <icode>error-exc="false"</icode>, Stog would have failed with the
+OCaml error message.
 </p>
 
