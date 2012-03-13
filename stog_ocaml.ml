@@ -61,7 +61,7 @@ let ocaml_phrases_of_string s =
 
 let log_oc = open_out "ocaml.log";;
 
-let _ = Location.input_name := "";;
+(*let _ = Location.input_name := "";;*)
 let stderr_file = Filename.temp_file "stogocaml" "err";;
 let stdout_file = Filename.temp_file "stogocaml" "out";;
 

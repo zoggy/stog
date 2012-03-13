@@ -98,20 +98,8 @@ GUI_MAIN_CMIFILES=$(GUi_MAIN_CMXFILES:.cmx=.cmi)
 GUI_MAIN=$(MAIN)-gui
 GUI_MAIN_BYTE=$(GUI_MAIN).byte
 
-OCAML_SRC_DIR=/home/guesdon/devel/ocaml-3.12/
-OCAML_INCLUDES= \
-	-I $(OCAML_SRC_DIR)parsing \
-	-I $(OCAML_SRC_DIR)typing \
-	-I $(OCAML_SRC_DIR)toplevel \
-	-I $(OCAML_SRC_DIR)utils \
-	-I $(OCAML_SRC_DIR)driver
-
-OCAMLTOP_CMXFILES=$(OCAMLTOP_CMOFILES:.cmo=.cmx)
-
 all: opt byte
 gui: guiopt guibyte
-ocaml: stog_ocaml.cma
-ocamlopt: stog_ocaml.cmxs
 
 opt: $(LIB) $(MAIN) plugin_example.cmxs disqus_plugin.cmxs
 guiopt: $(GUI_MAIN)
@@ -140,8 +128,8 @@ $(GUI_MAIN_BYTE): $(LIB_BYTE) $(GUI_MAIN_CMIFILES) $(GUI_MAIN_CMOFILES)
 	$(OCAMLC) -linkall -o $@ $(COMPFLAGS) $(SYSLIBS_BYTE) \
 	$(LIB_BYTE) $(GUI_SYSLIBS_BYTE) $(GUI_MAIN_CMOFILES)
 
-stog_ocaml.cmo: stog_ocaml.ml
-	$(OCAMLC) $(COMPFLAGS) -c $(OCAML_INCLUDES) $<
+stog_ocaml.cmo: stog_ocaml.ml errors.cmi
+	$(OCAMLC) $(COMPFLAGS) -c $<
 
 ##########
 .PHONY: doc webdoc
