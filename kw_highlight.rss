@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>Stog: highlight</title>
+    <link>http://zoggy.github.com/stog/kw_highlight.html</link>
+    <description>Static blog and web site generator</description>
+    <managingEditor>zoggy &apos;AT&apos; bat8 &apos;DOT&apos; org</managingEditor>
+    <pubDate>13 Mar 2012 08:00:00 +0000</pubDate>
+    <lastBuildDate>13 Mar 2012 08:00:00 +0000</lastBuildDate>
+    <generator>Stog</generator>
+    <item>
+      <title>Including a code file (defering evaluation)</title>
+      <link>http://zoggy.github.com/stog/including-code-file/index.html</link>
+      <description>&lt;main&gt;&lt;p&gt;How to highlight a file inserted with &lt;span class=&quot;icode&quot;&gt;&lt;main&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;include&lt;/span&gt; ...&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/main&gt;&lt;/span&gt; ?
+&lt;/p&gt;
+&lt;/main&gt;&lt;a href=&quot;http://zoggy.github.com/stog/including-code-file&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>13 Mar 2012 08:00:00 +0000</pubDate>
+      <category>stog</category>
+      <category>highlight</category>
+      <category>include</category>
+      <category>code</category>
+      <guid isPermaLink="true">http://zoggy.github.com/stog/including-code-file/index.html</guid>
+    </item>
+  </channel>
+</rss>
