@@ -1,0 +1,32 @@
+article-title= Including a code file (defering evaluation)
+article-date= 2012/03/13
+topics= stog
+keywords= highlight, include, code
+article-published= true
+<->
+<p>How to highlight a file inserted with <icode lang="xml">&lt;include ...&gt;</icode> ?
+</p>
+<sep_/>
+<p>
+If you want to include and highlight for example the <icode>style.less</icode> file
+in the template directory, you can try
+<hcode lang="css"><![CDATA[<hcode raw="true" lang="css"><include file="style.less"/></hcode>]]></hcode>
+but this will only result in
+<hcode raw="true" lang="css"><include file="style.less"/></hcode>
+</p>
+<p>This is because <icode>&lt;hcode...&gt;</icode> is evaluated immediately, displaying
+its children nodes. What you need is to defer the evaluation of <icode>&lt;hcode...&gt;</icode>,
+using the special <icode>defer_</icode> attribute:
+<hcode lang="css"><![CDATA[<hcode raw="true" lang="css" defer_="1"><include file="style.less"/></hcode>]]></hcode>
+This will give the expected result:
+<hcode raw="true" lang="css" defer_="1"><include file="style.less"/></hcode>
+</p>
+<p>
+The <icode>defer_</icode> attribute is decremented each time the node should be evaluated.
+So the first time, the value is 1, so the children are evaluated first, then the
+<icode>&lt;hcode&gt;</icode> node is returned with a <icode>defer_</icode> attribute
+decremented, i.e. 0, and with the result of <icode>&lt;include ...&gt;</icode>
+as children. During the next evaluation, the <icode>&lt;hcode&gt;</icode> is evaluated
+and it now highlights its children, that is the contents of the included file.
+</p>
+<p><icode>defer_</icode> can take values greater than 1, if you need to nest defered evaluations.</p>
