@@ -523,7 +523,7 @@ let fun_prepare_toc env args subs =
   | Xtmpl.E (tag, subs) ->
       match tag with
       | (("", t), atts) ->
-          iter d acc (Xtmpl.T (t, List.map (fun ((_,a),v) -> (a, v)) atts, subs))
+          iter d acc (Xtmpl.T (t, (List.map (fun ((_,a),v) -> (a, v)) atts), subs))
       | _ -> acc
   in
   let toc = List.rev (List.fold_left (iter 1) [] subs) in

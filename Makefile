@@ -29,7 +29,8 @@
 
 #
 
-INCLUDES=-I +lablgtk2 -I +lablgtk-extras -I +cameleon2 -I +xmlm $(OCAML_INCLUDES)
+INCLUDES=-I +lablgtk2 -I +lablgtk-extras -I +cameleon2 \
+	`ocamlfind query -i-format xmlm` `ocamlfind query -i-format xtmpl`
 COMPFLAGS=$(INCLUDES) -annot -I `ocamlfind query pcre` -rectypes -g
 OCAMLPP=
 
@@ -47,8 +48,8 @@ RM=rm -f
 CP=cp -f
 MKDIR=mkdir -p
 
-SYSLIBS=unix.cmxa dynlink.cmxa pcre.cmxa str.cmxa xmlm.cmx xtmpl.cmx xml-light.cmxa rss.cmxa
-SYSLIBS_BYTE=unix.cma pcre.cma str.cma xmlm.cmo xtmpl.cmo xml-light.cma rss.cma
+SYSLIBS=unix.cmxa dynlink.cmxa pcre.cmxa str.cmxa xmlm.cmxa xtmpl.cmx xml-light.cmxa rss.cmxa
+SYSLIBS_BYTE=unix.cma pcre.cma str.cma xmlm.cma xtmpl.cmo xml-light.cma rss.cma
 
 GUI_SYSLIBS=lablgtk.cmxa \
 	lablgtksourceview2.cmxa \
