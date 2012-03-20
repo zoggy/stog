@@ -263,10 +263,18 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
     match lang with
       None ->
         (
-         let lang = Xtmpl.opt_arg args ~def: "txt" "lang" in
-         match lang with
-           "txt" -> (lang, None)
-         | _ -> (lang, Some (Printf.sprintf "--syntax=%s" lang))
+         match Xtmpl.get_arg args "lang-file" with
+           None ->
+             begin
+               let lang = Xtmpl.opt_arg args ~def: "txt" "lang" in
+               match lang with
+                 "txt" -> (lang, None)
+               | _ -> (lang, Some (Printf.sprintf "--syntax=%s" lang))
+             end
+         | Some f ->
+             let lang = Xtmpl.opt_arg args ~def: "" "lang" in
+             let opts = Printf.sprintf "--config-file=%s" f in
+             (lang, Some opts)
         )
     | Some "ocaml" ->
         let lang_file = Filename.concat stog.stog_dir "ocaml.lang" in
