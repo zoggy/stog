@@ -8,18 +8,18 @@ article-published= true
 </p>
 <sep_/>
 <p>
-If you want to include and highlight for example the <icode>style.less</icode> file
-in the template directory, you can try
-<hcode lang="css"><![CDATA[<hcode raw="true" lang="css"><include file="style.less"/></hcode>]]></hcode>
+If you want to include and highlight for example the <icode>../../disqus_plugin.ml</icode> file
+relative to the template directory, you can try
+<hcode lang="xml"><![CDATA[<hcode raw="true" lang="ocaml"><include file="../../disqus_plugin.ml"/></hcode>]]></hcode>
 but this will only result in
-<hcode raw="true" lang="css"><include file="style.less"/></hcode>
+<hcode raw="true" lang="ocaml"><include file="../../disqus_plugin.ml"/></hcode>
 </p>
 <p>This is because <icode>&lt;hcode...&gt;</icode> is evaluated immediately, displaying
 its children nodes. What you need is to defer the evaluation of <icode>&lt;hcode...&gt;</icode>,
 using the special <icode>defer_</icode> attribute:
-<hcode lang="css"><![CDATA[<hcode raw="true" lang="css" defer_="1"><include file="style.less"/></hcode>]]></hcode>
+<hcode lang="xml"><![CDATA[<hcode raw="true" lang="ocaml" defer_="1"><include file="../../disqus_plugin.ml"/></hcode>]]></hcode>
 This will give the expected result:
-<hcode raw="true" lang="css" defer_="1"><include file="style.less"/></hcode>
+<hcode raw="true" lang="ocaml" defer_="1"><include file="../../disqus_plugin.ml"/></hcode>
 </p>
 <p>
 The <icode>defer_</icode> attribute is decremented each time the node should be evaluated.
