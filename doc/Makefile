@@ -43,7 +43,7 @@ build:
 
 site:
 	$(STOG) $(STOG_OPTIONS) .
-	$(LESSC) tmpl/style.less > $(DEST_DIR)/style.css
+	$(LESSC) less/style.less > $(DEST_DIR)/style.css
 	cp -f *png tmpl/*png $(DEST_DIR)/
 #	cp -f *.svg $(DEST_DIR)/
 
