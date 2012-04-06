@@ -161,7 +161,7 @@ clean:
 HEADFILES= Makefile *.ml *.mli doc/Makefile
 headers:
 	echo $(HEADFILES)
-	headache -h header -c .headache_config `ls $(HEADFILES)`
+	headache -h header -c .headache_config `ls $(HEADFILES) | grep -v plugin_example`
 
 noheaders:
 	headache -r -c .headache_config `ls $(HEADFILES)`
