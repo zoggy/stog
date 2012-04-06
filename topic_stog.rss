@@ -1,58 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0">
-  <channel>
-    <title>Stog: stog</title>
-    <link>http://zoggy.github.com/stog/topic_stog.html</link>
-    <description>Static blog and web site generator</description>
-    <managingEditor>zoggy &apos;AT&apos; bat8 &apos;DOT&apos; org</managingEditor>
-    <pubDate>13 Mar 2012 08:00:00 +0000</pubDate>
-    <lastBuildDate>13 Mar 2012 08:00:00 +0000</lastBuildDate>
-    <generator>Stog</generator>
-    <item>
-      <title>Including a code file (defering evaluation)</title>
-      <link>http://zoggy.github.com/stog/including-code-file/index.html</link>
-      <description>&lt;main&gt;&lt;p&gt;How to highlight a file inserted with &lt;span class=&quot;icode&quot;&gt;&lt;main&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;include&lt;/span&gt; ...&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel><title>Stog: stog</title><link>http://zoggy.github.com/stog/topic_stog.html</link><description>Static blog and web site generator</description><managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor><pubDate>13 Mar 2012 08:00:00 +0000</pubDate><lastBuildDate>13 Mar 2012 08:00:00 +0000</lastBuildDate><generator>Stog</generator><item><title>Including a code file (deferring evaluation)</title><link>http://zoggy.github.com/stog/including-code-file/index.html</link><description>&lt;main&gt;&lt;p&gt;How to highlight a file inserted with &lt;span class=&quot;icode&quot;&gt;&lt;main&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;include&lt;/span&gt; ...&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;/main&gt;&lt;/span&gt; ?
 &lt;/p&gt;
-&lt;/main&gt;&lt;a href=&quot;http://zoggy.github.com/stog/including-code-file&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description>
-      <pubDate>13 Mar 2012 08:00:00 +0000</pubDate>
-      <category>stog</category>
-      <category>highlight</category>
-      <category>include</category>
-      <category>code</category>
-      <guid isPermaLink="true">http://zoggy.github.com/stog/including-code-file/index.html</guid>
-    </item>
-    <item>
-      <title>Displaying evaluated OCaml code</title>
-      <link>http://zoggy.github.com/stog/displaying-evaluated-ocaml-code/index.html</link>
-      <description>&lt;main&gt;&lt;p&gt;
+&lt;/main&gt;&lt;a href=&quot;http://zoggy.github.com/stog/including-code-file&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>13 Mar 2012 08:00:00 +0000</pubDate><category>stog</category><category>highlight</category><category>include</category><category>code</category><guid isPermaLink="true">http://zoggy.github.com/stog/including-code-file/index.html</guid></item><item><title>Displaying evaluated OCaml code</title><link>http://zoggy.github.com/stog/displaying-evaluated-ocaml-code/index.html</link><description>&lt;main&gt;&lt;p&gt;
 Bytecode version of Stog, &lt;span class=&quot;icode&quot;&gt;stog.byte&lt;/span&gt;,
 offers the &lt;span class=&quot;icode&quot;&gt;&lt;main&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;ocaml-eval&amp;gt;&lt;/span&gt; ... &lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;/ocaml-eval&amp;gt;&lt;/span&gt;
 &lt;/main&gt;&lt;/span&gt;
 function to evaluate code and display the result. This is nice to provide
 verified code examples on your pages.
 &lt;/p&gt;
-&lt;/main&gt;&lt;a href=&quot;http://zoggy.github.com/stog/displaying-evaluated-ocaml-code&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description>
-      <pubDate>11 Mar 2012 08:00:00 +0000</pubDate>
-      <category>stog</category>
-      <category>ocaml</category>
-      <category>evaluation</category>
-      <category>code</category>
-      <guid isPermaLink="true">http://zoggy.github.com/stog/displaying-evaluated-ocaml-code/index.html</guid>
-    </item>
-    <item>
-      <title>LaTeX in stog</title>
-      <link>http://zoggy.github.com/stog/latex-in-stog/index.html</link>
-      <description>&lt;main&gt;&lt;p&gt;
+&lt;/main&gt;&lt;a href=&quot;http://zoggy.github.com/stog/displaying-evaluated-ocaml-code&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>11 Mar 2012 08:00:00 +0000</pubDate><category>stog</category><category>ocaml</category><category>evaluation</category><category>code</category><guid isPermaLink="true">http://zoggy.github.com/stog/displaying-evaluated-ocaml-code/index.html</guid></item><item><title>LaTeX in stog</title><link>http://zoggy.github.com/stog/latex-in-stog/index.html</link><description>&lt;main&gt;&lt;p&gt;
 Stog handles &lt;span class=&quot;icode&quot;&gt;&lt;main&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;latex&amp;gt;&lt;/span&gt; ... &lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;/latex&amp;gt;&lt;/span&gt;
 &lt;/main&gt;&lt;/span&gt;.
 &lt;/p&gt;
-&lt;/main&gt;&lt;a href=&quot;http://zoggy.github.com/stog/latex-in-stog&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description>
-      <pubDate>09 Mar 2012 08:00:00 +0000</pubDate>
-      <category>stog</category>
-      <category>latex</category>
-      <category>svg</category>
-      <guid isPermaLink="true">http://zoggy.github.com/stog/latex-in-stog/index.html</guid>
-    </item>
-  </channel>
-</rss>
+&lt;/main&gt;&lt;a href=&quot;http://zoggy.github.com/stog/latex-in-stog&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>09 Mar 2012 08:00:00 +0000</pubDate><category>stog</category><category>latex</category><category>svg</category><guid isPermaLink="true">http://zoggy.github.com/stog/latex-in-stog/index.html</guid></item></channel></rss>

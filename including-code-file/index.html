@@ -1,6 +1,6 @@
 <!DOCTYPE HTML><html>
 <head>
-<title>Stog : Including a code file (defering evaluation)</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Including a code file (deferring evaluation)</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <link rel="stylesheet" type="text/css" href="http://zoggy.github.com/stog/style.css"/>
 
 </head><body>
@@ -35,7 +35,7 @@
 </aside>
 <div itemscope="" itemtype="http://schema.org/BlogPosting" id="article">
 <div class="date">mardi 13 mars 2012</div>
-<h1 itemprop="name">Including a code file (defering evaluation)</h1>
+<h1 itemprop="name">Including a code file (deferring evaluation)</h1>
 <link itemprop="url" href="http://zoggy.github.com/stog/including-code-file"/>
 <div itemprop="articleBody" id="article-body">
 <p>How to highlight a file inserted with <span class="icode"><span class="hl kwa">&lt;include</span> ...<span class="hl kwa">&gt;</span>
@@ -43,31 +43,62 @@
 </p>
 
 <p>
-If you want to include and highlight for example the <span class="icode">style.less</span> file
-in the template directory, you can try
-<pre class="code-css"><span class="hl opt">&lt;</span>hcode raw<span class="hl opt">=</span><span class="hl str">&quot;true&quot;</span> lang<span class="hl opt">=</span><span class="hl str">&quot;css&quot;</span><span class="hl opt">&gt;&lt;</span>include file<span class="hl opt">=</span><span class="hl str">&quot;style.less&quot;</span><span class="hl opt">/&gt;&lt;/</span>hcode<span class="hl opt">&gt;</span>
+If you want to include and highlight for example the <span class="icode">../../disqus_plugin.ml</span> file
+relative to the template directory, you can try
+<pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../../disqus_plugin.ml&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
 </pre>
 but this will only result in
-<pre class="code-css"><span class="hl opt">&lt;</span>include file<span class="hl opt">=</span><span class="hl str">&quot;style.less&quot;</span><span class="hl opt">/&gt;</span>
+<pre class="code-ocaml"><span class="hl opt">&lt;</span><span class="hl kwa">include</span> file<span class="hl opt">=</span><span class="hl str">&quot;../../disqus_plugin.ml&quot;</span><span class="hl opt">/&gt;</span>
 </pre>
 </p>
 <p>This is because <span class="icode">&lt;hcode...&gt;</span> is evaluated immediately, displaying
 its children nodes. What you need is to defer the evaluation of <span class="icode">&lt;hcode...&gt;</span>,
 using the special <span class="icode">defer_</span> attribute:
-<pre class="code-css"><span class="hl opt">&lt;</span>hcode raw<span class="hl opt">=</span><span class="hl str">&quot;true&quot;</span> lang<span class="hl opt">=</span><span class="hl str">&quot;css&quot;</span> defer_<span class="hl opt">=</span><span class="hl str">&quot;1&quot;</span><span class="hl opt">&gt;&lt;</span>include file<span class="hl opt">=</span><span class="hl str">&quot;style.less&quot;</span><span class="hl opt">/&gt;&lt;/</span>hcode<span class="hl opt">&gt;</span>
+<pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../../disqus_plugin.ml&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
 </pre>
 This will give the expected result:
-<pre class="code-css">@import <span class="hl str">&quot;gradients.less&quot;</span><span class="hl opt">;</span>
-@import <span class="hl str">&quot;variables.less&quot;</span><span class="hl opt">;</span>
-@import <span class="hl str">&quot;mixins.less&quot;</span><span class="hl opt">;</span>
-@import <span class="hl str">&quot;button-groups.less&quot;</span><span class="hl opt">;</span>
-@import <span class="hl str">&quot;buttons.less&quot;</span><span class="hl opt">;</span>
-@import <span class="hl str">&quot;grid.less&quot;</span><span class="hl opt">;</span>
-@import <span class="hl str">&quot;navbar.less&quot;</span><span class="hl opt">;</span>
-@import <span class="hl str">&quot;alerts.less&quot;</span><span class="hl opt">;</span>
-@import <span class="hl str">&quot;code.less&quot;</span><span class="hl opt">;</span>
-@import <span class="hl str">&quot;tables.less&quot;</span><span class="hl opt">;</span>
-@import <span class="hl str">&quot;mystyle.less&quot;</span><span class="hl opt">;</span>
+<pre class="code-ocaml"><span class="hl com">(*********************************************************************************)</span>
+<span class="hl com">(*                Stog                                                           *)</span>
+<span class="hl com">(*                                                                               *)</span>
+<span class="hl com">(*    Copyright (C) 2012 Maxence Guesdon. All rights reserved.                   *)</span>
+<span class="hl com">(*                                                                               *)</span>
+<span class="hl com">(*    This program is free software; you can redistribute it and/or modify       *)</span>
+<span class="hl com">(*    it under the terms of the GNU General Public License as                    *)</span>
+<span class="hl com">(*    published by the Free Software Foundation; either version 2 of the         *)</span>
+<span class="hl com">(*    License.                                                                   *)</span>
+<span class="hl com">(*                                                                               *)</span>
+<span class="hl com">(*    This program is distributed in the hope that it will be useful,            *)</span>
+<span class="hl com">(*    but WITHOUT ANY WARRANTY; without even the implied warranty of             *)</span>
+<span class="hl com">(*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the              *)</span>
+<span class="hl com">(*    GNU Library General Public License for more details.                       *)</span>
+<span class="hl com">(*                                                                               *)</span>
+<span class="hl com">(*    You should have received a copy of the GNU General Public                  *)</span>
+<span class="hl com">(*    License along with this program; if not, write to the Free Software        *)</span>
+<span class="hl com">(*    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA                   *)</span>
+<span class="hl com">(*    02111-1307  USA                                                            *)</span>
+<span class="hl com">(*                                                                               *)</span>
+<span class="hl com">(*    As a special exception, you have permission to link this program           *)</span>
+<span class="hl com">(*    with the OCaml compiler and distribute executables, as long as you         *)</span>
+<span class="hl com">(*    follow the requirements of the GNU GPL in regard to all of the             *)</span>
+<span class="hl com">(*    software in the executable aside from the OCaml compiler.                  *)</span>
+<span class="hl com">(*                                                                               *)</span>
+<span class="hl com">(*    Contact: Maxence.Guesdon@inria.fr                                          *)</span>
+<span class="hl com">(*                                                                               *)</span>
+<span class="hl com">(*********************************************************************************)</span>
+
+<span class="hl kwa">open</span> <span class="hl kwd">Stog_types</span><span class="hl opt">;;</span>
+
+<span class="hl kwa">let</span> fun_comments env args subs <span class="hl opt">=</span>
+  <span class="hl kwa">match</span> <span class="hl opt">!</span><span class="hl kwc">Stog_html</span><span class="hl opt">.</span>current_stog <span class="hl kwa">with</span>
+    <span class="hl kwd">None</span> <span class="hl opt">-&gt;</span> <span class="hl kwa">assert false</span>
+  | <span class="hl kwd">Some</span> stog <span class="hl opt">-&gt;</span>
+      <span class="hl kwa">let</span> tmpl <span class="hl opt">=</span> <span class="hl kwc">Filename</span><span class="hl opt">.</span>concat stog<span class="hl opt">.</span>stog_tmpl_dir <span class="hl str">&quot;disqus.tmpl&quot;</span> <span class="hl kwa">in</span>
+      <span class="hl opt">[</span><span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>xml_of_string <span class="hl opt">(</span><span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>apply_from_file env tmpl<span class="hl opt">)]</span>
+<span class="hl opt">;;</span>
+
+<span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_html</span><span class="hl opt">.</span>plugin_funs <span class="hl opt">:=</span>
+  <span class="hl opt">(</span><span class="hl str">&quot;comments&quot;</span><span class="hl opt">,</span> fun_comments<span class="hl opt">) :: !</span><span class="hl kwc">Stog_html</span><span class="hl opt">.</span>plugin_funs
+<span class="hl opt">;;</span>
 </pre>
 </p>
 <p>
@@ -78,7 +109,7 @@ decremented, i.e. 0, and with the result of <span class="icode">&lt;include ...&
 as children. During the next evaluation, the <span class="icode">&lt;hcode&gt;</span> is evaluated
 and it now highlights its children, that is the contents of the included file.
 </p>
-<p><span class="icode">defer_</span> can take values greater than 1, if you need to nest defered evaluations.</p>
+<p><span class="icode">defer_</span> can take values greater than 1, if you need to nest deferred evaluations.</p>
 </div>
 <div class="article-keywords">
 <div class="bloc-keywords">
