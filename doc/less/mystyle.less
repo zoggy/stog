@@ -1,21 +1,6 @@
 
 @articleRightMargin: 190px;
 
-// Border Radius
-/*
-.border-radius(@radius: 5px) {
-  -webkit-border-radius: @radius ;
-     -moz-border-radius: @radius ;
-          border-radius: @radius;
-}
-
-// Drop shadows
-.box-shadow(@shadow: 0 1px 3px rgba(0,0,0,.25)) {
-  -webkit-box-shadow: @shadow;
-     -moz-box-shadow: @shadow;
-          box-shadow: @shadow;
-}
-*/
 .rounded-box (@border-color: @color2, @bgcolor: @color3) {
   padding: 0 3px 2px;
   border: 1px solid @border-color;
@@ -32,7 +17,6 @@
 
 html { margin: 0 ; padding: 0 ;height: 100% ; }
 
-
 body {
   font: normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
   #gradient > .vertical(@color1, @color2);
@@ -41,18 +25,18 @@ body {
   height: 100%;
   margin: 0 ;
   padding: 0 ;
-/*  padding-top: @navbarHeight ;*/
 }
 
-p { margin-top: 0.2em; }
+/*p { margin-top: 0.2em; }*/
 
+/*
 footer#bottombar {
   position: fixed ;
   bottom: 0px;
-/*  height: 30px;*/
   width: 100%;
   }
 
+*/
 
 div#page {
   background-color: @bgcolor ;
@@ -63,21 +47,11 @@ div#page {
   padding-left: 2em;
   padding-right: 2em;
   line-height: 1.4;
-  /*
-    border-width: 0 5px 0 5px ;
-    border-color: #DDDDDD;
-  */
   border-width: 0 ;
   border-style: solid ;
-  /* border-width: 0 3px 0 0 ;
-     border-color: rgba(50%, 0%, 0%, 10%) ;
-  */
   min-height: 100% ;
-/*  padding-bottom: 2em;*/
-/*  margin-bottom: 2em;*/
   text-align: justify ;
 }
-
 
 div#header {
   padding-top: @navbarHeight + 4px;
@@ -88,12 +62,6 @@ div#navpath {
   height: 30px;
   }
 
-div#leftpane {
-
-}
-div#rightpane {
-
-}
 
 a:link {
   text-decoration:underline;
