@@ -31,9 +31,13 @@
 
 let gensym = let cpt = ref 0 in fun () -> incr cpt; !cpt;;
 
+let cache = Hashtbl.create 111;;
+
 let make_svg outdir ?(packages=[]) latex_code =
-  let tex = Filename.temp_file "stog" ".tex" in
-  let code = Printf.sprintf
+  try Hashtbl.find cache latex_code
+  with Not_found ->
+      let tex = Filename.temp_file "stog" ".tex" in
+      let code = Printf.sprintf
 "\\documentclass[12pt]{article}
 \\pagestyle{empty}
 \\usepackage[utf8x]{inputenc}
@@ -42,28 +46,29 @@ let make_svg outdir ?(packages=[]) latex_code =
 %s
 \\end{document}
 "
-  (String.concat ""
-    (List.map (fun s -> Printf.sprintf "\\usepackage%s\n" s) packages))
-  latex_code
-  in
-  let base = Filename.chop_extension tex in
-  let dvi = base^".dvi" in
-  let svg = Filename.concat outdir
-    (Filename.basename (Printf.sprintf "_latex%d.svg" (gensym())))
-  in
-  Stog_misc.file_of_string ~file: tex code;
-  let command = Printf.sprintf
-(*    "latex -output-directory=/tmp -interaction=batchmode %s ; dvips -o %s %s && convert -units PixelsPerInch -density 100 -trim %s %s"*)
-    "latex -output-directory=/tmp -interaction=batchmode %s ; dvisvgm -M 1.5 -e --no-fonts %s -s > %s"
-    (Filename.quote tex) (Filename.quote dvi) (Filename.quote svg)
-  in
-  match Sys.command command with
-    0 ->
-      List.iter (fun f -> try Sys.remove f with _ -> ())
-        [ tex ; dvi ];
-      svg
-  | n ->
-    failwith (Printf.sprintf "Command failed: %s" command)
+        (String.concat ""
+         (List.map (fun s -> Printf.sprintf "\\usepackage%s\n" s) packages))
+        latex_code
+      in
+      let base = Filename.chop_extension tex in
+      let dvi = base^".dvi" in
+      let svg = Filename.concat outdir
+        (Filename.basename (Printf.sprintf "_latex%d.svg" (gensym())))
+      in
+      Stog_misc.file_of_string ~file: tex code;
+      let command = Printf.sprintf
+        (*    "latex -output-directory=/tmp -interaction=batchmode %s ; dvips -o %s %s && convert -units PixelsPerInch -density 100 -trim %s %s"*)
+        "latex -output-directory=/tmp -interaction=batchmode %s ; dvisvgm -e --scale=1.1 -M 1.5 --no-fonts %s -s > %s"
+        (Filename.quote tex) (Filename.quote dvi) (Filename.quote svg)
+      in
+      match Sys.command command with
+        0 ->
+          List.iter (fun f -> try Sys.remove f with _ -> ())
+          [ tex ; dvi ];
+          Hashtbl.add cache latex_code svg;
+          svg
+      | n ->
+          failwith (Printf.sprintf "Command failed: %s" command)
 ;;
 
 let fun_latex outdir stog env args subs =
