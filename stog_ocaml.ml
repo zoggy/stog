@@ -88,7 +88,7 @@ let eval_ocaml_phrase ~exc phrase =
     Unix.close fd_out;
     Printf.fprintf log_oc "executing phrase: %s\n" phrase;
     let phrase = !Toploop.parse_toplevel_phrase lexbuf in
-    Printf.fprintf log_oc "phrase parsed";
+    Printf.fprintf log_oc "phrase parsed\n";
     ignore(Toploop.execute_phrase true Format.str_formatter phrase);
     let exec_output = Format.flush_str_formatter () in
     let err = Stog_misc.string_of_file stderr_file in
@@ -111,7 +111,28 @@ let eval_ocaml_phrase ~exc phrase =
     `Ok (Stog_misc.strip_string (Format.flush_str_formatter ()))
   with
   | e ->
-      Errors.report_error Format.str_formatter e;
+      (* Errors.report_error relies on exported compiler lib; on some
+         bugged setups, those libs are not in synch with the compiler
+         implementation, and the call below fails
+         because of an implementation mismatch with the toplevel.
+
+         We are therefore extra careful when calling
+         Errors.report_error, and in particular collect backtraces to
+         help spot this vicious issue. *)
+
+      let backtrace_enabled = Printexc.backtrace_status () in
+      if not backtrace_enabled then Printexc.record_backtrace true;
+      begin
+        try Errors.report_error Format.str_formatter e
+        with exn ->
+          Printf.fprintf log_oc
+            "an error happened during phrase error reporting:\n%s\n%!"
+            (Printexc.to_string exn);
+          Printf.fprintf log_oc "error backtrace:\n%s\n%!"
+            (Printexc.get_backtrace ());
+      end;
+      if not backtrace_enabled then Printexc.record_backtrace false;
+
       let err = Format.flush_str_formatter () in
       let msg = Printf.sprintf "ocaml error with code:\n%s\n%s" phrase err in
       if exc then

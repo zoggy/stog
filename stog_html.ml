@@ -591,7 +591,13 @@ and fun_page outdir stog env args subs =
     | None ->
       match Xtmpl.get_arg args "href" with
       | Some id -> fun_page_ref id stog env args subs
-      | None -> failwith "Missing id or href for <page>"
+      | None ->
+          let info =
+            match subs with
+              [] -> "<no children>"
+            | l -> String.concat "" (List.map Xtmpl.string_of_xml subs)
+          in
+          failwith ("Missing id or href for <page>: "^info)
 
 and default_commands ?outdir ?from ?rss stog =
   let l =
