@@ -76,6 +76,7 @@ LIB_CMXFILES=stog_config.cmx \
 	stog_graph.cmx \
 	stog_date.cmx \
 	stog_types.cmx \
+	stog_intl.cmx \
 	stog_find.cmx \
 	stog_mailparse.cmx \
 	stog_cst.cmx \

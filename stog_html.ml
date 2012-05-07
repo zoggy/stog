@@ -216,8 +216,9 @@ let fun_archive_tree ?from stog _env _ =
 
   let f_mon year (month, set) =
     let link = link_to ?from (month_index_file stog ~year ~month) in
+    let month_str = Stog_intl.get_month stog.stog_lang month in
     Xtmpl.T ("li", [], [
-       Xtmpl.T ("a", ["href", link], [ Xtmpl.D (months.(month-1)) ]) ;
+       Xtmpl.T ("a", ["href", link], [ Xtmpl.D month_str ]) ;
        Xtmpl.D (Printf.sprintf "(%d)" (Stog_types.Art_set.cardinal set))
      ]
     )
@@ -651,9 +652,9 @@ let intro_of_article stog art =
 ;;
 
 let rss_date_of_article article =
-    let (y, m, d) = article.art_date in
+    let {year; month; day} = article.art_date in
     {
-      Rss.year = y ; month = m ; day = d ;
+      Rss.year = year ; month ; day;
       hour = 8 ; minute = 0 ; second = 0 ;
       zone = 0 ; week_day = -1 ;
     }
@@ -708,7 +709,9 @@ let generate_rss_feed_file stog ?title link articles file =
     items
   in
   let channel = Rss.keep_n_items stog.stog_rss_length channel in
-  Rss.print_file ~encoding: "UTF-8" file channel
+  (* break tail-rec to get a better error backtrace *)
+  let result = Rss.print_file ~encoding: "UTF-8" file channel in
+  result
 ;;
 
 let copy_file ?(ignerr=false) ?(quote_src=true) ?(quote_dst=true) src dest =
@@ -943,7 +946,8 @@ let generate_article outdir stog env art_id article =
      Stog_cst.page_title, (fun _ _ _ -> [ Xtmpl.D article.art_title ]) ;
      "article-url", (fun _ _ _ -> [ Xtmpl.D url ]) ;
      "article-body", (fun _ _ _ -> [ xml_of_article_body article.art_body ]);
-     Stog_cst.article_date, (fun _ _ _ -> [ Xtmpl.D (Stog_types.string_of_date article.art_date) ]) ;
+     Stog_cst.article_date, (fun _ _ _ ->
+       [ Xtmpl.D (Stog_intl.string_of_date stog.stog_lang article.art_date) ]) ;
      "next", (next Stog_info.succ_by_date) ;
      "previous", (next Stog_info.pred_by_date) ;
      "keywords", html_of_keywords stog article ;
@@ -981,7 +985,8 @@ let article_list outdir ?rss ?set stog env args _ =
     let url = article_url stog art in
     let env = Xtmpl.env_of_list ~env
     ([
-       "article-date", (fun _ _ _ -> [ Xtmpl.D (Stog_types.string_of_date art.art_date) ]) ;
+       "article-date", (fun _ _ _ ->
+         [ Xtmpl.D (Stog_intl.string_of_date stog.stog_lang art.art_date) ]) ;
        "article-title", (fun _ _ _ -> [ Xtmpl.D art.art_title ] );
        "article-url", (fun _ _ _ -> [ Xtmpl.D url ]);
        "article-intro", (fun _ _ _ -> intro_of_article stog art) ;
@@ -1041,7 +1046,9 @@ let generate_archive_index outdir stog env =
     let env = Xtmpl.env_of_list ~env
       ([
          "articles", (article_list outdir ~set stog);
-         Stog_cst.page_title, (fun _ _ _ -> [Xtmpl.D (Printf.sprintf "%s %d" months.(month-1) year)]) ;
+         Stog_cst.page_title, (fun _ _ _ ->
+           let month_str = Stog_intl.get_month stog.stog_lang month in
+           [Xtmpl.D (Printf.sprintf "%s %d" month_str year)]) ;
        ] @ (default_commands ~outdir ~from:`Index stog))
     in
     let env = env_add_langswitch env stog html_file in

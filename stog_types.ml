@@ -30,7 +30,11 @@
 (** *)
 
 type contents_kind = Text | Html
-type date = int * int * int (** day 1..31 * month 1..12 * year *)
+type date = {
+  year : int;
+  month : int;
+  day : int;
+}
 type time = Stog_date.t ;;
 
 type message = {
@@ -73,7 +77,11 @@ and page_id = page Stog_tmap.key
 
 let today () =
   let t = Unix.gmtime (Unix.time()) in
-  (t.Unix.tm_year + 1900, t.Unix.tm_mon+1,  t.Unix.tm_mday)
+  {
+    year = t.Unix.tm_year + 1900;
+    month = t.Unix.tm_mon+1;
+    day = t.Unix.tm_mday
+  }
 ;;
 
 let dummy_article () =
@@ -264,21 +272,6 @@ let merge_stogs stogs =
       List.fold_left f stog q
 ;;
 
-
-let days = [| "dimanche" ; "lundi" ; "mardi" ; "mercredi" ; "jeudi" ; "vendredi" ; "samedi" |]
-let months = [|
-   "janvier" ; "février" ; "mars" ; "avril" ; "mai" ; "juin" ;
-   "juillet" ; "août" ; "septembre" ; "octobre" ; "novembre" ; "décembre" |];;
-
-let string_of_date (y,m,d) =
-  let tm = { Unix.tm_mday = d ; tm_mon = (m-1) ; tm_year = (y - 1900) ;
-             tm_sec = 0 ; tm_min = 0 ; tm_hour = 0 ; tm_wday = 0 ;
-             tm_yday = 0 ; tm_isdst = false ; }
-  in
-  let (_, tm) = Unix.mktime tm in
-  Printf.sprintf "%s %d %s %d"
-    days.(tm.Unix.tm_wday) d months.(m-1) y
-;;
 
 let make_human_id stog str =
   let str = Stog_misc.lowercase str in

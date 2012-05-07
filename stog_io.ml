@@ -47,7 +47,7 @@ let separator = "<->";;
 let re_separator = Str.regexp_string separator;;
 
 let date_of_string s =
-  try Scanf.sscanf s "%d/%d/%d" (fun d m y -> (d, m, y))
+  try Scanf.sscanf s "%d/%d/%d" (fun year month day -> {day; month; year})
   with
   | Scanf.Scan_failure _ -> failwith ("Invalid date: "^s)
   | End_of_file -> failwith (Printf.sprintf "Incomplete date \"%s\"" s)
@@ -148,11 +148,12 @@ let read_article dir =
       let art_files = List.filter ((<>) file) art_files in
       let comments = read_article_comments  dir in
       (*prerr_endline (Printf.sprintf "%s: %d messages" dir (List.length comments));*)
+      let default_date = { day = 01; month = 01; year = 2011; } in
       let a =
         { art_human_id = Filename.basename dir ;
           art_kind = kind ;
           art_body = "" ;
-          art_date = (01, 01, 2011) ;
+          art_date = default_date ;
           art_keywords = [] ;
           art_topics = [] ;
           art_title = ("title for "^(Filename.basename dir)) ;
@@ -345,7 +346,7 @@ let write_stog_article stog _ art =
     Printf.sprintf
     "title: %s\ndate: %s\ntopics: %s\nkeywords: %s\npublished: %s\n<->\n%s"
     art.art_title
-    (let (y, m, d) = art.art_date in Printf.sprintf "%04d/%02d/%02d" y m d)
+    (Stog_intl.short_string_of_date art.art_date)
     (list art.art_topics)
     (list art.art_keywords)
     (if art.art_published then "true" else "false")

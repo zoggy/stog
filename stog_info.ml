@@ -178,12 +178,12 @@ let compute_archives stog =
     Stog_types.Int_map.add m set mmap
   in
   let f_art art_id article ymap =
-    let (year,mon, _) = article.art_date in
+    let {year; month; day = _} = article.art_date in
     let mmap =
       try Stog_types.Int_map.find year ymap
       with Not_found -> Stog_types.Int_map.empty
     in
-    let mmap = f_mon art_id mon mmap in
+    let mmap = f_mon art_id month mmap in
     Stog_types.Int_map.add year mmap ymap
   in
   let arch = Stog_tmap.fold f_art
