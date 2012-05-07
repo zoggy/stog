@@ -42,6 +42,10 @@ let first_that_exists =
   iter
 ;;
 
+let re_ignore =
+  let comment = "^[ \t]*#.*$" in
+  let empty = "^[ \t]*$" in
+  Str.regexp (comment ^ "\\|" ^ empty)
 let re_field = Str.regexp "^\\([^=]+\\)=\\([^\n]*\\)";;
 let separator = "<->"
 (* matches the separator only when it's alone on its line *)
@@ -68,7 +72,8 @@ let bool_of_string s =
 let read_article_header art header =
   let lines = Stog_misc.split_string header ['\n'] in
   let f art line =
-    try
+    if Str.string_match re_ignore line 0 then art
+    else try
       ignore(Str.string_match re_field line 0);
       let field = Str.matched_group 1 line in
       let value = Str.matched_group 2 line in
