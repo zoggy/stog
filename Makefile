@@ -37,6 +37,9 @@ INCLUDES=-I +lablgtk2 -I +lablgtk-extras \
 COMPFLAGS=$(INCLUDES) -annot -rectypes -g
 OCAMLPP=
 
+PLUGINS_BYTE=disqus_plugin.cmo markdown_plugin.cmo
+PLUGINS_OPT=$(PLUGINS_BYTE:.cmo=.cmxs)
+
 OCAMLC=ocamlc.opt -g
 OCAMLOPT=ocamlopt.opt -g
 OCAMLLEX=ocamllex
@@ -105,9 +108,9 @@ GUI_MAIN_BYTE=$(GUI_MAIN).byte
 all: opt byte
 gui: guiopt guibyte
 
-opt: $(LIB) $(MAIN) plugin_example.cmxs disqus_plugin.cmxs
+opt: $(LIB) $(MAIN) plugin_example.cmxs $(PLUGINS_OPT)
 guiopt: $(GUI_MAIN)
-byte: $(LIB_BYTE) $(MAIN_BYTE) plugin_example.cmo disqus_plugin.cmo
+byte: $(LIB_BYTE) $(MAIN_BYTE) plugin_example.cmo $(PLUGINS_BYTE)
 guibyte: $(GUI_MAIN_BYTE)
 
 $(MAIN): $(LIB) stog_dyn_opt.cmx stog_main.cmx
