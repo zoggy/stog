@@ -169,11 +169,6 @@ noheaders:
 #############
 .SUFFIXES: .mli .ml .cmi .cmo .cmx .mll .mly
 
-stog_coms.cmo stog_coms.cmi: stog_coms.ml
-	$(OCAMLC) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
-stog_coms.cmx stog_coms.cmi: stog_coms.ml
-	$(OCAMLOPT) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
-
 %.cmi:%.mli
 	$(OCAMLC) $(OCAMLPP) $(COMPFLAGS) -c $<
 
@@ -201,6 +196,11 @@ stog_coms.cmx stog_coms.cmi: stog_coms.ml
 
 %.mli %.ml:%.mly
 	$(OCAMLYACC) -v $<
+
+stog_coms.cmo stog_coms.cmi: stog_coms.ml
+	$(OCAMLC) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
+stog_coms.cmx: stog_coms.ml
+	$(OCAMLOPT) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
 
 .PHONY: clean depend
 
