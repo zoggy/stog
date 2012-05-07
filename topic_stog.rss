@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"><channel><title>Stog: stog</title><link>http://zoggy.github.com/stog/topic_stog.html</link><description>Static blog and web site generator</description><managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor><pubDate>13 Mar 2012 08:00:00 +0000</pubDate><lastBuildDate>13 Mar 2012 08:00:00 +0000</lastBuildDate><generator>Stog</generator><item><title>Including a code file (deferring evaluation)</title><link>http://zoggy.github.com/stog/including-code-file/index.html</link><description>&lt;main&gt;&lt;p&gt;How to highlight a file inserted with &lt;span class=&quot;icode&quot;&gt;&lt;main&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;include&lt;/span&gt; ...&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;/main&gt;&lt;/span&gt; ?
 &lt;/p&gt;
