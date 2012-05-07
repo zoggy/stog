@@ -43,8 +43,9 @@ let first_that_exists =
 ;;
 
 let re_field = Str.regexp "^\\([^=]+\\)=\\([^\n]*\\)";;
-let separator = "<->";;
-let re_separator = Str.regexp_string separator;;
+let separator = "<->"
+(* matches the separator only when it's alone on its line *)
+let re_separator = Str.regexp ("^" ^ Str.quote separator ^ "$")
 
 let date_of_string s =
   try Scanf.sscanf s "%d/%d/%d" (fun year month day -> {day; month; year})
@@ -98,7 +99,17 @@ let read_article_main art ?loc contents =
   let loc = match loc with None -> "..." | Some loc -> loc in
   let p_sep =
     try Str.search_forward re_separator contents 0
-    with Not_found -> failwith ("no <-> separator in "^loc)
+    with Not_found ->
+      (* to avoid confusions and ambiguities, we ask that the <->
+         separator be alone on its line; if that fails, we check if
+         there is some separator as part of a line, to give a clearer
+         error message. *)
+      try
+        let fuzzy_sep = Str.regexp_string separator in
+        ignore (Str.search_forward fuzzy_sep contents 0);
+        failwith ("the <-> separator is not alone on its line in "^loc)
+      with Not_found ->
+        failwith ("no <-> separator in "^loc)
   in
   let p = p_sep + String.length separator in
   let body =
