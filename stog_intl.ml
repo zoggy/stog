@@ -37,20 +37,22 @@ let english =
       months.(month-1) day year in
   { days; months; string_of_date }
 
+let default_lang = ref english;;
+
 let data_of_lang =
   let warned = Hashtbl.create 10 in
   fun lang ->
     match lang with
-      | None -> english
+      | None -> !default_lang
       | Some "fr" -> french
       | Some "en" -> english
       | Some other ->
         if not (Hashtbl.mem warned lang) then begin
-          Printf.eprintf "date_of_lang: unknown lang %S, default to english"
+          Printf.eprintf "date_of_lang: unknown lang %S, using default"
             other;
           Hashtbl.add warned lang ();
         end;
-        english
+        !default_lang
 
 let get_month lang m =
   assert (m >= 1 && m <= 12);

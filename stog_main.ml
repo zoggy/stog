@@ -68,6 +68,9 @@ let options = [
     "--lang", Arg.String (fun s -> lang := Some s),
     "<s> generate pages for language <s>" ;
 
+    "--default-fr", Arg.Unit (fun () -> Stog_intl.default_lang := Stog_intl.french),
+    "<s> use french as default language (dates, ...)" ;
+
     "--plugin", Arg.String (fun s -> plugins := !plugins @ [s]),
     "<file> load plugin (ocaml object file)" ;
   ];;
