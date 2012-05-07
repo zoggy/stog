@@ -34,7 +34,7 @@ Example of use:
 
     <markdown>
     # A typical markdown example
-    
+
     [Markdown](http://daringfireball.net/projects/markdown/) is
     a markup language meant to be written simply in a text editor,
     with a markup that is both easy to read and write. It is later
@@ -88,9 +88,7 @@ let fun_markdown env args subs =
   [ Xtmpl.xml_of_string applied_output ]
 ;;
 
-let () = Stog_html.plugin_funs :=
-  ("markdown", fun_markdown) :: !Stog_html.plugin_funs
-;;
+let () = Stog_plug.register_fun "markdown" fun_markdown;;
 
 
 
