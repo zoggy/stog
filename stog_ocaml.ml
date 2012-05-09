@@ -108,7 +108,7 @@ let eval_ocaml_phrase ~exc phrase =
      | s -> Format.pp_print_string Format.str_formatter s
     );
     Format.pp_print_string Format.str_formatter exec_output;
-    `Ok (Stog_misc.strip_string (Format.flush_str_formatter ()))
+    `Ok (Stog_misc.strip_string (Format.flush_str_formatter ()), out)
   with
   | e ->
       (* Errors.report_error relies on exported compiler lib; on some
@@ -160,6 +160,10 @@ let fun_eval env args code =
   try
     let exc = Xtmpl.opt_arg args ~def: "true" "error-exc" = "true" in
     let toplevel = Xtmpl.opt_arg args ~def: "false" "toplevel" = "true" in
+    let show_code = Xtmpl.opt_arg args ~def: "true" "show-code" <> "false" in
+    let show_stdout = Xtmpl.opt_arg args
+      ~def: (if toplevel then "true" else "false") "show-stdout" <> "false"
+    in
     let code =
       match code with
         [ Xtmpl.D code ] -> code
@@ -184,17 +188,31 @@ let fun_eval env args code =
           else
             "--syntax=ocaml"
         in
-        let code = Stog_html.highlight ~opts phrase in
-        let code = if toplevel then Printf.sprintf "# %s" code else code in
-        let code = Xtmpl.T ("div", [], [Xtmpl.xml_of_string code]) in
-        let (output, raised_exc) =
+        let code =
+          if show_code then
+            begin
+              let code = Stog_html.highlight ~opts phrase in
+              let code = if toplevel then Printf.sprintf "# %s" code else code in
+              Xtmpl.T ("div", [], [Xtmpl.xml_of_string code])
+            end
+          else
+            Xtmpl.D ""
+        in
+        let (output, stdout, raised_exc) =
           match eval_ocaml_phrase ~exc phrase with
-            `Ok s -> (s, false)
-          | `Exc s -> (s, true)
+            `Ok (s, stdout) -> (s, stdout, false)
+          | `Exc s -> (s, "", true)
         in
         let acc =
           match toplevel with
-            false -> code::acc
+            false ->
+              if show_stdout then
+                let xml =
+                  Xtmpl.T ("div", ["class", "ocaml-toplevel"], [Xtmpl.D stdout])
+                in
+                xml :: code :: acc
+              else
+                code::acc
           | true ->
               let classes = Printf.sprintf "ocaml-toplevel%s"
                 (if raised_exc then " ocaml-exc" else "")
@@ -202,14 +220,17 @@ let fun_eval env args code =
               let xml =
                 Xtmpl.T ("div", ["class", classes], [Xtmpl.D output])
               in
-            xml :: code :: acc
+              xml :: code :: acc
         in
         iter acc q
     in
     let xml = iter [] phrases in
     Unix.dup2 original_stdout Unix.stdout;
     Unix.dup2 original_stderr Unix.stderr;
-    [ Xtmpl.T ("pre", ["class", "code-ocaml"], xml) ]
+    if show_code || toplevel || show_stdout then
+      [ Xtmpl.T ("pre", ["class", "code-ocaml"], xml) ]
+    else
+      [ Xtmpl.D "" ]
   with
     e ->
 
