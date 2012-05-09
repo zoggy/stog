@@ -914,14 +914,6 @@ let generate_article outdir stog env art_id article =
   Stog_misc.mkdir art_dir;
   List.iter (fun f -> copy_file f art_dir) article.art_files;
 
-  let next f _ _ _ =
-    match f stog art_id with
-      None -> []
-    | Some id ->
-        let a = Stog_types.article stog id in
-        let link = link_to_article stog a in
-        [ Xtmpl.T ("a", ["href", link], [ Xtmpl.D a.art_title ]) ]
-  in
   let comment_actions =
     let href = build_mailto stog article in
     (*let href = Xtmpl.string_of_xml (Xtmpl.D href) in*)
@@ -940,6 +932,22 @@ let generate_article outdir stog env art_id article =
      article.art_vars
     )
   in
+  let previous, next =
+    let html_link a =
+      let link = link_to_article stog a in
+      [ Xtmpl.T ("a", ["href", link], [ Xtmpl.D a.art_title ]) ] in
+    let try_link key search =
+      try
+        let hid = List.assoc key article.art_vars in
+        let _, article = Stog_types.article_by_human_id stog hid in
+        html_link article
+      with Not_found ->
+        match search stog art_id with
+          | None -> []
+          | Some id -> html_link (Stog_types.article stog id) in
+    (try_link "previous" Stog_info.pred_by_date,
+     try_link "next" Stog_info.succ_by_date)
+  in
   let env = Xtmpl.env_of_list ~env
     ([
      Stog_cst.article_title, (fun _ _ _ -> [ Xtmpl.D article.art_title ]) ;
@@ -948,8 +956,8 @@ let generate_article outdir stog env art_id article =
      "article-body", (fun _ _ _ -> [ xml_of_article_body article.art_body ]);
      Stog_cst.article_date, (fun _ _ _ ->
        [ Xtmpl.D (Stog_intl.string_of_date stog.stog_lang article.art_date) ]) ;
-     "next", (next Stog_info.succ_by_date) ;
-     "previous", (next Stog_info.pred_by_date) ;
+     "next", (fun _ _ _ -> next);
+     "previous", (fun _ _ _ -> previous);
      "keywords", html_of_keywords stog article ;
      "topics", html_of_topics stog article ;
      "comment-actions", (fun _ _ _ -> comment_actions);
