@@ -88,12 +88,12 @@ let read_article_header art header =
       | other -> { art with art_vars = (other, value) :: art.art_vars }
     with
       Not_found ->
-        prerr_endline
-        (Printf.sprintf "Line not handled in %s: %s"
-         art.art_human_id line);
-        art
+        Stog_msg.warning
+          (Printf.sprintf "Line not handled in %s: %s"
+           art.art_human_id line);
+          art
     | Invalid_argument s ->
-        prerr_endline
+        Stog_msg.warning
         (Printf.sprintf "Invalid_argument(%s): %s" s line);
         art
   in
@@ -208,12 +208,12 @@ let read_stog_header stog header =
       | field -> { stog with stog_vars = (field, value) :: stog.stog_vars }
     with
       Not_found ->
-        prerr_endline
+        Stog_msg.warning
         (Printf.sprintf "Line not handled in stog index: %s"
          line);
         stog
     | Invalid_argument s ->
-        prerr_endline
+        Stog_msg.warning
         (Printf.sprintf "Invalid_argument(%s): %s" s line);
         stog
   in
@@ -234,12 +234,12 @@ let read_page_header page header =
       | field -> { page with page_vars = (field, value) :: page.page_vars }
     with
       Not_found ->
-        prerr_endline
+        Stog_msg.warning
         (Printf.sprintf "Line not handled in page: %s"
          line);
         page
     | Invalid_argument s ->
-        prerr_endline
+        Stog_msg.warning
         (Printf.sprintf "Invalid_argument(%s): %s" s line);
         page
   in
@@ -285,7 +285,7 @@ let read_stog_pages stog dir =
     let msg =  Printf.sprintf "%s: %s %s"
       (Unix.error_message e) s1 s2
     in
-    prerr_endline msg
+    Stog_msg.error msg
   in
   let page_files = Stog_find.find_list
     (Stog_find.Custom on_error)
@@ -327,7 +327,7 @@ let read_stog dir =
     let msg =  Printf.sprintf "%s: %s %s"
       (Unix.error_message e) s1 s2
     in
-    prerr_endline msg
+    Stog_msg.error msg
   in
   let dirs = Stog_find.find_list
     (Stog_find.Custom on_error)
@@ -390,4 +390,4 @@ let write_stog stog =
   write_stog_index stog;
   Stog_tmap.iter (write_stog_article stog) stog.stog_articles
 ;;
-  
+

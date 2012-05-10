@@ -168,7 +168,7 @@ let fun_article_href hid ?from stog env args subs =
         Some a
       with
         Not_found ->
-          prerr_endline (Printf.sprintf "Unknown article '%s'" hid);
+          Stog_msg.error (Printf.sprintf "Unknown article '%s'" hid);
           None
     in
     let text =
@@ -379,10 +379,10 @@ let fun_graph =
                 match Sys.command com with
                   0 -> ()
                 | _ ->
-                    prerr_endline (Printf.sprintf "Command failed: %s" com)
+                    Stog_msg.error (Printf.sprintf "Command failed: %s" com)
               end
           | _ ->
-              prerr_endline (Printf.sprintf "Command failed: %s" com)
+              Stog_msg.error (Printf.sprintf "Command failed: %s" com)
     end;
     [
       Xtmpl.T ("a", ["href", src], [
@@ -470,7 +470,7 @@ let env_add_langswitch env stog html_f =
 ;;
 
 let fun_twocolumns env args subs =
-  prerr_endline (Printf.sprintf "two-columns, length(subs)=%d" (List.length subs));
+  (*prerr_endline (Printf.sprintf "two-columns, length(subs)=%d" (List.length subs));*)
   let empty = [] in
   let subs = List.fold_right
     (fun xml acc ->
@@ -723,7 +723,7 @@ let copy_file ?(ignerr=false) ?(quote_src=true) ?(quote_dst=true) src dest =
     0 -> ()
   | _ ->
       let msg = Printf.sprintf "command failed: %s" com in
-      (if ignerr then prerr_endline else failwith) msg
+      if ignerr then Stog_msg.error msg else failwith msg
 ;;
 
 let xml_of_article_body s =
@@ -1113,7 +1113,7 @@ let generate outdir stog =
   begin
     match stog.stog_lang with
       None -> ()
-    | Some lang -> prerr_endline (Printf.sprintf "Generating pages for language %s" lang);
+    | Some lang -> Stog_msg.verbose (Printf.sprintf "Generating pages for language %s" lang);
   end;
   current_stog := Some stog;
   let env = List.fold_left
@@ -1125,4 +1125,4 @@ let generate outdir stog =
   Stog_tmap.iter (generate_article outdir stog env) stog.stog_articles
 ;;
 
-  
+

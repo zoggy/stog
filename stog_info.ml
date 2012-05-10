@@ -151,7 +151,7 @@ let add_refs_in_graph stog =
       None ->
         []
     | Some hid ->
-        prerr_endline (Printf.sprintf "f_ref hid=%s" hid);
+        (*prerr_endline (Printf.sprintf "f_ref hid=%s" hid);*)
         (
          let (id2, _) = Stog_types.article_by_human_id stog hid in
          g := Stog_types.Graph.add !g (id, id2, Stog_types.Ref)
@@ -291,4 +291,4 @@ let remove_not_published stog =
     stog_art_by_human_id = by_hid ;
   }
 ;;
-  
+
