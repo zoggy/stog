@@ -29,11 +29,19 @@
 
 #
 
+OCAMLC=ocamlc.opt
+OCAMLOPT=ocamlopt.opt
+OCAMLLEX=ocamllex
+OCAMLYACC=ocamlyacc
+CAMLP4O=camlp4o
+OCAMLLIB:=`$(OCAMLC) -where`
+OCAMLFIND=ocamlfind
+
 INCLUDES=-I +lablgtk2 -I +lablgtk-extras \
-	`ocamlfind query -i-format xmlm` \
-	`ocamlfind query -i-format rss` \
-	`ocamlfind query -i-format xtmpl` \
-	`ocamlfind query -i-format pcre`
+	`$(OCAMLFIND) query -i-format xmlm` \
+	`$(OCAMLFIND) query -i-format rss` \
+	`$(OCAMLFIND) query -i-format xtmpl` \
+	`$(OCAMLFIND) query -i-format pcre`
 COMPFLAGS=$(INCLUDES) -annot -rectypes -g
 OCAMLPP=
 
@@ -42,16 +50,6 @@ PLUGINS_BYTE= \
 	plugins/stog_markdown.cmo \
 	plugins/plugin_example.cmo
 PLUGINS_OPT=$(PLUGINS_BYTE:.cmo=.cmxs)
-
-OCAMLC=ocamlc.opt -g
-OCAMLOPT=ocamlopt.opt -g
-OCAMLLEX=ocamllex
-OCAMLYACC=ocamlyacc
-CAMLP4O=camlp4o
-OCAMLLIB:=`$(OCAMLC) -where`
-
-
-INSTALLDIR=$(OCAMLLIB)/stog
 
 RM=rm -f
 CP=cp -f
@@ -155,11 +153,15 @@ webdoc:
 
 ##########
 install:
-	$(MKDIR) $(INSTALLDIR)
-	$(CP) $(LIB_CMIFILES) $(LIB) $(LIB_BYTE) $(LIB:.cmxa=.a) \
-	$(INSTALLDIR)
+	@$(OCAMLFIND) install stog META \
+		$(PLUGINS_BYTE) $(PLUGINS_OPT) $(PLUGINS_OPT:.cmxs=.cmx) $(PLUGINS_OPT:.cmxs=.o) \
+		$(LIB_CMIFILES) $(LIB_CMXFILES) $(LIB_CMXFILES:.cmx=.o) \
+		$(LIB_BYTE) $(LIB) $(LIB:.cmxa=.a)
 	$(CP) $(MAIN) $(MAIN_BYTE)  `dirname \`which $(OCAMLC)\``/
 
+uninstall:
+	@$(OCAMLFIND) remove stog
+	for i in $(MAIN) $(MAIN_BYTE); do $(RM) `dirname \`which $(OCAMLC)\``/$$i; done
 #####
 clean:
 	$(RM) $(MAIN) $(MAIN_BYTE) $(GUI_MAIN) $(GUI_MAIN_BYTE) *.cm* *.o *.a *.x *.annot

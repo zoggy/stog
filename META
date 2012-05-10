@@ -1,0 +1,25 @@
+version = "1.0"
+description = "Stog"
+requires = "pcre,xtmpl,rss,xmlm"
+archive(byte) = "stog.cma"
+archive(native) = "stog.cmxa"
+
+package "disqus" (
+  version = "1.0"
+  description = "Stog disqus plugin"
+  archive(byte) = "stog_disqus.cmo"
+  archive(native) = "sotg_disqus.cmx"
+  archive(stog,byte) = "stog_disqus.cmo"
+  archive(stog,native) = "stog_disqus.cmxs"
+)
+
+package "markdown" (
+  version = "1.0"
+  description = "Stog markdown plugin"
+  archive(byte) = "stog_markdown.cmo"
+  archive(native) = "sotg_markdown.cmx"
+  archive(stog,byte) = "stog_markdown.cmo"
+  archive(stog,native) = "stog_markdown.cmxs"
+)
+
+
