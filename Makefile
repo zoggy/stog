@@ -114,7 +114,7 @@ gui: guiopt guibyte
 
 opt: $(LIB) $(MAIN) plugins/plugin_example.cmxs $(PLUGINS_OPT)
 guiopt: $(GUI_MAIN)
-byte: $(LIB_BYTE) $(MAIN_BYTE) plugin_example.cmo $(PLUGINS_BYTE)
+byte: $(LIB_BYTE) $(MAIN_BYTE) plugins/plugin_example.cmo $(PLUGINS_BYTE)
 guibyte: $(GUI_MAIN_BYTE)
 
 $(MAIN): $(LIB) stog_dyn_opt.cmx stog_main.cmx
