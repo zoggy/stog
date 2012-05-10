@@ -30,7 +30,7 @@
 (** *)
 
 let (load_files : (string list -> unit) ref) =
-  ref (fun _ -> prerr_endline "Stog_dyn.load_files not initialized"; exit 1);;
+  ref (fun _ -> Stog_msg.error "Stog_dyn.load_files not initialized"; exit 1);;
 
 let files_of_packages kind pkg_names =
   let file = Filename.temp_file "stog" "txt" in
@@ -51,7 +51,7 @@ let files_of_packages kind pkg_names =
 ;;
 
 let (load_packages : (string list -> unit) ref) =
-  ref (fun _ -> prerr_endline "Stog_dyn.load_packages not initialized"; exit 1);;
+  ref (fun _ -> Stog_msg.error "Stog_dyn.load_packages not initialized"; exit 1);;
 
 let load_packages_comma kind load_file pkg_names =
   let pkg_names = Stog_misc.split_string pkg_names [','] in
