@@ -937,14 +937,20 @@ let generate_article outdir stog env art_id article =
       let link = link_to_article stog a in
       [ Xtmpl.T ("a", ["href", link], [ Xtmpl.D a.art_title ]) ] in
     let try_link key search =
-      try
-        let hid = List.assoc key article.art_vars in
-        let _, article = Stog_types.article_by_human_id stog hid in
-        html_link article
-      with Not_found ->
+      let fallback () =
         match search stog art_id with
           | None -> []
           | Some id -> html_link (Stog_types.article stog id) in
+      if not (List.mem_assoc key article.art_vars) then fallback ()
+      else
+        let hid = List.assoc key article.art_vars in
+        try
+          let _, article = Stog_types.article_by_human_id stog hid in
+          html_link article
+        with Not_found ->
+          Printf.eprintf "Identifier %S unknown for key %S\n" hid key;
+          fallback ()
+    in
     (try_link "previous" Stog_info.pred_by_date,
      try_link "next" Stog_info.succ_by_date)
   in
