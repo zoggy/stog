@@ -1,5 +1,7 @@
 open Stog_types
 
+type lang_abbrev = string
+
 type lang_data = {
   days : string array; (* 7 *)
   months : string array; (* 12 *)
@@ -37,22 +39,37 @@ let english =
       months.(month-1) day year in
   { days; months; string_of_date }
 
+let languages = ref Stog_types.Str_map.empty;;
+
+let register_lang abbrev data =
+  languages := Stog_types.Str_map.add abbrev data !languages;;
+
+let () = register_lang "fr" french;;
+let () = register_lang "en" english;;
+
 let default_lang = ref english;;
+
+let set_default_lang abbrev =
+  try default_lang := Stog_types.Str_map.find abbrev !languages
+  with Not_found ->
+      failwith (Printf.sprintf "Language %S not registered" abbrev)
+;;
 
 let data_of_lang =
   let warned = Hashtbl.create 10 in
   fun lang ->
     match lang with
-      | None -> !default_lang
-      | Some "fr" -> french
-      | Some "en" -> english
-      | Some other ->
-        if not (Hashtbl.mem warned lang) then begin
-          Printf.eprintf "date_of_lang: unknown lang %S, using default"
-            other;
-          Hashtbl.add warned lang ();
-        end;
-        !default_lang
+    | None -> !default_lang
+    | Some abbrev ->
+        try Stog_types.Str_map.find abbrev !languages
+        with Not_found ->
+            if not (Hashtbl.mem warned lang) then
+              begin
+                Printf.eprintf "date_of_lang: unknown lang %S, using default"
+                abbrev;
+                Hashtbl.add warned lang ();
+              end;
+            !default_lang
 
 let get_month lang m =
   assert (m >= 1 && m <= 12);

@@ -33,6 +33,7 @@ let site_url = ref None ;;
 let tmpl_dir = ref None ;;
 
 let lang = ref None;;
+let default_lang_to_set = ref None;;
 
 let plugins = ref [];;
 
@@ -68,8 +69,8 @@ let options = [
     "--lang", Arg.String (fun s -> lang := Some s),
     "<s> generate pages for language <s>" ;
 
-    "--default-fr", Arg.Unit (fun () -> Stog_intl.default_lang := Stog_intl.french),
-    "<s> use french as default language (dates, ...)" ;
+    "--default-lang", Arg.String (fun s -> default_lang_to_set := Some s),
+    "<lang> use <lang> as default language (dates, ...); default is \"en\"" ;
 
     "--plugin", Arg.String (fun s -> plugins := !plugins @ [s]),
     "<file> load plugin (ocaml object file)" ;
@@ -85,6 +86,11 @@ let main () =
   Arg.parse options (fun s -> remain := s :: !remain) usage ;
 
   !Stog_dyn.load_files !plugins;
+  begin
+    match !default_lang_to_set with
+      None -> ()
+    | Some abbrev -> Stog_intl.set_default_lang abbrev
+  end;
   match List.rev !remain with
     [] -> failwith usage
   | dirs ->
