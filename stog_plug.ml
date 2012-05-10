@@ -10,3 +10,12 @@ let stog () =
     None -> failwith "Current stog not initialized"
   | Some x -> x
 ;;
+
+let set_print_verbose = Stog_msg.set_print_verbose;;
+let verbose = Stog_msg.verbose;;
+
+let set_print_warning = Stog_msg.set_print_warning;;
+let warning = Stog_msg.warning;;
+
+let set_print_error = Stog_msg.set_print_error;;
+let error = Stog_msg.error;;
