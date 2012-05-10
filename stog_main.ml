@@ -36,6 +36,7 @@ let lang = ref None;;
 let default_lang_to_set = ref None;;
 
 let plugins = ref [];;
+let packages = ref [];;
 
 let set_stog_options stog =
   let stog =
@@ -74,6 +75,9 @@ let options = [
 
     "--plugin", Arg.String (fun s -> plugins := !plugins @ [s]),
     "<file> load plugin (ocaml object file)" ;
+
+    "--package", Arg.String (fun s -> packages := !packages @ [s]),
+    "<pkg[,pkg2[,...]]> load package (a plugin loaded with ocamlfind)";
   ];;
 
 let usage = Printf.sprintf
@@ -83,9 +87,10 @@ let usage = Printf.sprintf
 
 let main () =
   let remain = ref [] in
-  Arg.parse options (fun s -> remain := s :: !remain) usage ;
+  Arg.parse (Arg.align options) (fun s -> remain := s :: !remain) usage ;
 
   !Stog_dyn.load_files !plugins;
+  !Stog_dyn.load_packages !packages;
   begin
     match !default_lang_to_set with
       None -> ()

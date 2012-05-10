@@ -32,3 +32,38 @@
 let (load_files : (string list -> unit) ref) =
   ref (fun _ -> prerr_endline "Stog_dyn.load_files not initialized"; exit 1);;
 
+let files_of_packages kind pkg_names =
+  let file = Filename.temp_file "stog" "txt" in
+  let com =
+    Printf.sprintf "ocamlfind query %s -predicates stog,%s -format %%d/%%a > %s"
+      (String.concat " " (List.map Filename.quote pkg_names))
+      (match kind with `Byte -> "byte" | `Native -> "native")
+      (Filename.quote file)
+  in
+  match Sys.command com with
+    0 ->
+      let s = Stog_misc.string_of_file file in
+      Sys.remove file;
+      Stog_misc.split_string s ['\n']
+  | n ->
+      let msg = Printf.sprintf "Command failed (%d): %s" n com in
+      failwith msg
+;;
+
+let (load_packages : (string list -> unit) ref) =
+  ref (fun _ -> prerr_endline "Stog_dyn.load_packages not initialized"; exit 1);;
+
+let load_packages_comma kind load_file pkg_names =
+  let pkg_names = Stog_misc.split_string pkg_names [','] in
+  let files = files_of_packages kind pkg_names in
+  List.iter load_file files
+;;
+
+let set_load_packages kind load_file =
+  let f packages =
+    List.iter (load_packages_comma kind load_file) packages
+  in
+  load_packages := f
+;;
+
+

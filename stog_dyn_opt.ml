@@ -30,12 +30,20 @@
 (** Dynamic load of code for native version. *)
 
 let _ = Dynlink.allow_unsafe_modules true;;
+
+let load_file file =
+  try Dynlink.loadfile file
+  with Dynlink.Error e ->
+      failwith (Dynlink.error_message e)
+
 let f files =
   try
     Dynlink.allow_unsafe_modules true ;
-    List.iter Dynlink.loadfile files
-    with Dynlink.Error e ->
+    List.iter load_file files
+  with Dynlink.Error e ->
       failwith (Dynlink.error_message e)
 ;;
 
 let () = Stog_dyn.load_files := f;;
+
+let () = Stog_dyn.set_load_packages `Native load_file;;

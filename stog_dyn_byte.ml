@@ -42,3 +42,6 @@ let load_file file =
 let f files = List.iter load_file files;;
 
 let () = Stog_dyn.load_files := f;;
+
+let () = Stog_dyn.set_load_packages `Byte load_file;;
+
