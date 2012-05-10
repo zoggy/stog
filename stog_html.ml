@@ -393,8 +393,10 @@ let fun_graph =
 
 let fun_if env args subs =
   let pred (att, v) =
-    let s = Xtmpl.apply env (Printf.sprintf "<%s/>" att) in
-    (*prerr_endline (Printf.sprintf "fun_if: pred: att=%s, s=%s, v=%s" att s v);*)
+    let node = Printf.sprintf "<%s/>" att in
+    let s = Xtmpl.apply env node in
+    (*prerr_endline (Printf.sprintf "fun_if: pred: att=%s, s=%S, v=%s" att s v);*)
+    let s = if s = node then "" else s in
     s = v
   in
   let cond = List.for_all pred args in
