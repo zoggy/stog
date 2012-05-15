@@ -6,7 +6,7 @@ let verbose_level = ref 0;;
 let verbose ?info ?(level=1) msg =
   if level <= !verbose_level then
     begin
-      let msg = Printf.sprintf "Warning: %s%s"
+      let msg = Printf.sprintf "%s%s"
         (match info with None -> "" | Some s -> Printf.sprintf "[%s]" s)
         msg
       in
