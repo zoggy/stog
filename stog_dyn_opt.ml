@@ -36,14 +36,6 @@ let load_file file =
   with Dynlink.Error e ->
       failwith (Dynlink.error_message e)
 
-let f files =
-  try
-    Dynlink.allow_unsafe_modules true ;
-    List.iter load_file files
-  with Dynlink.Error e ->
-      failwith (Dynlink.error_message e)
-;;
+let () = Stog_dyn.load_file := load_file;;
 
-let () = Stog_dyn.load_files := f;;
-
-let () = Stog_dyn.set_load_packages `Native load_file;;
+let () = Stog_dyn.set_load_packages `Native ;;

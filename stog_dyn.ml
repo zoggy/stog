@@ -29,13 +29,28 @@
 
 (** *)
 
-let (load_files : (string list -> unit) ref) =
-  ref (fun _ -> Stog_msg.error "Stog_dyn.load_files not initialized"; exit 1);;
+let (load_file : (string -> unit) ref) =
+  ref (fun _ -> Stog_msg.error "Stog_dyn.load_file not initialized"; exit 1);;
+
+let loaded_files = ref [];;
+let load_files =
+  let f file =
+    if List.mem file !loaded_files then
+      Stog_msg.verbose (Printf.sprintf "Not loading already loaded file %s" file)
+    else
+      begin
+        Stog_msg.verbose (Printf.sprintf "Loading file %s" file);
+        !load_file file;
+        loaded_files := file :: !loaded_files;
+      end
+  in
+  List.iter f
+;;
 
 let files_of_packages kind pkg_names =
   let file = Filename.temp_file "stog" "txt" in
   let com =
-    Printf.sprintf "ocamlfind query %s -predicates stog,%s -format %%d/%%a > %s"
+    Printf.sprintf "ocamlfind query %s -predicates stog,%s -r -format %%d/%%a > %s"
       (String.concat " " (List.map Filename.quote pkg_names))
       (match kind with `Byte -> "byte" | `Native -> "native")
       (Filename.quote file)
@@ -53,15 +68,15 @@ let files_of_packages kind pkg_names =
 let (load_packages : (string list -> unit) ref) =
   ref (fun _ -> Stog_msg.error "Stog_dyn.load_packages not initialized"; exit 1);;
 
-let load_packages_comma kind load_file pkg_names =
+let load_packages_comma kind pkg_names =
   let pkg_names = Stog_misc.split_string pkg_names [','] in
   let files = files_of_packages kind pkg_names in
-  List.iter load_file files
+  load_files files
 ;;
 
-let set_load_packages kind load_file =
+let set_load_packages kind =
   let f packages =
-    List.iter (load_packages_comma kind load_file) packages
+    List.iter (load_packages_comma kind) packages
   in
   load_packages := f
 ;;

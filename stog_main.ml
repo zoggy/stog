@@ -92,7 +92,7 @@ let main () =
   let remain = ref [] in
   Arg.parse (Arg.align options) (fun s -> remain := s :: !remain) usage ;
 
-  !Stog_dyn.load_files !plugins;
+  Stog_dyn.load_files !plugins;
   !Stog_dyn.load_packages !packages;
   begin
     match !default_lang_to_set with
