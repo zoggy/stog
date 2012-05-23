@@ -702,9 +702,26 @@ let generate_rss_feed_file stog ?title link articles file =
       [] -> None
     | h :: _ -> Some (rss_date_of_article h)
   in
+  let image =
+    try
+      let file = List.assoc "rss-image" stog.stog_vars in
+      let url = Filename.concat stog.stog_base_url file in
+      let image = {
+          Rss.image_url = url ;
+          image_title = stog.stog_title ;
+          image_link = stog.stog_base_url ;
+          image_height = None ;
+          image_width = None ;
+          image_desc = None ;
+        }
+      in
+      Some image
+    with
+      Not_found -> None
+  in
   let channel =
     Rss.channel ~title ~link
-    ~desc: stog.stog_desc
+    ~desc: stog.stog_desc ?image
     ~managing_editor: stog.stog_email
     ?pubdate ?last_build_date: pubdate
     ~generator: "Stog"

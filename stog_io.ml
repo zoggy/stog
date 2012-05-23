@@ -350,7 +350,12 @@ let read_stog dir =
     stog
     dirs
   in
-  read_stog_pages stog dir
+  let stog = read_stog_pages stog dir in
+  Stog_msg.verbose ~level: 2
+    (Printf.sprintf "Pages: %s"
+      (String.concat ", "
+        (Stog_types.Str_map.fold (fun id _ acc -> id :: acc) stog.stog_page_by_human_id [])));
+  stog
 ;;
 
 let write_stog_article stog _ art =
