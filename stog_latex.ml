@@ -56,19 +56,25 @@ let make_svg outdir ?(packages=[]) latex_code =
         (Filename.basename (Printf.sprintf "_latex%d.svg" (gensym())))
       in
       Stog_misc.file_of_string ~file: tex code;
+      let log = Filename.temp_file "stog" ".log" in
       let command = Printf.sprintf
-        (*    "latex -output-directory=/tmp -interaction=batchmode %s ; dvips -o %s %s && convert -units PixelsPerInch -density 100 -trim %s %s"*)
-        "latex -output-directory=/tmp -interaction=batchmode %s ; dvisvgm -e --scale=1.1 -M 1.5 --no-fonts %s -s > %s"
-        (Filename.quote tex) (Filename.quote dvi) (Filename.quote svg)
+        "(latex -output-directory=/tmp -interaction=batchmode %s > %s 2>&1) && \
+         dvisvgm -e --scale=1.1 -M 1.5 --no-fonts %s -s 2>> %s > %s"
+        (Filename.quote tex) (Filename.quote log) (Filename.quote dvi)
+        (Filename.quote log) (Filename.quote svg)
       in
       match Sys.command command with
         0 ->
           List.iter (fun f -> try Sys.remove f with _ -> ())
-          [ tex ; dvi ];
+          [ tex ; dvi ; log ];
           Hashtbl.add cache latex_code svg;
           svg
       | n ->
-          failwith (Printf.sprintf "Command failed: %s" command)
+          let log = Stog_misc.string_of_file log in
+          (try Sys.remove log with _ -> ());
+          failwith
+          (Printf.sprintf "Command failed [%d]: %s\n=== log ===\n%s\n=== tex code ===\n%s"
+           n command log latex_code)
 ;;
 
 let fun_latex outdir stog env args subs =
