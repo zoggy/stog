@@ -41,7 +41,8 @@ INCLUDES=-I +lablgtk2 -I +lablgtk-extras \
 	`$(OCAMLFIND) query -i-format xmlm` \
 	`$(OCAMLFIND) query -i-format rss` \
 	`$(OCAMLFIND) query -i-format xtmpl` \
-	`$(OCAMLFIND) query -i-format pcre`
+	`$(OCAMLFIND) query -i-format pcre` \
+	`$(OCAMLFIND) query -i-format compiler-libs.toplevel`
 COMPFLAGS=$(INCLUDES) -annot -rectypes -g
 OCAMLPP=
 
@@ -123,7 +124,7 @@ $(MAIN): $(LIB) stog_dyn_opt.cmx stog_main.cmx
 
 $(MAIN_BYTE): $(LIB_BYTE) stog_ocaml.cmo stog_dyn_byte.cmo stog_main.cmo
 	$(OCAMLC) -linkall -o $@ $(COMPFLAGS) $(SYSLIBS_BYTE) \
-	toplevellib.cma $^
+	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $^
 
 $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 	$(OCAMLOPT) -a -o $@ $(LIB_CMXFILES)
