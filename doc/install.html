@@ -29,6 +29,11 @@ LaTeX in your pages.</li>
 <p>Get the sources from git repository:
 <command-line>git clone https://github.com/zoggy/stog.git</command-line>
 </p>
+<subsection title="Releases">
+<ul>
+<li><a href="stog-0.1.tar.gz">0.1</a> [2012-06-20]: Initial release.</li>
+</ul>
+</subsection>
 </section>
 
 <section name="compilation" title="Compilation">
@@ -36,8 +41,9 @@ LaTeX in your pages.</li>
 Just type
 <command-line>make &amp;&amp; make install</command-line>
 This will install <icode>stog</icode> and <icode>stog.byte</icode>
-in the same directory as <icode>ocamlc</icode>
-and libraries in <icode>`ocamlc -where`/stog/</icode>.
+in the same directory as <icode>ocamlc</icode>. This will also
+install the <tt>stog</tt> library and the
+<tt>stog.disqus</tt> and <tt>stog.markdown</tt> plugins, with findlib.
 </p>
 </section>
 
