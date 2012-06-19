@@ -974,7 +974,10 @@ pre {
   -moz-border-radius: 4px;
   border-radius: 4px;
   white-space: pre;
-  white-space: pre-wrap;
+  /* white-space: pre-wrap;*/
+
+  width: auto;
+  overflow: auto;
   word-break: break-all;
 }
 pre.prettyprint {

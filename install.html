@@ -58,6 +58,11 @@ LaTeX in your pages.</li>
 <pre class="code-sh">git clone https<span class="hl opt">://</span>github.com<span class="hl opt">/</span>zoggy<span class="hl opt">/</span>stog.git
 </pre>
 </p>
+<div class="subsection"><div class="subsection-title">Releases</div>
+<ul>
+<li><a href="stog-0.1.tar.gz">0.1</a> [2012-06-20]: Initial release.</li>
+</ul>
+</div>
 </div>
 
 <div class="section"><div class="section-title" id="compilation">Compilation</div>
@@ -66,8 +71,9 @@ Just type
 <pre class="code-sh"><span class="hl kwc">make</span> <span class="hl opt">&amp;&amp;</span> <span class="hl kwc">make install</span>
 </pre>
 This will install <span class="icode">stog</span> and <span class="icode">stog.byte</span>
-in the same directory as <span class="icode">ocamlc</span>
-and libraries in <span class="icode">`ocamlc -where`/stog/</span>.
+in the same directory as <span class="icode">ocamlc</span>. This will also
+install the <tt>stog</tt> library and the
+<tt>stog.disqus</tt> and <tt>stog.markdown</tt> plugins, with findlib.
 </p>
 </div>
 
