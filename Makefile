@@ -169,6 +169,11 @@ clean:
 	$(RM) $(MAIN) $(MAIN_BYTE) $(GUI_MAIN) $(GUI_MAIN_BYTE) *.cm* *.o *.a *.x *.annot
 	(cd plugins && $(RM) *.cm* *.o *.a *.x *.annot)
 
+# archive :
+###########
+archive:
+	git archive --prefix=stog-$(VERSION)/ HEAD | gzip > ../stog-pages/stog-$(VERSION).tar.gz
+
 # headers :
 ###########
 HEADFILES= Makefile *.ml *.mli doc/Makefile
