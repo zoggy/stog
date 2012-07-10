@@ -83,10 +83,12 @@ let link_to ?(from=`Article) file =
   Printf.sprintf "%s%s" pref file
 ;;
 
-let link_to_article stog ?(from=`Article) article =
+let link_to_article stog ?(from=`Article) ?id article =
   link_to ~from
-  (Printf.sprintf "%s/%s"
-   article.art_human_id (html_file stog "index"))
+  (Printf.sprintf "%s/%s%s"
+   article.art_human_id (html_file stog "index")
+   (match id with None -> "" | Some s -> "#"^s)
+  )
 ;;
 
 let topic_index_file stog topic =
@@ -159,8 +161,16 @@ let fun_image _env args legend =
 ;;
 
 
-let fun_article_href hid ?from stog env args subs =
-  let article, text =
+let fun_article_href href ?from stog env args subs =
+  let article, id, text =
+    let (hid, id) =
+      try
+        let p = String.index href '#' in
+        let len = String.length href in
+        (String.sub href 0 p, Some (String.sub href (p+1) (len - (p+1))))
+      with
+        Not_found -> (href, None)
+    in
     let a =
       try
         let (_, a) = Stog_types.article_by_human_id stog hid in
@@ -176,13 +186,13 @@ let fun_article_href hid ?from stog env args subs =
       | Some a, [] -> [Xtmpl.D (Printf.sprintf "\"%s\"" a.art_title)]
       | Some _, text -> text
     in
-    (a, text)
+    (a, id, text)
   in
   match article with
     None -> [Xtmpl.T ("span", ["class", "unknown-ref"], text)]
   | Some a ->
       [
-        Xtmpl.T ("a", ["href", (link_to_article stog ?from a)], text)
+        Xtmpl.T ("a", ["href", (link_to_article stog ?from ?id a)], text)
       ]
 ;;
 
