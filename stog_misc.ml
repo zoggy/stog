@@ -232,3 +232,13 @@ let dot_to_svg dot =
 ;;
 
 
+let rec list_compare comp l1 l2 =
+ match l1, l2 with
+   [], [] -> 0
+  | [], _ -> -1
+  | _, [] -> 1
+  | h1::q1, h2::q2 ->
+      match comp h1 h2 with
+        0 -> list_compare comp q1 q2
+      | n -> n
+;;

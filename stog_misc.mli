@@ -128,3 +128,5 @@ val map_opt : ('a -> 'b) -> 'a option -> 'b option
 val list_concat : ?sep: 'a -> 'a list -> 'a list
 
 val dot_to_svg : string -> string
+
+val list_compare : ('a -> 'a -> int) -> 'a list -> 'a list -> int

@@ -28,7 +28,7 @@
 
 (** *)
 
-type contents_kind = Text | Html
+type contents_kind = `Text | `Html | `Xml
 type date = {
   year : int;
   month : int;
@@ -48,31 +48,25 @@ type message = {
 type 'a tree = 'a tree_node
 and 'a tree_node = Node of 'a * 'a tree list
 
-type article =
-  {
-    art_human_id : string;
-    art_kind : contents_kind ;
-    art_body : string ;
-    art_date : date ;
-    art_keywords : string list ;
-    art_topics : string list ;
-    art_published : bool ;
-    art_title : string ;
-    art_location : string ;
-    art_files : string list ; (** list of files in [art_location] *)
-    art_comments : message tree list ;
-    art_vars : (string * string) list
-  }
-and article_id = article Stog_tmap.key
 
-type page =
-  { page_human_id : string ;
-    page_kind : contents_kind ;
-    page_body : string ;
-    page_title : string ;
-    page_vars : (string * string) list ;
+type body = Xml of Xtmpl.tree | String of string
+
+type human_id = string list;;
+
+type elt =
+  { elt_human_id : human_id ;
+    elt_type : string ;
+    elt_body : body ;
+    elt_date : date option ;
+    elt_title : string ;
+    elt_keywords : string list ;
+    elt_topics : string list ;
+    elt_published : bool ;
+    elt_vars : (string * string) list ;
+    elt_src : string ;
+    elt_streams : human_id list ; (* list of streams (blog, etc.) this element belongs to *)
   }
-and page_id = page Stog_tmap.key
+and elt_id = elt Stog_tmap.key
 
 let today () =
   let t = Unix.gmtime (Unix.time()) in
@@ -83,33 +77,24 @@ let today () =
   }
 ;;
 
-let dummy_article () =
-  { art_human_id = "dummy" ;
-    art_kind = Html ;
-    art_body = "" ;
-    art_date = today () ;
-    art_keywords = [] ;
-    art_topics = [] ;
-    art_published = true ;
-    art_title = "Dummy title";
-    art_location = "/tmp" ;
-    art_files = [] ;
-    art_comments = [] ;
-    art_vars = [] ;
-  }
-;;
-let  dummy_page () =
-  { page_human_id = "dummypage" ;
-    page_kind = Html ;
-    page_body = "" ;
-    page_title  = "" ;
-    page_vars = [] ;
+let dummy_elt () =
+  { elt_human_id = "dummy" ;
+    elt_type = "dummy" ;
+    elt_body = String "" ;
+    elt_date = today () ;
+    elt_title = "Dummy title";
+    elt_keywords = [] ;
+    elt_topics = [] ;
+    elt_published = true ;
+    elt_vars = [] ;
+    elt_src = "/tmp" ;
+    elt_streams : string list ;
   }
 ;;
 
 module Str_map = Map.Make (struct type t = string let compare = compare end);;
-module Art_set = Set.Make (struct type t = article_id let compare = Stog_tmap.compare_key end);;
-module Page_set = Set.Make (struct type t = page_id let compare = Stog_tmap.compare_key end);;
+module Hid_map = Map.Make (struct type t = human_id let compare = compare end);;
+module Elt_set = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
 module Int_map = Map.Make (struct type t = int let compare = compare end);;
 
 type edge_type =
@@ -121,7 +106,7 @@ type edge_type =
 
 module Graph = Stog_graph.Make_with_map
   (struct
-     type t = article_id
+     type t = elt_id
      let compare = Stog_tmap.compare_key
    end
   )
@@ -129,19 +114,17 @@ module Graph = Stog_graph.Make_with_map
 
 type stog = {
   stog_dir : string ;
-  stog_articles : (article, article) Stog_tmap.t ;
-  stog_art_by_human_id : article_id Str_map.t ;
-  stog_pages : (page, page) Stog_tmap.t ;
-  stog_page_by_human_id : page_id Str_map.t ;
+  stog_elts : (elt, elt) Stog_tmap.t ;
+  stog_elt_by_human_id : elt_id Hid_map.t ;
   stog_vars : (string * string) list ;
   stog_tmpl_dir : string ;
   stog_title : string ;
-  stog_body : string ;
-  stog_desc : string ;
+  stog_body : body ;
+  stog_desc : body ;
   stog_graph : Graph.t ;
-  stog_arts_by_kw : Art_set.t Str_map.t ;
-  stog_arts_by_topic : Art_set.t Str_map.t ;
-  stog_archives : Art_set.t Int_map.t Int_map.t ; (* year -> month -> article set *)
+  stog_elts_by_kw : Elt_set.t Str_map.t ;
+  stog_elts_by_topic : Elt_set.t Str_map.t ;
+  stog_archives : Elt_set.t Int_map.t Int_map.t ; (* year -> month -> article set *)
   stog_base_url : string ;
   stog_email : string ;
   stog_rss_length : int ;
