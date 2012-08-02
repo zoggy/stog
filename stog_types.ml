@@ -93,7 +93,7 @@ let dummy_elt () =
 ;;
 
 module Str_map = Map.Make (struct type t = string let compare = compare end);;
-module Hid_map = Map.Make (struct type t = human_id let compare = compare end);;
+module Hid_map = Stog_trie.Make (struct type t = human_id let compare = compare end);;
 module Elt_set = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
 module Int_map = Map.Make (struct type t = int let compare = compare end);;
 
