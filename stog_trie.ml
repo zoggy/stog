@@ -43,10 +43,10 @@ module Make (P : P) =
       in
       iter [] l1 l2
 
-    let rec add ?(backpath=[]) elt t =
-      match elt with
-        ([], _) -> t
-      | ((sym :: q) as path, data) ->
+    let rec add ?(backpath=[]) path data t =
+      match path with
+        [] -> t
+      | sym :: q ->
           if is_empty t then
              Node (Map.add sym (Leaf (q, data)) Map.empty, None)
           else
@@ -85,11 +85,49 @@ module Make (P : P) =
                   | [], None ->
                       Node (map, Some data)
                   | _, _ ->
-                    add ~backpath: (sym :: backpath) (q, data) t2
+                    add ~backpath: (sym :: backpath) q data t2
                 with
                   Not_found ->
                     Node (Map.add sym (Leaf (q, data)) map, data_opt)
 
-    let add elt t = add elt t
+    let add path data t = add path data t
 
+    let rec is_path_prefix p1 p2 =
+      match p1, p2 with
+        [], [] -> true
+      | [], _ -> true
+      | _, [] -> false
+      | h1 :: q1, h2 :: q2 ->
+          match P.compare h1 h2 with
+            0 -> is_path_prefix q1 q2
+          | _ -> false
+
+    let rec elts ?(acc=[]) path = function
+      Leaf (p, data) -> (path @ p, data) :: acc
+    | Node (map, data_opt) ->
+        let acc =
+          match data_opt with
+            None -> acc
+          | Some data -> (path, data) :: acc
+        in
+        Map.fold (fun sym t acc -> elts ~acc (path @ [sym]) t) map acc
+
+    let rec find ?(backpath=[]) path t =
+      match path with
+        [] -> List.map snd (elts (List.rev backpath) t)
+      | sym :: q ->
+          match t with
+            Leaf (p, data) ->
+              if is_path_prefix path p then
+                [data]
+              else
+                []
+          | Node (map, _) ->
+              try
+                let t = Map.find sym map in
+                find ~backpath: (sym :: backpath) q t
+              with Not_found ->
+                  []
+
+    let find path t = find path t
   end

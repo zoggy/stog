@@ -28,7 +28,7 @@
 
 (** *)
 
-type contents_kind = `Text | `Html | `Xml
+type contents_kind = [`Text | `Html | `Xml]
 type date = {
   year : int;
   month : int;
@@ -78,22 +78,22 @@ let today () =
 ;;
 
 let dummy_elt () =
-  { elt_human_id = "dummy" ;
+  { elt_human_id = [] ;
     elt_type = "dummy" ;
     elt_body = String "" ;
-    elt_date = today () ;
+    elt_date = None ;
     elt_title = "Dummy title";
     elt_keywords = [] ;
     elt_topics = [] ;
     elt_published = true ;
     elt_vars = [] ;
     elt_src = "/tmp" ;
-    elt_streams : string list ;
+    elt_streams = [] ;
   }
 ;;
 
 module Str_map = Map.Make (struct type t = string let compare = compare end);;
-module Hid_map = Stog_trie.Make (struct type t = human_id let compare = compare end);;
+module Hid_map = Stog_trie.Make (struct type t = string let compare = compare end);;
 module Elt_set = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
 module Int_map = Map.Make (struct type t = int let compare = compare end);;
 
@@ -115,7 +115,7 @@ module Graph = Stog_graph.Make_with_map
 type stog = {
   stog_dir : string ;
   stog_elts : (elt, elt) Stog_tmap.t ;
-  stog_elt_by_human_id : elt_id Hid_map.t ;
+  stog_elts_by_human_id : elt_id Hid_map.t ;
   stog_vars : (string * string) list ;
   stog_tmpl_dir : string ;
   stog_title : string ;
@@ -133,17 +133,15 @@ type stog = {
 
 let create_stog dir = {
   stog_dir = dir ;
-  stog_articles = Stog_tmap.create (dummy_article ());
-  stog_art_by_human_id = Str_map.empty ;
-  stog_pages = Stog_tmap.create (dummy_page ());
-  stog_page_by_human_id = Str_map.empty ;
+  stog_elts = Stog_tmap.create (dummy_elt ());
+  stog_elts_by_human_id = Hid_map.empty ;
   stog_tmpl_dir = Filename.concat dir "tmpl" ;
   stog_title = "Blog title" ;
-  stog_body = "" ;
-  stog_desc = "" ;
+  stog_body = String "" ;
+  stog_desc = String "" ;
   stog_graph = Graph.create () ;
-  stog_arts_by_kw = Str_map.empty ;
-  stog_arts_by_topic = Str_map.empty ;
+  stog_elts_by_kw = Str_map.empty ;
+  stog_elts_by_topic = Str_map.empty ;
   stog_archives = Int_map.empty ;
   stog_base_url = "http://yourblog.net" ;
   stog_email = "foo@bar.com" ;
@@ -153,42 +151,42 @@ let create_stog dir = {
   }
 ;;
 
-let article stog id = Stog_tmap.get stog.stog_articles id;;
-let article_by_human_id stog h =
-  let id = Str_map.find h stog.stog_art_by_human_id in
-  (id, article stog id)
+let elt stog id = Stog_tmap.get stog.stog_elts id;;
+let elts_by_human_id stog h =
+  let h = List.rev h in
+  let ids = Hid_map.find h stog.stog_elts_by_human_id in
+  List.map (fun id -> (id, elt stog id)) ids
 ;;
 
-let set_article stog id article =
-  {  stog with
-    stog_articles = Stog_tmap.modify stog.stog_articles id article }
+let set_elt stog id elt =
+  { stog with
+    stog_elts = Stog_tmap.modify stog.stog_elts id elt }
 ;;
 
-let add_article stog art =
-  let (id, articles) = Stog_tmap.add stog.stog_articles art in
-  let map = Str_map.add
-    art.art_human_id
-    id
-    stog.stog_art_by_human_id
+let add_elt stog elt =
+  let (id, elts) = Stog_tmap.add stog.stog_elts elt in
+  let map = Hid_map.add
+    (List.rev elt.elt_human_id) id
+    stog.stog_elts_by_human_id
   in
   { stog with
-    stog_articles = articles ;
-    stog_art_by_human_id = map ;
+    stog_elts = elts ;
+    stog_elts_by_human_id = map ;
   }
 ;;
 
-let sort_articles_by_date arts =
+let sort_elts_by_date elts =
   List.sort
-  (fun a1 a2 ->
-     Pervasives.compare a1.art_date a2.art_date)
-  arts
+  (fun e1 e2 ->
+     Pervasives.compare e1.elt_date e2.elt_date)
+  elts
 ;;
 
-let sort_ids_articles_by_date arts =
+let sort_ids_elts_by_date elts =
   List.sort
-  (fun (_,a1) (_,a2) ->
-     Pervasives.compare a1.art_date a2.art_date)
-  arts
+  (fun (_,e1) (_,e2) ->
+     Pervasives.compare e1.elt_date e2.elt_date)
+  elts
 ;;
 
 let article_list ?(by_date=false) stog =
