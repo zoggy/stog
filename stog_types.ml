@@ -189,44 +189,14 @@ let sort_ids_elts_by_date elts =
   elts
 ;;
 
-let article_list ?(by_date=false) stog =
+let elt_list ?(by_date=false) stog =
   let l =
     Stog_tmap.fold
-    (fun id art acc -> (id, art) :: acc)
-    stog.stog_articles
+    (fun id elt acc -> (id, elt) :: acc)
+    stog.stog_elts
     []
   in
-  if by_date then sort_ids_articles_by_date l else l
-;;
-
-let page stog id = Stog_tmap.get stog.stog_pages id;;
-let page_by_human_id stog h =
-  let id = Str_map.find h stog.stog_page_by_human_id in
-  (id, page stog id)
-;;
-
-let set_page stog id page =
-  { stog with
-    stog_pages = Stog_tmap.modify stog.stog_pages id page }
-;;
-
-let add_page stog page =
-  let (id, pages) = Stog_tmap.add stog.stog_pages page in
-  let map = Str_map.add
-    page.page_human_id
-    id
-    stog.stog_page_by_human_id
-  in
-  { stog with
-    stog_pages = pages ;
-    stog_page_by_human_id = map ;
-  }
-;;
-let page_list stog =
-  Stog_tmap.fold
-  (fun id page acc -> (id, page) :: acc)
-  stog.stog_pages
-  []
+  if by_date then sort_ids_elts_by_date l else l
 ;;
 
 let merge_stogs stogs =
@@ -234,19 +204,19 @@ let merge_stogs stogs =
     [] -> assert false
   | stog :: q ->
       let f acc stog =
-        let (articles, by_hid) =
+        let (elts, by_hid) =
           Stog_tmap.fold
-          (fun _ art (arts, by_hid) ->
-             let (id, arts) = Stog_tmap.add arts art in
-             let by_hid = Str_map.add art.art_human_id id by_hid in
-             (arts, by_hid)
+          (fun _ elt (elts, by_hid) ->
+             let (id, elts) = Stog_tmap.add elts elt in
+             let by_hid = Hid_map.add elt.elt_human_id id by_hid in
+             (elts, by_hid)
           )
-          stog.stog_articles
-          (acc.stog_articles, acc.stog_art_by_human_id)
+          stog.stog_elts
+          (acc.stog_elts, acc.stog_elts_by_human_id)
         in
         { acc with
-          stog_articles = articles ;
-          stog_art_by_human_id = by_hid ;
+          stog_elts = elts ;
+          stog_elts_by_human_id = by_hid ;
         }
       in
       List.fold_left f stog q
