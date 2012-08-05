@@ -49,7 +49,7 @@ type 'a tree = 'a tree_node
 and 'a tree_node = Node of 'a * 'a tree list
 
 
-type body = Xml of Xtmpl.tree | String of string
+type body = Xml of Xtmpl.tree list | String of string
 
 type human_id = string list;;
 
@@ -77,12 +77,12 @@ let today () =
   }
 ;;
 
-let dummy_elt () =
-  { elt_human_id = [] ;
-    elt_type = "dummy" ;
+let make_elt ?(typ="dummy") ?(hid=[]) () =
+  { elt_human_id = hid ;
+    elt_type = typ ;
     elt_body = String "" ;
     elt_date = None ;
-    elt_title = "Dummy title";
+    elt_title = "";
     elt_keywords = [] ;
     elt_topics = [] ;
     elt_published = true ;
@@ -133,7 +133,7 @@ type stog = {
 
 let create_stog dir = {
   stog_dir = dir ;
-  stog_elts = Stog_tmap.create (dummy_elt ());
+  stog_elts = Stog_tmap.create (make_elt ());
   stog_elts_by_human_id = Hid_map.empty ;
   stog_tmpl_dir = Filename.concat dir "tmpl" ;
   stog_title = "Blog title" ;
@@ -246,10 +246,10 @@ let make_human_id stog str =
     let hid = Printf.sprintf "%s%s"
       hid0 (if n = 1 then "" else string_of_int n)
     in
-    try
-      ignore(Str_map.find hid stog.stog_art_by_human_id);
-      iter (n+1)
-    with Not_found -> hid
+    let hid = [ hid ] in
+    match Hid_map.find hid stog.stog_elts_by_human_id with
+      [] -> hid
+    | _ -> iter (n+1)
   in
   iter 1
 ;;

@@ -41,14 +41,6 @@ let first_that_exists =
   iter
 ;;
 
-let re_ignore =
-  let comment = "^[ \t]*#.*$" in
-  let empty = "^[ \t]*$" in
-  Str.regexp (comment ^ "\\|" ^ empty)
-let re_field = Str.regexp "^\\([^=]+\\)=\\([^\n]*\\)";;
-let separator = "<->"
-(* matches the separator only when it's alone on its line *)
-let re_separator = Str.regexp ("^" ^ Str.quote separator ^ "$")
 
 let date_of_string s =
   try Scanf.sscanf s "%d/%d/%d" (fun year month day -> {day; month; year})
@@ -62,11 +54,89 @@ let topics_of_string s =
     (Stog_misc.split_string s [','; ';'])
 ;;
 let keywords_of_string = topics_of_string ;;
+let streams_of_string s =
+  let l = topics_of_string s in
+  List.map (fun s -> Stog_misc.split_string s ['/']) l
+;;
+
 let bool_of_string s =
   match String.lowercase s with
     "0" | "false" -> false
   | _ -> true
 ;;
+
+let node_details = function
+  Xtmpl.D _  -> None
+| Xtmpl.T (tag, atts, subs) -> Some (tag, atts, subs)
+| Xtmpl.E (((_,tag),atts), subs) ->
+    let atts = List.fold_left
+      (fun acc ((s,att), v) ->
+         match s with "" -> (att,v) :: acc | _ -> acc) [] atts
+    in
+    Some (tag, atts, subs)
+;;
+
+let fill_elt_from_atts =
+  let rec iter elt = function
+    [] -> elt
+  | h :: q ->
+      let elt =
+        match h with
+        | ("with-contents",_) -> elt
+        | ("title", s) -> { elt with elt_title = s }
+        | ("keywords", s) -> { elt with elt_keywords = keywords_of_string s }
+        | ("topics", s) -> { elt with elt_topics = topics_of_string s }
+        | ("date", s) -> { elt with elt_date = Some (date_of_string s) }
+        | ("published", s) -> { elt with elt_published = bool_of_string s }
+        | ("streams", s) -> { elt with elt_streams = streams_of_string s }
+        | (v, s) -> { elt with elt_vars = (v, s) :: elt.elt_vars }
+      in
+      iter elt q
+  in
+  iter
+;;
+
+let fill_elt_from_nodes =
+  let f elt xml =
+    match node_details xml with
+      None -> elt
+    | Some (tag, atts, subs) ->
+        match tag with
+        | "contents" -> { elt with elt_body = Xml subs }
+        | _ -> failwith "not implemented"
+  in
+  List.fold_left f
+;;
+
+let elt_of_file file =
+  let xml = Xtmpl.xml_of_string (Stog_misc.string_of_file file) in
+  let (typ, atts, subs) =
+    match node_details xml with
+      None -> failwith (Printf.sprintf "File %S does not content an XML tree" file)
+    | Some (tag, atts, subs) -> (tag, atts, subs)
+  in
+  let elt = Stog_types.make_elt ~typ () in
+  let elt = { elt with elt_src = file } in
+  let elt = fill_elt_from_atts elt atts in
+  match Xtmpl.get_arg atts "with-contents" with
+    Some s when bool_of_string s ->
+      (* arguments are also passed in sub nodes, and contents is in
+         subnode "contents" *)
+      elt
+  | _ ->
+      (* all arguments are passed in attributes, subnodes are the contents *)
+      elt
+;;
+
+(*
+let re_ignore =
+  let comment = "^[ \t]*#.*$" in
+  let empty = "^[ \t]*$" in
+  Str.regexp (comment ^ "\\|" ^ empty)
+let re_field = Str.regexp "^\\([^=]+\\)=\\([^\n]*\\)";;
+let separator = "<->"
+(* matches the separator only when it's alone on its line *)
+let re_separator = Str.regexp ("^" ^ Str.quote separator ^ "$")
 
 let read_article_header art header =
   let lines = Stog_misc.split_string header ['\n'] in
@@ -395,3 +465,4 @@ let write_stog stog =
   Stog_tmap.iter (write_stog_article stog) stog.stog_articles
 ;;
 
+*)
