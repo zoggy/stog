@@ -89,7 +89,7 @@ let fill_elt_from_atts =
         | ("date", s) -> { elt with elt_date = Some (date_of_string s) }
         | ("published", s) -> { elt with elt_published = bool_of_string s }
         | ("streams", s) -> { elt with elt_streams = streams_of_string s }
-        | (v, s) -> { elt with elt_vars = (v, s) :: elt.elt_vars }
+        | (att, v) -> { elt with elt_vars = (att, v) :: elt.elt_vars }
       in
       iter elt q
   in
@@ -101,9 +101,16 @@ let fill_elt_from_nodes =
     match node_details xml with
       None -> elt
     | Some (tag, atts, subs) ->
+        let v = String.concat "" (List.map Xtmpl.string_of_xml subs) in
         match tag with
         | "contents" -> { elt with elt_body = Xml subs }
-        | _ -> failwith "not implemented"
+        | "title" -> { elt with elt_title = v }
+        | "keywords" -> { elt with elt_keywords = keywords_of_string v }
+        | "topics" -> { elt with elt_topics = topics_of_string v }
+        | "date" -> { elt with elt_date = Some (date_of_string v) }
+        | "published" -> { elt with elt_published = bool_of_string v }
+        | "streams" -> { elt with elt_streams = streams_of_string v }
+        | s -> { elt with elt_vars = (s, v) :: elt.elt_vars }
   in
   List.fold_left f
 ;;
@@ -122,10 +129,10 @@ let elt_of_file file =
     Some s when bool_of_string s ->
       (* arguments are also passed in sub nodes, and contents is in
          subnode "contents" *)
-      elt
+      fill_elt_from_nodes elt subs
   | _ ->
       (* all arguments are passed in attributes, subnodes are the contents *)
-      elt
+      { elt with elt_body = Xml subs }
 ;;
 
 (*

@@ -51,7 +51,26 @@ and 'a tree_node = Node of 'a * 'a tree list
 
 type body = Xml of Xtmpl.tree list | String of string
 
-type human_id = string list;;
+type human_id = {
+    hid_path : string list;
+    hid_absolute : bool ;
+  }
+let string_of_human_id hid =
+  Printf.sprintf "%s%s"
+  (if hid.hid_absolute then "/" else "")
+  (String.concat "/" hid.hid_path)
+let human_id_of_string s =
+  let len = String.length s in
+  if len <= 0 then failwith (Printf.sprintf "Invalid human_id: %S" s);
+  let (abs, s) =
+    match s.[0] with
+      '/' -> (true, String.sub s 1 (len - 1))
+    | _ -> (false, s)
+  in
+  { hid_path = Stog_misc.split_string s ['/'];
+    hid_absolute = abs ;
+  }
+;;
 
 type elt =
   { elt_human_id : human_id ;
@@ -77,7 +96,7 @@ let today () =
   }
 ;;
 
-let make_elt ?(typ="dummy") ?(hid=[]) () =
+let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
   { elt_human_id = hid ;
     elt_type = typ ;
     elt_body = String "" ;
@@ -95,6 +114,7 @@ let make_elt ?(typ="dummy") ?(hid=[]) () =
 module Str_map = Map.Make (struct type t = string let compare = compare end);;
 module Hid_map = Stog_trie.Make (struct type t = string let compare = compare end);;
 module Elt_set = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
+module Elt_map = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
 module Int_map = Map.Make (struct type t = int let compare = compare end);;
 
 type edge_type =
@@ -153,9 +173,27 @@ let create_stog dir = {
 
 let elt stog id = Stog_tmap.get stog.stog_elts id;;
 let elts_by_human_id stog h =
-  let h = List.rev h in
-  let ids = Hid_map.find h stog.stog_elts_by_human_id in
-  List.map (fun id -> (id, elt stog id)) ids
+  let rev_path = List.rev h.hid_path in
+  let ids = Hid_map.find rev_path stog.stog_elts_by_human_id in
+  let l = List.map (fun id -> (id, elt stog id)) ids in
+  match h.hid_absolute with
+    false -> l
+  | true ->
+      List.filter (fun (_, elt) -> elt.elt_human_id = h) l
+;;
+
+let elt_by_human_id stog h =
+  match elts_by_human_id stog h with
+    [] ->
+      failwith (Printf.sprintf "Unknown element %S" (string_of_human_id h))
+  | [x] -> x
+  | l ->
+      let msg = Printf.sprintf "More than one element matches %S: %s"
+        (string_of_human_id h)
+        (String.concat ", "
+          (List.map (fun (id, elt) -> string_of_human_id elt.elt_human_id) l))
+      in
+      failwith msg
 ;;
 
 let set_elt stog id elt =
@@ -166,7 +204,7 @@ let set_elt stog id elt =
 let add_elt stog elt =
   let (id, elts) = Stog_tmap.add stog.stog_elts elt in
   let map = Hid_map.add
-    (List.rev elt.elt_human_id) id
+    (List.rev elt.elt_human_id.hid_path) id
     stog.stog_elts_by_human_id
   in
   { stog with
@@ -208,7 +246,7 @@ let merge_stogs stogs =
           Stog_tmap.fold
           (fun _ elt (elts, by_hid) ->
              let (id, elts) = Stog_tmap.add elts elt in
-             let by_hid = Hid_map.add elt.elt_human_id id by_hid in
+             let by_hid = Hid_map.add (List.rev elt.elt_human_id.hid_path) id by_hid in
              (elts, by_hid)
           )
           stog.stog_elts

@@ -130,4 +130,15 @@ module Make (P : P) =
                   []
 
     let find path t = find path t
+
+(*    let remove path t =
+      let rec iter t = function
+        [] -> t
+      | [sym] ->
+          begin
+            match t with
+              Leaf l when l = [sym] ->
+          end
+      | sym :: q ->
+         *)
   end
