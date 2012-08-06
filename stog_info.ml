@@ -162,11 +162,8 @@ let add_refs_in_graph stog =
   let f_art id art =
     let funs = [ "ref", f_ref id ] in
     let elt = Stog_types.elt stog id in
-    match elt.elt_body with
-      Xml trees ->
-        let env = Xtmpl.env_of_list funs in
-        ignore(Xtmpl.apply_to_xmls env trees)
-    | String _ -> ()
+    let env = Xtmpl.env_of_list funs in
+    ignore(Xtmpl.apply_to_xmls env elt.elt_body)
   in
   Stog_tmap.iter f_art stog.stog_elts;
   { stog with stog_graph = !g }

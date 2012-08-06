@@ -56,7 +56,7 @@ let topics_of_string s =
 let keywords_of_string = topics_of_string ;;
 let streams_of_string s =
   let l = topics_of_string s in
-  List.map (fun s -> Stog_misc.split_string s ['/']) l
+  List.map Stog_types.human_id_of_string l
 ;;
 
 let bool_of_string s =
@@ -89,6 +89,7 @@ let fill_elt_from_atts =
         | ("date", s) -> { elt with elt_date = Some (date_of_string s) }
         | ("published", s) -> { elt with elt_published = bool_of_string s }
         | ("streams", s) -> { elt with elt_streams = streams_of_string s }
+        | ("language-dep", s) -> { elt with elt_lang_dep = bool_of_string s }
         | (att, v) -> { elt with elt_vars = (att, v) :: elt.elt_vars }
       in
       iter elt q
@@ -103,13 +104,14 @@ let fill_elt_from_nodes =
     | Some (tag, atts, subs) ->
         let v = String.concat "" (List.map Xtmpl.string_of_xml subs) in
         match tag with
-        | "contents" -> { elt with elt_body = Xml subs }
+        | "contents" -> { elt with elt_body = subs }
         | "title" -> { elt with elt_title = v }
         | "keywords" -> { elt with elt_keywords = keywords_of_string v }
         | "topics" -> { elt with elt_topics = topics_of_string v }
         | "date" -> { elt with elt_date = Some (date_of_string v) }
         | "published" -> { elt with elt_published = bool_of_string v }
         | "streams" -> { elt with elt_streams = streams_of_string v }
+        | "language-dep" -> { elt with elt_lang_dep = bool_of_string v }
         | s -> { elt with elt_vars = (s, v) :: elt.elt_vars }
   in
   List.fold_left f
@@ -132,7 +134,7 @@ let elt_of_file file =
       fill_elt_from_nodes elt subs
   | _ ->
       (* all arguments are passed in attributes, subnodes are the contents *)
-      { elt with elt_body = Xml subs }
+      { elt with elt_body = subs }
 ;;
 
 (*

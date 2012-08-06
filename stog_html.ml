@@ -69,12 +69,32 @@ let html_file stog name =
   Printf.sprintf "%s%s.html" name ext_pref
 ;;
 
-let tag_sep = "<sep_/>";;
+let tag_sep = "sep_";;
 
-let article_url stog art =
-  Printf.sprintf "%s/%s" stog.stog_base_url art.art_human_id
+let elt_dst f_concat stog base elt =
+  let path = List.fold_left f_concat "" elt.elt_human_id.hid_path in
+  let ext = Stog_misc.filename_extension elt.elt_src in
+  let path =
+    if elt.elt_lang_dep then
+      begin
+        let ext_pref =
+          match stog.stog_lang with
+            None -> ""
+          | Some lang -> "."^lang
+        in
+        Printf.sprintf "%s%s" path ext_pref
+      end
+    else
+      path
+  in
+  let dst = match ext with "" -> path | _ -> path^"."^ext in
+  f_concat base dst
 ;;
 
+let elt_dst_file stog elt = elt_dst Filename.concat stog stog.stog_outdir elt;;
+let elt_url stog elt = elt_dst (fun a b -> a^"/"^b) stog stog.stog_base_url elt;;
+
+(*
 let link_to ?(from=`Article) file =
   let pref = match from with
       `Article -> "../"
@@ -90,6 +110,7 @@ let link_to_article stog ?(from=`Article) ?id article =
    (match id with None -> "" | Some s -> "#"^s)
   )
 ;;
+*)
 
 let topic_index_file stog topic =
   url_compat (html_file stog (Printf.sprintf "topic_%s" topic))
@@ -101,8 +122,9 @@ let month_index_file stog ~year ~month =
   url_compat (html_file stog (Printf.sprintf "%04d_%02d" year month))
 ;;
 
+(*
 let page_file stog page = html_file stog page.page_human_id;;
-
+*)
 let make_lang_funs stog =
   match stog.stog_lang with
     None -> []
@@ -160,9 +182,8 @@ let fun_image _env args legend =
   ]
 ;;
 
-
-let fun_article_href href ?from stog env args subs =
-  let article, id, text =
+let fun_elt_href ?typ href stog env args subs =
+  let (elt, id, text) =
     let (hid, id) =
       try
         let p = String.index href '#' in
@@ -171,42 +192,49 @@ let fun_article_href href ?from stog env args subs =
       with
         Not_found -> (href, None)
     in
-    let a =
+    let elt =
       try
-        let (_, a) = Stog_types.article_by_human_id stog hid in
-        Some a
+        let hid = Stog_types.human_id_of_string hid in
+        let (_, elt) = Stog_types.elt_by_human_id ?typ stog hid in
+        Some elt
       with
-        Not_found ->
-          Stog_msg.error (Printf.sprintf "Unknown article '%s'" hid);
+        Failure s ->
+          Stog_msg.error s;
           None
     in
     let text =
-      match a, subs with
+      match elt, subs with
         None, _ -> [Xtmpl.D "??"]
-      | Some a, [] -> [Xtmpl.D (Printf.sprintf "\"%s\"" a.art_title)]
+      | Some elt, [] -> [Xtmpl.D (Printf.sprintf "\"%s\"" elt.elt_title)]
       | Some _, text -> text
     in
-    (a, id, text)
+    (elt, id, text)
   in
-  match article with
+  match elt with
     None -> [Xtmpl.T ("span", ["class", "unknown-ref"], text)]
-  | Some a ->
+  | Some elt ->
       [
-        Xtmpl.T ("a", ["href", (link_to_article stog ?from ?id a)], text)
+        Xtmpl.T ("a", ["href", (elt_url stog elt)], text)
       ]
 ;;
 
-let fun_article ?from stog env args subs =
-  let hid =
+let fun_elt ?typ stog env args subs =
+  let href =
     match Xtmpl.get_arg args "href" with
-      None -> failwith "Missing href for <article>"
-    | Some id -> id
+      None ->
+        let msg = Printf.sprintf "Missing href for <%s>"
+          (match typ with None -> "elt" | Some s -> s)
+        in
+        failwith msg
+    | Some s -> s
   in
-  fun_article_href hid ?from stog env args subs
+  fun_elt_href ?typ href stog env args subs
 ;;
 
+let fun_post = fun_elt ~typ: "post";;
+let fun_page = fun_elt ~typ: "page";;
 
-let fun_archive_tree ?from stog _env _ =
+let fun_archive_tree stog _env _ =
   let mk_months map =
     List.sort (fun (m1, _) (m2, _) -> compare m2 m1)
     (Stog_types.Int_map.fold
@@ -224,11 +252,11 @@ let fun_archive_tree ?from stog _env _ =
   let years = List.sort (fun (y1,_) (y2,_) -> compare y2 y1) years in
 
   let f_mon year (month, set) =
-    let link = link_to ?from (month_index_file stog ~year ~month) in
+    let href = Printf.sprintf "%s/%s" stog.stog_base_url (month_index_file stog ~year ~month) in
     let month_str = Stog_intl.get_month stog.stog_lang month in
     Xtmpl.T ("li", [], [
-       Xtmpl.T ("a", ["href", link], [ Xtmpl.D month_str ]) ;
-       Xtmpl.D (Printf.sprintf "(%d)" (Stog_types.Art_set.cardinal set))
+       Xtmpl.T ("a", ["href", href], [ Xtmpl.D month_str ]) ;
+       Xtmpl.D (Printf.sprintf "(%d)" (Stog_types.Elt_set.cardinal set))
      ]
     )
   in
@@ -352,38 +380,34 @@ let fun_blog_url stog _env _ _ = [ Xtmpl.D stog.stog_base_url ];;
 
 let fun_graph =
   let generated = ref false in
-  fun outdir ?from stog _env _ _ ->
+  fun stog _env _ _ ->
     let png_name = "site-graph.png" in
     let svg_file = (Filename.chop_extension png_name) ^ ".svg" in
-    let src = link_to ?from svg_file in
-    let small_src = link_to ?from ("small-"^png_name) in
+    let src = Printf.sprintf "%s/%s" stog.stog_base_url svg_file in
+    let small_src = Printf.sprintf "%s/small-%s" stog.stog_base_url png_name in
     begin
       match !generated with
         true -> ()
       | false ->
           generated := true;
-          let f_href art =
-            let link = link_to ~from: `Index art.Stog_types.art_human_id in
-            Printf.sprintf "%s/%s" stog.stog_base_url link
-          in
-          let dot_code = Stog_info.dot_of_graph f_href stog in
+          let dot_code = Stog_info.dot_of_graph (elt_url stog) stog in
 
           let tmp = Filename.temp_file "stog" "dot" in
           Stog_misc.file_of_string ~file: tmp dot_code;
 
           let com = Printf.sprintf "dot -Gcharset=utf-8 -Tpng -o %s %s"
-            (Filename.quote (Filename.concat outdir png_name))
+            (Filename.quote (Filename.concat stog.stog_outdir png_name))
             (Filename.quote tmp)
           in
           let svg_code = Stog_misc.dot_to_svg dot_code in
-          Stog_misc.file_of_string ~file: (Filename.concat outdir svg_file) svg_code;
+          Stog_misc.file_of_string ~file: (Filename.concat stog.stog_outdir svg_file) svg_code;
           match Sys.command com with
             0 ->
               begin
                 (try Sys.remove tmp with _ -> ());
                 let com = Printf.sprintf "convert -scale 120x120 %s %s"
-                  (Filename.quote (Filename.concat outdir png_name))
-                  (Filename.quote (Filename.concat outdir small_src))
+                  (Filename.quote (Filename.concat stog.stog_outdir png_name))
+                  (Filename.quote (Filename.concat stog.stog_outdir small_src))
                 in
                 match Sys.command com with
                   0 -> ()
@@ -421,37 +445,11 @@ let fun_if env args subs =
   | false, [_] -> []
 ;;
 
-let get_page stog hid =
-    try snd(Stog_types.page_by_human_id stog hid)
-    with Not_found -> failwith (Printf.sprintf "No such page: %s" hid)
-;;
-
 let generate_page stog env contents =
   let tmpl = Filename.concat stog.stog_tmpl_dir "page.tmpl" in
   let f env args body = contents in
   let env = Xtmpl.env_of_list ~env ["contents", f] in
   Xtmpl.apply env (Stog_misc.string_of_file tmpl)
-;;
-
-let fun_page_ref hid stog env args subs =
-  let (hid, anchor) =
-    try
-      let p = String.index hid '#' in
-      let len = String.length hid in
-      (String.sub hid 0 p, "#"^(String.sub hid (p+1) (len - (p+1))))
-    with
-      Not_found -> (hid, "")
-  in
-  let page = get_page stog hid in
-  let file = page_file stog page in
-  let url = Printf.sprintf "%s%s" file anchor in
-  let link = Printf.sprintf "%s/%s" stog.stog_base_url url in
-  let text =
-    match subs with
-      [] -> [ Xtmpl.xml_of_string page.page_title ]
-    | l -> l
-  in
-  [ Xtmpl.T ("a", ["href", link], text) ]
 ;;
 
 let env_add_langswitch env stog html_f =
@@ -574,7 +572,7 @@ let fun_toc env args subs =
   subs @ [Xtmpl.T ("toc-contents", [], [])]
 ;;
 
-
+(*
 let rec fun_page_id hid outdir stog env args subs =
   let page = get_page stog hid in
   let file = Filename.concat outdir (page_file stog page) in
@@ -610,86 +608,88 @@ and fun_page outdir stog env args subs =
             | l -> String.concat "" (List.map Xtmpl.string_of_xml subs)
           in
           failwith ("Missing id or href for <page>: "^info)
-
-and default_commands ?outdir ?from ?rss stog =
+*)
+let default_commands ?rss stog =
   let l =
     !plugin_funs @
     [
       "if", fun_if ;
       "include", fun_include stog.stog_tmpl_dir ;
       "image", fun_image ;
-      "archive-tree", (fun _ -> fun_archive_tree ?from stog) ;
+      "archive-tree", (fun _ -> fun_archive_tree stog) ;
       "hcode", fun_hcode stog ~inline: false ?lang: None;
       "icode", fun_icode ?lang: None stog;
       "ocaml", fun_ocaml ~inline: false stog;
       "command-line", fun_command_line ~inline: false stog ;
-      "article", fun_article ?from stog;
+      "post", fun_post stog;
       "section", fun_section ;
       "subsection", fun_subsection ;
       "rssfeed", (match rss with None -> fun _env _ _ -> [] | Some file -> fun_rss_feed file);
       Stog_cst.site_url, fun_blog_url stog ;
       "search-form", fun_search_form stog ;
       Stog_cst.site_title, (fun _ _ _ -> [ Xtmpl.D stog.stog_title ]) ;
-      Stog_cst.site_desc, (fun _ _ _ -> [ Xtmpl.xml_of_string stog.stog_desc ]) ;
+      Stog_cst.site_desc, (fun _ _ _ -> stog.stog_desc) ;
       "two-columns", fun_twocolumns ;
       "ext-a", fun_exta ;
       "prepare-toc", fun_prepare_toc ;
       "toc", fun_toc ;
+      "graph", fun_graph stog ;
+      "page", (fun_page stog) ;
+      "latex", (Stog_latex.fun_latex stog) ;
     ]
-  in
-  let l =
-     match outdir with
-     | None -> l
-     | Some outdir ->
-         l @
-         ["graph", fun_graph outdir ?from stog ;
-          "page", (fun_page outdir stog) ;
-          "latex", (Stog_latex.fun_latex outdir stog) ;
-         ]
   in
   (make_lang_funs stog) @ l
 ;;
 
-let intro_of_article stog art =
-  let re_sep = Str.regexp_string tag_sep in
+let intro_of_elt stog elt =
+  let rec iter acc = function
+    [] -> raise Not_found
+  | (Xtmpl.T ("sep_",_,_)) :: _
+  | (Xtmpl.E (((_,"sep_"),_),_)) :: _ -> List.rev acc
+  | h :: q -> iter (h::acc) q
+  in
   try
-    let p = Str.search_forward re_sep art.art_body 0 in
-    [ Xtmpl.xml_of_string (String.sub art.art_body 0 p) ;
-     Xtmpl.T ("a", ["href", Printf.sprintf "%s/%s" stog.stog_base_url art.art_human_id],
+    let xml = iter [] elt.elt_body in
+    xml @
+    [
+      Xtmpl.T ("a", ["href", elt_url stog elt],
        [ Xtmpl.T ("img", [ "src", Printf.sprintf "%s/next.png" stog.stog_base_url; "alt", "next"], [])])
     ]
   with
-    Not_found -> [ Xtmpl.xml_of_string art.art_body ]
+    Not_found -> elt.elt_body
 ;;
 
-let rss_date_of_article article =
-    let {year; month; day} = article.art_date in
-    {
-      Rss.year = year ; month ; day;
-      hour = 8 ; minute = 0 ; second = 0 ;
-      zone = 0 ; week_day = -1 ;
-    }
+let rss_date_of_date d =
+  let {year; month; day} = d in
+  {
+    Rss.year = year ; month ; day;
+    hour = 8 ; minute = 0 ; second = 0 ;
+    zone = 0 ; week_day = -1 ;
+  }
 ;;
 
-let article_to_rss_item stog article =
-  let link = link_to_article stog ~from: `Index article in
-  let link = Printf.sprintf "%s/%s" stog.stog_base_url link in
-  let pubdate = rss_date_of_article article in
+let elt_to_rss_item stog elt =
+  let link = elt_url stog elt in
+  let pubdate =
+    match elt.elt_date with
+      None -> assert false
+    | Some d -> rss_date_of_date d
+  in
   let f_word w =
     { Rss.cat_name = w ; Rss.cat_domain = None }
   in
   let cats =
-    (List.map f_word article.art_topics) @
-    (List.map f_word article.art_keywords)
+    (List.map f_word elt.elt_topics) @
+    (List.map f_word elt.elt_keywords)
   in
-  let desc = intro_of_article stog article in
+  let desc = intro_of_elt stog elt in
   let desc =
     Xtmpl.apply_to_xmls
     (Xtmpl.env_of_list (default_commands stog))
     desc
   in
   let desc = String.concat "" (List.map Xtmpl.string_of_xml desc) in
-  Rss.item ~title: article.art_title
+  Rss.item ~title: elt.elt_title
   ~desc
   ~link
   ~pubdate
@@ -698,18 +698,23 @@ let article_to_rss_item stog article =
   ()
 ;;
 
-let generate_rss_feed_file stog ?title link articles file =
-  let arts = List.rev (Stog_types.sort_articles_by_date articles) in
-  let items = List.map (article_to_rss_item stog) arts in
+let generate_rss_feed_file stog ?title link elts file =
+  let elts = List.rev (Stog_types.sort_elts_by_date elts) in
+  let elts = List.filter
+    (fun elt -> match elt.elt_date with None -> false | _ -> true)  elts
+  in
+  let items = List.map (elt_to_rss_item stog) elts in
   let title = Printf.sprintf "%s%s"
     stog.stog_title
     (match title with None -> "" | Some t -> Printf.sprintf ": %s" t)
   in
   let link = stog.stog_base_url ^"/" ^ link in
   let pubdate =
-    match arts with
+    match elts with
       [] -> None
-    | h :: _ -> Some (rss_date_of_article h)
+    | h :: _ ->
+        Some (rss_date_of_date
+         (match h.elt_date with None -> assert false | Some d -> d))
   in
   let image =
     try
@@ -728,9 +733,10 @@ let generate_rss_feed_file stog ?title link articles file =
     with
       Not_found -> None
   in
+  let desc = String.concat "" (List.map Xtmpl.string_of_xml stog.stog_desc) in
   let channel =
     Rss.channel ~title ~link
-    ~desc: stog.stog_desc ?image
+    ~desc ?image
     ~managing_editor: stog.stog_email
     ?pubdate ?last_build_date: pubdate
     ~generator: "Stog"
@@ -754,12 +760,7 @@ let copy_file ?(ignerr=false) ?(quote_src=true) ?(quote_dst=true) src dest =
       if ignerr then Stog_msg.error msg else failwith msg
 ;;
 
-let xml_of_article_body s =
-  let s = Str.global_replace (Str.regexp_string tag_sep) "" s in
-  Xtmpl.xml_of_string s
-;;
-
-let html_of_topics stog art env args _ =
+let html_of_topics stog elt env args _ =
   let sep = Xtmpl.xml_of_string (Xtmpl.opt_arg args ~def: ", " "set") in
   let tmpl = Filename.concat stog.stog_tmpl_dir "topic.tmpl" in
   let f w =
@@ -768,12 +769,13 @@ let html_of_topics stog art env args _ =
   in
   Stog_misc.list_concat ~sep
   (List.map (fun w ->
-      Xtmpl.T ("a", ["href", link_to (topic_index_file stog w)], [ f w ]))
-   art.art_topics
+      let href = Printf.sprintf "%s/%s" stog.stog_base_url (topic_index_file stog w) in
+      Xtmpl.T ("a", ["href", href ], [ f w ]))
+   elt.elt_topics
   )
 ;;
 
-let html_of_keywords stog art env args _ =
+let html_of_keywords stog elt env args _ =
   let sep = Xtmpl.xml_of_string (Xtmpl.opt_arg args ~def: ", " "set") in
   let tmpl = Filename.concat stog.stog_tmpl_dir "keyword.tmpl" in
   let f w =
@@ -782,8 +784,9 @@ let html_of_keywords stog art env args _ =
   in
   Stog_misc.list_concat ~sep
   (List.map (fun w ->
-      Xtmpl.T ("a", ["href", link_to (keyword_index_file stog w)], [ f w ]))
-   art.art_keywords
+      let href = Printf.sprintf "%s/%s" stog.stog_base_url (keyword_index_file stog w) in
+      Xtmpl.T ("a", ["href", href], [ f w ]))
+   elt.elt_keywords
   )
 ;;
 
@@ -836,7 +839,7 @@ let normalize_email s =
   s2
 ;;
 
-
+(*
 let build_mailto stog ?message article =
   let emails =
     match message with
@@ -847,7 +850,7 @@ let build_mailto stog ?message article =
     Stog_misc.list_remove_doubles
     (List.map normalize_email emails)
   in
-  let hid = article.art_human_id in
+  let hid = elt.elt_human_id in
   let subject =
     match message with
       None -> Printf.sprintf "%s [%s]" article.art_title (Stog_misc.md5 hid)
@@ -924,24 +927,25 @@ let html_of_comments outdir stog article =
   let tmpl = Filename.concat stog.stog_tmpl_dir "comment.tmpl" in
   html_of_comments outdir stog article tmpl article.art_comments
 ;;
-
-let generate_blogpage stog env contents =
-  let tmpl = Filename.concat stog.stog_tmpl_dir "blogpage.tmpl" in
+*)
+(*
+let generate_elt_page stog env contents =
+  let tmpl = Filename.concat stog.stog_tmpl_dir (elt.elt_type^".tmpl") in
   let f env args body = contents in
   let env = Xtmpl.env_of_list ~env ["contents", f] in
   Xtmpl.apply env (Stog_misc.string_of_file tmpl)
 ;;
-
-let generate_article outdir stog env art_id article =
-  let html_file = Filename.concat outdir
-    (link_to_article stog ~from: `Index article)
-  in
-  let tmpl = (*Filename.concat stog.stog_tmpl_dir*) "article.tmpl" in
-  let art_dir = Filename.dirname html_file in
-  let url = article_url stog article in
+*)
+let generate_elt stog env elt_id elt =
+  let file = elt_dst_file stog elt in
+  let tmpl = elt.elt_type^".tmpl" in (*(*Filename.concat stog.stog_tmpl_dir*) "article.tmpl" in*)
+(*  let art_dir = Filename.dirname html_file in*)
+  let url = elt_url stog elt in
+(*
   Stog_misc.mkdir art_dir;
   List.iter (fun f -> copy_file f art_dir) article.art_files;
-
+*)
+(*
   let comment_actions =
     let href = build_mailto stog article in
     (*let href = Xtmpl.string_of_xml (Xtmpl.D href) in*)
@@ -953,30 +957,33 @@ let generate_article outdir stog env art_id article =
             "title", "Post a comment"], [])])
     ]
   in
+*)
   let env = Xtmpl.env_of_list ~env
     (List.map
      (fun (key, value) ->
         (key, fun _ _ _ -> [Xtmpl.xml_of_string value]))
-     article.art_vars
+     elt.elt_vars
     )
   in
   let previous, next =
-    let html_link a =
-      let link = link_to_article stog a in
-      [ Xtmpl.T ("a", ["href", link], [ Xtmpl.D a.art_title ]) ] in
+    let html_link elt =
+      let href = elt_url stog elt in
+      [ Xtmpl.T ("a", ["href", href], [ Xtmpl.D elt.elt_title ]) ]
+    in
     let try_link key search =
       let fallback () =
-        match search stog art_id with
+        match search stog elt_id with
           | None -> []
-          | Some id -> html_link (Stog_types.article stog id) in
-      if not (List.mem_assoc key article.art_vars) then fallback ()
+          | Some id -> html_link (Stog_types.elt stog id)
+      in
+      if not (List.mem_assoc key elt.elt_vars) then fallback ()
       else
-        let hid = List.assoc key article.art_vars in
+        let hid = Stog_types.human_id_of_string (List.assoc key elt.elt_vars) in
         try
-          let _, article = Stog_types.article_by_human_id stog hid in
-          html_link article
-        with Not_found ->
-          Printf.eprintf "Identifier %S unknown for key %S\n" hid key;
+          let (_, elt) = Stog_types.elt_by_human_id stog hid in
+          html_link elt
+        with Failure s ->
+          Stog_msg.warning s;
           fallback ()
     in
     (try_link "previous" Stog_info.pred_by_date,
@@ -984,24 +991,27 @@ let generate_article outdir stog env art_id article =
   in
   let env = Xtmpl.env_of_list ~env
     ([
-     Stog_cst.article_title, (fun _ _ _ -> [ Xtmpl.D article.art_title ]) ;
-     Stog_cst.page_title, (fun _ _ _ -> [ Xtmpl.D article.art_title ]) ;
-     "article-url", (fun _ _ _ -> [ Xtmpl.D url ]) ;
-     "article-body", (fun _ _ _ -> [ xml_of_article_body article.art_body ]);
-     Stog_cst.article_date, (fun _ _ _ ->
-       [ Xtmpl.D (Stog_intl.string_of_date stog.stog_lang article.art_date) ]) ;
+     Stog_cst.elt_title, (fun _ _ _ -> [ Xtmpl.D elt.elt_title ]) ;
+     "elt-url", (fun _ _ _ -> [ Xtmpl.D url ]) ;
+     "elt-body", (fun _ _ _ -> elt.elt_body);
+     tag_sep, (fun _ _ _ -> []);
+     Stog_cst.elt_date, (fun _ _ _ ->
+       [ Xtmpl.D (Stog_intl.string_of_date_opt stog.stog_lang elt.elt_date) ]) ;
      "next", (fun _ _ _ -> next);
      "previous", (fun _ _ _ -> previous);
-     "keywords", html_of_keywords stog article ;
-     "topics", html_of_topics stog article ;
+     "keywords", html_of_keywords stog elt ;
+     "topics", html_of_topics stog elt ;
+(*
      "comment-actions", (fun _ _ _ -> comment_actions);
      "comments", html_of_comments outdir stog article ;
-     "article-navbar", fun _ _ _ -> [Xtmpl.D "true"] ;
-   ] @ (default_commands ~outdir stog))
+*)
+(*
+     "elt-navbar", fun _ _ _ -> [Xtmpl.D "true"] ;
+*)
+   ] @ (default_commands stog))
   in
-  let env = env_add_langswitch env stog html_file in
-  let s = generate_blogpage stog env [Xtmpl.T ("include", ["file", tmpl], [])] in
-  Xtmpl.apply_string_to_file ~head: "<!DOCTYPE HTML>" env s html_file
+  let env = env_add_langswitch env stog file in
+  Xtmpl.apply_to_file ~head: "<!DOCTYPE HTML>" env tmpl file
 ;;
 
 

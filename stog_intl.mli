@@ -53,4 +53,5 @@ val data_of_lang : lang_abbrev option -> lang_data
 
 val get_month : lang_abbrev option -> int -> string
 val string_of_date : lang_abbrev option -> Stog_types.date -> string
+val string_of_date_opt : lang_abbrev option -> Stog_types.date option -> string
 val short_string_of_date : Stog_types.date -> string

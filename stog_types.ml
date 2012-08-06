@@ -49,7 +49,7 @@ type 'a tree = 'a tree_node
 and 'a tree_node = Node of 'a * 'a tree list
 
 
-type body = Xml of Xtmpl.tree list | String of string
+type body = Xtmpl.tree list
 
 type human_id = {
     hid_path : string list;
@@ -84,6 +84,7 @@ type elt =
     elt_vars : (string * string) list ;
     elt_src : string ;
     elt_streams : human_id list ; (* list of streams (blog, etc.) this element belongs to *)
+    elt_lang_dep : bool ; (* whether a file must be generated for each language *)
   }
 and elt_id = elt Stog_tmap.key
 
@@ -99,7 +100,7 @@ let today () =
 let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
   { elt_human_id = hid ;
     elt_type = typ ;
-    elt_body = String "" ;
+    elt_body = [] ;
     elt_date = None ;
     elt_title = "";
     elt_keywords = [] ;
@@ -108,6 +109,7 @@ let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
     elt_vars = [] ;
     elt_src = "/tmp" ;
     elt_streams = [] ;
+    elt_lang_dep = true ;
   }
 ;;
 
@@ -149,6 +151,7 @@ type stog = {
   stog_email : string ;
   stog_rss_length : int ;
   stog_lang : string option ;
+  stog_outdir : string ;
   }
 
 let create_stog dir = {
@@ -157,8 +160,8 @@ let create_stog dir = {
   stog_elts_by_human_id = Hid_map.empty ;
   stog_tmpl_dir = Filename.concat dir "tmpl" ;
   stog_title = "Blog title" ;
-  stog_body = String "" ;
-  stog_desc = String "" ;
+  stog_body = [] ;
+  stog_desc = [] ;
   stog_graph = Graph.create () ;
   stog_elts_by_kw = Str_map.empty ;
   stog_elts_by_topic = Str_map.empty ;
@@ -168,28 +171,34 @@ let create_stog dir = {
   stog_rss_length = 10 ;
   stog_vars = [] ;
   stog_lang = None ;
+  stog_outdir = "." ;
   }
 ;;
 
 let elt stog id = Stog_tmap.get stog.stog_elts id;;
-let elts_by_human_id stog h =
+let elts_by_human_id ?typ stog h =
   let rev_path = List.rev h.hid_path in
   let ids = Hid_map.find rev_path stog.stog_elts_by_human_id in
   let l = List.map (fun id -> (id, elt stog id)) ids in
-  match h.hid_absolute with
-    false -> l
-  | true ->
-      List.filter (fun (_, elt) -> elt.elt_human_id = h) l
+  let pred =
+    match h.hid_absolute, typ with
+      false, None -> None
+    | false, Some typ -> Some (fun (_, elt) -> elt.elt_type = typ)
+    | true, None -> Some (fun (_, elt) -> elt.elt_human_id = h)
+    | true, Some typ -> Some (fun (_, elt) -> elt.elt_human_id = h && elt.elt_type = typ)
+  in
+  match pred with None -> l | Some pred -> List.filter pred l
 ;;
 
-let elt_by_human_id stog h =
-  match elts_by_human_id stog h with
+let elt_by_human_id ?typ stog h =
+  match elts_by_human_id ?typ stog h with
     [] ->
       failwith (Printf.sprintf "Unknown element %S" (string_of_human_id h))
   | [x] -> x
   | l ->
-      let msg = Printf.sprintf "More than one element matches %S: %s"
+      let msg = Printf.sprintf "More than one element matches %S%s: %s"
         (string_of_human_id h)
+        (match typ with None -> "" | Some t -> Printf.sprintf " of type %S" t)
         (String.concat ", "
           (List.map (fun (id, elt) -> string_of_human_id elt.elt_human_id) l))
       in
