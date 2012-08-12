@@ -54,10 +54,7 @@ let topics_of_string s =
     (Stog_misc.split_string s [','; ';'])
 ;;
 let keywords_of_string = topics_of_string ;;
-let streams_of_string s =
-  let l = topics_of_string s in
-  List.map Stog_types.human_id_of_string l
-;;
+let sets_of_string = topics_of_string ;;
 
 let bool_of_string s =
   match String.lowercase s with
@@ -88,7 +85,7 @@ let fill_elt_from_atts =
         | ("topics", s) -> { elt with elt_topics = topics_of_string s }
         | ("date", s) -> { elt with elt_date = Some (date_of_string s) }
         | ("published", s) -> { elt with elt_published = bool_of_string s }
-        | ("streams", s) -> { elt with elt_streams = streams_of_string s }
+        | ("sets", s) -> { elt with elt_sets = sets_of_string s }
         | ("language-dep", s) -> { elt with elt_lang_dep = bool_of_string s }
         | (att, v) -> { elt with elt_vars = (att, v) :: elt.elt_vars }
       in
@@ -110,7 +107,7 @@ let fill_elt_from_nodes =
         | "topics" -> { elt with elt_topics = topics_of_string v }
         | "date" -> { elt with elt_date = Some (date_of_string v) }
         | "published" -> { elt with elt_published = bool_of_string v }
-        | "streams" -> { elt with elt_streams = streams_of_string v }
+        | "sets" -> { elt with elt_sets = sets_of_string v }
         | "language-dep" -> { elt with elt_lang_dep = bool_of_string v }
         | s -> { elt with elt_vars = (s, v) :: elt.elt_vars }
   in

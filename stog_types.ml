@@ -83,7 +83,7 @@ type elt =
     elt_published : bool ;
     elt_vars : (string * string) list ;
     elt_src : string ;
-    elt_streams : human_id list ; (* list of streams (blog, etc.) this element belongs to *)
+    elt_sets : string list ; (* list of sets ("blog", "foo", etc.) this element belongs to *)
     elt_lang_dep : bool ; (* whether a file must be generated for each language *)
   }
 and elt_id = elt Stog_tmap.key
@@ -108,7 +108,7 @@ let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
     elt_published = true ;
     elt_vars = [] ;
     elt_src = "/tmp" ;
-    elt_streams = [] ;
+    elt_sets = [] ;
     elt_lang_dep = true ;
   }
 ;;
@@ -236,10 +236,15 @@ let sort_ids_elts_by_date elts =
   elts
 ;;
 
-let elt_list ?(by_date=false) stog =
+let elt_list ?(by_date=false) ?set stog =
+  let pred =
+    match set with
+      None -> (fun _ -> true)
+    | Some set -> (fun elt -> List.mem set elt.elt_sets)
+  in
   let l =
     Stog_tmap.fold
-    (fun id elt acc -> (id, elt) :: acc)
+    (fun id elt acc -> if pred elt then (id, elt) :: acc else acc)
     stog.stog_elts
     []
   in

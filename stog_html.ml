@@ -936,11 +936,27 @@ let generate_elt_page stog env contents =
   Xtmpl.apply env (Stog_misc.string_of_file tmpl)
 ;;
 *)
+
+let commands_of_elt stog elt_id elt =
+  let url = elt_url stog elt in
+  [
+    Stog_cst.elt_title, (fun _ _ _ -> [ Xtmpl.D elt.elt_title ]) ;
+    "elt-url", (fun _ _ _ -> [ Xtmpl.D url ]) ;
+    "elt-body", (fun _ _ _ -> elt.elt_body);
+    "elt-type", (fun _ _ _ -> [Xtmpl.D elt.elt_type]);
+    "elt-src", (fun _ _ _ -> [Xtmpl.D elt.elt_src]);
+    tag_sep, (fun _ _ _ -> []);
+    Stog_cst.elt_date, (fun _ _ _ ->
+       [ Xtmpl.D (Stog_intl.string_of_date_opt stog.stog_lang elt.elt_date) ]) ;
+    "elt-keywords", html_of_keywords stog elt ;
+    "elt-topics", html_of_topics stog elt ;
+  ]
+;;
+
 let generate_elt stog env elt_id elt =
   let file = elt_dst_file stog elt in
   let tmpl = elt.elt_type^".tmpl" in (*(*Filename.concat stog.stog_tmpl_dir*) "article.tmpl" in*)
 (*  let art_dir = Filename.dirname html_file in*)
-  let url = elt_url stog elt in
 (*
   Stog_misc.mkdir art_dir;
   List.iter (fun f -> copy_file f art_dir) article.art_files;
@@ -991,64 +1007,57 @@ let generate_elt stog env elt_id elt =
   in
   let env = Xtmpl.env_of_list ~env
     ([
-       Stog_cst.elt_title, (fun _ _ _ -> [ Xtmpl.D elt.elt_title ]) ;
-       "elt-url", (fun _ _ _ -> [ Xtmpl.D url ]) ;
-       "elt-body", (fun _ _ _ -> elt.elt_body);
-       "elt-type", (fun _ _ _ -> [Xtmpl.D elt.elt_type]);
-       "elt-src", (fun _ _ _ -> [Xtmpl.D elt.elt_src]);
-       tag_sep, (fun _ _ _ -> []);
-       Stog_cst.elt_date, (fun _ _ _ ->
-          [ Xtmpl.D (Stog_intl.string_of_date_opt stog.stog_lang elt.elt_date) ]) ;
-       "next", (fun _ _ _ -> next);
+        "next", (fun _ _ _ -> next);
        "previous", (fun _ _ _ -> previous);
-       "keywords", html_of_keywords stog elt ;
-       "topics", html_of_topics stog elt ;
-       (*
-          "comment-actions", (fun _ _ _ -> comment_actions);
-          "comments", html_of_comments outdir stog article ;
-       *)
-       (*
+     ] @
+     (commands_of_elt stog elt_id elt) @
+        (*
           "elt-navbar", fun _ _ _ -> [Xtmpl.D "true"] ;
        *)
-   ] @ (default_commands stog))
+     (default_commands stog))
   in
   let env = env_add_langswitch env stog file in
   Xtmpl.apply_to_file ~head: "<!DOCTYPE HTML>" env tmpl file
 ;;
 
 
-let article_list outdir ?rss ?set stog env args _ =
+let elt_list ?rss ?set stog env args _ =
+  let elts =
+    match set with
+      Some set ->
+        let l = Stog_types.Elt_set.elements set in
+        List.map (fun id -> (id, Stog_types.elt stog id)) l
+    | None ->
+        let set = Xtmpl.get_arg args "set" in
+        Stog_types.elt_list ?set stog
+  in
   let max = Stog_misc.map_opt int_of_string
     (Xtmpl.get_arg args "max")
   in
-  let arts =
-    match set with
-      None -> Stog_types.article_list stog
-    | Some set ->
-        let l = Stog_types.Art_set.elements set in
-        List.map (fun id -> (id, Stog_types.article stog id)) l
-  in
-  let arts = List.rev (Stog_types.sort_ids_articles_by_date arts) in
-  let arts =
+  let elts = List.rev (Stog_types.sort_ids_elts_by_date elts) in
+  let elts =
     match max with
-      None -> arts
-    | Some n -> Stog_misc.list_chop n arts
+      None -> elts
+    | Some n -> Stog_misc.list_chop n elts
   in
-  let tmpl = Filename.concat stog.stog_tmpl_dir "article_list.tmpl" in
-  let f_article (_, art) =
-    let url = article_url stog art in
+  let tmpl =
+    let file =
+      match Xtmpl.get_arg args "tmpl" with
+        None -> "elt_list.tmpl"
+      | Some s -> s
+    in
+    Filename.concat stog.stog_tmpl_dir file
+  in
+  let f_elt (elt_id, elt) =
+    let url = elt_url stog elt in
     let env = Xtmpl.env_of_list ~env
-    ([
-       "article-date", (fun _ _ _ ->
-         [ Xtmpl.D (Stog_intl.string_of_date stog.stog_lang art.art_date) ]) ;
-       "article-title", (fun _ _ _ -> [ Xtmpl.D art.art_title ] );
-       "article-url", (fun _ _ _ -> [ Xtmpl.D url ]);
-       "article-intro", (fun _ _ _ -> intro_of_article stog art) ;
-     ] @ (default_commands ~outdir ~from:`Index stog))
+      (( "elt-intro", (fun _ _ _ -> intro_of_elt stog elt)) ::
+       (commands_of_elt stog elt_id elt)
+       @ (default_commands stog))
     in
     Xtmpl.xml_of_string (Xtmpl.apply_from_file env tmpl)
   in
-  let xml = List.map f_article arts in
+  let xml = List.map f_elt elts in
   match rss with
     None -> xml
   | Some link ->
@@ -1066,11 +1075,11 @@ let generate_by_word_indexes outdir stog env tmpl map f_html_file =
     let rss_basefile = (Filename.chop_extension base_html_file)^".rss" in
     let rss_file = Filename.concat outdir rss_basefile in
     generate_rss_feed_file stog ~title: word base_html_file
-    (List.map (Stog_types.article stog) (Stog_types.Art_set.elements set))
+    (List.map (Stog_types.elt stog) (Stog_types.Elt_set.elements set))
     rss_file;
     let env = Xtmpl.env_of_list ~env
       ([
-         "articles", (article_list outdir ~set ~rss: rss_basefile stog);
+         "articles", (elt_list outdir ~set ~rss: rss_basefile stog);
          Stog_cst.page_title, (fun _ _ _ -> [Xtmpl.D word]) ;
        ] @ (default_commands ~outdir ~from:`Index ~rss: rss_basefile stog))
     in
