@@ -991,23 +991,25 @@ let generate_elt stog env elt_id elt =
   in
   let env = Xtmpl.env_of_list ~env
     ([
-     Stog_cst.elt_title, (fun _ _ _ -> [ Xtmpl.D elt.elt_title ]) ;
-     "elt-url", (fun _ _ _ -> [ Xtmpl.D url ]) ;
-     "elt-body", (fun _ _ _ -> elt.elt_body);
-     tag_sep, (fun _ _ _ -> []);
-     Stog_cst.elt_date, (fun _ _ _ ->
-       [ Xtmpl.D (Stog_intl.string_of_date_opt stog.stog_lang elt.elt_date) ]) ;
-     "next", (fun _ _ _ -> next);
-     "previous", (fun _ _ _ -> previous);
-     "keywords", html_of_keywords stog elt ;
-     "topics", html_of_topics stog elt ;
-(*
-     "comment-actions", (fun _ _ _ -> comment_actions);
-     "comments", html_of_comments outdir stog article ;
-*)
-(*
-     "elt-navbar", fun _ _ _ -> [Xtmpl.D "true"] ;
-*)
+       Stog_cst.elt_title, (fun _ _ _ -> [ Xtmpl.D elt.elt_title ]) ;
+       "elt-url", (fun _ _ _ -> [ Xtmpl.D url ]) ;
+       "elt-body", (fun _ _ _ -> elt.elt_body);
+       "elt-type", (fun _ _ _ -> [Xtmpl.D elt.elt_type]);
+       "elt-src", (fun _ _ _ -> [Xtmpl.D elt.elt_src]);
+       tag_sep, (fun _ _ _ -> []);
+       Stog_cst.elt_date, (fun _ _ _ ->
+          [ Xtmpl.D (Stog_intl.string_of_date_opt stog.stog_lang elt.elt_date) ]) ;
+       "next", (fun _ _ _ -> next);
+       "previous", (fun _ _ _ -> previous);
+       "keywords", html_of_keywords stog elt ;
+       "topics", html_of_topics stog elt ;
+       (*
+          "comment-actions", (fun _ _ _ -> comment_actions);
+          "comments", html_of_comments outdir stog article ;
+       *)
+       (*
+          "elt-navbar", fun _ _ _ -> [Xtmpl.D "true"] ;
+       *)
    ] @ (default_commands stog))
   in
   let env = env_add_langswitch env stog file in
