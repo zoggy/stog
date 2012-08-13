@@ -28,5 +28,42 @@
 
 (** *)
 
-let version = "0.1";;
-let default_port = 15007;;
+let version = "0.2";;
+
+type t =
+  { ignored : string list ; (** list of regexps of filenames to ignore *)
+    elements : string list ; (** list of regexps for element files *)
+    not_elements : string list ;
+    (** list of regexps for file matching elements rules but not being  elements *)
+  }
+;;
+
+module CF = Config_file;;
+
+let rc_file dir = Filename.concat dir ".stog";;
+
+let read_config dir =
+  let rc_file = rc_file dir in
+  let group = new CF.group in
+  let o_ignored = new CF.list_cp CF.string_wrappers ~group
+    ["ignored"] [ ".*Makefile" ] "Regexps of files to ignore"
+  in
+  let o_elts = new CF.list_cp CF.string_wrappers ~group
+    ["elements"] [ ".*\\.xml" ; ".*\\.html" ] "Regexps of files containing elements"
+  in
+  let o_no_elts = new CF.list_cp CF.string_wrappers ~group
+    ["not-elements"] [ ".*\\.xml" ; ".*\\.html" ]
+    "Regexps of files matching 'elements' regexps but not containing elements"
+  in
+  group#read rc_file;
+  group#write rc_file;
+  { ignored = o_ignored#get ;
+    elements = o_elts#get ;
+    not_elements = o_not_elts#get ;
+  }
+;;
+
+
+
+
+    

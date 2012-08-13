@@ -394,9 +394,12 @@ let read_stog_index stog dir =
       let header = String.sub contents 0 p_sep in
       read_stog_header stog header
 ;;
+*)
 
 let read_stog dir =
   let stog = Stog_types.create_stog dir in
+  let cfg = Stog_config.read_config dir in
+
   let stog = read_stog_index stog dir in
   let on_error (e,s1,s2) =
     let msg =  Printf.sprintf "%s: %s %s"
@@ -433,6 +436,7 @@ let read_stog dir =
   stog
 ;;
 
+(*
 let write_stog_article stog _ art =
   let dir = Filename.concat stog.stog_dir art.art_human_id in
   Stog_misc.mkdir dir;
