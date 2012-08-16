@@ -1211,10 +1211,11 @@ let generate stog =
   prerr_endline
   (Stog_types.Hid_map.to_string (fun x -> x) stog.stog_elts_by_human_id);
 (*  generate_index outdir stog env ; generate_index_file outdir stog env;*)
+(*
   generate_topic_indexes stog env;
   generate_keyword_indexes stog env;
   generate_archive_index stog env;
-  Stog_tmap.iter (fun elt_id elt -> generate_elt stog env ~elt_id elt) stog.stog_elts
+*)  Stog_tmap.iter (fun elt_id elt -> generate_elt stog env ~elt_id elt) stog.stog_elts
 ;;
 
 
