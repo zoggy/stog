@@ -114,6 +114,7 @@ let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
 ;;
 
 module Str_map = Map.Make (struct type t = string let compare = compare end);;
+module Str_set = Set.Make (struct type t = string let compare = compare end);;
 module Hid_map = Stog_trie.Make (struct type t = string let compare = compare end);;
 module Elt_set = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
 module Elt_map = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
@@ -134,6 +135,11 @@ module Graph = Stog_graph.Make_with_map
   )
   (struct type t = edge_type let compare = Pervasives.compare end);;
 
+type file_tree =
+{ files : Str_set.t ;
+  dirs : file_tree Str_map.t ;
+}
+
 type stog = {
   stog_dir : string ;
   stog_elts : (elt, elt) Stog_tmap.t ;
@@ -141,7 +147,6 @@ type stog = {
   stog_vars : (string * string) list ;
   stog_tmpl_dir : string ;
   stog_title : string ;
-  stog_body : body ;
   stog_desc : body ;
   stog_graph : Graph.t ;
   stog_elts_by_kw : Elt_set.t Str_map.t ;
@@ -152,6 +157,8 @@ type stog = {
   stog_rss_length : int ;
   stog_lang : string option ;
   stog_outdir : string ;
+  stog_main_elt : elt_id option ;
+  stog_files : file_tree ;
   }
 
 let create_stog dir = {
@@ -160,7 +167,6 @@ let create_stog dir = {
   stog_elts_by_human_id = Hid_map.empty ;
   stog_tmpl_dir = Filename.concat dir "tmpl" ;
   stog_title = "Blog title" ;
-  stog_body = [] ;
   stog_desc = [] ;
   stog_graph = Graph.create () ;
   stog_elts_by_kw = Str_map.empty ;
@@ -172,6 +178,8 @@ let create_stog dir = {
   stog_vars = [] ;
   stog_lang = None ;
   stog_outdir = "." ;
+  stog_main_elt = None ;
+  stog_files = { files = Str_set.empty ; dirs = Str_map.empty } ;
   }
 ;;
 

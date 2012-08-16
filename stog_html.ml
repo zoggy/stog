@@ -1054,7 +1054,6 @@ let elt_list ?rss ?set stog env args _ =
     Filename.concat stog.stog_tmpl_dir file
   in
   let f_elt (elt_id, elt) =
-    let url = elt_url stog elt in
     let env = Xtmpl.env_of_list ~env
       (( "elt-intro", (fun _ _ _ -> intro_of_elt stog elt)) ::
        (commands_of_elt stog elt)
@@ -1143,8 +1142,6 @@ let generate_archive_index stog env =
         elt_lang_dep = true ;
       }
     in
-    let out_file = elt_dst_file stog elt in
-    let url = elt_url stog elt in
     let env = Xtmpl.env_of_list ~env
       ((commands_of_elt stog elt) @ (default_commands stog))
     in
@@ -1188,7 +1185,7 @@ let generate_index outdir stog env =
 ;;
 *)
 
-let generate outdir stog =
+let generate stog =
   begin
     match stog.stog_lang with
       None -> ()

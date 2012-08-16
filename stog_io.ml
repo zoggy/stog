@@ -62,6 +62,50 @@ let bool_of_string s =
   | _ -> true
 ;;
 
+let extract_stog_info_from_elt stog elt =
+  let stog = { stog with stog_title = elt.elt_title } in
+  let rec iter (stog, atts) = function
+    [] -> (stog, atts)
+  | h :: q ->
+      let (stog, opt) =
+        match h with
+        | ("stog-desc",s) -> { stog with stog_desc = [Xtmpl.xml_of_string s] }, None
+        | ("stog-base-url",s) -> { stog with stog_base_url = s }, None
+        | ("stog-email",s) -> { stog with stog_email = s }, None
+        | ("stog-rss-length",s) -> { stog with stog_rss_length = int_of_string s }, None
+        | (att, v) -> (stog, Some h)
+      in
+      let atts = match opt with None -> atts | Some x -> h :: atts in
+      iter (stog, atts) q
+  in
+  let (stog, vars) = iter (stog, []) elt.elt_vars in
+  let stog = { stog with stog_vars = vars } in
+  (stog, { elt with elt_vars = vars })
+;;
+
+let add_elt stog elt =
+  let (stog, elt) =
+    let is_main =
+      try bool_of_string (List.assoc "main" elt.elt_vars)
+      with Not_found -> false
+    in
+    if is_main then
+      begin
+      match stog.stog_main_elt with
+          Some id ->
+            let elt2 = Stog_types.elt stog id in
+            failwith
+            (Printf.sprintf "%S: %S is already defined as main stog element"
+             elt.elt_src elt2.elt_src)
+        | None ->
+            extract_stog_info_from_elt stog elt
+      end
+    else
+      (stog, elt)
+  in
+  Stog_types.add_elt stog elt
+;;
+
 let node_details = function
   Xtmpl.D _  -> None
 | Xtmpl.T (tag, atts, subs) -> Some (tag, atts, subs)
@@ -115,23 +159,26 @@ let fill_elt_from_nodes =
 ;;
 
 let elt_of_file file =
-  let xml = Xtmpl.xml_of_string (Stog_misc.string_of_file file) in
-  let (typ, atts, subs) =
-    match node_details xml with
-      None -> failwith (Printf.sprintf "File %S does not content an XML tree" file)
-    | Some (tag, atts, subs) -> (tag, atts, subs)
-  in
-  let elt = Stog_types.make_elt ~typ () in
-  let elt = { elt with elt_src = file } in
-  let elt = fill_elt_from_atts elt atts in
-  match Xtmpl.get_arg atts "with-contents" with
-    Some s when bool_of_string s ->
-      (* arguments are also passed in sub nodes, and contents is in
-         subnode "contents" *)
-      fill_elt_from_nodes elt subs
-  | _ ->
-      (* all arguments are passed in attributes, subnodes are the contents *)
-      { elt with elt_body = subs }
+  try
+    let xml = Xtmpl.xml_of_string ~add_main: false (Stog_misc.string_of_file file) in
+    let (typ, atts, subs) =
+      match node_details xml with
+        None -> failwith (Printf.sprintf "File %S does not content an XML tree" file)
+      | Some (tag, atts, subs) -> (tag, atts, subs)
+    in
+    let elt = Stog_types.make_elt ~typ () in
+    let elt = { elt with elt_src = file } in
+    let elt = fill_elt_from_atts elt atts in
+    match Xtmpl.get_arg atts "with-contents" with
+      Some s when bool_of_string s ->
+        (* arguments are also passed in sub nodes, and contents is in
+           subnode "contents" *)
+        fill_elt_from_nodes elt subs
+    | _ ->
+        (* all arguments are passed in attributes, subnodes are the contents *)
+        { elt with elt_body = subs }
+  with
+    Failure s -> failwith (Printf.sprintf "File %S:\n%s" file s)
 ;;
 
 (*
@@ -396,43 +443,76 @@ let read_stog_index stog dir =
 ;;
 *)
 
+let read_files cfg stog dir =
+  let stog_rc_file = Stog_config.rc_file dir in
+  let on_error (e,s1,s2) =
+    let msg =  Printf.sprintf "%s: %s %s" (Unix.error_message e) s1 s2 in
+    Stog_msg.error msg
+  in
+  let pred_ign =
+    let make_pred re =
+      let re = Str.regexp re in
+      fun s -> Str.string_match re s 0
+    in
+    let preds = List.map make_pred cfg.Stog_config.ignored in
+    fun entry ->
+      entry <> stog_rc_file &&
+      (let base = Filename.basename entry in base <> "." && base <> "..") &&
+      (
+       let k = (Unix.lstat entry).Unix.st_kind in
+       match k with
+         Unix.S_REG | Unix.S_DIR -> not (List.exists (fun f -> f entry) preds)
+       | _ -> false
+      )
+  in
+  let pred_elt =
+    let make_pred re =
+      let re = Str.regexp re in
+      fun s -> Str.string_match re s 0
+    in
+    let preds_ok = List.map make_pred cfg.Stog_config.elements in
+    let preds_ko = List.map make_pred cfg.Stog_config.not_elements in
+    fun entry ->
+      (List.exists (fun f -> f entry) preds_ok) &&
+      not (List.exists (fun f -> f entry) preds_ko)
+  in
+  let is_dir file = (Unix.lstat file).Unix.st_kind = Unix.S_DIR in
+  let rec iter stog dir =
+    let entries =
+      Stog_find.find_list
+      (Stog_find.Custom on_error)
+      [dir]
+      [ Stog_find.Maxdepth 1 ;
+        Stog_find.Predicate pred_ign ;
+      ]
+    in
+    let entries = List.filter ((<>) dir) entries in
+    let (dirs, files) = List.partition is_dir entries in
+    (*prerr_endline ("dirs=" ^ String.concat ", " dirs);*)
+    let (elt_files, files) = List.partition pred_elt files in
+    let files = List.fold_right Str_set.add files Str_set.empty in
+    let elts = List.map elt_of_file elt_files in
+    let stog = List.fold_left add_elt stog elts in
+    let (stog, dirs) = List.fold_left
+      (fun (stog, map) dir ->
+        let base = Filename.basename dir in
+        let (stog, tree) = iter stog dir in
+        (stog, Str_map.add base tree map)
+      )
+      (stog, Str_map.empty)
+      dirs
+    in
+    let tree = { files ; dirs } in
+    (stog, tree)
+  in
+  let (stog, tree) = iter stog dir in
+  { stog with stog_files = tree }
+;;
+
 let read_stog dir =
   let stog = Stog_types.create_stog dir in
   let cfg = Stog_config.read_config dir in
-
-  let stog = read_stog_index stog dir in
-  let on_error (e,s1,s2) =
-    let msg =  Printf.sprintf "%s: %s %s"
-      (Unix.error_message e) s1 s2
-    in
-    Stog_msg.error msg
-  in
-  let dirs = Stog_find.find_list
-    (Stog_find.Custom on_error)
-    [dir]
-    [ Stog_find.Maxdepth 1 ;
-      Stog_find.Type Unix.S_DIR ;
-    ]
-  in
-  let dirs = List.filter ((<>) dir) dirs in
-  let dirs = ignore_dot_entries dirs in
-
-  (*List.iter prerr_endline dirs;*)
-  let stog =
-    List.fold_left
-    (fun stog dir ->
-       match read_article dir with
-         None -> stog
-       | Some art -> add_article stog art
-    )
-    stog
-    dirs
-  in
-  let stog = read_stog_pages stog dir in
-  Stog_msg.verbose ~level: 2
-    (Printf.sprintf "Pages: %s"
-      (String.concat ", "
-        (Stog_types.Str_map.fold (fun id _ acc -> id :: acc) stog.stog_page_by_human_id [])));
+  let stog = read_files cfg stog dir in
   stog
 ;;
 

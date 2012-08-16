@@ -46,13 +46,13 @@ let read_config dir =
   let rc_file = rc_file dir in
   let group = new CF.group in
   let o_ignored = new CF.list_cp CF.string_wrappers ~group
-    ["ignored"] [ ".*Makefile" ] "Regexps of files to ignore"
+    ["ignored"] [ ".*\.git" ; ".*Makefile" ] "Regexps of files to ignore"
   in
   let o_elts = new CF.list_cp CF.string_wrappers ~group
-    ["elements"] [ ".*\\.xml" ; ".*\\.html" ] "Regexps of files containing elements"
+    ["elements"] [ ".*\\.xml$" ; ".*\\.html$" ] "Regexps of files containing elements"
   in
-  let o_no_elts = new CF.list_cp CF.string_wrappers ~group
-    ["not-elements"] [ ".*\\.xml" ; ".*\\.html" ]
+  let o_not_elts = new CF.list_cp CF.string_wrappers ~group
+    ["not-elements"] [ ]
     "Regexps of files matching 'elements' regexps but not containing elements"
   in
   group#read rc_file;

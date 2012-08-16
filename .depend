@@ -23,15 +23,17 @@ stog_gui_main.cmo : stog_types.cmo stog_misc.cmi stog_io.cmo \
 stog_gui_main.cmx : stog_types.cmx stog_misc.cmx stog_io.cmx \
     stog_gui_arts.cmx
 stog_html.cmo : stog_types.cmo stog_tmap.cmi stog_msg.cmi stog_misc.cmi \
-    stog_latex.cmo stog_intl.cmi stog_info.cmo stog_date.cmi stog_cst.cmo
+    stog_latex.cmo stog_intl.cmi stog_info.cmo stog_cst.cmo
 stog_html.cmx : stog_types.cmx stog_tmap.cmx stog_msg.cmx stog_misc.cmx \
-    stog_latex.cmx stog_intl.cmx stog_info.cmx stog_date.cmx stog_cst.cmx
+    stog_latex.cmx stog_intl.cmx stog_info.cmx stog_cst.cmx
 stog_info.cmo : stog_types.cmo stog_tmap.cmi stog_misc.cmi
 stog_info.cmx : stog_types.cmx stog_tmap.cmx stog_misc.cmx
 stog_intl.cmo : stog_types.cmo stog_intl.cmi
 stog_intl.cmx : stog_types.cmx stog_intl.cmi
-stog_io.cmo : stog_types.cmo stog_misc.cmi
-stog_io.cmx : stog_types.cmx stog_misc.cmx
+stog_io.cmo : stog_types.cmo stog_msg.cmi stog_misc.cmi stog_find.cmi \
+    stog_config.cmo
+stog_io.cmx : stog_types.cmx stog_msg.cmx stog_misc.cmx stog_find.cmx \
+    stog_config.cmx
 stog_latex.cmo : stog_types.cmo stog_misc.cmi
 stog_latex.cmx : stog_types.cmx stog_misc.cmx
 stog_mailparse.cmo : stog_types.cmo stog_misc.cmi stog_graph.cmi \

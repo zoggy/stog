@@ -53,6 +53,7 @@ let set_stog_options stog =
       None -> stog
     | Some s -> { stog with Stog_types.stog_lang = Some s }
   in
+  let stog = { stog with Stog_types.stog_outdir = !output_dir } in
   stog
 ;;
 
@@ -111,7 +112,7 @@ let main () =
         let stog = Stog_info.compute stog in
         (*prerr_endline "graph computed";*)
         let stog = set_stog_options stog in
-        Stog_html.generate !output_dir stog
+        Stog_html.generate stog
   end;
   let err = Stog_msg.errors () in
   let warn = Stog_msg.warnings () in
