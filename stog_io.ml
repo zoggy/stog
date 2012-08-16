@@ -158,16 +158,33 @@ let fill_elt_from_nodes =
   List.fold_left f
 ;;
 
-let elt_of_file file =
+let elt_of_file stog file =
   try
+    let hid =
+      let s = try Filename.chop_extension file with _ -> file in
+      let len = String.length s in
+      let len0 = String.length stog.stog_dir in
+      let s =
+        if len > len0 then
+          "/"^(String.sub s len0 (len - len0))
+        else
+          s
+      in
+      Stog_types.human_id_of_string s
+    in
     let xml = Xtmpl.xml_of_string ~add_main: false (Stog_misc.string_of_file file) in
     let (typ, atts, subs) =
       match node_details xml with
         None -> failwith (Printf.sprintf "File %S does not content an XML tree" file)
       | Some (tag, atts, subs) -> (tag, atts, subs)
     in
-    let elt = Stog_types.make_elt ~typ () in
+    let elt = Stog_types.make_elt ~hid ~typ () in
     let elt = { elt with elt_src = file } in
+    let elt =
+      match Xtmpl.get_arg atts "hid" with
+        None -> elt
+      | Some s -> { elt with elt_human_id = Stog_types.human_id_of_string s }
+    in
     let elt = fill_elt_from_atts elt atts in
     match Xtmpl.get_arg atts "with-contents" with
       Some s when bool_of_string s ->
@@ -466,8 +483,8 @@ let read_files cfg stog dir =
       )
   in
   let pred_elt =
-    let make_pred re =
-      let re = Str.regexp re in
+    let make_pred s_re =
+      let re = Str.regexp s_re in
       fun s -> Str.string_match re s 0
     in
     let preds_ok = List.map make_pred cfg.Stog_config.elements in
@@ -491,7 +508,7 @@ let read_files cfg stog dir =
     (*prerr_endline ("dirs=" ^ String.concat ", " dirs);*)
     let (elt_files, files) = List.partition pred_elt files in
     let files = List.fold_right Str_set.add files Str_set.empty in
-    let elts = List.map elt_of_file elt_files in
+    let elts = List.map (elt_of_file stog) elt_files in
     let stog = List.fold_left add_elt stog elts in
     let (stog, dirs) = List.fold_left
       (fun (stog, map) dir ->

@@ -48,7 +48,7 @@ module Make (P : P) =
         [] -> t
       | sym :: q ->
           if is_empty t then
-             Node (Map.add sym (Leaf (q, data)) Map.empty, None)
+             Leaf (path, data) (*Node (Map.add sym (Leaf (q, data)) Map.empty, None)*)
           else
             match t with
               Leaf (orig_path2,data2) ->
@@ -85,7 +85,8 @@ module Make (P : P) =
                   | [], None ->
                       Node (map, Some data)
                   | _, _ ->
-                    add ~backpath: (sym :: backpath) q data t2
+                    let x = add ~backpath: (sym :: backpath) q data t2 in
+                    Node (Map.add sym x map, data_opt)
                 with
                   Not_found ->
                     Node (Map.add sym (Leaf (q, data)) map, data_opt)
@@ -130,6 +131,25 @@ module Make (P : P) =
                   []
 
     let find path t = find path t
+
+    let to_string f t =
+      let b = Buffer.create 256 in
+      let rec iter margin = function
+        Leaf (p, _) -> Printf.bprintf b "%s[%s(leaf)]\n" margin (String.concat "/" (List.map f (List.rev p)))
+      | Node (map, opt) ->
+          begin
+          match opt with
+              None -> ()
+            | Some _ -> Printf.bprintf b "%s[data]\n" margin
+          end;
+          Map.iter
+          (fun k v ->
+             Printf.bprintf b "%s%s\n" margin (f k); iter (margin^"  ") v)
+          map
+      in
+      iter "" t;
+      Buffer.contents b
+
 
 (*    let remove path t =
       let rec iter t = function

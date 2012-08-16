@@ -224,6 +224,8 @@ let add_elt stog elt =
     (List.rev elt.elt_human_id.hid_path) id
     stog.stog_elts_by_human_id
   in
+  (*prerr_endline (Printf.sprintf "add_elt %s =>\n%s" (string_of_human_id elt.elt_human_id)
+    (Hid_map.to_string (fun x -> x) map));*)
   { stog with
     stog_elts = elts ;
     stog_elts_by_human_id = map ;

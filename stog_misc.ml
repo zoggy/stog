@@ -250,3 +250,12 @@ let filename_extension s =
     if p < len - 1 then String.sub s (p+1) (len - p - 1) else ""
   with Not_found -> ""
 ;;
+
+let safe_mkdir dir =
+  let com = Printf.sprintf "mkdir -p %s" (Filename.quote dir) in
+  match Sys.command com with
+    0 -> ()
+  | n ->
+      let msg = Printf.sprintf "Execution failed (%d): %s" n com in
+      failwith msg
+;;

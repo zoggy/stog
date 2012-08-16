@@ -72,7 +72,11 @@ let html_file stog name =
 let tag_sep = "sep_";;
 
 let elt_dst f_concat stog base elt =
-  let path = List.fold_left f_concat "" elt.elt_human_id.hid_path in
+  let path =
+    match elt.elt_human_id.hid_path with
+      [] -> failwith "Invalid human id: []"
+    | h :: q -> List.fold_left f_concat h q
+  in
   let ext = Stog_misc.filename_extension elt.elt_src in
   let path =
     if elt.elt_lang_dep then
@@ -956,8 +960,10 @@ let commands_of_elt stog elt =
 ;;
 
 let generate_elt stog env ?elt_id elt =
+  Stog_msg.verbose
+  (Printf.sprintf "Generating %S" (Stog_types.string_of_human_id elt.elt_human_id));
   let file = elt_dst_file stog elt in
-  let tmpl = elt.elt_type^".tmpl" in (*(*Filename.concat stog.stog_tmpl_dir*) "article.tmpl" in*)
+  let tmpl = Filename.concat stog.stog_tmpl_dir elt.elt_type^".tmpl" in
 (*  let art_dir = Filename.dirname html_file in*)
 (*
   Stog_misc.mkdir art_dir;
@@ -1022,6 +1028,7 @@ let generate_elt stog env ?elt_id elt =
      (default_commands stog))
   in
   let env = env_add_langswitch env stog elt in
+  Stog_misc.safe_mkdir (Filename.dirname file);
   Xtmpl.apply_to_file ~head: "<!DOCTYPE HTML>" env tmpl file
 ;;
 
@@ -1197,6 +1204,12 @@ let generate stog =
     Xtmpl.env_empty
     stog.stog_vars
   in
+  Stog_tmap.iter
+    (fun elt_id elt ->
+     prerr_endline (Stog_types.string_of_human_id elt.elt_human_id))
+  stog.stog_elts;
+  prerr_endline
+  (Stog_types.Hid_map.to_string (fun x -> x) stog.stog_elts_by_human_id);
 (*  generate_index outdir stog env ; generate_index_file outdir stog env;*)
   generate_topic_indexes stog env;
   generate_keyword_indexes stog env;
