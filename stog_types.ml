@@ -186,6 +186,7 @@ let create_stog dir = {
 let elt stog id = Stog_tmap.get stog.stog_elts id;;
 let elts_by_human_id ?typ stog h =
   let rev_path = List.rev h.hid_path in
+  prerr_endline (Printf.sprintf "lookup rev_path=%s" (String.concat "/" rev_path));
   let ids = Hid_map.find rev_path stog.stog_elts_by_human_id in
   let l = List.map (fun id -> (id, elt stog id)) ids in
   let pred =
@@ -220,9 +221,19 @@ let set_elt stog id elt =
 
 let add_elt stog elt =
   let (id, elts) = Stog_tmap.add stog.stog_elts elt in
+  let rev_path = List.rev elt.elt_human_id.hid_path in
   let map = Hid_map.add
-    (List.rev elt.elt_human_id.hid_path) id
+    rev_path id
     stog.stog_elts_by_human_id
+  in
+  let map =
+    prerr_endline (Printf.sprintf "rev_path=%s" (String.concat "/" rev_path));
+    match rev_path with
+    | "index" :: q ->
+        prerr_endline (Printf.sprintf "add again %s" (String.concat "/" q));
+        (* also make this element accessible without "index" *)
+        Hid_map.add q id map
+    | _ -> map
   in
   (*prerr_endline (Printf.sprintf "add_elt %s =>\n%s" (string_of_human_id elt.elt_human_id)
     (Hid_map.to_string (fun x -> x) map));*)
