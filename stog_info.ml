@@ -291,14 +291,13 @@ let remove_not_published stog =
     stog.stog_elts_by_human_id removed
   in
      *)
-  let by_hid = Stog_tmap.fold
-    (fun elt_id elt acc ->
-       Stog_types.Hid_map.add (List.rev elt.elt_human_id.hid_path) elt_id acc)
-       elts Stog_types.Hid_map.empty
+  let stog = Stog_tmap.fold
+    (fun elt_id elt stog ->
+       Stog_types.add_hid stog elt.elt_human_id elt_id)
+    elts { stog with stog_elts_by_human_id = Stog_types.Hid_map.empty }
   in
   { stog with
     stog_elts = elts ;
-    stog_elts_by_human_id = by_hid ;
   }
 ;;
 

@@ -186,7 +186,7 @@ let create_stog dir = {
 let elt stog id = Stog_tmap.get stog.stog_elts id;;
 let elts_by_human_id ?typ stog h =
   let rev_path = List.rev h.hid_path in
-  prerr_endline (Printf.sprintf "lookup rev_path=%s" (String.concat "/" rev_path));
+  (*prerr_endline (Printf.sprintf "lookup rev_path=%s" (String.concat "/" rev_path));*)
   let ids = Hid_map.find rev_path stog.stog_elts_by_human_id in
   let l = List.map (fun id -> (id, elt stog id)) ids in
   let pred =
@@ -219,27 +219,29 @@ let set_elt stog id elt =
     stog_elts = Stog_tmap.modify stog.stog_elts id elt }
 ;;
 
-let add_elt stog elt =
-  let (id, elts) = Stog_tmap.add stog.stog_elts elt in
-  let rev_path = List.rev elt.elt_human_id.hid_path in
+let add_hid stog hid id =
+  let rev_path = List.rev hid.hid_path in
   let map = Hid_map.add
     rev_path id
     stog.stog_elts_by_human_id
   in
   let map =
-    prerr_endline (Printf.sprintf "rev_path=%s" (String.concat "/" rev_path));
+    (*prerr_endline (Printf.sprintf "rev_path=%s" (String.concat "/" rev_path));*)
     match rev_path with
     | "index" :: q ->
-        prerr_endline (Printf.sprintf "add again %s" (String.concat "/" q));
+        (*prerr_endline (Printf.sprintf "add again %s" (String.concat "/" q));*)
         (* also make this element accessible without "index" *)
         Hid_map.add q id map
     | _ -> map
   in
-  (*prerr_endline (Printf.sprintf "add_elt %s =>\n%s" (string_of_human_id elt.elt_human_id)
-    (Hid_map.to_string (fun x -> x) map));*)
+  { stog with stog_elts_by_human_id = map }
+;;
+
+let add_elt stog elt =
+  let (id, elts) = Stog_tmap.add stog.stog_elts elt in
+  let stog = add_hid stog elt.elt_human_id id in
   { stog with
     stog_elts = elts ;
-    stog_elts_by_human_id = map ;
   }
 ;;
 
@@ -277,20 +279,9 @@ let merge_stogs stogs =
     [] -> assert false
   | stog :: q ->
       let f acc stog =
-        let (elts, by_hid) =
-          Stog_tmap.fold
-          (fun _ elt (elts, by_hid) ->
-             let (id, elts) = Stog_tmap.add elts elt in
-             let by_hid = Hid_map.add (List.rev elt.elt_human_id.hid_path) id by_hid in
-             (elts, by_hid)
-          )
-          stog.stog_elts
-          (acc.stog_elts, acc.stog_elts_by_human_id)
-        in
-        { acc with
-          stog_elts = elts ;
-          stog_elts_by_human_id = by_hid ;
-        }
+        Stog_tmap.fold (fun _ elt acc -> add_elt acc elt)
+        stog.stog_elts
+        acc
       in
       List.fold_left f stog q
 ;;
