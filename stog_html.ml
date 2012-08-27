@@ -201,8 +201,11 @@ let fun_elt_href ?typ href stog env args subs =
   match elt with
     None -> [Xtmpl.T ("span", ["class", "unknown-ref"], text)]
   | Some elt ->
+      let href = Printf.sprintf "%s%s" (elt_url stog elt)
+        (match id with None -> "" | Some s -> "#"^s)
+      in
       [
-        Xtmpl.T ("a", ["href", (elt_url stog elt)], text)
+        Xtmpl.T ("a", ["href", href], text)
       ]
 ;;
 
