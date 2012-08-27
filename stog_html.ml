@@ -59,16 +59,7 @@ let escape_html s =
   done;
   Buffer.contents b
 ;;
-(*
-let html_file stog name =
-  let ext_pref =
-    match stog.stog_lang with
-      None -> ""
-    | Some lang -> "."^lang
-  in
-  Printf.sprintf "%s%s.html" name ext_pref
-;;
-*)
+
 let tag_sep = "sep_";;
 
 let elt_dst f_concat stog base elt =
@@ -117,32 +108,11 @@ let url_of_hid stog ?ext hid =
   elt_url stog { elt with Stog_types.elt_src = src }
 ;;
 
-(*
-let link_to ?(from=`Article) file =
-  let pref = match from with
-      `Article -> "../"
-    | `Index -> ""
-  in
-  Printf.sprintf "%s%s" pref file
-;;
-
-let link_to_article stog ?(from=`Article) ?id article =
-  link_to ~from
-  (Printf.sprintf "%s/%s%s"
-   article.art_human_id (html_file stog "index")
-   (match id with None -> "" | Some s -> "#"^s)
-  )
-;;
-*)
-
 let topic_index_hid topic = Stog_types.human_id_of_string ("/topic_"^topic);;
 let keyword_index_hid kw = Stog_types.human_id_of_string ("/kw_"^ kw);;
 let month_index_hid ~year ~month =
   Stog_types.human_id_of_string (Printf.sprintf "/%04d_%02d" year month);;
 
-(*
-let page_file stog page = html_file stog page.page_human_id;;
-*)
 let make_lang_funs stog =
   match stog.stog_lang with
     None -> []
@@ -590,43 +560,6 @@ let fun_toc env args subs =
   subs @ [Xtmpl.T ("toc-contents", [], [])]
 ;;
 
-(*
-let rec fun_page_id hid outdir stog env args subs =
-  let page = get_page stog hid in
-  let file = Filename.concat outdir (page_file stog page) in
-  let xml = Xtmpl.xml_of_string page.page_body in
-  let env = Xtmpl.env_of_list ~env
-    (List.map
-     (fun (key, value) ->
-       (key, fun _ _ _ -> [Xtmpl.xml_of_string value]))
-     page.page_vars
-    )
-  in
-  let env = Xtmpl.env_of_list ~env (default_commands ~outdir ~from: `Index stog) in
-  let env = env_add_langswitch env stog file in
-  let env = List.fold_left
-    (fun env (s,v) -> Xtmpl.env_add_att s v env)
-    env
-    ((Stog_cst.page_title, page.page_title) :: args)
-  in
-  let s = generate_page stog env [xml] in
-  Xtmpl.apply_string_to_file ~head: "<!DOCTYPE html>" env s file;
-  []
-
-and fun_page outdir stog env args subs =
-    match Xtmpl.get_arg args "id" with
-    | Some hid -> fun_page_id hid outdir stog env args subs
-    | None ->
-      match Xtmpl.get_arg args "href" with
-      | Some id -> fun_page_ref id stog env args subs
-      | None ->
-          let info =
-            match subs with
-              [] -> "<no children>"
-            | l -> String.concat "" (List.map Xtmpl.string_of_xml subs)
-          in
-          failwith ("Missing id or href for <page>: "^info)
-*)
 let default_commands ?rss stog =
   let l =
     !plugin_funs @
