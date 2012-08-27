@@ -99,7 +99,7 @@ let elt_dst_file stog elt = elt_dst Filename.concat stog stog.stog_outdir elt;;
 let elt_url stog elt =
   let url = elt_dst (fun a b -> a^"/"^b) stog stog.stog_base_url elt in
   let len = String.length url in
-  let s = "index.html" in
+  let s = "/index.html" in
   let len_s = String.length s in
   if len >= len_s && String.sub url (len - len_s) len_s = s then
     String.sub url 0 (len-len_s)
