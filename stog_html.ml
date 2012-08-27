@@ -96,7 +96,17 @@ let elt_dst f_concat stog base elt =
 ;;
 
 let elt_dst_file stog elt = elt_dst Filename.concat stog stog.stog_outdir elt;;
-let elt_url stog elt = elt_dst (fun a b -> a^"/"^b) stog stog.stog_base_url elt;;
+let elt_url stog elt =
+  let url = elt_dst (fun a b -> a^"/"^b) stog stog.stog_base_url elt in
+  let len = String.length url in
+  let s = "index.html" in
+  let len_s = String.length s in
+  if len >= len_s && String.sub url (len - len_s) len_s = s then
+    String.sub url 0 (len-len_s)
+  else
+    url
+;;
+
 
 let url_of_hid stog ?ext hid =
   let elt = Stog_types.make_elt ~hid () in
@@ -1252,7 +1262,7 @@ let generate_index outdir stog env =
 ;;
 *)
 
-let generate stog =
+let generate ?only_elt stog =
   begin
     match stog.stog_lang with
       None -> ()
@@ -1271,12 +1281,18 @@ let generate stog =
   prerr_endline
   (Stog_types.Hid_map.to_string (fun x -> x) stog.stog_elts_by_human_id);
   *)
-  let elts = stog.stog_elts in
-  let stog = generate_topic_indexes stog env in
-  let stog = generate_keyword_indexes stog env in
-  let stog = generate_archive_index stog env in
-  Stog_tmap.iter (fun elt_id elt -> generate_elt stog env ~elt_id elt) elts;
-  copy_other_files stog
+  match only_elt with
+    None ->
+      let elts = stog.stog_elts in
+      let stog = generate_topic_indexes stog env in
+      let stog = generate_keyword_indexes stog env in
+      let stog = generate_archive_index stog env in
+      Stog_tmap.iter (fun elt_id elt -> generate_elt stog env ~elt_id elt) elts;
+      copy_other_files stog
+  | Some s ->
+      let hid = Stog_types.human_id_of_string s in
+      let (elt_id, elt) = Stog_types.elt_by_human_id stog hid in
+      generate_elt stog env ~elt_id elt
 ;;
 
 
