@@ -576,6 +576,7 @@ let default_commands ?rss stog =
       "ocaml", fun_ocaml ~inline: false stog;
       "command-line", fun_command_line ~inline: false stog ;
       "post", fun_post stog;
+      "elt", fun_elt stog;
       "section", fun_section ;
       "subsection", fun_subsection ;
       "rssfeed", (match rss with None -> fun _env _ _ -> [] | Some file -> fun_rss_feed file);
