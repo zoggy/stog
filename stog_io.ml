@@ -507,6 +507,7 @@ let read_files cfg stog dir =
     let (dirs, files) = List.partition is_dir entries in
     (*prerr_endline ("dirs=" ^ String.concat ", " dirs);*)
     let (elt_files, files) = List.partition pred_elt files in
+    let files = List.map Filename.basename files in
     let files = List.fold_right Str_set.add files Str_set.empty in
     let elts = List.map (elt_of_file stog) elt_files in
     let stog = List.fold_left add_elt stog elts in
