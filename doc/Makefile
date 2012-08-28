@@ -27,7 +27,7 @@
 #################################################################################
 
 STOGDIR=..
-STOG=$(STOGDIR)/stog.byte --plugin ../plugins/plugin_example.cmo
+STOG=$(STOGDIR)/stog.byte --plugin ../plugins/plugin_example.cmo  --plugin ../plugins/stog_disqus.cmo
 DEST_DIR=`pwd`/../doc-output
 BASE_URL_OPTION=
 STOG_OPTIONS=-d $(DEST_DIR) $(BASE_URL_OPTION)
@@ -43,7 +43,7 @@ build:
 site:
 	$(STOG) $(STOG_OPTIONS) .
 	$(LESSC) less/style.less > $(DEST_DIR)/style.css
-	cp -f *png tmpl/*png $(DEST_DIR)/
+#	cp -f *png tmpl/*png $(DEST_DIR)/
 #	cp -f *.svg $(DEST_DIR)/
 
 test:

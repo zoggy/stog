@@ -1,17 +1,18 @@
-site-title= Stog
-site-description= Static blog and web site generator
-site-email= zoggy 'AT' bat8 'DOT' org
-site-url= http://zoggy.github.com/stog
-rss-length= 10
-languages= es,fr
-<->
-<env_ navbar-home="" navbar-doc="" navbar-about="" >
+<page
+  main="true"
+  title="Stog"
+  stog-site-description="Static blog and web site generator"
+  stog-site-email="zoggy 'AT' bat8 'DOT' org"
+  stog-site-url="http://zoggy.github.com/stog"
+  stog-rss-length="10"
+>
+<!--<env_ navbar-home="" navbar-doc="" navbar-about="" >
 <page id="install" navbar-install="active"/>
 <page id="doc" navbar-doc="active"/>
 <page id="blog" navbar-blog="active"/>
 <page id="about" navbar-about="active"/>
 <env_ navbar-home="active">
-<!--<aside><include file="sidebar.tmpl"/></aside>-->
+-->
 <p>In one sentence, Stog is a kind of <ext-a href="http://jekyllrb.com/">Jekyll</ext-a> in OCaml:
 It is a static web site generator, able to handle blog posts as well as regular pages.
 </p>
@@ -54,14 +55,9 @@ them for your own site.
 </p>
 </section>
 
-<section title="Blog">
-<articles max="4"/>
+<section title="Latest news">
+<elements type="post" rss="index.rss" max="10"/>
 </section>
-</env_>
-</env_>
-
-
-
-
+</page>
 
 

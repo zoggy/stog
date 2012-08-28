@@ -1,5 +1,5 @@
 
-@articleRightMargin: 190px;
+@eltRightMargin: 190px;
 
 .rounded-box (@border-color: @color2, @bgcolor: @color3) {
   padding: 0 3px 2px;
@@ -94,13 +94,13 @@ div.center {
   text-align: center ;
 }
 
-div#article-body {
+div#elt-body {
   text-align: justify;
   margin-bottom: 2em;
-  margin-right: @articleRightMargin;
+  margin-right: @eltRightMargin;
 }
 
-div#article {
+div#elt {
 /*
   margin-left: 1em;
   margin-right: 1em;
@@ -151,7 +151,7 @@ div.blogbody {
 
 }
 
-div.article-item {
+div.elt-item {
   margin-bottom: 1.5em;
 /*
   border-width: 0 0 0 2px ;
@@ -159,13 +159,13 @@ div.article-item {
   border-color: #550000;
 */
 }
-/*div.article-item:hover { background-color: #CCCCCC ; }*/
+/*div.elt-item:hover { background-color: #CCCCCC ; }*/
 
-div.article-item-title { font-size: 150% ; }
-div.article-item p {
+div.elt-item-title { font-size: 150% ; }
+div.elt-item p {
   display: inline ;
   }
-div.article_intro { margin-top: 4px }
+div.elt-intro { margin-top: 4px }
 
 img.img { border-width: 0 ; margin-bottom: 0;}
 div.img { text-align: center ; }
@@ -198,10 +198,10 @@ div.keywords {
   display: inline ;
 }
 
-div.article-keywords {
+div.elt-keywords {
   .sidebox ;
   margin-left: 1em;
-  margin-right: @articleRightMargin ;
+  margin-right: @eltRightMargin ;
 }
 
 div#archives {
@@ -239,7 +239,7 @@ div.quote {
 
 div.comments {
   margin-top: 1.5em;
-  margin-right: @articleRightMargin;
+  margin-right: @eltRightMargin;
 }
 
 div.subcomments {
@@ -389,9 +389,9 @@ td.two-columns-right {
   line-height: 10px;
 }
 
-div.article-navbar {
+div.elt-navbar {
   width: 100%;
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0 0;
   border-style: solid ;
   border-color: #DDDDDD ;
   padding-bottom: 0.5em;
@@ -522,7 +522,7 @@ div.navbar {
   display: none
   }
 
-div#article-body {
+div#elt-body {
   margin-right: 0 ;
   }
 }

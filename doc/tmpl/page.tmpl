@@ -1,16 +1,36 @@
 <html>
 <head>
-<title><site-title/> : <page-title/></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="style.css"></link>
+<title><site-title/> : <elt-title/></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="&lt;site-url/&gt;/style.css"></link>
 <rssfeed/>
 </head><body>
 <div id="page">
 <include file="menubar.tmpl"/>
 <div id="header">
-<div class="page-title"><page-title/></div>
+<if elt-type="post">><div class="elt-navbar"><if previous=""><span/><div class="navleft"><previous/></div></if><if next=""><span/><div class="navright"><next/></div></if></div></if>
+<div class="page-title"><elt-title/></div>
 </div>
 <if withsidebar="true"><include file="sidebar.tmpl"/><span/></if>
-<contents/>
+<if elt-type="post"><div class="date"><elt-date/></div></if>
+<elt-body/>
+
+<if elt-type="post"><div class="comments">
+<div>
+<div class="elt-keywords">
+  <div class="bloc-keywords">
+  Topics: <div class="keywords"><elt-topics sep=", "/></div>
+  </div>
+  <div class="bloc-keywords">
+  Keywords: <div class="keywords"><elt-keywords sep=", "/></div>
+  </div>
+</div>
+</div>
+<div itemprop="articleSection" class="section">
+  <comments/>
+</div>
+</div>
+</if>
+
 </div>
 <footer id="bottombar">
 </footer>
