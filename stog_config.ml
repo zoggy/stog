@@ -57,6 +57,8 @@ let read_config dir =
     ["not-elements"] [ ]
     "Regexps of files matching 'elements' regexps but not containing elements"
   in
+  let cfg_dir = config_dir dir in
+  if not (Sys.file_exists cfg_dir) then Stog_misc.safe_mkdir cfg_dir ;
   group#read rc_file;
   group#write rc_file;
   { ignored = o_ignored#get ;

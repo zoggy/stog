@@ -73,9 +73,10 @@ GUI_SYSLIBS_BYTE=lablgtk.cma \
 	gmylist.cmo \
 	okey.cmo
 
-LIB_CMXFILES=stog_config.cmx \
+LIB_CMXFILES= \
 	stog_msg.cmx \
 	stog_misc.cmx \
+	stog_config.cmx \
 	stog_trie.cmx \
 	stog_tmap.cmx \
 	stog_graph.cmx \
