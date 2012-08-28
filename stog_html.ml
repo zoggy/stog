@@ -838,6 +838,19 @@ and elt_list ?rss ?set stog env args _ =
     Xtmpl.xml_of_string (Xtmpl.apply_from_file env tmpl)
   in
   let xml = List.map f_elt elts in
+  let rss =
+    match rss with
+      Some link -> Some link
+    | None ->
+        match Xtmpl.get_arg args "rss" with
+          None -> None
+        | Some file ->
+            let url = Printf.sprintf "%s/%s" stog.stog_base_url file in
+            let file = Filename.concat stog.stog_outdir file in
+            let title =Xtmpl.get_arg args "title" in
+            generate_rss_feed_file stog ?title url (List.map snd elts) file;
+            Some url
+  in
   match rss with
     None -> xml
   | Some link ->
