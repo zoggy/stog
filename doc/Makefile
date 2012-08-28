@@ -36,7 +36,6 @@ LESSC=lessc
 .PHONY: build site test
 
 build:
-	rm -fr $(DEST_DIR)/*
 	$(MAKE) site
 
 
