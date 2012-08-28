@@ -989,7 +989,7 @@ let generate_archive_index stog env =
     in
     let elt =
       { Stog_types.elt_human_id = hid ;
-        elt_type = "month";
+        elt_type = "by-month";
         elt_body = elt_list ~set stog env [] [] ;
         elt_date = None ;
         elt_title = title ;
