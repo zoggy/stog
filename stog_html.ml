@@ -823,7 +823,7 @@ and elt_list ?rss ?set stog env args _ =
   let tmpl =
     let file =
       match Xtmpl.get_arg args "tmpl" with
-        None -> "elt_list.tmpl"
+        None -> "elt-in-list.tmpl"
       | Some s -> s
     in
     Filename.concat stog.stog_tmpl_dir file
