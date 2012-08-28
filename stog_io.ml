@@ -69,7 +69,7 @@ let extract_stog_info_from_elt stog elt =
   | h :: q ->
       let (stog, opt) =
         match h with
-        | ("stog-description",s) -> { stog with stog_desc = [Xtmpl.xml_of_string s] }, None
+        | ("stog-site-description",s) -> { stog with stog_desc = [Xtmpl.xml_of_string s] }, None
         | ("stog-site-url",s) -> { stog with stog_base_url = s }, None
         | ("stog-site-email",s) -> { stog with stog_email = s }, None
         | ("stog-rss-length",s) -> { stog with stog_rss_length = int_of_string s }, None
