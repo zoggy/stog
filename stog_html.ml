@@ -200,7 +200,8 @@ let fun_elt_href ?typ href stog env args subs =
         None, _ -> [Xtmpl.D "??"]
       | Some elt, [] ->
           let quote = if quotes then "\"" else "" in
-          [Xtmpl.D (Printf.sprintf "%s%s%s" quote elt.elt_title quote)]
+          let s = Printf.sprintf "%s%s%s" quote elt.elt_title quote in
+          [Xtmpl.xml_of_string s]
       | Some _, text -> text
     in
     (elt, id, text)
@@ -793,7 +794,7 @@ let remove_re s =
 ;;
 
 let rec elt_commands stog =
-  let f_title elt _ _ _ = [ Xtmpl.D elt.elt_title ] in
+  let f_title elt _ _ _ = [ Xtmpl.xml_of_string elt.elt_title ] in
   let f_url elt _ _ _ = [ Xtmpl.D (elt_url stog elt) ] in
   let f_body elt _ _ _ = elt.elt_body in
   let f_type elt _ _ _ = [Xtmpl.D elt.elt_type] in
@@ -909,7 +910,7 @@ let generate_elt stog env ?elt_id elt =
   let previous, next =
     let html_link elt =
       let href = elt_url stog elt in
-      [ Xtmpl.T ("a", ["href", href], [ Xtmpl.D elt.elt_title ]) ]
+      [ Xtmpl.T ("a", ["href", href], [ Xtmpl.xml_of_string elt.elt_title ]) ]
     in
     let try_link key search =
       let fallback () =
