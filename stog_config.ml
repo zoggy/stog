@@ -40,10 +40,12 @@ type t =
 
 module CF = Config_file;;
 
-let rc_file dir = Filename.concat dir ".stog";;
+let config_dir dir = Filename.concat dir ".stog";;
+let config_file dir = Filename.concat (config_dir dir) "config";;
+let tmpl_dir dir = Filename.concat (config_dir dir) "templates";;
 
 let read_config dir =
-  let rc_file = rc_file dir in
+  let rc_file = config_file dir in
   let group = new CF.group in
   let o_ignored = new CF.list_cp CF.string_wrappers ~group
     ["ignored"] [ ".*\\.git" ; ".*Makefile" ; ".*tmpl$" ] "Regexps of files to ignore"
