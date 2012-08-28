@@ -1,8 +1,8 @@
-<!DOCTYPE html><html>
+<!DOCTYPE HTML><html>
 <head>
 <title>Stog : Documentation</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="style.css"/>
-
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.com/stog/style.css"/>
+<rssfeed/>
 </head><body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
@@ -11,11 +11,11 @@
 
   <a class="brand" href="http://zoggy.github.com/stog/index.html">Stog</a>
   <ul class="nav">
-    <li class=""><a href="http://zoggy.github.com/stog/index.html">Home</a></li>
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.com/stog/index.html">Home</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.com/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.com/stog/doc.html">Documentation</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.com/stog/blog.html">Blog</a></li>
-    <li class=""><a href="http://zoggy.github.com/stog/about.html">?</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.com/stog/about.html">?</a></li>
   </ul>
   <div class="nav pull-right">
 
@@ -25,14 +25,14 @@
 </div>
 
 <div id="header">
+
 <div class="page-title">Documentation</div>
 </div>
 <span/>
 
 
-
 <div class="alert alert-warning">
-We assume Stog was correctly installed (see <a href="http://zoggy.github.com/stog/install.html">Installation</a>)
+We assume Stog was correctly installed (see <a href="http://zoggy.github.com/stog/install.html">&quot;Installation&quot;</a>)
 and the <span class="icode">stog</span> executable is in your <span class="icode">PATH</span>.
 </div>
 
@@ -47,7 +47,39 @@ All text is assumed to be UTF-8.
 <li><a href="http://zoggy.github.com/stog/plugins.html">Developing plugins</a></li>
 </ul>
 </div>
+
+
+
+<div>
+<p class="alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Documentation&quot;</span>
+<span class="hl kwb">navbar-doc</span>=<span class="hl str">&quot;active&quot;</span>
+<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;alert alert-warning&quot;</span><span class="hl kwa">&gt;</span>
+We assume Stog was correctly installed (see <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;install&quot;</span><span class="hl kwa">/&gt;</span>)
+and the <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> executable is in your <span class="hl kwa">&lt;icode&gt;</span>PATH<span class="hl kwa">&lt;/icode&gt;</span>.
+<span class="hl kwa">&lt;/div&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;General considerations&quot;</span><span class="hl kwa">&gt;</span>
+All text is assumed to be UTF-<span class="hl num">8</span>.
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Topics&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;ul</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;toc&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;getting_started&quot;</span> <span class="hl kwb">quotes</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;funs&quot;</span> <span class="hl kwb">quotes</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins&quot;</span> <span class="hl kwb">quotes</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span>
+</pre>
 </div>
+</div>
+</div>
+
 <footer id="bottombar">
 </footer>
 </body>

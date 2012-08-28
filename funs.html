@@ -1,8 +1,8 @@
-<!DOCTYPE html><html>
+<!DOCTYPE HTML><html>
 <head>
 <title>Stog : Predefined functions</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link rel="stylesheet" type="text/css" href="style.css"/>
-
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.com/stog/style.css"/>
+<rssfeed/>
 </head><body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
@@ -11,11 +11,11 @@
 
   <a class="brand" href="http://zoggy.github.com/stog/index.html">Stog</a>
   <ul class="nav">
-    <li class=""><a href="http://zoggy.github.com/stog/index.html">Home</a></li>
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.com/stog/index.html">Home</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.com/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.com/stog/doc.html">Documentation</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.com/stog/blog.html">Blog</a></li>
-    <li class=""><a href="http://zoggy.github.com/stog/about.html">?</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.com/stog/about.html">?</a></li>
   </ul>
   <div class="nav pull-right">
 
@@ -25,36 +25,59 @@
 </div>
 
 <div id="header">
+
 <div class="page-title">Predefined functions</div>
 </div>
 <span/>
+
+
 <p>
 Some functions are pre-defined and can be used in your pages, articles and templates.
 The following common functions are available everywhere:
-<a href="#archive-tree">archive-tree</a>,
-<a href="#article">article</a>,
-<a href="#articles">articles</a>,
-<a href="#command-line">command-line</a>,
-<a href="#env_">env_</a>,
-<a href="#ext-a">ext-a</a>,
-<a href="#graphx">graph</a>,
-<a href="#hcode">hcode</a>,
-<a href="#icode">icode</a>,
-<a href="#if">if</a>,
-<a href="#include">include</a>,
-<a href="#image">image</a>,
-<a href="#langswitch">langswitch</a>,
-<a href="#latex">latex</a>,
-<a href="#ocaml">ocaml</a>,
-<a href="#pagex">page</a>,
-<a href="#rssfeedx">rssfeed</a>,
-<a href="#section">section and subsection</a>,
-<a href="#site-descx">site-desc</a>,
-<a href="#site-titlex">site-title</a>,
-<a href="#site-url">site-url</a>,
-<a href="#toc">toc and prepare-toc</a>,
-<a href="#two-columns">two-columns</a>.
 </p>
+<table class="n-columns"><tr><td class="n-columns column-0">
+<ul>
+<li><a href="#archive-tree">archive-tree</a></li>
+<li><a href="#command-line">command-line</a></li>
+<li><a href="#elt">elt, post and page</a></li>
+<li><a href="#elt-bodyx">elt-body</a></li>
+<li><a href="#elt-date">elt-date</a></li>
+<li><a href="#elt-hid">elt-hid</a></li>
+<li><a href="#elt-intro">elt-intro</a></li>
+<li><a href="#elt-keywordsx">elt-keywords and elt-topics</a></li>
+<li><a href="#elt-src">elt-src</a></li>
+<li><a href="#elt-title">elt-title</a></li>
+<li><a href="#elt-type">elt-type</a></li>
+</ul>
+</td><td class="n-columns column-1">
+<ul>
+<li><a href="#elt-url">elt-url</a></li>
+<li><a href="#elements">elements</a></li>
+<li><a href="#env_">env_</a></li>
+<li><a href="#ext-a">ext-a</a></li>
+<li><a href="#graphx">graph</a></li>
+<li><a href="#hcode">hcode</a></li>
+<li><a href="#icode">icode</a></li>
+<li><a href="#if">if</a></li>
+<li><a href="#include">include</a></li>
+<li><a href="#image">image</a></li>
+<li><a href="#langswitch">langswitch</a></li>
+</ul>
+</td><td class="n-columns column-2">
+<ul>
+<li><a href="#latex">latex</a></li>
+<li><a href="#ocaml">ocaml</a></li>
+<li><a href="#previous">previous and next</a></li>
+<li><a href="#section">section and subsection</a></li>
+<li><a href="#sep_">sep_</a></li>
+<li><a href="#site-descriptionx">site-description</a></li>
+<li><a href="#site-email">site-email</a></li>
+<li><a href="#site-titlex">site-title</a></li>
+<li><a href="#site-url">site-url</a></li>
+<li><a href="#toc">toc and prepare-toc</a></li>
+<li><a href="#two-columns">two-columns and n-columns</a></li>
+</ul>
+</td></tr></table>
 <p>For most of the functions, you should look at the generated XML to modify
 your CSS stylesheet according to the classes used. You can start from
 the <span class="icode">.less</span> files in the <span class="icode">doc</span> directory
@@ -67,78 +90,14 @@ Some functions are available in some templates only (and in templates
 <thead>
 <tr><th>Template</th><th>Functions</th></tr>
 </thead>
-<tr><td>index.tmpl</td>
-<td>
-<a href="#contents">contents</a>
-</td></tr>
-
-<tr><td>page.tmpl</td>
-<td>
-<a href="#contents">contents</a>,
-<a href="#page-titlex">page-title</a>
-</td></tr>
-
-<tr><td>blogpage.tmpl</td><td>
-<a href="#article-navbar">article-navbar</a>,
-<a href="#contents">contents</a>,
-<a href="#page-title">page-title</a>,
-<a href="#previous">previous and next</a>
-</td></tr>
-
-<tr><td>article.tmpl</td>
-<td>
-<a href="#article-body">article-body</a>,
-<a href="#article-date">article-date</a>,
-<a href="#article-navbar">article-navbar</a>,
-<a href="#article-title">article-title</a>,
-<a href="#article-url">article-url</a>,
-<a href="comment-actions">comment-actions</a>,
-<a href="comments">comments</a>,
-<a href="keywords">keywords and topics</a>,
-<a href="#previous">previous and next</a>
-</td></tr>
-
-<tr><td>article_list.tmpl</td>
-<td>
-<a href="#article-date">article-date</a>,
-<a href="#article-intro">article-intro</a>,
-<a href="#article-title">article-title</a>,
-<a href="#article-url">article-url</a>
-</td></tr>
-
-<tr><td>by_topic.tmpl</td>
-<td>
-<a href="#articles">articles</a>,
-<a href="#page-title">page-title</a>,
-<a href="#topic">topic</a>
-</td></tr>
-
-<tr><td>by_kw.tmpl</td>
-<td>
-<a href="#articles">articles</a>,
-<a href="#keyword">keyword</a>,
-<a href="#page-title">page-title</a>
-</td></tr>
-
-<tr><td>archive_month.tmpl</td>
-<td>
-<a href="#articles">articles</a>,
-<a href="#page-title">page-title</a>
-</td></tr>
-
 <tr><td>topic.tmpl</td><td><a href="#topic">topic</a></td></tr>
 <tr><td>keyword.tmpl</td><td><a href="#keyword">keyword</a></td></tr>
-
-<tr><td>comment.tmpl</td><td>
-body,
-<a href="#comment-actions">comment-actions</a>,
-<a href="#comments">comments</a>,
-date, from, subject, to
-</td></tr>
-
 </table>
 </p>
-
+<p>
+In the following descriptions, the current element refers to the element
+whose hid is retrieved by the <span class="icode">&lt;elt-hid/&gt;</span> function.
+</p>
 
 <div class="section"><div class="section-title" id="archive-tree">archive-tree</div>
 <p>
@@ -147,78 +106,6 @@ date, from, subject, to
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="article">article</div>
-<p>
-<strong>Syntax:</strong>
-<pre class="code-xml"><span class="hl kwa">&lt;article</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>text<span class="hl kwa">&lt;/article&gt;</span>
-</pre>
-</p>
-<p>
-This will return a link to the article specified by its id. The id of an article
-is the base name of its directory in your project. Refering to an unknown
-article will raise an error.
-</p>
-<p>
-If no text is given for the link, the title of the article will be used instead.
-</p>
-</div>
-
-<div class="section"><div class="section-title" id="article-bodyx">article-body</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;article-body/&gt;</span>
-</span> returns the body of the current article.
-</p>
-</div>
-
-<div class="section"><div class="section-title" id="article-date">article-date</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;article-date/&gt;</span>
-</span> returns the date of the current article.
-</p>
-</div>
-
-<div class="section"><div class="section-title" id="article-intro">article-intro</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;article-intro/&gt;</span>
-</span> returns the inroduction of an article,
-that is the boy code before the <span class="icode">&lt;sep_/&gt;</span> marker.
-</p>
-<p>
-<span class="icode"><span class="hl kwa">&lt;article-intro/&gt;</span>
-</span> is only available in the template
-<span class="icode">article_list.tmpl</span> template file, used to compute the
-<a href="#articles"><span class="icode">&lt;articles.../&gt;</span></a> function.
-</p>
-</div>
-
-<div class="section"><div class="section-title" id="article-navbar">article-navbar</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;article-navbar/&gt;</span>
-</span> contains &quot;true&quot; when
-we are &quot;in&quot; an article page. It is not defined if we are for example in
-another blog page, like article list by topic, by keyword, or by month.
-This can be used in the <span class="icode">blogpage.tmpl</span> template file
-to display of not the navigation bar, that is the bar with links to
-next and previous article.
-</p>
-</div>
-
-<div class="section"><div class="section-title" id="article-url">article-url</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;article-url/&gt;</span>
-</span> returns the final url of the current article.
-</p>
-</div>
-
-<div class="section"><div class="section-title" id="articles">articles</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;articles</span> <span class="hl kwb">max</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
-</span> inserts the list of
-published articles.
-The optional <span class="icode">max=&quot;n&quot;</span> attribute can be used to list only
-the <span class="icode">n</span> last articles.
-</p>
-</div>
 
 <div class="section"><div class="section-title" id="command-line">command-line</div>
 <p>
@@ -231,33 +118,143 @@ attribute already set to &quot;sh&quot;.
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="comment-actions">comment-actions</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;comment-actions/&gt;</span>
-</span> inserts the action to
-add a comment or reply to a comment. By default, it creates a &quot;mailto:&quot; link
-with some fields pre-defined.
-</p>
-</div>
-
-<div class="section"><div class="section-title" id="comments">comments</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;comments/&gt;</span>
-</span> inserts the comments of the article.
-By default, the comments are taken from email files in the directory of the
-article. It is possible to override the <span class="icode">comments</span> function with
-a plugin to use another comment system, like <span class="ext-a"><a href="http://disqus.com">Disqus</a></span>.
-</p>
-</div>
-
 <div class="section"><div class="section-title" id="contents">contents</div>
 <p>
 <span class="icode"><span class="hl kwa">&lt;contents/&gt;</span>
 </span> is the generic function to insert some
-contents in an included file or template. It is used for example in
-<span class="icode">blogpage.tmpl</span>, in <a href="#include"><span class="icode"><span class="hl kwa">&lt;include&gt;</span>
-</span></a>, ...
+contents in an included file or template.
 </p>
+</div>
+
+<div class="section"><div class="section-title" id="elt">elt, post and page</div>
+<p>
+<strong>Syntax:</strong>
+<pre class="code-xml"><span class="hl kwa">&lt;elt</span> href=hid<span class="hl kwa">&gt;</span>text<span class="hl kwa">&lt;/elt&gt;</span>
+</pre>
+</p>
+<p>
+This will return a link to the element specified by its hid. The hid of an element
+is its absolute name from the root directoty of your project. You are not forced
+to give the full path, but can also give only one or more of the last parts
+of the path, as long as it uniquely identifies an existing element.
+</p>
+<p>
+For example, suppose you want to refer to the element defined in file
+<span class="icode">&lt;root dir&gt;/foo/bar/hello.html</span>. The hid of this element
+is &quot;/foo/bar/hello&quot;. You can refer to it in various ways:
+</p>
+<ul>
+<li>with its absolute hid, providing the heading '/': <span class="icode">/foo/bar/hello</span>,</li>
+<li>with only the last part of its hid: <span class="icode">hello</span>,</li>
+<li>with an ending subpart of its hid: <span class="icode">bar/hello</span>.</li>
+</ul>
+<p>In the last two cases, an error will be raised if more than one elements
+match the incomplete hid. You can provide an additional attribute <span class="icode">type</span>
+to prevent ambiguities, for example:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;bar/hello&quot;</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;post&quot;</span><span class="hl kwa">/&gt;</span>
+</pre>
+<p>
+Refering to an unknown element will raise an error.
+</p>
+<p>
+If no text is given for the link, the title of the element between quotes
+will be used instead. Specifying in attributes <span class="icode">quotes=&quot;false&quot;</span>
+indicates not to add quotes around the element title.
+</p>
+<p>
+<span class="icode"><span class="hl kwa">&lt;page</span> ...<span class="hl kwa">&gt;</span>
+</span> and <span class="icode"><span class="hl kwa">&lt;post</span> ... <span class="hl kwa">&gt;</span>
+</span>
+are equivalent respectively to
+<span class="icode"><span class="hl kwa">&lt;elt</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;page&quot;</span> ...<span class="hl kwa">&gt;</span>
+</span> and
+<span class="icode"><span class="hl kwa">&lt;elt</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;post&quot;</span> ...<span class="hl kwa">&gt;</span>
+</span>.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="elt-bodyx">elt-body</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;elt-body/&gt;</span>
+</span> returns the body of the current element.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="elt-date">elt-date</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;elt-date/&gt;</span>
+</span> returns the date of the current element,
+or an empty string if no date were specified.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="elt-hid">elt-hid</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;elt-hid/&gt;</span>
+</span> returns the hid of the current element.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="elt-intro">elt-intro</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;elt-intro/&gt;</span>
+</span> returns the introduction of an element,
+that is the body code before the <span class="icode">&lt;sep_/&gt;</span> marker.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="elt-src">elt-src</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;elt-src/&gt;</span>
+</span> returns the source filename
+of the element.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="elt-title">elt-title</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;elt-title/&gt;</span>
+</span> returns the title of the current element.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="elt-type">elt-type</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;elt-type/&gt;</span>
+</span> returns the type of the current element.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="elt-url">elt-url</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;elt-url/&gt;</span>
+</span> returns the final url of the current element.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="elements">elements</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;elements</span> ...<span class="hl kwa">/&gt;</span>
+</span> inserts the list of
+published elements.
+</p>
+<p>The following optional attributes can be specified:</p>
+<ul>
+<li><span class="icode">max=&quot;n&quot;</span> can be used to list only the <span class="icode">n</span> most recent
+elements.</li>
+<li><span class="icode">rss=&quot;filename&quot;</span> triggers the creation of a RSS file corresponding
+to the selected elements. The given filename is appended to the stog output directory.
+A link to the RSS file is also added before the list.</li>
+<li><span class="icode">set=&quot;name&quot;</span> can be used to select only the elements belonging to
+the given set.</li>
+<li><span class="icode">type=&quot;type&quot;</span> filters the elements to keep only the ones of the given
+type.</li>
+<li><span class="icode">title=&quot;title&quot;</span> specifies the title of the RSS channel, if a RSS
+file is created. If no title is given, the site title is used.</li>
+</ul>
+<p>Example: <span class="icode"><span class="hl kwa">&lt;elements</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;post&quot;</span> <span class="hl kwb">max</span>=<span class="hl str">&quot;10&quot;</span> <span class="hl kwb">rss</span>=<span class="hl str">&quot;index.rss&quot;</span><span class="hl kwa">/&gt;</span>
+</span></p>
 </div>
 
 <div class="section"><div class="section-title" id="env_">env_</div>
@@ -294,9 +291,9 @@ This can be used to add specific style link to external sites.
 <div class="section"><div class="section-title" id="graphx">graph</div>
 <p>
 <span class="icode"><span class="hl kwa">&lt;graph/&gt;</span>
-</span> computes the graph of articles in SVG format, and returns
-a link to this graph displayed as a small graph. One can click on an article in the generated SVG
-graph to jump to the article.
+</span> computes the graph of elements in SVG format, and returns
+a link to this graph displayed as a small graph. One can click on an element in the generated SVG
+graph to jump to the element.
 </p>
 </div>
 
@@ -338,12 +335,17 @@ generate inline highlighted code instead of using a box.
 The <span class="icode">if</span> function tests whether each condition expressed as <span class="icode">attr=&quot;value&quot;</span>
 is verified. If so, the first XML child is returned, else the second one is returned.
 To test the value of <span class="icode">attr</span>, <span class="icode">attr</span> is looked up in the current
-environment. It its value is the same as the given value, the condition is verified.
+environment. If its value is the same as the given value, the condition is verified.
+For  this evaluation, a tag <span class="icode">t</span> not found in the environment in not
+reduced to itself but to the empty string, so that the condition in
+<span class="icode"><span class="hl kwa">&lt;if</span> <span class="hl kwb">foo</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/if&gt;</span>
+</span>
+will be verified if <span class="icode">foo</span> is not in the environment.
 </p>
 <p>
 The <span class="icode">&quot;value&quot;</span> part of the condition must be valid XML, and can contain
 calls to functions, as in:
-<pre class="code-xml"><span class="hl kwa">&lt;if</span> <span class="hl kwb">page-title</span>=<span class="hl str">&quot;&amp;lt;site-title&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>....<span class="hl kwa">&lt;/if&gt;</span>
+<pre class="code-xml"><span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-title</span>=<span class="hl str">&quot;&amp;lt;site-title&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>....<span class="hl kwa">&lt;/if&gt;</span>
 </pre>
 </p>
 <p>Other example: Testing whether a variable is empty to known whether to output
@@ -371,7 +373,7 @@ the name <span class="icode">contents</span>.
 </p>
 <p>
 With the additional attribute <span class="icode">raw=&quot;true&quot;</span>, the contents of the loaded file
-is considered as PCData. This is useful for example to load code.
+is considered as PCData. This is useful for example to insert code.
 </p>
 <p>At last, all additional attributes to <span class="icode">&lt;include ...&gt;</span> will
 be added to the environment used to evaluate the contents of the file.
@@ -396,8 +398,9 @@ will be reduced to
 </pre>
 </p>
 <p>
-This generates an image using an <span class="icode"><span class="hl kwa">&lt;img</span> ...<span class="hl kwa">/&gt;</span>
-</span> node. The legend is optional.
+This inserts an image using an <span class="icode"><span class="hl kwa">&lt;img</span> ...<span class="hl kwa">/&gt;</span>
+</span> node.
+The legend is optional.
 </p>
 <p>
 The <span class="icode">float</span> attribute can be used to change a class in the generated code,
@@ -412,18 +415,19 @@ Additional attributes are passed to the generated <span class="icode">img</span>
 <p>
 <span class="icode"><span class="hl kwa">&lt;keyword/&gt;</span>
 </span> inserts the name of the current keyword,
-when computing topic list (in template <span class="icode">keyword.tmpl</span>.
+when computing keyword list (in template <span class="icode">keyword.tmpl</span>).
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="keywords">keywords and topics</div>
+<div class="section"><div class="section-title" id="elt-keywordsx">elt-keywords and elt-topics</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;keywords</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
+<span class="icode"><span class="hl kwa">&lt;elt-keywords</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
 </span> and
-<span class="icode"><span class="hl kwa">&lt;topics</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
-</span> respectively return the keyword and topic list of
-the current article, as defined in the article file. The optional <span class="icode">sep</span> attribute
-can be used to specify a separator oe each keyword or topic.
+<span class="icode"><span class="hl kwa">&lt;elt-topics</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
+</span> respectively return
+the keyword and topic list of
+the current element, as defined in the element. The optional <span class="icode">sep</span> attribute
+can be used to specify a separator between each keyword or topic.
 </p>
 <p>Each keyword will be displayed using a <span class="icode">keyword.tmpl</span> template file.
 Each topic will be displayed using a <span class="icode">topic.tmpl</span> template file.
@@ -443,8 +447,8 @@ to pages in other languages than <span class="icode">language</span>.
 <p>
 <span class="icode"><span class="hl kwa">&lt;latex&gt;</span>...<span class="hl kwa">&lt;/latex&gt;</span>
 </span> is used to compile
-latex code and display it as SVG in the page. Read <a href="latex-in-stog/index.html">this article</a>
-for details.
+latex code and display it as SVG in the page. Read
+<a href="http://zoggy.github.com/stog/posts/latex-in-stog.html">this post</a> for details.
 </p>
 </div>
 
@@ -454,7 +458,7 @@ for details.
 </span> and
 <span class="icode"><span class="hl kwa">&lt;next/&gt;</span>
 </span> respectively return a link to the previous and next
-article according to the chronological order of article dates.
+element according to the chronological order of element dates.
 </p>
 </div>
 
@@ -466,46 +470,6 @@ article according to the chronological order of article dates.
 </span></a>
 with the <span class="icode">lang</span>
 attribute already set to &quot;ocaml&quot;.
-</p>
-</div>
-
-<div class="section"><div class="section-title" id="pagex">page</div>
-<p>
-<strong>Syntax:</strong>
-<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/page&gt;</span>
-</pre>
-</p>
-<p>
-<span class="icode"><span class="hl kwa">&lt;page</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
-</span> is used to trigger the generation of the
-page with the given <span class="icode">id</span>. The page is generated from the original
-page file, whose body is evaluated in the current environment. This allows
-set of pages to be generated with an environment, while other ones are generated
-with a different environment. This is what is used in this doc to highlight
-the part of the site the current page belongs to in the top navigation bar.
-<p>
-The page id is the filename of the source page, without extension.
-</p>
-<span class="icode"><span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>some text<span class="hl kwa">&lt;/page&gt;</span>
-</span> returns a link
-to the indicated page. If no text is given, the page title is used as text
-for the link.
-</p>
-</div>
-
-<div class="section"><div class="section-title" id="page-titlex">page-title</div>
-<p><span class="icode"><span class="hl kwa">&lt;page-title&gt;</span>
-</span> returns the page title as specified in the
-page file.
-</p>
-</div>
-
-<div class="section"><div class="section-title" id="rssfeedx">rssfeed</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;rssfeed/&gt;</span>
-</span> is available in pages an RSS feed is associated to,
-like keywords page, ... It returns the url of the RSS feed.
 </p>
 </div>
 
@@ -521,27 +485,43 @@ if given, is used as id in the section title node.
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="site-descx">site-desc</div>
+<div class="section"><div class="section-title" id="sep_">sep_</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;site-desc&gt;</span>
-</span> returns the site description as specified in the
-main file.
+<span class="icode"><span class="hl kwa">&lt;sep_/&gt;</span>
+</span> is the tag used to indicate the end of the introduction
+of an element. It is reduced to an empty string.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="site-descriptionx">site-description</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;site-description/&gt;</span>
+</span> returns the site description
+as specified in the main element.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="site-email">site-email</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;site-email/&gt;</span>
+</span> returns the site contact email
+as specified in the main element.
 </p>
 </div>
 
 <div class="section"><div class="section-title" id="site-titlex">site-title</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;site-title&gt;</span>
+<span class="icode"><span class="hl kwa">&lt;site-title/&gt;</span>
 </span> returns the site title as specified in the
-main file.
+main element.
 </p>
 </div>
 
 <div class="section"><div class="section-title" id="site-url">site-url</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;site-url&gt;</span>
+<span class="icode"><span class="hl kwa">&lt;site-url/&gt;</span>
 </span> returns the site url as specified in the
-main file.
+main element.
 </p>
 </div>
 
@@ -582,11 +562,11 @@ is used to specify the depth of the table of contents.
 <p>
 <span class="icode"><span class="hl kwa">&lt;topic/&gt;</span>
 </span> inserts the name of the current topic,
-when computing topic list (in template <span class="icode">topic.tmpl</span>.
+when computing topic list (in template <span class="icode">topic.tmpl</span>).
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="two-columns">two-columns</div>
+<div class="section"><div class="section-title" id="two-columns">two-columns and n-columns</div>
 <p>
 <strong>Syntax:</strong>
 <pre class="code-xml"><span class="hl kwa">&lt;two-columns&gt;</span>
@@ -596,10 +576,515 @@ when computing topic list (in template <span class="icode">topic.tmpl</span>.
 </pre>
 </p>
 <p>
-This will put the two given XML nodes in a two-columns layout.
+This will put the two given XML nodes in a two-columns layout. Note that the tag used to
+enclose the left and right contents is not kept, so you may use any tag you want, for example:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;two-columns&gt;&lt;left&gt;</span>bla bla bla<span class="hl kwa">&lt;/left&gt;&lt;right&gt;</span>bla bla bla<span class="hl kwa">&lt;/right&gt;&lt;/two-columns&gt;</span>
+</pre>
+<p>
+<span class="icode">&lt;n-columns&gt;</span> works the same way but produces as many columns as there are
+children in the node.
 </p>
 </div>
+
+
+
+<div>
+<p class="alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Predefined functions&quot;</span>
+<span class="hl kwb">navbar-doc</span>=<span class="hl str">&quot;active&quot;</span>
+<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Some functions are pre-defined and can be used in your pages, articles and templates.
+The following common functions are available everywhere:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;n-columns&gt;</span>
+<span class="hl kwa">&lt;left&gt;</span>
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#archive-tree&quot;</span><span class="hl kwa">&gt;</span>archive-tree<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#command-line&quot;</span><span class="hl kwa">&gt;</span>command-line<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#elt&quot;</span><span class="hl kwa">&gt;</span>elt, post and page<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#elt-bodyx&quot;</span><span class="hl kwa">&gt;</span>elt-body<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#elt-date&quot;</span><span class="hl kwa">&gt;</span>elt-date<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#elt-hid&quot;</span><span class="hl kwa">&gt;</span>elt-hid<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#elt-intro&quot;</span><span class="hl kwa">&gt;</span>elt-intro<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#elt-keywordsx&quot;</span><span class="hl kwa">&gt;</span>elt-keywords and elt-topics<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#elt-src&quot;</span><span class="hl kwa">&gt;</span>elt-src<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#elt-title&quot;</span><span class="hl kwa">&gt;</span>elt-title<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#elt-type&quot;</span><span class="hl kwa">&gt;</span>elt-type<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/left&gt;</span>
+<span class="hl kwa">&lt;middle&gt;</span>
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#elt-url&quot;</span><span class="hl kwa">&gt;</span>elt-url<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#elements&quot;</span><span class="hl kwa">&gt;</span>elements<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#env_&quot;</span><span class="hl kwa">&gt;</span>env_<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#ext-a&quot;</span><span class="hl kwa">&gt;</span>ext-a<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#graphx&quot;</span><span class="hl kwa">&gt;</span>graph<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#hcode&quot;</span><span class="hl kwa">&gt;</span>hcode<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#icode&quot;</span><span class="hl kwa">&gt;</span>icode<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#if&quot;</span><span class="hl kwa">&gt;</span>if<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#include&quot;</span><span class="hl kwa">&gt;</span>include<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#image&quot;</span><span class="hl kwa">&gt;</span>image<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#langswitch&quot;</span><span class="hl kwa">&gt;</span>langswitch<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/middle&gt;</span>
+<span class="hl kwa">&lt;right&gt;</span>
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#latex&quot;</span><span class="hl kwa">&gt;</span>latex<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#ocaml&quot;</span><span class="hl kwa">&gt;</span>ocaml<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#previous&quot;</span><span class="hl kwa">&gt;</span>previous and next<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#section&quot;</span><span class="hl kwa">&gt;</span>section and subsection<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#sep_&quot;</span><span class="hl kwa">&gt;</span>sep_<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#site-descriptionx&quot;</span><span class="hl kwa">&gt;</span>site-description<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#site-email&quot;</span><span class="hl kwa">&gt;</span>site-email<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#site-titlex&quot;</span><span class="hl kwa">&gt;</span>site-title<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#site-url&quot;</span><span class="hl kwa">&gt;</span>site-url<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#toc&quot;</span><span class="hl kwa">&gt;</span>toc and prepare-toc<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#two-columns&quot;</span><span class="hl kwa">&gt;</span>two-columns and n-columns<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/right&gt;</span>
+<span class="hl kwa">&lt;/n-columns&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>For most of the functions, you should look at the generated XML to modify
+your CSS stylesheet according to the classes used. You can start from
+the <span class="hl kwa">&lt;icode&gt;</span>.less<span class="hl kwa">&lt;/icode&gt;</span> files in the <span class="hl kwa">&lt;icode&gt;</span>doc<span class="hl kwa">&lt;/icode&gt;</span> directory
+of the stog sources.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Some functions are available in some templates only (and in templates
+<span class="hl str">&quot;called&quot;</span> from these templates):
+<span class="hl kwa">&lt;table</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;table table-bordered table-stripped&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;thead&gt;</span>
+<span class="hl kwa">&lt;tr&gt;&lt;th&gt;</span>Template<span class="hl kwa">&lt;/th&gt;&lt;th&gt;</span>Functions<span class="hl kwa">&lt;/th&gt;&lt;/tr&gt;</span>
+<span class="hl kwa">&lt;/thead&gt;</span>
+<span class="hl kwa">&lt;tr&gt;&lt;td&gt;</span>topic.tmpl<span class="hl kwa">&lt;/td&gt;&lt;td&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#topic&quot;</span><span class="hl kwa">&gt;</span>topic<span class="hl kwa">&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;</span>
+<span class="hl kwa">&lt;tr&gt;&lt;td&gt;</span>keyword.tmpl<span class="hl kwa">&lt;/td&gt;&lt;td&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#keyword&quot;</span><span class="hl kwa">&gt;</span>keyword<span class="hl kwa">&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;</span>
+<span class="hl kwa">&lt;/table&gt;</span>
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+In the following descriptions, the current element refers to the element
+whose hid is retrieved by the <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>elt-hid/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> function.
+<span class="hl kwa">&lt;/p&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;archive-tree&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;archive-tree&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>archive-tree/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> inserts the articles archive tree.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;command-line&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;command-line&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>command-line<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> works like
+<span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#hcode&quot;</span><span class="hl kwa">&gt;&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>hcode<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;&lt;/a&gt;</span>
+with the <span class="hl kwa">&lt;icode&gt;</span>lang<span class="hl kwa">&lt;/icode&gt;</span>
+attribute already set to <span class="hl str">&quot;sh&quot;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;contents&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;contents&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>contents/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> is the generic function to insert some
+contents in an included file or template.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;elt&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;elt, post and page&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;syntax.tmpl&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;elt</span> href=hid<span class="hl kwa">&gt;</span>text<span class="hl kwa">&lt;/elt&gt;</span>]]<span class="hl kwa">&gt;&lt;/include&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+This will return a link to the element specified by its hid. The hid of an element
+is its absolute name from the root directoty of your project. You are not forced
+to give the full path, but can also give only one or more of the last parts
+of the path, as long as it uniquely identifies an existing element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+For example, suppose you want to refer to the element defined in file
+<span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>root dir<span class="hl kwd">&amp;gt;</span>/foo/bar/hello.html<span class="hl kwa">&lt;/icode&gt;</span>. The hid of this element
+is <span class="hl str">&quot;/foo/bar/hello&quot;</span>. You can refer to it in various ways:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>with its absolute hid, providing the heading '/': <span class="hl kwa">&lt;icode&gt;</span>/foo/bar/hello<span class="hl kwa">&lt;/icode&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>with only the last part of its hid: <span class="hl kwa">&lt;icode&gt;</span>hello<span class="hl kwa">&lt;/icode&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>with an ending subpart of its hid: <span class="hl kwa">&lt;icode&gt;</span>bar/hello<span class="hl kwa">&lt;/icode&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>In the last two cases, an error will be raised if more than one elements
+match the incomplete hid. You can provide an additional attribute <span class="hl kwa">&lt;icode&gt;</span>type<span class="hl kwa">&lt;/icode&gt;</span>
+to prevent ambiguities, for example:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;bar/hello&quot;</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;post&quot;</span><span class="hl kwa">/&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Refering to an unknown element will raise an error.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+If no text is given for the link, the title of the element between quotes
+will be used instead. Specifying in attributes <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwb">quotes</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&lt;/icode&gt;</span>
+indicates not to add quotes around the element title.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>page ...<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> and <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>post ... <span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>
+are equivalent respectively to
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elt <span class="hl kwb">type</span>=<span class="hl str">&quot;page&quot;</span> ...<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> and
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elt <span class="hl kwb">type</span>=<span class="hl str">&quot;post&quot;</span> ...<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;elt-bodyx&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;elt-body&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elt-body/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> returns the body of the current element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;elt-date&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;elt-date&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elt-date/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> returns the date of the current element,
+or an empty string if no date were specified.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;elt-hid&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;elt-hid&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elt-hid/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> returns the hid of the current element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;elt-intro&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;elt-intro&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elt-intro/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> returns the introduction of an element,
+that is the body code before the <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>sep_/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> marker.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;elt-src&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;elt-src&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elt-src/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> returns the source filename
+of the element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;elt-title&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;elt-title&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elt-title/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> returns the title of the current element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;elt-type&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;elt-type&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elt-type/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> returns the type of the current element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;elt-url&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;elt-url&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elt-url/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> returns the final url of the current element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;elements&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;elements&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elements .../<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> inserts the list of
+published elements.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>The following optional attributes can be specified:<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;icode&gt;</span><span class="hl kwb">max</span>=<span class="hl str">&quot;n&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> can be used to list only the <span class="hl kwa">&lt;icode&gt;</span>n<span class="hl kwa">&lt;/icode&gt;</span> most recent
+elements.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;icode&gt;</span><span class="hl kwb">rss</span>=<span class="hl str">&quot;filename&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> triggers the creation of a RSS file corresponding
+to the selected elements. The given filename is appended to the stog output directory.
+A link to the RSS file is also added before the list.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;icode&gt;</span><span class="hl kwb">set</span>=<span class="hl str">&quot;name&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> can be used to select only the elements belonging to
+the given set.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;icode&gt;</span><span class="hl kwb">type</span>=<span class="hl str">&quot;type&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> filters the elements to keep only the ones of the given
+type.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;icode&gt;</span><span class="hl kwb">title</span>=<span class="hl str">&quot;title&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> specifies the title of the RSS channel, if a RSS
+file is created. If no title is given, the site title is used.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>Example: <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elements <span class="hl kwb">type</span>=<span class="hl str">&quot;post&quot;</span> <span class="hl kwb">max</span>=<span class="hl str">&quot;10&quot;</span> <span class="hl kwb">rss</span>=<span class="hl str">&quot;index.rss&quot;</span>/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;env_&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;env_&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>The special tag <span class="hl kwa">&lt;icode&gt;</span>env_<span class="hl kwa">&lt;/icode&gt;</span> can be used to modify the environment
+before analysing children. For example, here we add an association
+between <span class="hl str">&quot;login&quot;</span> and <span class="hl str">&quot;zoggy&quot;</span>. This will add to the environment
+an association between the key <span class="hl str">&quot;login&quot;</span> and
+the function returning the one-element list [<span class="hl str">&quot;zoggy&quot;</span>], which is used
+later in the <span class="hl str">&quot;login&quot;</span> attribute:
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;env_</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;zoggy&quot;</span><span class="hl kwa">&gt;</span>
+  ...
+  <span class="hl kwa">&lt;user</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;&amp;lt;login/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/user&gt;</span>
+  ...
+<span class="hl kwa">&lt;/env_&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>Such a function cannot be created in plugins, since functions only return
+XML trees, not a new environment. But your functions can return XML trees
+containing <span class="hl kwa">&lt;icode&gt;</span>env_<span class="hl kwa">&lt;/icode&gt;</span> tags to modify the environment used to
+evaluate the returned XML trees.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;ext-a&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;ext-a&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>ext-a attributes<span class="hl kwd">&amp;gt;</span>...<span class="hl kwd">&amp;lt;</span>/ext-a<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> is reduced
+to <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>span <span class="hl kwb">class</span>=<span class="hl str">&quot;ext-a&quot;</span><span class="hl kwd">&amp;gt;&amp;lt;</span>a attributes<span class="hl kwd">&amp;gt;</span>...<span class="hl kwd">&amp;lt;</span>/<span class="hl kwd">&amp;gt;&amp;lt;</span>/ext-a<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>.
+This can be used to add specific style link to external sites.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;graphx&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;graph&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>graph/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> computes the graph of elements in SVG format, and returns
+a link to this graph displayed as a small graph. One can click on an element in the generated SVG
+graph to jump to the element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;hcode&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;hcode&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;syntax.tmpl&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>your code<span class="hl kwa">&lt;/hcode&gt;</span>]]<span class="hl kwa">&gt;&lt;/include&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+This function inserts the given pre-formatted code. It uses the
+<span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://www.andre-simon.de/doku/highlight/en/highlight.html&quot;</span><span class="hl kwa">&gt;&lt;icode&gt;</span>highlight<span class="hl kwa">&lt;/icode&gt;&lt;/ext-a&gt;</span>
+tool to add syntax highlighting. For example, the code examples of this page are
+inserted using <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/hcode&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;icode&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;icode&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> works like
+<span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#hcode&quot;</span><span class="hl kwa">&gt;&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>hcode<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;&lt;/a&gt;</span> but is used to
+generate inline highlighted code instead of using a box.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;if&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;if&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;syntax.tmpl&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[
+<span class="hl kwa">&lt;if</span> <span class="hl kwb">attr1</span>=<span class="hl str">&quot;value1&quot;</span> <span class="hl kwb">attr2</span>=<span class="hl str">&quot;value2&quot;</span> ...<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;XML</span> tree used when all conditions are verified<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;optional</span> XML tree used when at least one condition is not verified<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;/if&gt;</span>
+]]<span class="hl kwa">&gt;&lt;/include&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The <span class="hl kwa">&lt;icode&gt;</span>if<span class="hl kwa">&lt;/icode&gt;</span> function tests whether each condition expressed as <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwb">attr</span>=<span class="hl str">&quot;value&quot;</span><span class="hl kwa">&lt;/icode&gt;</span>
+is verified. If so, the first XML child is returned, else the second one is returned.
+To test the value of <span class="hl kwa">&lt;icode&gt;</span>attr<span class="hl kwa">&lt;/icode&gt;</span>, <span class="hl kwa">&lt;icode&gt;</span>attr<span class="hl kwa">&lt;/icode&gt;</span> is looked up in the current
+environment. If its value is the same as the given value, the condition is verified.
+For  this evaluation, a tag <span class="hl kwa">&lt;icode&gt;</span>t<span class="hl kwa">&lt;/icode&gt;</span> not found in the environment in not
+reduced to itself but to the empty string, so that the condition in
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>if <span class="hl kwb">foo</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwd">&amp;gt;</span>...<span class="hl kwd">&amp;lt;</span>/if<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>
+will be verified if <span class="hl kwa">&lt;icode&gt;</span>foo<span class="hl kwa">&lt;/icode&gt;</span> is not in the environment.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The <span class="hl kwa">&lt;icode&gt;</span><span class="hl str">&quot;value&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> part of the condition must be valid XML, and can contain
+calls to functions, as in:
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-title</span>=<span class="hl str">&quot;&amp;lt;site-title&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>....<span class="hl kwa">&lt;/if&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>Other example: Testing whether a variable is empty to known whether to output
+a block or not:
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;if</span> <span class="hl kwb">list</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;span/&gt;</span>
+<span class="hl kwa">&lt;div&gt;</span>The list is not empty, let's print it:<span class="hl kwa">&lt;ul&gt;&lt;list/&gt;&lt;/ul&gt;&lt;/div&gt;</span>
+<span class="hl kwa">&lt;/if&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;include&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;include&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;syntax.tmpl&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;template&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/include&gt;</span>]]<span class="hl kwa">&gt;&lt;/include&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+This function will load the file <span class="hl kwa">&lt;icode&gt;</span>template<span class="hl kwa">&lt;/icode&gt;</span> from the template directory
+(or fail if the file does not exist). The contents of the file will then be evaluated.
+The code between <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>include ...<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> and <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>/include<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>
+is added to the environment used to evaluate the contents of the file, associated to
+the name <span class="hl kwa">&lt;icode&gt;</span>contents<span class="hl kwa">&lt;/icode&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+With the additional attribute <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&lt;/icode&gt;</span>, the contents of the loaded file
+is considered as PCData. This is useful for example to insert code.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>At last, all additional attributes to <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>include ...<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> will
+be added to the environment used to evaluate the contents of the file.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>Here is an example. If we have the <span class="hl kwa">&lt;icode&gt;</span>foo.tmpl<span class="hl kwa">&lt;/icode&gt;</span> file
+in the template directory, with the following contents:
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;p&gt;</span> key=<span class="hl kwa">&lt;key/&gt;</span> value=<span class="hl kwa">&lt;contents/&gt; &lt;/p&gt;</span> ]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+The following code
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;foo.tmpl&quot;</span> <span class="hl kwb">key</span>=<span class="hl str">&quot;bar&quot;</span><span class="hl kwa">&gt;</span>the value of bar<span class="hl kwa">&lt;/include&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+will be reduced to
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;p&gt;</span> key=bar value=the value of bar <span class="hl kwa">&lt;/p&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;image&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;image&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;syntax.tmpl&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;image</span> <span class="hl kwb">float</span>=<span class="hl str">&quot;[left|right]&quot;</span> <span class="hl kwb">src</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>legend<span class="hl kwa">&lt;/image&gt;</span>]]<span class="hl kwa">&gt;&lt;/include&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+This inserts an image using an <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>img .../<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> node.
+The legend is optional.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The <span class="hl kwa">&lt;icode&gt;</span>float<span class="hl kwa">&lt;/icode&gt;</span> attribute can be used to change a class in the generated code,
+so you can set the style of the image to be left or right floating.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Additional attributes are passed to the generated <span class="hl kwa">&lt;icode&gt;</span>img<span class="hl kwa">&lt;/icode&gt;</span> node.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;keyword&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;keyword&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>keyword/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> inserts the name of the current keyword,
+when computing keyword list (in template <span class="hl kwa">&lt;icode&gt;</span>keyword.tmpl<span class="hl kwa">&lt;/icode&gt;</span>).
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;elt-keywordsx&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;elt-keywords and elt-topics&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elt-keywords <span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span>/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> and
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>elt-topics <span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span>/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> respectively return
+the keyword and topic list of
+the current element, as defined in the element. The optional <span class="hl kwa">&lt;icode&gt;</span>sep<span class="hl kwa">&lt;/icode&gt;</span> attribute
+can be used to specify a separator between each keyword or topic.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>Each keyword will be displayed using a <span class="hl kwa">&lt;icode&gt;</span>keyword.tmpl<span class="hl kwa">&lt;/icode&gt;</span> template file.
+Each topic will be displayed using a <span class="hl kwa">&lt;icode&gt;</span>topic.tmpl<span class="hl kwa">&lt;/icode&gt;</span> template file.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;langswitch&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;langswitch&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+If <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> is launched with option <span class="hl kwa">&lt;icode&gt;</span>--lang language<span class="hl kwa">&lt;/icode&gt;</span>, the
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>langswitch<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> function returns some code to access
+to pages in other languages than <span class="hl kwa">&lt;icode&gt;</span>language<span class="hl kwa">&lt;/icode&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;latex&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;latex&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>latex<span class="hl kwd">&amp;gt;</span>...<span class="hl kwd">&amp;lt;</span>/latex<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> is used to compile
+latex code and display it as SVG in the page. Read
+<span class="hl kwa">&lt;post</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;latex-in-stog&quot;</span><span class="hl kwa">&gt;</span>this post<span class="hl kwa">&lt;/post&gt;</span> for details.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;previous&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;previous and next&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>previous/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> and
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>next/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> respectively return a link to the previous and next
+element according to the chronological order of element dates.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;ocaml&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>ocaml<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> works like
+<span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#hcode&quot;</span><span class="hl kwa">&gt;&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>hcode<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;&lt;/a&gt;</span>
+with the <span class="hl kwa">&lt;icode&gt;</span>lang<span class="hl kwa">&lt;/icode&gt;</span>
+attribute already set to <span class="hl str">&quot;ocaml&quot;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;section&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;section and subsection&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;syntax.tmpl&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/subsection&gt;</span>
+ ]]<span class="hl kwa">&gt;&lt;/include&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>This is used to insert sections and subsections, with a given title. The name,
+if given, is used as id in the section title node.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;sep_&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;sep_&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>sep_/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> is the tag used to indicate the end of the introduction
+of an element. It is reduced to an empty string.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;site-descriptionx&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;site-description&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>site-description/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> returns the site description
+as specified in the main element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;site-email&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;site-email&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>site-email/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> returns the site contact email
+as specified in the main element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;site-titlex&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;site-title&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>site-title/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> returns the site title as specified in the
+main element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;site-url&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;site-url&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>site-url/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> returns the site url as specified in the
+main element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;toc&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;toc and prepare-toc&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;syntax.tmpl&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;prepare-toc</span> <span class="hl kwb">depth</span>=<span class="hl str">&quot;[1|2|...]&quot;</span><span class="hl kwa">&gt;</span>
+...
+<span class="hl kwa">&lt;toc&gt;</span>text<span class="hl kwa">&lt;/toc&gt;</span>
+...
+<span class="hl kwa">&lt;section</span> ...<span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;subsection</span> ...<span class="hl kwa">&gt;</span>
+
+  <span class="hl kwa">&lt;/subsection&gt;</span>
+  ...
+<span class="hl kwa">&lt;/section&gt;</span>
+...
+<span class="hl kwa">&lt;/prepare-toc&gt;</span>]]<span class="hl kwa">&gt;&lt;/include&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>toc<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> node is used to insert a table of contents.
+If a text is given, it is added ahead of the table of contents.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Since the <span class="hl kwa">&lt;icode&gt;</span>toc<span class="hl kwa">&lt;/icode&gt;</span> node does not include the sections and subsections, it is
+not sufficient to build the table of contents. So it will use what is returned by
+the function associated to <span class="hl str">&quot;toc-contents&quot;</span> in its environment.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>This function is added to the environment by the <span class="hl kwa">&lt;icode&gt;</span>prepare-toc<span class="hl kwa">&lt;/icode&gt;</span> node,
+which includes all the sections and subsections. The <span class="hl kwa">&lt;icode&gt;</span>depth<span class="hl kwa">&lt;/icode&gt;</span> attribute
+is used to specify the depth of the table of contents.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;topic&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;topic&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>topic/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> inserts the name of the current topic,
+when computing topic list (in template <span class="hl kwa">&lt;icode&gt;</span>topic.tmpl<span class="hl kwa">&lt;/icode&gt;</span>).
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;two-columns&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;two-columns and n-columns&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;syntax.tmpl&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;two-columns&gt;</span>
+<span class="hl kwa">&lt;XML</span> for left column<span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;XML</span> for right column<span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;/two-columns&gt;</span>]]<span class="hl kwa">&gt;&lt;/include&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+This will put the two given XML nodes in a two-columns layout. Note that the tag used to
+enclose the left and right contents is not kept, so you may use any tag you want, for example:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[
+<span class="hl kwa">&lt;two-columns&gt;&lt;left&gt;</span>bla bla bla<span class="hl kwa">&lt;/left&gt;&lt;right&gt;</span>bla bla bla<span class="hl kwa">&lt;/right&gt;&lt;/two-columns&gt;</span>
+]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>n-columns<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> works the same way but produces as many columns as there are
+children in the node.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span>
+</pre>
 </div>
+</div>
+</div>
+
 <footer id="bottombar">
 </footer>
 </body>
