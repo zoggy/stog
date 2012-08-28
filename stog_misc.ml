@@ -232,3 +232,30 @@ let dot_to_svg dot =
 ;;
 
 
+let rec list_compare comp l1 l2 =
+ match l1, l2 with
+   [], [] -> 0
+  | [], _ -> -1
+  | _, [] -> 1
+  | h1::q1, h2::q2 ->
+      match comp h1 h2 with
+        0 -> list_compare comp q1 q2
+      | n -> n
+;;
+
+let filename_extension s =
+  let len = String.length s in
+  try
+    let p = String.rindex s '.' in
+    if p < len - 1 then String.sub s (p+1) (len - p - 1) else ""
+  with Not_found -> ""
+;;
+
+let safe_mkdir dir =
+  let com = Printf.sprintf "mkdir -p %s" (Filename.quote dir) in
+  match Sys.command com with
+    0 -> ()
+  | n ->
+      let msg = Printf.sprintf "Execution failed (%d): %s" n com in
+      failwith msg
+;;

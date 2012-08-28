@@ -31,45 +31,45 @@
 open Stog_types;;
 
 let compute_map f_words f_update stog =
-  let f art_id article map =
+  let f elt_id elt map =
     let on_word map w =
       let set =
         try Stog_types.Str_map.find w map
-        with Not_found -> Stog_types.Art_set.empty
+        with Not_found -> Stog_types.Elt_set.empty
       in
-      let set = Stog_types.Art_set.add art_id set in
+      let set = Stog_types.Elt_set.add elt_id set in
       Stog_types.Str_map.add w set map
     in
-    List.fold_left on_word map (f_words article)
+    List.fold_left on_word map (f_words elt)
   in
   f_update stog
-  (Stog_tmap.fold f stog.stog_articles Stog_types.Str_map.empty)
+  (Stog_tmap.fold f stog.stog_elts Stog_types.Str_map.empty)
 ;;
 
 let compute_topic_map stog =
   compute_map
-  (fun a -> a.art_topics)
-  (fun stog map -> { stog with stog_arts_by_topic = map })
+  (fun a -> a.elt_topics)
+  (fun stog map -> { stog with stog_elts_by_topic = map })
   stog
 ;;
 
 let compute_keyword_map stog =
   compute_map
-  (fun a -> a.art_keywords)
-  (fun stog map -> { stog with stog_arts_by_kw = map })
+  (fun a -> a.elt_keywords)
+  (fun stog map -> { stog with stog_elts_by_kw = map })
   stog
 ;;
 
 let compute_graph_with_dates stog =
-  let arts = Stog_types.article_list ~by_date:true stog in
+  let elts = Stog_types.elt_list ~by_date:true stog in
   let g = Stog_types.Graph.create () in
   let rec iter g = function
     [] | [_] -> g
-  | (art_id, _) :: (next_id, next) :: q ->
-      let g = Stog_types.Graph.add g (art_id, next_id, Stog_types.Date) in
+  | (elt_id, _) :: (next_id, next) :: q ->
+      let g = Stog_types.Graph.add g (elt_id, next_id, Stog_types.Date) in
       iter g ((next_id, next) :: q)
   in
-  { stog with stog_graph = iter g arts }
+  { stog with stog_graph = iter g elts }
 ;;
 
 let next_by_date f_next stog art_id =
@@ -130,16 +130,16 @@ let add_words_in_graph stog f edge_data =
 let add_topics_in_graph stog =
   add_words_in_graph stog
   (fun id ->
-     let art = Stog_types.article stog id in
-     art.art_topics
+     let elt = Stog_types.elt stog id in
+     elt.elt_topics
   )
 ;;
 
 let add_keywords_in_graph stog =
   add_words_in_graph stog
   (fun id ->
-     let art = Stog_types.article stog id in
-     art.art_keywords
+     let elt = Stog_types.elt stog id in
+     elt.elt_keywords
   )
 ;;
 
@@ -152,41 +152,45 @@ let add_refs_in_graph stog =
     | Some hid ->
         (*prerr_endline (Printf.sprintf "f_ref hid=%s" hid);*)
         (
-         let (id2, _) = Stog_types.article_by_human_id stog hid in
+         let (id2, _) = Stog_types.elt_by_human_id stog
+           (Stog_types.human_id_of_string hid)
+         in
          g := Stog_types.Graph.add !g (id, id2, Stog_types.Ref)
         );
         []
   in
   let f_art id art =
     let funs = [ "ref", f_ref id ] in
-    let art = Stog_types.article stog id in
+    let elt = Stog_types.elt stog id in
     let env = Xtmpl.env_of_list funs in
-    ignore(Xtmpl.apply env art.art_body)
+    ignore(Xtmpl.apply_to_xmls env elt.elt_body)
   in
-  Stog_tmap.iter f_art stog.stog_articles;
+  Stog_tmap.iter f_art stog.stog_elts;
   { stog with stog_graph = !g }
 ;;
 
 let compute_archives stog =
-  let f_mon art_id m mmap =
+  let f_mon elt_id m mmap =
     let set =
       try Stog_types.Int_map.find m mmap
-      with Not_found -> Stog_types.Art_set.empty
+      with Not_found -> Stog_types.Elt_set.empty
     in
-    let set = Stog_types.Art_set.add art_id set in
+    let set = Stog_types.Elt_set.add elt_id set in
     Stog_types.Int_map.add m set mmap
   in
-  let f_art art_id article ymap =
-    let {year; month; day = _} = article.art_date in
-    let mmap =
-      try Stog_types.Int_map.find year ymap
-      with Not_found -> Stog_types.Int_map.empty
-    in
-    let mmap = f_mon art_id month mmap in
-    Stog_types.Int_map.add year mmap ymap
+  let f_art elt_id elt ymap =
+    match elt.elt_date with
+      None -> ymap
+    | Some  {year; month; day = _} ->
+        let mmap =
+          try Stog_types.Int_map.find year ymap
+          with Not_found -> Stog_types.Int_map.empty
+        in
+        let mmap = f_mon elt_id month mmap in
+        Stog_types.Int_map.add year mmap ymap
   in
   let arch = Stog_tmap.fold f_art
-    stog.stog_articles Stog_types.Int_map.empty
+    stog.stog_elts Stog_types.Int_map.empty
   in
   { stog with stog_archives = arch }
 ;;
@@ -243,17 +247,17 @@ let dot_of_graph f_href stog =
       ("", ["style", "dashed"])
   in
   let f_node id =
-    let art = Stog_types.article stog id in
+    let elt = Stog_types.elt stog id in
     let col =
-      match art.art_topics with
+      match elt.elt_topics with
         [] -> "black"
       | w :: _ ->
           let (r,g,b) = color_of_text w in
           Printf.sprintf "#%02x%02x%02x" r g b
     in
-    let href = f_href art in
+    let href = f_href elt in
     (Printf.sprintf "id%d" (Stog_tmap.int id),
-     art.art_title,
+     elt.elt_title,
      ["shape", "rect"; "color", col; "fontcolor", col; "href", href])
   in
   Stog_types.Graph.dot_of_graph ~f_edge ~f_node g
@@ -271,23 +275,29 @@ let compute stog =
 ;;
 
 let remove_not_published stog =
-  let (arts, removed) = Stog_tmap.fold
-    (fun id art (acc, removed) ->
-       if art.art_published then
+  let (elts, removed) = Stog_tmap.fold
+    (fun id elt (acc, removed) ->
+       if elt.elt_published then
          (acc, removed)
        else
-         (Stog_tmap.remove acc id, art.art_human_id :: removed)
+         (Stog_tmap.remove acc id, elt.elt_human_id :: removed)
     )
-   stog.stog_articles
-   (stog.stog_articles, [])
+   stog.stog_elts
+   (stog.stog_elts, [])
   in
+(*
   let by_hid = List.fold_left
-    (fun acc k -> Stog_types.Str_map.remove k acc)
-    stog.stog_art_by_human_id removed
+    (fun acc k -> Stog_types.Hid_map.remove (List.rev k.hid_path) acc)
+    stog.stog_elts_by_human_id removed
+  in
+     *)
+  let stog = Stog_tmap.fold
+    (fun elt_id elt stog ->
+       Stog_types.add_hid stog elt.elt_human_id elt_id)
+    elts { stog with stog_elts_by_human_id = Stog_types.Hid_map.empty }
   in
   { stog with
-    stog_articles = arts ;
-    stog_art_by_human_id = by_hid ;
+    stog_elts = elts ;
   }
 ;;
 

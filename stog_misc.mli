@@ -128,3 +128,11 @@ val map_opt : ('a -> 'b) -> 'a option -> 'b option
 val list_concat : ?sep: 'a -> 'a list -> 'a list
 
 val dot_to_svg : string -> string
+
+val list_compare : ('a -> 'a -> int) -> 'a list -> 'a list -> int
+
+(** [filename_extension filename] returns extension of [filename]
+  or [""] if there is no extension. *)
+val filename_extension : string -> string
+
+val safe_mkdir : string -> unit

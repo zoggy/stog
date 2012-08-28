@@ -1,25 +1,27 @@
-page-title=Developing plugins
-<->
+<page title="Developing plugins"
+navbar-doc="active"
+>
 <p>
 Plugins are written in OCaml. The compiled OCaml code is then
-loaded in Stog with the <icode>--plugin</icode> option of <icode>stog</icode>.
+loaded in Stog with the <icode>--plugin</icode> or <icode>--package</icode>
+options of <icode>stog</icode> (see <page href="getting_started#running"/>).
 </p>
 <section name="writing" title="Writing the code">
 <p>
 A plugin just registers new functions associated to tags.
 Here is an example:
-<hcode lang="ocaml" defer_="1">
-<include file="../../plugins/plugin_example.ml" raw="true"/>
-</hcode>
 </p>
+<hcode lang="ocaml" defer_="1">
+<include file="../../../plugins/plugin_example.ml" raw="true"/>
+</hcode>
 </section>
 
 <section name="compiling" title="Compilation">
 <p>
 The plugin is simply compiled with
-<command-line>ocamlopt -I +stog -shared -o plugin_example.cmxs plugin_example.ml</command-line>
+<command-line>ocamlfind ocamlopt -package stog -rectypes -shared -o plugin_example.cmxs plugin_example.ml</command-line>
 for native code or
-<command-line>ocamlc -I +stog -c plugin_example.ml</command-line>
+<command-line>ocamlfind ocamlc -package stog -rectypes -c plugin_example.ml</command-line>
 for bytecode.
 </p>
 </section>
@@ -27,18 +29,22 @@ for bytecode.
 <section name="using" title="Using">
 <p>
 The plugin is used by specifying it one the <icode>stog</icode> command line:
-<command-line>stog --plugin plugin_example.cmxs ...</command-line>
 </p>
-<p>With our plugin example, we can use the new "list":
+<command-line>stog --plugin plugin_example.cmxs ...</command-line>
+<p>or, if the plugin is installed with ocamlfind:</p>
+<command-line>stog --package plugin_example ...</command-line>
+<p>
+With our plugin example, we can use the new "list":
+</p>
 <hcode lang="xml"><![CDATA[
 <list sep="&lt;b&gt; -- &lt;/b&gt;"><span>first thing</span>second thing<div>something else</div></list>]]>
 </hcode>
-</p>
 <p>
 This will be evaluated (reduced) to
+</p>
 <hcode defer_="1" lang="xml">
 <list sep="&lt;b&gt; -- &lt;/b&gt;"><span>first thing</span>second thing<div>something else</div></list>
 </hcode>
-</p>
 
 </section>
+</page>

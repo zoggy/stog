@@ -76,7 +76,7 @@ let make_svg outdir ?(packages=[]) latex_code =
            n command log latex_code)
 ;;
 
-let fun_latex outdir stog env args subs =
+let fun_latex stog env args subs =
   let code =
     match subs with
       [ Xtmpl.D code ] -> code
@@ -86,7 +86,7 @@ let fun_latex outdir stog env args subs =
   let packages = Xtmpl.opt_arg args "packages" in
   let packages = Stog_misc.split_string packages [';'] in
   let showcode = Xtmpl.opt_arg args "showcode" = "true" in
-  let svg = Filename.basename (make_svg outdir ~packages code) in
+  let svg = Filename.basename (make_svg stog.Stog_types.stog_outdir ~packages code) in
   let url = Printf.sprintf "%s/%s" stog.Stog_types.stog_base_url svg in
   (Xtmpl.T ("img", ["class", "latex" ; "src", url ; "alt", code ; "title", code], []) ) ::
   (match showcode with

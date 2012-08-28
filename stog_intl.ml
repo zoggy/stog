@@ -106,6 +106,11 @@ let get_month lang m =
 let string_of_date lang d =
   (data_of_lang lang).string_of_date d
 
+let string_of_date_opt lang = function
+  None -> ""
+| Some d -> (data_of_lang lang).string_of_date d
+;;
+
 let short_string_of_date { year; month; day } =
   Printf.sprintf "%04d/%02d/%02d" year month day
 

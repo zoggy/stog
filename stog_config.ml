@@ -28,5 +28,46 @@
 
 (** *)
 
-let version = "0.1";;
-let default_port = 15007;;
+let version = "0.2";;
+
+type t =
+  { ignored : string list ; (** list of regexps of filenames to ignore *)
+    elements : string list ; (** list of regexps for element files *)
+    not_elements : string list ;
+    (** list of regexps for file matching elements rules but not being  elements *)
+  }
+;;
+
+module CF = Config_file;;
+
+let config_dir dir = Filename.concat dir ".stog";;
+let config_file dir = Filename.concat (config_dir dir) "config";;
+let tmpl_dir dir = Filename.concat (config_dir dir) "templates";;
+
+let read_config dir =
+  let rc_file = config_file dir in
+  let group = new CF.group in
+  let o_ignored = new CF.list_cp CF.string_wrappers ~group
+    ["ignored"] [ ".*\\.git" ; ".*Makefile" ; ".*tmpl$" ] "Regexps of files to ignore"
+  in
+  let o_elts = new CF.list_cp CF.string_wrappers ~group
+    ["elements"] [ ".*\\.xml$" ; ".*\\.html$" ] "Regexps of files containing elements"
+  in
+  let o_not_elts = new CF.list_cp CF.string_wrappers ~group
+    ["not-elements"] [ ]
+    "Regexps of files matching 'elements' regexps but not containing elements"
+  in
+  let cfg_dir = config_dir dir in
+  if not (Sys.file_exists cfg_dir) then Stog_misc.safe_mkdir cfg_dir ;
+  group#read rc_file;
+  group#write rc_file;
+  { ignored = o_ignored#get ;
+    elements = o_elts#get ;
+    not_elements = o_not_elts#get ;
+  }
+;;
+
+
+
+
+    

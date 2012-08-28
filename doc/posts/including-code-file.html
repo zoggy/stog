@@ -1,9 +1,9 @@
-article-title= Including a code file (deferring evaluation)
-article-date= 2012/03/13
-topics= stog
-keywords= highlight, include, code
-article-published= true
-<->
+<post title="Including a code file (deferring evaluation)"
+date="2012/03/13"
+topics="stog"
+keywords="highlight, include, code"
+published="true"
+>
 <p>How to highlight a file inserted with <icode lang="xml">&lt;include ...&gt;</icode> ?
 </p>
 <sep_/>
@@ -12,14 +12,14 @@ If you want to include and highlight for example the <icode>../../plugins/stog_d
 relative to the template directory, you can try
 <hcode lang="xml"><![CDATA[<hcode raw="true" lang="ocaml"><include file="../../plugins/stog_disqus.ml"/></hcode>]]></hcode>
 but this will only result in
-<hcode raw="true" lang="ocaml"><include file="../../plugins/stog_disqus.ml"/></hcode>
+<hcode raw="true" lang="ocaml"><include file="../../../plugins/stog_disqus.ml"/></hcode>
 </p>
 <p>This is because <icode>&lt;hcode...&gt;</icode> is evaluated immediately, displaying
 its children nodes. What you need is to defer the evaluation of <icode>&lt;hcode...&gt;</icode>,
 using the special <icode>defer_</icode> attribute:
 <hcode lang="xml"><![CDATA[<hcode raw="true" lang="ocaml" defer_="1"><include file="../../plugins/stog_disqus.ml"/></hcode>]]></hcode>
 This will give the expected result:
-<hcode raw="true" lang="ocaml" defer_="1"><include file="../../plugins/stog_disqus.ml"/></hcode>
+<hcode raw="true" lang="ocaml" defer_="1"><include file="../../../plugins/stog_disqus.ml"/></hcode>
 </p>
 <p>
 The <icode>defer_</icode> attribute is decremented each time the node should be evaluated.
@@ -30,3 +30,4 @@ as children. During the next evaluation, the <icode>&lt;hcode&gt;</icode> is eva
 and it now highlights its children, that is the contents of the included file.
 </p>
 <p><icode>defer_</icode> can take values greater than 1, if you need to nest deferred evaluations.</p>
+</post>

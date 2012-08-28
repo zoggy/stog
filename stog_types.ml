@@ -28,7 +28,7 @@
 
 (** *)
 
-type contents_kind = Text | Html
+type contents_kind = [`Text | `Html | `Xml]
 type date = {
   year : int;
   month : int;
@@ -48,31 +48,45 @@ type message = {
 type 'a tree = 'a tree_node
 and 'a tree_node = Node of 'a * 'a tree list
 
-type article =
-  {
-    art_human_id : string;
-    art_kind : contents_kind ;
-    art_body : string ;
-    art_date : date ;
-    art_keywords : string list ;
-    art_topics : string list ;
-    art_published : bool ;
-    art_title : string ;
-    art_location : string ;
-    art_files : string list ; (** list of files in [art_location] *)
-    art_comments : message tree list ;
-    art_vars : (string * string) list
-  }
-and article_id = article Stog_tmap.key
 
-type page =
-  { page_human_id : string ;
-    page_kind : contents_kind ;
-    page_body : string ;
-    page_title : string ;
-    page_vars : (string * string) list ;
+type body = Xtmpl.tree list
+
+type human_id = {
+    hid_path : string list;
+    hid_absolute : bool ;
   }
-and page_id = page Stog_tmap.key
+let string_of_human_id hid =
+  Printf.sprintf "%s%s"
+  (if hid.hid_absolute then "/" else "")
+  (String.concat "/" hid.hid_path)
+let human_id_of_string s =
+  let len = String.length s in
+  if len <= 0 then failwith (Printf.sprintf "Invalid human_id: %S" s);
+  let (abs, s) =
+    match s.[0] with
+      '/' -> (true, String.sub s 1 (len - 1))
+    | _ -> (false, s)
+  in
+  { hid_path = Stog_misc.split_string s ['/'];
+    hid_absolute = abs ;
+  }
+;;
+
+type elt =
+  { elt_human_id : human_id ;
+    elt_type : string ;
+    elt_body : body ;
+    elt_date : date option ;
+    elt_title : string ;
+    elt_keywords : string list ;
+    elt_topics : string list ;
+    elt_published : bool ;
+    elt_vars : (string * string) list ;
+    elt_src : string ;
+    elt_sets : string list ; (* list of sets ("blog", "foo", etc.) this element belongs to *)
+    elt_lang_dep : bool ; (* whether a file must be generated for each language *)
+  }
+and elt_id = elt Stog_tmap.key
 
 let today () =
   let t = Unix.gmtime (Unix.time()) in
@@ -83,33 +97,27 @@ let today () =
   }
 ;;
 
-let dummy_article () =
-  { art_human_id = "dummy" ;
-    art_kind = Html ;
-    art_body = "" ;
-    art_date = today () ;
-    art_keywords = [] ;
-    art_topics = [] ;
-    art_published = true ;
-    art_title = "Dummy title";
-    art_location = "/tmp" ;
-    art_files = [] ;
-    art_comments = [] ;
-    art_vars = [] ;
-  }
-;;
-let  dummy_page () =
-  { page_human_id = "dummypage" ;
-    page_kind = Html ;
-    page_body = "" ;
-    page_title  = "" ;
-    page_vars = [] ;
+let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
+  { elt_human_id = hid ;
+    elt_type = typ ;
+    elt_body = [] ;
+    elt_date = None ;
+    elt_title = "";
+    elt_keywords = [] ;
+    elt_topics = [] ;
+    elt_published = true ;
+    elt_vars = [] ;
+    elt_src = "/tmp" ;
+    elt_sets = [] ;
+    elt_lang_dep = true ;
   }
 ;;
 
 module Str_map = Map.Make (struct type t = string let compare = compare end);;
-module Art_set = Set.Make (struct type t = article_id let compare = Stog_tmap.compare_key end);;
-module Page_set = Set.Make (struct type t = page_id let compare = Stog_tmap.compare_key end);;
+module Str_set = Set.Make (struct type t = string let compare = compare end);;
+module Hid_map = Stog_trie.Make (struct type t = string let compare = compare end);;
+module Elt_set = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
+module Elt_map = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
 module Int_map = Map.Make (struct type t = int let compare = compare end);;
 
 type edge_type =
@@ -121,131 +129,149 @@ type edge_type =
 
 module Graph = Stog_graph.Make_with_map
   (struct
-     type t = article_id
+     type t = elt_id
      let compare = Stog_tmap.compare_key
    end
   )
   (struct type t = edge_type let compare = Pervasives.compare end);;
 
+type file_tree =
+{ files : Str_set.t ;
+  dirs : file_tree Str_map.t ;
+}
+
 type stog = {
   stog_dir : string ;
-  stog_articles : (article, article) Stog_tmap.t ;
-  stog_art_by_human_id : article_id Str_map.t ;
-  stog_pages : (page, page) Stog_tmap.t ;
-  stog_page_by_human_id : page_id Str_map.t ;
+  stog_elts : (elt, elt) Stog_tmap.t ;
+  stog_elts_by_human_id : elt_id Hid_map.t ;
   stog_vars : (string * string) list ;
   stog_tmpl_dir : string ;
   stog_title : string ;
-  stog_body : string ;
-  stog_desc : string ;
+  stog_desc : body ;
   stog_graph : Graph.t ;
-  stog_arts_by_kw : Art_set.t Str_map.t ;
-  stog_arts_by_topic : Art_set.t Str_map.t ;
-  stog_archives : Art_set.t Int_map.t Int_map.t ; (* year -> month -> article set *)
+  stog_elts_by_kw : Elt_set.t Str_map.t ;
+  stog_elts_by_topic : Elt_set.t Str_map.t ;
+  stog_archives : Elt_set.t Int_map.t Int_map.t ; (* year -> month -> article set *)
   stog_base_url : string ;
   stog_email : string ;
   stog_rss_length : int ;
   stog_lang : string option ;
+  stog_outdir : string ;
+  stog_main_elt : elt_id option ;
+  stog_files : file_tree ;
   }
 
 let create_stog dir = {
   stog_dir = dir ;
-  stog_articles = Stog_tmap.create (dummy_article ());
-  stog_art_by_human_id = Str_map.empty ;
-  stog_pages = Stog_tmap.create (dummy_page ());
-  stog_page_by_human_id = Str_map.empty ;
-  stog_tmpl_dir = Filename.concat dir "tmpl" ;
+  stog_elts = Stog_tmap.create (make_elt ());
+  stog_elts_by_human_id = Hid_map.empty ;
+  stog_tmpl_dir = Stog_config.tmpl_dir dir ;
   stog_title = "Blog title" ;
-  stog_body = "" ;
-  stog_desc = "" ;
+  stog_desc = [] ;
   stog_graph = Graph.create () ;
-  stog_arts_by_kw = Str_map.empty ;
-  stog_arts_by_topic = Str_map.empty ;
+  stog_elts_by_kw = Str_map.empty ;
+  stog_elts_by_topic = Str_map.empty ;
   stog_archives = Int_map.empty ;
   stog_base_url = "http://yourblog.net" ;
   stog_email = "foo@bar.com" ;
   stog_rss_length = 10 ;
   stog_vars = [] ;
   stog_lang = None ;
+  stog_outdir = "." ;
+  stog_main_elt = None ;
+  stog_files = { files = Str_set.empty ; dirs = Str_map.empty } ;
   }
 ;;
 
-let article stog id = Stog_tmap.get stog.stog_articles id;;
-let article_by_human_id stog h =
-  let id = Str_map.find h stog.stog_art_by_human_id in
-  (id, article stog id)
-;;
-
-let set_article stog id article =
-  {  stog with
-    stog_articles = Stog_tmap.modify stog.stog_articles id article }
-;;
-
-let add_article stog art =
-  let (id, articles) = Stog_tmap.add stog.stog_articles art in
-  let map = Str_map.add
-    art.art_human_id
-    id
-    stog.stog_art_by_human_id
+let elt stog id = Stog_tmap.get stog.stog_elts id;;
+let elts_by_human_id ?typ stog h =
+  let rev_path = List.rev h.hid_path in
+  (*prerr_endline (Printf.sprintf "lookup rev_path=%s" (String.concat "/" rev_path));*)
+  let ids = Hid_map.find rev_path stog.stog_elts_by_human_id in
+  let l = List.map (fun id -> (id, elt stog id)) ids in
+  let pred =
+    match h.hid_absolute, typ with
+      false, None -> None
+    | false, Some typ -> Some (fun (_, elt) -> elt.elt_type = typ)
+    | true, None -> Some (fun (_, elt) -> elt.elt_human_id = h)
+    | true, Some typ -> Some (fun (_, elt) -> elt.elt_human_id = h && elt.elt_type = typ)
   in
+  match pred with None -> l | Some pred -> List.filter pred l
+;;
+
+let elt_by_human_id ?typ stog h =
+  match elts_by_human_id ?typ stog h with
+    [] ->
+      failwith (Printf.sprintf "Unknown element %S" (string_of_human_id h))
+  | [x] -> x
+  | l ->
+      let msg = Printf.sprintf "More than one element matches %S%s: %s"
+        (string_of_human_id h)
+        (match typ with None -> "" | Some t -> Printf.sprintf " of type %S" t)
+        (String.concat ", "
+          (List.map (fun (id, elt) -> string_of_human_id elt.elt_human_id) l))
+      in
+      failwith msg
+;;
+
+let set_elt stog id elt =
   { stog with
-    stog_articles = articles ;
-    stog_art_by_human_id = map ;
+    stog_elts = Stog_tmap.modify stog.stog_elts id elt }
+;;
+
+let add_hid stog hid id =
+  let rev_path = List.rev hid.hid_path in
+  let map = Hid_map.add
+    rev_path id
+    stog.stog_elts_by_human_id
+  in
+  let map =
+    (*prerr_endline (Printf.sprintf "rev_path=%s" (String.concat "/" rev_path));*)
+    match rev_path with
+    | "index" :: q ->
+        (*prerr_endline (Printf.sprintf "add again %s" (String.concat "/" q));*)
+        (* also make this element accessible without "index" *)
+        Hid_map.add q id map
+    | _ -> map
+  in
+  { stog with stog_elts_by_human_id = map }
+;;
+
+let add_elt stog elt =
+  let (id, elts) = Stog_tmap.add stog.stog_elts elt in
+  let stog = add_hid stog elt.elt_human_id id in
+  { stog with
+    stog_elts = elts ;
   }
 ;;
 
-let sort_articles_by_date arts =
+let sort_elts_by_date elts =
   List.sort
-  (fun a1 a2 ->
-     Pervasives.compare a1.art_date a2.art_date)
-  arts
+  (fun e1 e2 ->
+     Pervasives.compare e1.elt_date e2.elt_date)
+  elts
 ;;
 
-let sort_ids_articles_by_date arts =
+let sort_ids_elts_by_date elts =
   List.sort
-  (fun (_,a1) (_,a2) ->
-     Pervasives.compare a1.art_date a2.art_date)
-  arts
+  (fun (_,e1) (_,e2) ->
+     Pervasives.compare e1.elt_date e2.elt_date)
+  elts
 ;;
 
-let article_list ?(by_date=false) stog =
+let elt_list ?(by_date=false) ?set stog =
+  let pred =
+    match set with
+      None -> (fun _ -> true)
+    | Some set -> (fun elt -> List.mem set elt.elt_sets)
+  in
   let l =
     Stog_tmap.fold
-    (fun id art acc -> (id, art) :: acc)
-    stog.stog_articles
+    (fun id elt acc -> if pred elt then (id, elt) :: acc else acc)
+    stog.stog_elts
     []
   in
-  if by_date then sort_ids_articles_by_date l else l
-;;
-
-let page stog id = Stog_tmap.get stog.stog_pages id;;
-let page_by_human_id stog h =
-  let id = Str_map.find h stog.stog_page_by_human_id in
-  (id, page stog id)
-;;
-
-let set_page stog id page =
-  { stog with
-    stog_pages = Stog_tmap.modify stog.stog_pages id page }
-;;
-
-let add_page stog page =
-  let (id, pages) = Stog_tmap.add stog.stog_pages page in
-  let map = Str_map.add
-    page.page_human_id
-    id
-    stog.stog_page_by_human_id
-  in
-  { stog with
-    stog_pages = pages ;
-    stog_page_by_human_id = map ;
-  }
-;;
-let page_list stog =
-  Stog_tmap.fold
-  (fun id page acc -> (id, page) :: acc)
-  stog.stog_pages
-  []
+  if by_date then sort_ids_elts_by_date l else l
 ;;
 
 let merge_stogs stogs =
@@ -253,20 +279,9 @@ let merge_stogs stogs =
     [] -> assert false
   | stog :: q ->
       let f acc stog =
-        let (articles, by_hid) =
-          Stog_tmap.fold
-          (fun _ art (arts, by_hid) ->
-             let (id, arts) = Stog_tmap.add arts art in
-             let by_hid = Str_map.add art.art_human_id id by_hid in
-             (arts, by_hid)
-          )
-          stog.stog_articles
-          (acc.stog_articles, acc.stog_art_by_human_id)
-        in
-        { acc with
-          stog_articles = articles ;
-          stog_art_by_human_id = by_hid ;
-        }
+        Stog_tmap.fold (fun _ elt acc -> add_elt acc elt)
+        stog.stog_elts
+        acc
       in
       List.fold_left f stog q
 ;;
@@ -295,10 +310,10 @@ let make_human_id stog str =
     let hid = Printf.sprintf "%s%s"
       hid0 (if n = 1 then "" else string_of_int n)
     in
-    try
-      ignore(Str_map.find hid stog.stog_art_by_human_id);
-      iter (n+1)
-    with Not_found -> hid
+    let hid = [ hid ] in
+    match Hid_map.find hid stog.stog_elts_by_human_id with
+      [] -> hid
+    | _ -> iter (n+1)
   in
   iter 1
 ;;

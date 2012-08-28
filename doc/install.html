@@ -1,5 +1,6 @@
-page-title=Installation
-<->
+<page title="Installation"
+navbar-install="active"
+>
 <prepare-toc depth="2">
 <toc></toc>
 <section name="deps" title="Dependencies">
@@ -10,7 +11,7 @@ To build Stog, you will need:
 <li><ext-a href="http://caml.inria.fr/">OCaml >= 4.00</ext-a> installed,</li>
 <li><ext-a href="http://erratique.ch/software/xmlm">Xmlm >= 1.1.0</ext-a>,</li>
 <li><ext-a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS >= 2.0</ext-a>,</li>
-<li><ext-a href="https://github.com/zoggy/xtmpl">Xtmpl</ext-a>.</li>
+<li><ext-a href="https://github.com/zoggy/xtmpl">Xtmpl >= 0.2</ext-a>.</li>
 </ul>
 <p>
 You will need to have the following tools installed to use
@@ -30,6 +31,10 @@ LaTeX in your pages.</li>
 </p>
 <subsection title="Releases">
 <ul>
+<li><a href="stog-0.2.tar.gz">0.2</a> [2012-08-28]:
+Change the format of files, now all in XML. Config and templates are in <icode>.stog</icode>
+directory. Less templates required. User can define elements of any "type" (post, page, ...).
+</li>
 <li><a href="stog-0.1.tar.gz">0.1</a> [2012-06-20]: Initial release.</li>
 </ul>
 </subsection>
@@ -47,3 +52,4 @@ install the <tt>stog</tt> library and the
 </section>
 
 </prepare-toc>
+</page>
