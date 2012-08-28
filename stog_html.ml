@@ -1080,6 +1080,7 @@ let generate ?only_elt stog =
     | Some lang -> Stog_msg.verbose (Printf.sprintf "Generating pages for language %s" lang);
   end;
   current_stog := Some stog;
+  Stog_misc.safe_mkdir stog.stog_outdir;
   let env = List.fold_left
     (fun env (name, v) -> Xtmpl.env_add name (fun _ _ _ -> [Xtmpl.D v]) env)
     Xtmpl.env_empty
