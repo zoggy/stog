@@ -40,3 +40,5 @@ val set_print_warning : (string -> unit) -> unit
 
 val error : ?info:string -> ?fatal: int -> string -> unit
 val set_print_error : (string -> unit) -> unit
+
+val register_pre_output_fun : (Stog_types.elt -> Stog_types.elt) -> unit

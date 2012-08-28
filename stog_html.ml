@@ -35,6 +35,8 @@ let languages = ["fr" ; "en" ];;
 let current_stog = ref None;;
 let plugin_funs = ref [];;
 
+let pre_output_funs = ref [];;
+
 let url_compat s =
  let s = Stog_misc.lowercase s in
  for i = 0 to String.length s - 1 do
@@ -892,7 +894,8 @@ and elt_list ?rss ?set stog env args _ =
       ) :: xml
 ;;
 
-
+let apply_pre_output_funs elt =
+  List.fold_right (fun f elt -> f elt) !pre_output_funs elt;;
 
 let generate_elt stog env ?elt_id elt =
   Stog_msg.verbose
@@ -946,7 +949,14 @@ let generate_elt stog env ?elt_id elt =
   in
   let env = env_add_langswitch env stog elt in
   Stog_misc.safe_mkdir (Filename.dirname file);
-  Xtmpl.apply_to_file ~head: "<!DOCTYPE HTML>" env tmpl file
+  let tmpl_xml = Xtmpl.xml_of_string (Stog_misc.string_of_file tmpl) in
+  let result = Xtmpl.apply_to_xmls env [tmpl_xml] in
+  let elt = { elt with elt_body = result } in
+  let elt = apply_pre_output_funs elt in
+  let oc = open_out file in
+  output_string oc "<!DOCTYPE HTML>\n" ;
+  List.iter (fun xml -> output_string oc (Xtmpl.string_of_xml xml)) elt.elt_body;
+  close_out oc
 ;;
 
 
