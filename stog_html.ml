@@ -171,6 +171,11 @@ let fun_image _env args legend =
 ;;
 
 let fun_elt_href ?typ href stog env args subs =
+  let quotes =
+    match Xtmpl.get_arg args "quotes" with
+      None -> true
+    | Some s -> Stog_io.bool_of_string s
+  in
   let (elt, id, text) =
     let (hid, id) =
       try
@@ -193,7 +198,9 @@ let fun_elt_href ?typ href stog env args subs =
     let text =
       match elt, subs with
         None, _ -> [Xtmpl.D "??"]
-      | Some elt, [] -> [Xtmpl.D (Printf.sprintf "\"%s\"" elt.elt_title)]
+      | Some elt, [] ->
+          let quote = if quotes then "\"" else "" in
+          [Xtmpl.D (Printf.sprintf "%s%s%s" quote elt.elt_title quote)]
       | Some _, text -> text
     in
     (elt, id, text)
