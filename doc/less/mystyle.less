@@ -20,7 +20,7 @@ html { margin: 0 ; padding: 0 ;height: 100% ; }
 body {
   font: normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
   /* #gradient > .vertical(@color1, @color2); */
-  background-color: @color2 ;
+  background-color: darken(@bgcolor, 10) ;
   color: @fgcolor ;
   height: 100%;
   margin: 0 ;
@@ -47,8 +47,9 @@ div#page {
   padding-left: 2em;
   padding-right: 2em;
   line-height: 1.4;
-  border-width: 0 ;
+  border-width: 0 1px 0 1px ;
   border-style: solid ;
+  border-color: @fgcolor;
   min-height: 100% ;
   text-align: justify ;
 }
@@ -364,6 +365,16 @@ td.two-columns-right {
   vertical-align: top ;
   padding-left: 0.5em;
 }
+
+div.n-columns {
+  display: block ;
+}
+
+td.n-columns {
+  vertical-align: top ;
+}
+
+
 // navbar:  overriding some of navbar.less
 .navbar {
   .brand {

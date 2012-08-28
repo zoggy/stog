@@ -502,6 +502,28 @@ let fun_twocolumns env args subs =
   ]
 ;;
 
+let fun_ncolumns env args subs =
+  let subs = List.fold_right
+    (fun xml acc ->
+       match xml with
+         Xtmpl.D _ -> acc
+       | Xtmpl.T (_,_,subs)
+       | Xtmpl.E (_, subs) -> subs :: acc
+    ) subs []
+  in
+  let tds =
+    let f (n,acc) xmls =
+       let acc = (Xtmpl.T ("td", ["class", Printf.sprintf "n-columns column-%d" n], xmls)) :: acc in
+       (n+1, acc)
+    in
+    List.rev (snd (List.fold_left f (0,[]) subs))
+  in
+  [ Xtmpl.T ("table", ["class", "n-columns"],
+     [ Xtmpl.T ("tr", [], tds) ]
+    );
+  ]
+;;
+
 let fun_exta env args subs =
   [ Xtmpl.T ("span", ["class","ext-a"],
      [ Xtmpl.T ("a",args, subs) ])
@@ -586,12 +608,13 @@ let default_commands ?rss stog =
       "elt", fun_elt stog;
       "section", fun_section ;
       "subsection", fun_subsection ;
-      "rssfeed", (match rss with None -> fun _env _ _ -> [] | Some file -> fun_rss_feed file);
       Stog_cst.site_url, fun_blog_url stog ;
       "search-form", fun_search_form stog ;
       Stog_cst.site_title, (fun _ _ _ -> [ Xtmpl.D stog.stog_title ]) ;
       Stog_cst.site_desc, (fun _ _ _ -> stog.stog_desc) ;
+      Stog_cst.site_email, (fun _ _ _ -> [ Xtmpl.D stog.stog_email ]) ;
       "two-columns", fun_twocolumns ;
+      "n-columns", fun_ncolumns ;
       "ext-a", fun_exta ;
       "prepare-toc", fun_prepare_toc ;
       "toc", fun_toc ;
@@ -837,9 +860,9 @@ and elt_list ?rss ?set stog env args _ =
   in
   let f_elt (elt_id, elt) =
     let env = Xtmpl.env_of_list ~env
-      (("elt-hid", fun _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)])::
-       (elt_commands stog)
-       @ (default_commands stog)
+      (
+       (default_commands stog) @ (elt_commands stog) @
+       [ "elt-hid", fun _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)] ]
       )
     in
     Xtmpl.xml_of_string (Xtmpl.apply_from_file env tmpl)
@@ -911,16 +934,14 @@ let generate_elt stog env ?elt_id elt =
      try_link "next" Stog_info.succ_by_date)
   in
   let env = Xtmpl.env_of_list ~env
-    ([
-      "elt-hid", (fun  _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)]);
+    (
+     (default_commands stog) @ (elt_commands stog) @
+     [
+       "elt-hid", (fun  _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)]);
        "next", (fun _ _ _ -> next);
        "previous", (fun _ _ _ -> previous);
-     ] @
-     (elt_commands stog) @
-        (*
-          "elt-navbar", fun _ _ _ -> [Xtmpl.D "true"] ;
-       *)
-     (default_commands stog))
+     ]
+    )
   in
   let env = env_add_langswitch env stog elt in
   Stog_misc.safe_mkdir (Filename.dirname file);
@@ -959,7 +980,7 @@ let generate_by_word_indexes stog env f_elt_id elt_type map =
       { elt with Stog_types.elt_body = elt_list ~set ~rss: rss_url stog env [] []}
     in
     let env = Xtmpl.env_of_list ~env
-      ((elt_commands stog) @ (default_commands ~rss: rss_url stog))
+      ( (default_commands ~rss: rss_url stog) @ (elt_commands stog) )
     in
     let env = env_add_langswitch env stog elt in
     let stog = Stog_types.add_elt stog elt in
@@ -1003,7 +1024,7 @@ let generate_archive_index stog env =
       }
     in
     let env = Xtmpl.env_of_list ~env
-      ((elt_commands stog) @ (default_commands stog))
+      ((default_commands stog) @ (elt_commands stog))
     in
     let env = env_add_langswitch env stog elt in
     let stog = Stog_types.add_elt stog elt in
