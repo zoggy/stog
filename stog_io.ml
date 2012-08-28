@@ -69,17 +69,27 @@ let extract_stog_info_from_elt stog elt =
   | h :: q ->
       let (stog, opt) =
         match h with
-        | ("stog-desc",s) -> { stog with stog_desc = [Xtmpl.xml_of_string s] }, None
-        | ("stog-base-url",s) -> { stog with stog_base_url = s }, None
-        | ("stog-email",s) -> { stog with stog_email = s }, None
+        | ("stog-description",s) -> { stog with stog_desc = [Xtmpl.xml_of_string s] }, None
+        | ("stog-site-url",s) -> { stog with stog_base_url = s }, None
+        | ("stog-site-email",s) -> { stog with stog_email = s }, None
         | ("stog-rss-length",s) -> { stog with stog_rss_length = int_of_string s }, None
-        | (att, v) -> (stog, Some h)
+        | (att, v) ->
+            let prefix = "stog-" in
+            let len = String.length att in
+            let len_p = String.length prefix in
+            if len > len_p && String.sub att 0 len_p = prefix then
+              (
+               let att = String.sub att len_p (len - len_p) in
+               let stog = { stog with stog_vars = (att, v) :: stog.stog_vars } in
+               (stog, None)
+              )
+            else
+              (stog, Some h)
       in
       let atts = match opt with None -> atts | Some x -> h :: atts in
       iter (stog, atts) q
   in
   let (stog, vars) = iter (stog, []) elt.elt_vars in
-  let stog = { stog with stog_vars = vars } in
   (stog, { elt with elt_vars = vars })
 ;;
 
