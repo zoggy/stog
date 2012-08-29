@@ -18,8 +18,11 @@
 html { margin: 0 ; padding: 0 ;height: 100% ; }
 
 body {
-  font: normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
   /* #gradient > .vertical(@color1, @color2); */
+  font-family : @baseFontFamily;
+  font-size: @baseFontSize ;
+  line-height: @baseLineHeight;
+
   background-color: darken(@bgcolor, 10) ;
   color: @fgcolor ;
   height: 100%;
@@ -392,13 +395,16 @@ td.n-columns {
   padding-top: 4px;
   }
 
+/*
 .navbar .nav > li  {
-  margin-top: 6px;line-height: 10px;
+  margin-top: 6px;
+  line-height: 10px;
 }
 
 .navbar .nav > li > a  {
-  line-height: 10px;
+  line-height: @navbarHeight ;
 }
+*/
 
 div.elt-navbar {
   width: 100%;
