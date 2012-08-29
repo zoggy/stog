@@ -141,6 +141,7 @@ let fill_elt_from_atts =
         | ("published", s) -> { elt with elt_published = bool_of_string s }
         | ("sets", s) -> { elt with elt_sets = sets_of_string s }
         | ("language-dep", s) -> { elt with elt_lang_dep = bool_of_string s }
+        | ("doctype", s) -> { elt with elt_xml_doctype = Some s }
         | (att, v) -> { elt with elt_vars = (att, v) :: elt.elt_vars }
       in
       iter elt q
@@ -163,6 +164,7 @@ let fill_elt_from_nodes =
         | "published" -> { elt with elt_published = bool_of_string v }
         | "sets" -> { elt with elt_sets = sets_of_string v }
         | "language-dep" -> { elt with elt_lang_dep = bool_of_string v }
+        | "doctype" -> { elt with elt_xml_doctype = Some v }
         | s -> { elt with elt_vars = (s, v) :: elt.elt_vars }
   in
   List.fold_left f

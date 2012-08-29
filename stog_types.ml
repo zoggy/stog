@@ -85,6 +85,8 @@ type elt =
     elt_src : string ;
     elt_sets : string list ; (* list of sets ("blog", "foo", etc.) this element belongs to *)
     elt_lang_dep : bool ; (* whether a file must be generated for each language *)
+    elt_xml_doctype : string option ;
+    elt_out : body ;
   }
 and elt_id = elt Stog_tmap.key
 
@@ -110,6 +112,8 @@ let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
     elt_src = "/tmp" ;
     elt_sets = [] ;
     elt_lang_dep = true ;
+    elt_xml_doctype = None ;
+    elt_out = [] ;
   }
 ;;
 

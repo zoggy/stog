@@ -48,6 +48,9 @@ let warning = Stog_msg.warning;;
 let set_print_error = Stog_msg.set_print_error;;
 let error = Stog_msg.error;;
 
-let register_pre_output_fun f =
-  Stog_html.pre_output_funs := f :: !Stog_html.pre_output_funs
+let register_stage1_fun f =
+  Stog_html.stage1_funs := f :: !Stog_html.stage1_funs
+;;
+let register_stage2_fun f =
+  Stog_html.stage2_funs := f :: !Stog_html.stage2_funs
 ;;

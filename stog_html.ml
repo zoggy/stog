@@ -35,7 +35,8 @@ let languages = ["fr" ; "en" ];;
 let current_stog = ref None;;
 let plugin_funs = ref [];;
 
-let pre_output_funs = ref [];;
+let stage2_funs : (Stog_types.stog -> Stog_types.elt -> Stog_types.elt) list ref = ref [];;
+let stage1_funs : (Stog_types.stog -> unit) list ref = ref [];;
 
 let url_compat s =
  let s = Stog_misc.lowercase s in
@@ -871,6 +872,11 @@ and elt_list ?rss ?set stog env args _ =
     Xtmpl.xml_of_string (Xtmpl.apply_from_file env tmpl)
   in
   let xml = List.map f_elt elts in
+  (*prerr_endline "elt_list:";
+  List.iter
+    (fun xml -> prerr_endline (Printf.sprintf "ITEM: %s" (Xtmpl.string_of_xml xml)))
+    xml;
+     *)
   let rss =
     match rss with
       Some link -> Some link
@@ -894,13 +900,19 @@ and elt_list ?rss ?set stog env args _ =
       ) :: xml
 ;;
 
-let apply_pre_output_funs elt =
-  List.fold_right (fun f elt -> f elt) !pre_output_funs elt;;
-
-let generate_elt stog env ?elt_id elt =
+let call_stage1_funs stog =
+  Stog_msg.verbose "Calling stage 1 functions";
+  List.iter (fun f -> f stog) (List.rev !stage1_funs);;
+let apply_stage2_funs stog elt =
   Stog_msg.verbose
-  (Printf.sprintf "Generating %S" (Stog_types.string_of_human_id elt.elt_human_id));
-  let file = elt_dst_file stog elt in
+    (Printf.sprintf "Calling stage 2 functions on %S"
+      (Stog_types.string_of_human_id elt.elt_human_id));
+  List.fold_right (fun f elt -> f stog elt) !stage2_funs elt;;
+
+let compute_elt stog env ?elt_id elt =
+  Stog_msg.verbose
+  (Printf.sprintf "Computing %S" (Stog_types.string_of_human_id elt.elt_human_id));
+
   let tmpl = Filename.concat stog.stog_tmpl_dir elt.elt_type^".tmpl" in
 
   let env = Xtmpl.env_of_list ~env
@@ -948,21 +960,22 @@ let generate_elt stog env ?elt_id elt =
     )
   in
   let env = env_add_langswitch env stog elt in
-  Stog_misc.safe_mkdir (Filename.dirname file);
+
   let tmpl_xml = Xtmpl.xml_of_string (Stog_misc.string_of_file tmpl) in
   let result = Xtmpl.apply_to_xmls env [tmpl_xml] in
-  let elt = { elt with elt_body = result } in
-  let elt = apply_pre_output_funs elt in
-  let oc = open_out file in
-  output_string oc "<!DOCTYPE HTML>\n" ;
-  List.iter (fun xml -> output_string oc (Xtmpl.string_of_xml xml)) elt.elt_body;
-  close_out oc
+  { elt with elt_out = result }
+;;
+
+let compute_elts =
+  let f env stog (elt_id, elt) =
+    let elt = compute_elt stog env ~elt_id elt in
+    Stog_types.set_elt stog elt_id elt
+  in
+  fun stog env elts -> List.fold_left (f env) stog elts
 ;;
 
 
-
-
-let generate_by_word_indexes stog env f_elt_id elt_type map =
+let compute_by_word_indexes stog env f_elt_id elt_type map =
   let f word set stog =
     let hid = f_elt_id word in
     let elt =
@@ -978,6 +991,8 @@ let generate_by_word_indexes stog env f_elt_id elt_type map =
         elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_human_id hid) ;
         elt_sets = [] ;
         elt_lang_dep = true ;
+        elt_xml_doctype = None ;
+        elt_out = [];
       }
     in
     let out_file = elt_dst_file stog elt in
@@ -995,24 +1010,25 @@ let generate_by_word_indexes stog env f_elt_id elt_type map =
     in
     let env = env_add_langswitch env stog elt in
     let stog = Stog_types.add_elt stog elt in
-    generate_elt stog env elt;
-    stog
+    let elt = compute_elt stog env elt in
+    let (elt_id,_) = Stog_types.elt_by_human_id stog elt.elt_human_id in
+    Stog_types.set_elt stog elt_id elt
   in
   Stog_types.Str_map.fold f map stog
 ;;
 
-let generate_topic_indexes stog env =
-  generate_by_word_indexes stog env topic_index_hid
+let compute_topic_indexes stog env =
+  compute_by_word_indexes stog env topic_index_hid
   "by-topic" stog.stog_elts_by_topic
 
 ;;
 
-let generate_keyword_indexes stog env =
-  generate_by_word_indexes stog env keyword_index_hid
+let compute_keyword_indexes stog env =
+  compute_by_word_indexes stog env keyword_index_hid
   "by-keyword" stog.stog_elts_by_kw
 ;;
 
-let generate_archive_index stog env =
+let compute_archive_index stog env =
   let f_month year month set stog =
     let hid = month_index_hid ~year ~month in
     let title =
@@ -1032,6 +1048,8 @@ let generate_archive_index stog env =
         elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_human_id hid) ;
         elt_sets = [] ;
         elt_lang_dep = true ;
+        elt_xml_doctype = None ;
+        elt_out = [] ;
       }
     in
     let env = Xtmpl.env_of_list ~env
@@ -1039,13 +1057,35 @@ let generate_archive_index stog env =
     in
     let env = env_add_langswitch env stog elt in
     let stog = Stog_types.add_elt stog elt in
-    generate_elt stog env elt;
-    stog
+    let elt = compute_elt stog env elt in
+    let (elt_id,_) = Stog_types.elt_by_human_id stog elt.elt_human_id in
+    Stog_types.set_elt stog elt_id elt
   in
   let f_year year mmap stog =
     Stog_types.Int_map.fold (f_month year) mmap stog
   in
   Stog_types.Int_map.fold f_year stog.stog_archives stog
+;;
+
+let output_elt stog elt =
+  let elt = apply_stage2_funs stog elt in
+  let file = elt_dst_file stog elt in
+  Stog_misc.safe_mkdir (Filename.dirname file);
+  let oc = open_out file in
+  let doctype =
+    match elt.elt_xml_doctype with
+      None -> "HTML"
+    | Some s -> s
+  in
+  Printf.fprintf oc "<!DOCTYPE %s>\n" doctype;
+  List.iter (fun xml -> output_string oc (Xtmpl.string_of_xml xml)) elt.elt_out;
+  close_out oc
+;;
+
+let output_elts ?elts stog =
+  match elts with
+    None -> Stog_tmap.iter (fun _ elt -> output_elt stog elt) stog.stog_elts
+  | Some l -> List.iter (output_elt stog) l
 ;;
 
 let copy_other_files stog =
@@ -1127,16 +1167,21 @@ let generate ?only_elt stog =
   *)
   match only_elt with
     None ->
-      let elts = stog.stog_elts in
-      let stog = generate_topic_indexes stog env in
-      let stog = generate_keyword_indexes stog env in
-      let stog = generate_archive_index stog env in
-      Stog_tmap.iter (fun elt_id elt -> generate_elt stog env ~elt_id elt) elts;
+      let elts = Stog_tmap.fold (fun k v acc -> (k, v) :: acc) stog.stog_elts [] in
+      let stog = compute_topic_indexes stog env in
+      let stog = compute_keyword_indexes stog env in
+      let stog = compute_archive_index stog env in
+      let stog = compute_elts stog env elts in
+      call_stage1_funs stog;
+      output_elts stog;
       copy_other_files stog
   | Some s ->
       let hid = Stog_types.human_id_of_string s in
       let (elt_id, elt) = Stog_types.elt_by_human_id stog hid in
-      generate_elt stog env ~elt_id elt
+      let stog = compute_elts stog env [elt_id, elt] in
+      call_stage1_funs stog;
+      let (_, elt) = Stog_types.elt_by_human_id stog hid in
+      output_elts ~elts: [elt] stog
 ;;
 
 
