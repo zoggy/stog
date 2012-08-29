@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0"><channel><title>Stog: include</title><link>http://zoggy.github.com/stog/kw_include.html</link><description>&lt;main_&gt;Static blog and web site generator&lt;/main_&gt;</description><managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor><pubDate>13 Mar 2012 08:00:00 +0000</pubDate><lastBuildDate>13 Mar 2012 08:00:00 +0000</lastBuildDate><generator>Stog</generator><item><title>Including a code file (deferring evaluation)</title><link>http://zoggy.github.com/stog/posts/including-code-file.html</link><description>
-&lt;p&gt;How to highlight a file inserted with &lt;span class=&quot;icode&quot;&gt;&lt;main_&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;include&lt;/span&gt; ...&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;/main_&gt;&lt;/span&gt; ?
+&lt;p&gt;How to highlight a file inserted with &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;include&lt;/span&gt; ...&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt; ?
 &lt;/p&gt;
 &lt;a href=&quot;http://zoggy.github.com/stog/posts/including-code-file.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>13 Mar 2012 08:00:00 +0000</pubDate><category>stog</category><category>highlight</category><category>include</category><category>code</category><guid isPermaLink="true">http://zoggy.github.com/stog/posts/including-code-file.html</guid></item></channel></rss>

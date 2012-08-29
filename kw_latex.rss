@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0"><channel><title>Stog: latex</title><link>http://zoggy.github.com/stog/kw_latex.html</link><description>&lt;main_&gt;Static blog and web site generator&lt;/main_&gt;</description><managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor><pubDate>09 Mar 2012 08:00:00 +0000</pubDate><lastBuildDate>09 Mar 2012 08:00:00 +0000</lastBuildDate><generator>Stog</generator><item><title>LaTeX in stog</title><link>http://zoggy.github.com/stog/posts/latex-in-stog.html</link><description>
 &lt;p&gt;
-Stog handles &lt;span class=&quot;icode&quot;&gt;&lt;main_&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;latex&amp;gt;&lt;/span&gt; ... &lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;/latex&amp;gt;&lt;/span&gt;
-&lt;/main_&gt;&lt;/span&gt;.
+Stog handles &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;latex&amp;gt;&lt;/span&gt; ... &lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;/latex&amp;gt;&lt;/span&gt;
+&lt;/span&gt;.
 &lt;/p&gt;
 &lt;a href=&quot;http://zoggy.github.com/stog/posts/latex-in-stog.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>09 Mar 2012 08:00:00 +0000</pubDate><category>stog</category><category>latex</category><category>svg</category><guid isPermaLink="true">http://zoggy.github.com/stog/posts/latex-in-stog.html</guid></item></channel></rss>

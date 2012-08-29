@@ -1,17 +1,17 @@
-<!DOCTYPE HTML><html>
+<!DOCTYPE HTML>
+<html>
 <head>
 <title>Stog : Getting started</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <link rel="stylesheet" type="text/css" href="http://zoggy.github.com/stog/style.css"/>
-<rssfeed/>
 </head><body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
+<div class="container">
 
 
-  <a class="brand" href="http://zoggy.github.com/stog/index.html">Stog</a>
   <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.com/stog/index.html">Home</a></li>
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.com/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.com/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.com/stog/doc.html">Documentation</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.com/stog/blog.html">Blog</a></li>
@@ -21,6 +21,7 @@
 
   </div>
 
+</div>
 </div>
 </div>
 
@@ -58,7 +59,7 @@ Here is an example of <span class="icode">.stog/config</span> file:
 <pre class="code-ocaml"><span class="hl com">(* Regexps of files to ignore *)</span>
 ignored <span class="hl opt">= [</span><span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">.git&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*Makefile&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*tmpl$&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*less$&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">.chamo.*&quot;</span><span class="hl opt">]</span>
 <span class="hl com">(* Regexps of files containing elements *)</span>
-elements <span class="hl opt">= [</span><span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">.xml$&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">.html$&quot;</span><span class="hl opt">]</span>
+elements <span class="hl opt">= [</span><span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">..xml$&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">.html$&quot;</span><span class="hl opt">]</span>
 <span class="hl com">(* Regexps of files matching 'elements' regexps but not containing elements</span>
 <span class="hl com">   *)</span>
 <span class="hl str">&quot;not-elements&quot;</span> <span class="hl opt">= []</span>
@@ -128,7 +129,8 @@ useful when an element is not ready yet for publication,</li>
 belonging to a set,</li>
 <li><b>language-dep</b>: can be set to <i>false</i> to indicate that this page is not
 language dependent, when generating multi-language sites (this affects to name of the
-generated file).</li>
+generated file),</li>
+<li><b>doctype</b>: specify the doctype which will printed into the final XML file. Default is &quot;HTML&quot;.</li>
 </ul>
 <p>
 Any other attribute will be available by its name in the environment when processing the template
@@ -263,237 +265,238 @@ associated to some tags, but more can be created in plugins.
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Getting started&quot;</span>
-<span class="hl kwb">navbar-doc</span>=<span class="hl str">&quot;active&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;prepare-toc</span> <span class="hl kwb">depth</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;toc&gt;</span>Sections:<span class="hl kwa">&lt;/toc&gt;</span>
+<pre class="code-xml"><span class="hl kwd">&amp;lt;</span>page title=<span class="hl kwd">&amp;quot;</span>Getting started<span class="hl kwd">&amp;quot;</span>
+navbar-doc=<span class="hl kwd">&amp;quot;</span>active<span class="hl kwd">&amp;quot;</span>
+<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>prepare-toc depth=<span class="hl kwd">&amp;quot;</span><span class="hl num">1</span><span class="hl kwd">&amp;quot;&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>toc<span class="hl kwd">&amp;gt;</span>Sections:<span class="hl kwd">&amp;lt;</span>/toc<span class="hl kwd">&amp;gt;</span>
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;principle&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Principle&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-When launched on a given root directory, <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> will read all files
+<span class="hl kwd">&amp;lt;</span>section name=<span class="hl kwd">&amp;quot;</span>principle<span class="hl kwd">&amp;quot;</span> title=<span class="hl kwd">&amp;quot;</span>Principle<span class="hl kwd">&amp;quot;&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
+When launched on a given root directory, <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>stog<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> will read all files
 and directories
 from this starting point and generate the same hierarchy in the output directory.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Some of the files will be read as <span class="hl kwa">&lt;i&gt;</span>elements<span class="hl kwa">&lt;/i&gt;</span>, i.e. xml files which will
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
+Some of the files will be read as <span class="hl kwd">&amp;lt;</span>i<span class="hl kwd">&amp;gt;</span>elements<span class="hl kwd">&amp;lt;</span>/i<span class="hl kwd">&amp;gt;</span>, i.e. xml files which will
 be processed through a templating engine to produce the final file.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The <span class="hl kwa">&lt;icode&gt;</span>.stog<span class="hl kwa">&lt;/icode&gt;</span> directory in the given root directory contains the
-templates (in directory <span class="hl kwa">&lt;icode&gt;</span>templates<span class="hl kwa">&lt;/icode&gt;</span>) and the
-<span class="hl kwa">&lt;icode&gt;</span>config<span class="hl kwa">&lt;/icode&gt;</span> file, containing stog configuration. In this file,
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
+The <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>.stog<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> directory in the given root directory contains the
+templates (in directory <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>templates<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>) and the
+<span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>config<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> file, containing stog configuration. In this file,
 using regular expressions, one can indicate which files must be ignored,
 and which files are elements. Files not being ignored nor being elements
-will be copied by <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> in the target directory.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Here is an example of <span class="hl kwa">&lt;icode&gt;</span>.stog/config<span class="hl kwa">&lt;/icode&gt;</span> file:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../config&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-A default file is generated by <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> if it does not exist.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-When launched, <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> performs the following actions:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ol&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>Read the given directory hierarachy;<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>Create the output directory;<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>Generate element files in this directory;<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>Copy all other files in the target directory, of course
-  keeping the source directory structure.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ol&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+will be copied by <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>stog<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> in the target directory.
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
+Here is an example of <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>.stog/config<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> file:
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>hcode lang=<span class="hl kwd">&amp;quot;</span>ocaml<span class="hl kwd">&amp;quot;</span> defer_=<span class="hl kwd">&amp;quot;</span><span class="hl num">1</span><span class="hl kwd">&amp;quot;&amp;gt;&amp;lt;</span>include file=<span class="hl kwd">&amp;quot;</span>../config<span class="hl kwd">&amp;quot;</span> raw=<span class="hl kwd">&amp;quot;</span>true<span class="hl kwd">&amp;quot;</span>/<span class="hl kwd">&amp;gt;&amp;lt;</span>/hcode<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
+A default file is generated by <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>stog<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> if it does not exist.
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
+When launched, <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>stog<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> performs the following actions:
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>ol<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;</span>Read the given directory hierarachy;<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;</span>Create the output directory;<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;</span>Generate element files in this directory;<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;</span>Copy all other files in the target directory, of course
+  keeping the source directory structure.<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/ol<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/section<span class="hl kwd">&amp;gt;</span>
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;elements&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Stog elements&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwd">&amp;lt;</span>section name=<span class="hl kwd">&amp;quot;</span>elements<span class="hl kwd">&amp;quot;</span> title=<span class="hl kwd">&amp;quot;</span>Stog elements<span class="hl kwd">&amp;quot;&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
 An element is an Xml tree, defined in a file matched by the regular expressions
 given in the configuration file. It has one of the following forms. First form:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>
-&lt;![CDATA[<span class="hl kwa">&lt;type</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Element title&quot;</span>
- <span class="hl kwb">attribute</span>=<span class="hl str">&quot;value&quot;</span>
- <span class="hl kwb">attribute2</span>=<span class="hl str">&quot;value2&quot;</span>
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>hcode lang=<span class="hl kwd">&amp;quot;</span>xml<span class="hl kwd">&amp;quot;&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>![CDATA[<span class="hl kwd">&amp;lt;</span>type title=<span class="hl kwd">&amp;quot;</span>Element title<span class="hl kwd">&amp;quot;</span>
+ attribute=<span class="hl kwd">&amp;quot;</span>value<span class="hl kwd">&amp;quot;</span>
+ attribute2=<span class="hl kwd">&amp;quot;</span>value2<span class="hl kwd">&amp;quot;</span>
  ...
-<span class="hl kwa">&gt;</span>
+<span class="hl kwd">&amp;gt;</span>
 Here is the body of the element.
-<span class="hl kwa">&lt;/type&gt;</span>
-]]<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>Second form, almost the same, except that <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&lt;/icode&gt;</span>
+<span class="hl kwd">&amp;lt;</span>/type<span class="hl kwd">&amp;gt;</span>
+]]<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/hcode<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>Second form, almost the same, except that <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>with-contents=<span class="hl kwd">&amp;quot;</span>true<span class="hl kwd">&amp;quot;&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>
 indicates that more attributes are given in subnodes, and the body is in the
-<span class="hl kwa">&lt;icode&gt;</span>contents<span class="hl kwa">&lt;/icode&gt;</span> subnode:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>
-&lt;![CDATA[<span class="hl kwa">&lt;type</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Element title&quot;</span>
- <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>
- <span class="hl kwb">attribute</span>=<span class="hl str">&quot;value&quot;</span>
+<span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>contents<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> subnode:
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>hcode lang=<span class="hl kwd">&amp;quot;</span>xml<span class="hl kwd">&amp;quot;&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>![CDATA[<span class="hl kwd">&amp;lt;</span>type title=<span class="hl kwd">&amp;quot;</span>Element title<span class="hl kwd">&amp;quot;</span>
+ with-contents=<span class="hl kwd">&amp;quot;</span>true<span class="hl kwd">&amp;quot;</span>
+ attribute=<span class="hl kwd">&amp;quot;</span>value<span class="hl kwd">&amp;quot;</span>
  ...
-<span class="hl kwa">&gt;</span>
- <span class="hl kwa">&lt;attribute2&gt;</span>value2<span class="hl kwa">&lt;/attribute2&gt;</span>
+<span class="hl kwd">&amp;gt;</span>
+ <span class="hl kwd">&amp;lt;</span>attribute2<span class="hl kwd">&amp;gt;</span>value2<span class="hl kwd">&amp;lt;</span>/attribute2<span class="hl kwd">&amp;gt;</span>
  ...
- <span class="hl kwa">&lt;contents&gt;</span>Here is the body of the element.<span class="hl kwa">&lt;/contents&gt;</span>
-<span class="hl kwa">&lt;/type&gt;</span>
-]]<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-<span class="hl kwa">&lt;icode&gt;</span>type<span class="hl kwa">&lt;/icode&gt;</span> can be any string (like <span class="hl str">&quot;post&quot;</span>, <span class="hl str">&quot;page&quot;</span>, ...) and defines the type
+ <span class="hl kwd">&amp;lt;</span>contents<span class="hl kwd">&amp;gt;</span>Here is the body of the element.<span class="hl kwd">&amp;lt;</span>/contents<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/type<span class="hl kwd">&amp;gt;</span>
+]]<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/hcode<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>type<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> can be any string (like <span class="hl kwd">&amp;quot;</span>post<span class="hl kwd">&amp;quot;</span>, <span class="hl kwd">&amp;quot;</span>page<span class="hl kwd">&amp;quot;</span>, ...) and defines the type
 of the element. This allows different treatements according to the element type.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
 You can specify any attribute for an element. Some attributes are used
 internally:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>title<span class="hl kwa">&lt;/b&gt;</span>: this is the title of the element; use <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>elt-title/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>
-in templates to access it,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>keywords<span class="hl kwa">&lt;/b&gt;</span>: the list of comma-separated keywords associated to the element;
-use <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>elt-keywords/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> in templates to insert the list of keywords
-with links to by-keyword index,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>topics<span class="hl kwa">&lt;/b&gt;</span>: same as keywords, but for topics (access with <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>elt-topics/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>),<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>date<span class="hl kwa">&lt;/b&gt;</span>: the element date, used for sorting in list. The date in specified in
-the form <span class="hl kwa">&lt;i&gt;</span>YYYY/MM/DD<span class="hl kwa">&lt;/i&gt;</span>. Use <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>elt-date/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> in templates to insert it,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>published<span class="hl kwa">&lt;/b&gt;</span>: can be set to <span class="hl kwa">&lt;i&gt;</span>false<span class="hl kwa">&lt;/i&gt;</span> to prevent the element from being generated;
-useful when an element is not ready yet for publication,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>sets<span class="hl kwa">&lt;/b&gt;</span>: a comma-separated list of set names; sets can be used to list element
-belonging to a set,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>language-dep<span class="hl kwa">&lt;/b&gt;</span>: can be set to <span class="hl kwa">&lt;i&gt;</span>false<span class="hl kwa">&lt;/i&gt;</span> to indicate that this page is not
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>ul<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>title<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span>: this is the title of the element; use <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;&amp;amp;</span>lt;elt-title/<span class="hl kwd">&amp;amp;</span>gt;<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>
+in templates to access it,<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>keywords<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span>: the list of comma-separated keywords associated to the element;
+use <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;&amp;amp;</span>lt;elt-keywords/<span class="hl kwd">&amp;amp;</span>gt;<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> in templates to insert the list of keywords
+with links to by-keyword index,<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>topics<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span>: same as keywords, but for topics (access with <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;&amp;amp;</span>lt;elt-topics/<span class="hl kwd">&amp;amp;</span>gt;<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>),<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>date<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span>: the element date, used for sorting in list. The date in specified in
+the form <span class="hl kwd">&amp;lt;</span>i<span class="hl kwd">&amp;gt;</span>YYYY/MM/DD<span class="hl kwd">&amp;lt;</span>/i<span class="hl kwd">&amp;gt;</span>. Use <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;&amp;amp;</span>lt;elt-date/<span class="hl kwd">&amp;amp;</span>gt;<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> in templates to insert it,<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>published<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span>: can be set to <span class="hl kwd">&amp;lt;</span>i<span class="hl kwd">&amp;gt;</span>false<span class="hl kwd">&amp;lt;</span>/i<span class="hl kwd">&amp;gt;</span> to prevent the element from being generated;
+useful when an element is not ready yet for publication,<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>sets<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span>: a comma-separated list of set names; sets can be used to list element
+belonging to a set,<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>language-dep<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span>: can be set to <span class="hl kwd">&amp;lt;</span>i<span class="hl kwd">&amp;gt;</span>false<span class="hl kwd">&amp;lt;</span>/i<span class="hl kwd">&amp;gt;</span> to indicate that this page is not
 language dependent, when generating multi-language sites (this affects to name of the
-generated file).<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+generated file),<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>doctype<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span>: specify the doctype which will printed into the final XML file. Default is <span class="hl kwd">&amp;quot;</span>HTML<span class="hl kwd">&amp;quot;</span>.<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/ul<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
 Any other attribute will be available by its name in the environment when processing the template
-associated to the element type. The element type can be accessed with <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>elt-type/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-To generate the file corresponding to an element, <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> will use the type of
-the element (for example <span class="hl str">&quot;post&quot;</span>) to load the associated template (for example <span class="hl str">&quot;post.tmpl&quot;</span> in
+associated to the element type. The element type can be accessed with <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;&amp;amp;</span>lt;elt-type/<span class="hl kwd">&amp;amp;</span>gt;<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>.
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
+To generate the file corresponding to an element, <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>stog<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> will use the type of
+the element (for example <span class="hl kwd">&amp;quot;</span>post<span class="hl kwd">&amp;quot;</span>) to load the associated template (for example <span class="hl kwd">&amp;quot;</span>post.tmpl<span class="hl kwd">&amp;quot;</span> in
 the templates directory).
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>You can have a look at the source of the pages of this site at the bottom of each page.
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>You can have a look at the source of the pages of this site at the bottom of each page.
 The sources of this site can be a good starting point. You can browse it in the
-<span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/stog/tree/master/doc&quot;</span><span class="hl kwa">&gt;</span>doc directory of the
-distribution<span class="hl kwa">&lt;/ext-a&gt;</span>.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwd">&amp;lt;</span>ext-a href=<span class="hl kwd">&amp;quot;</span>https://github.com/zoggy/stog/tree/master/doc<span class="hl kwd">&amp;quot;&amp;gt;</span>doc directory of the
+distribution<span class="hl kwd">&amp;lt;</span>/ext-a<span class="hl kwd">&amp;gt;</span>.
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/section<span class="hl kwd">&amp;gt;</span>
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;mainelement&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Stog main element&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwd">&amp;lt;</span>section name=<span class="hl kwd">&amp;quot;</span>mainelement<span class="hl kwd">&amp;quot;</span> title=<span class="hl kwd">&amp;quot;</span>Stog main element<span class="hl kwd">&amp;quot;&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
 One element is called the main element. This element is a regular
-element with the <span class="hl kwa">&lt;icode&gt;</span>main<span class="hl kwa">&lt;/icode&gt;</span> attribute set to <span class="hl str">&quot;true&quot;</span>. There can be only
+element with the <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>main<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> attribute set to <span class="hl kwd">&amp;quot;</span>true<span class="hl kwd">&amp;quot;</span>. There can be only
 one main element.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
 Some attributes of this main element are used to specify site-wide information:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>title<span class="hl kwa">&lt;/b&gt;</span>: The title of the blog is the same as this element and can be accessed
-with <span class="hl kwd">&amp;lt;</span>site-title/<span class="hl kwd">&amp;gt;</span> in templates,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog-site-description<span class="hl kwa">&lt;/b&gt;</span>: A short description of the site; use <span class="hl kwd">&amp;lt;</span>site-description/<span class="hl kwd">&amp;gt;</span>
-to access it in templates;<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog-site-url<span class="hl kwa">&lt;/b&gt;</span>: The base url of the site, used to forge urls when generating pages;
-use <span class="hl kwd">&amp;lt;</span>site-url/<span class="hl kwd">&amp;gt;</span> to insert it in templates,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog-site-email<span class="hl kwa">&lt;/b&gt;</span>: A contact email for the site, accessible with <span class="hl kwd">&amp;lt;</span>site-email/<span class="hl kwd">&amp;gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog-rss-length<span class="hl kwa">&lt;/b&gt;</span>: The default length of RSS feeds.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-In the main element, any attribute beginning with <span class="hl str">&quot;stog-&quot;</span> will be used as global attribute
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>ul<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>title<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span>: The title of the blog is the same as this element and can be accessed
+with <span class="hl kwd">&amp;amp;</span>lt;site-title/<span class="hl kwd">&amp;amp;</span>gt; in templates,<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>stog-site-description<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span>: A short description of the site; use <span class="hl kwd">&amp;amp;</span>lt;site-description/<span class="hl kwd">&amp;amp;</span>gt;
+to access it in templates;<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>stog-site-url<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span>: The base url of the site, used to forge urls when generating pages;
+use <span class="hl kwd">&amp;amp;</span>lt;site-url/<span class="hl kwd">&amp;amp;</span>gt; to insert it in templates,<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>stog-site-email<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span>: A contact email for the site, accessible with <span class="hl kwd">&amp;amp;</span>lt;site-email/<span class="hl kwd">&amp;amp;</span>gt;,<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>stog-rss-length<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span>: The default length of RSS feeds.<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/ul<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
+In the main element, any attribute beginning with <span class="hl kwd">&amp;quot;</span>stog-<span class="hl kwd">&amp;quot;</span> will be used as global attribute
 and accessible in all templates by its name. Other attributes are associated to the element only.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/section<span class="hl kwd">&amp;gt;</span>
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;running&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Running Stog&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwd">&amp;lt;</span>section name=<span class="hl kwd">&amp;quot;</span>running<span class="hl kwd">&amp;quot;</span> title=<span class="hl kwd">&amp;quot;</span>Running Stog<span class="hl kwd">&amp;quot;&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
 To compile your web site, use the following command:
-<span class="hl kwa">&lt;command-line&gt;</span>&lt;![CDATA[stog <span class="hl kwa">&lt;root-directory&gt;</span>]]<span class="hl kwa">&gt;&lt;/command-line&gt;</span>
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>Stog will generate your web site in <span class="hl kwa">&lt;icode&gt;</span>./stog-output<span class="hl kwa">&lt;/icode&gt;</span>,
-except if you use the <span class="hl kwa">&lt;icode&gt;</span>-d<span class="hl kwa">&lt;/icode&gt;</span> option to specify another
+<span class="hl kwd">&amp;lt;</span>command-line<span class="hl kwd">&amp;gt;&amp;lt;</span>![CDATA[stog <span class="hl kwd">&amp;lt;</span>root-directory<span class="hl kwd">&amp;gt;</span>]]<span class="hl kwd">&amp;gt;&amp;lt;</span>/command-line<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>Stog will generate your web site in <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>./stog-output<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>,
+except if you use the <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>-d<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> option to specify another
 output directory.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>You can specify a template directory with the <span class="hl kwa">&lt;icode&gt;</span>--tmpl<span class="hl kwa">&lt;/icode&gt;</span>
-option. By default, the templates are searched in the <span class="hl kwa">&lt;icode&gt;</span>.stog/templates<span class="hl kwa">&lt;/icode&gt;</span> directory
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>You can specify a template directory with the <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>--tmpl<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>
+option. By default, the templates are searched in the <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>.stog/templates<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> directory
 of the specified root directory.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-It is possible to give more than one directory to <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span>. In this case,
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
+It is possible to give more than one directory to <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>stog<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>. In this case,
 all pages and articles are merged as if all were defined in the last directory
 given. It may be useful to gather blogs or page to generate one big site. Or not.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>The <span class="hl kwa">&lt;icode&gt;</span>--site-url<span class="hl kwa">&lt;/icode&gt;</span> option is used to override the <span class="hl kwa">&lt;icode&gt;</span>stog-site-url<span class="hl kwa">&lt;/icode&gt;</span>
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>The <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>--site-url<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> option is used to override the <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>stog-site-url<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>
 field of the main element. It it useful to generate a local site, for example
-<span class="hl kwa">&lt;command-line&gt;</span>stog --site-url file:///tmp/website your-directory<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwd">&amp;lt;</span>command-line<span class="hl kwd">&amp;gt;</span>stog --site-url file:///tmp/website your-directory<span class="hl kwd">&amp;lt;</span>/command-line<span class="hl kwd">&amp;gt;</span>
 to test your site locally with correct links.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>The <span class="hl kwa">&lt;icode&gt;</span>--plugin<span class="hl kwa">&lt;/icode&gt;</span> option makes <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> dynamically
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>The <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>--plugin<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> option makes <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>stog<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> dynamically
 load the given OCaml object file. The loaded plugin can define new functions
 to associate to some tags, or even override some pre-defined functions.
-See <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins&quot;</span><span class="hl kwa">/&gt;</span>.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-If a plugin was installed with ocamlfind, the <span class="hl kwa">&lt;icode&gt;</span>--package<span class="hl kwa">&lt;/icode&gt;</span> option can be used
-to specify a list of comma-separated packages to load. <span class="hl kwa">&lt;icode&gt;</span>ocamlfind<span class="hl kwa">&lt;/icode&gt;</span> will
+See <span class="hl kwd">&amp;lt;</span>page href=<span class="hl kwd">&amp;quot;</span>plugins<span class="hl kwd">&amp;quot;</span>/<span class="hl kwd">&amp;gt;</span>.
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
+If a plugin was installed with ocamlfind, the <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>--package<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> option can be used
+to specify a list of comma-separated packages to load. <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>ocamlfind<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> will
 then be used to get the location and required files to load these packages, in bytecode
-for <span class="hl kwa">&lt;icode&gt;</span>stog.byte<span class="hl kwa">&lt;/icode&gt;</span> or native-code for <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span>.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>At last, the <span class="hl kwa">&lt;icode&gt;</span>--lang<span class="hl kwa">&lt;/icode&gt;</span> option is used to generate the website
-for one language. By default, the only known languages are <span class="hl str">&quot;en&quot;</span> and <span class="hl str">&quot;fr&quot;</span>.
-If you use the <span class="hl kwa">&lt;icode&gt;</span>--lang en<span class="hl kwa">&lt;/icode&gt;</span> option, then pages will be generated
-in <span class="hl kwa">&lt;icode&gt;</span>.en.html<span class="hl kwa">&lt;/icode&gt;</span> files and all <span class="hl str">&quot;fr&quot;</span> nodes will be removed.
-Then you can run <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> with the <span class="hl kwa">&lt;icode&gt;</span>--lang fr<span class="hl kwa">&lt;/icode&gt;</span>
-to generate the <span class="hl str">&quot;fr&quot;</span> part of your web site.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl com">&lt;!--</span>
-<span class="hl com">&lt;p&gt;</span>
-<span class="hl com">If you need more languages, just define &quot;stog-languages&quot; in the main element</span>
-<span class="hl com">this way:</span>
-<span class="hl com">&lt;/p&gt;</span>
-<span class="hl com">&lt;hcode&gt;&lt;![CDATA[&lt;type main=&quot;true&quot; ... stog-languages=&quot;es,de,fr,en&quot;&gt;...&lt;/type&gt;]]&gt;&lt;/hcode&gt;</span>
-<span class="hl com">&lt;p&gt;This makes &amp;lt;languages/&amp;gt; returning the list of languages, and it is used by</span>
-<span class="hl com">the provided</span>
-<span class="hl com">--&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+for <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>stog.byte<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> or native-code for <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>stog<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>.
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>At last, the <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>--lang<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> option is used to generate the website
+for one language. By default, the only known languages are <span class="hl kwd">&amp;quot;</span>en<span class="hl kwd">&amp;quot;</span> and <span class="hl kwd">&amp;quot;</span>fr<span class="hl kwd">&amp;quot;</span>.
+If you use the <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>--lang en<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> option, then pages will be generated
+in <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>.en.html<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> files and all <span class="hl kwd">&amp;quot;</span>fr<span class="hl kwd">&amp;quot;</span> nodes will be removed.
+Then you can run <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>stog<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> with the <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>--lang fr<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>
+to generate the <span class="hl kwd">&amp;quot;</span>fr<span class="hl kwd">&amp;quot;</span> part of your web site.
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>!--
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
+If you need more languages, just define <span class="hl kwd">&amp;quot;</span>stog-languages<span class="hl kwd">&amp;quot;</span> in the main element
+this way:
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>hcode<span class="hl kwd">&amp;gt;&amp;lt;</span>![CDATA[<span class="hl kwd">&amp;lt;</span>type main=<span class="hl kwd">&amp;quot;</span>true<span class="hl kwd">&amp;quot;</span> ... stog-languages=<span class="hl kwd">&amp;quot;</span>es,de,fr,en<span class="hl kwd">&amp;quot;&amp;gt;</span>...<span class="hl kwd">&amp;lt;</span>/type<span class="hl kwd">&amp;gt;</span>]]<span class="hl kwd">&amp;gt;&amp;lt;</span>/hcode<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>This makes <span class="hl kwd">&amp;amp;</span>lt;languages/<span class="hl kwd">&amp;amp;</span>gt; returning the list of languages, and it is used by
+the provided
+--<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/section<span class="hl kwd">&amp;gt;</span>
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;templates&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Evaluation and templating&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwd">&amp;lt;</span>section name=<span class="hl kwd">&amp;quot;</span>templates<span class="hl kwd">&amp;quot;</span> title=<span class="hl kwd">&amp;quot;</span>Evaluation and templating<span class="hl kwd">&amp;quot;&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
 The final file for each element is build this way
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ol&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>The template file is loaded, according to the type of the element; for example,
-if the element has type <span class="hl str">&quot;page&quot;</span>, then a template <span class="hl kwa">&lt;icode&gt;</span>page.tmpl<span class="hl kwa">&lt;/icode&gt;</span> will
-be looked for;<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>An environment is build, containing the <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#mainelement&quot;</span><span class="hl kwa">&gt;</span>site-wide attributes<span class="hl kwa">&lt;/a&gt;</span>,
-the element attributes and some <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;funs&quot;</span><span class="hl kwa">&gt;</span>default callbacks<span class="hl kwa">&lt;/page&gt;</span>. This environment
-is in fact a set of rewrite rules.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>The rewrite rules applied on the template to get the final XML document;<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>The XML document is written to the final file.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ol&gt;</span>
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>ol<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;</span>The template file is loaded, according to the type of the element; for example,
+if the element has type <span class="hl kwd">&amp;quot;</span>page<span class="hl kwd">&amp;quot;</span>, then a template <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>page.tmpl<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> will
+be looked for;<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;</span>An environment is build, containing the <span class="hl kwd">&amp;lt;</span>a href=<span class="hl kwd">&amp;quot;</span>#mainelement<span class="hl kwd">&amp;quot;&amp;gt;</span>site-wide attributes<span class="hl kwd">&amp;lt;</span>/a<span class="hl kwd">&amp;gt;</span>,
+the element attributes and some <span class="hl kwd">&amp;lt;</span>page href=<span class="hl kwd">&amp;quot;</span>funs<span class="hl kwd">&amp;quot;&amp;gt;</span>default callbacks<span class="hl kwd">&amp;lt;</span>/page<span class="hl kwd">&amp;gt;</span>. This environment
+is in fact a set of rewrite rules.<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;</span>The rewrite rules applied on the template to get the final XML document;<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;</span>The XML document is written to the final file.<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/ol<span class="hl kwd">&amp;gt;</span>
 
-<span class="hl kwa">&lt;p&gt;</span>The environment is used in the following way.
-For each encountered tag <span class="hl kwa">&lt;icode&gt;</span>t<span class="hl kwa">&lt;/icode&gt;</span>, <span class="hl kwa">&lt;icode&gt;</span>t<span class="hl kwa">&lt;/icode&gt;</span> is looked up
-in the environment for its associated <span class="hl kwa">&lt;em&gt;</span>function<span class="hl kwa">&lt;/em&gt; &lt;icode&gt;</span>f<span class="hl kwa">&lt;/icode&gt;</span>.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>If no <span class="hl kwa">&lt;icode&gt;</span>f<span class="hl kwa">&lt;/icode&gt;</span> is found, then the XML tag is left untouched
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>The environment is used in the following way.
+For each encountered tag <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>t<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>, <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>t<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> is looked up
+in the environment for its associated <span class="hl kwd">&amp;lt;</span>em<span class="hl kwd">&amp;gt;</span>function<span class="hl kwd">&amp;lt;</span>/em<span class="hl kwd">&amp;gt; &amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>f<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>.
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>If no <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>f<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> is found, then the XML tag is left untouched
 and the children of the tag are then analysed.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>If <span class="hl kwa">&lt;icode&gt;</span>f<span class="hl kwa">&lt;/icode&gt;</span> is found, then it is called, given the environment,
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>If <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>f<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> is found, then it is called, given the environment,
 the tag attributes and the children of the tag. Then the function returns
 a list of XML trees which must then be analysed.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>When this analyze reaches a fixpoint, the final XML is returned.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>This work is performed by the <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span>Xtmpl<span class="hl kwa">&lt;/ext-a&gt;</span>
-library.<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>Besides, the contents of the attributes are also analysed to perform such substitutions,
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>When this analyze reaches a fixpoint, the final XML is returned.
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>This work is performed by the <span class="hl kwd">&amp;lt;</span>ext-a href=<span class="hl kwd">&amp;quot;</span>https://github.com/zoggy/xtmpl<span class="hl kwd">&amp;quot;&amp;gt;</span>Xtmpl<span class="hl kwd">&amp;lt;</span>/ext-a<span class="hl kwd">&amp;gt;</span>
+library.<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>Besides, the contents of the attributes are also analysed to perform such substitutions,
 before looking up for the tag in the environment.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>Stog comes with <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;funs&quot;</span><span class="hl kwa">&gt;</span>predefined functions<span class="hl kwa">&lt;/page&gt;</span>
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>Stog comes with <span class="hl kwd">&amp;lt;</span>page href=<span class="hl kwd">&amp;quot;</span>funs<span class="hl kwd">&amp;quot;&amp;gt;</span>predefined functions<span class="hl kwd">&amp;lt;</span>/page<span class="hl kwd">&amp;gt;</span>
 associated to some tags, but more can be created in plugins.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
-<span class="hl kwa">&lt;/prepare-toc&gt;</span>
-<span class="hl kwa">&lt;/page&gt;</span>
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/section<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/prepare-toc<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/page<span class="hl kwd">&amp;gt;</span>
 </pre>
 </div>
 </div>

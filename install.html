@@ -1,17 +1,17 @@
-<!DOCTYPE HTML><html>
+<!DOCTYPE HTML>
+<html>
 <head>
 <title>Stog : Installation</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <link rel="stylesheet" type="text/css" href="http://zoggy.github.com/stog/style.css"/>
-<rssfeed/>
 </head><body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
+<div class="container">
 
 
-  <a class="brand" href="http://zoggy.github.com/stog/index.html">Stog</a>
   <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.com/stog/index.html">Home</a></li>
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.com/stog/index.html">Stog</a></li>
     <li class="active"><a href="http://zoggy.github.com/stog/install.html">Installation</a></li>
     <li class="&lt;navbar-doc/&gt;"><a href="http://zoggy.github.com/stog/doc.html">Documentation</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.com/stog/blog.html">Blog</a></li>
@@ -21,6 +21,7 @@
 
   </div>
 
+</div>
 </div>
 </div>
 
@@ -92,61 +93,61 @@ install the <tt>stog</tt> library and the
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Installation&quot;</span>
-<span class="hl kwb">navbar-install</span>=<span class="hl str">&quot;active&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;prepare-toc</span> <span class="hl kwb">depth</span>=<span class="hl str">&quot;2&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;toc&gt;&lt;/toc&gt;</span>
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;deps&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Dependencies&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+<pre class="code-xml"><span class="hl kwd">&amp;lt;</span>page title=<span class="hl kwd">&amp;quot;</span>Installation<span class="hl kwd">&amp;quot;</span>
+navbar-install=<span class="hl kwd">&amp;quot;</span>active<span class="hl kwd">&amp;quot;</span>
+<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>prepare-toc depth=<span class="hl kwd">&amp;quot;</span><span class="hl num">2</span><span class="hl kwd">&amp;quot;&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>toc<span class="hl kwd">&amp;gt;&amp;lt;</span>/toc<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>section name=<span class="hl kwd">&amp;quot;</span>deps<span class="hl kwd">&amp;quot;</span> title=<span class="hl kwd">&amp;quot;</span>Dependencies<span class="hl kwd">&amp;quot;&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
 To build Stog, you will need:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://caml.inria.fr/&quot;</span><span class="hl kwa">&gt;</span>OCaml <span class="hl kwa">&gt;</span>= <span class="hl num">4.00</span><span class="hl kwa">&lt;/ext-a&gt;</span> installed,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://erratique.ch/software/xmlm&quot;</span><span class="hl kwa">&gt;</span>Xmlm <span class="hl kwa">&gt;</span>= <span class="hl num">1.1.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://zoggy.github.com/ocamlrss/&quot;</span><span class="hl kwa">&gt;</span>OCaml-RSS <span class="hl kwa">&gt;</span>= <span class="hl num">2.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span>Xtmpl <span class="hl kwa">&gt;</span>= <span class="hl num">0.2</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>ul<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>ext-a href=<span class="hl kwd">&amp;quot;</span>http://caml.inria.fr/<span class="hl kwd">&amp;quot;&amp;gt;</span>OCaml <span class="hl kwd">&amp;gt;</span>= <span class="hl num">4.00</span><span class="hl kwd">&amp;lt;</span>/ext-a<span class="hl kwd">&amp;gt;</span> installed,<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>ext-a href=<span class="hl kwd">&amp;quot;</span>http://erratique.ch/software/xmlm<span class="hl kwd">&amp;quot;&amp;gt;</span>Xmlm <span class="hl kwd">&amp;gt;</span>= <span class="hl num">1.1.0</span><span class="hl kwd">&amp;lt;</span>/ext-a<span class="hl kwd">&amp;gt;</span>,<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>ext-a href=<span class="hl kwd">&amp;quot;</span>http://zoggy.github.com/ocamlrss/<span class="hl kwd">&amp;quot;&amp;gt;</span>OCaml-RSS <span class="hl kwd">&amp;gt;</span>= <span class="hl num">2.0</span><span class="hl kwd">&amp;lt;</span>/ext-a<span class="hl kwd">&amp;gt;</span>,<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>ext-a href=<span class="hl kwd">&amp;quot;</span>https://github.com/zoggy/xtmpl<span class="hl kwd">&amp;quot;&amp;gt;</span>Xtmpl <span class="hl kwd">&amp;gt;</span>= <span class="hl num">0.2</span><span class="hl kwd">&amp;lt;</span>/ext-a<span class="hl kwd">&amp;gt;</span>.<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/ul<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
 You will need to have the following tools installed to use
 some functions:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://www.andre-simon.de/doku/highlight/en/highlight.html&quot;</span><span class="hl kwa">&gt;</span>highlight<span class="hl kwa">&lt;/ext-a&gt;</span>
-to use syntax highlighting,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>LaTeX and <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://dvisvgm.sourceforge.net/&quot;</span><span class="hl kwa">&gt;</span>dvisvgm<span class="hl kwa">&lt;/ext-a&gt;</span> to embed
-LaTeX in your pages.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>ul<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>ext-a href=<span class="hl kwd">&amp;quot;</span>http://www.andre-simon.de/doku/highlight/en/highlight.html<span class="hl kwd">&amp;quot;&amp;gt;</span>highlight<span class="hl kwd">&amp;lt;</span>/ext-a<span class="hl kwd">&amp;gt;</span>
+to use syntax highlighting,<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;</span>LaTeX and <span class="hl kwd">&amp;lt;</span>ext-a href=<span class="hl kwd">&amp;quot;</span>http://dvisvgm.sourceforge.net/<span class="hl kwd">&amp;quot;&amp;gt;</span>dvisvgm<span class="hl kwd">&amp;lt;</span>/ext-a<span class="hl kwd">&amp;gt;</span> to embed
+LaTeX in your pages.<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/ul<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/section<span class="hl kwd">&amp;gt;</span>
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;download&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Get the sources&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>Get the sources from git repository:
-<span class="hl kwa">&lt;command-line&gt;</span>git clone https://github.com/zoggy/stog.git<span class="hl kwa">&lt;/command-line&gt;</span>
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Releases&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.2.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.2</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">08</span>-<span class="hl num">28</span>]:
-Change the format of files, now all in XML. Config and templates are in <span class="hl kwa">&lt;icode&gt;</span>.stog<span class="hl kwa">&lt;/icode&gt;</span>
-directory. Less templates required. User can define elements of any <span class="hl str">&quot;type&quot;</span> (post, page, ...).
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.1.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.1</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">06</span>-<span class="hl num">20</span>]: Initial release.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;/subsection&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwd">&amp;lt;</span>section name=<span class="hl kwd">&amp;quot;</span>download<span class="hl kwd">&amp;quot;</span> title=<span class="hl kwd">&amp;quot;</span>Get the sources<span class="hl kwd">&amp;quot;&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>Get the sources from git repository:
+<span class="hl kwd">&amp;lt;</span>command-line<span class="hl kwd">&amp;gt;</span>git clone https://github.com/zoggy/stog.git<span class="hl kwd">&amp;lt;</span>/command-line<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>subsection title=<span class="hl kwd">&amp;quot;</span>Releases<span class="hl kwd">&amp;quot;&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>ul<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>a href=<span class="hl kwd">&amp;quot;</span>stog-<span class="hl num">0.2</span>.tar.gz<span class="hl kwd">&amp;quot;&amp;gt;</span><span class="hl num">0.2</span><span class="hl kwd">&amp;lt;</span>/a<span class="hl kwd">&amp;gt;</span> [<span class="hl num">2012</span>-<span class="hl num">08</span>-<span class="hl num">28</span>]:
+Change the format of files, now all in XML. Config and templates are in <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>.stog<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>
+directory. Less templates required. User can define elements of any <span class="hl kwd">&amp;quot;</span>type<span class="hl kwd">&amp;quot;</span> (post, page, ...).
+<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>li<span class="hl kwd">&amp;gt;&amp;lt;</span>a href=<span class="hl kwd">&amp;quot;</span>stog-<span class="hl num">0.1</span>.tar.gz<span class="hl kwd">&amp;quot;&amp;gt;</span><span class="hl num">0.1</span><span class="hl kwd">&amp;lt;</span>/a<span class="hl kwd">&amp;gt;</span> [<span class="hl num">2012</span>-<span class="hl num">06</span>-<span class="hl num">20</span>]: Initial release.<span class="hl kwd">&amp;lt;</span>/li<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/ul<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/subsection<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/section<span class="hl kwd">&amp;gt;</span>
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;compilation&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Compilation&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwd">&amp;lt;</span>section name=<span class="hl kwd">&amp;quot;</span>compilation<span class="hl kwd">&amp;quot;</span> title=<span class="hl kwd">&amp;quot;</span>Compilation<span class="hl kwd">&amp;quot;&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span>
 Just type
-<span class="hl kwa">&lt;command-line&gt;</span>make <span class="hl kwd">&amp;amp;&amp;amp;</span> make install<span class="hl kwa">&lt;/command-line&gt;</span>
-This will install <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> and <span class="hl kwa">&lt;icode&gt;</span>stog.byte<span class="hl kwa">&lt;/icode&gt;</span>
-in the same directory as <span class="hl kwa">&lt;icode&gt;</span>ocamlc<span class="hl kwa">&lt;/icode&gt;</span>. This will also
-install the <span class="hl kwa">&lt;tt&gt;</span>stog<span class="hl kwa">&lt;/tt&gt;</span> library and the
-<span class="hl kwa">&lt;tt&gt;</span>stog.disqus<span class="hl kwa">&lt;/tt&gt;</span> and <span class="hl kwa">&lt;tt&gt;</span>stog.markdown<span class="hl kwa">&lt;/tt&gt;</span> plugins, with findlib.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwd">&amp;lt;</span>command-line<span class="hl kwd">&amp;gt;</span>make <span class="hl kwd">&amp;amp;</span>amp;<span class="hl kwd">&amp;amp;</span>amp; make install<span class="hl kwd">&amp;lt;</span>/command-line<span class="hl kwd">&amp;gt;</span>
+This will install <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>stog<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span> and <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>stog.byte<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>
+in the same directory as <span class="hl kwd">&amp;lt;</span>icode<span class="hl kwd">&amp;gt;</span>ocamlc<span class="hl kwd">&amp;lt;</span>/icode<span class="hl kwd">&amp;gt;</span>. This will also
+install the <span class="hl kwd">&amp;lt;</span>tt<span class="hl kwd">&amp;gt;</span>stog<span class="hl kwd">&amp;lt;</span>/tt<span class="hl kwd">&amp;gt;</span> library and the
+<span class="hl kwd">&amp;lt;</span>tt<span class="hl kwd">&amp;gt;</span>stog.disqus<span class="hl kwd">&amp;lt;</span>/tt<span class="hl kwd">&amp;gt;</span> and <span class="hl kwd">&amp;lt;</span>tt<span class="hl kwd">&amp;gt;</span>stog.markdown<span class="hl kwd">&amp;lt;</span>/tt<span class="hl kwd">&amp;gt;</span> plugins, with findlib.
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/section<span class="hl kwd">&amp;gt;</span>
 
-<span class="hl kwa">&lt;/prepare-toc&gt;</span>
-<span class="hl kwa">&lt;/page&gt;</span>
+<span class="hl kwd">&amp;lt;</span>/prepare-toc<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/page<span class="hl kwd">&amp;gt;</span>
 </pre>
 </div>
 </div>

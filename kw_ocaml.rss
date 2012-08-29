@@ -2,8 +2,8 @@
 <rss version="2.0"><channel><title>Stog: ocaml</title><link>http://zoggy.github.com/stog/kw_ocaml.html</link><description>&lt;main_&gt;Static blog and web site generator&lt;/main_&gt;</description><managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor><pubDate>11 Mar 2012 08:00:00 +0000</pubDate><lastBuildDate>11 Mar 2012 08:00:00 +0000</lastBuildDate><generator>Stog</generator><item><title>Displaying evaluated OCaml code</title><link>http://zoggy.github.com/stog/posts/displaying-evaluated-ocaml-code.html</link><description>
 &lt;p&gt;
 Bytecode version of Stog, &lt;span class=&quot;icode&quot;&gt;stog.byte&lt;/span&gt;,
-offers the &lt;span class=&quot;icode&quot;&gt;&lt;main_&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;ocaml-eval&amp;gt;&lt;/span&gt; ... &lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;/ocaml-eval&amp;gt;&lt;/span&gt;
-&lt;/main_&gt;&lt;/span&gt;
+offers the &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;ocaml-eval&amp;gt;&lt;/span&gt; ... &lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;/ocaml-eval&amp;gt;&lt;/span&gt;
+&lt;/span&gt;
 function to evaluate code and display the result. This is nice to provide
 verified code examples on your pages.
 &lt;/p&gt;
