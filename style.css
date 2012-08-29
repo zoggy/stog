@@ -1200,6 +1200,7 @@ div#page {
   margin-right: auto;
   padding-left: 2em;
   padding-right: 2em;
+  padding-bottom: 1px;
   line-height: 1.4;
   border-width: 0 1px 0 1px ;
   border-style: solid ;

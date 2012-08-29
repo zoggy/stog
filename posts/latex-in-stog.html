@@ -108,30 +108,30 @@ Another example:
 "/>
 </p>
 <p>The code:
-<pre class="code-xml"><span class="hl kwd">&amp;lt;</span>latex packages=<span class="hl kwd">&amp;quot;</span>{tikz}<span class="hl kwd">&amp;quot; &amp;gt;&amp;lt;</span>![CDATA[
+<pre class="code-xml"><span class="hl kwa">&lt;latex</span> <span class="hl kwb">packages</span>=<span class="hl str">&quot;{tikz}&quot;</span> <span class="hl kwa">&gt;</span>&lt;![CDATA[
 \centerline{<span class="hl esc">\b</span>egin{tikzpicture}[scale=<span class="hl num">1.8</span>]
 \draw (<span class="hl num">0</span>,<span class="hl num">0</span>) -- (<span class="hl num">0</span>,<span class="hl num">4</span>) ;
-\draw [<span class="hl kwd">&amp;gt;</span>=stealth,-<span class="hl kwd">&amp;gt;</span>] (<span class="hl num">0</span>,<span class="hl num">0</span>) -- (<span class="hl num">0</span>,<span class="hl num">1</span>) ;
+\draw [<span class="hl kwa">&gt;</span>=stealth,-<span class="hl kwa">&gt;</span>] (<span class="hl num">0</span>,<span class="hl num">0</span>) -- (<span class="hl num">0</span>,<span class="hl num">1</span>) ;
 \draw (<span class="hl num">0</span>,<span class="hl num">0</span>) -- (<span class="hl num">3</span>,<span class="hl num">0</span>) ;
 \draw [dotted, very thin, gray] (<span class="hl num">0</span>,<span class="hl num">0</span>) grid (<span class="hl num">3</span>,<span class="hl num">4</span>);
 \draw (<span class="hl num">3</span>,<span class="hl num">0</span>) node[right]{$X_n$} ;
 \draw (<span class="hl num">0</span>,<span class="hl num">4</span>) node[left]{$M_n$} ;
 \draw (<span class="hl num">1</span>,<span class="hl num">0</span>) node[below]{<span class="hl num">0</span>};
 \draw (<span class="hl num">2</span>,<span class="hl num">0</span>) node[below]{<span class="hl num">1</span>};\draw (<span class="hl num">1</span>, <span class="hl num">1</span>) node {$<span class="hl esc">\b</span>ullet$};
-\draw [<span class="hl kwd">&amp;gt;</span>=stealth, -<span class="hl kwd">&amp;gt;</span>] (<span class="hl num">1</span>, <span class="hl num">1</span>) -- (<span class="hl num">1</span>, <span class="hl num">2</span>) node[midway,above,sloped]{$q_{<span class="hl num">0</span>}(<span class="hl num">0</span>)$};
+\draw [<span class="hl kwa">&gt;</span>=stealth, -<span class="hl kwa">&gt;</span>] (<span class="hl num">1</span>, <span class="hl num">1</span>) -- (<span class="hl num">1</span>, <span class="hl num">2</span>) node[midway,above,sloped]{$q_{<span class="hl num">0</span>}(<span class="hl num">0</span>)$};
 \draw (<span class="hl num">1</span>, <span class="hl num">2</span>) node {$<span class="hl esc">\b</span>ullet$};
-\draw [<span class="hl kwd">&amp;gt;</span>=stealth, -<span class="hl kwd">&amp;gt;</span>] (<span class="hl num">1</span>, <span class="hl num">2</span>) -- (<span class="hl num">2</span>, <span class="hl num">1</span>) node[midway,below,sloped]{$q_{<span class="hl num">00</span>}(<span class="hl num">1</span>)$};
+\draw [<span class="hl kwa">&gt;</span>=stealth, -<span class="hl kwa">&gt;</span>] (<span class="hl num">1</span>, <span class="hl num">2</span>) -- (<span class="hl num">2</span>, <span class="hl num">1</span>) node[midway,below,sloped]{$q_{<span class="hl num">00</span>}(<span class="hl num">1</span>)$};
 \draw (<span class="hl num">2</span>, <span class="hl num">1</span>) node {$<span class="hl esc">\b</span>ullet$};
-\draw [<span class="hl kwd">&amp;gt;</span>=stealth, -<span class="hl kwd">&amp;gt;</span>] (<span class="hl num">2</span>, <span class="hl num">1</span>) -- (<span class="hl num">2</span>, <span class="hl num">2</span>) node[midway,below,sloped]{$q_{<span class="hl num">100</span>}(<span class="hl num">1</span>)$};
+\draw [<span class="hl kwa">&gt;</span>=stealth, -<span class="hl kwa">&gt;</span>] (<span class="hl num">2</span>, <span class="hl num">1</span>) -- (<span class="hl num">2</span>, <span class="hl num">2</span>) node[midway,below,sloped]{$q_{<span class="hl num">100</span>}(<span class="hl num">1</span>)$};
 \draw (<span class="hl num">2</span>, <span class="hl num">2</span>) node {$<span class="hl esc">\b</span>ullet$};
-\draw [<span class="hl kwd">&amp;gt;</span>=stealth, -<span class="hl kwd">&amp;gt;</span>] (<span class="hl num">2</span>, <span class="hl num">2</span>) -- (<span class="hl num">2</span>, <span class="hl num">3</span>) node[midway,below,sloped]{$q_{<span class="hl num">1100</span>}(<span class="hl num">1</span>)$};
+\draw [<span class="hl kwa">&gt;</span>=stealth, -<span class="hl kwa">&gt;</span>] (<span class="hl num">2</span>, <span class="hl num">2</span>) -- (<span class="hl num">2</span>, <span class="hl num">3</span>) node[midway,below,sloped]{$q_{<span class="hl num">1100</span>}(<span class="hl num">1</span>)$};
 \draw (<span class="hl num">2</span>, <span class="hl num">3</span>) node {$<span class="hl esc">\b</span>ullet$};
-\draw [draw=red, fill=red, -<span class="hl kwd">&amp;gt;</span>, double,thick] (<span class="hl num">2</span>, <span class="hl num">3</span>) -- (<span class="hl num">1</span>, <span class="hl num">1</span>) node[midway,above,sloped]{{\color{red}$q_{<span class="hl num">11100</span>}(<span class="hl num">0</span>)$}};
-\draw [draw=red, fill=red, -<span class="hl kwd">&amp;gt;</span>, double,thick] (<span class="hl num">2</span>, <span class="hl num">3</span>) -- (<span class="hl num">2</span>, <span class="hl num">4</span>) node[midway,above,sloped]{{\color{red}$q_{<span class="hl num">11100</span>}(<span class="hl num">1</span>)$}};
+\draw [draw=red, fill=red, -<span class="hl kwa">&gt;</span>, double,thick] (<span class="hl num">2</span>, <span class="hl num">3</span>) -- (<span class="hl num">1</span>, <span class="hl num">1</span>) node[midway,above,sloped]{{\color{red}$q_{<span class="hl num">11100</span>}(<span class="hl num">0</span>)$}};
+\draw [draw=red, fill=red, -<span class="hl kwa">&gt;</span>, double,thick] (<span class="hl num">2</span>, <span class="hl num">3</span>) -- (<span class="hl num">2</span>, <span class="hl num">4</span>) node[midway,above,sloped]{{\color{red}$q_{<span class="hl num">11100</span>}(<span class="hl num">1</span>)$}};
 \draw (<span class="hl num">2</span>, <span class="hl num">3</span>) node {{\color{red}$<span class="hl esc">\b</span>ullet$}};
 \end{tikzpicture}}
-\centerline{..<span class="hl num">.100111</span>}]]<span class="hl kwd">&amp;gt;</span>
-<span class="hl kwd">&amp;lt;</span>/latex<span class="hl kwd">&amp;gt;</span>
+\centerline{..<span class="hl num">.100111</span>}]]<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;/latex&gt;</span>
 </pre>
 </p>
 
