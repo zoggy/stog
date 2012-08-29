@@ -329,12 +329,14 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
         (lang, Some (Printf.sprintf "--syntax=%s" lang))
   in
   let code =
-    match code with
-      [ Xtmpl.D code ] -> code
-    | _ ->
-       String.concat "" (List.map Xtmpl.string_of_xml code)
-    (*failwith (Printf.sprintf "Invalid code: %s"
-         (String.concat "" (List.map Xtmpl.string_of_xml code)))*)
+    let l = List.map
+      (
+       function Xtmpl.D code -> code
+       | x -> Xtmpl.string_of_xml x
+      )
+      code
+    in
+    String.concat "" l
   in
   let code = Stog_misc.strip_string code in
   let xml_code =

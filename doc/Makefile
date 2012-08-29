@@ -33,15 +33,17 @@ BASE_URL_OPTION=
 STOG_OPTIONS=-d $(DEST_DIR) -v -v $(BASE_URL_OPTION) $(MORE_OPTS)
 LESSC=lessc
 
-.PHONY: build site test
+.PHONY: build site test style
 
 build:
 	for i in html css rss svg png; do rm -fr $(DEST_DIR)/*.$$i ; done
 	rm -f $(DEST_DIR)/*/*html
 	$(MAKE) site
 
-site:
+site: style
 	$(STOG) $(STOG_OPTIONS) .
+
+style:
 	$(LESSC) less/style.less > $(DEST_DIR)/style.css
 #	cp -f *png tmpl/*png $(DEST_DIR)/
 #	cp -f *.svg $(DEST_DIR)/
