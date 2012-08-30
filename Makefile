@@ -155,6 +155,11 @@ ocamldoc:
 	$(OCAMLDOC) $(INCLUDES) -rectypes -d ocamldoc -html -t "Stog" \
 	$(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli)
 
+depocamldoc:
+	$(MKDIR) ocamldoc
+	$(OCAMLDOC) $(INCLUDES) -rectypes -d ocamldoc -g odoc_depgraph.cmxs -t "Stog" \
+	$(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli)
+
 doc:
 	rm -fr doc-output
 	(cd doc && $(MAKE) test)
