@@ -28,20 +28,50 @@
 
 (** *)
 
-let site_title = "site-title";;
-let site_desc = "site-description";;
-let site_url = "site-url";;
-let site_email = "site-email";;
-let rss_length = "rss-length";;
-let languages = "languages";;
+let site_title = "site-title"
+let site_desc = "site-description"
+let site_url = "site-url"
+let site_email = "site-email"
+let rss_length = "rss-length"
+let languages = "languages"
 
-let elt_url = "elt-url";;
-let elt_body = "elt-body";;
-let elt_intro = "elt-intro";;
-let elt_title = "elt-title";;
-let elt_type = "elt-type";;
-let elt_src = "elt-src";;
-let elt_date = "elt-date";;
-let elt_topics = "elt-topics";;
-let elt_keywords = "elt-keywords";;
-let elt_published = "elt-published";;
+let elt = "elt"
+let elt_body = "elt-body"
+let elt_date = "elt-date"
+let elt_hid = "elt-hid"
+let elt_intro = "elt-intro"
+let elt_keywords = "elt-keywords"
+let elt_src = "elt-src"
+let elt_title = "elt-title"
+let elt_topics = "elt-topics"
+let elt_type = "elt-type"
+let elt_url = "elt-url"
+
+let sep = "sep_"
+
+let archive_tree = "archive-tree"
+let command_line = "command-line"
+let elements = "elements"
+let ext_a = "ext-a"
+let graph = "graph"
+let hcode = "hcode"
+let icode = "icode"
+let if_ = "if"
+let image = "image"
+let include_ = "include"
+let keyword = "keyword"
+let langswitch = "langswitch"
+let latex = "latex"
+let n_columns = "n-columns"
+let next = "next"
+let ocaml = "ocaml"
+let page = "page"
+let post = "post"
+let prepare_toc = "prepare-toc"
+let previous = "previous"
+let search_form = "search-form"
+let section = "section"
+let subsection = "subsection"
+let toc = "toc"
+let topic = "topic"
+let two_columns = "two-columns"
