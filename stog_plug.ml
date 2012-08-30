@@ -30,8 +30,8 @@
 
 let register_lang = Stog_intl.register_lang;;
 
-let register_fun name f =
-  Stog_html.plugin_funs := (name, f) :: !Stog_html.plugin_funs ;;
+let register_rule name f =
+  Stog_html.plugin_rules := (name, f) :: !Stog_html.plugin_rules ;;
 
 let stog () =
   match !Stog_html.current_stog with
@@ -48,6 +48,9 @@ let warning = Stog_msg.warning;;
 let set_print_error = Stog_msg.set_print_error;;
 let error = Stog_msg.error;;
 
+let register_stage0_fun f =
+  Stog_html.stage0_funs := f :: !Stog_html.stage0_funs
+;;
 let register_stage1_fun f =
   Stog_html.stage1_funs := f :: !Stog_html.stage1_funs
 ;;

@@ -88,7 +88,7 @@ let fun_markdown env args subs =
   [ Xtmpl.xml_of_string applied_output ]
 ;;
 
-let () = Stog_plug.register_fun "markdown" fun_markdown;;
+let () = Stog_plug.register_rule "markdown" fun_markdown;;
 
 
 

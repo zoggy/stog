@@ -24,6 +24,7 @@ let fun_list env args subs =
   iter [] subs
 ;;
 
-(* register the new function, associated to tag "list" *)
-let () = Stog_plug.register_fun "list" fun_list;;
+(* register the new function, associated to tag "list".
+  Before stog 0.3, this function was called [Stog_plug.register_fun]. *)
+let () = Stog_plug.register_rule "list" fun_list;;
 

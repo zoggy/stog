@@ -31,6 +31,7 @@ VERSION=0.2
 
 OCAMLC=ocamlc.opt
 OCAMLOPT=ocamlopt.opt
+OCAMLDOC=ocamldoc.opt
 OCAMLLEX=ocamllex
 OCAMLYACC=ocamlyacc
 CAMLP4O=camlp4o
@@ -44,7 +45,7 @@ INCLUDES=-I +lablgtk2 -I +lablgtk-extras \
 	`$(OCAMLFIND) query -i-format pcre` \
 	`$(OCAMLFIND) query -i-format config-file` \
 	`$(OCAMLFIND) query -i-format compiler-libs.toplevel`
-COMPFLAGS=$(INCLUDES) -annot -rectypes -g
+COMPFLAGS=$(INCLUDES) -annot -rectypes -g #-w +K
 OCAMLPP=
 
 PLUGINS_BYTE= \
@@ -147,7 +148,12 @@ stog_ocaml.cmo: stog_ocaml.ml errors.cmi
 	$(OCAMLC) $(COMPFLAGS) -c $<
 
 ##########
-.PHONY: doc webdoc
+.PHONY: doc webdoc ocamldoc
+
+ocamldoc:
+	$(MKDIR) ocamldoc
+	$(OCAMLDOC) $(INCLUDES) -rectypes -d ocamldoc -html -t "Stog" \
+	$(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli)
 
 doc:
 	rm -fr doc-output

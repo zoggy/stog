@@ -244,4 +244,4 @@ let ocaml_funs =
   ]
 ;;
 
-Stog_html.plugin_funs := ocaml_funs @ !Stog_html.plugin_funs;;
+Stog_html.plugin_rules := ocaml_funs @ !Stog_html.plugin_rules;;
