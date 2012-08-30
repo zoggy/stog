@@ -26,7 +26,12 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Interface for plugins. *)
+(** Interface for plugins.
+
+  Even if all modules are accessible from dynamically loaded code,
+  this {!Stog_plug} module should remain compatible from one release to
+  another.
+*)
 
 val register_lang : Stog_intl.lang_abbrev -> Stog_intl.lang_data -> unit
 val register_rule : string -> Xtmpl.callback -> unit

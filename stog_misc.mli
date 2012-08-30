@@ -26,7 +26,7 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Utilities. *)
 
 (*i==v=[Misc.safe_main]=1.0====*)
 (** [safe_main f] calls [f ()] but handles [Sys_error] and [Failure]

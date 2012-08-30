@@ -3,23 +3,15 @@
 module type S =
   sig
     type symbol
-    type data
     type path = symbol list
-    type 'a elt = path * 'a
     type 'a t
     exception Already_present of path
     val empty : 'a t
-    val add : 'a elt -> 'a t -> 'a t
-    val find : 'a elt -> 'a t -> 'a elt list
+    val add : path -> 'a -> 'a t -> 'a t
+    val find : path -> 'a t -> 'a list
   end
 
-module type P =
-  sig
-    type t
-    val compare : t -> t -> int
-  end
-
-module Make (P : P) =
+module Make (P : Map.OrderedType) =
   struct
     module Map = Map.Make (P)
     type symbol = P.t

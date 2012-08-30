@@ -733,15 +733,15 @@ and build_rules stog =
     !plugin_rules @
     [
       Stog_cst.elt_title, mk f_title ;
-      "elt-url", mk f_url ;
-      "elt-body", mk f_body ;
-      "elt-type", mk f_type ;
-      "elt-src", mk f_src ;
-      tag_sep, (fun _ _ _ -> []);
+      Stog_cst.elt_url, mk f_url ;
+      Stog_cst.elt_body, mk f_body ;
+      Stog_cst.elt_type, mk f_type ;
+      Stog_cst.elt_src, mk f_src ;
       Stog_cst.elt_date, mk f_date ;
-      "elt-keywords", mk (html_of_keywords stog) ;
-      "elt-topics", mk (html_of_topics stog) ;
-      "elt-intro", mk f_intro ;
+      Stog_cst.elt_keywords, mk (html_of_keywords stog) ;
+      Stog_cst.elt_topics, mk (html_of_topics stog) ;
+      Stog_cst.elt_intro, mk f_intro ;
+      tag_sep, (fun _ _ _ -> []);
       "elements", elt_list stog ;
       "if", fun_if ;
       "include", fun_include stog.stog_tmpl_dir ;

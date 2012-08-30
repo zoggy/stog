@@ -26,22 +26,27 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Tries.
 
-let site_title = "site-title";;
-let site_desc = "site-description";;
-let site_url = "site-url";;
-let site_email = "site-email";;
-let rss_length = "rss-length";;
-let languages = "languages";;
+   These tries store data associated to paths. A path is a list of symbols.
+   The same path cannot be added twice.
+*)
 
-let elt_url = "elt-url";;
-let elt_body = "elt-body";;
-let elt_intro = "elt-intro";;
-let elt_title = "elt-title";;
-let elt_type = "elt-type";;
-let elt_src = "elt-src";;
-let elt_date = "elt-date";;
-let elt_topics = "elt-topics";;
-let elt_keywords = "elt-keywords";;
-let elt_published = "elt-published";;
+(** Signature of the module created by the {!Make} functor. *)
+module type S =
+  sig
+    type symbol
+    type path = symbol list
+    type 'a t
+    exception Already_present of path
+    val empty : 'a t
+
+    (** @raise Already_present if the added path already exist in the trie. *)
+    val add : path -> 'a -> 'a t -> 'a t
+
+    (** Find all data associated to the given path or below, or an empty list
+         if such a path does not exist. *)
+    val find : path -> 'a t -> 'a list
+
+  end
+module Make : functor (P : Map.OrderedType) -> S with type symbol = P.t

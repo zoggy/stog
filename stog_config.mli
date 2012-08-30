@@ -26,22 +26,32 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Reading stog config. *)
 
-let site_title = "site-title";;
-let site_desc = "site-description";;
-let site_url = "site-url";;
-let site_email = "site-email";;
-let rss_length = "rss-length";;
-let languages = "languages";;
+(** Version of stog. *)
+val version : string
 
-let elt_url = "elt-url";;
-let elt_body = "elt-body";;
-let elt_intro = "elt-intro";;
-let elt_title = "elt-title";;
-let elt_type = "elt-type";;
-let elt_src = "elt-src";;
-let elt_date = "elt-date";;
-let elt_topics = "elt-topics";;
-let elt_keywords = "elt-keywords";;
-let elt_published = "elt-published";;
+(** Contents of [.stog/config] file. *)
+type t = {
+  ignored : string list;
+  elements : string list;
+  not_elements : string list;
+}
+
+(** [config_dir dir] returns the stog configuration directory in the given directory. *)
+val config_dir : string -> string
+
+(** [config_file dir] returns the stog [config] file for a given project directory,
+     that is [Filename.concat (config_dir dir) "config"].*)
+val config_file : string -> string
+
+(** [tmpl_dir dir] returns the directory containing templates, from a
+  stog project directory. *)
+val tmpl_dir : string -> string
+
+(** [read_config file] returns the configuration stored in the given
+  stog configuration file.
+  If the file does not exists, it is created.
+  The file is also written back, so that new fields automatically appear in the file.
+*)
+val read_config : string -> t
