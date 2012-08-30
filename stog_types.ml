@@ -28,7 +28,6 @@
 
 (** *)
 
-type contents_kind = [`Text | `Html | `Xml]
 type date = {
   year : int;
   month : int;
@@ -83,8 +82,8 @@ type elt =
     elt_published : bool ;
     elt_vars : (string * string) list ;
     elt_src : string ;
-    elt_sets : string list ; (* list of sets ("blog", "foo", etc.) this element belongs to *)
-    elt_lang_dep : bool ; (* whether a file must be generated for each language *)
+    elt_sets : string list ;
+    elt_lang_dep : bool ;
     elt_xml_doctype : string option ;
     elt_out : body ;
   }

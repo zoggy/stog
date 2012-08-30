@@ -85,7 +85,6 @@ LIB_CMXFILES= \
 	stog_types.cmx \
 	stog_intl.cmx \
 	stog_find.cmx \
-	stog_mailparse.cmx \
 	stog_tags.cmx \
 	stog_io.cmx \
 	stog_info.cmx \
