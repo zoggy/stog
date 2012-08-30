@@ -11,7 +11,7 @@ To build Stog, you will need:
 <li><ext-a href="http://caml.inria.fr/">OCaml >= 4.00</ext-a> installed,</li>
 <li><ext-a href="http://erratique.ch/software/xmlm">Xmlm >= 1.1.0</ext-a>,</li>
 <li><ext-a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS >= 2.0</ext-a>,</li>
-<li><ext-a href="https://github.com/zoggy/xtmpl">Xtmpl >= 0.2</ext-a>.</li>
+<li><ext-a href="https://github.com/zoggy/xtmpl">Xtmpl >= 0.3</ext-a>.</li>
 </ul>
 <p>
 You will need to have the following tools installed to use
@@ -31,6 +31,16 @@ LaTeX in your pages.</li>
 </p>
 <subsection title="Releases">
 <ul>
+<li><a href="stog-0.3.tar.gz">0.3</a> [2012-08-30]:
+<ul>
+<li>new stage 0 to allow plugins to change the stog structure before generating,</li>
+<li>new fields <icode>elt_xml_doctype</icode>, <icode>elt_out</icode> in
+<a href="&lt;site-url/&gt;/ref-doc/Stog_types.html#TYPEelt"><icode>elt type</icode></a>,</li>
+<li>handle doctype attribute in element description,</li>
+<li>define and use stage1 and stage 2 functions for plugins,</li>
+<li>more .mlis file and comments in the library.</li>
+</ul>
+</li>
 <li><a href="stog-0.2.tar.gz">0.2</a> [2012-08-28]:
 Change the format of files, now all in XML. Config and templates are in <icode>.stog</icode>
 directory. Less templates required. User can define elements of any "type" (post, page, ...).
