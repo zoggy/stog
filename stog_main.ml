@@ -59,6 +59,10 @@ let set_stog_options stog =
 ;;
 
 let options = [
+    "-version",
+    Arg.Unit (fun () -> print_endline (Printf.sprintf "%s" Stog_config.version); exit 0),
+    " print version and exit";
+
     "-v", Arg.Unit Stog_msg.incr_verbose_level, " increase verbose level by one";
     "--verbose", Arg.Int Stog_msg.set_verbose_level, "<n> set verbose level to <n>";
 

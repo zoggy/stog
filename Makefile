@@ -27,7 +27,7 @@
 #################################################################################
 
 #
-VERSION=0.2
+VERSION=0.3
 
 OCAMLC=ocamlc.opt
 OCAMLOPT=ocamlopt.opt

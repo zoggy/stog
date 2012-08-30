@@ -1,6 +1,7 @@
-Next release:
+Release 0.3
   * new stage 0 to allow plugins to change the stog structure before generating
   * new fields elt_xml_doctype, elt_out
   * handle doctype attribute in element description
   * define and use stage1 and stage2 functions for plugins
+  * more .mlis file and comments in the library
     
