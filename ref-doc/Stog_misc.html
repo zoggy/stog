@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Stog_msg.html">
+<link rel="next" href="Stog_config.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Stog_msg" rel="Chapter" href="Stog_msg.html">
+<link title="Stog_misc" rel="Chapter" href="Stog_misc.html">
+<link title="Stog_config" rel="Chapter" href="Stog_config.html">
+<link title="Stog_trie" rel="Chapter" href="Stog_trie.html">
+<link title="Stog_tmap" rel="Chapter" href="Stog_tmap.html">
+<link title="Stog_graph" rel="Chapter" href="Stog_graph.html">
+<link title="Stog_date" rel="Chapter" href="Stog_date.html">
+<link title="Stog_types" rel="Chapter" href="Stog_types.html">
+<link title="Stog_intl" rel="Chapter" href="Stog_intl.html">
+<link title="Stog_find" rel="Chapter" href="Stog_find.html">
+<link title="Stog_tags" rel="Chapter" href="Stog_tags.html">
+<link title="Stog_io" rel="Chapter" href="Stog_io.html">
+<link title="Stog_info" rel="Chapter" href="Stog_info.html">
+<link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
+<link title="Stog_html" rel="Chapter" href="Stog_html.html">
+<link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
+<link title="Stog_dyn" rel="Chapter" href="Stog_dyn.html"><title>Stog : Stog_misc</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Stog_msg.html" title="Stog_msg">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Stog_config.html" title="Stog_config">Next</a>
+</div>
+<h1>Module <a href="type_Stog_misc.html">Stog_misc</a></h1>
+<pre><span class="keyword">module</span> Stog_misc: <code class="code">sig</code> <a href="Stog_misc.html">..</a> <code class="code">end</code></pre>Utilities.<br>
+<hr width="100%">
+<pre><span id="VALsafe_main"><span class="keyword">val</span> safe_main</span> : <code class="type">(unit -> unit) -> unit</code></pre><div class="info">
+<code class="code">safe_main f</code> calls <code class="code">f ()</code> but handles <code class="code">Sys_error</code> and <code class="code">Failure</code>
+   exceptions by exiting with error code 1.<br>
+<b>Author(s):</b> Maxence Guesdon<br>
+<b>Version:</b> 1.0<br>
+</div>
+<pre><span id="VALstring_of_file"><span class="keyword">val</span> string_of_file</span> : <code class="type">string -> string</code></pre><div class="info">
+<code class="code">string_of_file filename</code> returns the content of <code class="code">filename</code>
+   in the form of one string.<br>
+<b>Author(s):</b> Maxence Guesdon<br>
+<b>Version:</b> 1.0<br>
+<b>Raises</b> <code>Sys_error</code> if the file could not be opened.<br>
+</div>
+<pre><span id="VALfile_of_string"><span class="keyword">val</span> file_of_string</span> : <code class="type">file:string -> string -> unit</code></pre><div class="info">
+<code class="code">file_of_string ~file str</code> creates a file named
+   <code class="code">filename</code> whose content is <code class="code">str</code>.<br>
+<b>Author(s):</b> Fabrice Lefessant<br>
+<b>Version:</b> 1.1<br>
+<b>Raises</b> <code>Sys_error</code> if the file could not be opened.<br>
+</div>
+<pre><span id="VALsplit_string"><span class="keyword">val</span> split_string</span> : <code class="type">?keep_empty:bool -> string -> char list -> string list</code></pre><div class="info">
+Separate the given string according to the given list of characters.<br>
+<b>Author(s):</b> Maxence Guesdon<br>
+<b>Version:</b> 1.1<br>
+</div>
+<div class="param_info"><code class="code">keep_empty</code> : is <code class="code">false</code> by default. If set to <code class="code">true</code>,
+   the empty strings between separators are kept.</div>
+<pre><span id="VALstrip_string"><span class="keyword">val</span> strip_string</span> : <code class="type">string -> string</code></pre><div class="info">
+<code class="code">strip_string s</code> removes all leading and trailing spaces from the given string.<br>
+<b>Author(s):</b> Maxence Guesdon<br>
+<b>Version:</b> 1.0<br>
+</div>
+<pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">string -> string</code></pre><div class="info">
+<code class="code">lowercase s</code> lowers the case of the given string, including accentuated characters.<br>
+<b>Author(s):</b> Maxence Guesdon<br>
+<b>Version:</b> 1.0<br>
+</div>
+<pre><span id="VALlist_chop"><span class="keyword">val</span> list_chop</span> : <code class="type">int -> 'h list -> 'h list</code></pre><div class="info">
+<code class="code">list_chop n l</code> returns the <code class="code">n</code> first elements of list <code class="code">l</code> or the whole
+   list if <code class="code">n &gt;= List.length l</code>.<br>
+<b>Author(s):</b> Maxence Guesdon<br>
+<b>Version:</b> 1.0<br>
+</div>
+<pre><span id="VALmkdir"><span class="keyword">val</span> mkdir</span> : <code class="type">string -> unit</code></pre><pre><span id="VALis_prefix"><span class="keyword">val</span> is_prefix</span> : <code class="type">string -> string -> bool</code></pre><div class="info">
+<code class="code">is_prefix pattern s</code> returns true if string <code class="code">s</code> begins with <code class="code">pattern</code>.<br>
+<b>Author(s):</b> Maxence Guesdon<br>
+<b>Version:</b> 1.0<br>
+</div>
+<pre><span id="VALlist_remove_doubles"><span class="keyword">val</span> list_remove_doubles</span> : <code class="type">?pred:('k -> 'k -> bool) -> 'k list -> 'k list</code></pre><div class="info">
+<code class="code">list_remove_doubles ?pred l</code> remove doubles in the given list <code class="code">l</code>, according
+   to the optional equality function <code class="code">pred</code>. Default equality function is <code class="code">(=)</code>.<br>
+<b>Author(s):</b> Maxence Guesdon<br>
+<b>Version:</b> 1.0<br>
+</div>
+<pre><span id="VALmd5"><span class="keyword">val</span> md5</span> : <code class="type">string -> string</code></pre><pre><span id="VALcount_char"><span class="keyword">val</span> count_char</span> : <code class="type">string -> char -> int</code></pre><pre><span id="VALencode_string"><span class="keyword">val</span> encode_string</span> : <code class="type">string -> string</code></pre><pre><span id="VALmap_opt"><span class="keyword">val</span> map_opt</span> : <code class="type">('a -> 'b) -> 'a option -> 'b option</code></pre><pre><span id="VALlist_concat"><span class="keyword">val</span> list_concat</span> : <code class="type">?sep:'a -> 'a list -> 'a list</code></pre><pre><span id="VALdot_to_svg"><span class="keyword">val</span> dot_to_svg</span> : <code class="type">string -> string</code></pre><pre><span id="VALlist_compare"><span class="keyword">val</span> list_compare</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list -> int</code></pre><pre><span id="VALfilename_extension"><span class="keyword">val</span> filename_extension</span> : <code class="type">string -> string</code></pre><div class="info">
+<code class="code">filename_extension filename</code> returns extension of <code class="code">filename</code>
+  or <code class="code">""</code> if there is no extension.<br>
+</div>
+<pre><span id="VALsafe_mkdir"><span class="keyword">val</span> safe_mkdir</span> : <code class="type">string -> unit</code></pre></body></html>

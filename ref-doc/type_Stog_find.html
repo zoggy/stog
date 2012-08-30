@@ -1,0 +1,48 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Stog_msg" rel="Chapter" href="Stog_msg.html">
+<link title="Stog_misc" rel="Chapter" href="Stog_misc.html">
+<link title="Stog_config" rel="Chapter" href="Stog_config.html">
+<link title="Stog_trie" rel="Chapter" href="Stog_trie.html">
+<link title="Stog_tmap" rel="Chapter" href="Stog_tmap.html">
+<link title="Stog_graph" rel="Chapter" href="Stog_graph.html">
+<link title="Stog_date" rel="Chapter" href="Stog_date.html">
+<link title="Stog_types" rel="Chapter" href="Stog_types.html">
+<link title="Stog_intl" rel="Chapter" href="Stog_intl.html">
+<link title="Stog_find" rel="Chapter" href="Stog_find.html">
+<link title="Stog_tags" rel="Chapter" href="Stog_tags.html">
+<link title="Stog_io" rel="Chapter" href="Stog_io.html">
+<link title="Stog_info" rel="Chapter" href="Stog_info.html">
+<link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
+<link title="Stog_html" rel="Chapter" href="Stog_html.html">
+<link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
+<link title="Stog_dyn" rel="Chapter" href="Stog_dyn.html"><title>Stog : Stog_find</title>
+</head>
+<body>
+<code class="code"><span class="keyword">sig</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;filter&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Maxdepth</span>&nbsp;<span class="keyword">of</span>&nbsp;int<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Type</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Unix</span>.file_kind<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Follow</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Regexp</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Str</span>.regexp<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Atime</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Stog_find</span>.interval<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Predicate</span>&nbsp;<span class="keyword">of</span>&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool)<br>
+&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;interval&nbsp;=&nbsp;<span class="constructor">Le</span>&nbsp;<span class="keyword">of</span>&nbsp;int&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Eq</span>&nbsp;<span class="keyword">of</span>&nbsp;int&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Ge</span>&nbsp;<span class="keyword">of</span>&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;mode&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Ignore</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Stderr</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Failure</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Custom</span>&nbsp;<span class="keyword">of</span>&nbsp;(<span class="constructor">Unix</span>.error&nbsp;*&nbsp;string&nbsp;*&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;find&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_find</span>.mode&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_find</span>.filter&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;find_list&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_find</span>.mode&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_find</span>.filter&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;list<br>
+<span class="keyword">end</span></code></body></html>

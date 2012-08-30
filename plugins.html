@@ -68,9 +68,13 @@ Here is an example:
   iter <span class="hl opt">[]</span> subs
 <span class="hl opt">;;</span>
 
-<span class="hl com">(* register the new function, associated to tag &quot;list&quot; *)</span>
-<span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_fun <span class="hl str">&quot;list&quot;</span> fun_list<span class="hl opt">;;</span>
+<span class="hl com">(* register the new function, associated to tag &quot;list&quot;.</span>
+<span class="hl com">  Before stog 0.3, this function was called [Stog_plug.register_fun]. *)</span>
+<span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_rule <span class="hl str">&quot;list&quot;</span> fun_list<span class="hl opt">;;</span>
 </pre>
+<p>
+Have a look at the <a href="http://zoggy.github.com/stog/ref-doc/index.html">Stog library reference documentation</a>.
+</p>
 </div>
 
 <div class="section"><div class="section-title" id="compiling">Compilation</div>
@@ -130,6 +134,9 @@ Here is an example:
 <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../../../plugins/plugin_example.ml&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;</span>
 <span class="hl kwa">&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Have a look at the <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;site-url/&amp;gt;/ref-doc/index.html&quot;</span><span class="hl kwa">&gt;</span>Stog library reference documentation<span class="hl kwa">&lt;/a&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>
 
 <span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;compiling&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Compilation&quot;</span><span class="hl kwa">&gt;</span>

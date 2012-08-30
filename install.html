@@ -42,7 +42,7 @@ To build Stog, you will need:
 <li><span class="ext-a"><a href="http://caml.inria.fr/">OCaml &gt;= 4.00</a></span> installed,</li>
 <li><span class="ext-a"><a href="http://erratique.ch/software/xmlm">Xmlm &gt;= 1.1.0</a></span>,</li>
 <li><span class="ext-a"><a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS &gt;= 2.0</a></span>,</li>
-<li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl &gt;= 0.2</a></span>.</li>
+<li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl &gt;= 0.3</a></span>.</li>
 </ul>
 <p>
 You will need to have the following tools installed to use
@@ -63,6 +63,16 @@ LaTeX in your pages.</li>
 </p>
 <div class="subsection"><div class="subsection-title">Releases</div>
 <ul>
+<li><a href="stog-0.3.tar.gz">0.3</a> [2012-08-30]:
+<ul>
+<li>new stage 0 to allow plugins to change the stog structure before generating,</li>
+<li>new fields <span class="icode">elt_xml_doctype</span>, <span class="icode">elt_out</span> in
+<a href="http://zoggy.github.com/stog/ref-doc/Stog_types.html#TYPEelt"><span class="icode">elt type</span></a>,</li>
+<li>handle doctype attribute in element description,</li>
+<li>define and use stage1 and stage 2 functions for plugins,</li>
+<li>more .mlis file and comments in the library.</li>
+</ul>
+</li>
 <li><a href="stog-0.2.tar.gz">0.2</a> [2012-08-28]:
 Change the format of files, now all in XML. Config and templates are in <span class="icode">.stog</span>
 directory. Less templates required. User can define elements of any &quot;type&quot; (post, page, ...).
@@ -106,7 +116,7 @@ To build Stog, you will need:
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://caml.inria.fr/&quot;</span><span class="hl kwa">&gt;</span>OCaml <span class="hl kwa">&gt;</span>= <span class="hl num">4.00</span><span class="hl kwa">&lt;/ext-a&gt;</span> installed,<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://erratique.ch/software/xmlm&quot;</span><span class="hl kwa">&gt;</span>Xmlm <span class="hl kwa">&gt;</span>= <span class="hl num">1.1.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://zoggy.github.com/ocamlrss/&quot;</span><span class="hl kwa">&gt;</span>OCaml-RSS <span class="hl kwa">&gt;</span>= <span class="hl num">2.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span>Xtmpl <span class="hl kwa">&gt;</span>= <span class="hl num">0.2</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span>Xtmpl <span class="hl kwa">&gt;</span>= <span class="hl num">0.3</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/ul&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 You will need to have the following tools installed to use
@@ -126,6 +136,16 @@ LaTeX in your pages.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Releases&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.3.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.3</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">08</span>-<span class="hl num">30</span>]:
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>new stage <span class="hl num">0</span> to allow plugins to change the stog structure before generating,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>new fields <span class="hl kwa">&lt;icode&gt;</span>elt_xml_doctype<span class="hl kwa">&lt;/icode&gt;</span>, <span class="hl kwa">&lt;icode&gt;</span>elt_out<span class="hl kwa">&lt;/icode&gt;</span> in
+<span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;site-url/&amp;gt;/ref-doc/Stog_types.html#TYPEelt&quot;</span><span class="hl kwa">&gt;&lt;icode&gt;</span>elt type<span class="hl kwa">&lt;/icode&gt;&lt;/a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>handle doctype attribute in element description,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>define and use stage1 and stage <span class="hl num">2</span> functions for plugins,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>more .mlis file and comments in the library.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.2.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.2</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">08</span>-<span class="hl num">28</span>]:
 Change the format of files, now all in XML. Config and templates are in <span class="hl kwa">&lt;icode&gt;</span>.stog<span class="hl kwa">&lt;/icode&gt;</span>
 directory. Less templates required. User can define elements of any <span class="hl str">&quot;type&quot;</span> (post, page, ...).
