@@ -1,3 +1,6 @@
+Next release:
+  * new 'functions' special attribute to define functions in element headers
+
 Release 0.3
   * new stage 0 to allow plugins to change the stog structure before generating
   * new fields elt_xml_doctype, elt_out

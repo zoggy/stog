@@ -856,19 +856,45 @@ let apply_stage2_funs stog elt =
   List.fold_right (fun f elt -> f stog elt) !stage2_funs elt
 ;;
 
+module Sset = Set.Make (struct type t = string let compare = Pervasives.compare end);;
+
+let rec env_of_vars ?env vars =
+  let funs =
+    try
+      let v = List.assoc "functions" vars in
+      let names = List.map Stog_misc.strip_string
+        (Stog_misc.split_string v [',';';'])
+      in
+      List.fold_right Sset.add names Sset.empty
+    with Not_found -> Sset.empty
+  in
+  let f x acc =
+    match x with
+    | ("functions", _) -> acc
+    | (key,value) when Sset.mem key funs ->
+        let v_xml = Xtmpl.xml_of_string value in
+        let f env atts subs =
+          let env = env_of_vars ~env atts in
+          let env = Xtmpl.env_add "contents" (fun _ _ _ -> subs) env in
+           Xtmpl.apply_to_xmls env [v_xml]
+        in
+        (key, f) :: acc
+    | (key, value) ->
+        (key, fun _ _ _ -> [Xtmpl.xml_of_string value]) :: acc
+  in
+  (* fold_right instead of fold_left to reverse list and keep associations
+     in the same order as in declarations *)
+  let l = List.fold_right f vars [] in
+  Xtmpl.env_of_list ?env l
+;;
+
 let compute_elt stog env ?elt_id elt =
   Stog_msg.verbose
   (Printf.sprintf "Computing %S" (Stog_types.string_of_human_id elt.elt_human_id));
 
   let tmpl = Filename.concat stog.stog_tmpl_dir elt.elt_type^".tmpl" in
 
-  let env = Xtmpl.env_of_list ~env
-    (List.map
-     (fun (key, value) ->
-        (key, fun _ _ _ -> [Xtmpl.xml_of_string value]))
-     elt.elt_vars
-    )
-  in
+  let env = env_of_vars ~env elt.elt_vars in
   let previous, next =
     let html_link elt =
       let href = elt_url stog elt in
@@ -1066,11 +1092,7 @@ let generate ?only_elt stog =
   let stog = apply_stage0_funs stog in
   current_stog := Some stog;
   Stog_misc.safe_mkdir stog.stog_outdir;
-  let env = List.fold_left
-    (fun env (name, v) -> Xtmpl.env_add name (fun _ _ _ -> [Xtmpl.D v]) env)
-    Xtmpl.env_empty
-    stog.stog_vars
-  in
+  let env = env_of_vars stog.stog_vars in
   (*Stog_tmap.iter
     (fun elt_id elt ->
      prerr_endline (Stog_types.string_of_human_id elt.elt_human_id))
