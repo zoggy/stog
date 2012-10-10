@@ -1,4 +1,5 @@
 Next release:
+  * handle relative paths in include, when starting with . or ..
   * handle <chapter> nodes as new kind of sections
   * new 'functions' special attribute to define functions in element headers
 

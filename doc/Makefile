@@ -45,6 +45,7 @@ site: style
 	$(MAKE) ocamldoc
 
 style:
+	mkdir -p $(DEST_DIR)
 	$(LESSC) less/style.less > $(DEST_DIR)/style.css
 
 ocamldoc:
