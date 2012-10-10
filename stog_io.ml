@@ -226,7 +226,7 @@ let read_files cfg stog dir =
       entry <> stog_cfg_dir &&
       (let base = Filename.basename entry in base <> "." && base <> "..") &&
       (
-       let k = (Unix.lstat entry).Unix.st_kind in
+       let k = (Unix.stat entry).Unix.st_kind in
        match k with
          Unix.S_REG | Unix.S_DIR -> not (List.exists (fun f -> f entry) preds)
        | _ -> false
@@ -243,7 +243,7 @@ let read_files cfg stog dir =
       (List.exists (fun f -> f entry) preds_ok) &&
       not (List.exists (fun f -> f entry) preds_ko)
   in
-  let is_dir file = (Unix.lstat file).Unix.st_kind = Unix.S_DIR in
+  let is_dir file = (Unix.stat file).Unix.st_kind = Unix.S_DIR in
   let rec iter stog dir =
     let entries =
       Stog_find.find_list
