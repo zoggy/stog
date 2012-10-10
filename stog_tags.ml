@@ -34,6 +34,7 @@ let site_url = "site-url"
 let site_email = "site-email"
 let rss_length = "rss-length"
 let languages = "languages"
+let functions = "functions_"
 
 let elt = "elt"
 let elt_body = "elt-body"

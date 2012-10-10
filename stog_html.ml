@@ -858,29 +858,44 @@ let apply_stage2_funs stog elt =
 
 module Sset = Set.Make (struct type t = string let compare = Pervasives.compare end);;
 
-let rec env_of_vars ?env vars =
-  let funs =
-    try
-      let v = List.assoc "functions" vars in
-      let names = List.map Stog_misc.strip_string
-        (Stog_misc.split_string v [',';';'])
-      in
-      List.fold_right Sset.add names Sset.empty
-    with Not_found -> Sset.empty
+let rec make_funs acc value =
+  let xmls =
+    let xml = Xtmpl.xml_of_string value in
+    match xml with
+      Xtmpl.D _ -> []
+    | Xtmpl.T (_,_,l) | Xtmpl.E (_, l) -> l
   in
+  (* keep order with fold_right *)
+  List.fold_right make_fun xmls acc
+
+and make_fun xml acc =
+  match xml with
+    Xtmpl.D _ -> acc
+  | Xtmpl.E (((_,name), atts), body) ->
+      let atts = List.map (fun ((_,s),v) -> (s,v)) atts in
+      make_fun (Xtmpl.T (name, atts, body)) acc
+  | Xtmpl.T (name, params, body) ->
+      let f env atts subs =
+        let vars = List.map
+          (fun (param,default) ->
+             match Xtmpl.get_arg atts param with
+               None -> (param, default)
+             | Some v -> (param, v)
+          )
+          params
+        in
+        let env = env_of_vars ~env vars in
+        let env = Xtmpl.env_add "contents" (fun _ _ _ -> subs) env in
+        Xtmpl.apply_to_xmls env body
+      in
+      (name, f) :: acc
+
+and env_of_vars ?env vars =
   let f x acc =
     match x with
-    | ("functions", _) -> acc
-    | (key,value) when Sset.mem key funs ->
-        let v_xml = Xtmpl.xml_of_string value in
-        let f env atts subs =
-          let env = env_of_vars ~env atts in
-          let env = Xtmpl.env_add "contents" (fun _ _ _ -> subs) env in
-           Xtmpl.apply_to_xmls env [v_xml]
-        in
-        (key, f) :: acc
-    | (key, value) ->
-        (key, fun _ _ _ -> [Xtmpl.xml_of_string value]) :: acc
+    | (key, value) when key = Stog_tags.functions ->
+       make_funs acc value
+    | (key, value) -> (key, fun _ _ _ -> [Xtmpl.xml_of_string value]) :: acc
   in
   (* fold_right instead of fold_left to reverse list and keep associations
      in the same order as in declarations *)

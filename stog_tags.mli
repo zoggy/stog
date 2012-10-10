@@ -34,6 +34,7 @@ val site_url : string
 val site_email : string
 val rss_length : string
 val languages : string
+val functions : string
 
 val elt : string
 val elt_body : string
