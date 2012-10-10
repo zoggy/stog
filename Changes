@@ -1,4 +1,5 @@
 Next release:
+  * handle <chapter> nodes as new kind of sections
   * new 'functions' special attribute to define functions in element headers
 
 Release 0.3

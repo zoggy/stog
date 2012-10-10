@@ -51,6 +51,7 @@ val elt_url : string
 val sep : string
 
 val archive_tree : string
+val chapter : string
 val command_line : string
 val elements : string
 val ext_a : string

@@ -78,7 +78,7 @@ val generate_rss_feed_file :
   ?title:string -> Rss.url -> Stog_types.elt list -> string -> unit
 
 (** Build the rules, using the default ones and the {!plugin_rules}. *)
-val build_rules : Stog_types.stog -> (string * Xtmpl.callback) list
+val build_rules : Stog_types.stog -> Stog_types.elt -> (string * Xtmpl.callback) list
 
 (** The calllback to insert a list of elements. Can be called directly
   if provided an additional environment, argument and children nodes. *)

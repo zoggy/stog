@@ -116,13 +116,18 @@ let make_lang_rules stog =
       (List.map (fun lang -> (lang, f_remove)) to_remove)
 ;;
 
-let fun_include tmpl_dir _env args subs =
+let fun_include tmpl_dir elt _env args subs =
   match Xtmpl.get_arg args "file" with
     None -> failwith "Missing 'file' argument for include command";
   | Some file ->
       let file =
         if Filename.is_relative file then
-          Filename.concat tmpl_dir file
+          begin
+            if Filename.is_implicit file then
+              Filename.concat tmpl_dir file
+            else
+              Filename.concat (Filename.dirname elt.elt_src) file
+          end
         else
           file
       in
@@ -354,6 +359,7 @@ let fun_section cls _env args body =
   [ Xtmpl.T ("div", ["class", cls], title @ body) ]
 ;;
 
+let fun_chapter = fun_section "chapter";;
 let fun_subsection = fun_section "subsection";;
 let fun_section = fun_section "section";;
 
@@ -519,7 +525,10 @@ let fun_prepare_toc env args subs =
   in
   let rec iter d acc = function
   | Xtmpl.D _ -> acc
-  | Xtmpl.T (tag, atts, subs) when tag = Stog_tags.section or tag = Stog_tags.subsection ->
+  | Xtmpl.T (tag, atts, subs) when
+      tag = Stog_tags.chapter or
+      tag = Stog_tags.section or
+      tag = Stog_tags.subsection ->
       begin
         match Xtmpl.get_arg atts "name", Xtmpl.get_arg atts "title" with
           None, _ | _, None ->
@@ -646,7 +655,7 @@ let rec elt_to_rss_item stog elt =
   let desc = intro_of_elt stog elt in
   let desc =
     Xtmpl.apply_to_xmls
-    (Xtmpl.env_of_list (build_rules stog))
+    (Xtmpl.env_of_list (build_rules stog elt))
     desc
   in
   let desc = String.concat "" (List.map Xtmpl.string_of_xml desc) in
@@ -706,7 +715,7 @@ and generate_rss_feed_file stog ?title link elts file =
   let result = Rss.print_file ~encoding: "UTF-8" file channel in
   result
 
-and build_rules stog =
+and build_rules stog elt =
   let f_title elt _ _ _ = [ Xtmpl.xml_of_string elt.elt_title ] in
   let f_url elt _ _ _ = [ Xtmpl.D (elt_url stog elt) ] in
   let f_body elt _ _ _ = elt.elt_body in
@@ -740,7 +749,7 @@ and build_rules stog =
       Stog_tags.sep, (fun _ _ _ -> []);
       Stog_tags.elements, elt_list stog ;
       Stog_tags.if_, fun_if ;
-      Stog_tags.include_, fun_include stog.stog_tmpl_dir ;
+      Stog_tags.include_, fun_include stog.stog_tmpl_dir elt ;
       Stog_tags.image, fun_image ;
       Stog_tags.archive_tree, (fun _ -> fun_archive_tree stog) ;
       Stog_tags.hcode, fun_hcode stog ~inline: false ?lang: None;
@@ -749,6 +758,7 @@ and build_rules stog =
       Stog_tags.command_line, fun_command_line ~inline: false stog ;
       Stog_tags.post, fun_post stog;
       Stog_tags.elt, fun_elt stog;
+      Stog_tags.chapter, fun_chapter ;
       Stog_tags.section, fun_section ;
       Stog_tags.subsection, fun_subsection ;
       Stog_tags.site_url, fun_blog_url stog ;
@@ -805,7 +815,7 @@ and elt_list ?rss ?set stog env args _ =
     let env = Xtmpl.env_of_list ~env
       (
        (Stog_tags.elt_hid, fun _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)])::
-       (build_rules stog)
+       (build_rules stog elt)
       )
     in
     Xtmpl.xml_of_string (Xtmpl.apply_from_file env tmpl)
@@ -940,7 +950,7 @@ let compute_elt stog env ?elt_id elt =
   let env = Xtmpl.env_of_list ~env
     (
      (Stog_tags.elt_hid, (fun  _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)])) ::
-     (build_rules stog) @
+     (build_rules stog elt) @
      [
        Stog_tags.next, (fun _ _ _ -> next);
        Stog_tags.previous, (fun _ _ _ -> previous);
@@ -993,7 +1003,7 @@ let compute_by_word_indexes stog env f_elt_id elt_type map =
     let elt =
       { elt with Stog_types.elt_body = elt_list ~set ~rss: rss_url stog env [] []}
     in
-    let env = Xtmpl.env_of_list ~env (build_rules stog) in
+    let env = Xtmpl.env_of_list ~env (build_rules stog elt) in
     let env = env_add_langswitch env stog elt in
     let stog = Stog_types.add_elt stog elt in
     let elt = compute_elt stog env elt in
@@ -1038,7 +1048,7 @@ let compute_archive_index stog env =
         elt_out = [] ;
       }
     in
-    let env = Xtmpl.env_of_list ~env (build_rules stog) in
+    let env = Xtmpl.env_of_list ~env (build_rules stog elt) in
     let env = env_add_langswitch env stog elt in
     let stog = Stog_types.add_elt stog elt in
     let elt = compute_elt stog env elt in

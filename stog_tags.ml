@@ -51,6 +51,7 @@ let elt_url = "elt-url"
 let sep = "sep_"
 
 let archive_tree = "archive-tree"
+let chapter = "chapter"
 let command_line = "command-line"
 let elements = "elements"
 let ext_a = "ext-a"
