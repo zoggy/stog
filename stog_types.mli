@@ -51,7 +51,7 @@ type elt = {
   elt_sets : string list; (** list of sets ("blog", "foo", etc.) this element belongs to *)
   elt_lang_dep : bool; (** whether a file must be generated for each language *)
   elt_xml_doctype : string option;
-  elt_out : body;
+  elt_out : body option;
 }
 type elt_id = elt Stog_tmap.key
 

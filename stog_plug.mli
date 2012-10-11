@@ -35,6 +35,12 @@
 
 val register_lang : Stog_intl.lang_abbrev -> Stog_intl.lang_data -> unit
 val register_rule : string -> Xtmpl.callback -> unit
+
+(** Unregister the rule with the given name from the plugin rules.
+  It only register the last registered rule with this name.
+  If a rule is unregistered, it is returned, else [None] is returned.*)
+val unregister_rule : string -> Xtmpl.callback option
+
 val stog : unit -> Stog_types.stog
 
 val verbose : ?info:string -> ?level: int -> string -> unit

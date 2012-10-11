@@ -69,16 +69,17 @@ val url_of_hid :
   Stog_types.stog -> ?ext:string -> Stog_types.human_id -> string
 
 val rss_date_of_date : Stog_types.date -> Rss.date
-val elt_to_rss_item : Stog_types.stog -> Stog_types.elt -> Rss.item
+val elt_to_rss_item : Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Rss.item
 
 (** Generate a RSS file from the given list of elements. The final RSS
   url must be given as it is embedded in the RSS file. *)
 val generate_rss_feed_file :
   Stog_types.stog ->
-  ?title:string -> Rss.url -> Stog_types.elt list -> string -> unit
+  ?title:string -> Rss.url -> (Stog_types.elt_id * Stog_types.elt) list -> string -> unit
 
-(** Build the rules, using the default ones and the {!plugin_rules}. *)
-val build_rules : Stog_types.stog -> Stog_types.elt -> (string * Xtmpl.callback) list
+(** Build the base rules, using the default ones and the {!plugin_rules}. *)
+val build_base_rules : Stog_types.stog ->
+  Stog_types.elt_id -> Stog_types.elt -> (string * Xtmpl.callback) list
 
 (** The calllback to insert a list of elements. Can be called directly
   if provided an additional environment, argument and children nodes. *)
@@ -98,3 +99,13 @@ val elt_list :
     {!Stog_types.elt.elt_out} field in the destination file.
 *)
 val generate : ?only_elt:string -> Stog_types.stog -> unit
+
+type rule_build =
+  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (string * Xtmpl.callback) list
+type level_fun =
+  Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
+;;
+
+
+val register_level_fun : int -> level_fun -> unit
+val compute_elt : rule_build -> level_fun

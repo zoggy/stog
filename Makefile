@@ -236,6 +236,6 @@ stog_coms.cmx: stog_coms.ml
 .PHONY: clean depend
 
 .depend depend:
-	ocamldep -pp $(CAMLP4O) *.ml > .depend
+	ocamldep -pp $(CAMLP4O) *.ml *.mli > .depend
 
 include .depend

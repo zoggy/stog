@@ -33,6 +33,20 @@ let register_lang = Stog_intl.register_lang;;
 let register_rule name f =
   Stog_html.plugin_rules := (name, f) :: !Stog_html.plugin_rules ;;
 
+let unregister_rule name =
+  let rec iter acc = function
+    [] -> (List.rev acc, None)
+  | (s,f) :: q ->
+      if s = name then
+        ((List.rev acc) @ q, Some f)
+      else
+        iter ((s,f) :: acc) q
+  in
+  let (rules, found) = iter [] !Stog_html.plugin_rules in
+  Stog_html.plugin_rules := rules;
+  found
+;;
+
 let stog () =
   match !Stog_html.current_stog with
     None -> failwith "Current stog not initialized"

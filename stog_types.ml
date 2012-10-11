@@ -85,7 +85,7 @@ type elt =
     elt_sets : string list ;
     elt_lang_dep : bool ;
     elt_xml_doctype : string option ;
-    elt_out : body ;
+    elt_out : body option;
   }
 and elt_id = elt Stog_tmap.key
 
@@ -112,7 +112,7 @@ let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
     elt_sets = [] ;
     elt_lang_dep = true ;
     elt_xml_doctype = None ;
-    elt_out = [] ;
+    elt_out = None ;
   }
 ;;
 
