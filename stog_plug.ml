@@ -65,9 +65,13 @@ let error = Stog_msg.error;;
 let register_stage0_fun f =
   Stog_html.stage0_funs := f :: !Stog_html.stage0_funs
 ;;
-let register_stage1_fun f =
-  Stog_html.stage1_funs := f :: !Stog_html.stage1_funs
+
+type rule_build =
+  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (string * Xtmpl.callback) list
+type level_fun =
+  Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
 ;;
-let register_stage2_fun f =
-  Stog_html.stage2_funs := f :: !Stog_html.stage2_funs
-;;
+
+
+let register_level_fun = Stog_html.register_level_fun;;
+let compute_elt = Stog_html.compute_elt;;

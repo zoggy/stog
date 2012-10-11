@@ -53,5 +53,12 @@ val error : ?info:string -> ?fatal: int -> string -> unit
 val set_print_error : (string -> unit) -> unit
 
 val register_stage0_fun : (Stog_types.stog -> Stog_types.stog) -> unit
-val register_stage1_fun : (Stog_types.stog -> unit) -> unit
-val register_stage2_fun : (Stog_types.stog -> Stog_types.elt -> Stog_types.elt) -> unit
+
+type rule_build =
+  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (string * Xtmpl.callback) list
+type level_fun =
+  Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
+;;
+
+val register_level_fun : int -> level_fun -> unit
+val compute_elt : rule_build -> level_fun

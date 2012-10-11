@@ -42,13 +42,6 @@ val plugin_rules : (string * Xtmpl.callback) list ref
 (** Stage 0 functions registered by plugins. *)
 val stage0_funs : (Stog_types.stog -> Stog_types.stog) list ref
 
-(** Stage 1 functions registered by plugins. *)
-val stage1_funs : (Stog_types.stog -> unit) list ref
-
-(** Stage 2 functions registered by plugins. *)
-val stage2_funs :
-  (Stog_types.stog -> Stog_types.elt -> Stog_types.elt) list ref
-
 (** Escape html code in the given string: change [&] to [&amp;],
   [<] to [&lt;] and [>] to [&gt;].*)
 val escape_html : string -> string
@@ -93,10 +86,8 @@ val elt_list :
   - build the base environment from the site global attributes,
   - compute by-topic, by-keyword and by-month elements,
   - compute elements,
-  - call stage1 functions with the stog structure, i.e. with
-    elements having their {!Stog_types.elt.elt_out} field computed,
-  - for each element, apply stage2 functions and output the
-    {!Stog_types.elt.elt_out} field in the destination file.
+  - for each level, for each element, apply level functions on the element
+  - output {!Stog_types.elt.elt_out} field in the destination file.
 *)
 val generate : ?only_elt:string -> Stog_types.stog -> unit
 

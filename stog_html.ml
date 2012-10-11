@@ -36,8 +36,6 @@ let current_stog = ref None;;
 
 let plugin_rules = ref [];;
 let stage0_funs : (Stog_types.stog -> Stog_types.stog) list ref = ref [];;
-let stage1_funs : (Stog_types.stog -> unit) list ref = ref [];;
-let stage2_funs : (Stog_types.stog -> Stog_types.elt -> Stog_types.elt) list ref = ref [];;
 
 let escape_html s =
   let b = Buffer.create 256 in
@@ -871,18 +869,6 @@ let apply_stage0_funs stog =
   List.fold_right (fun f stog -> f stog) !stage0_funs stog
 ;;
 
-let call_stage1_funs stog =
-  Stog_msg.verbose "Calling stage 1 functions";
-  List.iter (fun f -> f stog) (List.rev !stage1_funs)
-;;
-
-let apply_stage2_funs stog elt =
-  Stog_msg.verbose
-    (Printf.sprintf "Calling stage 2 functions on %S"
-      (Stog_types.string_of_human_id elt.elt_human_id));
-  List.fold_right (fun f elt -> f stog elt) !stage2_funs elt
-;;
-
 module Sset = Set.Make (struct type t = string let compare = Pervasives.compare end);;
 
 let rec make_funs acc value =
@@ -1140,14 +1126,12 @@ let generate ?only_elt stog =
       let stog = make_keyword_indexes stog env in
       let stog = make_archive_index stog env in
       let stog = compute_levels env stog in
-      call_stage1_funs stog;
       output_elts stog;
       copy_other_files stog
   | Some s ->
       let hid = Stog_types.human_id_of_string s in
       let (elt_id, elt) = Stog_types.elt_by_human_id stog hid in
       let stog = compute_levels ~elts: [elt_id, elt] env stog in
-      call_stage1_funs stog;
       let (_, elt) = Stog_types.elt_by_human_id stog hid in
       output_elts ~elts: [elt] stog
 ;;
