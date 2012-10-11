@@ -1,4 +1,6 @@
 Next release:
+  * define and use levels of rules; plugins can extend the number of levels
+    to define their own rewrite system
   * handle relative paths in include, when starting with . or ..
   * handle <chapter> nodes as new kind of sections
   * new 'functions' special attribute to define functions in element headers
