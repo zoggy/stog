@@ -73,14 +73,14 @@ In the following descriptions, the current element refers to the element
 whose hid is retrieved by the <icode>&lt;elt-hid/&gt;</icode> function.
 </p>
 
-<section name="archive-tree" title="archive-tree">
+<section id="archive-tree" title="archive-tree">
 <p>
 <icode lang="xml">&lt;archive-tree/&gt;</icode> inserts the articles archive tree.
 </p>
 </section>
 
 
-<section name="command-line" title="command-line">
+<section id="command-line" title="command-line">
 <p>
 <icode lang="xml">&lt;command-line&gt;</icode> works like
 <a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a>
@@ -89,14 +89,14 @@ attribute already set to "sh".
 </p>
 </section>
 
-<section name="contents" title="contents">
+<section id="contents" title="contents">
 <p>
 <icode lang="xml">&lt;contents/&gt;</icode> is the generic function to insert some
 contents in an included file or template.
 </p>
 </section>
 
-<section name="elt" title="elt, post and page">
+<section id="elt" title="elt, post and page">
 <include file="syntax.tmpl"><![CDATA[<elt href=hid>text</elt>]]></include>
 <p>
 This will return a link to the element specified by its hid. The hid of an element
@@ -135,58 +135,58 @@ are equivalent respectively to
 </p>
 </section>
 
-<section name="elt-bodyx" title="elt-body">
+<section id="elt-bodyx" title="elt-body">
 <p>
 <icode lang="xml">&lt;elt-body/&gt;</icode> returns the body of the current element.
 </p>
 </section>
 
-<section name="elt-date" title="elt-date">
+<section id="elt-date" title="elt-date">
 <p>
 <icode lang="xml">&lt;elt-date/&gt;</icode> returns the date of the current element,
 or an empty string if no date were specified.
 </p>
 </section>
 
-<section name="elt-hid" title="elt-hid">
+<section id="elt-hid" title="elt-hid">
 <p>
 <icode lang="xml">&lt;elt-hid/&gt;</icode> returns the hid of the current element.
 </p>
 </section>
 
-<section name="elt-intro" title="elt-intro">
+<section id="elt-intro" title="elt-intro">
 <p>
 <icode lang="xml">&lt;elt-intro/&gt;</icode> returns the introduction of an element,
 that is the body code before the <icode>&lt;sep_/&gt;</icode> marker.
 </p>
 </section>
 
-<section name="elt-src" title="elt-src">
+<section id="elt-src" title="elt-src">
 <p>
 <icode lang="xml">&lt;elt-src/&gt;</icode> returns the source filename
 of the element.
 </p>
 </section>
 
-<section name="elt-title" title="elt-title">
+<section id="elt-title" title="elt-title">
 <p>
 <icode lang="xml">&lt;elt-title/&gt;</icode> returns the title of the current element.
 </p>
 </section>
 
-<section name="elt-type" title="elt-type">
+<section id="elt-type" title="elt-type">
 <p>
 <icode lang="xml">&lt;elt-type/&gt;</icode> returns the type of the current element.
 </p>
 </section>
 
-<section name="elt-url" title="elt-url">
+<section id="elt-url" title="elt-url">
 <p>
 <icode lang="xml">&lt;elt-url/&gt;</icode> returns the final url of the current element.
 </p>
 </section>
 
-<section name="elements" title="elements">
+<section id="elements" title="elements">
 <p>
 <icode lang="xml">&lt;elements .../&gt;</icode> inserts the list of
 published elements.
@@ -208,7 +208,7 @@ file is created. If no title is given, the site title is used.</li>
 <p>Example: <icode lang="xml">&lt;elements type="post" max="10" rss="index.rss"/&gt;</icode></p>
 </section>
 
-<section name="env_" title="env_">
+<section id="env_" title="env_">
 <p>The special tag <icode>env_</icode> can be used to modify the environment
 before analysing children. For example, here we add an association
 between "login" and "zoggy". This will add to the environment
@@ -228,7 +228,7 @@ evaluate the returned XML trees.
 </p>
 </section>
 
-<section name="ext-a" title="ext-a">
+<section id="ext-a" title="ext-a">
 <p>
 <icode lang="xml">&lt;ext-a attributes&gt;...&lt;/ext-a&gt;</icode> is reduced
 to <icode lang="xml">&lt;span class="ext-a"&gt;&lt;a attributes&gt;...&lt;/&gt;&lt;/ext-a&gt;</icode>.
@@ -236,7 +236,7 @@ This can be used to add specific style link to external sites.
 </p>
 </section>
 
-<section name="graphx" title="graph">
+<section id="graphx" title="graph">
 <p>
 <icode lang="xml">&lt;graph/&gt;</icode> computes the graph of elements in SVG format, and returns
 a link to this graph displayed as a small graph. One can click on an element in the generated SVG
@@ -244,7 +244,7 @@ graph to jump to the element.
 </p>
 </section>
 
-<section name="hcode" title="hcode">
+<section id="hcode" title="hcode">
 <include file="syntax.tmpl"><![CDATA[<hcode lang="...">your code</hcode>]]></include>
 <p>
 This function inserts the given pre-formatted code. It uses the
@@ -254,7 +254,7 @@ inserted using <hcode lang="xml"><![CDATA[<hcode lang="xml">...</hcode>]]></hcod
 </p>
 </section>
 
-<section name="icode" title="icode">
+<section id="icode" title="icode">
 <p>
 <icode lang="xml">&lt;icode&gt;</icode> works like
 <a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a> but is used to
@@ -262,7 +262,7 @@ generate inline highlighted code instead of using a box.
 </p>
 </section>
 
-<section name="if" title="if">
+<section id="if" title="if">
 <include file="syntax.tmpl"><![CDATA[
 <if attr1="value1" attr2="value2" ...>
 <XML tree used when all conditions are verified>
@@ -293,7 +293,7 @@ a block or not:
 </p>
 </section>
 
-<section name="include" title="include">
+<section id="include" title="include">
 <include file="syntax.tmpl"><![CDATA[<include file="template">...</include>]]></include>
 <p>
 This function will load the file <icode>template</icode> from the template directory
@@ -319,7 +319,7 @@ will be reduced to
 </p>
 </section>
 
-<section name="image" title="image">
+<section id="image" title="image">
 <include file="syntax.tmpl"><![CDATA[<image float="[left|right]" src="..." ...>legend</image>]]></include>
 <p>
 This inserts an image using an <icode lang="xml">&lt;img .../&gt;</icode> node.
@@ -334,14 +334,14 @@ Additional attributes are passed to the generated <icode>img</icode> node.
 </p>
 </section>
 
-<section name="keyword" title="keyword">
+<section id="keyword" title="keyword">
 <p>
 <icode lang="xml">&lt;keyword/&gt;</icode> inserts the name of the current keyword,
 when computing keyword list (in template <icode>keyword.tmpl</icode>).
 </p>
 </section>
 
-<section name="elt-keywordsx" title="elt-keywords and elt-topics">
+<section id="elt-keywordsx" title="elt-keywords and elt-topics">
 <p>
 <icode lang="xml">&lt;elt-keywords sep="..."/&gt;</icode> and
 <icode lang="xml">&lt;elt-topics sep="..."/&gt;</icode> respectively return
@@ -354,7 +354,7 @@ Each topic will be displayed using a <icode>topic.tmpl</icode> template file.
 </p>
 </section>
 
-<section name="langswitch" title="langswitch">
+<section id="langswitch" title="langswitch">
 <p>
 If <icode>stog</icode> is launched with option <icode>--lang language</icode>, the
 <icode lang="xml">&lt;langswitch&gt;</icode> function returns some code to access
@@ -362,7 +362,7 @@ to pages in other languages than <icode>language</icode>.
 </p>
 </section>
 
-<section name="latex" title="latex">
+<section id="latex" title="latex">
 <p>
 <icode lang="xml">&lt;latex&gt;...&lt;/latex&gt;</icode> is used to compile
 latex code and display it as SVG in the page. Read
@@ -370,7 +370,7 @@ latex code and display it as SVG in the page. Read
 </p>
 </section>
 
-<section name="previous" title="previous and next">
+<section id="previous" title="previous and next">
 <p>
 <icode lang="xml">&lt;previous/&gt;</icode> and
 <icode lang="xml">&lt;next/&gt;</icode> respectively return a link to the previous and next
@@ -378,7 +378,7 @@ element according to the chronological order of element dates.
 </p>
 </section>
 
-<section name="ocaml" title="ocaml">
+<section id="ocaml" title="ocaml">
 <p>
 <icode lang="xml">&lt;ocaml&gt;</icode> works like
 <a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a>
@@ -387,51 +387,51 @@ attribute already set to "ocaml".
 </p>
 </section>
 
-<section name="section" title="section and subsection">
-<include file="syntax.tmpl"><![CDATA[<section name="..." title="...">...</section>
-<subsection name="..." title="...">...</subsection>
+<section id="section" title="section and subsection">
+<include file="syntax.tmpl"><![CDATA[<section id="..." title="...">...</section>
+<subsection id="..." title="...">...</subsection>
  ]]></include>
 <p>This is used to insert sections and subsections, with a given title. The name,
 if given, is used as id in the section title node.
 </p>
 </section>
 
-<section name="sep_" title="sep_">
+<section id="sep_" title="sep_">
 <p>
 <icode lang="xml">&lt;sep_/&gt;</icode> is the tag used to indicate the end of the introduction
 of an element. It is reduced to an empty string.
 </p>
 </section>
 
-<section name="site-descriptionx" title="site-description">
+<section id="site-descriptionx" title="site-description">
 <p>
 <icode lang="xml">&lt;site-description/&gt;</icode> returns the site description
 as specified in the main element.
 </p>
 </section>
 
-<section name="site-email" title="site-email">
+<section id="site-email" title="site-email">
 <p>
 <icode lang="xml">&lt;site-email/&gt;</icode> returns the site contact email
 as specified in the main element.
 </p>
 </section>
 
-<section name="site-titlex" title="site-title">
+<section id="site-titlex" title="site-title">
 <p>
 <icode lang="xml">&lt;site-title/&gt;</icode> returns the site title as specified in the
 main element.
 </p>
 </section>
 
-<section name="site-url" title="site-url">
+<section id="site-url" title="site-url">
 <p>
 <icode lang="xml">&lt;site-url/&gt;</icode> returns the site url as specified in the
 main element.
 </p>
 </section>
 
-<section name="toc" title="toc and prepare-toc">
+<section id="toc" title="toc and prepare-toc">
 <include file="syntax.tmpl"><![CDATA[<prepare-toc depth="[1|2|...]">
 ...
 <toc>text</toc>
@@ -459,14 +459,14 @@ is used to specify the depth of the table of contents.
 </p>
 </section>
 
-<section name="topic" title="topic">
+<section id="topic" title="topic">
 <p>
 <icode lang="xml">&lt;topic/&gt;</icode> inserts the name of the current topic,
 when computing topic list (in template <icode>topic.tmpl</icode>).
 </p>
 </section>
 
-<section name="two-columns" title="two-columns and n-columns">
+<section id="two-columns" title="two-columns and n-columns">
 <include file="syntax.tmpl"><![CDATA[<two-columns>
 <XML for left column/>
 <XML for right column/>

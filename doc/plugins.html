@@ -6,7 +6,7 @@ Plugins are written in OCaml. The compiled OCaml code is then
 loaded in Stog with the <icode>--plugin</icode> or <icode>--package</icode>
 options of <icode>stog</icode> (see <page href="getting_started#running"/>).
 </p>
-<section name="writing" title="Writing the code">
+<section id="writing" title="Writing the code">
 <p>
 A plugin just registers new functions associated to tags.
 Here is an example:
@@ -19,7 +19,7 @@ Have a look at the <a href="&lt;site-url/&gt;/ref-doc/index.html">Stog library r
 </p>
 </section>
 
-<section name="compiling" title="Compilation">
+<section id="compiling" title="Compilation">
 <p>
 The plugin is simply compiled with
 <command-line>ocamlfind ocamlopt -package stog -rectypes -shared -o plugin_example.cmxs plugin_example.ml</command-line>
@@ -29,7 +29,7 @@ for bytecode.
 </p>
 </section>
 
-<section name="using" title="Using">
+<section id="using" title="Using">
 <p>
 The plugin is used by specifying it one the <icode>stog</icode> command line:
 </p>

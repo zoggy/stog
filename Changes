@@ -1,4 +1,6 @@
 Next release:
+  * veritfy references to blocks by id (sections, ...) and use their title in links
+  * now use "id" attribute instead of "name" attribute in sectionning tags
   * define and use levels of rules; plugins can extend the number of levels
     to define their own rewrite system
   * handle relative paths in include, when starting with . or ..

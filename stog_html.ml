@@ -29,13 +29,42 @@
 (** *)
 
 open Stog_types;;
+module Smap = Stog_types.Str_map;;
 
 let languages = ["fr" ; "en" ];;
 
 let current_stog = ref None;;
-
 let plugin_rules = ref [];;
 let stage0_funs : (Stog_types.stog -> Stog_types.stog) list ref = ref [];;
+let blocks = ref Smap.empty ;;
+
+let add_block ~hid ~id ~short ~long =
+  let map =
+    try
+      let map = Smap.find hid !blocks in
+      Smap.add id (short, long) map
+    with Not_found -> Smap.empty
+  in
+  blocks := Smap.add hid map !blocks
+;;
+
+let get_in_env env s =
+  let node = "<"^s^"/>" in
+  let s = Xtmpl.apply env node in
+  if s = node then "" else s
+;;
+
+let get_in_args_or_env env args s =
+  match Xtmpl.get_arg args s with
+    None -> get_in_env env s
+  | Some s -> s
+;;
+
+let get_hid env =
+  let s = get_in_env env Stog_tags.elt_hid in
+  assert (s <> "");
+  s
+;;
 
 let escape_html s =
   let b = Buffer.create 256 in
@@ -176,12 +205,14 @@ let fun_elt_href ?typ href stog env args subs =
       try
         let p = String.index href '#' in
         let len = String.length href in
-        (String.sub href 0 p, Some (String.sub href (p+1) (len - (p+1))))
+        let hid = String.sub href 0 p in
+        (hid, Some (String.sub href (p+1) (len - (p+1))))
       with
         Not_found -> (href, None)
     in
     let elt =
       try
+        let hid = match hid with "" -> get_hid env | s ->  s in
         let hid = Stog_types.human_id_of_string hid in
         let (_, elt) = Stog_types.elt_by_human_id ?typ stog hid in
         Some elt
@@ -191,13 +222,33 @@ let fun_elt_href ?typ href stog env args subs =
           None
     in
     let text =
-      match elt, subs with
-        None, _ -> [Xtmpl.D "??"]
-      | Some elt, [] ->
+      match elt, subs, id with
+        None, _, _ -> [Xtmpl.D "??"]
+      | Some elt, [], None ->
           let quote = if quotes then "\"" else "" in
           let s = Printf.sprintf "%s%s%s" quote elt.elt_title quote in
           [Xtmpl.xml_of_string s]
-      | Some _, text -> text
+      | Some _, text, None -> text
+      | Some elt, _, Some id ->
+          let hid = Stog_types.string_of_human_id elt.elt_human_id in
+          let title =
+            try
+              let (short, long) = Smap.find id (Smap.find hid !blocks) in
+              match Xtmpl.get_arg args "long" with
+                Some "true" -> long
+              | _ -> short
+            with Not_found ->
+                let msg = Printf.sprintf "Unknown block \"%s#%s\"" hid id in
+                Stog_msg.error msg;
+                Xtmpl.D "??"
+          in
+          match subs with
+            [] ->
+              if quotes then
+                [ Xtmpl.D "\"" ; title ; Xtmpl.D "\""]
+              else
+                [title]
+          | text -> text
     in
     (elt, id, text)
   in
@@ -342,18 +393,28 @@ let fun_ocaml = fun_hcode ~lang: "ocaml";;
 let fun_command_line = fun_hcode ~lang: "sh";;
 let fun_icode = fun_hcode ~inline: true ;;
 
-let make_fun_section cls _env args body =
-  let id =
-    match Xtmpl.get_arg args "name" with
+let make_fun_section cls env args body =
+  let hid = get_hid env in
+  let id_opt = Xtmpl.get_arg args "id" in
+  let att_id =
+    match id_opt with
       None -> []
     | Some name -> ["id", name]
   in
+  let title_opt = Xtmpl.get_arg args "title" in
   let title =
-    match Xtmpl.get_arg args "title" with
+    match title_opt with
       None -> []
     | Some t ->
-        [Xtmpl.T ("div", ["class", cls^"-title"] @ id, [Xtmpl.xml_of_string t])]
+        [Xtmpl.T ("div", ["class", cls^"-title"] @ att_id, [Xtmpl.xml_of_string t])]
   in
+  (
+   match id_opt with
+     None -> ()
+   | Some id ->
+       let title = match title_opt with None -> Xtmpl.D "_" | Some s -> Xtmpl.xml_of_string s in
+       add_block ~hid ~id ~short: title ~long: title
+  );
   [ Xtmpl.T ("div", ["class", cls], title @ body) ]
 ;;
 
@@ -525,7 +586,7 @@ let fun_prepare_toc tags env args subs =
   | Xtmpl.D _ -> acc
   | Xtmpl.T (tag, atts, subs) when List.mem tag tags ->
       begin
-        match Xtmpl.get_arg atts "name", Xtmpl.get_arg atts "title" with
+        match Xtmpl.get_arg atts "id", Xtmpl.get_arg atts "title" with
           None, _ | _, None ->
             (*prerr_endline "no name nor title";*)
             acc
@@ -754,7 +815,6 @@ and build_base_rules stog elt_id elt =
   let l =
     !plugin_rules @
     [
-      Stog_tags.elt_hid, (fun  _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)]) ;
       Stog_tags.elt_title, mk f_title ;
       Stog_tags.elt_url, mk f_url ;
       Stog_tags.elt_body, mk f_body ;
@@ -774,8 +834,6 @@ and build_base_rules stog elt_id elt =
       Stog_tags.icode, fun_icode ?lang: None stog;
       Stog_tags.ocaml, fun_ocaml ~inline: false stog;
       Stog_tags.command_line, fun_command_line ~inline: false stog ;
-      Stog_tags.post, fun_post stog;
-      Stog_tags.elt, fun_elt stog;
       Stog_tags.site_url, fun_blog_url stog ;
       Stog_tags.search_form, fun_search_form stog ;
       Stog_tags.site_title, (fun _ _ _ -> [ Xtmpl.D stog.stog_title ]) ;
@@ -785,7 +843,6 @@ and build_base_rules stog elt_id elt =
       Stog_tags.n_columns, fun_ncolumns ;
       Stog_tags.ext_a, fun_exta ;
       Stog_tags.graph, fun_graph stog ;
-      Stog_tags.page, (fun_page stog) ;
       Stog_tags.latex, (Stog_latex.fun_latex stog) ;
       Stog_tags.next, (fun _ _ _ -> next);
       Stog_tags.previous, (fun _ _ _ -> previous);
@@ -919,7 +976,6 @@ and env_of_vars ?env vars =
 let compute_elt build_rules env stog elt_id elt =
   Stog_msg.verbose ~level:2
   (Printf.sprintf "Computing %S" (Stog_types.string_of_human_id elt.elt_human_id));
-
   let xmls =
     match elt.elt_out with
       None ->
@@ -929,9 +985,11 @@ let compute_elt build_rules env stog elt_id elt =
         xmls
   in
   let env = env_of_vars ~env elt.elt_vars in
-  let env = Xtmpl.env_of_list ~env
-     (build_rules stog elt_id elt)
+  let rules =
+   (Stog_tags.elt_hid, (fun  _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)])) ::
+   (build_rules stog elt_id elt)
   in
+  let env = Xtmpl.env_of_list ~env rules in
   let env = env_add_langswitch env stog elt in
   let result = Xtmpl.apply_to_xmls env xmls in
   { elt with elt_out = Some result }
@@ -1166,6 +1224,16 @@ let rules_sectionning stog elt_id elt =
   List.map (fun tag -> (tag, make_fun_section tag)) tags
 ;;
 
+let rules_fun_elt stog elt_id elt =
+  [ Stog_tags.elt, fun_elt stog ;
+    Stog_tags.post, fun_post stog ;
+    Stog_tags.page, fun_page stog ;
+  ]
+;;
+
 let () = register_level_fun 0 (compute_elt rules_0);;
 let () = register_level_fun 50 (compute_elt rules_toc);;
 let () = register_level_fun 100 (compute_elt rules_sectionning);;
+let () = register_level_fun 150 (compute_elt rules_fun_elt);;
+
+
