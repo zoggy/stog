@@ -40,12 +40,18 @@ let blocks = ref Smap.empty ;;
 
 let add_block ~hid ~id ~short ~long =
   let map =
-    try
-      let map = Smap.find hid !blocks in
-      Smap.add id (short, long) map
+    try Smap.find hid !blocks
     with Not_found -> Smap.empty
+    in
+  let map =
+    try
+      ignore (Smap.find id map);
+      Stog_msg.warning (Printf.sprintf "Multiple blocks with id %S for hid=%S" id hid);
+      map
+    with Not_found ->
+        Smap.add id (short, long) map
   in
-  blocks := Smap.add hid map !blocks
+  blocks := Smap.add hid map !blocks;
 ;;
 
 let get_in_env env s =
@@ -233,14 +239,20 @@ let fun_elt_href ?typ href stog env args subs =
           let hid = Stog_types.string_of_human_id elt.elt_human_id in
           let title =
             try
-              let (short, long) = Smap.find id (Smap.find hid !blocks) in
-              match Xtmpl.get_arg args "long" with
-                Some "true" -> long
-              | _ -> short
+              let id_map = Smap.find hid !blocks in
+              try
+                let (short, long) = Smap.find id id_map in
+                match Xtmpl.get_arg args "long" with
+                  Some "true" -> long
+                | _ -> short
+              with Not_found ->
+                  let msg = Printf.sprintf "Unknown block hid=%S, id=%S" hid id in
+                  Stog_msg.error msg;
+                  Xtmpl.D "??"
             with Not_found ->
-                let msg = Printf.sprintf "Unknown block \"%s#%s\"" hid id in
-                Stog_msg.error msg;
-                Xtmpl.D "??"
+              let msg = Printf.sprintf "Unknown element %S" hid in
+              Stog_msg.error msg;
+              Xtmpl.D "??"
           in
           match subs with
             [] ->
