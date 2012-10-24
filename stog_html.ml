@@ -347,7 +347,7 @@ let highlight ~opts code =
       let code = Stog_misc.string_of_file temp_file in
       Sys.remove code_file;
       Sys.remove temp_file;
-      code
+      Stog_misc.strip_string code
   | _ ->
       failwith (Printf.sprintf "command failed: %s" com)
 ;;
