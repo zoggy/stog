@@ -43,9 +43,13 @@ val plugin_rules : (string * Xtmpl.callback) list ref
 val stage0_funs : (Stog_types.stog -> Stog_types.stog) list ref
 
 (** Adding a known block id for a given hid. A short and a long title
-  are specified. These registered blocks are used by <elt href="..#id"/> nodes. *)
+  are specified. These registered blocks are used by <elt href="..#id"/> nodes.
+  @on_dup specifies what to do when the id to add is already present.
+  Default is to issue a warning. [`Fail] will raise a [Failure] exception.
+*)
 val add_block :
-  hid: string -> id: string -> short: Xtmpl.tree -> long: Xtmpl.tree -> unit
+  ?on_dup: [`Ignore | `Fail | `Warn] ->
+  hid: string -> id: string -> short: Xtmpl.tree -> long: Xtmpl.tree -> unit -> unit
 
 (** [get_in_env env tag] will look for the given string in the environment,
   by building a <tag/> node and evaluating it. If the result is the same node,

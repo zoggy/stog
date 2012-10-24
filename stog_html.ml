@@ -38,7 +38,7 @@ let plugin_rules = ref [];;
 let stage0_funs : (Stog_types.stog -> Stog_types.stog) list ref = ref [];;
 let blocks = ref Smap.empty ;;
 
-let add_block ~hid ~id ~short ~long =
+let add_block ?(on_dup=`Warn) ~hid ~id ~short ~long () =
   let map =
     try Smap.find hid !blocks
     with Not_found -> Smap.empty
@@ -46,7 +46,13 @@ let add_block ~hid ~id ~short ~long =
   let map =
     try
       ignore (Smap.find id map);
-      Stog_msg.warning (Printf.sprintf "Multiple blocks with id %S for hid=%S" id hid);
+      begin
+        let msg = Printf.sprintf "Multiple blocks with id %S for hid=%S" id hid in
+        match on_dup with
+          `Warn -> Stog_msg.warning msg
+        | `Fail -> failwith msg
+        | `Ignore -> ()
+      end;
       map
     with Not_found ->
         Smap.add id (short, long) map
@@ -425,7 +431,7 @@ let make_fun_section cls env args body =
      None -> ()
    | Some id ->
        let title = match title_opt with None -> Xtmpl.D "_" | Some s -> Xtmpl.xml_of_string s in
-       add_block ~hid ~id ~short: title ~long: title
+       add_block ~hid ~id ~short: title ~long: title ()
   );
   [ Xtmpl.T ("div", ["class", cls], title @ body) ]
 ;;
@@ -1141,6 +1147,8 @@ type level_fun =
 ;;
 
 module Intmap = Map.Make (struct type t = int let compare = Pervasives.compare end);;
+module Set = Set.Make (struct type t = string let compare = Pervasives.compare end);;
+
 let levels = ref (Intmap.empty : level_fun list Intmap.t);;
 
 let register_level_fun level f =
@@ -1236,6 +1244,41 @@ let rules_sectionning stog elt_id elt =
   List.map (fun tag -> (tag, make_fun_section tag)) tags
 ;;
 
+let gather_existing_ids =
+  let rec f hid set = function
+    Xtmpl.D _ -> set
+  | Xtmpl.E (((_,tag),atts),subs) ->
+      let g acc = function
+        (("",s), v) -> (s, v) :: acc
+      | _ -> acc
+      in
+      let atts = List.fold_left g [] atts in
+      f hid set (Xtmpl.T (tag, atts, subs))
+  | Xtmpl.T (tag, atts, subs) ->
+      let set =
+        match Xtmpl.get_arg atts "id" with
+          None -> set
+        | Some id ->
+            if Sset.mem id set then
+              failwith (Printf.sprintf "id %S defined twice in the same element %S." id
+               (Stog_types.string_of_human_id hid))
+            else
+                Sset.add id set
+      in
+      List.fold_left (f hid) set subs
+  in
+  fun env stog elt_id elt ->
+    match elt.elt_out with
+      None -> elt
+    | Some body ->
+        let set = List.fold_left (f elt.elt_human_id) Sset.empty body in
+        let title = Xtmpl.xml_of_string elt.elt_title in
+        let hid = Stog_types.string_of_human_id elt.elt_human_id in
+        Sset.iter
+          (fun id -> add_block ~on_dup: `Ignore ~hid ~id ~short: title ~long: title ()) set;
+        elt
+;;
+
 let rules_fun_elt stog elt_id elt =
   [ Stog_tags.elt, fun_elt stog ;
     Stog_tags.post, fun_post stog ;
@@ -1246,6 +1289,7 @@ let rules_fun_elt stog elt_id elt =
 let () = register_level_fun 0 (compute_elt rules_0);;
 let () = register_level_fun 50 (compute_elt rules_toc);;
 let () = register_level_fun 100 (compute_elt rules_sectionning);;
+let () = register_level_fun 120 (gather_existing_ids);;
 let () = register_level_fun 150 (compute_elt rules_fun_elt);;
 
 

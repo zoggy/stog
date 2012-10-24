@@ -44,9 +44,13 @@ val unregister_rule : string -> Xtmpl.callback option
 val stog : unit -> Stog_types.stog
 
 (** Adding a known block id for a given hid. A short and a long title
-  are specified. These registered blocks are used by <elt href="..#id"/> nodes. *)
+  are specified. These registered blocks are used by <elt href="..#id"/> nodes.
+  @on_dup specifies what to do when the id to add is already present.
+  Default is to issue a warning. [`Fail] will raise a [Failure] exception.
+*)
 val add_block :
-  hid: string -> id: string -> short: Xtmpl.tree -> long: Xtmpl.tree -> unit
+  ?on_dup: [`Ignore | `Fail | `Warn] ->
+  hid: string -> id: string -> short: Xtmpl.tree -> long: Xtmpl.tree -> unit -> unit
 
 val verbose : ?info:string -> ?level: int -> string -> unit
 val set_print_verbose : (string -> unit) -> unit
