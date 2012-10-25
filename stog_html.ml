@@ -1283,7 +1283,7 @@ let rules_fun_elt stog elt_id elt =
   [ Stog_tags.elt, fun_elt stog ;
     Stog_tags.post, fun_post stog ;
     Stog_tags.page, fun_page stog ;
-  ]
+  ] @ (build_base_rules stog elt_id elt)
 ;;
 
 let () = register_level_fun 0 (compute_elt rules_0);;
