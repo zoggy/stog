@@ -32,7 +32,14 @@ let gensym = let cpt = ref 0 in fun () -> incr cpt; !cpt;;
 
 let cache = Hashtbl.create 111;;
 
-let make_svg outdir ?(packages=[]) latex_code =
+let get_in_env env s =
+  let node = "<"^s^"/>" in
+  let s = Xtmpl.apply env node in
+  if s = node then "" else s
+;;
+
+let make_svg outdir ?(packages=[]) ?defs latex_code =
+  let defs = match defs with None -> "" | Some s -> s^"\n" in
   try Hashtbl.find cache latex_code
   with Not_found ->
       let tex = Filename.temp_file "stog" ".tex" in
@@ -40,13 +47,14 @@ let make_svg outdir ?(packages=[]) latex_code =
 "\\documentclass[12pt]{article}
 \\pagestyle{empty}
 \\usepackage[utf8x]{inputenc}
-%s
+%s%s
 \\begin{document}
 %s
 \\end{document}
 "
         (String.concat ""
          (List.map (fun s -> Printf.sprintf "\\usepackage%s\n" s) packages))
+         defs
         latex_code
       in
       let base = Filename.chop_extension tex in
@@ -86,7 +94,8 @@ let fun_latex stog env args subs =
   let packages = Xtmpl.opt_arg args "packages" in
   let packages = Stog_misc.split_string packages [';'] in
   let showcode = Xtmpl.opt_arg args "showcode" = "true" in
-  let svg = Filename.basename (make_svg stog.Stog_types.stog_outdir ~packages code) in
+  let defs = match get_in_env env "latex-defs" with "" -> None | s -> Some s in
+  let svg = Filename.basename (make_svg stog.Stog_types.stog_outdir ~packages ?defs code) in
   let url = Printf.sprintf "%s/%s" stog.Stog_types.stog_base_url svg in
   (Xtmpl.T ("img", ["class", "latex" ; "src", url ; "alt", code ; "title", code], []) ) ::
   (match showcode with

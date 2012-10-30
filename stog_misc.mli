@@ -136,3 +136,20 @@ val list_compare : ('a -> 'a -> int) -> 'a list -> 'a list -> int
 val filename_extension : string -> string
 
 val safe_mkdir : string -> unit
+
+(*i==v=[String.opt_of_string]=1.0====*)
+(** [opt_of_string s] returns [None] if the string if empty
+   (length is 0) or [Some s].
+@@version 1.0
+@@cgname String.opt_of_string*)
+val opt_of_string : string -> string option
+(*/i==v=[String.opt_of_string]=1.0====*)
+
+(*i==v=[String.string_of_opt]=1.0====*)
+(** [string_of_opt s_opt] returns the empty string if
+   [s_opt = None] or [s] if [s_opt = Some s].
+@@version 1.0
+@@cgname String.string_of_opt*)
+val string_of_opt : string option -> string
+(*/i==v=[String.string_of_opt]=1.0====*)
+

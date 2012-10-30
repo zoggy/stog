@@ -259,3 +259,15 @@ let safe_mkdir dir =
       let msg = Printf.sprintf "Execution failed (%d): %s" n com in
       failwith msg
 ;;
+
+(*c==v=[String.string_of_opt]=1.0====*)
+let string_of_opt = function
+  None -> ""
+| Some s -> s
+(*/c==v=[String.string_of_opt]=1.0====*)
+
+(*c==v=[String.opt_of_string]=1.0====*)
+let opt_of_string = function
+  "" -> None
+| s -> Some s
+(*/c==v=[String.opt_of_string]=1.0====*)

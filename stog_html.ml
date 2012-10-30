@@ -37,6 +37,26 @@ let current_stog = ref None;;
 let plugin_rules = ref [];;
 let stage0_funs : (Stog_types.stog -> Stog_types.stog) list ref = ref [];;
 let blocks = ref Smap.empty ;;
+let counters = ref Smap.empty;;
+
+let bump_counter s_hid name =
+  let map =
+    try Smap.find s_hid !counters
+    with Not_found -> Smap.empty
+  in
+  let cpt =
+    try Smap.find name map + 1
+    with Not_found -> 1
+  in
+  let map = Smap.add name cpt map in
+  counters := Smap.add s_hid map !counters;
+  cpt
+;;
+
+let get_counter s_hid name =
+  try Smap.find name (Smap.find s_hid !counters)
+  with Not_found -> 0
+;;
 
 let add_block ?(on_dup=`Warn) ~hid ~id ~short ~long () =
   let map =
@@ -60,11 +80,7 @@ let add_block ?(on_dup=`Warn) ~hid ~id ~short ~long () =
   blocks := Smap.add hid map !blocks;
 ;;
 
-let get_in_env env s =
-  let node = "<"^s^"/>" in
-  let s = Xtmpl.apply env node in
-  if s = node then "" else s
-;;
+let get_in_env = Stog_latex.get_in_env;;
 
 let get_in_args_or_env env args s =
   match Xtmpl.get_arg args s with
@@ -155,6 +171,15 @@ let make_lang_rules stog =
       (List.map (fun lang -> (lang, f_remove)) to_remove)
 ;;
 
+let fun_counter env atts subs =
+  match Xtmpl.get_arg atts "counter-name" with
+    None -> subs
+  | Some name ->
+      let hid = get_hid env in
+      let cpt = get_counter hid name in
+      [Xtmpl.D (string_of_int cpt)]
+;;
+
 let fun_include tmpl_dir elt _env args subs =
   match Xtmpl.get_arg args "file" with
     None -> failwith "Missing 'file' argument for include command";
@@ -209,7 +234,7 @@ let fun_image _env args legend =
 let fun_elt_href ?typ href stog env args subs =
   let quotes =
     match Xtmpl.get_arg args "quotes" with
-      None -> true
+      None -> false
     | Some s -> Stog_io.bool_of_string s
   in
   let (elt, id, text) =
@@ -653,6 +678,85 @@ let fun_toc env args subs =
   subs @ [Xtmpl.T ("toc-contents", [], [])]
 ;;
 
+let fun_block1 stog env atts subs =
+  match Xtmpl.get_arg atts "href" with
+    Some s when s <> "" ->
+      begin
+        match Xtmpl.get_arg atts Stog_tags.elt_hid with
+          Some _ -> raise Xtmpl.No_change
+        | None ->
+            let hid = get_hid env in
+            [ Xtmpl.T (Stog_tags.block, [Stog_tags.elt_hid, hid ; "href", s], subs)]
+      end
+  | _ ->
+      let hid = get_hid env in
+      let id_opt = Xtmpl.get_arg atts "id" in
+      let label_opt = Xtmpl.get_arg atts "label" in
+      let class_opt = Xtmpl.get_arg atts "class" in
+      let title_opt = Xtmpl.get_arg atts "title" in
+      let cpt_opt =
+        match Xtmpl.get_arg atts "counter-name" with
+          None -> None
+        | Some name -> Some (bump_counter hid name)
+      in
+      let (short, long) =
+        match label_opt with
+          None -> failwith "No label for block"
+        | Some label ->
+            let short =
+              match cpt_opt with
+                None -> label
+              | Some cpt -> Printf.sprintf "%s%d"
+                (if label <> "" then label^" " else "") cpt
+            in
+            let long =
+              match title_opt, cpt_opt with
+                None, None -> short
+              | None, Some cpt -> Printf.sprintf "%s" short
+              | Some t, _ -> Printf.sprintf "%s: %s" short t
+            in
+            (short, long)
+      in
+      (match id_opt with
+         None -> ()
+       | Some id ->
+           let short = Xtmpl.xml_of_string short in
+           let long = Xtmpl.xml_of_string long in
+           add_block ~hid ~id ~short ~long ()
+      );
+      let env = Xtmpl.env_add_att "id" (Stog_misc.string_of_opt id_opt) env in
+      let env = Xtmpl.env_add_att "class" (Stog_misc.string_of_opt class_opt) env in
+      let env = Xtmpl.env_add_att "title" long env in
+      match subs with
+        [] ->
+          let tmpl_file =
+            match class_opt with
+              None -> "block.tmpl"
+            | Some c -> Printf.sprintf "block-%s.tmpl" c
+          in
+          let tmpl = Filename.concat stog.Stog_types.stog_tmpl_dir tmpl_file in
+          [Xtmpl.xml_of_string (Xtmpl.apply_from_file env tmpl)]
+      | _ ->
+          Xtmpl.apply_to_xmls env subs
+;;
+
+let fun_block2 env atts subs =
+  match Xtmpl.get_arg atts "href" with
+    None -> subs
+  | Some href ->
+      let hid = match Xtmpl.get_arg atts Stog_tags.elt_hid with
+          None -> assert false
+        | Some hid -> hid
+      in
+      let url = Printf.sprintf "%s#%s" hid href in
+      let quotes =
+        match Xtmpl.get_arg atts "quotes" with
+          None -> "false"
+        | Some s -> s
+      in
+      [Xtmpl.T (Stog_tags.elt, ["href", url ; "quotes", quotes], [])]
+;;
+
 let intro_of_elt stog elt =
   let rec iter acc = function
     [] -> raise Not_found
@@ -844,6 +948,8 @@ and build_base_rules stog elt_id elt =
       Stog_tags.elt_intro, mk f_intro ;
       Stog_tags.sep, (fun _ _ _ -> []);
       Stog_tags.elements, elt_list stog ;
+      Stog_tags.block, fun_block1 stog ;
+      Stog_tags.counter, fun_counter  ;
       Stog_tags.if_, fun_if ;
       Stog_tags.include_, fun_include stog.stog_tmpl_dir elt ;
       Stog_tags.image, fun_image ;
@@ -1257,11 +1363,13 @@ let gather_existing_ids =
   | Xtmpl.T (tag, atts, subs) ->
       let set =
         match Xtmpl.get_arg atts "id" with
-          None -> set
+          None
+        | Some "" -> set
         | Some id ->
             if Sset.mem id set then
-              failwith (Printf.sprintf "id %S defined twice in the same element %S." id
-               (Stog_types.string_of_human_id hid))
+              failwith (Printf.sprintf
+               "id %S defined twice in the same element %S (here for tag %S)" id
+               (Stog_types.string_of_human_id hid) tag)
             else
                 Sset.add id set
       in
@@ -1283,6 +1391,7 @@ let rules_fun_elt stog elt_id elt =
   [ Stog_tags.elt, fun_elt stog ;
     Stog_tags.post, fun_post stog ;
     Stog_tags.page, fun_page stog ;
+    Stog_tags.block, fun_block2 ;
   ] @ (build_base_rules stog elt_id elt)
 ;;
 
