@@ -7,8 +7,6 @@ OK- file box to handle files in each post directory
 
 
 -functions: just vars with parameters in elt header
--counters for sectionning
--title-format in blocks
 - eqnarray and ids in eqnarray
 
 microdata:

@@ -1,4 +1,5 @@
 Next release:
+  * sectionning now uses blocks and counters
   * handle blocks and counters (from stog_writing)
   * veritfy references to blocks by id (sections, ...) and use their title in links
   * now use "id" attribute instead of "name" attribute in sectionning tags
