@@ -67,6 +67,12 @@ let set_counter s_hid name v =
   counters := Smap.add s_hid map !counters
 ;;
 
+let random_id () =
+  Printf.sprintf "%0x-%0x-%0x-%0x"
+    (Random.int 0xffff) (Random.int 0xffff)
+    (Random.int 0xffff) (Random.int 0xffff)
+;;
+
 let add_block ?(on_dup=`Warn) ~hid ~id ~short ~long () =
   let map =
     try Smap.find hid !blocks
@@ -181,12 +187,21 @@ let make_lang_rules stog =
 ;;
 
 let fun_counter env atts subs =
+(*  prerr_endline (Printf.sprintf "fun_counter args=%s\nenv=%s"
+    (String.concat "\n" (List.map (fun (s, v) -> Printf.sprintf "%S, %S" s v) atts))
+    (Xtmpl.string_of_env env));
+*)
   match Xtmpl.get_arg atts "counter-name" with
     None -> subs
   | Some name ->
       let hid = get_hid env in
-      let cpt = get_counter hid name in
-      [Xtmpl.D (string_of_int cpt)]
+      let v = Printf.sprintf "counter__%s" name in
+      match get_in_env env v with
+        "" ->
+          prerr_endline ("NO V "^v^"\n"^(Xtmpl.string_of_env env));
+          let cpt = get_counter hid name in
+          [Xtmpl.D (string_of_int cpt)]
+      | s -> [ Xtmpl.D s ]
 ;;
 
 let fun_include tmpl_dir elt _env args subs =
@@ -459,7 +474,18 @@ let make_fun_section sect_up cls sect_down env args subs =
     ]
   in
   let label = String.capitalize cls in
-  [ Xtmpl.T (Stog_tags.block, ("label", label) :: ("class", cls) :: ("counter-name", cls) :: args, body) ]
+  [ Xtmpl.T (Stog_tags.block,
+     ("label", label) :: ("class", cls) :: ("counter-name", cls) ::
+     ("with-contents", "true") :: args,
+     [
+       Xtmpl.T ("long-title-format", [],
+        [Xtmpl.xml_of_string (Printf.sprintf "<counter counter-name=%S/>. <title/>" cls)]);
+       Xtmpl.T ("short-title-format", [],
+        [Xtmpl.xml_of_string (Printf.sprintf "<counter counter-name=%S/>" cls)]);
+       Xtmpl.T ("contents", [], body) ;
+     ]
+    )
+  ]
 ;;
 
 let fun_search_form stog _env _ _ =
@@ -675,11 +701,130 @@ let fun_toc env args subs =
   subs @ [Xtmpl.T ("toc-contents", [], [])]
 ;;
 
-let fun_block1 stog env atts subs =
-  match Xtmpl.get_arg atts "href" with
+type block =
+  { blk_id : string ;
+    blk_label : Xtmpl.tree list option ;
+    blk_class : string option ;
+    blk_title : Xtmpl.tree list ;
+    blk_cpt_name : string option ;
+    blk_long_f : Xtmpl.tree list ;
+    blk_short_f : Xtmpl.tree list ;
+    blk_body : Xtmpl.tree list ;
+  }
+
+let block_body_of_subs stog blk = function
+  [] ->
+    let tmpl_file =
+      match blk.blk_class with
+        None -> "block.tmpl"
+      | Some c -> Printf.sprintf "block-%s.tmpl" c
+    in
+    let tmpl = Filename.concat stog.Stog_types.stog_tmpl_dir tmpl_file in
+    let s = Stog_misc.string_of_file tmpl in
+    [ Xtmpl.xml_of_string s ]
+| l -> l
+;;
+
+let read_block_from_subs stog =
+  let s_xmls l = String.concat "" (List.map Xtmpl.string_of_xml l) in
+  let rec f blk = function
+    Xtmpl.D _ -> blk
+  | Xtmpl.E (((_,tag),_),xmls) -> f blk (Xtmpl.T (tag, [], xmls))
+  | Xtmpl.T (tag,_,xmls) ->
+      match tag, xmls with
+        "id", [Xtmpl.D id] -> { blk with blk_id = id }
+      | "id", _ ->
+          Stog_msg.warning
+            (Printf.sprintf "Ignoring id of block: %S" (s_xmls xmls));
+          blk
+      | "label", _ -> { blk with blk_label = Some xmls }
+      | "class", [Xtmpl.D cls] -> { blk with blk_class = Some cls }
+      | "class", _ ->
+          Stog_msg.warning
+            (Printf.sprintf  "Ignoring class of block: %S" (s_xmls xmls));
+          blk
+      | "counter-name", [Xtmpl.D s] -> { blk with blk_cpt_name = Some s }
+      | "counter-name", _ ->
+          Stog_msg.warning
+            (Printf.sprintf "Ignoring counter-name of block: %S" (s_xmls xmls));
+          blk
+      | "title", _ -> { blk with blk_title = xmls }
+      | "long-title-format", _ -> { blk with blk_long_f = xmls }
+      | "short-title-format", _ -> { blk with blk_short_f = xmls }
+      | "contents", _ -> { blk with blk_body = block_body_of_subs stog blk xmls }
+      | _, _ ->
+          Stog_msg.warning
+            (Printf.sprintf "Ignoring block node %S" tag);
+          blk
+  in
+  List.fold_left f
+;;
+
+let read_block stog args subs =
+  let with_contents =
+    match Xtmpl.get_arg args "with-contents" with
+      Some "true" -> true
+    | None | Some _ -> false
+  in
+  let blk_id =
+    match Xtmpl.get_arg args "id" with
+      Some id -> id
+    | None -> random_id ()
+  in
+  let blk_label =
+    match Xtmpl.get_arg args "label" with
+      None -> None
+    | Some s -> Some [ Xtmpl.xml_of_string s ]
+  in
+  let blk_class = Xtmpl.get_arg args "class" in
+  let blk_title =
+    match Xtmpl.get_arg args "title" with
+      None -> [ Xtmpl.xml_of_string " " ]
+    | Some s -> [ Xtmpl.xml_of_string s ]
+  in
+  let blk_cpt_name = Xtmpl.get_arg args "counter-name" in
+  let xml_title = Xtmpl.T ("title", [], []) in
+  let xml_label =  Xtmpl.T ("label", [], []) in
+  let xml_cpt s = Xtmpl.T ("counter", ["counter-name", s], []) in
+  let blk_long_f =
+    match Xtmpl.get_arg args "long-title-format" with
+      None ->
+        (xml_label ::
+         (match blk_cpt_name with
+            None -> []
+          | Some c -> [Xtmpl.D " " ; xml_cpt c]
+         ) @ [ Xtmpl.D ": " ; xml_title ]
+        )
+    | Some s -> [ Xtmpl.xml_of_string s ]
+  in
+  let blk_short_f =
+    match Xtmpl.get_arg args "short-title-format" with
+      None ->
+        begin
+          match blk_label, blk_cpt_name with
+            None, None ->  [ xml_title ]
+          | Some _, None -> [ xml_label ]
+          | None, Some s -> [ xml_cpt s ]
+          | Some _, Some s -> [ xml_label ; Xtmpl.D " " ; xml_cpt s ]
+        end
+    | Some s -> [ Xtmpl.xml_of_string s ]
+  in
+  let blk = {
+    blk_id ; blk_label ; blk_class ; blk_title ;
+    blk_cpt_name ; blk_long_f ; blk_short_f ;
+    blk_body = [] ;
+    }
+  in
+  match with_contents with
+    false -> { blk with blk_body = block_body_of_subs stog blk subs }
+  | true -> read_block_from_subs stog blk subs
+;;
+
+let fun_block1 stog env args subs =
+  match Xtmpl.get_arg args "href" with
     Some s when s <> "" ->
       begin
-        match Xtmpl.get_arg atts Stog_tags.elt_hid with
+        match Xtmpl.get_arg args Stog_tags.elt_hid with
           Some _ -> raise Xtmpl.No_change
         | None ->
             let hid = get_hid env in
@@ -687,54 +832,30 @@ let fun_block1 stog env atts subs =
       end
   | _ ->
       let hid = get_hid env in
-      let id_opt = Xtmpl.get_arg atts "id" in
-      let label_opt = Xtmpl.get_arg atts "label" in
-      let class_opt = Xtmpl.get_arg atts "class" in
-      let title_opt = Xtmpl.get_arg atts "title" in
-      let cpt_opt =
-        match Xtmpl.get_arg atts "counter-name" with
-          None -> None
-        | Some name -> Some (bump_counter hid name)
+      let block = read_block stog args subs in
+      let env =
+        match block.blk_cpt_name with
+          None -> env
+        | Some name ->
+            let cpt = bump_counter hid name in
+            Xtmpl.env_add_att (Printf.sprintf "counter__%s" name) (string_of_int cpt) env
       in
-      let (short, long) =
-        match label_opt with
-          None -> failwith "No label for block"
-        | Some label ->
-            let short =
-              match cpt_opt with
-                None -> label
-              | Some cpt -> Printf.sprintf "%s%d"
-                (if label <> "" then label^" " else "") cpt
-            in
-            let long =
-              match title_opt, cpt_opt with
-                None, None -> short
-              | None, Some cpt -> Printf.sprintf "%s" short
-              | Some t, _ -> Printf.sprintf "%s: %s" short t
-            in
-            (short, long)
+      let env = Xtmpl.env_add_att "id" block.blk_id env in
+      let env = Xtmpl.env_add "title" (fun _ _ _ -> block.blk_title) env in
+      let env = Xtmpl.env_add "label"
+        (fun _ _ _ -> match block.blk_label with None -> [] | Some xml -> xml) env
       in
-      (match id_opt with
-         None -> ()
-       | Some id ->
-           let short = Xtmpl.xml_of_string short in
-           let long = Xtmpl.xml_of_string long in
-           add_block ~hid ~id ~short ~long ()
-      );
-      let env = Xtmpl.env_add_att "id" (Stog_misc.string_of_opt id_opt) env in
-      let env = Xtmpl.env_add_att "class" (Stog_misc.string_of_opt class_opt) env in
-      let env = Xtmpl.env_add_att "title" long env in
-      match subs with
-        [] ->
-          let tmpl_file =
-            match class_opt with
-              None -> "block.tmpl"
-            | Some c -> Printf.sprintf "block-%s.tmpl" c
-          in
-          let tmpl = Filename.concat stog.Stog_types.stog_tmpl_dir tmpl_file in
-          [Xtmpl.xml_of_string (Xtmpl.apply_from_file env tmpl)]
-      | _ ->
-          Xtmpl.apply_to_xmls env subs
+      let env = Xtmpl.env_add_att "class" (Stog_misc.string_of_opt block.blk_class) env in
+      let env = Xtmpl.env_add_att "counter-name" (Stog_misc.string_of_opt block.blk_cpt_name) env in
+      let long =
+        Xtmpl.T (Xtmpl.tag_main, [], Xtmpl.apply_to_xmls env block.blk_long_f)
+      in
+      let short =
+         Xtmpl.T (Xtmpl.tag_main, [], Xtmpl.apply_to_xmls env block.blk_short_f)
+      in
+      add_block ~hid ~id: block.blk_id ~short ~long ();
+      let env = Xtmpl.env_add "title" (fun _ _ _ -> [long]) env in
+      Xtmpl.apply_to_xmls env block.blk_body
 ;;
 
 let fun_block2 env atts subs =
@@ -946,7 +1067,7 @@ and build_base_rules stog elt_id elt =
       Stog_tags.sep, (fun _ _ _ -> []);
       Stog_tags.elements, elt_list stog ;
       Stog_tags.block, fun_block1 stog ;
-      Stog_tags.counter, fun_counter  ;
+      Stog_tags.counter, fun_counter ;
       Stog_tags.if_, fun_if ;
       Stog_tags.include_, fun_include stog.stog_tmpl_dir elt ;
       Stog_tags.image, fun_image ;
@@ -1351,6 +1472,7 @@ let rules_sectionning stog elt_id elt =
     f (rule :: acc) (tag :: up) rest
   in
   let rules = f [] [] tags in
+  (Stog_tags.counter, fun_counter)::
   (Stog_tags.block, fun_block1 stog) :: rules
 ;;
 
@@ -1375,7 +1497,7 @@ let gather_existing_ids =
                "id %S defined twice in the same element %S (here for tag %S)" id
                (Stog_types.string_of_human_id hid) tag)
             else
-                Sset.add id set
+               Sset.add id set
       in
       List.fold_left (f hid) set subs
   in
@@ -1383,7 +1505,15 @@ let gather_existing_ids =
     match elt.elt_out with
       None -> elt
     | Some body ->
-        let set = List.fold_left (f elt.elt_human_id) Sset.empty body in
+        let set =
+          let g set xml =
+            try f elt.elt_human_id set xml
+            with e ->
+                prerr_endline (Xtmpl.string_of_xml xml);
+                raise e
+          in
+          List.fold_left g Sset.empty body
+        in
         let title = Xtmpl.xml_of_string elt.elt_title in
         let hid = Stog_types.string_of_human_id elt.elt_human_id in
         Sset.iter
