@@ -473,15 +473,19 @@ let make_fun_section sect_up cls sect_down env args subs =
       )
     ]
   in
+  let f cls =
+    Printf.sprintf "<counter counter-name=%S/>" cls
+  in
+  let counters = String.concat "." (List.rev_map f (cls::sect_up)) in
   let label = String.capitalize cls in
   [ Xtmpl.T (Stog_tags.block,
      ("label", label) :: ("class", cls) :: ("counter-name", cls) ::
      ("with-contents", "true") :: args,
      [
        Xtmpl.T ("long-title-format", [],
-        [Xtmpl.xml_of_string (Printf.sprintf "<counter counter-name=%S/>. <title/>" cls)]);
+        [Xtmpl.xml_of_string (Printf.sprintf "%s. <title/>" counters cls)]);
        Xtmpl.T ("short-title-format", [],
-        [Xtmpl.xml_of_string (Printf.sprintf "<counter counter-name=%S/>" cls)]);
+        [Xtmpl.xml_of_string counters]
        Xtmpl.T ("contents", [], body) ;
      ]
     )
