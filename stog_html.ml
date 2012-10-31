@@ -58,6 +58,15 @@ let get_counter s_hid name =
   with Not_found -> 0
 ;;
 
+let set_counter s_hid name v =
+  let map =
+   try Smap.find s_hid !counters
+   with Not_found -> Smap.empty
+  in
+  let map = Smap.add name v map in
+  counters := Smap.add s_hid map !counters
+;;
+
 let add_block ?(on_dup=`Warn) ~hid ~id ~short ~long () =
   let map =
     try Smap.find hid !blocks
@@ -436,34 +445,22 @@ let fun_ocaml = fun_hcode ~lang: "ocaml";;
 let fun_command_line = fun_hcode ~lang: "sh";;
 let fun_icode = fun_hcode ~inline: true ;;
 
-let make_fun_section cls env args body =
+let make_fun_section sect_up cls sect_down env args subs =
   let hid = get_hid env in
-  let id_opt = Xtmpl.get_arg args "id" in
-  let att_id =
-    match id_opt with
-      None -> []
-    | Some name -> ["id", name]
+  List.iter (fun cls_down -> set_counter hid cls_down 0) sect_down;
+  let att_id = ("id", "<id/>") in
+  let body =
+    [ Xtmpl.T ("div", ("class", cls) :: [],
+       (
+        (Xtmpl.T ("div", ("class", cls^"-title") :: att_id :: [], [Xtmpl.T ("title",[],[])])) ::
+        subs
+       )
+      )
+    ]
   in
-  let title_opt = Xtmpl.get_arg args "title" in
-  let title =
-    match title_opt with
-      None -> []
-    | Some t ->
-        [Xtmpl.T ("div", ["class", cls^"-title"] @ att_id, [Xtmpl.xml_of_string t])]
-  in
-  (
-   match id_opt with
-     None -> ()
-   | Some id ->
-       let title = match title_opt with None -> Xtmpl.D "_" | Some s -> Xtmpl.xml_of_string s in
-       add_block ~hid ~id ~short: title ~long: title ()
-  );
-  [ Xtmpl.T ("div", ["class", cls], title @ body) ]
+  let label = String.capitalize cls in
+  [ Xtmpl.T (Stog_tags.block, ("label", label) :: ("class", cls) :: ("counter-name", cls) :: args, body) ]
 ;;
-
-let fun_chapter = make_fun_section "chapter";;
-let fun_subsection = make_fun_section "subsection";;
-let fun_section = make_fun_section "section";;
 
 let fun_search_form stog _env _ _ =
   let tmpl = Filename.concat stog.stog_tmpl_dir "search.tmpl" in
@@ -1347,7 +1344,14 @@ let rules_toc stog elt_id elt =
 
 let rules_sectionning stog elt_id elt =
   let tags = get_sectionning_tags stog elt in
-  List.map (fun tag -> (tag, make_fun_section tag)) tags
+  let rec f acc up = function
+    [] -> acc
+  | tag :: rest ->
+    let rule = (tag, make_fun_section up tag rest) in
+    f (rule :: acc) (tag :: up) rest
+  in
+  let rules = f [] [] tags in
+  (Stog_tags.block, fun_block1 stog) :: rules
 ;;
 
 let gather_existing_ids =

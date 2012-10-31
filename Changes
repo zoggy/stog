@@ -1,5 +1,5 @@
 Next release:
-  * handle blocks and counter (from stog_writing)
+  * handle blocks and counters (from stog_writing)
   * veritfy references to blocks by id (sections, ...) and use their title in links
   * now use "id" attribute instead of "name" attribute in sectionning tags
   * define and use levels of rules; plugins can extend the number of levels
