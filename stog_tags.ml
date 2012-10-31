@@ -51,7 +51,6 @@ let elt_url = "elt-url"
 let sep = "sep_"
 
 let archive_tree = "archive-tree"
-let chapter = "chapter"
 let block = "block"
 let command_line = "command-line"
 let counter = "counter"

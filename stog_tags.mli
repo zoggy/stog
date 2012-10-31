@@ -52,7 +52,6 @@ val sep : string
 
 val archive_tree : string
 val block : string
-val chapter : string
 val command_line : string
 val counter : string
 val elements : string

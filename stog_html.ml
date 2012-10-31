@@ -195,13 +195,8 @@ let fun_counter env atts subs =
     None -> subs
   | Some name ->
       let hid = get_hid env in
-      let v = Printf.sprintf "counter__%s" name in
-      match get_in_env env v with
-        "" ->
-          prerr_endline ("NO V "^v^"\n"^(Xtmpl.string_of_env env));
           let cpt = get_counter hid name in
           [Xtmpl.D (string_of_int cpt)]
-      | s -> [ Xtmpl.D s ]
 ;;
 
 let fun_include tmpl_dir elt _env args subs =
@@ -483,9 +478,9 @@ let make_fun_section sect_up cls sect_down env args subs =
      ("with-contents", "true") :: args,
      [
        Xtmpl.T ("long-title-format", [],
-        [Xtmpl.xml_of_string (Printf.sprintf "%s. <title/>" counters cls)]);
+        [Xtmpl.xml_of_string (Printf.sprintf "%s. <title/>" counters)]);
        Xtmpl.T ("short-title-format", [],
-        [Xtmpl.xml_of_string counters]
+        [Xtmpl.xml_of_string counters]);
        Xtmpl.T ("contents", [], body) ;
      ]
     )
@@ -837,13 +832,11 @@ let fun_block1 stog env args subs =
   | _ ->
       let hid = get_hid env in
       let block = read_block stog args subs in
-      let env =
+      begin
         match block.blk_cpt_name with
-          None -> env
-        | Some name ->
-            let cpt = bump_counter hid name in
-            Xtmpl.env_add_att (Printf.sprintf "counter__%s" name) (string_of_int cpt) env
-      in
+          None -> ()
+        | Some name -> ignore(bump_counter hid name)
+      end;
       let env = Xtmpl.env_add_att "id" block.blk_id env in
       let env = Xtmpl.env_add "title" (fun _ _ _ -> block.blk_title) env in
       let env = Xtmpl.env_add "label"
@@ -1454,7 +1447,7 @@ let get_sectionning_tags stog elt =
       with Not_found -> None
   in
   match spec with
-    None -> [Stog_tags.chapter ; Stog_tags.section ; Stog_tags.subsection]
+    None -> [Stog_tags.section ; Stog_tags.subsection]
   | Some s ->
      let l = Stog_misc.split_string s [',' ; ';'] in
      List.map Stog_misc.strip_string l
