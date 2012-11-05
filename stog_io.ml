@@ -101,7 +101,9 @@ let add_elt stog elt =
     let is_main =
       try match List.find (fun (s,_,_) -> s = "main") elt.elt_defs with
           (_,_,[Xtmpl.D s]) -> bool_of_string s
-        | _ -> false
+        | (_,_,xmls) ->
+          prerr_endline (Printf.sprintf "elt %S: not main:\n%S" elt.elt_title (Xtmpl.string_of_xmls xmls));
+          false
       with Not_found -> false
     in
     if is_main then
@@ -147,7 +149,7 @@ let fill_elt_from_atts =
         | ("sets", s) -> { elt with elt_sets = sets_of_string s }
         | ("language-dep", s) -> { elt with elt_lang_dep = bool_of_string s }
         | ("doctype", s) -> { elt with elt_xml_doctype = Some s }
-        | (att, v) -> { elt with elt_defs = (att, [], [Xtmpl.xml_of_string v]) :: elt.elt_defs }
+        | (att, v) -> { elt with elt_defs = (att, [], [Xtmpl.D v]) :: elt.elt_defs }
       in
       iter elt q
   in

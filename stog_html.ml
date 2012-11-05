@@ -1173,7 +1173,6 @@ let apply_stage0_funs stog =
 module Sset = Set.Make (struct type t = string let compare = Pervasives.compare end);;
 
 let rec make_fun (name, params, body) acc =
-  prerr_endline (Printf.sprintf "make_fun %s" name);
   let f env atts subs =
     let vars = List.map
       (fun (param,default) ->
