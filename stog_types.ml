@@ -71,6 +71,18 @@ let human_id_of_string s =
   }
 ;;
 
+type def = string * (string * string) list * body
+
+let get_def =
+  let p name (s,_,_) = s = name in
+  fun defs name ->
+    try
+      let (_,args, body) = List.find (p name) defs in
+      Some (args, body)
+    with
+      Not_found -> None
+;;
+
 type elt =
   { elt_human_id : human_id ;
     elt_type : string ;
@@ -80,7 +92,7 @@ type elt =
     elt_keywords : string list ;
     elt_topics : string list ;
     elt_published : bool ;
-    elt_vars : (string * string) list ;
+    elt_defs : def list ;
     elt_src : string ;
     elt_sets : string list ;
     elt_lang_dep : bool ;
@@ -107,7 +119,7 @@ let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
     elt_keywords = [] ;
     elt_topics = [] ;
     elt_published = true ;
-    elt_vars = [] ;
+    elt_defs = [] ;
     elt_src = "/tmp" ;
     elt_sets = [] ;
     elt_lang_dep = true ;
@@ -147,7 +159,7 @@ type stog = {
   stog_dir : string ;
   stog_elts : (elt, elt) Stog_tmap.t ;
   stog_elts_by_human_id : elt_id Hid_map.t ;
-  stog_vars : (string * string) list ;
+  stog_defs : def list ;
   stog_tmpl_dir : string ;
   stog_title : string ;
   stog_desc : body ;
@@ -178,7 +190,7 @@ let create_stog dir = {
   stog_base_url = "http://yourblog.net" ;
   stog_email = "foo@bar.com" ;
   stog_rss_length = 10 ;
-  stog_vars = [] ;
+  stog_defs = [] ;
   stog_lang = None ;
   stog_outdir = "." ;
   stog_main_elt = None ;

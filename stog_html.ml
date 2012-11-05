@@ -977,7 +977,11 @@ and generate_rss_feed_file stog ?title link elts file =
   in
   let image =
     try
-      let file = List.assoc "rss-image" stog.stog_vars in
+      let file =
+        match Stog_types.get_def stog.stog_defs "rss-image" with
+          Some (_,xmls) -> Xtmpl.string_of_xmls xmls
+        | None -> ""
+      in
       let url = Filename.concat stog.stog_base_url file in
       let image = {
           Rss.image_url = url ;
@@ -1036,15 +1040,16 @@ and build_base_rules stog elt_id elt =
         | None -> []
         | Some id -> html_link (Stog_types.elt stog id)
       in
-      if not (List.mem_assoc key elt.elt_vars) then fallback ()
-      else
-        let hid = Stog_types.human_id_of_string (List.assoc key elt.elt_vars) in
-        try
-          let (_, elt) = Stog_types.elt_by_human_id stog hid in
-          html_link elt
-        with Failure s ->
-          Stog_msg.warning s;
-          fallback ()
+      match Stog_types.get_def elt.elt_defs key with
+        None -> fallback ()
+      | Some (_,body) ->
+          let hid = Stog_types.human_id_of_string (Xtmpl.string_of_xmls body) in
+          try
+            let (_, elt) = Stog_types.elt_by_human_id stog hid in
+            html_link elt
+          with Failure s ->
+              Stog_msg.warning s;
+              fallback ()
     in
     (try_link "previous" Stog_info.pred_by_date,
      try_link "next" Stog_info.succ_by_date)
@@ -1167,48 +1172,32 @@ let apply_stage0_funs stog =
 
 module Sset = Set.Make (struct type t = string let compare = Pervasives.compare end);;
 
-let rec make_funs acc value =
-  let xmls =
-    let xml = Xtmpl.xml_of_string value in
-    match xml with
-      Xtmpl.D _ -> []
-    | Xtmpl.T (_,_,l) | Xtmpl.E (_, l) -> l
+let rec make_fun (name, params, body) acc =
+  let f env atts subs =
+    let vars = List.map
+      (fun (param,default) ->
+         match Xtmpl.get_arg atts param with
+           None -> (param, [], [ Xtmpl.xml_of_string default])
+         | Some v -> (param, [], [ Xtmpl.xml_of_string v ])
+      )
+      params
+    in
+    let env = env_of_defs ~env vars in
+    let env = Xtmpl.env_add "contents" (fun _ _ _ -> subs) env in
+    Xtmpl.apply_to_xmls env body
   in
-  (* keep order with fold_right *)
-  List.fold_right make_fun xmls acc
+  (name, f) :: acc
 
-and make_fun xml acc =
-  match xml with
-    Xtmpl.D _ -> acc
-  | Xtmpl.E (((_,name), atts), body) ->
-      let atts = List.map (fun ((_,s),v) -> (s,v)) atts in
-      make_fun (Xtmpl.T (name, atts, body)) acc
-  | Xtmpl.T (name, params, body) ->
-      let f env atts subs =
-        let vars = List.map
-          (fun (param,default) ->
-             match Xtmpl.get_arg atts param with
-               None -> (param, default)
-             | Some v -> (param, v)
-          )
-          params
-        in
-        let env = env_of_vars ~env vars in
-        let env = Xtmpl.env_add "contents" (fun _ _ _ -> subs) env in
-        Xtmpl.apply_to_xmls env body
-      in
-      (name, f) :: acc
 
-and env_of_vars ?env vars =
+and env_of_defs ?env defs =
   let f x acc =
     match x with
-    | (key, value) when key = Stog_tags.functions ->
-       make_funs acc value
-    | (key, value) -> (key, fun _ _ _ -> [Xtmpl.xml_of_string value]) :: acc
+    | (key, [], body) -> (key, fun _ _ _ -> body) :: acc
+    | _ ->  make_fun x acc
   in
   (* fold_right instead of fold_left to reverse list and keep associations
      in the same order as in declarations *)
-  let l = List.fold_right f vars [] in
+  let l = List.fold_right f defs [] in
   Xtmpl.env_of_list ?env l
 ;;
 
@@ -1223,7 +1212,7 @@ let compute_elt build_rules env stog elt_id elt =
     | Some xmls ->
         xmls
   in
-  let env = env_of_vars ~env elt.elt_vars in
+  let env = env_of_defs ~env elt.elt_defs in
   let rules =
    (Stog_tags.elt_hid, (fun  _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)])) ::
    (build_rules stog elt_id elt)
@@ -1246,7 +1235,7 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
         elt_keywords = [] ;
         elt_topics = [] ;
         elt_published = true ;
-        elt_vars = [] ;
+        elt_defs = [] ;
         elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_human_id hid) ;
         elt_sets = [] ;
         elt_lang_dep = true ;
@@ -1296,7 +1285,7 @@ let make_archive_index stog env =
         elt_keywords = [] ;
         elt_topics = [] ;
         elt_published = true ;
-        elt_vars = [] ;
+        elt_defs = [] ;
         elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_human_id hid) ;
         elt_sets = [] ;
         elt_lang_dep = true ;
@@ -1410,7 +1399,7 @@ let generate ?only_elt stog =
   let stog = apply_stage0_funs stog in
   current_stog := Some stog;
   Stog_misc.safe_mkdir stog.stog_outdir;
-  let env = env_of_vars stog.stog_vars in
+  let env = env_of_defs stog.stog_defs in
   (*Stog_tmap.iter
     (fun elt_id elt ->
      prerr_endline (Stog_types.string_of_human_id elt.elt_human_id))
@@ -1441,14 +1430,15 @@ let rules_0 = build_base_rules ;;
 
 let get_sectionning_tags stog elt =
   let spec =
-    try Some(List.assoc "sectionning" elt.elt_vars)
-    with Not_found ->
-      try Some (List.assoc "sectionning" stog.stog_vars)
-      with Not_found -> None
+    match Stog_types.get_def elt.elt_defs "sectionning" with
+      Some x -> Some x
+    | None ->
+        Stog_types.get_def stog.stog_defs "sectionning" 
   in
   match spec with
     None -> [Stog_tags.section ; Stog_tags.subsection]
-  | Some s ->
+  | Some (_,xmls) ->
+     let s = Xtmpl.string_of_xmls xmls in
      let l = Stog_misc.split_string s [',' ; ';'] in
      List.map Stog_misc.strip_string l
 ;;

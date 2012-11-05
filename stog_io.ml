@@ -64,39 +64,44 @@ let bool_of_string s =
 
 let extract_stog_info_from_elt stog elt =
   let stog = { stog with stog_title = elt.elt_title } in
-  let rec iter (stog, atts) = function
-    [] -> (stog, atts)
+  let rec iter (stog, defs) = function
+    [] -> (stog, defs)
   | h :: q ->
       let (stog, opt) =
         match h with
-        | ("stog-site-description",s) -> { stog with stog_desc = [Xtmpl.xml_of_string s] }, None
-        | ("stog-site-url",s) -> { stog with stog_base_url = s }, None
-        | ("stog-site-email",s) -> { stog with stog_email = s }, None
-        | ("stog-rss-length",s) -> { stog with stog_rss_length = int_of_string s }, None
-        | (att, v) ->
+        | ("stog-site-description",_,xmls) -> { stog with stog_desc = xmls }, None
+        | ("stog-site-url",_,xmls) -> { stog with stog_base_url = Xtmpl.string_of_xmls xmls }, None
+        | ("stog-site-email",_,xmls) -> { stog with stog_email = Xtmpl.string_of_xmls xmls }, None
+        | ("stog-rss-length",_,xmls) ->
+            { stog with
+              stog_rss_length = int_of_string (Xtmpl.string_of_xmls xmls) },
+            None
+        | (name, args, body) ->
             let prefix = "stog-" in
-            let len = String.length att in
+            let len = String.length name in
             let len_p = String.length prefix in
-            if len > len_p && String.sub att 0 len_p = prefix then
+            if len > len_p && String.sub name 0 len_p = prefix then
               (
-               let att = String.sub att len_p (len - len_p) in
-               let stog = { stog with stog_vars = (att, v) :: stog.stog_vars } in
+               let name = String.sub name len_p (len - len_p) in
+               let stog = { stog with stog_defs = (name, args, body) :: stog.stog_defs } in
                (stog, None)
               )
             else
               (stog, Some h)
       in
-      let atts = match opt with None -> atts | Some x -> h :: atts in
-      iter (stog, atts) q
+      let defs = match opt with None -> defs | Some x -> h :: defs in
+      iter (stog, defs) q
   in
-  let (stog, vars) = iter (stog, []) elt.elt_vars in
-  (stog, { elt with elt_vars = vars })
+  let (stog, defs) = iter (stog, []) elt.elt_defs in
+  (stog, { elt with elt_defs = defs })
 ;;
 
 let add_elt stog elt =
   let (stog, elt) =
     let is_main =
-      try bool_of_string (List.assoc "main" elt.elt_vars)
+      try match List.find (fun (s,_,_) -> s = "main") elt.elt_defs with
+          (_,_,[Xtmpl.D s]) -> bool_of_string s
+        | _ -> false
       with Not_found -> false
     in
     if is_main then
@@ -142,7 +147,7 @@ let fill_elt_from_atts =
         | ("sets", s) -> { elt with elt_sets = sets_of_string s }
         | ("language-dep", s) -> { elt with elt_lang_dep = bool_of_string s }
         | ("doctype", s) -> { elt with elt_xml_doctype = Some s }
-        | (att, v) -> { elt with elt_vars = (att, v) :: elt.elt_vars }
+        | (att, v) -> { elt with elt_defs = (att, [], [Xtmpl.xml_of_string v]) :: elt.elt_defs }
       in
       iter elt q
   in
@@ -154,7 +159,7 @@ let fill_elt_from_nodes =
     match node_details xml with
       None -> elt
     | Some (tag, atts, subs) ->
-        let v = String.concat "" (List.map Xtmpl.string_of_xml subs) in
+        let v = Xtmpl.string_of_xmls subs in
         match tag with
         | "contents" -> { elt with elt_body = subs }
         | "title" -> { elt with elt_title = v }
@@ -165,7 +170,7 @@ let fill_elt_from_nodes =
         | "sets" -> { elt with elt_sets = sets_of_string v }
         | "language-dep" -> { elt with elt_lang_dep = bool_of_string v }
         | "doctype" -> { elt with elt_xml_doctype = Some v }
-        | s -> { elt with elt_vars = (s, v) :: elt.elt_vars }
+        | s -> { elt with elt_defs = (s, atts, subs) :: elt.elt_defs }
   in
   List.fold_left f
 ;;

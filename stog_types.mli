@@ -37,6 +37,10 @@ type human_id = { hid_path : string list; hid_absolute : bool; }
 val string_of_human_id : human_id -> string
 val human_id_of_string : string -> human_id
 
+type def = string * (string * string) list * body
+
+val get_def : def list -> string -> ((string * string) list * body) option
+
 type elt = {
   elt_human_id : human_id;
   elt_type : string;
@@ -46,7 +50,7 @@ type elt = {
   elt_keywords : string list;
   elt_topics : string list;
   elt_published : bool;
-  elt_vars : (string * string) list;
+  elt_defs : def list;
   elt_src : string;
   elt_sets : string list; (** list of sets ("blog", "foo", etc.) this element belongs to *)
   elt_lang_dep : bool; (** whether a file must be generated for each language *)
@@ -74,7 +78,7 @@ type stog = {
   stog_dir : string;
   stog_elts : (elt, elt) Stog_tmap.t;
   stog_elts_by_human_id : elt_id Hid_map.t;
-  stog_vars : (string * string) list;
+  stog_defs : def list;
   stog_tmpl_dir : string;
   stog_title : string;
   stog_desc : body;
