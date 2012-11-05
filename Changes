@@ -1,4 +1,5 @@
 Next release:
+  * ability to define "functions", with elt paremeters having attributes
   * sectionning now uses blocks and counters
   * handle blocks and counters (from stog_writing)
   * veritfy references to blocks by id (sections, ...) and use their title in links
@@ -7,7 +8,6 @@ Next release:
     to define their own rewrite system
   * handle relative paths in include, when starting with . or ..
   * handle <chapter> nodes as new kind of sections
-  * new 'functions' special attribute to define functions in element headers
 
 Release 0.3
   * new stage 0 to allow plugins to change the stog structure before generating
