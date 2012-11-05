@@ -1173,6 +1173,7 @@ let apply_stage0_funs stog =
 module Sset = Set.Make (struct type t = string let compare = Pervasives.compare end);;
 
 let rec make_fun (name, params, body) acc =
+  prerr_endline (Printf.sprintf "make_fun %s" name);
   let f env atts subs =
     let vars = List.map
       (fun (param,default) ->
@@ -1433,7 +1434,7 @@ let get_sectionning_tags stog elt =
     match Stog_types.get_def elt.elt_defs "sectionning" with
       Some x -> Some x
     | None ->
-        Stog_types.get_def stog.stog_defs "sectionning" 
+        Stog_types.get_def stog.stog_defs "sectionning"
   in
   match spec with
     None -> [Stog_tags.section ; Stog_tags.subsection]
