@@ -65,6 +65,7 @@ val include_ : string
 val keyword : string
 val langswitch : string
 val latex : string
+val list : string
 val n_columns : string
 val next : string
 val ocaml : string

@@ -250,6 +250,30 @@ let fun_image _env args legend =
   ]
 ;;
 
+let fun_list env args subs =
+  (* get the optional sep attribute ... *)
+  let sep = Xtmpl.opt_arg args "sep" in
+  (* and parse it as xml *)
+  let xml = Xtmpl.xml_of_string sep in
+  (* We can access the stog structure with [Stog_plug.stog ()] .
+     We don't use it here.
+  *)
+
+  (* then insert the separator between all children of the node *)
+  let rec iter acc = function
+    [] -> List.rev acc
+  | h :: q ->
+      let acc =
+        match acc with
+          [] -> [h]
+        | _ -> h :: xml :: acc
+      in
+      iter acc q
+  in
+  (* and finally return the list of xml trees *)
+  iter [] subs
+;;
+
 let fun_elt_href ?typ href stog env args subs =
   let quotes =
     match Xtmpl.get_arg args "quotes" with
@@ -1076,6 +1100,7 @@ and build_base_rules stog elt_id elt =
       Stog_tags.archive_tree, (fun _ -> fun_archive_tree stog) ;
       Stog_tags.hcode, fun_hcode stog ~inline: false ?lang: None;
       Stog_tags.icode, fun_icode ?lang: None stog;
+      Stog_tags.list, fun_list ;
       Stog_tags.ocaml, fun_ocaml ~inline: false stog;
       Stog_tags.command_line, fun_command_line ~inline: false stog ;
       Stog_tags.site_url, fun_blog_url stog ;
