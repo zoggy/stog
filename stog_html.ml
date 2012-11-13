@@ -1425,16 +1425,8 @@ let generate ?only_elt stog =
   current_stog := Some stog;
   Stog_misc.safe_mkdir stog.stog_outdir;
   let env = env_of_defs stog.stog_defs in
-  (*Stog_tmap.iter
-    (fun elt_id elt ->
-     prerr_endline (Stog_types.string_of_human_id elt.elt_human_id))
-  stog.stog_elts;
-  prerr_endline
-  (Stog_types.Hid_map.to_string (fun x -> x) stog.stog_elts_by_human_id);
-  *)
   match only_elt with
     None ->
-(*      let elts = Stog_tmap.fold (fun k v acc -> (k, v) :: acc) stog.stog_elts [] in*)
       let stog = make_topic_indexes stog env in
       let stog = make_keyword_indexes stog env in
       let stog = make_archive_index stog env in
