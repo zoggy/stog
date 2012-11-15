@@ -493,16 +493,26 @@ let make_fun_section sect_up cls sect_down env args subs =
     ]
   in
   let f cls =
-    Printf.sprintf "<counter counter-name=%S/>" cls
+    match get_in_env env (cls^"-counter") with
+      s when not (Stog_io.bool_of_string s) -> ""
+    | _ -> Printf.sprintf "<counter counter-name=%S/>" cls
   in
-  let counters = String.concat "." (List.rev_map f (cls::sect_up)) in
+  let counters = String.concat "."
+    (List.filter ((<>) "") (List.rev_map f (cls::sect_up)))
+  in
+  let counters = match counters with "" -> "" | _ -> counters^". " in
+  let counter_name =
+    match get_in_env env (cls^"counter") with
+      s when not (Stog_io.bool_of_string s) -> ""
+    | _ -> cls
+  in
   let label = String.capitalize cls in
   [ Xtmpl.T (Stog_tags.block,
-     ("label", label) :: ("class", cls) :: ("counter-name", cls) ::
+     ("label", label) :: ("class", cls) :: ("counter-name", counter_name) ::
      ("with-contents", "true") :: args,
      [
        Xtmpl.T ("long-title-format", [],
-        [Xtmpl.xml_of_string (Printf.sprintf "%s. <title/>" counters)]);
+        [Xtmpl.xml_of_string (Printf.sprintf "%s<title/>" counters)]);
        Xtmpl.T ("short-title-format", [],
         [Xtmpl.xml_of_string counters]);
        Xtmpl.T ("contents", [], body) ;
