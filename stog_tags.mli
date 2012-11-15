@@ -61,6 +61,7 @@ val hcode : string
 val icode : string
 val if_ : string
 val image : string
+val inc : string
 val include_ : string
 val keyword : string
 val langswitch : string

@@ -113,3 +113,5 @@ val elt_list :
 
 val merge_stogs : stog list -> stog
 val make_human_id : stog -> string -> string list
+
+val find_block_by_id : elt -> string -> Xtmpl.tree option

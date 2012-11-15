@@ -332,3 +332,41 @@ let make_human_id stog str =
   in
   iter 1
 ;;
+
+exception Block_found of Xtmpl.tree
+let find_block_by_id =
+  let rec find_in_list id = function
+    [] -> raise Not_found
+  | xml :: q ->
+    try find id xml
+    with Not_found ->
+      find_in_list id q
+  and find id xml =
+    match xml with
+      Xtmpl.D _ -> raise Not_found
+    | Xtmpl.T (_,atts,subs) ->
+        begin
+          match
+            try Some (List.assoc "id" atts)
+            with Not_found -> None
+          with
+            Some s when s = id -> raise (Block_found xml)
+          | _ -> find_in_list id subs
+        end
+    | Xtmpl.E ((_,atts),subs) ->
+        match
+          try Some (List.assoc ("","id") atts)
+          with Not_found -> None
+        with
+          Some s when s = id -> raise (Block_found xml)
+        | _ -> find_in_list id subs
+  in
+  fun elt id ->
+    try
+      match elt.elt_out with
+        None -> find_in_list id elt.elt_body
+      | Some body -> find_in_list id body
+    with
+      Not_found -> None
+    | Block_found xml -> Some xml
+;;

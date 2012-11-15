@@ -163,6 +163,8 @@ let fun_eval env args code =
     let show_stdout = Xtmpl.opt_arg args
       ~def: (if toplevel then "true" else "false") "show-stdout" <> "false"
     in
+    let id_opt = Xtmpl.opt_arg args "id" in
+    let atts = match id_opt with "" -> [] | id -> ["id", id] in
     let code =
       match code with
         [ Xtmpl.D code ] -> code
@@ -227,7 +229,7 @@ let fun_eval env args code =
     Unix.dup2 original_stdout Unix.stdout;
     Unix.dup2 original_stderr Unix.stderr;
     if show_code || toplevel || show_stdout then
-      [ Xtmpl.T ("pre", ["class", "code-ocaml"], xml) ]
+      [ Xtmpl.T ("pre", ["class", "code-ocaml"] @ atts, xml) ]
     else
       [ Xtmpl.D "" ]
   with

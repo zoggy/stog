@@ -195,19 +195,18 @@ let fun_counter env atts subs =
     None -> subs
   | Some name ->
       let hid = get_hid env in
-          let cpt = get_counter hid name in
-          [Xtmpl.D (string_of_int cpt)]
+      let cpt = get_counter hid name in
+      [Xtmpl.D (string_of_int cpt)]
 ;;
 
-let fun_include tmpl_dir elt _env args subs =
+let fun_include stog elt _env args subs =
   match Xtmpl.get_arg args "file" with
-    None -> failwith "Missing 'file' argument for include command";
   | Some file ->
       let file =
         if Filename.is_relative file then
           begin
             if Filename.is_implicit file then
-              Filename.concat tmpl_dir file
+              Filename.concat stog.stog_tmpl_dir file
             else
               Filename.concat (Filename.dirname elt.elt_src) file
           end
@@ -224,6 +223,21 @@ let fun_include tmpl_dir elt _env args subs =
         args
       in
       [Xtmpl.T (Xtmpl.tag_env, args, xml)]
+  | None ->
+      failwith "Missing 'file' argument for include command"
+;;
+
+let fun_inc stog elt _env args subs =
+  match Xtmpl.get_arg args Stog_tags.elt_hid, Xtmpl.get_arg args "id" with
+    None, _
+  | _, None ->
+      failwith "Missing reference argument for inc command";
+  | Some hid, Some id ->
+      let (_,elt) = Stog_types.elt_by_human_id stog (Stog_types.human_id_of_string hid) in
+      match Stog_types.find_block_by_id elt id with
+        Some xml -> [xml]
+      | None ->
+          failwith (Printf.sprintf "No id %S in element %S"  id hid)
 ;;
 
 let fun_image _env args legend =
@@ -1105,7 +1119,7 @@ and build_base_rules stog elt_id elt =
       Stog_tags.block, fun_block1 stog ;
       Stog_tags.counter, fun_counter ;
       Stog_tags.if_, fun_if ;
-      Stog_tags.include_, fun_include stog.stog_tmpl_dir elt ;
+      Stog_tags.include_, fun_include stog elt ;
       Stog_tags.image, fun_image ;
       Stog_tags.archive_tree, (fun _ -> fun_archive_tree stog) ;
       Stog_tags.hcode, fun_hcode stog ~inline: false ?lang: None;
@@ -1540,6 +1554,7 @@ let rules_fun_elt stog elt_id elt =
     Stog_tags.post, fun_post stog ;
     Stog_tags.page, fun_page stog ;
     Stog_tags.block, fun_block2 ;
+    Stog_tags.inc, fun_inc stog elt ;
   ] @ (build_base_rules stog elt_id elt)
 ;;
 
