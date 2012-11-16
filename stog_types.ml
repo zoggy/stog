@@ -101,6 +101,8 @@ type elt =
   }
 and elt_id = elt Stog_tmap.key
 
+
+
 let today () =
   let t = Unix.gmtime (Unix.time()) in
   {
@@ -135,6 +137,11 @@ module Elt_set = Set.Make (struct type t = elt_id let compare = Stog_tmap.compar
 module Elt_map = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
 module Int_map = Map.Make (struct type t = int let compare = compare end);;
 
+type cached_elt =
+  { cache_elt : elt ;
+    cache_blocks : (Xtmpl.tree * Xtmpl.tree) Str_map.t ;
+  }
+
 type edge_type =
   Date
 | Topic of string
@@ -161,6 +168,7 @@ type stog = {
   stog_elts_by_human_id : elt_id Hid_map.t ;
   stog_defs : def list ;
   stog_tmpl_dir : string ;
+  stog_cache_dir : string ;
   stog_title : string ;
   stog_desc : body ;
   stog_graph : Graph.t ;
@@ -181,6 +189,7 @@ let create_stog dir = {
   stog_elts = Stog_tmap.create (make_elt ());
   stog_elts_by_human_id = Hid_map.empty ;
   stog_tmpl_dir = Stog_config.tmpl_dir dir ;
+  stog_cache_dir = Stog_config.cache_dir dir ;
   stog_title = "Blog title" ;
   stog_desc = [] ;
   stog_graph = Graph.create () ;

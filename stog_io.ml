@@ -179,16 +179,10 @@ let fill_elt_from_nodes =
 
 let elt_of_file stog file =
   try
+    let rel_file = Stog_misc.path_under ~parent: stog.stog_dir file in
     let hid =
-      let s = try Filename.chop_extension file with _ -> file in
-      let len = String.length s in
-      let len0 = String.length stog.stog_dir in
-      let s =
-        if len > len0 then
-          "/"^(String.sub s len0 (len - len0))
-        else
-          s
-      in
+      let s = try Filename.chop_extension rel_file with _ -> rel_file in
+      let s = "/"^s in
       Stog_types.human_id_of_string s
     in
     let xml = Xtmpl.xml_of_string ~add_main: false (Stog_misc.string_of_file file) in
@@ -198,7 +192,7 @@ let elt_of_file stog file =
       | Some (tag, atts, subs) -> (tag, atts, subs)
     in
     let elt = Stog_types.make_elt ~hid ~typ () in
-    let elt = { elt with elt_src = file } in
+    let elt = { elt with elt_src = rel_file } in
     let elt =
       match Xtmpl.get_arg atts "hid" with
         None -> elt

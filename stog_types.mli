@@ -61,6 +61,7 @@ type elt_id = elt Stog_tmap.key
 
 val make_elt : ?typ:string -> ?hid:human_id -> unit -> elt
 
+
 val today : unit -> date
 
 module Str_map : Map.S with type key = string
@@ -68,6 +69,11 @@ module Str_set : Set.S with type elt = string
 module Hid_map : Stog_trie.S with type symbol = string
 module Elt_set : Set.S with type elt = elt_id
 module Int_map : Map.S with type key = int
+
+type cached_elt =
+  { cache_elt : elt ;
+    cache_blocks : (Xtmpl.tree * Xtmpl.tree) Str_map.t ;
+  }
 
 type edge_type = Date | Topic of string | Keyword of string | Ref
 
@@ -80,6 +86,7 @@ type stog = {
   stog_elts_by_human_id : elt_id Hid_map.t;
   stog_defs : def list;
   stog_tmpl_dir : string;
+  stog_cache_dir : string;
   stog_title : string;
   stog_desc : body;
   stog_graph : Graph.t;

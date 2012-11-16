@@ -88,7 +88,6 @@ val strip_string : string -> string
 val lowercase : string -> string
 (*/i==v=[String.lowercase]=1.0====*)
 
-
 (*i==v=[List.list_chop]=1.0====*)
 (** [list_chop n l] returns the [n] first elements of list [l] or the whole
    list if [n >= List.length l].
@@ -152,4 +151,13 @@ val opt_of_string : string -> string option
 @cgname String.string_of_opt*)
 val string_of_opt : string option -> string
 (*/i==v=[String.string_of_opt]=1.0====*)
+
+(** Return mdification time of the given file, or None if
+  the file does not exist. *)
+val file_mtime : string -> float option
+
+(** [path_under ~parent file] returns the path to [file] from [parent].
+     @raise Failure if [parent] is not a prefix of [file].*)
+val path_under : parent: string -> string -> string
+
 

@@ -43,6 +43,7 @@ module CF = Config_file;;
 let config_dir dir = Filename.concat dir ".stog";;
 let config_file dir = Filename.concat (config_dir dir) "config";;
 let tmpl_dir dir = Filename.concat (config_dir dir) "templates";;
+let cache_dir dir = Filename.concat (config_dir dir) "cache";;
 
 let read_config dir =
   let rc_file = config_file dir in

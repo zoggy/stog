@@ -111,7 +111,7 @@ val elt_list :
   - for each level, for each element, apply level functions on the element
   - output {!Stog_types.elt.elt_out} field in the destination file.
 *)
-val generate : ?only_elt:string -> Stog_types.stog -> unit
+val generate : ?use_cache: bool -> ?only_elt:string -> Stog_types.stog -> unit
 
 type rule_build =
   Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (string * Xtmpl.callback) list

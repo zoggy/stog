@@ -338,9 +338,9 @@ let fun_elt_href ?typ href stog env args subs =
                   Stog_msg.error msg;
                   Xtmpl.D "??"
             with Not_found ->
-              let msg = Printf.sprintf "Unknown element %S" hid in
-              Stog_msg.error msg;
-              Xtmpl.D "??"
+                let msg = Printf.sprintf "Unknown element %S in block map" hid in
+                Stog_msg.error msg;
+                Xtmpl.D "??"
           in
           match subs with
             [] ->
@@ -1350,6 +1350,22 @@ let make_archive_index stog env =
   Stog_types.Int_map.fold f_year stog.stog_archives stog
 ;;
 
+
+let output_elt_cache stog elt =
+  let cache_file = Filename.concat stog.stog_cache_dir elt.elt_src in
+  let hid = Stog_types.string_of_human_id elt.elt_human_id in
+  let cache_dir = Filename.dirname cache_file in
+  Stog_misc.safe_mkdir cache_dir ;
+  let t = {
+      cache_elt = elt ;
+      cache_blocks = try Smap.find hid !blocks with Not_found -> Smap.empty ;
+    }
+  in
+  let oc = open_out_bin cache_file in
+  output_value oc t;
+  close_out oc
+;;
+
 let output_elt stog elt =
   let file = elt_dst_file stog elt in
   Stog_misc.safe_mkdir (Filename.dirname file);
@@ -1365,7 +1381,8 @@ let output_elt stog elt =
       in
       Printf.fprintf oc "<!DOCTYPE %s>\n" doctype;
       List.iter (fun xml -> output_string oc (Xtmpl.string_of_xml xml)) xmls;
-      close_out oc
+      close_out oc;
+      output_elt_cache stog elt
 ;;
 
 let output_elts ?elts stog =
@@ -1428,18 +1445,59 @@ let compute_level ?elts env level (funs: level_fun list) stog =
     match elts with
       None -> Stog_tmap.fold (f_elt f) stog.stog_elts stog
     | Some l ->
-        List.fold_left
-        (fun stog (elt_id, elt) -> f_elt f elt_id elt stog)
-        stog l
+       List.fold_left (fun stog elt_id ->
+           let elt = Stog_types.elt stog elt_id in
+           f_elt f elt_id elt stog
+           )
+           stog l
   in
   List.fold_left f_fun stog funs
 ;;
 
-let compute_levels ?elts env stog =
-  Intmap.fold (compute_level ?elts env) !levels stog
+let load_cached_elt file =
+  let ic = open_in_bin file in
+  let (t : Stog_types.cached_elt) = input_value ic in
+  close_in ic;
+  let hid = Stog_types.string_of_human_id t.cache_elt.elt_human_id in
+  blocks := Smap.add hid t.cache_blocks !blocks;
+  t.cache_elt
 ;;
 
-let generate ?only_elt stog =
+let get_cached_elements stog =
+  let f elt_id elt (cached, not_cached) =
+     let src_time = Stog_misc.file_mtime elt.elt_src in
+     let cache_file = Filename.concat stog.stog_cache_dir elt.elt_src in
+     let cache_time = Stog_misc.file_mtime cache_file in
+     match src_time, cache_time with
+      None, _
+    | _, None -> (cached, elt_id::not_cached)
+    | Some t_elt, Some t_cache ->
+        if t_cache > t_elt then
+          begin
+            let elt = load_cached_elt cache_file in
+            ((elt_id, elt) :: cached, not_cached)
+          end
+        else
+          (cached, elt_id :: not_cached)
+  in
+  Stog_tmap.fold f stog.stog_elts ([], [])
+;;
+
+let compute_levels ?(use_cache=true) ?elts env stog =
+  if use_cache then
+    begin
+      let (cached, not_cached) = get_cached_elements stog in
+      let stog = List.fold_left
+        (fun stog (elt_id, elt) -> Stog_types.set_elt stog elt_id elt)
+        stog cached
+      in
+      Intmap.fold (compute_level ~elts: not_cached env) !levels stog
+    end
+  else
+    Intmap.fold (compute_level ?elts env) !levels stog
+;;
+
+let generate ?(use_cache=true) ?only_elt stog =
   begin
     match stog.stog_lang with
       None -> ()
@@ -1454,13 +1512,13 @@ let generate ?only_elt stog =
       let stog = make_topic_indexes stog env in
       let stog = make_keyword_indexes stog env in
       let stog = make_archive_index stog env in
-      let stog = compute_levels env stog in
+      let stog = compute_levels ~use_cache env stog in
       output_elts stog;
       copy_other_files stog
   | Some s ->
       let hid = Stog_types.human_id_of_string s in
-      let (elt_id, elt) = Stog_types.elt_by_human_id stog hid in
-      let stog = compute_levels ~elts: [elt_id, elt] env stog in
+      let (elt_id, _) = Stog_types.elt_by_human_id stog hid in
+      let stog = compute_levels ~use_cache: false ~elts: [elt_id] env stog in
       let (_, elt) = Stog_types.elt_by_human_id stog hid in
       output_elts ~elts: [elt] stog
 ;;

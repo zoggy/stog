@@ -271,3 +271,18 @@ let opt_of_string = function
   "" -> None
 | s -> Some s
 (*/c==v=[String.opt_of_string]=1.0====*)
+
+let file_mtime file =
+  try Some (Unix.stat file).Unix.st_mtime
+  with _ -> None
+;;
+
+let path_under ~parent file =
+  if is_prefix parent file then
+    begin
+      let len = String.length parent + 1 in
+      String.sub file len (String.length file - len)
+    end
+  else
+    failwith (Printf.sprintf "%s is not under %s" file parent)
+;;
