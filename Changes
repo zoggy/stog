@@ -1,4 +1,6 @@
 Next release:
+  * add simple cache system
+  * new <inc> rule
   * ability to define "functions", with elt paremeters having attributes
   * sectionning now uses blocks and counters
   * handle blocks and counters (from stog_writing)
