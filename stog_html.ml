@@ -1518,7 +1518,7 @@ let generate ?(use_cache=true) ?only_elt stog =
   | Some s ->
       let hid = Stog_types.human_id_of_string s in
       let (elt_id, _) = Stog_types.elt_by_human_id stog hid in
-      let stog = compute_levels ~use_cache: false ~elts: [elt_id] env stog in
+      let stog = compute_levels ~use_cache ~elts: [elt_id] env stog in
       let (_, elt) = Stog_types.elt_by_human_id stog hid in
       output_elts ~elts: [elt] stog
 ;;

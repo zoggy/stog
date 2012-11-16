@@ -30,6 +30,7 @@ let output_dir = ref "stog-output";;
 
 let site_url = ref None ;;
 let tmpl_dir = ref None ;;
+let use_cache = ref true;;
 
 let lang = ref None;;
 let default_lang_to_set = ref None;;
@@ -87,8 +88,11 @@ let options = [
     "--package", Arg.String (fun s -> packages := !packages @ [s]),
     "<pkg[,pkg2[,...]]> load package (a plugin loaded with ocamlfind)";
 
-    "--only", Arg.String (fun s -> only_elt := Some s),
-    "<elt-id> generate only the page for the given element" ;
+    "--only", Arg.String (fun s -> use_cache := false ; only_elt := Some s),
+    "<elt-id> generate only the page for the given element; imply --nocache" ;
+
+    "--nocache", Arg.Clear use_cache,
+    " do not use cache to prevent computing unmodified elements" ;
   ];;
 
 let usage = Printf.sprintf
@@ -120,7 +124,7 @@ let main () =
         let stog = Stog_info.compute stog in
         (*prerr_endline "graph computed";*)
         let stog = set_stog_options stog in
-        Stog_html.generate ?only_elt: !only_elt stog
+        Stog_html.generate ~use_cache: !use_cache ?only_elt: !only_elt stog
   end;
   let err = Stog_msg.errors () in
   let warn = Stog_msg.warnings () in
