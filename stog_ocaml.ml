@@ -118,6 +118,7 @@ let fun_eval stog env args code =
     let show_stdout = Xtmpl.opt_arg args
       ~def: (if toplevel then "true" else "false") "show-stdout" <> "false"
     in
+    let session_name = Xtmpl.get_arg args "session" in
     let id_opt = Xtmpl.opt_arg args "id" in
     let atts = match id_opt with "" -> [] | id -> ["id", id] in
     let code =
@@ -151,7 +152,7 @@ let fun_eval stog env args code =
             Xtmpl.D ""
         in
         let (output, stdout, raised_exc) =
-          match eval_ocaml_phrase ~exc phrase with
+          match eval_ocaml_phrase ?session_name ~exc phrase with
             Stog_ocaml_types.Ok (s, stdout) -> (s, stdout, false)
           | Stog_ocaml_types.Exc s -> (s, "", true)
         in
