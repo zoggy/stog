@@ -1,4 +1,7 @@
 Next release:
+  * use separate tool to evaluate ocaml code; this allows to use native
+    code version of stog even when evaluating ocaml code; also allow
+    to use distinct ocaml toplevels in ocaml-eval (with session="...")
   * add simple cache system
   * new <inc> rule
   * ability to define "functions", with elt paremeters having attributes
