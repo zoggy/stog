@@ -26,12 +26,6 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Program communicating through pipes to:
-  - receive ocaml code to evaluate,
-  - send evaluation results.
-*)
-
-
 let _ = Toploop.set_paths ();;
 let _ = Toploop.initialize_toplevel_env();;
 let _ =

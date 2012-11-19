@@ -26,43 +26,11 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Types for interfacing stog and ocaml-session. *)
 
-type input =
-  { in_phrase : string ;
-    in_err_exc : bool ;
-  }
-
+type input = { in_phrase : string; in_err_exc : bool; }
 type result = Exc of string | Ok of string * string
-
-let pid = Unix.getpid();;
-
-let read_input ic =
-  let (v : input) = input_value ic in
-  v
-;;
-
-let write_input oc (i : input) =
-(*  prerr_endline (Printf.sprintf "write_input len(phrase)=%d" (String.length i.in_phrase));*)
-  output_value oc i;
-  flush oc
-;;
-
-let read_result ic =
-  let (r : result) = input_value ic in
-  r
-;;
-
-
-let write_result oc (r : result) =
-(*  let s =
-    match r with
-      Exc s -> Printf.sprintf "Exc(%S)" s
-    | Ok (s1, s2) -> Printf.sprintf "Ok(%S,%S)" s1 s2
-  in
-  prerr_endline (Printf.sprintf "write_result %s" s);
-*)
-  output_value oc r ;
-  flush oc
-;;
-
+val read_input : in_channel -> input
+val write_input : out_channel -> input -> unit
+val read_result : in_channel -> result
+val write_result : out_channel -> result -> unit

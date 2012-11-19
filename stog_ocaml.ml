@@ -26,7 +26,7 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Functions to eval and display ocaml in generated pages. *)
+(** *)
 
 let stog_ocaml_session = "stog-ocaml-session";;
 
