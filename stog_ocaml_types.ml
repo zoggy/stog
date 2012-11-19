@@ -26,60 +26,43 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Predefined tags. *)
+(** Types for interfacing stog and ocaml-session. *)
 
-val site_title : string
-val site_desc : string
-val site_url : string
-val site_email : string
-val rss_length : string
-val languages : string
-val functions : string
+type input =
+  { in_phrase : string ;
+    in_err_exc : bool ;
+  }
 
-val elt : string
-val elt_body : string
-val elt_date : string
-val elt_keywords : string
-val elt_hid : string
-val elt_intro : string
-val elt_src : string
-val elt_title : string
-val elt_topics : string
-val elt_type : string
-val elt_url : string
+type result = Exc of string | Ok of string * string
 
-val sep : string
+let pid = Unix.getpid();;
 
-val archive_tree : string
-val block : string
-val command_line : string
-val counter : string
-val elements : string
-val ext_a : string
-val graph : string
-val hcode : string
-val icode : string
-val if_ : string
-val image : string
-val inc : string
-val include_ : string
-val keyword : string
-val langswitch : string
-val latex : string
-val list : string
-val n_columns : string
-val next : string
-val ocaml : string
-val ocaml_eval : string
-val page : string
-val post : string
-val prepare_toc : string
-val previous : string
-val search_form : string
-val section : string
-val subsection : string
-val toc : string
-val topic : string
-val two_columns : string
+let read_input ic =
+  let (v : input) = input_value ic in
+  v
+;;
 
+let write_input oc (i : input) =
+(*  prerr_endline (Printf.sprintf "write_input len(phrase)=%d" (String.length i.in_phrase));*)
+  output_value oc i;
+  flush oc
+;;
+
+let read_result ic =
+  let (r : result) = input_value ic in
+  r
+;;
+
+
+let write_result oc (r : result) =
+(*  let s =
+    match r with
+      Exc s -> Printf.sprintf "Exc(%S)" s
+    | Ok (s1, s2) -> Printf.sprintf "Ok(%S,%S)" s1 s2
+  in
+  prerr_endline (Printf.sprintf "write_result %s" s);
+*)
+  output_value oc r ;
+  flush oc
+;;
 

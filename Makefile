@@ -88,6 +88,8 @@ LIB_CMXFILES= \
 	stog_tags.cmx \
 	stog_io.cmx \
 	stog_info.cmx \
+	stog_ocaml_types.cmx \
+	stog_ocaml.cmx \
 	stog_latex.cmx \
 	stog_html.cmx \
 	stog_plug.cmx \
@@ -101,6 +103,14 @@ LIB_BYTE=$(LIB:.cmxa=.cma)
 
 MAIN=stog
 MAIN_BYTE=$(MAIN).byte
+
+OCAML_SESSION=$(MAIN)-ocaml-session
+
+OCAML_SESSION_CMOFILES= \
+	stog_ocaml_types.cmo \
+	stog_misc.cmo \
+	stog_ocaml_session.cmo
+OCAML_SESSION_CMIFILES=$(OCAML_SESSION_CMOFILES:.cmo=.cmi)
 
 GUI_MAIN_CMXFILES=\
 	stog_gui_arts.cmx \
@@ -118,14 +128,14 @@ gui: guiopt guibyte
 
 opt: $(LIB) $(MAIN) plugins/plugin_example.cmxs $(PLUGINS_OPT)
 guiopt: $(GUI_MAIN)
-byte: $(LIB_BYTE) $(MAIN_BYTE) plugins/plugin_example.cmo $(PLUGINS_BYTE)
+byte: $(LIB_BYTE) $(MAIN_BYTE) $(OCAML_SESSION) plugins/plugin_example.cmo $(PLUGINS_BYTE)
 guibyte: $(GUI_MAIN_BYTE)
 
 $(MAIN): $(LIB) stog_dyn_opt.cmx stog_main.cmx
 	$(OCAMLOPT) -verbose -linkall -o $@ $(COMPFLAGS) $(SYSLIBS) \
 	$^
 
-$(MAIN_BYTE): $(LIB_BYTE) stog_ocaml.cmo stog_dyn_byte.cmo stog_main.cmo
+$(MAIN_BYTE): $(LIB_BYTE) stog_dyn_byte.cmo stog_main.cmo
 	$(OCAMLC) -linkall -o $@ $(COMPFLAGS) $(SYSLIBS_BYTE) \
 	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $^
 
@@ -134,6 +144,11 @@ $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 
 $(LIB_BYTE): $(LIB_CMIFILES) $(LIB_CMOFILES)
 	$(OCAMLC) -a -o $@ $(LIB_CMOFILES)
+
+$(OCAML_SESSION): $(OCAML_SESSION_CMIFILES) $(OCAML_SESSION_CMIFILES)
+	$(OCAMLC) -linkall -o $@ $(COMPFLAGS) unix.cma str.cma \
+	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $(OCAML_SESSION_CMOFILES)
+
 
 $(GUI_MAIN): $(LIB) $(GUI_MAIN_CMIFILES) $(GUI_MAIN_CMXFILES)
 	$(OCAMLOPT) -verbose -linkall -o $@ $(COMPFLAGS) $(SYSLIBS) \
@@ -172,7 +187,7 @@ install:
 		$(PLUGINS_BYTE) $(PLUGINS_OPT) $(PLUGINS_OPT:.cmxs=.cmx) $(PLUGINS_OPT:.cmxs=.o) \
 		$(LIB_CMIFILES) $(LIB_CMXFILES) $(LIB_CMXFILES:.cmx=.o) \
 		$(LIB_BYTE) $(LIB) $(LIB:.cmxa=.a)
-	$(CP) $(MAIN) $(MAIN_BYTE)  `dirname \`which $(OCAMLC)\``/
+	$(CP) $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) `dirname \`which $(OCAMLC)\``/
 
 uninstall:
 	@$(OCAMLFIND) remove stog

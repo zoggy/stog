@@ -28,13 +28,51 @@
 
 (** Functions to eval and display ocaml in generated pages. *)
 
-let _ = Toploop.set_paths ();;
-let _ = Toploop.initialize_toplevel_env();;
-let _ =
-  match Hashtbl.find Toploop.directive_table "rectypes" with
-    Toploop.Directive_none f -> f ()
-  | _ -> assert false;;
-let _ = Toploop.max_printer_steps := 20;;
+let stog_ocaml_session = "stog-ocaml-session";;
+
+type session =
+  { session_out : out_channel ;
+    session_in : in_channel ;
+  }
+
+module Smap = Stog_types.Str_map;;
+
+let sessions = ref Smap.empty;;
+
+let close_sessions () =
+  let f name t =
+    close_out t.session_out;
+    close_in t.session_in;
+    Stog_msg.verbose ~level:1 (Printf.sprintf "closing ocaml session %S" name);
+    ignore(Unix.close_process (t.session_in, t.session_out))
+  in
+  Smap.iter f !sessions
+;;
+
+let create_session () =
+  try
+    let (ic, oc) = Unix.open_process stog_ocaml_session in
+    { session_out = oc ; session_in = ic }
+  with
+    Unix.Unix_error (e, s1, s2) ->
+      failwith (Printf.sprintf "%s: %s %s" (Unix.error_message e) s1 s2)
+;;
+
+let get_session name =
+  try Smap.find name !sessions
+  with Not_found ->
+      Stog_msg.verbose ~level:1 (Printf.sprintf "opening ocaml session %S"  name);
+      let t = create_session () in
+      sessions := Smap.add name t !sessions;
+      t
+;;
+
+let eval_ocaml_phrase ?(session_name="default") ~exc phrase =
+  let session = get_session session_name in
+  Stog_ocaml_types.write_input session.session_out
+    { Stog_ocaml_types.in_phrase = phrase ; in_err_exc = exc };
+  Stog_ocaml_types.read_result session.session_in
+;;
 
 let ocaml_phrases_of_string s =
   let s = Stog_misc.strip_string s in
@@ -58,89 +96,7 @@ let ocaml_phrases_of_string s =
   List.rev_map Stog_misc.strip_string !acc
 ;;
 
-let log_oc = open_out "ocaml.log";;
-
-(*let _ = Location.input_name := "";;*)
-let stderr_file = Filename.temp_file "stogocaml" "err";;
-let stdout_file = Filename.temp_file "stogocaml" "out";;
-
-let remove_empty_filename =
-  let empty = "File \"\", l" in
-  let re = Str.regexp_string empty in
-  Str.global_replace re "L"
-;;
-
-
-let eval_ocaml_phrase ~exc phrase =
-  try
-    let lexbuf = Lexing.from_string phrase in
-    let fd_err = Unix.openfile stderr_file
-      [Unix.O_WRONLY; Unix.O_CREAT; Unix.O_TRUNC]
-      0o640
-    in
-    Unix.dup2 fd_err Unix.stderr;
-    let fd_out = Unix.openfile stdout_file
-      [Unix.O_WRONLY; Unix.O_CREAT; Unix.O_TRUNC]
-      0o640
-    in
-    Unix.dup2 fd_out Unix.stdout;
-    Unix.close fd_out;
-    Printf.fprintf log_oc "executing phrase: %s\n" phrase;
-    let phrase = !Toploop.parse_toplevel_phrase lexbuf in
-    Printf.fprintf log_oc "phrase parsed\n";
-    ignore(Toploop.execute_phrase true Format.str_formatter phrase);
-    let exec_output = Format.flush_str_formatter () in
-    let err = Stog_misc.string_of_file stderr_file in
-    let err = remove_empty_filename err in
-    let out = Stog_misc.string_of_file stdout_file in
-    Printf.fprintf log_oc "exec_output: %s\n" exec_output;
-    Printf.fprintf log_oc "err: %s\n" err;
-    Printf.fprintf log_oc "out: %s\n" out;
-    (
-     match err with
-       "" -> ()
-     | s -> Format.pp_print_string Format.str_formatter s
-    );
-    (
-     match out with
-       "" -> ()
-     | s -> Format.pp_print_string Format.str_formatter s
-    );
-    Format.pp_print_string Format.str_formatter exec_output;
-    `Ok (Stog_misc.strip_string (Format.flush_str_formatter ()), out)
-  with
-  | e ->
-      (* Errors.report_error relies on exported compiler lib; on some
-         bugged setups, those libs are not in synch with the compiler
-         implementation, and the call below fails
-         because of an implementation mismatch with the toplevel.
-
-         We are therefore extra careful when calling
-         Errors.report_error, and in particular collect backtraces to
-         help spot this vicious issue. *)
-
-      let backtrace_enabled = Printexc.backtrace_status () in
-      if not backtrace_enabled then Printexc.record_backtrace true;
-      begin
-        try Errors.report_error Format.str_formatter e
-        with exn ->
-          Printf.fprintf log_oc
-            "an error happened during phrase error reporting:\n%s\n%!"
-            (Printexc.to_string exn);
-          Printf.fprintf log_oc "error backtrace:\n%s\n%!"
-            (Printexc.get_backtrace ());
-      end;
-      if not backtrace_enabled then Printexc.record_backtrace false;
-
-      let err = Format.flush_str_formatter () in
-      let msg = Printf.sprintf "ocaml error with code:\n%s\n%s" phrase err in
-      if exc then
-        failwith msg
-      else
-        `Exc (Stog_misc.strip_string (remove_empty_filename err))
-;;
-
-
+(*
 let fun_new_env env args subs =
   let old_env = ! Toploop.toplevel_env in
   let restore_env subs =
@@ -152,10 +108,9 @@ let fun_new_env env args subs =
   in
   restore_env xml
 ;;
+*)
 
-let fun_eval env args code =
-  let original_stderr = Unix.dup Unix.stderr in
-  let original_stdout = Unix.dup Unix.stdout in
+let fun_eval stog env args code =
   try
     let exc = Xtmpl.opt_arg args ~def: "true" "error-exc" = "true" in
     let toplevel = Xtmpl.opt_arg args ~def: "false" "toplevel" = "true" in
@@ -177,11 +132,7 @@ let fun_eval env args code =
       [] -> List.rev acc
     | phrase :: q ->
         let lang_file =
-          let d =
-            match !Stog_html.current_stog with
-              None -> Filename.dirname Sys.argv.(0)
-            | Some stog -> stog.Stog_types.stog_dir
-          in
+          let d = stog.Stog_types.stog_dir in
           Filename.concat d "ocaml.lang"
         in
         let opts = if Sys.file_exists lang_file then
@@ -192,17 +143,17 @@ let fun_eval env args code =
         let code =
           if show_code then
             begin
-              let code = Stog_html.highlight ~opts phrase in
+              let code = Stog_misc.highlight ~opts phrase in
               let code = if toplevel then Printf.sprintf "# %s" code else code in
               Xtmpl.T ("div", [], [Xtmpl.xml_of_string code])
             end
-          else
+           else
             Xtmpl.D ""
         in
         let (output, stdout, raised_exc) =
           match eval_ocaml_phrase ~exc phrase with
-            `Ok (s, stdout) -> (s, stdout, false)
-          | `Exc s -> (s, "", true)
+            Stog_ocaml_types.Ok (s, stdout) -> (s, stdout, false)
+          | Stog_ocaml_types.Exc s -> (s, "", true)
         in
         let acc =
           match toplevel with
@@ -226,24 +177,12 @@ let fun_eval env args code =
         iter acc q
     in
     let xml = iter [] phrases in
-    Unix.dup2 original_stdout Unix.stdout;
-    Unix.dup2 original_stderr Unix.stderr;
     if show_code || toplevel || show_stdout then
       [ Xtmpl.T ("pre", ["class", "code-ocaml"] @ atts, xml) ]
     else
       [ Xtmpl.D "" ]
   with
     e ->
-
-      Unix.dup2 original_stdout Unix.stdout;
-      Unix.dup2 original_stderr Unix.stderr;
       raise e
 ;;
 
-let ocaml_funs =
-  [ "ocaml-new-env", fun_new_env ;
-    "ocaml-eval", fun_eval ;
-  ]
-;;
-
-Stog_html.plugin_rules := ocaml_funs @ !Stog_html.plugin_rules;;

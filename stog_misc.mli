@@ -161,3 +161,6 @@ val file_mtime : string -> float option
 val path_under : parent: string -> string -> string
 
 
+(** Call the highlight command on the given string and make it produce xhtml code.
+  Options are passed to the highlight command. *)
+val highlight : opts:string -> string -> string

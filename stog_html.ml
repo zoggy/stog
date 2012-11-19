@@ -416,23 +416,7 @@ let fun_archive_tree stog _env _ =
   [ Xtmpl.T ("ul", [], List.map f_year years) ]
 ;;
 
-let highlight ~opts code =
-  let code_file = Filename.temp_file "stog" "code" in
-  Stog_misc.file_of_string ~file: code_file code;
-  let temp_file = Filename.temp_file "stog" "highlight" in
-  let com = Printf.sprintf
-    "highlight -O xhtml %s -f %s > %s"
-    opts (Filename.quote code_file)(Filename.quote temp_file)
-  in
-  match Sys.command com with
-    0 ->
-      let code = Stog_misc.string_of_file temp_file in
-      Sys.remove code_file;
-      Sys.remove temp_file;
-      Stog_misc.strip_string code
-  | _ ->
-      failwith (Printf.sprintf "command failed: %s" com)
-;;
+let highlight = Stog_misc.highlight;;
 
 let fun_hcode ?(inline=false) ?lang stog _env args code =
   let language, language_options =
@@ -1126,6 +1110,7 @@ and build_base_rules stog elt_id elt =
       Stog_tags.icode, fun_icode ?lang: None stog;
       Stog_tags.list, fun_list ;
       Stog_tags.ocaml, fun_ocaml ~inline: false stog;
+      Stog_tags.ocaml_eval, Stog_ocaml.fun_eval stog ;
       Stog_tags.command_line, fun_command_line ~inline: false stog ;
       Stog_tags.site_url, fun_blog_url stog ;
       Stog_tags.search_form, fun_search_form stog ;
@@ -1513,6 +1498,7 @@ let generate ?(use_cache=true) ?only_elt stog =
       let stog = make_keyword_indexes stog env in
       let stog = make_archive_index stog env in
       let stog = compute_levels ~use_cache env stog in
+      Stog_ocaml.close_sessions();
       output_elts stog;
       copy_other_files stog
   | Some s ->
