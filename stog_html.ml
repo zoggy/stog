@@ -315,7 +315,6 @@ let fun_elt_href ?typ href stog env args subs =
       | Some elt, [], None ->
           let quote = if quotes then "\"" else "" in
           let s = Printf.sprintf "%s%s%s" quote elt.elt_title quote in
-          prerr_endline (Printf.sprintf "s=%S" s);
           [Xtmpl.xml_of_string s]
       | Some _, text, None -> text
       | Some elt, _, Some id ->
@@ -345,7 +344,6 @@ let fun_elt_href ?typ href stog env args subs =
                 [title]
           | text -> text
     in
-    prerr_endline (Printf.sprintf "text=%s" (Xtmpl.string_of_xmls text));
     (elt, id, text)
   in
   match elt with
