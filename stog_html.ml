@@ -265,15 +265,9 @@ let fun_image _env args legend =
 ;;
 
 let fun_list env args subs =
-  (* get the optional sep attribute ... *)
   let sep = Xtmpl.opt_arg args "sep" in
-  (* and parse it as xml *)
   let xml = Xtmpl.xml_of_string sep in
-  (* We can access the stog structure with [Stog_plug.stog ()] .
-     We don't use it here.
-  *)
-
-  (* then insert the separator between all children of the node *)
+  (* insert the separator between all children of the node *)
   let rec iter acc = function
     [] -> List.rev acc
   | h :: q ->
@@ -1598,8 +1592,11 @@ let rules_fun_elt stog elt_id elt =
     Stog_tags.post, fun_post stog ;
     Stog_tags.page, fun_page stog ;
     Stog_tags.block, fun_block2 ;
-    Stog_tags.inc, fun_inc stog elt ;
   ] @ (build_base_rules stog elt_id elt)
+;;
+
+let rules_inc_elt stog elt_id elt =
+  [ Stog_tags.inc, fun_inc stog elt ]
 ;;
 
 let () = register_level_fun 0 (compute_elt rules_0);;
@@ -1607,5 +1604,6 @@ let () = register_level_fun 50 (compute_elt rules_toc);;
 let () = register_level_fun 100 (compute_elt rules_sectionning);;
 let () = register_level_fun 120 (gather_existing_ids);;
 let () = register_level_fun 150 (compute_elt rules_fun_elt);;
+let () = register_level_fun 160 (compute_elt rules_inc_elt);;
 
 
