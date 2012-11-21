@@ -1,4 +1,5 @@
 stog-ocaml-session
+doc/.stog/cache
 ocamldoc
 .chamo*
 *.cm*
