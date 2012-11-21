@@ -1,0 +1,61 @@
+<post title="OCaml sessions"
+date="2012/11/21"
+topics="stog"
+keywords="ocaml, evaluation, code"
+published="true">
+<p>
+A <post href="displaying-evaluated-ocaml-code">previous post</post>
+introduced the <icode>&lt;ocaml-eval&gt;</icode> function to
+evaluate ocaml code, enventually displaying the result in a toplevel way, etc.
+</p>
+<p>
+OCaml code was evaluated in the Stog process, which required Stog to
+embed the OCaml toplevel, only available as bytecode. As a consequence,
+only the bytecode version of Stog could evaluate OCaml code using the
+internal toplevel.
+</p>
+<p>
+Since release 0.4 of Stog, the evaluation of OCaml has been moved
+to an external program, <icode>ocaml-ocaml-session</icode>.
+This program is launched by Stog when OCaml code has to be evaluated.
+Stog and this program communicate OCaml values through a pipe
+(see <a href="../ref-doc/Stog_ocaml_types.html">Stog_ocaml_types</a> module
+for details).
+</p>
+<p>Of course, an instance of <icode>stog-ocaml-session</icode> is
+not launched each time an OCaml phrase has be to evaluated.
+Instead, Stog keeps a list of "ocaml sessions", each session corresponding
+to a <icode>stog-ocaml-session</icode> process.
+</p>
+<p>That allows two cool things:</p>
+<ul>
+<li>the <icode>&lt;ocaml-eval&gt;</icode> function is available in native code
+  version of Stog,</li>
+<li>more than one session can be used when evaluating the code to show in
+the generated pages. For example, there can be one ocaml session per
+blog post, to prevent namespace pollution from one post to another.
+</li>
+</ul>
+<p>The default ocaml session is called "default". The session name to
+use to evaluate OCaml code can be specified using the "session" attribute
+of  <icode>&lt;ocaml-eval&gt;</icode>.
+</p>
+<p>Here is an example.</p>
+<hcode lang="xml"><ocaml-eval toplevel="true">let x = 1;;</ocaml-eval></hcode>
+<p>will give</p>
+<ocaml-eval toplevel="true">let x = 1;;</ocaml-eval>
+<p>Then, let's evaluate another piece of code, in the same ("default") session:
+</p>
+<hcode lang="xml"><ocaml-eval toplevel="true">let y = x + 1;;</ocaml-eval></hcode>
+will give
+<ocaml-eval toplevel="true">let y = x + 1;;</ocaml-eval>
+<p>Now, let's evaluate the same code in another session, "session2":</p>
+<hcode lang="xml"
+><ocaml-eval toplevel="true"
+             error-exc="false"
+             session="session2">
+let y = x + 1;;</ocaml-eval></hcode>
+<p>will result in</p>
+<ocaml-eval toplevel="true" error-exc="false" session="session2">let y = x + 1;;</ocaml-eval>
+
+</post>
