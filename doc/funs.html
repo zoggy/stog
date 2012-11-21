@@ -31,6 +31,7 @@ The following common functions are available everywhere:
 <li><a href="#hcode">hcode</a></li>
 <li><a href="#icode">icode</a></li>
 <li><a href="#if">if</a></li>
+<li><a href="#inc">inc</a></li>
 <li><a href="#include">include</a></li>
 <li><a href="#image">image</a></li>
 <li><a href="#langswitch">langswitch</a></li>
@@ -41,7 +42,7 @@ The following common functions are available everywhere:
 <li><a href="#latex">latex</a></li>
 <li><a href="#ocaml">ocaml</a></li>
 <li><a href="#previous">previous and next</a></li>
-<li><a href="#section">section and subsection</a></li>
+<li><a href="#sectionning">sectionning</a></li>
 <li><a href="#sep_">sep_</a></li>
 <li><a href="#site-descriptionx">site-description</a></li>
 <li><a href="#site-email">site-email</a></li>
@@ -97,7 +98,7 @@ contents in an included file or template.
 </section>
 
 <section id="elt" title="elt, post and page">
-<include file="syntax.tmpl"><![CDATA[<elt href=hid>text</elt>]]></include>
+<include file="syntax.tmpl"><![CDATA[<elt href=hid[#id]>text</elt>]]></include>
 <p>
 This will return a link to the element specified by its hid. The hid of an element
 is its absolute name from the root directoty of your project. You are not forced
@@ -120,12 +121,20 @@ to prevent ambiguities, for example:
 </p>
 <hcode lang="xml"><![CDATA[<elt href="bar/hello" type="post"/>]]></hcode>
 <p>
-Refering to an unknown element will raise an error.
+Refering to an unknown element will raise an error. If no hid is given,
+<icode>&lt;elt-hid/&gt;</icode> is used instead, i.e. the string associated to
+<icode>elt-hid</icode> in the environment, to retrieve the current element hid.
 </p>
 <p>
-If no text is given for the link, the title of the element between quotes
-will be used instead. Specifying in attributes <icode>quotes="false"</icode>
-indicates not to add quotes around the element title.
+A node id can also be specified, like <icode>thisblock</icode> in
+<icode>href="blabla#thisblock"</icode>. Refering to an unknown block id
+will raise an error.
+</p>
+<p>
+If no text is given for the link, the title of the element
+will be used instead (or, if a node id is given, the title associated to
+the node id, if any). Specifying in attributes <icode>quotes="true"</icode>
+indicates to add quotes around the element title.
 </p>
 <p>
 <icode lang="xml">&lt;page ...&gt;</icode> and <icode lang="xml">&lt;post ... &gt;</icode>
@@ -293,6 +302,15 @@ a block or not:
 </p>
 </section>
 
+<section id="inc" title="inc">
+<include file="syntax.tmpl"><![CDATA[<inc href="..."/>]]></include>
+<p>
+This functions is used to insert the XML node specified by the <icode>href</icode> attribute.
+See <elt href="#elt"/> for details about how to specify an element. The id of the
+node if mandatory for this command.
+</p>
+</section>
+
 <section id="include" title="include">
 <include file="syntax.tmpl"><![CDATA[<include file="template">...</include>]]></include>
 <p>
@@ -394,7 +412,7 @@ attribute already set to "ocaml".
 </p>
 </section>
 
-<section id="section" title="section and subsection">
+<section id="sectionning" title="sectionning">
 <include file="syntax.tmpl"><![CDATA[<section id="..." title="...">...</section>
 <subsection id="..." title="...">...</subsection>
  ]]></include>
