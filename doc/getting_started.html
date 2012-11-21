@@ -1,6 +1,10 @@
 <page title="Getting started"
 navbar-doc="active"
+with-contents="true"
 >
+<ixml foo=""><icode defer_="1" lang="xml"><contents/></icode></ixml>
+<command prompt="#"><pre><prompt/> <contents/></pre></command>
+<contents>
 <prepare-toc depth="1">
 <toc>Sections:</toc>
 
@@ -257,8 +261,88 @@ associated to some tags, but more can be created in plugins.
 </p>
 </section>
 
-<section id="functions" title="Functions">
-bla bla
+<section id="functions" title="Attributes and functions">
+<p>
+When defining elements, you can add attributes, which will be added
+to the base environment when applying level functions to this element.
+For example:
+</p>
+<hcode lang="xml"><![CDATA[<page title="...."
+...
+author="Santa Claus"
+>
+.... <author/> ....
+</page>]]></hcode>
+<p>
+Here the node <icode lang="xml">&lt;author/&gt;</icode> will we rewritten to
+"Santa Claus" (without quotes).
+</p>
+<p>The same can be achieved for more complex nodes, using the
+<icode lang="xml">with-contents="true"</icode>
+attribute:
+</p>
+<hcode lang="xml"><![CDATA[<page title="...."
+  with-contents="true"
+  ...
+>
+<author><b>Santa Claus</b></author>
+<contents>
+.... <author/> ....
+</contents>
+</page>]]></hcode>
+<p>here <icode lang="xml">&lt;author/&gt;</icode> will we rewritten to
+<icode lang="xml">&lt;b&gt;Santa Claus&lt;/b&gt;</icode>.
+</p>
+<p>
+You can also define functions. A function is defined like an attribute
+when having <icode lang="xml">with-contents="true"</icode>, except the
+node defining the name of the function has XML attributes:
+</p>
+<hcode lang="xml"><![CDATA[<page title="...."
+  with-contents="true"
+  ...
+>
+...
+<command prompt="#"><pre><prompt/> <contents/><more/></pre></command>
+...
+<contents>
+.... <command>ls -l</command>
+</contents>
+</page>]]></hcode>
+<p>
+Here we define a function <ixml>&lt;command&gt;</ixml> which allows to put some
+XML into a <ixml><pre/></ixml> node, with a prompt before.
+<ixml>&lt;contents/&gt;</ixml> is used to insert the "contents" parameter of the function,
+that is the subnodes of the <ixml>&lt;command&gt;</ixml> node.
+</p>
+<p>So <icode lang="xml"><command>ls -l</command></icode> will be rewritten to
+<ixml><command>ls -l</command></ixml>.
+</p>
+<p>
+<icode>prompt</icode> is an argument for <icode lang="xml"><command/></icode>, with a default
+value set to "# ". This argument can be changed when "calling" the function:
+</p>
+<hcode lang="xml">... <command prompt="mysql&gt; ">select * from table</command> ...</hcode>
+<p>will be rewritten to</p>
+<hcode defer_="1" lang="xml">... <command prompt="mysql&gt; ">select * from table</command> ...</hcode>
+<p>
+Only attributes of the <ixml>&lt;command/&gt;</ixml> nodes which are
+"declared" in the rule attribute list are added to the environment used
+when applying the <ixml>&lt;command&gt;</ixml> rule.
+</p>
+<p>It is not unusual to declare only one dummy parameter to create a function
+so that <ixml>&lt;contents/&gt;</ixml> can be used in the rule body, this way:
+</p>
+<hcode lang="xml"><![CDATA[<page title="...." with-contents="true"  ... >
+...
+<emph foo=""><b><i><contents/></i></b>
+...
+<contents>
+  ... <emph>bla bla</emph> ...
+</contents>
+</page>]]></hcode>
 </section>
+
 </prepare-toc>
+</contents>
 </page>
