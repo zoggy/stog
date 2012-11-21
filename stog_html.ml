@@ -315,6 +315,7 @@ let fun_elt_href ?typ href stog env args subs =
       | Some elt, [], None ->
           let quote = if quotes then "\"" else "" in
           let s = Printf.sprintf "%s%s%s" quote elt.elt_title quote in
+          prerr_endline (Printf.sprintf "s=%S" s);
           [Xtmpl.xml_of_string s]
       | Some _, text, None -> text
       | Some elt, _, Some id ->
@@ -344,6 +345,7 @@ let fun_elt_href ?typ href stog env args subs =
                 [title]
           | text -> text
     in
+    prerr_endline (Printf.sprintf "text=%s" (Xtmpl.string_of_xmls text));
     (elt, id, text)
   in
   match elt with
@@ -492,9 +494,8 @@ let make_fun_section sect_up cls sect_down env args subs =
   let counters = String.concat "."
     (List.filter ((<>) "") (List.rev_map f (cls::sect_up)))
   in
-  let counters = match counters with "" -> "" | _ -> counters^". " in
   let counter_name =
-    match get_in_env env (cls^"counter") with
+    match get_in_env env (cls^"-counter") with
       s when not (Stog_io.bool_of_string s) -> ""
     | _ -> cls
   in
@@ -504,9 +505,12 @@ let make_fun_section sect_up cls sect_down env args subs =
      ("with-contents", "true") :: args,
      [
        Xtmpl.T ("long-title-format", [],
-        [Xtmpl.xml_of_string (Printf.sprintf "%s<title/>" counters)]);
+        [Xtmpl.xml_of_string (Printf.sprintf "%s%s<title/>" counters (if counters = "" then "" else " "))]);
        Xtmpl.T ("short-title-format", [],
-        [Xtmpl.xml_of_string counters]);
+        (match counter_name with
+          "" -> [Xtmpl.xml_of_string "<title/>"]
+         | _ -> [Xtmpl.xml_of_string counters]
+        ));
        Xtmpl.T ("contents", [], body) ;
      ]
     )
