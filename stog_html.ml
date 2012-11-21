@@ -227,17 +227,36 @@ let fun_include stog elt _env args subs =
       failwith "Missing 'file' argument for include command"
 ;;
 
-let fun_inc stog elt _env args subs =
-  match Xtmpl.get_arg args Stog_tags.elt_hid, Xtmpl.get_arg args "id" with
-    None, _
-  | _, None ->
-      failwith "Missing reference argument for inc command";
-  | Some hid, Some id ->
-      let (_,elt) = Stog_types.elt_by_human_id stog (Stog_types.human_id_of_string hid) in
-      match Stog_types.find_block_by_id elt id with
-        Some xml -> [xml]
-      | None ->
-          failwith (Printf.sprintf "No id %S in element %S"  id hid)
+let fun_inc stog elt env args subs =
+  let href =
+    match Xtmpl.get_arg args "href" with
+      None -> failwith "Missing href for inc rule"
+    | Some href -> href
+  in
+  let (hid, id) =
+    try
+      let p = String.index href '#' in
+      let len = String.length href in
+      let hid = String.sub href 0 p in
+      (hid, String.sub href (p+1) (len - (p+1)))
+    with
+        Not_found ->
+        failwith "Missing block id for inc rule"
+  in
+  try
+    let hid = match hid with "" -> get_hid env | s ->  s in
+    let hid = Stog_types.human_id_of_string hid in
+    let (_, elt) = Stog_types.elt_by_human_id stog hid in
+    match Stog_types.find_block_by_id elt id with
+      Some xml -> [xml]
+    | None ->
+        failwith
+        (Printf.sprintf "No id %S in element %S"
+         id (Stog_types.string_of_human_id hid))
+  with
+    Failure s ->
+      Stog_msg.error s;
+      [Xtmpl.D ("??"^href^"??")]
 ;;
 
 let fun_image _env args legend =
