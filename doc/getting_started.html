@@ -341,6 +341,13 @@ so that <ixml>&lt;contents/&gt;</ixml> can be used in the rule body, this way:
   ... <emph>bla bla</emph> ...
 </contents>
 </page>]]></hcode>
+
+<p>
+To define functions available for all elements, you have to define them in
+the main element and prefix their name with "stog-", like "stog-command". Then,
+the <ixml>&lt;command&gt;</ixml> rule will be available in all elements; besides
+it can be redefined in an element to change this rule for this element only.
+</p>
 </section>
 
 </prepare-toc>

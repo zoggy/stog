@@ -306,6 +306,13 @@ the name <icode>contents</icode>.
 With the additional attribute <icode>raw="true"</icode>, the contents of the loaded file
 is considered as PCData. This is useful for example to insert code.
 </p>
+<p>
+If the file attribute begins with "." or "..", that is the filename is explicitely relative,
+the file path is concatenated to the current element source file path.
+</p>
+<p>
+If the file attribute is an absolute filename, then this absolute filename is used.
+</p>
 <p>At last, all additional attributes to <icode>&lt;include ...&gt;</icode> will
 be added to the environment used to evaluate the contents of the file.
 </p>
