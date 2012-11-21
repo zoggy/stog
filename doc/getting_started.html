@@ -91,16 +91,17 @@ with links to by-keyword index,</li>
 the form <i>YYYY/MM/DD</i>. Use <icode>&lt;elt-date/&gt;</icode> in templates to insert it,</li>
 <li><b>published</b>: can be set to <i>false</i> to prevent the element from being generated;
 useful when an element is not ready yet for publication,</li>
-<li><b>sets</b>: a comma-separated list of set names; sets can be used to list element
+<li><b>sets</b>: a comma-separated list of set names; sets can be used to list elements
 belonging to a set,</li>
 <li><b>language-dep</b>: can be set to <i>false</i> to indicate that this page is not
-language dependent, when generating multi-language sites (this affects to name of the
+language dependent, when generating multi-language sites (this affects the name of the
 generated file),</li>
 <li><b>doctype</b>: specify the doctype which will printed into the final XML file. Default is "HTML".</li>
 </ul>
 <p>
 Any other attribute will be available by its name in the environment when processing the template
 associated to the element type. The element type can be accessed with <icode>&lt;elt-type/&gt;</icode>.
+More details in <elt href="#functions"></elt>.
 </p>
 <p>
 To generate the file corresponding to an element, <icode>stog</icode> will use the type of
@@ -176,9 +177,9 @@ for <icode>stog.byte</icode> or native-code for <icode>stog</icode>.
 <p>At last, the <icode>--lang</icode> option is used to generate the website
 for one language. By default, the only known languages are "en" and "fr".
 If you use the <icode>--lang en</icode> option, then pages will be generated
-in <icode>.en.html</icode> files and all "fr" nodes will be removed.
+in <icode>.en.html</icode> files and all <icode>&lt;fr&gt;</icode> nodes will be removed.
 Then you can run <icode>stog</icode> with the <icode>--lang fr</icode>
-to generate the "fr" part of your web site.
+to generate the "fr" part of your web site, removing all <icode>&lt;en&gt;</icode>.
 </p>
 <!--
 <p>
@@ -193,18 +194,45 @@ the provided
 
 <section id="templates" title="Evaluation and templating">
 <p>
-The final file for each element is build this way
+The final files corresponding to elements are built the following way.
 </p>
-<ol>
-<li>The template file is loaded, according to the type of the element; for example,
+<p>Various rewrite levels are defined in Stog, and plugins can add more levels.
+</p>
+<p>A level is composed of a list of functions, each function taking an element
+and returning the (eventually modified) element. Pre-defined levels are composed
+of functions applying rewrite rules to element body.
+</p>
+<p>Various levels are required to ensure some rules will be applied after
+others, for example to verify cross-element links. Each level has a number,
+and levels are applied in order from 0 to n. Pre-defined levels are
+numbered like lines in basic programs: 0, 50, 100, 120, ... making
+plugins able to insert new levels.
+</p>
+<p>The first application of a level to an element uses the
+type of the element to load the corresponding template; for example,
 if the element has type "page", then a template <icode>page.tmpl</icode> will
-be looked for;</li>
-<li>An environment is build, containing the <a href="#mainelement">site-wide attributes</a>,
-the element attributes and some <page href="funs">default callbacks</page>. This environment
-is in fact a set of rewrite rules.</li>
-<li>The rewrite rules applied on the template to get the final XML document;</li>
-<li>The XML document is written to the final file.</li>
-</ol>
+be looked for.
+</p>
+<p>An environment is built containing the
+<a href="#mainelement">site-wide attributes</a> and the element attributes.
+This environment is a set of rewrite rules.
+</p>
+<p>In each level, each function of the level is applied to the element current body
+(the "first current body" is the template, where <icode>&lt;elt-body/&gt;</icode> will be
+rewritten to the tree of the element body as given in the element file).
+</p>
+<p>The pre-defined levels contain pre-defined functions which apply
+<page href="funs">default rules</page>, in addition to the rules from
+the environment and rules added by plugins.
+</p>
+<p>When all levels were applied to elements, the contents of each element
+is stored in the cache (the <icode>.stog/cache</icode> directory).
+The final XML file is also created from this contents.
+</p>
+<p>Remark: If the element file was not modified since the corresponding
+cache file was stored, the contents of the element is read back from
+the cache, and the level functions are not applied to this element.
+</p>
 
 <p>The environment is used in the following way.
 For each encountered tag <icode>t</icode>, <icode>t</icode> is looked up
@@ -227,6 +255,10 @@ before looking up for the tag in the environment.
 <p>Stog comes with <page href="funs">predefined functions</page>
 associated to some tags, but more can be created in plugins.
 </p>
+</section>
+
+<section id="functions" title="Functions">
+bla bla
 </section>
 </prepare-toc>
 </page>

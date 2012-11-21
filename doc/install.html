@@ -9,6 +9,7 @@ To build Stog, you will need:
 </p>
 <ul>
 <li><ext-a href="http://caml.inria.fr/">OCaml >= 4.00</ext-a> installed,</li>
+<li><ext-a href="http://config-file.forge.ocamlcore.org/">Config-file >= 1.1</ext-a>.</li>
 <li><ext-a href="http://erratique.ch/software/xmlm">Xmlm >= 1.1.0</ext-a>,</li>
 <li><ext-a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS >= 2.0</ext-a>,</li>
 <li><ext-a href="https://github.com/zoggy/xtmpl">Xtmpl >= 0.3</ext-a>.</li>
@@ -31,6 +32,29 @@ LaTeX in your pages.</li>
 </p>
 <subsection title="Releases">
 <ul>
+<li><a href="stog-0.4.tar.gz">0.4</a> [2012-11-21]:
+<ul>
+<li>handle relative paths in <icode>&lt;include&gt;</icode>, when starting with
+  <icode>.</icode> or <icode>..</icode>,</li>
+<li>use a separate tool to evaluate ocaml code, "stog-ocaml-sessoin";
+   this allows to use native code version of stog even when evaluating
+   ocaml code; it also makes possible to use distinct ocaml toplevels in
+   ocaml-eval (with session="..."),</li>
+<li>add simple cache system, and option <icode>--nocache</icode>,</li>
+<li>new <icode>&lt;inc&gt;</icode> rule to include a block from another
+  element: <icode lang="xml">&lt;inc elt-hid="/install" id="blockid"/&gt;</icode>,
+</li>
+<li>ability to define "functions", site-wide or element-wide,</li>
+<li>handle blocks and counters,</li>
+<li>sectionning now uses blocks and counters,</li>
+<li>a "sectionning" attribute is used to determine which nodes are used for
+  sectionning an element; default is "section,subsection",</li>
+<li>veritfy references to blocks by id (sections, ...) and use their title in links,</li>
+<li>use "id" attribute instead of "name" attribute in sectionning tags,</li>
+<li>define and use levels of rules; plugins can extend the number of levels
+    to define their own rewriting system.</li>
+</ul>
+</li>
 <li><a href="stog-0.3.tar.gz">0.3</a> [2012-08-30]:
 <ul>
 <li>new stage 0 to allow plugins to change the stog structure before generating,</li>

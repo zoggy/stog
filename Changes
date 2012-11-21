@@ -1,4 +1,4 @@
-Next release:
+Release 0.4:
   * use separate tool to evaluate ocaml code; this allows to use native
     code version of stog even when evaluating ocaml code; also allow
     to use distinct ocaml toplevels in ocaml-eval (with session="...")
@@ -12,7 +12,6 @@ Next release:
   * define and use levels of rules; plugins can extend the number of levels
     to define their own rewrite system
   * handle relative paths in include, when starting with . or ..
-  * handle <chapter> nodes as new kind of sections
 
 Release 0.3
   * new stage 0 to allow plugins to change the stog structure before generating
