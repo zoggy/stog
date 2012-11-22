@@ -67,10 +67,10 @@ LaTeX in your pages.</li>
 <ul>
 <li>handle relative paths in <span class="icode">&lt;include&gt;</span>, when starting with
   <span class="icode">.</span> or <span class="icode">..</span>,</li>
-<li>use a separate tool to evaluate ocaml code, &quot;stog-ocaml-sessoin&quot;;
+<li>use a separate tool to evaluate ocaml code, &quot;stog-ocaml-session&quot;;
    this allows to use native code version of stog even when evaluating
    ocaml code; it also makes possible to use distinct ocaml toplevels in
-   ocaml-eval (with session=&quot;...&quot;),</li>
+   ocaml-eval (with session=&quot;...&quot;); details <a href="http://zoggy.github.com/stog/posts/ocaml-sessions.html">here</a>,</li>
 <li>add simple cache system, and option <span class="icode">--nocache</span>,</li>
 <li>new <span class="icode">&lt;inc&gt;</span> rule to include a block from another
   element: <span class="icode"><span class="hl kwa">&lt;inc</span> <span class="hl kwb">elt-hid</span>=<span class="hl str">&quot;/install&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;blockid&quot;</span><span class="hl kwa">/&gt;</span></span>,
@@ -163,10 +163,10 @@ LaTeX in your pages.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;ul&gt;</span>
 <span class="hl kwa">&lt;li&gt;</span>handle relative paths in <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>include<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>, when starting with
   <span class="hl kwa">&lt;icode&gt;</span>.<span class="hl kwa">&lt;/icode&gt;</span> or <span class="hl kwa">&lt;icode&gt;</span>..<span class="hl kwa">&lt;/icode&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>use a separate tool to evaluate ocaml code, <span class="hl str">&quot;stog-ocaml-sessoin&quot;</span>;
+<span class="hl kwa">&lt;li&gt;</span>use a separate tool to evaluate ocaml code, <span class="hl str">&quot;stog-ocaml-session&quot;</span>;
    this allows to use native code version of stog even when evaluating
    ocaml code; it also makes possible to use distinct ocaml toplevels in
-   ocaml-eval (with <span class="hl kwb">session</span>=<span class="hl str">&quot;...&quot;</span>),<span class="hl kwa">&lt;/li&gt;</span>
+   ocaml-eval (with <span class="hl kwb">session</span>=<span class="hl str">&quot;...&quot;</span>); details <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ocaml-sessions&quot;</span><span class="hl kwa">&gt;</span>here<span class="hl kwa">&lt;/elt&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;</span>add simple cache system, and option <span class="hl kwa">&lt;icode&gt;</span>--nocache<span class="hl kwa">&lt;/icode&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;</span>new <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>inc<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> rule to include a block from another
   element: <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>inc <span class="hl kwb">elt-hid</span>=<span class="hl str">&quot;/install&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;blockid&quot;</span>/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>,
