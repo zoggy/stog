@@ -23,6 +23,47 @@ whose hid is retrieved by the <icode>&lt;elt-hid/&gt;</icode> function.
 <prepare-toc depth="1">
 <toc/>
 
+<section id="others" title="Rules always applied">
+<p>These rules are applied in each level:</p>
+
+<subsection id="contents" title="contents">
+<p>
+<icode lang="xml">&lt;contents/&gt;</icode> is the generic function to insert some
+contents in an included file or template. It may be available or not depending
+on the context.
+</p>
+</subsection>
+
+<subsection id="env_" title="env_">
+<p>The special tag <icode>env_</icode> can be used to modify the environment
+before analysing children. For example, here we add an association
+between "login" and "zoggy". This will add to the environment
+an association between the key "login" and
+the function returning the one-element list ["zoggy"], which is used
+later in the "login" attribute:
+<hcode lang="xml"><![CDATA[<env_ login="zoggy">
+  ...
+  <user login="&lt;login/&gt;">...</user>
+  ...
+</env_>]]></hcode>
+</p>
+<p>Such a function cannot be created in plugins, since functions only return
+XML trees, not a new environment. But your functions can return XML trees
+containing <icode>env_</icode> tags to modify the environment used to
+evaluate the returned XML trees.
+</p>
+</subsection>
+
+<subsection id="langswitch" title="langswitch">
+<p>
+If <icode>stog</icode> is launched with option <icode>--lang language</icode>, the
+<icode lang="xml">&lt;langswitch&gt;</icode> function returns some code to access
+to pages in other languages than <icode>language</icode>.
+</p>
+</subsection>
+
+</section>
+
 <section id="level0" title="Level 0: Base rules">
 <p>
 The following rules are called base rules: they are applied on level 0
@@ -39,45 +80,42 @@ redefining pre-defined rules with the same names.
 <li><elt href="#archive-tree"/></li>
 <li><elt href="#block"/></li>
 <li><elt href="#command-line"/></li>
-<li><elt href="#contents"/></li>
 <li><elt href="#counter"/></li>
 <li><elt href="#elements"/></li>
 <li><elt href="#elt-bodyx"/></li>
 <li><elt href="#elt-date"/></li>
 <li><elt href="#elt-hid"/></li>
+<li><elt href="#elt-intro"/></li>
 </ul>
 </left>
 <middle>
 <ul>
-<li><elt href="#elt-intro"/></li>
 <li><elt href="#elt-keywordsx"/></li>
 <li><elt href="#elt-src"/></li>
 <li><elt href="#elt-title"/></li>
 <li><elt href="#elt-type"/></li>
 <li><elt href="#elt-url"/></li>
-<li><elt href="#env_"/></li>
 <li><elt href="#ext-a"/></li>
 <li><elt href="#graphx"/></li>
+<li><elt href="#hcode"/></li>
+<li><elt href="#icode"/></li>
 </ul>
 </middle>
 <right>
 <ul>
-<li><elt href="#hcode"/></li>
-<li><elt href="#icode"/></li>
 <li><elt href="#if"/></li>
 <li><elt href="#image"/></li>
 <li><elt href="#include"/></li>
-<li><elt href="#langswitch"/></li>
 <li><elt href="#latex"/></li>
 <li><elt href="#list"/></li>
 <li><elt href="#ocaml"/></li>
+<li><elt href="#ocaml-eval"/></li>
+<li><elt href="#previous"/></li>
+<li><elt href="#sep_"/></li>
 </ul>
 </right>
 <col4>
 <ul>
-<li><elt href="#ocaml-eval"/></li>
-<li><elt href="#previous"/></li>
-<li><elt href="#sep_"/></li>
 <li><elt href="#site-descriptionx"/></li>
 <li><elt href="#site-email"/></li>
 <li><elt href="#site-titlex"/></li>
@@ -108,14 +146,6 @@ attribute already set to "sh".
 
 <subsection id="counter" title="counter">
 <p>To be written.</p>
-</subsection>
-
-<subsection id="contents" title="contents">
-<p>
-<div class="todo">move this elsewhere; with env_ ? </div>
-<icode lang="xml">&lt;contents/&gt;</icode> is the generic function to insert some
-contents in an included file or template.
-</p>
 </subsection>
 
 <subsection id="elements" title="elements">
@@ -191,25 +221,6 @@ of the element.
 </p>
 </subsection>
 
-<subsection id="env_" title="env_">
-<p>The special tag <icode>env_</icode> can be used to modify the environment
-before analysing children. For example, here we add an association
-between "login" and "zoggy". This will add to the environment
-an association between the key "login" and
-the function returning the one-element list ["zoggy"], which is used
-later in the "login" attribute:
-<hcode lang="xml"><![CDATA[<env_ login="zoggy">
-  ...
-  <user login="&lt;login/&gt;">...</user>
-  ...
-</env_>]]></hcode>
-</p>
-<p>Such a function cannot be created in plugins, since functions only return
-XML trees, not a new environment. But your functions can return XML trees
-containing <icode>env_</icode> tags to modify the environment used to
-evaluate the returned XML trees.
-</p>
-</subsection>
 
 <subsection id="ext-a" title="ext-a">
 <p>
@@ -346,14 +357,6 @@ Each topic will be displayed using a <icode>topic.tmpl</icode> template file.
 In these templates, <icode lang="xml">&lt;keyword/&gt;</icode>
 (resp. <icode lang="xml">&lt;topic/&gt;</icode>) inserts the name of the current keyword
 (resp. topic), when computing keyword (resp. topic) list.
-</p>
-</subsection>
-
-<subsection id="langswitch" title="langswitch">
-<p>
-If <icode>stog</icode> is launched with option <icode>--lang language</icode>, the
-<icode lang="xml">&lt;langswitch&gt;</icode> function returns some code to access
-to pages in other languages than <icode>language</icode>.
 </p>
 </subsection>
 
