@@ -1,103 +1,535 @@
 <page title="Predefined functions"
 navbar-doc="active"
+with-contents="true"
 >
+<also-base-rules>
+<p class="alert alert-warning">This level also applies the <elt href="#level0">base rules</elt>.</p>
+</also-base-rules>
+<contents>
 <p>
-Some functions are pre-defined and can be used in your pages, articles and templates.
-The following common functions are available everywhere:
+Some rules are pre-defined and can be used in your elements and templates.
+They are gouped in different levels (see <elt href="getting_started#templates"/>).
+We give here the list of pre-defined rules applied at each pre-defined level.
 </p>
-<n-columns>
-<left>
-<ul>
-<li><a href="#archive-tree">archive-tree</a></li>
-<li><a href="#command-line">command-line</a></li>
-<li><a href="#elt">elt, post and page</a></li>
-<li><a href="#elt-bodyx">elt-body</a></li>
-<li><a href="#elt-date">elt-date</a></li>
-<li><a href="#elt-hid">elt-hid</a></li>
-<li><a href="#elt-intro">elt-intro</a></li>
-<li><a href="#elt-keywordsx">elt-keywords and elt-topics</a></li>
-<li><a href="#elt-src">elt-src</a></li>
-<li><a href="#elt-title">elt-title</a></li>
-<li><a href="#elt-type">elt-type</a></li>
-</ul>
-</left>
-<middle>
-<ul>
-<li><a href="#elt-url">elt-url</a></li>
-<li><a href="#elements">elements</a></li>
-<li><a href="#env_">env_</a></li>
-<li><a href="#ext-a">ext-a</a></li>
-<li><a href="#graphx">graph</a></li>
-<li><a href="#hcode">hcode</a></li>
-<li><a href="#icode">icode</a></li>
-<li><a href="#if">if</a></li>
-<li><a href="#inc">inc</a></li>
-<li><a href="#include">include</a></li>
-<li><a href="#image">image</a></li>
-<li><a href="#langswitch">langswitch</a></li>
-</ul>
-</middle>
-<right>
-<ul>
-<li><a href="#latex">latex</a></li>
-<li><a href="#ocaml">ocaml</a></li>
-<li><a href="#previous">previous and next</a></li>
-<li><a href="#sectionning">sectionning</a></li>
-<li><a href="#sep_">sep_</a></li>
-<li><a href="#site-descriptionx">site-description</a></li>
-<li><a href="#site-email">site-email</a></li>
-<li><a href="#site-titlex">site-title</a></li>
-<li><a href="#site-url">site-url</a></li>
-<li><a href="#toc">toc and prepare-toc</a></li>
-<li><a href="#two-columns">two-columns and n-columns</a></li>
-</ul>
-</right>
-</n-columns>
-<p>For most of the functions, you should look at the generated XML to modify
+<p>For most of the rules, you should look at the generated XML to modify
 your CSS stylesheet according to the classes used. You can start from
 the <icode>.less</icode> files in the <icode>doc</icode> directory
 of the stog sources.
 </p>
 <p>
-Some functions are available in some templates only (and in templates
-"called" from these templates):
-<table class="table table-bordered table-stripped">
-<thead>
-<tr><th>Template</th><th>Functions</th></tr>
-</thead>
-<tr><td>topic.tmpl</td><td><a href="#topic">topic</a></td></tr>
-<tr><td>keyword.tmpl</td><td><a href="#keyword">keyword</a></td></tr>
-</table>
-</p>
-<p>
 In the following descriptions, the current element refers to the element
 whose hid is retrieved by the <icode>&lt;elt-hid/&gt;</icode> function.
 </p>
+<prepare-toc depth="1">
+<toc/>
 
-<section id="archive-tree" title="archive-tree">
+<section id="level0" title="Level 0: Base rules">
+<p>
+The following rules are called base rules: they are applied on level 0
+but also in some other levels. They are used for simple formatting
+and to use information about the current element.
+</p>
+<p>
+The base rules defined by plugins are also added to this list, possibly
+redefining pre-defined rules with the same names.
+</p>
+<n-columns>
+<left>
+<ul>
+<li><elt href="#archive-tree"/></li>
+<li><elt href="#block"/></li>
+<li><elt href="#command-line"/></li>
+<li><elt href="#contents"/></li>
+<li><elt href="#counter"/></li>
+<li><elt href="#elements"/></li>
+<li><elt href="#elt-bodyx"/></li>
+<li><elt href="#elt-date"/></li>
+<li><elt href="#elt-hid"/></li>
+</ul>
+</left>
+<middle>
+<ul>
+<li><elt href="#elt-intro"/></li>
+<li><elt href="#elt-keywordsx"/></li>
+<li><elt href="#elt-src"/></li>
+<li><elt href="#elt-title"/></li>
+<li><elt href="#elt-type"/></li>
+<li><elt href="#elt-url"/></li>
+<li><elt href="#env_"/></li>
+<li><elt href="#ext-a"/></li>
+<li><elt href="#graphx"/></li>
+</ul>
+</middle>
+<right>
+<ul>
+<li><elt href="#hcode"/></li>
+<li><elt href="#icode"/></li>
+<li><elt href="#if"/></li>
+<li><elt href="#image"/></li>
+<li><elt href="#include"/></li>
+<li><elt href="#langswitch"/></li>
+<li><elt href="#latex"/></li>
+<li><elt href="#list"/></li>
+<li><elt href="#ocaml"/></li>
+</ul>
+</right>
+<col4>
+<ul>
+<li><elt href="#ocaml-eval"/></li>
+<li><elt href="#previous"/></li>
+<li><elt href="#sep_"/></li>
+<li><elt href="#site-descriptionx"/></li>
+<li><elt href="#site-email"/></li>
+<li><elt href="#site-titlex"/></li>
+<li><elt href="#site-url"/></li>
+<li><elt href="#two-columns"/></li>
+</ul>
+</col4>
+</n-columns>
+
+<subsection id="archive-tree" title="archive-tree">
 <p>
 <icode lang="xml">&lt;archive-tree/&gt;</icode> inserts the articles archive tree.
 </p>
-</section>
+</subsection>
 
+<subsection id="block" title="block">
+<p>To be written.</p>
+</subsection>
 
-<section id="command-line" title="command-line">
+<subsection id="command-line" title="command-line">
 <p>
 <icode lang="xml">&lt;command-line&gt;</icode> works like
 <a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a>
 with the <icode>lang</icode>
 attribute already set to "sh".
 </p>
-</section>
+</subsection>
 
-<section id="contents" title="contents">
+<subsection id="counter" title="counter">
+<p>To be written.</p>
+</subsection>
+
+<subsection id="contents" title="contents">
 <p>
+<div class="todo">move this elsewhere; with env_ ? </div>
 <icode lang="xml">&lt;contents/&gt;</icode> is the generic function to insert some
 contents in an included file or template.
 </p>
+</subsection>
+
+<subsection id="elements" title="elements">
+<p>
+<icode lang="xml">&lt;elements .../&gt;</icode> inserts the list of
+published elements.
+</p>
+<p>The following optional attributes can be specified:</p>
+<ul>
+<li><icode>max="n"</icode> can be used to list only the <icode>n</icode> most recent
+elements.</li>
+<li><icode>rss="filename"</icode> triggers the creation of a RSS file corresponding
+to the selected elements. The given filename is appended to the stog output directory.
+A link to the RSS file is also added before the list.</li>
+<li><icode>set="name"</icode> can be used to select only the elements belonging to
+the given set.</li>
+<li><icode>type="type"</icode> filters the elements to keep only the ones of the given
+type.</li>
+<li><icode>title="title"</icode> specifies the title of the RSS channel, if a RSS
+file is created. If no title is given, the site title is used.</li>
+</ul>
+<p>Example: <icode lang="xml">&lt;elements type="post" max="10" rss="index.rss"/&gt;</icode></p>
+</subsection>
+
+<subsection id="elt-bodyx" title="elt-body">
+<p>
+<icode lang="xml">&lt;elt-body/&gt;</icode> returns the body of the current element.
+</p>
+</subsection>
+
+<subsection id="elt-date" title="elt-date">
+<p>
+<icode lang="xml">&lt;elt-date/&gt;</icode> returns the date of the current element,
+or an empty string if no date were specified.
+</p>
+</subsection>
+
+<subsection id="elt-hid" title="elt-hid">
+<p>
+<icode lang="xml">&lt;elt-hid/&gt;</icode> returns the hid of the current element.
+</p>
+</subsection>
+
+<subsection id="elt-intro" title="elt-intro">
+<p>
+<icode lang="xml">&lt;elt-intro/&gt;</icode> returns the introduction of an element,
+that is the body code before the <icode>&lt;sep_/&gt;</icode> marker.
+</p>
+</subsection>
+
+<subsection id="elt-src" title="elt-src">
+<p>
+<icode lang="xml">&lt;elt-src/&gt;</icode> returns the source filename
+of the element.
+</p>
+</subsection>
+
+<subsection id="elt-title" title="elt-title">
+<p>
+<icode lang="xml">&lt;elt-title/&gt;</icode> returns the title of the current element.
+</p>
+</subsection>
+
+<subsection id="elt-type" title="elt-type">
+<p>
+<icode lang="xml">&lt;elt-type/&gt;</icode> returns the type of the current element.
+</p>
+</subsection>
+
+<subsection id="elt-url" title="elt-url">
+<p>
+<icode lang="xml">&lt;elt-url/&gt;</icode> returns the final url of the current element.
+</p>
+</subsection>
+
+<subsection id="env_" title="env_">
+<p>The special tag <icode>env_</icode> can be used to modify the environment
+before analysing children. For example, here we add an association
+between "login" and "zoggy". This will add to the environment
+an association between the key "login" and
+the function returning the one-element list ["zoggy"], which is used
+later in the "login" attribute:
+<hcode lang="xml"><![CDATA[<env_ login="zoggy">
+  ...
+  <user login="&lt;login/&gt;">...</user>
+  ...
+</env_>]]></hcode>
+</p>
+<p>Such a function cannot be created in plugins, since functions only return
+XML trees, not a new environment. But your functions can return XML trees
+containing <icode>env_</icode> tags to modify the environment used to
+evaluate the returned XML trees.
+</p>
+</subsection>
+
+<subsection id="ext-a" title="ext-a">
+<p>
+<icode lang="xml">&lt;ext-a attributes&gt;...&lt;/ext-a&gt;</icode> is reduced
+to <icode lang="xml">&lt;span class="ext-a"&gt;&lt;a attributes&gt;...&lt;/a&gt;&lt;/ext-a&gt;</icode>.
+This can be used to add specific style link to external sites.
+</p>
+</subsection>
+
+<subsection id="graphx" title="graph">
+<p>
+<icode lang="xml">&lt;graph/&gt;</icode> computes the graph of elements in SVG format, and returns
+a link to this graph displayed as a small graph. One can click on an element in the generated SVG
+graph to jump to the element.
+</p>
+</subsection>
+
+<subsection id="hcode" title="hcode">
+<include file="syntax.tmpl"><![CDATA[<hcode lang="...">your code</hcode>]]></include>
+<p>
+This function inserts the given pre-formatted code. It uses the
+<ext-a href="http://www.andre-simon.de/doku/highlight/en/highlight.html"><icode>highlight</icode></ext-a>
+tool to add syntax highlighting. For example, the code examples of this page are
+inserted using <hcode lang="xml"><![CDATA[<hcode lang="xml">...</hcode>]]></hcode>
+</p>
+</subsection>
+
+<subsection id="icode" title="icode">
+<p>
+<icode lang="xml">&lt;icode&gt;</icode> works like
+<a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a> but is used to
+generate inline highlighted code instead of using a box.
+</p>
+</subsection>
+
+<subsection id="if" title="if">
+<include file="syntax.tmpl"><![CDATA[
+<if attr1="value1" attr2="value2" ...>
+<XML tree used when all conditions are verified>
+<optional XML tree used when at least one condition is not verified>
+</if>
+]]></include>
+<p>
+The <icode>if</icode> function tests whether each condition expressed as <icode>attr="value"</icode>
+is verified. If so, the first XML child is returned, else the second one is returned.
+To test the value of <icode>attr</icode>, <icode>attr</icode> is looked up in the current
+environment. If its value is the same as the given value, the condition is verified.
+For  this evaluation, a tag <icode>t</icode> not found in the environment in not
+reduced to itself but to the empty string, so that the condition in
+<icode lang="xml">&lt;if foo=""&gt;...&lt;/if&gt;</icode>
+will be verified if <icode>foo</icode> is not in the environment.
+</p>
+<p>
+The <icode>"value"</icode> part of the condition must be valid XML, and can contain
+calls to functions, as in:
+<hcode lang="xml"><![CDATA[<if elt-title="&lt;site-title&gt;">....</if>]]></hcode>
+</p>
+<p>Other example: Testing whether a variable is empty to known whether to output
+a block or not:
+<hcode lang="xml"><![CDATA[<if list="">
+<span/>
+<div>The list is not empty, let's print it:<ul><list/></ul></div>
+</if>]]></hcode>
+</p>
+</subsection>
+
+<subsection id="include" title="include">
+<include file="syntax.tmpl"><![CDATA[<include file="template">...</include>]]></include>
+<p>
+This function will load the file <icode>template</icode> from the template directory
+(or fail if the file does not exist). The contents of the file will then be evaluated.
+The code between <icode>&lt;include ...&gt;</icode> and <icode>&lt;/include&gt;</icode>
+is added to the environment used to evaluate the contents of the file, associated to
+the name <icode>contents</icode>.
+</p>
+<p>
+With the additional attribute <icode>raw="true"</icode>, the contents of the loaded file
+is considered as PCData. This is useful for example to insert code.
+</p>
+<p>
+If the file attribute begins with "." or "..", that is the filename is explicitely relative,
+the file path is concatenated to the current element source file path.
+</p>
+<p>
+If the file attribute is an absolute filename, then this absolute filename is used.
+</p>
+<p>At last, all additional attributes to <icode>&lt;include ...&gt;</icode> will
+be added to the environment used to evaluate the contents of the file.
+</p>
+<p>Here is an example. If we have the <icode>foo.tmpl</icode> file
+in the template directory, with the following contents:
+<hcode lang="xml"><![CDATA[<p> key=<key/> value=<contents/> </p> ]]></hcode>
+<p>The following code</p>
+<hcode lang="xml"><![CDATA[<include file="foo.tmpl" key="bar">the value of bar</include>]]></hcode>
+<p>will be reduced to</p>
+<hcode lang="xml"><![CDATA[<p> key=bar value=the value of bar </p>]]></hcode>
+</p>
+</subsection>
+
+<subsection id="image" title="image">
+<include file="syntax.tmpl"><![CDATA[<image float="[left|right]" src="..." ...>legend</image>]]></include>
+<p>
+This inserts an image using an <icode lang="xml">&lt;img .../&gt;</icode> node.
+The legend is optional.
+</p>
+<p>
+The <icode>float</icode> attribute can be used to change a class in the generated code,
+so you can set the style of the image to be left or right floating.
+</p>
+<p>
+Additional attributes are passed to the generated <icode>img</icode> node.
+</p>
+</subsection>
+
+<subsection id="keyword" title="keyword">
+<p>
+<icode lang="xml">&lt;keyword/&gt;</icode> inserts the name of the current keyword,
+when computing keyword list (in template <icode>keyword.tmpl</icode>).
+</p>
+</subsection>
+
+<subsection id="elt-keywordsx" title="elt-keywords / elt-topics">
+<p>
+<icode lang="xml">&lt;elt-keywords sep="..."/&gt;</icode> and
+<icode lang="xml">&lt;elt-topics sep="..."/&gt;</icode> respectively return
+the keyword and topic list of
+the current element, as defined in the element. The optional <icode>sep</icode> attribute
+can be used to specify a separator between each keyword or topic.
+</p>
+<p>Each keyword will be displayed using a <icode>keyword.tmpl</icode> template file.
+Each topic will be displayed using a <icode>topic.tmpl</icode> template file.
+</p>
+<p>
+In these templates, <icode lang="xml">&lt;keyword/&gt;</icode>
+(resp. <icode lang="xml">&lt;topic/&gt;</icode>) inserts the name of the current keyword
+(resp. topic), when computing keyword (resp. topic) list.
+</p>
+</subsection>
+
+<subsection id="langswitch" title="langswitch">
+<p>
+If <icode>stog</icode> is launched with option <icode>--lang language</icode>, the
+<icode lang="xml">&lt;langswitch&gt;</icode> function returns some code to access
+to pages in other languages than <icode>language</icode>.
+</p>
+</subsection>
+
+<subsection id="latex" title="latex">
+<p>
+<icode lang="xml">&lt;latex&gt;...&lt;/latex&gt;</icode> is used to compile
+latex code and display it as SVG in the page. Read
+<post href="latex-in-stog">this post</post> for details.
+</p>
+</subsection>
+
+<subsection id="list" title="list">
+<hcode lang="xml"><list sep="..."><node1>...</node1><node2>...</node2>...</list></hcode>
+<p>will is reduced to the list of subnodes, separated by the given <icode>sep</icode> attribute.</p>
+<p>For example:</p>
+<hcode lang="xml"><list sep=", "><b>apple</b><b>banana</b><b>orange</b></list></hcode>
+<p>will be reduced to</p>
+<hcode defer_="1" lang="xml"><list sep=", "><b>apple</b><b>banana</b><b>orange</b></list></hcode>
+</subsection>
+
+<subsection id="previous" title="previous / next">
+<p>
+<icode lang="xml">&lt;previous/&gt;</icode> and
+<icode lang="xml">&lt;next/&gt;</icode> respectively return a link to the previous and next
+element according to the chronological order of element dates.
+</p>
+</subsection>
+
+<subsection id="ocaml" title="ocaml">
+<p>
+<icode lang="xml">&lt;ocaml&gt;</icode> works like
+<a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a>
+with the <icode>lang</icode>
+attribute already set to "ocaml".
+</p>
+</subsection>
+
+<subsection id="ocaml-eval" title="ocaml-eval">
+<p>This rule evaluate OCaml code. See the following
+blog posts: <post href="displaying-evaluated-ocaml-code"/> and <post href="ocaml-sessions"/>.
+</p>
+</subsection>
+
+<subsection id="sep_" title="sep_">
+<p>
+<icode lang="xml">&lt;sep_/&gt;</icode> is the tag used to indicate the end of the introduction
+of an element. It is reduced to an empty string.
+</p>
+</subsection>
+
+<subsection id="site-descriptionx" title="site-description">
+<p>
+<icode lang="xml">&lt;site-description/&gt;</icode> returns the site description
+as specified in the main element.
+</p>
+</subsection>
+
+<subsection id="site-email" title="site-email">
+<p>
+<icode lang="xml">&lt;site-email/&gt;</icode> returns the site contact email
+as specified in the main element.
+</p>
+</subsection>
+
+<subsection id="site-titlex" title="site-title">
+<p>
+<icode lang="xml">&lt;site-title/&gt;</icode> returns the site title as specified in the
+main element.
+</p>
+</subsection>
+
+<subsection id="site-url" title="site-url">
+<p>
+<icode lang="xml">&lt;site-url/&gt;</icode> returns the site url as specified in the
+main element.
+</p>
+</subsection>
+
+<subsection id="two-columns" title="two-columns / n-columns">
+<include file="syntax.tmpl"><![CDATA[<two-columns>
+<XML for left column/>
+<XML for right column/>
+</two-columns>]]></include>
+<p>
+This will put the two given XML nodes in a two-columns layout. Note that the tag used to
+enclose the left and right contents is not kept, so you may use any tag you want, for example:
+</p>
+<hcode lang="xml"><![CDATA[
+<two-columns><left>bla bla bla</left><right>bla bla bla</right></two-columns>
+]]></hcode>
+<p>
+<icode>&lt;n-columns&gt;</icode> works the same way but produces as many columns as there are
+children in the node.
+</p>
+</subsection>
+
 </section>
 
-<section id="elt" title="elt, post and page">
+<section id="level50" title="Level 50: Computing tables of contents">
+<p>
+This level only contains two rules: <icode>toc</icode> and <icode>prepare-toc</icode>.
+</p>
+<include file="syntax.tmpl"><![CDATA[<prepare-toc depth="[1|2|...]">
+...
+<toc>text</toc>
+...
+<section ...>
+  <subsection ...>
+
+  </subsection>
+  ...
+</section>
+...
+</prepare-toc>]]></include>
+<p>
+The <icode lang="xml">&lt;toc&gt;</icode> node is used to insert a table of contents.
+If a text is given, it is added ahead of the table of contents.
+</p>
+<p>
+Since the <icode>toc</icode> node does not include the sections and subsections, it is
+not sufficient to build the table of contents. So it will use what is returned by
+the function associated to "toc-contents" in its environment.
+</p>
+<p>This function is added to the environment by the <icode>prepare-toc</icode> node,
+which includes all the sections and subsections. The <icode>depth</icode> attribute
+is used to specify the depth of the table of contents.
+</p>
+<p>The nodes used for sectionning can be changed, see <elt href="#level100"/>.</p>
+</section>
+
+<section id="level100" title="Level 100: Sectionning">
+<include file="syntax.tmpl"><![CDATA[<section id="..." title="...">...</section>
+<subsection id="..." title="...">...</subsection>
+ ]]></include>
+<p>This is used to insert sections and subsections, with a given title. The id,
+if given, will be associated to the section title node.
+</p>
+<p>"section" and "subsection" are the default sectionning nodes.
+You can specify other nodes:
+</p>
+<ul>
+<li>for one element, using the "sectionning" attribute in the element, for example:
+  <hcode lang="xml"><page title="..." sectionning="section,subsection,paragraph">...</page></hcode>
+  will define "section", "subsection" and "paragraph" as sectionning nodes.
+</li>
+<li>for all the site elements, using the "stog-sectionning" attribute in the main element
+  (see <elt href="getting_started#mainelement"/>):
+  <hcode lang="xml"><page title="..." stog-sectionning="section,subsection,paragraph">...</page></hcode>
+</li>
+</ul>
+<p>
+When a sectionning node is reduced, a <elt href="#block"/> is created, so that
+refering to the section (or subsection, or ...), will use the title of the section
+(or subsection, or ...) for the produced link default text.
+</p>
+<p>To prevent a sectionning node having a counter associated, you can use
+<icode lang="xml">section-counter="false"</icode> in the element attribute, or
+<icode lang="xml">stog-section-counter="false"</icode> in the main element. "section" can be replaced
+by "subsection" or any other node to prevent this node having a counter.
+</p>
+</section>
+
+<section id="level120" title="Level 120: Gathering existing ids">
+<p>This level does not contain any additional rule. The only function
+pre-defined in this level gathers all ids of all element, so that
+cross-links in next levels can be verified.
+</p>
+<p>This function will issue a warning when an id is defined twice in the same element.</p>
+</section>
+
+<section id="level150" title="Level 150: Cross linking">
+<also-base-rules/>
+<p>
+The default rules defined in this level are the following:
+<icode>elt</icode>, <icode>post</icode>, <icode>page</icode> and <icode>block</icode>.
+</p>
 <include file="syntax.tmpl"><![CDATA[<elt href=hid[#id]>text</elt>]]></include>
 <p>
 This will return a link to the element specified by its hid. The hid of an element
@@ -142,370 +574,61 @@ are equivalent respectively to
 <icode lang="xml">&lt;elt type="page" ...&gt;</icode> and
 <icode lang="xml">&lt;elt type="post" ...&gt;</icode>.
 </p>
-</section>
-
-<section id="elt-bodyx" title="elt-body">
+<p>The <icode>block</icode> rule in this level hides the <elt href="#block"/> base rule.
+In this level,
+</p>
+<hcode lang="xml"><block href="...">text</block></hcode>
+<p>is used to refer to a block using the given <icode>href</icode> attribute. Here the
+href only contains an id, it is not of the form "hid[#id]". This will
+be reduced to a link to the corresponding element, using the given text.
+</p>
+<p>If the node matching the <icode>href</icode> was defined with the
+<elt href="#block"/> base rule (i.e. without <icode>href</icode> attribute),
+then the title associated to this node is used as text for the procuded link, if not
+text was given (<icode lang="xml"><block href="..."/></icode>).
+</p>
+<p>So,</p>
+<hcode lang="xml"><block href="fig1"/></hcode>
+<p>is equivalent to</p>
+<hcode lang="xml"><elt href="#fig1"/></hcode>
+<p>or</p>
+<hcode lang="xml"><elt id="&lt;elt-hid/&gt;#fig1"/></hcode>
 <p>
-<icode lang="xml">&lt;elt-body/&gt;</icode> returns the body of the current element.
+But the purpose of <icode>block</icode> rule is not to be used directly, but rather
+by defining other rules reducing to <icode>block</icode>, like environments in
+latex for figures, proofs, propositions, ...
+</p>
+<p>Here is an example of definition of a function in an element definition:</p>
+<hcode lang="xml">
+<article title="..." with-contents="true">
+<theorem id="" title="" href=""><block
+  counter-name="theorem" class="theorem"
+  label="Theorem" href="&lt;href/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+>
+<div class="&lt;class/&gt;" id="&lt;id/&gt;">
+  <div class="title"><title/></div>
+  <div class="contents"><contents/></div>
+</div></block></theorem>
+<contents>...</contents>
+</article></hcode>
+<p>This defines a new rule <icode>theorem</icode> used this way to define a new theorem:</p>
+<hcode lang="xml"><theorem id="thmain" title="Main result">...</theorem></hcode>
+<p>Elsewhere, this theorem can be referred to using</p>
+<hcode lang="xml"><theorem href="thmain"/></hcode>
+<p>which will be reduced to a link with "Theorem 1" as text, if this theorem was the
+first defined in the article.
 </p>
 </section>
 
-<section id="elt-date" title="elt-date">
-<p>
-<icode lang="xml">&lt;elt-date/&gt;</icode> returns the date of the current element,
-or an empty string if no date were specified.
-</p>
-</section>
-
-<section id="elt-hid" title="elt-hid">
-<p>
-<icode lang="xml">&lt;elt-hid/&gt;</icode> returns the hid of the current element.
-</p>
-</section>
-
-<section id="elt-intro" title="elt-intro">
-<p>
-<icode lang="xml">&lt;elt-intro/&gt;</icode> returns the introduction of an element,
-that is the body code before the <icode>&lt;sep_/&gt;</icode> marker.
-</p>
-</section>
-
-<section id="elt-src" title="elt-src">
-<p>
-<icode lang="xml">&lt;elt-src/&gt;</icode> returns the source filename
-of the element.
-</p>
-</section>
-
-<section id="elt-title" title="elt-title">
-<p>
-<icode lang="xml">&lt;elt-title/&gt;</icode> returns the title of the current element.
-</p>
-</section>
-
-<section id="elt-type" title="elt-type">
-<p>
-<icode lang="xml">&lt;elt-type/&gt;</icode> returns the type of the current element.
-</p>
-</section>
-
-<section id="elt-url" title="elt-url">
-<p>
-<icode lang="xml">&lt;elt-url/&gt;</icode> returns the final url of the current element.
-</p>
-</section>
-
-<section id="elements" title="elements">
-<p>
-<icode lang="xml">&lt;elements .../&gt;</icode> inserts the list of
-published elements.
-</p>
-<p>The following optional attributes can be specified:</p>
-<ul>
-<li><icode>max="n"</icode> can be used to list only the <icode>n</icode> most recent
-elements.</li>
-<li><icode>rss="filename"</icode> triggers the creation of a RSS file corresponding
-to the selected elements. The given filename is appended to the stog output directory.
-A link to the RSS file is also added before the list.</li>
-<li><icode>set="name"</icode> can be used to select only the elements belonging to
-the given set.</li>
-<li><icode>type="type"</icode> filters the elements to keep only the ones of the given
-type.</li>
-<li><icode>title="title"</icode> specifies the title of the RSS channel, if a RSS
-file is created. If no title is given, the site title is used.</li>
-</ul>
-<p>Example: <icode lang="xml">&lt;elements type="post" max="10" rss="index.rss"/&gt;</icode></p>
-</section>
-
-<section id="env_" title="env_">
-<p>The special tag <icode>env_</icode> can be used to modify the environment
-before analysing children. For example, here we add an association
-between "login" and "zoggy". This will add to the environment
-an association between the key "login" and
-the function returning the one-element list ["zoggy"], which is used
-later in the "login" attribute:
-<hcode lang="xml"><![CDATA[<env_ login="zoggy">
-  ...
-  <user login="&lt;login/&gt;">...</user>
-  ...
-</env_>]]></hcode>
-</p>
-<p>Such a function cannot be created in plugins, since functions only return
-XML trees, not a new environment. But your functions can return XML trees
-containing <icode>env_</icode> tags to modify the environment used to
-evaluate the returned XML trees.
-</p>
-</section>
-
-<section id="ext-a" title="ext-a">
-<p>
-<icode lang="xml">&lt;ext-a attributes&gt;...&lt;/ext-a&gt;</icode> is reduced
-to <icode lang="xml">&lt;span class="ext-a"&gt;&lt;a attributes&gt;...&lt;/&gt;&lt;/ext-a&gt;</icode>.
-This can be used to add specific style link to external sites.
-</p>
-</section>
-
-<section id="graphx" title="graph">
-<p>
-<icode lang="xml">&lt;graph/&gt;</icode> computes the graph of elements in SVG format, and returns
-a link to this graph displayed as a small graph. One can click on an element in the generated SVG
-graph to jump to the element.
-</p>
-</section>
-
-<section id="hcode" title="hcode">
-<include file="syntax.tmpl"><![CDATA[<hcode lang="...">your code</hcode>]]></include>
-<p>
-This function inserts the given pre-formatted code. It uses the
-<ext-a href="http://www.andre-simon.de/doku/highlight/en/highlight.html"><icode>highlight</icode></ext-a>
-tool to add syntax highlighting. For example, the code examples of this page are
-inserted using <hcode lang="xml"><![CDATA[<hcode lang="xml">...</hcode>]]></hcode>
-</p>
-</section>
-
-<section id="icode" title="icode">
-<p>
-<icode lang="xml">&lt;icode&gt;</icode> works like
-<a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a> but is used to
-generate inline highlighted code instead of using a box.
-</p>
-</section>
-
-<section id="if" title="if">
-<include file="syntax.tmpl"><![CDATA[
-<if attr1="value1" attr2="value2" ...>
-<XML tree used when all conditions are verified>
-<optional XML tree used when at least one condition is not verified>
-</if>
-]]></include>
-<p>
-The <icode>if</icode> function tests whether each condition expressed as <icode>attr="value"</icode>
-is verified. If so, the first XML child is returned, else the second one is returned.
-To test the value of <icode>attr</icode>, <icode>attr</icode> is looked up in the current
-environment. If its value is the same as the given value, the condition is verified.
-For  this evaluation, a tag <icode>t</icode> not found in the environment in not
-reduced to itself but to the empty string, so that the condition in
-<icode lang="xml">&lt;if foo=""&gt;...&lt;/if&gt;</icode>
-will be verified if <icode>foo</icode> is not in the environment.
-</p>
-<p>
-The <icode>"value"</icode> part of the condition must be valid XML, and can contain
-calls to functions, as in:
-<hcode lang="xml"><![CDATA[<if elt-title="&lt;site-title&gt;">....</if>]]></hcode>
-</p>
-<p>Other example: Testing whether a variable is empty to known whether to output
-a block or not:
-<hcode lang="xml"><![CDATA[<if list="">
-<span/>
-<div>The list is not empty, let's print it:<ul><list/></ul></div>
-</if>]]></hcode>
-</p>
-</section>
-
-<section id="inc" title="inc">
+<section id="level160" title="Level 160: Including blocks">
 <include file="syntax.tmpl"><![CDATA[<inc href="..."/>]]></include>
 <p>
-This functions is used to insert the XML node specified by the <icode>href</icode> attribute.
-See <elt href="#elt"/> for details about how to specify an element. The id of the
+This rule is used to insert the XML node specified by the <icode>href</icode> attribute.
+See <elt href="#level150"/> for details about how to specify an element. The id of the
 node if mandatory for this command.
 </p>
 </section>
-
-<section id="include" title="include">
-<include file="syntax.tmpl"><![CDATA[<include file="template">...</include>]]></include>
-<p>
-This function will load the file <icode>template</icode> from the template directory
-(or fail if the file does not exist). The contents of the file will then be evaluated.
-The code between <icode>&lt;include ...&gt;</icode> and <icode>&lt;/include&gt;</icode>
-is added to the environment used to evaluate the contents of the file, associated to
-the name <icode>contents</icode>.
-</p>
-<p>
-With the additional attribute <icode>raw="true"</icode>, the contents of the loaded file
-is considered as PCData. This is useful for example to insert code.
-</p>
-<p>
-If the file attribute begins with "." or "..", that is the filename is explicitely relative,
-the file path is concatenated to the current element source file path.
-</p>
-<p>
-If the file attribute is an absolute filename, then this absolute filename is used.
-</p>
-<p>At last, all additional attributes to <icode>&lt;include ...&gt;</icode> will
-be added to the environment used to evaluate the contents of the file.
-</p>
-<p>Here is an example. If we have the <icode>foo.tmpl</icode> file
-in the template directory, with the following contents:
-<hcode lang="xml"><![CDATA[<p> key=<key/> value=<contents/> </p> ]]></hcode>
-The following code
-<hcode lang="xml"><![CDATA[<include file="foo.tmpl" key="bar">the value of bar</include>]]></hcode>
-will be reduced to
-<hcode lang="xml"><![CDATA[<p> key=bar value=the value of bar </p>]]></hcode>
-</p>
-</section>
-
-<section id="image" title="image">
-<include file="syntax.tmpl"><![CDATA[<image float="[left|right]" src="..." ...>legend</image>]]></include>
-<p>
-This inserts an image using an <icode lang="xml">&lt;img .../&gt;</icode> node.
-The legend is optional.
-</p>
-<p>
-The <icode>float</icode> attribute can be used to change a class in the generated code,
-so you can set the style of the image to be left or right floating.
-</p>
-<p>
-Additional attributes are passed to the generated <icode>img</icode> node.
-</p>
-</section>
-
-<section id="keyword" title="keyword">
-<p>
-<icode lang="xml">&lt;keyword/&gt;</icode> inserts the name of the current keyword,
-when computing keyword list (in template <icode>keyword.tmpl</icode>).
-</p>
-</section>
-
-<section id="elt-keywordsx" title="elt-keywords and elt-topics">
-<p>
-<icode lang="xml">&lt;elt-keywords sep="..."/&gt;</icode> and
-<icode lang="xml">&lt;elt-topics sep="..."/&gt;</icode> respectively return
-the keyword and topic list of
-the current element, as defined in the element. The optional <icode>sep</icode> attribute
-can be used to specify a separator between each keyword or topic.
-</p>
-<p>Each keyword will be displayed using a <icode>keyword.tmpl</icode> template file.
-Each topic will be displayed using a <icode>topic.tmpl</icode> template file.
-</p>
-</section>
-
-<section id="langswitch" title="langswitch">
-<p>
-If <icode>stog</icode> is launched with option <icode>--lang language</icode>, the
-<icode lang="xml">&lt;langswitch&gt;</icode> function returns some code to access
-to pages in other languages than <icode>language</icode>.
-</p>
-</section>
-
-<section id="latex" title="latex">
-<p>
-<icode lang="xml">&lt;latex&gt;...&lt;/latex&gt;</icode> is used to compile
-latex code and display it as SVG in the page. Read
-<post href="latex-in-stog">this post</post> for details.
-</p>
-</section>
-
-<section id="previous" title="previous and next">
-<p>
-<icode lang="xml">&lt;previous/&gt;</icode> and
-<icode lang="xml">&lt;next/&gt;</icode> respectively return a link to the previous and next
-element according to the chronological order of element dates.
-</p>
-</section>
-
-<section id="ocaml" title="ocaml">
-<p>
-<icode lang="xml">&lt;ocaml&gt;</icode> works like
-<a href="#hcode"><icode lang="xml">&lt;hcode&gt;</icode></a>
-with the <icode>lang</icode>
-attribute already set to "ocaml".
-</p>
-</section>
-
-<section id="sectionning" title="sectionning">
-<include file="syntax.tmpl"><![CDATA[<section id="..." title="...">...</section>
-<subsection id="..." title="...">...</subsection>
- ]]></include>
-<p>This is used to insert sections and subsections, with a given title. The name,
-if given, is used as id in the section title node.
-</p>
-</section>
-
-<section id="sep_" title="sep_">
-<p>
-<icode lang="xml">&lt;sep_/&gt;</icode> is the tag used to indicate the end of the introduction
-of an element. It is reduced to an empty string.
-</p>
-</section>
-
-<section id="site-descriptionx" title="site-description">
-<p>
-<icode lang="xml">&lt;site-description/&gt;</icode> returns the site description
-as specified in the main element.
-</p>
-</section>
-
-<section id="site-email" title="site-email">
-<p>
-<icode lang="xml">&lt;site-email/&gt;</icode> returns the site contact email
-as specified in the main element.
-</p>
-</section>
-
-<section id="site-titlex" title="site-title">
-<p>
-<icode lang="xml">&lt;site-title/&gt;</icode> returns the site title as specified in the
-main element.
-</p>
-</section>
-
-<section id="site-url" title="site-url">
-<p>
-<icode lang="xml">&lt;site-url/&gt;</icode> returns the site url as specified in the
-main element.
-</p>
-</section>
-
-<section id="toc" title="toc and prepare-toc">
-<include file="syntax.tmpl"><![CDATA[<prepare-toc depth="[1|2|...]">
-...
-<toc>text</toc>
-...
-<section ...>
-  <subsection ...>
-
-  </subsection>
-  ...
-</section>
-...
-</prepare-toc>]]></include>
-<p>
-The <icode lang="xml">&lt;toc&gt;</icode> node is used to insert a table of contents.
-If a text is given, it is added ahead of the table of contents.
-</p>
-<p>
-Since the <icode>toc</icode> node does not include the sections and subsections, it is
-not sufficient to build the table of contents. So it will use what is returned by
-the function associated to "toc-contents" in its environment.
-</p>
-<p>This function is added to the environment by the <icode>prepare-toc</icode> node,
-which includes all the sections and subsections. The <icode>depth</icode> attribute
-is used to specify the depth of the table of contents.
-</p>
-</section>
-
-<section id="topic" title="topic">
-<p>
-<icode lang="xml">&lt;topic/&gt;</icode> inserts the name of the current topic,
-when computing topic list (in template <icode>topic.tmpl</icode>).
-</p>
-</section>
-
-<section id="two-columns" title="two-columns and n-columns">
-<include file="syntax.tmpl"><![CDATA[<two-columns>
-<XML for left column/>
-<XML for right column/>
-</two-columns>]]></include>
-<p>
-This will put the two given XML nodes in a two-columns layout. Note that the tag used to
-enclose the left and right contents is not kept, so you may use any tag you want, for example:
-</p>
-<hcode lang="xml"><![CDATA[
-<two-columns><left>bla bla bla</left><right>bla bla bla</right></two-columns>
-]]></hcode>
-<p>
-<icode>&lt;n-columns&gt;</icode> works the same way but produces as many columns as there are
-children in the node.
-</p>
-</section>
+</prepare-toc>
+</contents>
 </page>

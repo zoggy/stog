@@ -1104,41 +1104,41 @@ and build_base_rules stog elt_id elt =
   let l =
     !plugin_rules @
     [
-      Stog_tags.elt_title, mk f_title ;
-      Stog_tags.elt_url, mk f_url ;
-      Stog_tags.elt_body, mk f_body ;
-      Stog_tags.elt_type, mk f_type ;
-      Stog_tags.elt_src, mk f_src ;
-      Stog_tags.elt_date, mk f_date ;
-      Stog_tags.elt_keywords, mk (html_of_keywords stog) ;
-      Stog_tags.elt_topics, mk (html_of_topics stog) ;
-      Stog_tags.elt_intro, mk f_intro ;
-      Stog_tags.sep, (fun _ _ _ -> []);
-      Stog_tags.elements, elt_list stog ;
-      Stog_tags.block, fun_block1 stog ;
-      Stog_tags.counter, fun_counter ;
-      Stog_tags.if_, fun_if ;
-      Stog_tags.include_, fun_include stog elt ;
-      Stog_tags.image, fun_image ;
       Stog_tags.archive_tree, (fun _ -> fun_archive_tree stog) ;
-      Stog_tags.hcode, fun_hcode stog ~inline: false ?lang: None;
-      Stog_tags.icode, fun_icode ?lang: None stog;
-      Stog_tags.list, fun_list ;
-      Stog_tags.ocaml, fun_ocaml ~inline: false stog;
-      Stog_tags.ocaml_eval, Stog_ocaml.fun_eval stog ;
+      Stog_tags.block, fun_block1 stog ;
       Stog_tags.command_line, fun_command_line ~inline: false stog ;
-      Stog_tags.site_url, fun_blog_url stog ;
-      Stog_tags.search_form, fun_search_form stog ;
-      Stog_tags.site_title, (fun _ _ _ -> [ Xtmpl.D stog.stog_title ]) ;
-      Stog_tags.site_desc, (fun _ _ _ -> stog.stog_desc) ;
-      Stog_tags.site_email, (fun _ _ _ -> [ Xtmpl.D stog.stog_email ]) ;
-      Stog_tags.two_columns, fun_twocolumns ;
-      Stog_tags.n_columns, fun_ncolumns ;
+      Stog_tags.counter, fun_counter ;
+      Stog_tags.elements, elt_list stog ;
+      Stog_tags.elt_body, mk f_body ;
+      Stog_tags.elt_date, mk f_date ;
+      Stog_tags.elt_intro, mk f_intro ;
+      Stog_tags.elt_keywords, mk (html_of_keywords stog) ;
+      Stog_tags.elt_src, mk f_src ;
+      Stog_tags.elt_title, mk f_title ;
+      Stog_tags.elt_topics, mk (html_of_topics stog) ;
+      Stog_tags.elt_type, mk f_type ;
+      Stog_tags.elt_url, mk f_url ;
       Stog_tags.ext_a, fun_exta ;
       Stog_tags.graph, fun_graph stog ;
+      Stog_tags.hcode, fun_hcode stog ~inline: false ?lang: None;
+      Stog_tags.icode, fun_icode ?lang: None stog;
+      Stog_tags.if_, fun_if ;
+      Stog_tags.image, fun_image ;
+      Stog_tags.include_, fun_include stog elt ;
       Stog_tags.latex, (Stog_latex.fun_latex stog) ;
+      Stog_tags.list, fun_list ;
+      Stog_tags.n_columns, fun_ncolumns ;
       Stog_tags.next, (fun _ _ _ -> next);
+      Stog_tags.ocaml, fun_ocaml ~inline: false stog;
+      Stog_tags.ocaml_eval, Stog_ocaml.fun_eval stog ;
       Stog_tags.previous, (fun _ _ _ -> previous);
+      Stog_tags.search_form, fun_search_form stog ;
+      Stog_tags.sep, (fun _ _ _ -> []);
+      Stog_tags.site_desc, (fun _ _ _ -> stog.stog_desc) ;
+      Stog_tags.site_email, (fun _ _ _ -> [ Xtmpl.D stog.stog_email ]) ;
+      Stog_tags.site_title, (fun _ _ _ -> [ Xtmpl.D stog.stog_title ]) ;
+      Stog_tags.site_url, fun_blog_url stog ;
+      Stog_tags.two_columns, fun_twocolumns ;
     ]
   in
   (make_lang_rules stog) @ l
