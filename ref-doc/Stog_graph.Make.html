@@ -24,6 +24,8 @@
 <link title="Stog_tags" rel="Chapter" href="Stog_tags.html">
 <link title="Stog_io" rel="Chapter" href="Stog_io.html">
 <link title="Stog_info" rel="Chapter" href="Stog_info.html">
+<link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
+<link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
@@ -34,7 +36,9 @@
 &nbsp;<a class="post" href="Stog_graph.Make_with_map.html" title="Stog_graph.Make_with_map">Next</a>
 </div>
 <h1>Functor <a href="type_Stog_graph.Make.html">Stog_graph.Make</a></h1>
-<pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code">functor (</code><code class="code">M</code><code class="code"> : </code><code class="type"><a href="Stog_graph.GMap.html">GMap</a></code><code class="code">) -&gt; </code><div class="sig_block"><code class="code">functor (</code><code class="code">Edge</code><code class="code"> : </code><code class="type">Map.OrderedType</code><code class="code">) -&gt; </code><code class="type"><a href="Stog_graph.S.html">S</a></code><code class="type">  with type key = M.key and type edge_data = Edge.t</code></div></div></pre>Making a graph module.<br>
+<pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code">functor (</code><code class="code">M</code><code class="code"> : </code><code class="type"><a href="Stog_graph.GMap.html">GMap</a></code><code class="code">) -&gt; </code><div class="sig_block"><code class="code">functor (</code><code class="code">Edge</code><code class="code"> : </code><code class="type">Map.OrderedType</code><code class="code">) -&gt; </code><code class="type"><a href="Stog_graph.S.html">S</a></code><code class="type">  with type key = M.key and type edge_data = Edge.t</code></div></div></pre><div class="info">
+Making a graph module.<br>
+</div>
 <table border="0" cellpadding="3" width="100%">
 <tr>
 <td align="left" valign="top" width="1%%"><b>Parameters: </b></td>

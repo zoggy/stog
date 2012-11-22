@@ -20,6 +20,8 @@
 <link title="Stog_tags" rel="Chapter" href="Stog_tags.html">
 <link title="Stog_io" rel="Chapter" href="Stog_io.html">
 <link title="Stog_info" rel="Chapter" href="Stog_info.html">
+<link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
+<link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
@@ -30,9 +32,14 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;current_stog&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;option&nbsp;<span class="constructor">Pervasives</span>.ref<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;plugin_rules&nbsp;:&nbsp;(string&nbsp;*&nbsp;<span class="constructor">Xtmpl</span>.callback)&nbsp;list&nbsp;<span class="constructor">Pervasives</span>.ref<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stage0_funs&nbsp;:&nbsp;(<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.stog)&nbsp;list&nbsp;<span class="constructor">Pervasives</span>.ref<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stage1_funs&nbsp;:&nbsp;(<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;list&nbsp;<span class="constructor">Pervasives</span>.ref<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stage2_funs&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt)&nbsp;list&nbsp;<span class="constructor">Pervasives</span>.ref<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_block&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?on_dup:[&nbsp;<span class="keywordsign">`</span><span class="constructor">Fail</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span><span class="constructor">Ignore</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span><span class="constructor">Warn</span>&nbsp;]&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;hid:string&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;id:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;short:<span class="constructor">Xtmpl</span>.tree&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;long:<span class="constructor">Xtmpl</span>.tree&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_in_env&nbsp;:&nbsp;<span class="constructor">Xtmpl</span>.env&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_in_args_or_env&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Xtmpl</span>.env&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(string&nbsp;*&nbsp;string)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_hid&nbsp;:&nbsp;<span class="constructor">Xtmpl</span>.env&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;escape_html&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;highlight&nbsp;:&nbsp;opts:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elt_dst_file&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
@@ -40,13 +47,27 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;url_of_hid&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?ext:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.human_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;rss_date_of_date&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.date&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Rss</span>.date<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elt_to_rss_item&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Rss</span>.item<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elt_to_rss_item&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Rss</span>.item<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;generate_rss_feed_file&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?title:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Rss</span>.url&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;build_rules&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(string&nbsp;*&nbsp;<span class="constructor">Xtmpl</span>.callback)&nbsp;list<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?title:string&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Rss</span>.url&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="constructor">Stog_types</span>.elt_id&nbsp;*&nbsp;<span class="constructor">Stog_types</span>.elt)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;build_base_rules&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.elt_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(string&nbsp;*&nbsp;<span class="constructor">Xtmpl</span>.callback)&nbsp;list<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elt_list&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;?rss:string&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;?set:<span class="constructor">Stog_types</span>.<span class="constructor">Elt_set</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Xtmpl</span>.callback<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;generate&nbsp;:&nbsp;?only_elt:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;generate&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?use_cache:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?only_elt:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;rule_build&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.elt_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(string&nbsp;*&nbsp;<span class="constructor">Xtmpl</span>.callback)&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;level_fun&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Xtmpl</span>.env&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.elt_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;register_level_fun&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_html</span>.level_fun&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;compute_elt&nbsp;:&nbsp;<span class="constructor">Stog_html</span>.rule_build&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_html</span>.level_fun<br>
 <span class="keyword">end</span></code></body></html>

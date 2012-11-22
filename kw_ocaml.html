@@ -33,6 +33,25 @@
 
 <div class="rss-button"><a href="http://zoggy.github.com/stog/kw_ocaml.rss"><img src="rss.png" alt="Rss feed"/></a></div><div itemprop="blogPosts" itemscope="" itemtype="http://schema.org/BlogPosting" class="elt-item">
 <div class="elt-item-title">
+<link itemprop="url" href="http://zoggy.github.com/stog/posts/ocaml-sessions.html"/>
+<a href="http://zoggy.github.com/stog/posts/ocaml-sessions.html"><span itemprop="name">OCaml sessions</span></a>
+</div>
+<div class="date">November 21, 2012</div>
+<div itemprop="headline" class="elt-intro">
+<p>
+A <a href="http://zoggy.github.com/stog/posts/displaying-evaluated-ocaml-code.html">previous post</a>
+introduced the <span class="icode">&lt;ocaml-eval&gt;</span> function to
+evaluate ocaml code, enventually displaying the result in a toplevel way, etc.
+</p>
+<p>
+OCaml code was evaluated in the Stog process, which required Stog to
+embed the OCaml toplevel, only available as bytecode. As a consequence,
+only the bytecode version of Stog could evaluate OCaml code using the
+internal toplevel.
+</p>
+<a href="http://zoggy.github.com/stog/posts/ocaml-sessions.html"><img src="http://zoggy.github.com/stog/next.png" alt="next"/></a></div>
+</div><div itemprop="blogPosts" itemscope="" itemtype="http://schema.org/BlogPosting" class="elt-item">
+<div class="elt-item-title">
 <link itemprop="url" href="http://zoggy.github.com/stog/posts/displaying-evaluated-ocaml-code.html"/>
 <a href="http://zoggy.github.com/stog/posts/displaying-evaluated-ocaml-code.html"><span itemprop="name">Displaying evaluated OCaml code</span></a>
 </div>
@@ -40,8 +59,7 @@
 <div itemprop="headline" class="elt-intro">
 <p>
 Bytecode version of Stog, <span class="icode">stog.byte</span>,
-offers the <span class="icode"><span class="hl kwa">&lt;ocaml-eval&gt;</span> ... <span class="hl kwa">&lt;/ocaml-eval&gt;</span>
-</span>
+offers the <span class="icode"><span class="hl kwa">&lt;ocaml-eval&gt;</span> ... <span class="hl kwa">&lt;/ocaml-eval&gt;</span></span>
 function to evaluate code and display the result. This is nice to provide
 verified code examples on your pages.
 </p>

@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0"><channel><title>Stog: ocaml</title><link>http://zoggy.github.com/stog/kw_ocaml.html</link><description>&lt;main_&gt;Static blog and web site generator&lt;/main_&gt;</description><managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor><pubDate>11 Mar 2012 08:00:00 +0000</pubDate><lastBuildDate>11 Mar 2012 08:00:00 +0000</lastBuildDate><generator>Stog</generator><item><title>Displaying evaluated OCaml code</title><link>http://zoggy.github.com/stog/posts/displaying-evaluated-ocaml-code.html</link><description>
+<rss version="2.0"><channel><title>Stog: ocaml</title><link>http://zoggy.github.com/stog/kw_ocaml.html</link><description>Static blog and web site generator</description><managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor><pubDate>21 Nov 2012 08:00:00 +0000</pubDate><lastBuildDate>21 Nov 2012 08:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.com/stog/</url><title>Stog</title><link>http://zoggy.github.com/stog</link></image><item><title>OCaml sessions</title><link>http://zoggy.github.com/stog/posts/ocaml-sessions.html</link><description>
+&lt;p&gt;
+A &lt;post href=&quot;displaying-evaluated-ocaml-code&quot;&gt;previous post&lt;/post&gt;
+introduced the &lt;span class=&quot;icode&quot;&gt;&amp;lt;ocaml-eval&amp;gt;&lt;/span&gt; function to
+evaluate ocaml code, enventually displaying the result in a toplevel way, etc.
+&lt;/p&gt;
+&lt;p&gt;
+OCaml code was evaluated in the Stog process, which required Stog to
+embed the OCaml toplevel, only available as bytecode. As a consequence,
+only the bytecode version of Stog could evaluate OCaml code using the
+internal toplevel.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.com/stog/posts/ocaml-sessions.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>21 Nov 2012 08:00:00 +0000</pubDate><category>stog</category><category>ocaml</category><category>evaluation</category><category>code</category><guid isPermaLink="true">http://zoggy.github.com/stog/posts/ocaml-sessions.html</guid></item><item><title>Displaying evaluated OCaml code</title><link>http://zoggy.github.com/stog/posts/displaying-evaluated-ocaml-code.html</link><description>
 &lt;p&gt;
 Bytecode version of Stog, &lt;span class=&quot;icode&quot;&gt;stog.byte&lt;/span&gt;,
-offers the &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;ocaml-eval&amp;gt;&lt;/span&gt; ... &lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;/ocaml-eval&amp;gt;&lt;/span&gt;
-&lt;/span&gt;
+offers the &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;ocaml-eval&amp;gt;&lt;/span&gt; ... &lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;/ocaml-eval&amp;gt;&lt;/span&gt;&lt;/span&gt;
 function to evaluate code and display the result. This is nice to provide
 verified code examples on your pages.
 &lt;/p&gt;

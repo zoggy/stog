@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="Stog_info.html">
+<link rel="previous" href="Stog_ocaml.html">
 <link rel="next" href="Stog_html.html">
 <link rel="Up" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
@@ -25,20 +25,27 @@
 <link title="Stog_tags" rel="Chapter" href="Stog_tags.html">
 <link title="Stog_io" rel="Chapter" href="Stog_io.html">
 <link title="Stog_info" rel="Chapter" href="Stog_info.html">
+<link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
+<link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
 <link title="Stog_dyn" rel="Chapter" href="Stog_dyn.html"><title>Stog : Stog_latex</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Stog_info.html" title="Stog_info">Previous</a>
+<div class="navbar"><a class="pre" href="Stog_ocaml.html" title="Stog_ocaml">Previous</a>
 &nbsp;<a class="up" href="index.html" title="Index">Up</a>
 &nbsp;<a class="post" href="Stog_html.html" title="Stog_html">Next</a>
 </div>
 <h1>Module <a href="type_Stog_latex.html">Stog_latex</a></h1>
-<pre><span class="keyword">module</span> Stog_latex: <code class="code">sig</code> <a href="Stog_latex.html">..</a> <code class="code">end</code></pre>LaTeX plugin.
+<pre><span class="keyword">module</span> Stog_latex: <code class="code">sig</code> <a href="Stog_latex.html">..</a> <code class="code">end</code></pre><div class="info">
+LaTeX plugin.
 <p>
 
    Some values are made available so they can be reused by other plugins.<br>
+</div>
 <hr width="100%">
-<pre><span id="VALmake_svg"><span class="keyword">val</span> make_svg</span> : <code class="type">string -> ?packages:string list -> string -> string</code></pre><pre><span id="VALfun_latex"><span class="keyword">val</span> fun_latex</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -><br>       'a -> (string * string) list -> Xtmpl.tree list -> Xtmpl.tree list</code></pre></body></html>
+<pre><span id="VALget_in_env"><span class="keyword">val</span> get_in_env</span> : <code class="type">Xtmpl.env -> string -> string</code></pre><div class="info">
+FIXME: move get_in_env elsewhere, but later<br>
+</div>
+<pre><span id="VALmake_svg"><span class="keyword">val</span> make_svg</span> : <code class="type">string -> ?packages:string list -> ?defs:string -> string -> string</code></pre><pre><span id="VALfun_latex"><span class="keyword">val</span> fun_latex</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -><br>       Xtmpl.env -> (string * string) list -> Xtmpl.tree list -> Xtmpl.tree list</code></pre></body></html>

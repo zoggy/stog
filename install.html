@@ -40,9 +40,10 @@ To build Stog, you will need:
 </p>
 <ul>
 <li><span class="ext-a"><a href="http://caml.inria.fr/">OCaml &gt;= 4.00</a></span> installed,</li>
+<li><span class="ext-a"><a href="http://config-file.forge.ocamlcore.org/">Config-file &gt;= 1.1</a></span>.</li>
 <li><span class="ext-a"><a href="http://erratique.ch/software/xmlm">Xmlm &gt;= 1.1.0</a></span>,</li>
 <li><span class="ext-a"><a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS &gt;= 2.0</a></span>,</li>
-<li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl &gt;= 0.3</a></span>.</li>
+<li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl &gt;= 0.4</a></span>.</li>
 </ul>
 <p>
 You will need to have the following tools installed to use
@@ -58,11 +59,33 @@ LaTeX in your pages.</li>
 
 <div class="section"><div class="section-title" id="download">Get the sources</div>
 <p>Get the sources from git repository:
-<pre class="code-sh">git clone https<span class="hl opt">://</span>github.com<span class="hl opt">/</span>zoggy<span class="hl opt">/</span>stog.git
-</pre>
+<pre class="code-sh">git clone https<span class="hl opt">://</span>github.com<span class="hl opt">/</span>zoggy<span class="hl opt">/</span>stog.git</pre>
 </p>
-<div class="subsection"><div class="subsection-title">Releases</div>
+<div class="subsection"><div class="subsection-title" id="f07b-fa0e-319-5720">Releases</div>
 <ul>
+<li><a href="stog-0.4.tar.gz">0.4</a> [2012-11-21]:
+<ul>
+<li>handle relative paths in <span class="icode">&lt;include&gt;</span>, when starting with
+  <span class="icode">.</span> or <span class="icode">..</span>,</li>
+<li>use a separate tool to evaluate ocaml code, &quot;stog-ocaml-sessoin&quot;;
+   this allows to use native code version of stog even when evaluating
+   ocaml code; it also makes possible to use distinct ocaml toplevels in
+   ocaml-eval (with session=&quot;...&quot;),</li>
+<li>add simple cache system, and option <span class="icode">--nocache</span>,</li>
+<li>new <span class="icode">&lt;inc&gt;</span> rule to include a block from another
+  element: <span class="icode"><span class="hl kwa">&lt;inc</span> <span class="hl kwb">elt-hid</span>=<span class="hl str">&quot;/install&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;blockid&quot;</span><span class="hl kwa">/&gt;</span></span>,
+</li>
+<li>ability to define &quot;functions&quot;, site-wide or element-wide,</li>
+<li>handle blocks and counters,</li>
+<li>sectionning now uses blocks and counters,</li>
+<li>a &quot;sectionning&quot; attribute is used to determine which nodes are used for
+  sectionning an element; default is &quot;section,subsection&quot;,</li>
+<li>verify references to blocks by id (sections, ...) and use their title in links,</li>
+<li>use &quot;id&quot; attribute instead of &quot;name&quot; attribute in sectionning tags,</li>
+<li>define and use levels of rules; plugins can extend the number of levels
+    to define their own rewriting system.</li>
+</ul>
+</li>
 <li><a href="stog-0.3.tar.gz">0.3</a> [2012-08-30]:
 <ul>
 <li>new stage 0 to allow plugins to change the stog structure before generating,</li>
@@ -85,8 +108,7 @@ directory. Less templates required. User can define elements of any &quot;type&q
 <div class="section"><div class="section-title" id="compilation">Compilation</div>
 <p>
 Just type
-<pre class="code-sh"><span class="hl kwc">make</span> <span class="hl opt">&amp;&amp;</span> <span class="hl kwc">make install</span>
-</pre>
+<pre class="code-sh"><span class="hl kwc">make</span> <span class="hl opt">&amp;&amp;</span> <span class="hl kwc">make install</span></pre>
 This will install <span class="icode">stog</span> and <span class="icode">stog.byte</span>
 in the same directory as <span class="icode">ocamlc</span>. This will also
 install the <tt>stog</tt> library and the
@@ -108,15 +130,16 @@ For information you can see the <a href="#pagesource"> source code of the page</
 <span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;prepare-toc</span> <span class="hl kwb">depth</span>=<span class="hl str">&quot;2&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;toc&gt;&lt;/toc&gt;</span>
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;deps&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Dependencies&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;deps&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Dependencies&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 To build Stog, you will need:
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;ul&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://caml.inria.fr/&quot;</span><span class="hl kwa">&gt;</span>OCaml <span class="hl kwa">&gt;</span>= <span class="hl num">4.00</span><span class="hl kwa">&lt;/ext-a&gt;</span> installed,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://config-file.forge.ocamlcore.org/&quot;</span><span class="hl kwa">&gt;</span>Config-file <span class="hl kwa">&gt;</span>= <span class="hl num">1.1</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://erratique.ch/software/xmlm&quot;</span><span class="hl kwa">&gt;</span>Xmlm <span class="hl kwa">&gt;</span>= <span class="hl num">1.1.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://zoggy.github.com/ocamlrss/&quot;</span><span class="hl kwa">&gt;</span>OCaml-RSS <span class="hl kwa">&gt;</span>= <span class="hl num">2.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span>Xtmpl <span class="hl kwa">&gt;</span>= <span class="hl num">0.3</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span>Xtmpl <span class="hl kwa">&gt;</span>= <span class="hl num">0.4</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/ul&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 You will need to have the following tools installed to use
@@ -130,12 +153,35 @@ LaTeX in your pages.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/ul&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;download&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Get the sources&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;download&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Get the sources&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>Get the sources from git repository:
 <span class="hl kwa">&lt;command-line&gt;</span>git clone https://github.com/zoggy/stog.git<span class="hl kwa">&lt;/command-line&gt;</span>
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Releases&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.4.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.4</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">11</span>-<span class="hl num">21</span>]:
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>handle relative paths in <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>include<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>, when starting with
+  <span class="hl kwa">&lt;icode&gt;</span>.<span class="hl kwa">&lt;/icode&gt;</span> or <span class="hl kwa">&lt;icode&gt;</span>..<span class="hl kwa">&lt;/icode&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>use a separate tool to evaluate ocaml code, <span class="hl str">&quot;stog-ocaml-sessoin&quot;</span>;
+   this allows to use native code version of stog even when evaluating
+   ocaml code; it also makes possible to use distinct ocaml toplevels in
+   ocaml-eval (with <span class="hl kwb">session</span>=<span class="hl str">&quot;...&quot;</span>),<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add simple cache system, and option <span class="hl kwa">&lt;icode&gt;</span>--nocache<span class="hl kwa">&lt;/icode&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>new <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>inc<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> rule to include a block from another
+  element: <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>inc <span class="hl kwb">elt-hid</span>=<span class="hl str">&quot;/install&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;blockid&quot;</span>/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>,
+<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>ability to define <span class="hl str">&quot;functions&quot;</span>, site-wide or element-wide,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>handle blocks and counters,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>sectionning now uses blocks and counters,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>a <span class="hl str">&quot;sectionning&quot;</span> attribute is used to determine which nodes are used for
+  sectionning an element; default is <span class="hl str">&quot;section,subsection&quot;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>verify references to blocks by id (sections, ...) and use their title in links,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>use <span class="hl str">&quot;id&quot;</span> attribute instead of <span class="hl str">&quot;name&quot;</span> attribute in sectionning tags,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>define and use levels of rules; plugins can extend the number of levels
+    to define their own rewriting system.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.3.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.3</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">08</span>-<span class="hl num">30</span>]:
 <span class="hl kwa">&lt;ul&gt;</span>
 <span class="hl kwa">&lt;li&gt;</span>new stage <span class="hl num">0</span> to allow plugins to change the stog structure before generating,<span class="hl kwa">&lt;/li&gt;</span>
@@ -155,7 +201,7 @@ directory. Less templates required. User can define elements of any <span class=
 <span class="hl kwa">&lt;/subsection&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;compilation&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Compilation&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;compilation&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Compilation&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 Just type
 <span class="hl kwa">&lt;command-line&gt;</span>make <span class="hl kwd">&amp;amp;&amp;amp;</span> make install<span class="hl kwa">&lt;/command-line&gt;</span>
@@ -167,8 +213,7 @@ install the <span class="hl kwa">&lt;tt&gt;</span>stog<span class="hl kwa">&lt;/
 <span class="hl kwa">&lt;/section&gt;</span>
 
 <span class="hl kwa">&lt;/prepare-toc&gt;</span>
-<span class="hl kwa">&lt;/page&gt;</span>
-</pre>
+<span class="hl kwa">&lt;/page&gt;</span></pre>
 </div>
 </div>
 </div>

@@ -25,6 +25,8 @@
 <link title="Stog_tags" rel="Chapter" href="Stog_tags.html">
 <link title="Stog_io" rel="Chapter" href="Stog_io.html">
 <link title="Stog_info" rel="Chapter" href="Stog_info.html">
+<link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
+<link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
@@ -36,11 +38,26 @@
 &nbsp;<a class="post" href="Stog_dyn.html" title="Stog_dyn">Next</a>
 </div>
 <h1>Module <a href="type_Stog_plug.html">Stog_plug</a></h1>
-<pre><span class="keyword">module</span> Stog_plug: <code class="code">sig</code> <a href="Stog_plug.html">..</a> <code class="code">end</code></pre>Interface for plugins.
+<pre><span class="keyword">module</span> Stog_plug: <code class="code">sig</code> <a href="Stog_plug.html">..</a> <code class="code">end</code></pre><div class="info">
+Interface for plugins.
 <p>
 
   Even if all modules are accessible from dynamically loaded code,
   this <a href="Stog_plug.html"><code class="code">Stog_plug</code></a> module should remain compatible from one release to
   another.<br>
+</div>
 <hr width="100%">
-<pre><span id="VALregister_lang"><span class="keyword">val</span> register_lang</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">Stog_intl.lang_abbrev</a> -> <a href="Stog_intl.html#TYPElang_data">Stog_intl.lang_data</a> -> unit</code></pre><pre><span id="VALregister_rule"><span class="keyword">val</span> register_rule</span> : <code class="type">string -> Xtmpl.callback -> unit</code></pre><pre><span id="VALstog"><span class="keyword">val</span> stog</span> : <code class="type">unit -> <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><pre><span id="VALverbose"><span class="keyword">val</span> verbose</span> : <code class="type">?info:string -> ?level:int -> string -> unit</code></pre><pre><span id="VALset_print_verbose"><span class="keyword">val</span> set_print_verbose</span> : <code class="type">(string -> unit) -> unit</code></pre><pre><span id="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?info:string -> string -> unit</code></pre><pre><span id="VALset_print_warning"><span class="keyword">val</span> set_print_warning</span> : <code class="type">(string -> unit) -> unit</code></pre><pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?info:string -> ?fatal:int -> string -> unit</code></pre><pre><span id="VALset_print_error"><span class="keyword">val</span> set_print_error</span> : <code class="type">(string -> unit) -> unit</code></pre><pre><span id="VALregister_stage0_fun"><span class="keyword">val</span> register_stage0_fun</span> : <code class="type">(<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> <a href="Stog_types.html#TYPEstog">Stog_types.stog</a>) -> unit</code></pre><pre><span id="VALregister_stage1_fun"><span class="keyword">val</span> register_stage1_fun</span> : <code class="type">(<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> unit) -> unit</code></pre><pre><span id="VALregister_stage2_fun"><span class="keyword">val</span> register_stage2_fun</span> : <code class="type">(<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a>) -> unit</code></pre></body></html>
+<pre><span id="VALregister_lang"><span class="keyword">val</span> register_lang</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">Stog_intl.lang_abbrev</a> -> <a href="Stog_intl.html#TYPElang_data">Stog_intl.lang_data</a> -> unit</code></pre><pre><span id="VALregister_rule"><span class="keyword">val</span> register_rule</span> : <code class="type">string -> Xtmpl.callback -> unit</code></pre><pre><span id="VALunregister_rule"><span class="keyword">val</span> unregister_rule</span> : <code class="type">string -> Xtmpl.callback option</code></pre><div class="info">
+Unregister the rule with the given name from the plugin rules.
+  It only register the last registered rule with this name.
+  If a rule is unregistered, it is returned, else <code class="code">None</code> is returned.<br>
+</div>
+<pre><span id="VALstog"><span class="keyword">val</span> stog</span> : <code class="type">unit -> <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><pre><span id="VALadd_block"><span class="keyword">val</span> add_block</span> : <code class="type">?on_dup:[ `Fail | `Ignore | `Warn ] -><br>       hid:string -><br>       id:string -> short:Xtmpl.tree -> long:Xtmpl.tree -> unit -> unit</code></pre><div class="info">
+Adding a known block id for a given hid. A short and a long title
+  are specified. These registered blocks are used by &lt;elt href="..#id"/&gt; nodes.<br>
+</div>
+<pre><span id="VALverbose"><span class="keyword">val</span> verbose</span> : <code class="type">?info:string -> ?level:int -> string -> unit</code></pre><pre><span id="VALset_print_verbose"><span class="keyword">val</span> set_print_verbose</span> : <code class="type">(string -> unit) -> unit</code></pre><pre><span id="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?info:string -> string -> unit</code></pre><pre><span id="VALset_print_warning"><span class="keyword">val</span> set_print_warning</span> : <code class="type">(string -> unit) -> unit</code></pre><pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?info:string -> ?fatal:int -> string -> unit</code></pre><pre><span id="VALset_print_error"><span class="keyword">val</span> set_print_error</span> : <code class="type">(string -> unit) -> unit</code></pre><pre><span id="VALregister_stage0_fun"><span class="keyword">val</span> register_stage0_fun</span> : <code class="type">(<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> <a href="Stog_types.html#TYPEstog">Stog_types.stog</a>) -> unit</code></pre><pre><span id="TYPErule_build"><span class="keyword">type</span> <code class="type"></code>rule_build</span> = <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -><br>       <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> (string * Xtmpl.callback) list</code> </pre>
+
+<pre><span id="TYPElevel_fun"><span class="keyword">type</span> <code class="type"></code>level_fun</span> = <code class="type">Xtmpl.env -><br>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a></code> </pre>
+
+<pre><span id="VALregister_level_fun"><span class="keyword">val</span> register_level_fun</span> : <code class="type">int -> <a href="Stog_plug.html#TYPElevel_fun">level_fun</a> -> unit</code></pre><pre><span id="VALcompute_elt"><span class="keyword">val</span> compute_elt</span> : <code class="type"><a href="Stog_plug.html#TYPErule_build">rule_build</a> -> <a href="Stog_plug.html#TYPElevel_fun">level_fun</a></code></pre></body></html>

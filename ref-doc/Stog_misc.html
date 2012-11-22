@@ -25,6 +25,8 @@
 <link title="Stog_tags" rel="Chapter" href="Stog_tags.html">
 <link title="Stog_io" rel="Chapter" href="Stog_io.html">
 <link title="Stog_info" rel="Chapter" href="Stog_info.html">
+<link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
+<link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
@@ -36,7 +38,9 @@
 &nbsp;<a class="post" href="Stog_config.html" title="Stog_config">Next</a>
 </div>
 <h1>Module <a href="type_Stog_misc.html">Stog_misc</a></h1>
-<pre><span class="keyword">module</span> Stog_misc: <code class="code">sig</code> <a href="Stog_misc.html">..</a> <code class="code">end</code></pre>Utilities.<br>
+<pre><span class="keyword">module</span> Stog_misc: <code class="code">sig</code> <a href="Stog_misc.html">..</a> <code class="code">end</code></pre><div class="info">
+Utilities.<br>
+</div>
 <hr width="100%">
 <pre><span id="VALsafe_main"><span class="keyword">val</span> safe_main</span> : <code class="type">(unit -> unit) -> unit</code></pre><div class="info">
 <code class="code">safe_main f</code> calls <code class="code">f ()</code> but handles <code class="code">Sys_error</code> and <code class="code">Failure</code>
@@ -96,4 +100,26 @@ Separate the given string according to the given list of characters.<br>
 <code class="code">filename_extension filename</code> returns extension of <code class="code">filename</code>
   or <code class="code">""</code> if there is no extension.<br>
 </div>
-<pre><span id="VALsafe_mkdir"><span class="keyword">val</span> safe_mkdir</span> : <code class="type">string -> unit</code></pre></body></html>
+<pre><span id="VALsafe_mkdir"><span class="keyword">val</span> safe_mkdir</span> : <code class="type">string -> unit</code></pre><pre><span id="VALopt_of_string"><span class="keyword">val</span> opt_of_string</span> : <code class="type">string -> string option</code></pre><div class="info">
+<code class="code">opt_of_string s</code> returns <code class="code">None</code> if the string if empty
+   (length is 0) or <code class="code">Some s</code>.<br>
+<b>Version:</b> 1.0<br>
+</div>
+<pre><span id="VALstring_of_opt"><span class="keyword">val</span> string_of_opt</span> : <code class="type">string option -> string</code></pre><div class="info">
+<code class="code">string_of_opt s_opt</code> returns the empty string if
+   <code class="code">s_opt = None</code> or <code class="code">s</code> if <code class="code">s_opt = Some s</code>.<br>
+<b>Version:</b> 1.0<br>
+</div>
+<pre><span id="VALfile_mtime"><span class="keyword">val</span> file_mtime</span> : <code class="type">string -> float option</code></pre><div class="info">
+Return mdification time of the given file, or None if
+  the file does not exist.<br>
+</div>
+<pre><span id="VALpath_under"><span class="keyword">val</span> path_under</span> : <code class="type">parent:string -> string -> string</code></pre><div class="info">
+<code class="code">path_under ~parent file</code> returns the path to <code class="code">file</code> from <code class="code">parent</code>.<br>
+<b>Raises</b> <code>Failure</code> if <code class="code">parent</code> is not a prefix of <code class="code">file</code>.<br>
+</div>
+<pre><span id="VALhighlight"><span class="keyword">val</span> highlight</span> : <code class="type">opts:string -> string -> string</code></pre><div class="info">
+Call the highlight command on the given string and make it produce xhtml code.
+  Options are passed to the highlight command.<br>
+</div>
+</body></html>

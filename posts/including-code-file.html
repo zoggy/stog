@@ -32,24 +32,20 @@
 <span/>
 <div class="date">March 13, 2012</div>
 
-<p>How to highlight a file inserted with <span class="icode"><span class="hl kwa">&lt;include</span> ...<span class="hl kwa">&gt;</span>
-</span> ?
+<p>How to highlight a file inserted with <span class="icode"><span class="hl kwa">&lt;include</span> ...<span class="hl kwa">&gt;</span></span> ?
 </p>
 
 <p>
-If you want to include and highlight for example the <span class="icode">../../plugins/stog_disqus.ml</span> file
-relative to the template directory, you can try
-<pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
-</pre>
+If you want to include and highlight for example the <span class="icode">../plugins/stog_disqus.ml</span> file
+relative to your project directory, you can try
+<pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span></pre>
 but this will only result in
-<pre class="code-ocaml"><span class="hl opt">&lt;</span><span class="hl kwa">include</span> file<span class="hl opt">=</span><span class="hl str">&quot;../../../plugins/stog_disqus.ml&quot;</span><span class="hl opt">/&gt;</span>
-</pre>
+<pre class="code-ocaml"><span class="hl opt">&lt;</span><span class="hl kwa">include</span> file<span class="hl opt">=</span><span class="hl str">&quot;../../plugins/stog_disqus.ml&quot;</span><span class="hl opt">/&gt;</span></pre>
 </p>
 <p>This is because <span class="icode">&lt;hcode...&gt;</span> is evaluated immediately, displaying
 its children nodes. What you need is to defer the evaluation of <span class="icode">&lt;hcode...&gt;</span>,
 using the special <span class="icode">defer_</span> attribute:
-<pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
-</pre>
+<pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span></pre>
 This will give the expected result:
 <pre class="code-ocaml"><span class="hl kwa">open</span> <span class="hl kwd">Stog_types</span><span class="hl opt">;;</span>
 
@@ -59,8 +55,7 @@ This will give the expected result:
   <span class="hl opt">[</span><span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>xml_of_string <span class="hl opt">(</span><span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>apply_from_file env tmpl<span class="hl opt">)]</span>
 <span class="hl opt">;;</span>
 
-<span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_rule <span class="hl str">&quot;comments&quot;</span> fun_comments<span class="hl opt">;;</span>
-</pre>
+<span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_rule <span class="hl str">&quot;comments&quot;</span> fun_comments<span class="hl opt">;;</span></pre>
 </p>
 <p>
 The <span class="icode">defer_</span> attribute is decremented each time the node should be evaluated.

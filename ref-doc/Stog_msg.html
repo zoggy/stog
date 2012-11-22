@@ -24,6 +24,8 @@
 <link title="Stog_tags" rel="Chapter" href="Stog_tags.html">
 <link title="Stog_io" rel="Chapter" href="Stog_io.html">
 <link title="Stog_info" rel="Chapter" href="Stog_info.html">
+<link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
+<link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
@@ -34,6 +36,8 @@
 &nbsp;<a class="post" href="Stog_misc.html" title="Stog_misc">Next</a>
 </div>
 <h1>Module <a href="type_Stog_msg.html">Stog_msg</a></h1>
-<pre><span class="keyword">module</span> Stog_msg: <code class="code">sig</code> <a href="Stog_msg.html">..</a> <code class="code">end</code></pre>Printing warnings and errors.<br>
+<pre><span class="keyword">module</span> Stog_msg: <code class="code">sig</code> <a href="Stog_msg.html">..</a> <code class="code">end</code></pre><div class="info">
+Printing warnings and errors.<br>
+</div>
 <hr width="100%">
 <pre><span id="VALverbose_level"><span class="keyword">val</span> verbose_level</span> : <code class="type">unit -> int</code></pre><pre><span id="VALset_verbose_level"><span class="keyword">val</span> set_verbose_level</span> : <code class="type">int -> unit</code></pre><pre><span id="VALincr_verbose_level"><span class="keyword">val</span> incr_verbose_level</span> : <code class="type">unit -> unit</code></pre><pre><span id="VALverbose"><span class="keyword">val</span> verbose</span> : <code class="type">?info:string -> ?level:int -> string -> unit</code></pre><pre><span id="VALset_print_verbose"><span class="keyword">val</span> set_print_verbose</span> : <code class="type">(string -> unit) -> unit</code></pre><pre><span id="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?info:string -> string -> unit</code></pre><pre><span id="VALset_print_warning"><span class="keyword">val</span> set_print_warning</span> : <code class="type">(string -> unit) -> unit</code></pre><pre><span id="VALwarnings"><span class="keyword">val</span> warnings</span> : <code class="type">unit -> int</code></pre><pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?info:string -> ?fatal:int -> string -> unit</code></pre><pre><span id="VALset_print_error"><span class="keyword">val</span> set_print_error</span> : <code class="type">(string -> unit) -> unit</code></pre><pre><span id="VALerrors"><span class="keyword">val</span> errors</span> : <code class="type">unit -> int</code></pre></body></html>

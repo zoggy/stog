@@ -20,6 +20,8 @@
 <link title="Stog_tags" rel="Chapter" href="Stog_tags.html">
 <link title="Stog_io" rel="Chapter" href="Stog_io.html">
 <link title="Stog_info" rel="Chapter" href="Stog_info.html">
+<link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
+<link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
@@ -29,7 +31,12 @@
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;register_lang&nbsp;:&nbsp;<span class="constructor">Stog_intl</span>.lang_abbrev&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_intl</span>.lang_data&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;register_rule&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Xtmpl</span>.callback&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;unregister_rule&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Xtmpl</span>.callback&nbsp;option<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stog&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.stog<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;add_block&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?on_dup:[&nbsp;<span class="keywordsign">`</span><span class="constructor">Fail</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span><span class="constructor">Ignore</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="keywordsign">`</span><span class="constructor">Warn</span>&nbsp;]&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;hid:string&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;id:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;short:<span class="constructor">Xtmpl</span>.tree&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;long:<span class="constructor">Xtmpl</span>.tree&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;verbose&nbsp;:&nbsp;?info:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?level:int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_print_verbose&nbsp;:&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;warning&nbsp;:&nbsp;?info:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
@@ -37,7 +44,13 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;error&nbsp;:&nbsp;?info:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?fatal:int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;set_print_error&nbsp;:&nbsp;(string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;register_stage0_fun&nbsp;:&nbsp;(<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.stog)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;register_stage1_fun&nbsp;:&nbsp;(<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;register_stage2_fun&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;rule_build&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.elt_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(string&nbsp;*&nbsp;<span class="constructor">Xtmpl</span>.callback)&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;level_fun&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Xtmpl</span>.env&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.elt_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;register_level_fun&nbsp;:&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_plug</span>.level_fun&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;compute_elt&nbsp;:&nbsp;<span class="constructor">Stog_plug</span>.rule_build&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_plug</span>.level_fun<br>
 <span class="keyword">end</span></code></body></html>

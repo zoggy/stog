@@ -25,6 +25,8 @@
 <link title="Stog_tags" rel="Chapter" href="Stog_tags.html">
 <link title="Stog_io" rel="Chapter" href="Stog_io.html">
 <link title="Stog_info" rel="Chapter" href="Stog_info.html">
+<link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
+<link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
@@ -36,7 +38,9 @@
 &nbsp;<a class="post" href="Stog_trie.html" title="Stog_trie">Next</a>
 </div>
 <h1>Module <a href="type_Stog_config.html">Stog_config</a></h1>
-<pre><span class="keyword">module</span> Stog_config: <code class="code">sig</code> <a href="Stog_config.html">..</a> <code class="code">end</code></pre>Reading stog config.<br>
+<pre><span class="keyword">module</span> Stog_config: <code class="code">sig</code> <a href="Stog_config.html">..</a> <code class="code">end</code></pre><div class="info">
+Reading stog config.<br>
+</div>
 <hr width="100%">
 <pre><span id="VALversion"><span class="keyword">val</span> version</span> : <code class="type">string</code></pre><div class="info">
 Version of stog.<br>
@@ -79,6 +83,9 @@ Contents of <code class="code">.stog/config</code> file.<br>
 <pre><span id="VALtmpl_dir"><span class="keyword">val</span> tmpl_dir</span> : <code class="type">string -> string</code></pre><div class="info">
 <code class="code">tmpl_dir dir</code> returns the directory containing templates, from a
   stog project directory.<br>
+</div>
+<pre><span id="VALcache_dir"><span class="keyword">val</span> cache_dir</span> : <code class="type">string -> string</code></pre><div class="info">
+<code class="code">cache_dir dir</code> returns the cache directory, from a stog project directory.<br>
 </div>
 <pre><span id="VALread_config"><span class="keyword">val</span> read_config</span> : <code class="type">string -> <a href="Stog_config.html#TYPEt">t</a></code></pre><div class="info">
 <code class="code">read_config file</code> returns the configuration stored in the given

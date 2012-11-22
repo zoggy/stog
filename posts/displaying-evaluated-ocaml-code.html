@@ -34,8 +34,7 @@
 
 <p>
 Bytecode version of Stog, <span class="icode">stog.byte</span>,
-offers the <span class="icode"><span class="hl kwa">&lt;ocaml-eval&gt;</span> ... <span class="hl kwa">&lt;/ocaml-eval&gt;</span>
-</span>
+offers the <span class="icode"><span class="hl kwa">&lt;ocaml-eval&gt;</span> ... <span class="hl kwa">&lt;/ocaml-eval&gt;</span></span>
 function to evaluate code and display the result. This is nice to provide
 verified code examples on your pages.
 </p>
@@ -44,18 +43,14 @@ verified code examples on your pages.
 Example:
 <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval&gt;</span>
 let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;
-<span class="hl kwa">&lt;/ocaml-eval&gt;</span>
-</pre>
-will display this: <pre class="code-ocaml"><div><span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span>
-</div></pre>
+<span class="hl kwa">&lt;/ocaml-eval&gt;</span></pre>
+will display this: <pre class="code-ocaml"><div><span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span></div></pre>
 </p>
 <p>Adding the <span class="icode">toplevel=&quot;true&quot;</span> attribute will enable printing of the
 toplevel result, so
 <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>
-let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;<span class="hl kwa">&lt;/ocaml-eval&gt;</span>
-</pre>
-will display this: <pre class="code-ocaml"><div># <span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span>
-</div><div class="ocaml-toplevel">val mylist : int list = [1; 2; 3; 4]</div></pre>
+let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;<span class="hl kwa">&lt;/ocaml-eval&gt;</span></pre>
+will display this: <pre class="code-ocaml"><div># <span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span></div><div class="ocaml-toplevel">val mylist : int list = [1; 2; 3; 4]</div></pre>
 </p>
 <p>
 By default, <span class="icode">ocaml-eval</span> will stop Stog if an exception is
@@ -68,11 +63,8 @@ don't want to let other piece of code fail silently.
 <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">error-exc</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&gt;</span>
 let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;
 let mylist2 = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl str">&quot;hello&quot;</span>];;
-<span class="hl kwa">&lt;/ocaml-eval&gt;</span>
-</pre>
-will display this: <pre class="code-ocaml"><div># <span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span>
-</div><div class="ocaml-toplevel">val mylist : int list = [1; 2; 3; 4]</div><div># <span class="hl kwa">let</span> mylist2 <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl str">&quot;hello&quot;</span><span class="hl opt">];;</span>
-</div><div class="ocaml-toplevel ocaml-exc">Line 1, characters 28-35:
+<span class="hl kwa">&lt;/ocaml-eval&gt;</span></pre>
+will display this: <pre class="code-ocaml"><div># <span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span></div><div class="ocaml-toplevel">val mylist : int list = [1; 2; 3; 4]</div><div># <span class="hl kwa">let</span> mylist2 <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl str">&quot;hello&quot;</span><span class="hl opt">];;</span></div><div class="ocaml-toplevel ocaml-exc">Line 1, characters 28-35:
 Error: This expression has type string but an expression was expected of type
          int</div></pre>
 Without <span class="icode">error-exc=&quot;false&quot;</span>, Stog would have failed with the
