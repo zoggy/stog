@@ -522,7 +522,7 @@ let make_fun_section sect_up cls sect_down env args subs =
      ("with-contents", "true") :: args,
      [
        Xtmpl.T ("long-title-format", [],
-        [Xtmpl.xml_of_string (Printf.sprintf "%s%s<title/>" counters (if counters = "" then "" else " "))]);
+        [Xtmpl.xml_of_string (Printf.sprintf "%s%s<title/>" counters (if counters = "" then "" else ". "))]);
        Xtmpl.T ("short-title-format", [],
         (match counter_name with
           "" -> [Xtmpl.xml_of_string "<title/>"]
