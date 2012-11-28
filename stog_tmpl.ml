@@ -40,9 +40,11 @@ let get_template stog contents name =
   if not (Sys.file_exists file) then
     (
      Stog_misc.safe_mkdir stog.stog_tmpl_dir ;
-     Stog_misc.file_of_string ~file (Xtmpl.string_of_xml contents)
-    );
-  Xtmpl.string_of_xml contents
+     Stog_misc.file_of_string ~file (Xtmpl.string_of_xml contents);
+     Xtmpl.string_of_xml contents
+    )
+  else
+    Stog_misc.string_of_file file
 ;;
 
 let page _ = parse
