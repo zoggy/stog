@@ -939,10 +939,10 @@ let intro_of_elt stog elt =
 
 let html_of_topics stog elt env args _ =
   let sep = Xtmpl.xml_of_string (Xtmpl.opt_arg args ~def: ", " "set") in
-  let tmpl = Filename.concat stog.stog_tmpl_dir "topic.tmpl" in
+  let tmpl = Stog_tmpl.get_template stog Stog_tmpl.topic "topic.tmpl" in
   let f w =
     let env = Xtmpl.env_of_list ~env [ Stog_tags.topic, (fun _ _ _ -> [Xtmpl.D w]) ] in
-    Xtmpl.xml_of_string (Xtmpl.apply_from_file env tmpl)
+    Xtmpl.xml_of_string (Xtmpl.apply env tmpl)
   in
   Stog_misc.list_concat ~sep
   (List.map (fun w ->
@@ -954,10 +954,10 @@ let html_of_topics stog elt env args _ =
 
 let html_of_keywords stog elt env args _ =
   let sep = Xtmpl.xml_of_string (Xtmpl.opt_arg args ~def: ", " "set") in
-  let tmpl = Filename.concat stog.stog_tmpl_dir "keyword.tmpl" in
+  let tmpl = Stog_tmpl.get_template stog Stog_tmpl.keyword "keyword.tmpl" in
   let f w =
     let env = Xtmpl.env_of_list ~env [ Stog_tags.keyword, (fun _ _ _ -> [Xtmpl.D w]) ] in
-    Xtmpl.xml_of_string (Xtmpl.apply_from_file env tmpl)
+    Xtmpl.xml_of_string (Xtmpl.apply env tmpl)
   in
   Stog_misc.list_concat ~sep
   (List.map (fun w ->
@@ -1169,12 +1169,9 @@ and elt_list ?rss ?set stog env args _ =
     | Some n -> Stog_misc.list_chop n elts
   in
   let tmpl =
-    let file =
       match Xtmpl.get_arg args "tmpl" with
-        None -> "elt-in-list.tmpl"
-      | Some s -> s
-    in
-    Filename.concat stog.stog_tmpl_dir file
+        None -> Stog_tmpl.get_template stog Stog_tmpl.elt_in_list "elt-in-list.tmpl"
+      | Some s -> Filename.concat stog.stog_tmpl_dir s
   in
   let f_elt (elt_id, elt) =
     let env = Xtmpl.env_of_list ~env
@@ -1183,7 +1180,7 @@ and elt_list ?rss ?set stog env args _ =
        (build_base_rules stog elt_id elt)
       )
     in
-    Xtmpl.xml_of_string (Xtmpl.apply_from_file env tmpl)
+    Xtmpl.xml_of_string (Xtmpl.apply env tmpl)
   in
   let xml = List.map f_elt elts in
   (*prerr_endline "elt_list:";
@@ -1256,8 +1253,17 @@ let compute_elt build_rules env stog elt_id elt =
   let xmls =
     match elt.elt_out with
       None ->
-        let tmpl = Filename.concat stog.stog_tmpl_dir elt.elt_type^".tmpl" in
-        [Xtmpl.xml_of_string (Stog_misc.string_of_file tmpl)]
+        let tmpl =
+           let default =
+             match elt.elt_type with
+              "by-topic" -> Stog_tmpl.by_topic
+            | "by-keyword" -> Stog_tmpl.by_keyword
+            | "by-month" -> Stog_tmpl.by_month
+            | _ -> Stog_tmpl.page
+          in
+          Stog_tmpl.get_template stog default (elt.elt_type^".tmpl")
+        in
+        [Xtmpl.xml_of_string tmpl]
     | Some xmls ->
         xmls
   in
