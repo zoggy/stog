@@ -40,6 +40,8 @@ let get_template stog contents name =
   if not (Sys.file_exists file) then
     (
      Stog_misc.safe_mkdir stog.stog_tmpl_dir ;
+     Stog_msg.warning
+       (Printf.sprintf "Creating default template file %S" file);
      Stog_misc.file_of_string ~file (Xtmpl.string_of_xml contents);
      contents
     )

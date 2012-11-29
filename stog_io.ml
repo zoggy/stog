@@ -279,6 +279,21 @@ let read_files cfg stog dir =
 ;;
 
 let read_stog dir =
+  let len_dir_sep = String.length Filename.dir_sep in
+  let rec remove_ending_sep s =
+    let len = String.length s in
+    if len <= 0 then failwith "Invalid directory %S" dir;
+    if len <= len_dir_sep then
+      s
+    else
+      (
+       if String.sub s (len - len_dir_sep) len_dir_sep = Filename.dir_sep then
+         remove_ending_sep (String.sub s 0 (len - len_dir_sep))
+       else
+         s
+      )
+  in
+  let dir = remove_ending_sep dir in
   let stog = Stog_types.create_stog dir in
   let cfg = Stog_config.read_config dir in
   let stog = read_files cfg stog dir in
