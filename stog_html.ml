@@ -942,12 +942,12 @@ let html_of_topics stog elt env args _ =
   let tmpl = Stog_tmpl.get_template stog Stog_tmpl.topic "topic.tmpl" in
   let f w =
     let env = Xtmpl.env_of_list ~env [ Stog_tags.topic, (fun _ _ _ -> [Xtmpl.D w]) ] in
-    Xtmpl.xml_of_string (Xtmpl.apply env tmpl)
+    Xtmpl.apply_to_xmls env [tmpl]
   in
   Stog_misc.list_concat ~sep
   (List.map (fun w ->
       let href = url_of_hid stog ~ext: "html" (topic_index_hid w) in
-      Xtmpl.T ("a", ["href", href ], [ f w ]))
+      Xtmpl.T ("a", ["href", href ], f w))
    elt.elt_topics
   )
 ;;
@@ -957,12 +957,12 @@ let html_of_keywords stog elt env args _ =
   let tmpl = Stog_tmpl.get_template stog Stog_tmpl.keyword "keyword.tmpl" in
   let f w =
     let env = Xtmpl.env_of_list ~env [ Stog_tags.keyword, (fun _ _ _ -> [Xtmpl.D w]) ] in
-    Xtmpl.xml_of_string (Xtmpl.apply env tmpl)
+    Xtmpl.apply_to_xmls env [tmpl]
   in
   Stog_misc.list_concat ~sep
   (List.map (fun w ->
       let href = url_of_hid stog ~ext: "html" (keyword_index_hid w) in
-      Xtmpl.T ("a", ["href", href], [ f w ]))
+      Xtmpl.T ("a", ["href", href], f w))
    elt.elt_keywords
   )
 ;;
@@ -1169,9 +1169,12 @@ and elt_list ?rss ?set stog env args _ =
     | Some n -> Stog_misc.list_chop n elts
   in
   let tmpl =
+    let file =
       match Xtmpl.get_arg args "tmpl" with
-        None -> Stog_tmpl.get_template stog Stog_tmpl.elt_in_list "elt-in-list.tmpl"
-      | Some s -> Filename.concat stog.stog_tmpl_dir s
+        None ->  "elt-in-list.tmpl"
+      | Some s -> s
+    in
+    Stog_tmpl.get_template stog Stog_tmpl.elt_in_list file
   in
   let f_elt (elt_id, elt) =
     let env = Xtmpl.env_of_list ~env
@@ -1180,7 +1183,9 @@ and elt_list ?rss ?set stog env args _ =
        (build_base_rules stog elt_id elt)
       )
     in
-    Xtmpl.xml_of_string (Xtmpl.apply env tmpl)
+    match Xtmpl.apply_to_xmls env [tmpl] with
+      [xml] -> xml
+    | _ -> assert false
   in
   let xml = List.map f_elt elts in
   (*prerr_endline "elt_list:";
@@ -1263,7 +1268,7 @@ let compute_elt build_rules env stog elt_id elt =
           in
           Stog_tmpl.get_template stog default (elt.elt_type^".tmpl")
         in
-        [Xtmpl.xml_of_string tmpl]
+        [tmpl]
     | Some xmls ->
         xmls
   in

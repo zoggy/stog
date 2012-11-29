@@ -41,10 +41,10 @@ let get_template stog contents name =
     (
      Stog_misc.safe_mkdir stog.stog_tmpl_dir ;
      Stog_misc.file_of_string ~file (Xtmpl.string_of_xml contents);
-     Xtmpl.string_of_xml contents
+     contents
     )
   else
-    Stog_misc.string_of_file file
+    parse (Stog_misc.string_of_file file)
 ;;
 
 let page _ = parse

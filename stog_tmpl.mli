@@ -30,7 +30,7 @@
 
 type contents = Stog_types.stog -> Xtmpl.tree
 
-val get_template : Stog_types.stog -> contents -> string -> string
+val get_template : Stog_types.stog -> contents -> string -> Xtmpl.tree
 
 val page : contents
 val by_keyword : contents
