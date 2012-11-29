@@ -30,13 +30,12 @@
   loaded too, there is a conflict if we use Dynlink, because
   toplevellib also contains some parts of Dynlink. *)
 
+let () = Dynlink.allow_unsafe_modules true;;
+
 let load_file file =
-  if not (Topdirs.load_file Format.str_formatter file) then
-    (
-     let msg = Format.flush_str_formatter () in
-     failwith msg
-    )
-;;
+  try Dynlink.loadfile file
+  with Dynlink.Error e ->
+      failwith (Dynlink.error_message e)
 
 let () = Stog_dyn.load_file := load_file;;
 

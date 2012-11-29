@@ -1,3 +1,9 @@
+Next release:
+  * fix: add '.' after counters in section title
+  * add: when a basic template is missing, create one and issue a warning;
+    these templates are: page.tmpl, elt-in-list.tmpl, by-keyword.tmpl,
+    by-topic.tmpl, keyword.tmpl, topic.tmpl, by-month.tmpl.
+
 Release 0.4:
   * use separate tool to evaluate ocaml code; this allows to use native
     code version of stog even when evaluating ocaml code; also allow
