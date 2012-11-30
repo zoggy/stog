@@ -301,73 +301,82 @@ let fun_list env args subs =
   iter [] subs
 ;;
 
+let elt_by_href ?typ stog env href =
+  let (hid, id) =
+    try
+      let p = String.index href '#' in
+      let len = String.length href in
+      let hid = String.sub href 0 p in
+      (hid, Some (String.sub href (p+1) (len - (p+1))))
+    with
+      Not_found -> (href, None)
+  in
+  let elt =
+    try
+      let hid = match hid with "" -> get_hid env | s ->  s in
+      let hid = Stog_types.human_id_of_string hid in
+      let (_, elt) = Stog_types.elt_by_human_id ?typ stog hid in
+        Some elt
+    with
+      Failure s ->
+        Stog_msg.error s;
+        None
+  in
+  match elt with
+    None -> None
+  | Some elt -> Some (elt, hid, id)
+;;
+
 let fun_elt_href ?typ href stog env args subs =
   let quotes =
     match Xtmpl.get_arg args "quotes" with
       None -> false
     | Some s -> Stog_io.bool_of_string s
   in
-  let (elt, id, text) =
-    let (hid, id) =
-      try
-        let p = String.index href '#' in
-        let len = String.length href in
-        let hid = String.sub href 0 p in
-        (hid, Some (String.sub href (p+1) (len - (p+1))))
-      with
-        Not_found -> (href, None)
-    in
-    let elt =
-      try
-        let hid = match hid with "" -> get_hid env | s ->  s in
-        let hid = Stog_types.human_id_of_string hid in
-        let (_, elt) = Stog_types.elt_by_human_id ?typ stog hid in
-        Some elt
-      with
-        Failure s ->
-          Stog_msg.error s;
-          None
-    in
+  let (elt, text) =
+    let info = elt_by_href ?typ stog env href in
     let text =
-      match elt, subs, id with
-        None, _, _ -> [Xtmpl.D "??"]
-      | Some elt, [], None ->
-          let quote = if quotes then "\"" else "" in
-          let s = Printf.sprintf "%s%s%s" quote elt.elt_title quote in
-          [Xtmpl.xml_of_string s]
-      | Some _, text, None -> text
-      | Some elt, _, Some id ->
-          let hid = Stog_types.string_of_human_id elt.elt_human_id in
-          let title =
-            try
-              let id_map = Smap.find hid !blocks in
-              try
-                let (short, long) = Smap.find id id_map in
-                match Xtmpl.get_arg args "long" with
-                  Some "true" -> long
-                | _ -> short
-              with Not_found ->
-                  let msg = Printf.sprintf "Unknown block hid=%S, id=%S" hid id in
-                  Stog_msg.error msg;
-                  Xtmpl.D "??"
-            with Not_found ->
-                let msg = Printf.sprintf "Unknown element %S in block map" hid in
-                Stog_msg.error msg;
-                Xtmpl.D "??"
-          in
-          match subs with
-            [] ->
-              if quotes then
-                [ Xtmpl.D "\"" ; title ; Xtmpl.D "\""]
-              else
-                [title]
-          | text -> text
+      match info with
+        None -> [Xtmpl.D "??"]
+      | Some (elt, hid, id) ->
+          match subs, id with
+          | [], None ->
+              let quote = if quotes then "\"" else "" in
+              let s = Printf.sprintf "%s%s%s" quote elt.elt_title quote in
+              [Xtmpl.xml_of_string s]
+          | text, None -> text
+          | _, Some id ->
+              let hid = Stog_types.string_of_human_id elt.elt_human_id in
+              let title =
+                try
+                  let id_map = Smap.find hid !blocks in
+                  try
+                    let (short, long) = Smap.find id id_map in
+                    match Xtmpl.get_arg args "long" with
+                      Some "true" -> long
+                    | _ -> short
+                  with Not_found ->
+                      let msg = Printf.sprintf "Unknown block hid=%S, id=%S" hid id in
+                      Stog_msg.error msg;
+                      Xtmpl.D "??"
+                with Not_found ->
+                    let msg = Printf.sprintf "Unknown element %S in block map" hid in
+                    Stog_msg.error msg;
+                    Xtmpl.D "??"
+              in
+              match subs with
+                [] ->
+                  if quotes then
+                    [ Xtmpl.D "\"" ; title ; Xtmpl.D "\""]
+                  else
+                    [title]
+              | text -> text
     in
-    (elt, id, text)
+    (info, text)
   in
   match elt with
     None -> [Xtmpl.T ("span", ["class", "unknown-ref"], text)]
-  | Some elt ->
+  | Some (elt, _, id) ->
       let href = Printf.sprintf "%s%s" (elt_url stog elt)
         (match id with None -> "" | Some s -> "#"^s)
       in

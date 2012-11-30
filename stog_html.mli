@@ -36,6 +36,13 @@
    by the {!val: generate} function. *)
 val current_stog : Stog_types.stog option ref
 
+(** [elt_by_href ?typ stog env href] returns the element, hid and
+  optional if matching the given href string, of the form [hid[#id]].
+  Return None if the element could not be found, of the id could not be found,
+  and an error is issued. *)
+val elt_by_href : ?typ: string -> Stog_types.stog -> Xtmpl.env -> string ->
+  (Stog_types.elt * string * string option) option
+
 (** The rewrite rules registered by plugins. *)
 val plugin_rules : (string * Xtmpl.callback) list ref
 

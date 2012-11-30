@@ -133,11 +133,11 @@ guiopt: $(GUI_MAIN)
 byte: $(LIB_BYTE) $(MAIN_BYTE) $(OCAML_SESSION) plugins/plugin_example.cmo $(PLUGINS_BYTE)
 guibyte: $(GUI_MAIN_BYTE)
 
-$(MAIN): $(LIB) stog_dyn_opt.cmx stog_main.cmx
+$(MAIN): $(LIB) stog_main.cmx
 	$(OCAMLOPT) -verbose -linkall -o $@ $(COMPFLAGS) $(SYSLIBS) \
 	$^
 
-$(MAIN_BYTE): $(LIB_BYTE) stog_dyn_byte.cmo stog_main.cmo
+$(MAIN_BYTE): $(LIB_BYTE) stog_main.cmo
 	$(OCAMLC) -linkall -o $@ $(COMPFLAGS) $(SYSLIBS_BYTE) \
 	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $^
 

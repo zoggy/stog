@@ -53,6 +53,8 @@ let stog () =
   | Some x -> x
 ;;
 
+let elt_by_href = Stog_html.elt_by_href
+
 let add_block = Stog_html.add_block;;
 
 let set_print_verbose = Stog_msg.set_print_verbose;;

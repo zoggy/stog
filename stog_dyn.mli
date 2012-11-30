@@ -28,8 +28,7 @@
 
 (** Common module for code dynamic loading. *)
 
-val load_file : (string -> unit) ref
 val load_files : string list -> unit
 
-val load_packages : (string list -> unit) ref
-val set_load_packages : [< `Byte | `Native ] -> unit
+val load_packages : (string list -> unit)
+

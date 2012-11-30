@@ -282,7 +282,7 @@ let read_stog dir =
   let len_dir_sep = String.length Filename.dir_sep in
   let rec remove_ending_sep s =
     let len = String.length s in
-    if len <= 0 then failwith "Invalid directory %S" dir;
+    if len <= 0 then failwith (Printf.sprintf "Invalid directory %S" dir);
     if len <= len_dir_sep then
       s
     else

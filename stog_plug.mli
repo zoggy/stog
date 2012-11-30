@@ -43,6 +43,13 @@ val unregister_rule : string -> Xtmpl.callback option
 
 val stog : unit -> Stog_types.stog
 
+(** [elt_by_href ?typ stog env href] returns the element, hid and
+  optional if matching the given href string, of the form [hid[#id]].
+  Return None if the element could not be found, of the id could not be found,
+  and an error is issued. *)
+val elt_by_href : ?typ: string -> Stog_types.stog -> Xtmpl.env -> string ->
+  (Stog_types.elt * string * string option) option
+
 (** Adding a known block id for a given hid. A short and a long title
   are specified. These registered blocks are used by <elt href="..#id"/> nodes.
   @on_dup specifies what to do when the id to add is already present.

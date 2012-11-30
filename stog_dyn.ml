@@ -28,8 +28,12 @@
 
 (** *)
 
-let (load_file : (string -> unit) ref) =
-  ref (fun _ -> Stog_msg.error "Stog_dyn.load_file not initialized"; exit 1);;
+let _ = Dynlink.allow_unsafe_modules true;;
+
+let load_file file =
+  try Dynlink.loadfile file
+  with Dynlink.Error e ->
+      failwith (Dynlink.error_message e)
 
 let loaded_files = ref [];;
 let load_files =
@@ -39,7 +43,7 @@ let load_files =
     else
       begin
         Stog_msg.verbose (Printf.sprintf "Loading file %s" file);
-        !load_file file;
+        load_file file;
         loaded_files := file :: !loaded_files;
       end
   in
@@ -64,20 +68,14 @@ let files_of_packages kind pkg_names =
       failwith msg
 ;;
 
-let (load_packages : (string list -> unit) ref) =
-  ref (fun _ -> Stog_msg.error "Stog_dyn.load_packages not initialized"; exit 1);;
-
-let load_packages_comma kind pkg_names =
+let load_packages_comma pkg_names =
+  let kind = if Dynlink.is_native then `Native else `Byte in
   let pkg_names = Stog_misc.split_string pkg_names [','] in
   let files = files_of_packages kind pkg_names in
   load_files files
 ;;
 
-let set_load_packages kind =
-  let f packages =
-    List.iter (load_packages_comma kind) packages
-  in
-  load_packages := f
+let load_packages packages =
+  List.iter load_packages_comma packages
 ;;
-
 
