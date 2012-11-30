@@ -126,6 +126,13 @@ type level_fun =
   Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
 ;;
 
+type level_fun_on_elt_list =
+  Xtmpl.env -> Stog_types.stog -> (Stog_types.elt_id * Stog_types.elt) list ->
+  (Stog_types.elt_id * Stog_types.elt) list
+;;
+
 
 val register_level_fun : int -> level_fun -> unit
 val compute_elt : rule_build -> level_fun
+
+val register_level_fun_on_elt_list : int -> level_fun_on_elt_list -> unit

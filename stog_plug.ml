@@ -75,7 +75,13 @@ type rule_build =
 type level_fun =
   Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
 ;;
+type level_fun_on_elt_list =
+  Xtmpl.env -> Stog_types.stog -> (Stog_types.elt_id * Stog_types.elt) list ->
+  (Stog_types.elt_id * Stog_types.elt) list
+;;
 
 
 let register_level_fun = Stog_html.register_level_fun;;
 let compute_elt = Stog_html.compute_elt;;
+
+let register_level_fun_on_elt_list = Stog_html.register_level_fun_on_elt_list;;

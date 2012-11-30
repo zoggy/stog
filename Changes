@@ -1,4 +1,6 @@
 Next release:
+  * add: Stog_plug.register_level_fun_on_elt_list to register functions
+    handling all elements at a time.
   * fix: add '.' after counters in section title
   * add: when a basic template is missing, create one and issue a warning;
     these templates are: page.tmpl, elt-in-list.tmpl, by-keyword.tmpl,

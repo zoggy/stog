@@ -1442,34 +1442,64 @@ type level_fun =
   Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
 ;;
 
+type level_fun_on_elt_list =
+  Xtmpl.env -> Stog_types.stog -> (Stog_types.elt_id * Stog_types.elt) list ->
+  (Stog_types.elt_id * Stog_types.elt) list
+;;
+
 module Intmap = Map.Make (struct type t = int let compare = Pervasives.compare end);;
 module Set = Set.Make (struct type t = string let compare = Pervasives.compare end);;
 
-let levels = ref (Intmap.empty : level_fun list Intmap.t);;
+type level_fun_kind =
+  On_elt of level_fun
+| On_elt_list of level_fun_on_elt_list
+;;
 
-let register_level_fun level f =
+let levels = ref (Intmap.empty : level_fun_kind list Intmap.t);;
+
+let register_level_fun_kind level k =
   let l =
     try Intmap.find level !levels
     with Not_found -> []
   in
-  levels := Intmap.add level (f::l) !levels
+  levels := Intmap.add level (k::l) !levels
 ;;
+let register_level_fun level f =
+  register_level_fun_kind level (On_elt f);;
+let register_level_fun_on_elt_list level f =
+  register_level_fun_kind level (On_elt_list f);;
 
-let compute_level ?elts env level (funs: level_fun list) stog =
+
+let compute_level ?elts env level (funs: level_fun_kind list) stog =
   Stog_msg.verbose (Printf.sprintf "Computing level %d" level);
   let f_elt f elt_id elt stog =
     let elt = f env stog elt_id elt in
     Stog_types.set_elt stog elt_id elt
   in
   let f_fun stog f =
-    match elts with
-      None -> Stog_tmap.fold (f_elt f) stog.stog_elts stog
-    | Some l ->
-       List.fold_left (fun stog elt_id ->
-           let elt = Stog_types.elt stog elt_id in
-           f_elt f elt_id elt stog
-           )
-           stog l
+    match f with
+      On_elt f ->
+        begin
+          match elts with
+            None -> Stog_tmap.fold (f_elt f) stog.stog_elts stog
+          | Some l ->
+              List.fold_left (fun stog elt_id ->
+                 let elt = Stog_types.elt stog elt_id in
+               f_elt f elt_id elt stog
+              )
+              stog l
+        end
+    | On_elt_list f ->
+        let elts =
+          match elts with
+            None -> Stog_tmap.fold (fun elt_id elt acc -> (elt_id, elt) :: acc) stog.stog_elts []
+          | Some l ->
+              List.map
+              (fun elt_id -> (elt_id, Stog_types.elt stog elt_id))
+              l
+        in
+        let modified = f env stog elts in
+        List.fold_left (fun stog (elt_id, elt) -> Stog_types.set_elt stog elt_id elt) stog modified
   in
   List.fold_left f_fun stog funs
 ;;
