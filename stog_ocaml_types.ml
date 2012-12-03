@@ -30,7 +30,6 @@
 
 type input =
   { in_phrase : string ;
-    in_err_exc : bool ;
   }
 
 type result = Exc of string | Ok of string * string

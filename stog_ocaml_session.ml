@@ -36,11 +36,12 @@ let _ = Toploop.max_printer_steps := 20;;
 
 
 
-let log_oc = open_out "ocaml.log";;
 
 (*let _ = Location.input_name := "";;*)
 let stderr_file = Filename.temp_file "stogocamlsession" "err";;
 let stdout_file = Filename.temp_file "stogocamlsession" "out";;
+let log_file = Filename.temp_file "stogocamlsession" "log";;
+let log_oc = open_out log_file;;
 
 let remove_empty_filename =
   let empty = "File \"\", l" in
@@ -49,7 +50,7 @@ let remove_empty_filename =
 ;;
 
 
-let eval_ocaml_phrase ~exc phrase =
+let eval_ocaml_phrase phrase =
   try
     let lexbuf = Lexing.from_string phrase in
     let fd_err = Unix.openfile stderr_file
@@ -111,17 +112,12 @@ let eval_ocaml_phrase ~exc phrase =
       if not backtrace_enabled then Printexc.record_backtrace false;
 
       let err = Format.flush_str_formatter () in
-      let msg = Printf.sprintf "ocaml error with code:\n%s\n%s" phrase err in
-      if exc then
-        failwith msg
-      else
-        Stog_ocaml_types.Exc (Stog_misc.strip_string (remove_empty_filename err))
+      Stog_ocaml_types.Exc (Stog_misc.strip_string (remove_empty_filename err))
 ;;
 
 let eval input =
   try
     let res = eval_ocaml_phrase
-      ~exc: input.Stog_ocaml_types.in_err_exc
       input.Stog_ocaml_types.in_phrase
     in
     res
@@ -131,6 +127,7 @@ let eval input =
 
 let ic_input = Unix.in_channel_of_descr (Unix.dup Unix.stdin);;
 let oc_result = Unix.out_channel_of_descr (Unix.dup Unix.stdout);;
+let old_stderr = Unix.dup Unix.stderr;;
 let rec loop () =
   let finish =
     try
@@ -141,10 +138,19 @@ let rec loop () =
     with
       End_of_file -> true
     | e ->
-        prerr_endline (Printexc.to_string e);
+        let msg =
+          match e with
+            Failure msg -> msg
+          | e -> Printexc.to_string e
+        in
+        let oc = Unix.out_channel_of_descr old_stderr in
+        output_string oc msg;
+        flush oc;
         false
   in
   if not finish then loop ()
 ;;
 
 loop();;
+close_out oc_result;;
+

@@ -67,10 +67,10 @@ let get_session name =
       t
 ;;
 
-let eval_ocaml_phrase ?(session_name="default") ~exc phrase =
+let eval_ocaml_phrase ?(session_name="default") phrase =
   let session = get_session session_name in
   Stog_ocaml_types.write_input session.session_out
-    { Stog_ocaml_types.in_phrase = phrase ; in_err_exc = exc };
+    { Stog_ocaml_types.in_phrase = phrase };
   Stog_ocaml_types.read_result session.session_in
 ;;
 
@@ -151,11 +151,18 @@ let fun_eval stog env args code =
            else
             Xtmpl.D ""
         in
+        (*prerr_endline (Printf.sprintf "evaluate %S" phrase);*)
         let (output, stdout, raised_exc) =
-          match eval_ocaml_phrase ?session_name ~exc phrase with
+          match eval_ocaml_phrase ?session_name phrase with
             Stog_ocaml_types.Ok (s, stdout) -> (s, stdout, false)
           | Stog_ocaml_types.Exc s -> (s, "", true)
         in
+        if raised_exc && exc then
+          begin
+            let msg = Printf.sprintf "ocaml error with code:\n%s\n%s" phrase output in
+            failwith msg
+          end;
+
         let acc =
           match toplevel with
             false ->
