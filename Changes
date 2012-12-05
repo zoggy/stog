@@ -1,4 +1,5 @@
 Next release:
+  * add: new caching system, available for plugins too
   * add: Stog_plug.plugin_config_file
   * add: Stog_plug.register_level_fun_on_elt_list to register functions
     handling all elements at a time.
