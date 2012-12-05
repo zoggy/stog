@@ -70,11 +70,6 @@ module Hid_map : Stog_trie.S with type symbol = string
 module Elt_set : Set.S with type elt = elt_id
 module Int_map : Map.S with type key = int
 
-type cached_elt =
-  { cache_elt : elt ;
-    cache_blocks : (Xtmpl.tree * Xtmpl.tree) Str_map.t ;
-  }
-
 type edge_type = Date | Topic of string | Keyword of string | Ref
 
 module Graph : Stog_graph.S with type key = elt_id and type edge_data = edge_type

@@ -93,6 +93,7 @@ LIB_CMXFILES= \
 	stog_ocaml.cmx \
 	stog_latex.cmx \
 	stog_tmpl.cmx \
+	stog_cache.cmx \
 	stog_html.cmx \
 	stog_plug.cmx \
 	stog_dyn.cmx \

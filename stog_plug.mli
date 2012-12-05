@@ -89,3 +89,4 @@ val compute_elt : rule_build -> level_fun
 
 val register_level_fun_on_elt_list : int -> level_fun_on_elt_list -> unit
 
+val register_cache : (module Stog_cache.Cache) -> unit

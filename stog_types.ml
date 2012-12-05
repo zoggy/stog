@@ -137,10 +137,6 @@ module Elt_set = Set.Make (struct type t = elt_id let compare = Stog_tmap.compar
 module Elt_map = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
 module Int_map = Map.Make (struct type t = int let compare = compare end);;
 
-type cached_elt =
-  { cache_elt : elt ;
-    cache_blocks : (Xtmpl.tree * Xtmpl.tree) Str_map.t ;
-  }
 
 type edge_type =
   Date

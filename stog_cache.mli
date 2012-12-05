@@ -26,74 +26,18 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Caching system. *)
 
-let plugin_config_file stog plugin_name =
-  Filename.concat
-    (Stog_config.config_dir stog.Stog_types.stog_dir)
-    ("config-"^plugin_name)
-;;
+module type Cache =
+  sig
+    type t
+    val name : string
+    val load : Stog_types.elt -> t -> unit
+    val store : Stog_types.elt -> t
+  end
 
-let register_lang = Stog_intl.register_lang;;
+val cache_file : string -> Stog_types.stog -> Stog_types.elt -> string
+val register_cache : (module Cache) -> unit
 
-let register_rule name f =
-  Stog_html.plugin_rules := (name, f) :: !Stog_html.plugin_rules ;;
-
-let unregister_rule name =
-  let rec iter acc = function
-    [] -> (List.rev acc, None)
-  | (s,f) :: q ->
-      if s = name then
-        ((List.rev acc) @ q, Some f)
-      else
-        iter ((s,f) :: acc) q
-  in
-  let (rules, found) = iter [] !Stog_html.plugin_rules in
-  Stog_html.plugin_rules := rules;
-  found
-;;
-
-let stog () =
-  match !Stog_html.current_stog with
-    None -> failwith "Current stog not initialized"
-  | Some x -> x
-;;
-
-let elt_by_href = Stog_html.elt_by_href
-
-let add_block = Stog_html.add_block;;
-
-let set_print_verbose = Stog_msg.set_print_verbose;;
-let verbose = Stog_msg.verbose;;
-
-let set_print_warning = Stog_msg.set_print_warning;;
-let warning = Stog_msg.warning;;
-
-let set_print_error = Stog_msg.set_print_error;;
-let error = Stog_msg.error;;
-
-let register_stage0_fun f =
-  Stog_html.stage0_funs := f :: !Stog_html.stage0_funs
-;;
-
-type rule_build =
-  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (string * Xtmpl.callback) list
-type level_fun =
-  Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
-;;
-type level_fun_on_elt_list =
-  Xtmpl.env -> Stog_types.stog -> (Stog_types.elt_id * Stog_types.elt) list ->
-  (Stog_types.elt_id * Stog_types.elt) list
-;;
-
-
-let register_level_fun = Stog_html.register_level_fun;;
-let compute_elt = Stog_html.compute_elt;;
-
-let register_level_fun_on_elt_list = Stog_html.register_level_fun_on_elt_list;;
-
-let register_cache = Stog_cache.register_cache ;;
-
-
-
-
+val apply_loaders : Stog_types.stog -> Stog_types.elt -> unit
+val apply_storers : Stog_types.stog -> Stog_types.elt -> unit

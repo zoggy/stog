@@ -1,13 +1,11 @@
+stog_cache.cmo : stog_types.cmi stog_misc.cmi
+stog_cache.cmx : stog_types.cmx stog_misc.cmx
 stog_config.cmo : stog_misc.cmi stog_config.cmi
 stog_config.cmx : stog_misc.cmx stog_config.cmi
 stog_date.cmo : stog_date.cmi
 stog_date.cmx : stog_date.cmi
 stog_dyn.cmo : stog_msg.cmi stog_misc.cmi stog_dyn.cmi
 stog_dyn.cmx : stog_msg.cmx stog_misc.cmx stog_dyn.cmi
-stog_dyn_byte.cmo : stog_dyn.cmi
-stog_dyn_byte.cmx : stog_dyn.cmx
-stog_dyn_opt.cmo : stog_dyn.cmi
-stog_dyn_opt.cmx : stog_dyn.cmx
 stog_find.cmo : stog_find.cmi
 stog_find.cmx : stog_find.cmi
 stog_graph.cmo : stog_graph.cmi
@@ -20,12 +18,12 @@ stog_gui_main.cmo : stog_types.cmi stog_misc.cmi stog_io.cmi \
     stog_gui_arts.cmo
 stog_gui_main.cmx : stog_types.cmx stog_misc.cmx stog_io.cmx \
     stog_gui_arts.cmx
-stog_html.cmo : stog_types.cmi stog_tmap.cmi stog_tags.cmi stog_ocaml.cmi \
-    stog_msg.cmi stog_misc.cmi stog_latex.cmi stog_io.cmi stog_intl.cmi \
-    stog_info.cmi stog_html.cmi
-stog_html.cmx : stog_types.cmx stog_tmap.cmx stog_tags.cmx stog_ocaml.cmx \
-    stog_msg.cmx stog_misc.cmx stog_latex.cmx stog_io.cmx stog_intl.cmx \
-    stog_info.cmx stog_html.cmi
+stog_html.cmo : stog_types.cmi stog_tmpl.cmi stog_tmap.cmi stog_tags.cmi \
+    stog_ocaml.cmi stog_msg.cmi stog_misc.cmi stog_latex.cmi stog_io.cmi \
+    stog_intl.cmi stog_info.cmi stog_cache.cmo stog_html.cmi
+stog_html.cmx : stog_types.cmx stog_tmpl.cmx stog_tmap.cmx stog_tags.cmx \
+    stog_ocaml.cmx stog_msg.cmx stog_misc.cmx stog_latex.cmx stog_io.cmx \
+    stog_intl.cmx stog_info.cmx stog_cache.cmx stog_html.cmi
 stog_info.cmo : stog_types.cmi stog_tmap.cmi stog_misc.cmi stog_info.cmi
 stog_info.cmx : stog_types.cmx stog_tmap.cmx stog_misc.cmx stog_info.cmi
 stog_intl.cmo : stog_types.cmi stog_intl.cmi
@@ -55,13 +53,15 @@ stog_ocaml_session.cmx : stog_ocaml_types.cmx stog_misc.cmx errors.cmi \
 stog_ocaml_types.cmo : stog_ocaml_types.cmi
 stog_ocaml_types.cmx : stog_ocaml_types.cmi
 stog_plug.cmo : stog_types.cmi stog_msg.cmi stog_intl.cmi stog_html.cmi \
-    stog_plug.cmi
+    stog_config.cmi stog_cache.cmo stog_plug.cmi
 stog_plug.cmx : stog_types.cmx stog_msg.cmx stog_intl.cmx stog_html.cmx \
-    stog_plug.cmi
+    stog_config.cmx stog_cache.cmx stog_plug.cmi
 stog_tags.cmo : stog_tags.cmi
 stog_tags.cmx : stog_tags.cmi
 stog_tmap.cmo : stog_tmap.cmi
 stog_tmap.cmx : stog_tmap.cmi
+stog_tmpl.cmo : stog_types.cmi stog_msg.cmi stog_misc.cmi stog_tmpl.cmi
+stog_tmpl.cmx : stog_types.cmx stog_msg.cmx stog_misc.cmx stog_tmpl.cmi
 stog_trie.cmo : stog_trie.cmi
 stog_trie.cmx : stog_trie.cmi
 stog_types.cmo : stog_trie.cmi stog_tmap.cmi stog_misc.cmi stog_graph.cmi \
@@ -86,8 +86,9 @@ stog_msg.cmi :
 stog_ocaml.cmi : stog_types.cmi
 stog_ocaml_session.cmi :
 stog_ocaml_types.cmi :
-stog_plug.cmi : stog_types.cmi stog_intl.cmi
+stog_plug.cmi : stog_types.cmi stog_intl.cmi stog_cache.cmo
 stog_tags.cmi :
 stog_tmap.cmi :
+stog_tmpl.cmi : stog_types.cmi
 stog_trie.cmi :
 stog_types.cmi : stog_trie.cmi stog_tmap.cmi stog_graph.cmi
