@@ -28,6 +28,12 @@
 
 (** *)
 
+let plugin_config_file stog plugin_name =
+  Filename.concat
+    (Stog_config.config_dir stog.Stog_types.stog_dir)
+    ("config-"^plugin_name)
+;;
+
 let register_lang = Stog_intl.register_lang;;
 
 let register_rule name f =

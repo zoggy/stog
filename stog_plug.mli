@@ -33,6 +33,10 @@
   another.
 *)
 
+(** [plugin_config_file stog plugin_name] returns the configuration file
+  for this plugin name, for consistency purpose. *)
+val plugin_config_file : Stog_types.stog -> string -> string
+
 val register_lang : Stog_intl.lang_abbrev -> Stog_intl.lang_data -> unit
 val register_rule : string -> Xtmpl.callback -> unit
 
@@ -84,3 +88,4 @@ val register_level_fun : int -> level_fun -> unit
 val compute_elt : rule_build -> level_fun
 
 val register_level_fun_on_elt_list : int -> level_fun_on_elt_list -> unit
+
