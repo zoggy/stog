@@ -1474,32 +1474,23 @@ let register_level_fun_on_elt_list level f =
 
 let compute_level ?elts env level (funs: level_fun_kind list) stog =
   Stog_msg.verbose (Printf.sprintf "Computing level %d" level);
-  let f_elt f elt_id elt stog =
+  let f_elt f stog (elt_id, elt) =
     let elt = f env stog elt_id elt in
     Stog_types.set_elt stog elt_id elt
   in
+  let elts =
+    match elts with
+      None ->
+        Stog_tmap.fold (fun elt_id elt acc -> (elt_id, elt) :: acc) stog.stog_elts []
+    | Some l ->
+        List.map
+        (fun elt_id -> (elt_id, Stog_types.elt stog elt_id))
+        l
+  in
   let f_fun stog f =
     match f with
-      On_elt f ->
-        begin
-          match elts with
-            None -> Stog_tmap.fold (f_elt f) stog.stog_elts stog
-          | Some l ->
-              List.fold_left (fun stog elt_id ->
-                 let elt = Stog_types.elt stog elt_id in
-               f_elt f elt_id elt stog
-              )
-              stog l
-        end
+      On_elt f -> List.fold_left (f_elt f) stog elts
     | On_elt_list f ->
-        let elts =
-          match elts with
-            None -> Stog_tmap.fold (fun elt_id elt acc -> (elt_id, elt) :: acc) stog.stog_elts []
-          | Some l ->
-              List.map
-              (fun elt_id -> (elt_id, Stog_types.elt stog elt_id))
-              l
-        in
         let modified = f env stog elts in
         List.fold_left (fun stog (elt_id, elt) -> Stog_types.set_elt stog elt_id elt) stog modified
   in
@@ -1524,7 +1515,8 @@ let cached_elements = ref [];;
 
 let get_cached_elements stog =
   let f elt_id elt (cached, not_cached) =
-     let src_time = Stog_misc.file_mtime elt.elt_src in
+     let src_file = Filename.concat stog.stog_dir elt.elt_src in
+     let src_time = Stog_misc.file_mtime src_file in
      let cache_file = Stog_cache.cache_file "" stog elt in
      let cache_time = Stog_misc.file_mtime cache_file in
      match src_time, cache_time with
@@ -1546,6 +1538,7 @@ let compute_levels ?(use_cache=true) ?elts env stog =
   if use_cache then
     begin
       let (cached, not_cached) = get_cached_elements stog in
+      prerr_endline (Printf.sprintf "%d elements read from cache" (List.length cached));
       let stog = List.fold_left2
         (fun stog elt_id elt -> Stog_types.set_elt stog elt_id elt)
         stog cached !cached_elements
