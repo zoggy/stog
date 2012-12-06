@@ -41,6 +41,9 @@ type def = Xmlm.name * Xmlm.attribute list * body
 
 val get_def : def list -> Xmlm.name -> (Xmlm.attribute list * body) option
 
+module Str_map : Map.S with type key = string
+module Str_set : Set.S with type elt = string
+
 type elt = {
   elt_human_id : human_id;
   elt_type : string;
@@ -56,6 +59,7 @@ type elt = {
   elt_lang_dep : bool; (** whether a file must be generated for each language *)
   elt_xml_doctype : string option;
   elt_out : body option;
+  elt_used_mods : Str_set.t ;
 }
 type elt_id = elt Stog_tmap.key
 
@@ -64,8 +68,6 @@ val make_elt : ?typ:string -> ?hid:human_id -> unit -> elt
 
 val today : unit -> date
 
-module Str_map : Map.S with type key = string
-module Str_set : Set.S with type elt = string
 module Hid_map : Stog_trie.S with type symbol = string
 module Elt_set : Set.S with type elt = elt_id
 module Int_map : Map.S with type key = int
@@ -80,13 +82,6 @@ type stog_mod = {
   mod_requires : Str_set.t ;
   mod_defs : def list ;
 }
-
-(*
-type stog_mod_use = {
-  use_name : string ;
-  use_prefix : string option ;
-}
-*)
 
 type stog = {
   stog_dir : string;
@@ -109,6 +104,7 @@ type stog = {
   stog_main_elt : elt_id option;
   stog_files : file_tree;
   stog_modules : stog_mod Str_map.t ;
+  stog_used_mods : Str_set.t ;
 }
 val create_stog : string -> stog
 

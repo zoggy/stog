@@ -114,6 +114,18 @@ let read_modules stog =
   List.fold_left read_module stog files
 ;;
 
+let used_mods_of_string set s =
+  let l = Stog_misc.split_string s [';' ; ','] in
+  List.fold_left
+    (fun set s ->
+     match Stog_misc.strip_string s with
+       "" -> set
+     | modname -> Stog_types.Str_set.add modname set
+     )
+     set
+     l
+;;
+
 let extract_stog_info_from_elt stog elt =
   let stog = { stog with stog_title = elt.elt_title } in
   let rec iter (stog, defs) = function
@@ -130,6 +142,10 @@ let extract_stog_info_from_elt stog elt =
             None
         | (("stog", name), args, body) ->
             let stog = { stog with stog_defs = (("",name), args, body) :: stog.stog_defs } in
+            (stog, None)
+        | (("", "use"), _, xmls) ->
+            let s = Xtmpl.string_of_xmls xmls in
+            let stog =  { stog with stog_used_mods = used_mods_of_string stog.stog_used_mods s } in
             (stog, None)
         | _ ->
             (stog, Some h)
@@ -185,6 +201,7 @@ let fill_elt_from_atts =
         | (("","sets"), s) -> { elt with elt_sets = sets_of_string s }
         | (("","language-dep"), s) -> { elt with elt_lang_dep = bool_of_string s }
         | (("","doctype"), s) -> { elt with elt_xml_doctype = Some s }
+        | (("", "use"), s) -> { elt with elt_used_mods = used_mods_of_string elt.elt_used_mods s }
         | (att, v) -> { elt with elt_defs = (att, [], [Xtmpl.D v]) :: elt.elt_defs }
       in
       iter elt q
@@ -208,6 +225,7 @@ let fill_elt_from_nodes =
         | ("", "sets") -> { elt with elt_sets = sets_of_string v }
         | ("", "language-dep") -> { elt with elt_lang_dep = bool_of_string v }
         | ("", "doctype") -> { elt with elt_xml_doctype = Some v }
+        | ("", "use") -> { elt with elt_used_mods = used_mods_of_string elt.elt_used_mods v }
         | s -> { elt with elt_defs = (s, atts, subs) :: elt.elt_defs }
   in
   List.fold_left f

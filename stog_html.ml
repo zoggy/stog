@@ -1289,6 +1289,10 @@ and env_of_defs ?env defs =
   Xtmpl.env_of_list ?env l
 ;;
 
+let env_of_used_mods ?env mods =
+  assert false
+;;
+
 let compute_elt build_rules env stog elt_id elt =
   Stog_msg.verbose ~level:2
   (Printf.sprintf "Computing %S" (Stog_types.string_of_human_id elt.elt_human_id));
@@ -1339,6 +1343,7 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
         elt_lang_dep = true ;
         elt_xml_doctype = None ;
         elt_out = None ;
+        elt_used_mods = Stog_types.Str_set.empty ;
       }
     in
     let out_file = elt_dst_file stog elt in
@@ -1389,6 +1394,7 @@ let make_archive_index stog env =
         elt_lang_dep = true ;
         elt_xml_doctype = None ;
         elt_out = None ;
+        elt_used_mods = Stog_types.Str_set.empty ;
       }
     in
     Stog_types.add_elt stog elt

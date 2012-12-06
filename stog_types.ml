@@ -83,6 +83,9 @@ let get_def =
       Not_found -> None
 ;;
 
+module Str_map = Map.Make (struct type t = string let compare = compare end);;
+module Str_set = Set.Make (struct type t = string let compare = compare end);;
+
 type elt =
   { elt_human_id : human_id ;
     elt_type : string ;
@@ -98,6 +101,7 @@ type elt =
     elt_lang_dep : bool ;
     elt_xml_doctype : string option ;
     elt_out : body option;
+    elt_used_mods : Str_set.t ;
   }
 and elt_id = elt Stog_tmap.key
 
@@ -125,11 +129,10 @@ let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
     elt_lang_dep = true ;
     elt_xml_doctype = None ;
     elt_out = None ;
+    elt_used_mods = Str_set.empty ;
   }
 ;;
 
-module Str_map = Map.Make (struct type t = string let compare = compare end);;
-module Str_set = Set.Make (struct type t = string let compare = compare end);;
 module Hid_map = Stog_trie.Make (struct type t = string let compare = compare end);;
 module Elt_set = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
 module Elt_map = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
@@ -182,6 +185,7 @@ type stog = {
   stog_main_elt : elt_id option ;
   stog_files : file_tree ;
   stog_modules : stog_mod Str_map.t ;
+  stog_used_mods : Str_set.t ;
   }
 
 let create_stog dir = {
@@ -205,6 +209,7 @@ let create_stog dir = {
   stog_main_elt = None ;
   stog_files = { files = Str_set.empty ; dirs = Str_map.empty } ;
   stog_modules = Str_map.empty ;
+  stog_used_mods = Str_set.empty ;
   }
 ;;
 
