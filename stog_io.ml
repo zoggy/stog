@@ -140,12 +140,12 @@ let extract_stog_info_from_elt stog elt =
             { stog with
               stog_rss_length = int_of_string (Xtmpl.string_of_xmls xmls) },
             None
-        | (("stog", name), args, body) ->
-            let stog = { stog with stog_defs = (("",name), args, body) :: stog.stog_defs } in
-            (stog, None)
-        | (("", "use"), _, xmls) ->
+        | (("stog", "use"), _, xmls) ->
             let s = Xtmpl.string_of_xmls xmls in
             let stog =  { stog with stog_used_mods = used_mods_of_string stog.stog_used_mods s } in
+            (stog, None)
+        | (("stog", name), args, body) ->
+            let stog = { stog with stog_defs = (("",name), args, body) :: stog.stog_defs } in
             (stog, None)
         | _ ->
             (stog, Some h)
