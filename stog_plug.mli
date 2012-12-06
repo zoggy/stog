@@ -38,12 +38,12 @@
 val plugin_config_file : Stog_types.stog -> string -> string
 
 val register_lang : Stog_intl.lang_abbrev -> Stog_intl.lang_data -> unit
-val register_rule : string -> Xtmpl.callback -> unit
+val register_rule : Xmlm.name -> Xtmpl.callback -> unit
 
 (** Unregister the rule with the given name from the plugin rules.
   It only register the last registered rule with this name.
   If a rule is unregistered, it is returned, else [None] is returned.*)
-val unregister_rule : string -> Xtmpl.callback option
+val unregister_rule : Xmlm.name -> Xtmpl.callback option
 
 val stog : unit -> Stog_types.stog
 
@@ -75,7 +75,7 @@ val set_print_error : (string -> unit) -> unit
 val register_stage0_fun : (Stog_types.stog -> Stog_types.stog) -> unit
 
 type rule_build =
-  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (string * Xtmpl.callback) list
+  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * Xtmpl.callback) list
 type level_fun =
   Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
 ;;

@@ -1,5 +1,5 @@
 - import directive in element headers
-
+- to fix: computation of elt graph
 
 
 microdata:

@@ -61,22 +61,11 @@ let bool_of_string s =
   | _ -> true
 ;;
 
-let node_details = function
-  Xtmpl.D _  -> None
-| Xtmpl.T (tag, atts, subs) -> Some (tag, atts, subs)
-| Xtmpl.E (((_,tag),atts), subs) ->
-    let atts = List.fold_left
-      (fun acc ((s,att), v) ->
-         match s with "" -> (att,v) :: acc | _ -> acc) [] atts
-    in
-    Some (tag, atts, subs)
-;;
-
 let module_defs_of_xml =
   let f acc xml =
-    match node_details xml with
-      None -> acc
-    | Some (tag, atts, subs) ->
+    match xml with
+      Xtmpl.D _ -> acc
+    | Xtmpl.E (tag, atts, subs) ->
         (tag, atts, subs) :: acc
   in
   List.fold_left f []
@@ -96,11 +85,11 @@ let read_module stog file =
   let modname = Filename.chop_extension (Filename.basename file) in
   try
     let xml = Xtmpl.xml_of_string ~add_main: false (Stog_misc.string_of_file file) in
-    match node_details xml with
-      None -> assert false
-    | Some (tag, atts, subs) ->
+    match xml with
+      Xtmpl.D _ -> assert false
+    | Xtmpl.E (tag, atts, subs) ->
         let mod_requires =
-          match Xtmpl.get_arg atts "requires" with
+          match Xtmpl.get_arg atts ("","requires") with
             None -> Stog_types.Str_set.empty
           | Some s -> module_requires_of_string s
         in
@@ -129,28 +118,21 @@ let extract_stog_info_from_elt stog elt =
   let stog = { stog with stog_title = elt.elt_title } in
   let rec iter (stog, defs) = function
     [] -> (stog, defs)
-  | h :: q ->
+  | h:: q ->
       let (stog, opt) =
         match h with
-        | ("stog-site-description",_,xmls) -> { stog with stog_desc = xmls }, None
-        | ("stog-site-url",_,xmls) -> { stog with stog_base_url = Xtmpl.string_of_xmls xmls }, None
-        | ("stog-site-email",_,xmls) -> { stog with stog_email = Xtmpl.string_of_xmls xmls }, None
-        | ("stog-rss-length",_,xmls) ->
+        | (("stog", "site-description"), _, xmls) -> { stog with stog_desc = xmls }, None
+        | (("stog", "site-url"), _, xmls) -> { stog with stog_base_url = Xtmpl.string_of_xmls xmls }, None
+        | (("stog", "site-email)"), _, xmls) -> { stog with stog_email = Xtmpl.string_of_xmls xmls }, None
+        | (("stog", "rss-length"), _,xmls) ->
             { stog with
               stog_rss_length = int_of_string (Xtmpl.string_of_xmls xmls) },
             None
-        | (name, args, body) ->
-            let prefix = "stog-" in
-            let len = String.length name in
-            let len_p = String.length prefix in
-            if len > len_p && String.sub name 0 len_p = prefix then
-              (
-               let name = String.sub name len_p (len - len_p) in
-               let stog = { stog with stog_defs = (name, args, body) :: stog.stog_defs } in
-               (stog, None)
-              )
-            else
-              (stog, Some h)
+        | (("stog", name), args, body) ->
+            let stog = { stog with stog_defs = (("",name), args, body) :: stog.stog_defs } in
+            (stog, None)
+        | _ ->
+            (stog, Some h)
       in
       let defs = match opt with None -> defs | Some x -> h :: defs in
       iter (stog, defs) q
@@ -162,7 +144,7 @@ let extract_stog_info_from_elt stog elt =
 let add_elt stog elt =
   let (stog, elt) =
     let is_main =
-      try match List.find (fun (s,_,_) -> s = "main") elt.elt_defs with
+      try match List.find (fun (s,_,_) -> s = ("","main")) elt.elt_defs with
           (_,_,[Xtmpl.D s]) -> bool_of_string s
         | (_,_,xmls) ->
           prerr_endline (Printf.sprintf "elt %S: not main:\n%S" elt.elt_title (Xtmpl.string_of_xmls xmls));
@@ -194,15 +176,15 @@ let fill_elt_from_atts =
   | h :: q ->
       let elt =
         match h with
-        | ("with-contents",_) -> elt
-        | ("title", s) -> { elt with elt_title = s }
-        | ("keywords", s) -> { elt with elt_keywords = keywords_of_string s }
-        | ("topics", s) -> { elt with elt_topics = topics_of_string s }
-        | ("date", s) -> { elt with elt_date = Some (date_of_string s) }
-        | ("published", s) -> { elt with elt_published = bool_of_string s }
-        | ("sets", s) -> { elt with elt_sets = sets_of_string s }
-        | ("language-dep", s) -> { elt with elt_lang_dep = bool_of_string s }
-        | ("doctype", s) -> { elt with elt_xml_doctype = Some s }
+        | (("","with-contents"),_) -> elt
+        | (("","title"), s) -> { elt with elt_title = s }
+        | (("","keywords"), s) -> { elt with elt_keywords = keywords_of_string s }
+        | (("","topics"), s) -> { elt with elt_topics = topics_of_string s }
+        | (("","date"), s) -> { elt with elt_date = Some (date_of_string s) }
+        | (("","published"), s) -> { elt with elt_published = bool_of_string s }
+        | (("","sets"), s) -> { elt with elt_sets = sets_of_string s }
+        | (("","language-dep"), s) -> { elt with elt_lang_dep = bool_of_string s }
+        | (("","doctype"), s) -> { elt with elt_xml_doctype = Some s }
         | (att, v) -> { elt with elt_defs = (att, [], [Xtmpl.D v]) :: elt.elt_defs }
       in
       iter elt q
@@ -212,20 +194,20 @@ let fill_elt_from_atts =
 
 let fill_elt_from_nodes =
   let f elt xml =
-    match node_details xml with
-      None -> elt
-    | Some (tag, atts, subs) ->
+    match xml with
+      Xtmpl.D _ -> elt
+    | Xtmpl.E (tag, atts, subs) ->
         let v = Xtmpl.string_of_xmls subs in
         match tag with
-        | "contents" -> { elt with elt_body = subs }
-        | "title" -> { elt with elt_title = v }
-        | "keywords" -> { elt with elt_keywords = keywords_of_string v }
-        | "topics" -> { elt with elt_topics = topics_of_string v }
-        | "date" -> { elt with elt_date = Some (date_of_string v) }
-        | "published" -> { elt with elt_published = bool_of_string v }
-        | "sets" -> { elt with elt_sets = sets_of_string v }
-        | "language-dep" -> { elt with elt_lang_dep = bool_of_string v }
-        | "doctype" -> { elt with elt_xml_doctype = Some v }
+        | ("", "contents") -> { elt with elt_body = subs }
+        | ("", "title") -> { elt with elt_title = v }
+        | ("", "keywords") -> { elt with elt_keywords = keywords_of_string v }
+        | ("", "topics") -> { elt with elt_topics = topics_of_string v }
+        | ("", "date") -> { elt with elt_date = Some (date_of_string v) }
+        | ("", "published") -> { elt with elt_published = bool_of_string v }
+        | ("", "sets") -> { elt with elt_sets = sets_of_string v }
+        | ("", "language-dep") -> { elt with elt_lang_dep = bool_of_string v }
+        | ("", "doctype") -> { elt with elt_xml_doctype = Some v }
         | s -> { elt with elt_defs = (s, atts, subs) :: elt.elt_defs }
   in
   List.fold_left f
@@ -241,19 +223,19 @@ let elt_of_file stog file =
     in
     let xml = Xtmpl.xml_of_string ~add_main: false (Stog_misc.string_of_file file) in
     let (typ, atts, subs) =
-      match node_details xml with
-        None -> failwith (Printf.sprintf "File %S does not content an XML tree" file)
-      | Some (tag, atts, subs) -> (tag, atts, subs)
+      match xml with
+        Xtmpl.D _ -> failwith (Printf.sprintf "File %S does not content an XML tree" file)
+      | Xtmpl.E ((_,tag), atts, subs) -> (tag, atts, subs)
     in
     let elt = Stog_types.make_elt ~hid ~typ () in
     let elt = { elt with elt_src = rel_file } in
     let elt =
-      match Xtmpl.get_arg atts "hid" with
+      match Xtmpl.get_arg atts ("","hid") with
         None -> elt
       | Some s -> { elt with elt_human_id = Stog_types.human_id_of_string s }
     in
     let elt = fill_elt_from_atts elt atts in
-    match Xtmpl.get_arg atts "with-contents" with
+    match Xtmpl.get_arg atts ("", "with-contents") with
       Some s when bool_of_string s ->
         (* arguments are also passed in sub nodes, and contents is in
            subnode "contents" *)

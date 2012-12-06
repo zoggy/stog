@@ -112,15 +112,15 @@ let fun_new_env env args subs =
 
 let fun_eval stog env args code =
   try
-    let exc = Xtmpl.opt_arg args ~def: "true" "error-exc" = "true" in
-    let toplevel = Xtmpl.opt_arg args ~def: "false" "toplevel" = "true" in
-    let show_code = Xtmpl.opt_arg args ~def: "true" "show-code" <> "false" in
+    let exc = Xtmpl.opt_arg args ~def: "true" ("", "error-exc") = "true" in
+    let toplevel = Xtmpl.opt_arg args ~def: "false" ("", "toplevel") = "true" in
+    let show_code = Xtmpl.opt_arg args ~def: "true" ("", "show-code") <> "false" in
     let show_stdout = Xtmpl.opt_arg args
-      ~def: (if toplevel then "true" else "false") "show-stdout" <> "false"
+      ~def: (if toplevel then "true" else "false") ("", "show-stdout") <> "false"
     in
-    let session_name = Xtmpl.get_arg args "session" in
-    let id_opt = Xtmpl.opt_arg args "id" in
-    let atts = match id_opt with "" -> [] | id -> ["id", id] in
+    let session_name = Xtmpl.get_arg args ("", "session") in
+    let id_opt = Xtmpl.opt_arg args ("", "id") in
+    let atts = match id_opt with "" -> [] | id -> [("","id"), id] in
     let code =
       match code with
         [ Xtmpl.D code ] -> code
@@ -146,7 +146,7 @@ let fun_eval stog env args code =
             begin
               let code = Stog_misc.highlight ~opts phrase in
               let code = if toplevel then Printf.sprintf "# %s" code else code in
-              Xtmpl.T ("div", [], [Xtmpl.xml_of_string code])
+              Xtmpl.E (("","div"), [], [Xtmpl.xml_of_string code])
             end
            else
             Xtmpl.D ""
@@ -168,7 +168,7 @@ let fun_eval stog env args code =
             false ->
               if show_stdout then
                 let xml =
-                  Xtmpl.T ("div", ["class", "ocaml-toplevel"], [Xtmpl.D stdout])
+                  Xtmpl.E (("","div"), [("","class"), "ocaml-toplevel"], [Xtmpl.D stdout])
                 in
                 xml :: code :: acc
               else
@@ -178,7 +178,7 @@ let fun_eval stog env args code =
                 (if raised_exc then " ocaml-exc" else "")
               in
               let xml =
-                Xtmpl.T ("div", ["class", classes], [Xtmpl.D output])
+                Xtmpl.E (("","div"), [("","class"), classes], [Xtmpl.D output])
               in
               xml :: code :: acc
         in
@@ -186,7 +186,7 @@ let fun_eval stog env args code =
     in
     let xml = iter [] phrases in
     if show_code || toplevel || show_stdout then
-      [ Xtmpl.T ("pre", ["class", "code-ocaml"] @ atts, xml) ]
+      [ Xtmpl.E (("","pre"), [("","class"), "code-ocaml"] @ atts, xml) ]
     else
       [ Xtmpl.D "" ]
   with

@@ -2,7 +2,7 @@
 
 let fun_list env args subs =
   (* get the optional sep attribute ... *)
-  let sep = Xtmpl.opt_arg args "sep" in
+  let sep = Xtmpl.opt_arg args ("", "sep") in
   (* and parse it as xml *)
   let xml = Xtmpl.xml_of_string sep in
   (* We can access the stog structure with [Stog_plug.stog ()] .
@@ -26,5 +26,5 @@ let fun_list env args subs =
 
 (* register the new function, associated to tag "list".
   Before stog 0.3, this function was called [Stog_plug.register_fun]. *)
-let () = Stog_plug.register_rule "list" fun_list;;
+let () = Stog_plug.register_rule ("", "list") fun_list;;
 

@@ -6,4 +6,4 @@ let fun_comments env args subs =
   [Xtmpl.xml_of_string (Xtmpl.apply_from_file env tmpl)]
 ;;
 
-let () = Stog_plug.register_rule "comments" fun_comments;;
+let () = Stog_plug.register_rule ("", "comments") fun_comments;;

@@ -44,7 +44,7 @@ val elt_by_href : ?typ: string -> Stog_types.stog -> Xtmpl.env -> string ->
   (Stog_types.elt * string * string option) option
 
 (** The rewrite rules registered by plugins. *)
-val plugin_rules : (string * Xtmpl.callback) list ref
+val plugin_rules : (Xmlm.name * Xtmpl.callback) list ref
 
 (** Stage 0 functions registered by plugins. *)
 val stage0_funs : (Stog_types.stog -> Stog_types.stog) list ref
@@ -61,11 +61,11 @@ val add_block :
 (** [get_in_env env tag] will look for the given string in the environment,
   by building a <tag/> node and evaluating it. If the result is the same node,
   then return [""] else return the reduced value as a string.*)
-val get_in_env : Xtmpl.env -> string -> string
+val get_in_env : Xtmpl.env -> Xmlm.name -> string
 
 (** [get_in_args_or_env env args s] returns the value associated to [s]
  in [args] of else return the result of [get_in_env env s]. *)
-val get_in_args_or_env : Xtmpl.env -> (string * string) list -> string -> string
+val get_in_args_or_env : Xtmpl.env -> Xmlm.attribute list -> Xmlm.name -> string
 
 (** [get_hid env] returns the value associated to ["hid"] in [env].
   @raise Assert_failure if ["hid"] is not found in the environment.*)
@@ -101,7 +101,7 @@ val generate_rss_feed_file :
 
 (** Build the base rules, using the default ones and the {!plugin_rules}. *)
 val build_base_rules : Stog_types.stog ->
-  Stog_types.elt_id -> Stog_types.elt -> (string * Xtmpl.callback) list
+  Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * Xtmpl.callback) list
 
 (** The calllback to insert a list of elements. Can be called directly
   if provided an additional environment, argument and children nodes. *)
@@ -121,7 +121,7 @@ val elt_list :
 val generate : ?use_cache: bool -> ?only_elt:string -> Stog_types.stog -> unit
 
 type rule_build =
-  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (string * Xtmpl.callback) list
+  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * Xtmpl.callback) list
 type level_fun =
   Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
 ;;

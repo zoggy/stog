@@ -32,7 +32,12 @@ let gensym = let cpt = ref 0 in fun () -> incr cpt; !cpt;;
 
 let cache = Hashtbl.create 111;;
 
-let get_in_env env s =
+let get_in_env env (prefix, s) =
+  let s =
+    match prefix with
+      "" -> s
+    | p -> p ^":" ^ s
+  in
   let node = "<"^s^"/>" in
   let s = Xtmpl.apply env node in
   if s = node then "" else s
@@ -91,15 +96,20 @@ let fun_latex stog env args subs =
     | _ -> failwith (Printf.sprintf "Invalid code: %s"
          (String.concat "" (List.map Xtmpl.string_of_xml subs)))
   in
-  let packages = Xtmpl.opt_arg args "packages" in
+  let packages = Xtmpl.opt_arg args ("", "packages") in
   let packages = Stog_misc.split_string packages [';'] in
-  let showcode = Xtmpl.opt_arg args "showcode" = "true" in
-  let defs = match get_in_env env "latex-defs" with "" -> None | s -> Some s in
+  let showcode = Xtmpl.opt_arg args ("", "showcode") = "true" in
+  let defs = match get_in_env env ("", "latex-defs") with "" -> None | s -> Some s in
   let svg = Filename.basename (make_svg stog.Stog_types.stog_outdir ~packages ?defs code) in
   let url = Printf.sprintf "%s/%s" stog.Stog_types.stog_base_url svg in
-  (Xtmpl.T ("img", ["class", "latex" ; "src", url ; "alt", code ; "title", code], []) ) ::
+  (Xtmpl.E (("","img"),
+    [("", "class"), "latex" ;
+     ("", "src"), url ;
+     ("", "alt"), code ;
+     ("", "title"), code],
+     []) ) ::
   (match showcode with
      false -> []
-   | true -> [ Xtmpl.T ("hcode", ["lang", "tex"], [Xtmpl.D code]) ]
+   | true -> [ Xtmpl.E (("","hcode"), [("","lang"), "tex"], [Xtmpl.D code]) ]
   )
 ;;

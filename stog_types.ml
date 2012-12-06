@@ -71,7 +71,7 @@ let human_id_of_string s =
   }
 ;;
 
-type def = string * (string * string) list * body
+type def = Xmlm.name * Xmlm.attribute list * body
 
 let get_def =
   let p name (s,_,_) = s = name in
@@ -100,8 +100,6 @@ type elt =
     elt_out : body option;
   }
 and elt_id = elt Stog_tmap.key
-
-
 
 let today () =
   let t = Unix.gmtime (Unix.time()) in
@@ -356,16 +354,7 @@ let find_block_by_id =
   and find id xml =
     match xml with
       Xtmpl.D _ -> raise Not_found
-    | Xtmpl.T (_,atts,subs) ->
-        begin
-          match
-            try Some (List.assoc "id" atts)
-            with Not_found -> None
-          with
-            Some s when s = id -> raise (Block_found xml)
-          | _ -> find_in_list id subs
-        end
-    | Xtmpl.E ((_,atts),subs) ->
+    | Xtmpl.E (_, atts, subs) ->
         match
           try Some (List.assoc ("","id") atts)
           with Not_found -> None

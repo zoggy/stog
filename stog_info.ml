@@ -143,10 +143,11 @@ let add_keywords_in_graph stog =
   )
 ;;
 
-let add_refs_in_graph stog =
+let add_refs_in_graph stog = stog
+(* FIXME: have to compute it differently now
   let g = ref stog.stog_graph in
   let f_ref id env args body =
-      match Xtmpl.get_arg args "id" with
+      match Xtmpl.get_arg args ("", "id") with
       None ->
         []
     | Some hid ->
@@ -167,6 +168,7 @@ let add_refs_in_graph stog =
   in
   Stog_tmap.iter f_art stog.stog_elts;
   { stog with stog_graph = !g }
+*)
 ;;
 
 let compute_archives stog =

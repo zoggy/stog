@@ -37,9 +37,9 @@ type human_id = { hid_path : string list; hid_absolute : bool; }
 val string_of_human_id : human_id -> string
 val human_id_of_string : string -> human_id
 
-type def = string * (string * string) list * body
+type def = Xmlm.name * Xmlm.attribute list * body
 
-val get_def : def list -> string -> ((string * string) list * body) option
+val get_def : def list -> Xmlm.name -> (Xmlm.attribute list * body) option
 
 type elt = {
   elt_human_id : human_id;

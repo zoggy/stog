@@ -30,6 +30,4 @@
 
 val close_sessions : unit -> unit
 
-val fun_eval :
-  Stog_types.stog ->
-  Xtmpl.env -> (string * string) list -> Xtmpl.tree list -> Xtmpl.tree list
+val fun_eval : Stog_types.stog -> Xtmpl.callback
