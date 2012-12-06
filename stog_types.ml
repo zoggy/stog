@@ -158,6 +158,11 @@ type file_tree =
   dirs : file_tree Str_map.t ;
 }
 
+type stog_mod = {
+  mod_requires : Str_set.t ;
+  mod_defs : def list ;
+}
+
 type stog = {
   stog_dir : string ;
   stog_elts : (elt, elt) Stog_tmap.t ;
@@ -178,6 +183,7 @@ type stog = {
   stog_outdir : string ;
   stog_main_elt : elt_id option ;
   stog_files : file_tree ;
+  stog_modules : stog_mod Str_map.t ;
   }
 
 let create_stog dir = {
@@ -200,6 +206,7 @@ let create_stog dir = {
   stog_outdir = "." ;
   stog_main_elt = None ;
   stog_files = { files = Str_set.empty ; dirs = Str_map.empty } ;
+  stog_modules = Str_map.empty ;
   }
 ;;
 

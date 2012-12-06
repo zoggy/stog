@@ -6,9 +6,10 @@
   stog-site-url="http://zoggy.github.com/stog"
   stog-rss-length="10"
   navbar-home="active"
-  stog-section-counter="false"
-  stog-subsection-counter="false"
+  with-contents="true"
 >
+<stog-use>nocounter</stog-use>
+<contents>
 <p>In one sentence, Stog is a kind of <ext-a href="http://jekyllrb.com/">Jekyll</ext-a> in OCaml:
 It is a static web site generator, able to handle blog posts as well as regular pages.
 </p>
@@ -56,6 +57,7 @@ them for your own site.
 <section title="Latest news">
 <elements type="post" rss="index.rss" max="10"/>
 </section>
+</contents>
 </page>
 
 

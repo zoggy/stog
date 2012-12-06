@@ -1,4 +1,3 @@
-- cache system for plugins
 - import directive in element headers
 
 

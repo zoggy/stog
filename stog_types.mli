@@ -75,6 +75,19 @@ type edge_type = Date | Topic of string | Keyword of string | Ref
 module Graph : Stog_graph.S with type key = elt_id and type edge_data = edge_type
 
 type file_tree = { files : Str_set.t; dirs : file_tree Str_map.t; }
+
+type stog_mod = {
+  mod_requires : Str_set.t ;
+  mod_defs : def list ;
+}
+
+(*
+type stog_mod_use = {
+  use_name : string ;
+  use_prefix : string option ;
+}
+*)
+
 type stog = {
   stog_dir : string;
   stog_elts : (elt, elt) Stog_tmap.t;
@@ -95,6 +108,7 @@ type stog = {
   stog_outdir : string;
   stog_main_elt : elt_id option;
   stog_files : file_tree;
+  stog_modules : stog_mod Str_map.t ;
 }
 val create_stog : string -> stog
 

@@ -41,7 +41,6 @@ let first_that_exists =
   iter
 ;;
 
-
 let date_of_string s =
   try Scanf.sscanf s "%d/%d/%d" (fun year month day -> {day; month; year})
   with
@@ -60,6 +59,70 @@ let bool_of_string s =
   match String.lowercase s with
     "0" | "false" -> false
   | _ -> true
+;;
+
+let node_details = function
+  Xtmpl.D _  -> None
+| Xtmpl.T (tag, atts, subs) -> Some (tag, atts, subs)
+| Xtmpl.E (((_,tag),atts), subs) ->
+    let atts = List.fold_left
+      (fun acc ((s,att), v) ->
+         match s with "" -> (att,v) :: acc | _ -> acc) [] atts
+    in
+    Some (tag, atts, subs)
+;;
+
+let module_defs_of_xml =
+  let f acc xml =
+    match node_details xml with
+      None -> acc
+    | Some (tag, atts, subs) ->
+        (tag, atts, subs) :: acc
+  in
+  List.fold_left f []
+;;
+
+let module_requires_of_string str =
+  let l = Stog_misc.split_string str [',' ; ';'] in
+  let l = List.map Stog_misc.strip_string l in
+  let f acc = function
+    "" -> acc
+  | s -> Stog_types.Str_set.add s acc
+  in
+  List.fold_left f Stog_types.Str_set.empty l
+;;
+
+let read_module stog file =
+  let modname = Filename.chop_extension (Filename.basename file) in
+  try
+    let xml = Xtmpl.xml_of_string ~add_main: false (Stog_misc.string_of_file file) in
+    match node_details xml with
+      None -> assert false
+    | Some (tag, atts, subs) ->
+        let mod_requires =
+          match Xtmpl.get_arg atts "requires" with
+            None -> Stog_types.Str_set.empty
+          | Some s -> module_requires_of_string s
+        in
+        let mod_defs = module_defs_of_xml subs in
+        let m = { mod_requires ; mod_defs } in
+        let modules = Stog_types.Str_map.add modname m stog.stog_modules in
+        { stog with stog_modules = modules }
+  with
+    Failure msg ->
+      failwith (Printf.sprintf "File %S:\n%s" file msg)
+
+let read_modules stog =
+  let mod_dir = Stog_config.modules_dir stog.stog_dir in
+  Stog_misc.safe_mkdir mod_dir;
+  let files = Stog_find.find_list
+    Stog_find.Stderr
+    [mod_dir]
+    [ Stog_find.Type Unix.S_REG ; Stog_find.Follow ;
+      Stog_find.Regexp (Str.regexp ".*\\.stm$")
+    ]
+  in
+  List.fold_left read_module stog files
 ;;
 
 let extract_stog_info_from_elt stog elt =
@@ -123,16 +186,7 @@ let add_elt stog elt =
   Stog_types.add_elt stog elt
 ;;
 
-let node_details = function
-  Xtmpl.D _  -> None
-| Xtmpl.T (tag, atts, subs) -> Some (tag, atts, subs)
-| Xtmpl.E (((_,tag),atts), subs) ->
-    let atts = List.fold_left
-      (fun acc ((s,att), v) ->
-         match s with "" -> (att,v) :: acc | _ -> acc) [] atts
-    in
-    Some (tag, atts, subs)
-;;
+
 
 let fill_elt_from_atts =
   let rec iter elt = function
@@ -297,6 +351,7 @@ let read_stog dir =
   let stog = Stog_types.create_stog dir in
   let cfg = Stog_config.read_config dir in
   let stog = read_files cfg stog dir in
+  let stog = read_modules stog in
   stog
 ;;
 

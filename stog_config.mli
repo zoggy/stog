@@ -52,6 +52,9 @@ val tmpl_dir : string -> string
 (** [cache_dir dir] returns the cache directory, from a stog project directory. *)
 val cache_dir : string -> string
 
+(** [modules_dir dir] returns the modules directory, from a stog project directory. *)
+val modules_dir : string -> string
+
 (** [read_config file] returns the configuration stored in the given
   stog configuration file.
   If the file does not exists, it is created.
