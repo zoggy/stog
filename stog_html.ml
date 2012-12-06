@@ -1289,8 +1289,19 @@ and env_of_defs ?env defs =
   Xtmpl.env_of_list ?env l
 ;;
 
-let env_of_used_mods ?env mods =
-  assert false
+(** FIXME: handle module requirements and already added modules *)
+let env_of_used_mod stog ?(env=Xtmpl.env_empty) modname =
+  try
+    let m = Stog_types.Str_map.find modname stog.stog_modules in
+    prerr_endline (Printf.sprintf "adding %d definitions from module %S"
+      (List.length m.mod_defs) modname);
+    env_of_defs ~env m.mod_defs
+  with Not_found ->
+    Stog_msg.warning (Printf.sprintf "No module %S" modname);
+    env
+
+let env_of_used_mods stog ?(env=Xtmpl.env_empty) mods =
+  Stog_types.Str_set.fold (fun name env -> env_of_used_mod stog ~env name) mods env
 ;;
 
 let compute_elt build_rules env stog elt_id elt =
@@ -1314,6 +1325,7 @@ let compute_elt build_rules env stog elt_id elt =
         xmls
   in
   let env = env_of_defs ~env elt.elt_defs in
+  let env = env_of_used_mods stog ~env elt.elt_used_mods in
   let rules =
    (("", Stog_tags.elt_hid),
     (fun  _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)])) ::
@@ -1594,6 +1606,7 @@ let generate ?(use_cache=true) ?only_elt stog =
   current_stog := Some stog;
   Stog_misc.safe_mkdir stog.stog_outdir;
   let env = env_of_defs stog.stog_defs in
+  let env = env_of_used_mods stog ~env stog.stog_used_mods in
   match only_elt with
     None ->
       let stog = make_topic_indexes stog env in
