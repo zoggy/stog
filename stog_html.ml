@@ -638,9 +638,10 @@ let fun_if env args subs =
   let pred ((prefix, name), v) =
     let nodes = [ Xtmpl.E ((prefix, name), [], []) ] in
     let nodes2 = Xtmpl.apply_to_xmls env nodes in
-    (*prerr_endline (Printf.sprintf "fun_if: pred: att=%s, s=%S, v=%s" att s v);*)
     let v2 = if nodes = nodes2 then [ Xtmpl.D "" ] else nodes2 in
-    [ Xtmpl.xml_of_string v ] = v2
+    (*prerr_endline (Printf.sprintf "fun_if: pred: att=(%s,%s), s=%S, v=%S, v2=%S"
+     prefix name (Xtmpl.string_of_xmls nodes2) v (Xtmpl.string_of_xmls v2));*)
+    Xtmpl.xml_of_string v = Xtmpl.E (("", Xtmpl.tag_main), [], v2)
   in
   let cond = List.for_all pred args in
   let subs = List.filter
