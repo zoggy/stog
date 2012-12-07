@@ -33,14 +33,9 @@ let gensym = let cpt = ref 0 in fun () -> incr cpt; !cpt;;
 let cache = Hashtbl.create 111;;
 
 let get_in_env env (prefix, s) =
-  let s =
-    match prefix with
-      "" -> s
-    | p -> p ^":" ^ s
-  in
-  let node = "<"^s^"/>" in
-  let s = Xtmpl.apply env node in
-  if s = node then "" else s
+  let node = [ Xtmpl.E((prefix,s),[],[]) ] in
+  let node2 = Xtmpl.apply_to_xmls env node in
+  if node2 = node then "" else Xtmpl.string_of_xmls node2
 ;;
 
 let make_svg outdir ?(packages=[]) ?defs latex_code =

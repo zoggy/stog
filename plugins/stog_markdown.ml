@@ -84,8 +84,8 @@ let fun_markdown env args subs =
   Sys.remove output_file;
   (* markdown may contain HTML portions meant to be processed by
      Xtmpl, so we re-run Xtmpl.apply here *)
-  let applied_output = Xtmpl.apply env output in
-  [ Xtmpl.xml_of_string applied_output ]
+  let applied_output = Xtmpl.apply_to_string env output in
+  applied_output
 ;;
 
 let () = Stog_plug.register_rule ("", "markdown") fun_markdown;;

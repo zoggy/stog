@@ -636,12 +636,11 @@ let fun_graph =
 
 let fun_if env args subs =
   let pred ((prefix, name), v) =
-    let att = match prefix with "" -> name | p -> p ^":" ^name in
-    let node = Printf.sprintf "<%s/>" att in
-    let s = Xtmpl.apply env node in
+    let nodes = [ Xtmpl.E ((prefix, name), [], []) ] in
+    let nodes2 = Xtmpl.apply_to_xmls env nodes in
     (*prerr_endline (Printf.sprintf "fun_if: pred: att=%s, s=%S, v=%s" att s v);*)
-    let s = if s = node then "" else s in
-    s = v
+    let v2 = if nodes = nodes2 then [ Xtmpl.D "" ] else nodes2 in
+    [ Xtmpl.xml_of_string v ] = v2
   in
   let cond = List.for_all pred args in
   let subs = List.filter
@@ -1120,14 +1119,17 @@ and build_base_rules stog elt_id elt =
   let f_date elt _ _ _ = [ Xtmpl.D (Stog_intl.string_of_date_opt stog.stog_lang elt.elt_date) ] in
   let f_intro elt _ _ _ = intro_of_elt stog elt in
   let mk f env atts subs =
-    let node = Printf.sprintf "<%s/>" Stog_tags.elt_hid in
-    let s = Xtmpl.apply env node in
-    if s = node then
+    let nodes = [ Xtmpl.E (("", Stog_tags.elt_hid), [], []) ] in
+    let nodes2 = Xtmpl.apply_to_xmls env nodes in
+    if nodes2 = nodes then
       []
     else
       (
-       let (_, elt) = Stog_types.elt_by_human_id stog (Stog_types.human_id_of_string s) in
-       f elt env atts subs
+       match nodes2 with
+         [Xtmpl.D s] ->
+           let (_, elt) = Stog_types.elt_by_human_id stog (Stog_types.human_id_of_string s) in
+           f elt env atts subs
+       | _ -> []
       )
   in
   let (previous, next) =
