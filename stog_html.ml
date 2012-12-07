@@ -124,7 +124,20 @@ let escape_html s =
   Buffer.contents b
 ;;
 
-let elt_dst f_concat stog base elt =
+let encode_for_url s =
+  let len = String.length s in
+  let b = Buffer.create len in
+  for i = 0 to len - 1 do
+    match s.[i] with
+    | 'A'..'Z' | 'a'..'z' | '0'..'9'
+    | '_' | '-' | '.' | '!' | '*' | '+' | '/' ->
+        Buffer.add_char b s.[i]
+    | c -> Printf.bprintf b "%%%0x" (Char.code c)
+  done;
+  Buffer.contents b
+;;
+
+let elt_dst f_concat ?(encode=true) stog base elt =
   let path =
     match elt.elt_human_id.hid_path with
       [] -> failwith "Invalid human id: []"
@@ -145,10 +158,13 @@ let elt_dst f_concat stog base elt =
       path
   in
   let dst = match ext with "" -> path | _ -> path^"."^ext in
+  let dst = if encode then encode_for_url dst else dst in
   f_concat base dst
 ;;
 
-let elt_dst_file stog elt = elt_dst Filename.concat stog stog.stog_outdir elt;;
+let elt_dst_file stog elt =
+  elt_dst ~encode: false Filename.concat stog stog.stog_outdir elt;;
+
 let elt_url stog elt =
   let url = elt_dst (fun a b -> a^"/"^b) stog stog.stog_base_url elt in
   let len = String.length url in
@@ -171,9 +187,9 @@ let url_of_hid stog ?ext hid =
 ;;
 
 let topic_index_hid topic =
-  Stog_types.human_id_of_string ("/topic_" ^ (Netencoding.Url.encode topic));;
+  Stog_types.human_id_of_string ("/topic_" ^ topic);;
 let keyword_index_hid kw =
-  Stog_types.human_id_of_string ("/kw_"^ (Netencoding.Url.encode kw));;
+  Stog_types.human_id_of_string ("/kw_"^ kw);;
 let month_index_hid ~year ~month =
   Stog_types.human_id_of_string (Printf.sprintf "/%04d_%02d" year month);;
 
