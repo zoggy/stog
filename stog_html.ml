@@ -547,7 +547,7 @@ let make_fun_section sect_up cls sect_down env args subs =
     ]
   in
   let f (prefix, cls) =
-    match get_in_env env (prefix, cls^"-counter") with
+    match get_in_env env (prefix, (concat_name (prefix, cls))^"-counter") with
       s when not (Stog_io.bool_of_string s) -> ""
     | _ ->
         Printf.sprintf "<counter counter-name=%S/>"
@@ -558,7 +558,7 @@ let make_fun_section sect_up cls sect_down env args subs =
   in
   let counter_name =
     let (pref, name) = cls in
-    match get_in_env env (pref, name^"-counter") with
+    match get_in_env env (pref, (concat_name cls)^"-counter") with
       s when not (Stog_io.bool_of_string s) -> ""
     | _ -> concat_name cls
   in
@@ -1323,8 +1323,8 @@ and env_of_defs ?env defs =
 let env_of_used_mod stog ?(env=Xtmpl.env_empty) modname =
   try
     let m = Stog_types.Str_map.find modname stog.stog_modules in
-    prerr_endline (Printf.sprintf "adding %d definitions from module %S"
-      (List.length m.mod_defs) modname);
+    (*prerr_endline (Printf.sprintf "adding %d definitions from module %S"
+      (List.length m.mod_defs) modname);*)
     env_of_defs ~env m.mod_defs
   with Not_found ->
     Stog_msg.warning (Printf.sprintf "No module %S" modname);
@@ -1615,7 +1615,7 @@ let compute_levels ?(use_cache=true) ?elts env stog =
   if use_cache then
     begin
       let (cached, not_cached) = get_cached_elements stog in
-      prerr_endline (Printf.sprintf "%d elements read from cache" (List.length cached));
+      Stog_msg.verbose (Printf.sprintf "%d elements read from cache" (List.length cached));
       let stog = List.fold_left2
         (fun stog elt_id elt -> Stog_types.set_elt stog elt_id elt)
         stog cached !cached_elements
@@ -1671,15 +1671,15 @@ let get_sectionning_tags stog elt =
      let s = Xtmpl.string_of_xmls xmls in
      let l = Stog_misc.split_string s [',' ; ';'] in
      let strip = Stog_misc.strip_string in
-     List.fold_left
-       (fun acc s ->
-         match Stog_misc.split_string s [':'] with
-           [] -> acc
-         | [s] -> ("", strip s) :: acc
-         | [pref ; s] -> (strip pref, strip s) :: acc
-         | pref :: q -> (strip pref, strip (String.concat ":" q)) :: acc
-      )
-       [] l
+      List.fold_right
+        (fun s acc ->
+           match Stog_misc.split_string s [':'] with
+             [] -> acc
+           | [s] -> ("", strip s) :: acc
+           | [pref ; s] -> (strip pref, strip s) :: acc
+           | pref :: q -> (strip pref, strip (String.concat ":" q)) :: acc
+        )
+      l []
 ;;
 
 let rules_toc stog elt_id elt =
