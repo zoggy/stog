@@ -1,7 +1,8 @@
 Next release:
+  * add: dependency to ocamlnet to encode urls
   * handle prefix in all xml nodes and attributes (upgrade to Xtmpl 0.5)
   * global definitions now are of the form stog:foo
-  * new module system
+  * add: module system
   * add: new caching system, available for plugins too
   * add: Stog_plug.plugin_config_file
   * add: Stog_plug.register_level_fun_on_elt_list to register functions

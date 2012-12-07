@@ -170,8 +170,10 @@ let url_of_hid stog ?ext hid =
   elt_url stog { elt with Stog_types.elt_src = src }
 ;;
 
-let topic_index_hid topic = Stog_types.human_id_of_string ("/topic_"^topic);;
-let keyword_index_hid kw = Stog_types.human_id_of_string ("/kw_"^ kw);;
+let topic_index_hid topic =
+  Stog_types.human_id_of_string ("/topic_" ^ (Netencoding.Url.encode topic));;
+let keyword_index_hid kw =
+  Stog_types.human_id_of_string ("/kw_"^ (Netencoding.Url.encode kw));;
 let month_index_hid ~year ~month =
   Stog_types.human_id_of_string (Printf.sprintf "/%04d_%02d" year month);;
 

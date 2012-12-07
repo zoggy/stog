@@ -239,6 +239,7 @@ let elt_of_file stog file =
       let s = "/"^s in
       Stog_types.human_id_of_string s
     in
+    Stog_msg.verbose ~level: 3 (Printf.sprintf "reading element file %S" file);
     let xml = Xtmpl.xml_of_string ~add_main: false (Stog_misc.string_of_file file) in
     let (typ, atts, subs) =
       match xml with
