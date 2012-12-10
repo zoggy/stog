@@ -84,7 +84,7 @@ let module_requires_of_string str =
 let read_module stog file =
   let modname = Filename.chop_extension (Filename.basename file) in
   try
-    let xml = Xtmpl.xml_of_string ~add_main: false (Stog_misc.string_of_file file) in
+    let xml = Xtmpl.xml_of_file file in
     match xml with
       Xtmpl.D _ -> assert false
     | Xtmpl.E (tag, atts, subs) ->
@@ -240,7 +240,7 @@ let elt_of_file stog file =
       Stog_types.human_id_of_string s
     in
     Stog_msg.verbose ~level: 3 (Printf.sprintf "reading element file %S" file);
-    let xml = Xtmpl.xml_of_string ~add_main: false (Stog_misc.string_of_file file) in
+    let xml = Xtmpl.xml_of_file file in
     let (typ, atts, subs) =
       match xml with
         Xtmpl.D _ -> failwith (Printf.sprintf "File %S does not content an XML tree" file)

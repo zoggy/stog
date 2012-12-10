@@ -582,7 +582,7 @@ let make_fun_section sect_up cls sect_down env args subs =
 
 let fun_search_form stog _env _ _ =
   let tmpl = Filename.concat stog.stog_tmpl_dir "search.tmpl" in
-  [ Xtmpl.xml_of_string (Stog_misc.string_of_file tmpl) ]
+  [ Xtmpl.xml_of_file tmpl ]
 ;;
 
 let fun_blog_url stog _env _ _ = [ Xtmpl.D stog.stog_base_url ];;
@@ -824,8 +824,7 @@ let block_body_of_subs stog blk = function
       | Some c -> Printf.sprintf "block-%s.tmpl" c
     in
     let tmpl = Filename.concat stog.Stog_types.stog_tmpl_dir tmpl_file in
-    let s = Stog_misc.string_of_file tmpl in
-    [ Xtmpl.xml_of_string s ]
+    [ Xtmpl.xml_of_file tmpl ]
 | l -> l
 ;;
 

@@ -46,7 +46,7 @@ let get_template stog contents name =
      contents
     )
   else
-    parse (Stog_misc.string_of_file file)
+    Xtmpl.xml_of_file file
 ;;
 
 let page _ = parse
