@@ -1471,7 +1471,7 @@ let output_elt stog elt =
   Stog_misc.safe_mkdir (Filename.dirname file);
   match elt.elt_out with
     None ->
-      failwith (Printf.sprintf "Element %S not commputed!" (Stog_types.string_of_human_id elt.elt_human_id))
+      failwith (Printf.sprintf "Element %S not computed!" (Stog_types.string_of_human_id elt.elt_human_id))
   | Some xmls ->
       let oc = open_out file in
       let doctype =
