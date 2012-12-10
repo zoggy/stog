@@ -340,7 +340,7 @@ let elt_by_href ?typ stog env href =
         Some elt
     with
       Failure s ->
-        Stog_msg.error s;
+        Stog_msg.error ~info: "Stog_html.elt_by_href" s;
         None
   in
   match elt with
@@ -349,6 +349,7 @@ let elt_by_href ?typ stog env href =
 ;;
 
 let fun_elt_href ?typ href stog env args subs =
+  let report_error msg = Stog_msg.error ~info: "Stog_html.fun_elt_href" msg in
   let quotes =
     match Xtmpl.get_arg args ("", "quotes") with
       None -> false
@@ -378,11 +379,11 @@ let fun_elt_href ?typ href stog env args subs =
                     | _ -> short
                   with Not_found ->
                       let msg = Printf.sprintf "Unknown block hid=%S, id=%S" hid id in
-                      Stog_msg.error msg;
+                      report_error msg;
                       Xtmpl.D "??"
                 with Not_found ->
                     let msg = Printf.sprintf "Unknown element %S in block map" hid in
-                    Stog_msg.error msg;
+                    report_error msg;
                     Xtmpl.D "??"
               in
               match subs with
@@ -589,6 +590,7 @@ let fun_blog_url stog _env _ _ = [ Xtmpl.D stog.stog_base_url ];;
 
 let fun_graph =
   let generated = ref false in
+  let report_error msg = Stog_msg.error ~info: "Stog_html.fun_graph" msg in
   fun stog _env _ _ ->
     let png_name = "site-graph.png" in
     let small_png_name = "small-"^png_name in
@@ -622,10 +624,10 @@ let fun_graph =
                 match Sys.command com with
                   0 -> ()
                 | _ ->
-                    Stog_msg.error (Printf.sprintf "Command failed: %s" com)
+                    report_error (Printf.sprintf "Command failed: %s" com)
               end
           | _ ->
-              Stog_msg.error (Printf.sprintf "Command failed: %s" com)
+              report_error (Printf.sprintf "Command failed: %s" com)
     end;
     [
       Xtmpl.E (("", "a"), [("", "href"), src], [
@@ -1490,13 +1492,14 @@ let output_elts ?elts stog =
 ;;
 
 let copy_other_files stog =
+  let report_error msg = Stog_msg.error ~info: "Stog_html.copy_other_files" msg in
   let copy_file src dst =
     let com = Printf.sprintf "cp -f %s %s" (Filename.quote src) (Filename.quote dst) in
     match Sys.command com with
       0 -> ()
     | n ->
         let msg = Printf.sprintf "Command failed [%d]: %s" n com in
-        Stog_msg.error msg
+        report_error msg
   in
   let f_file dst path name =
     let dst = Filename.concat dst name in
@@ -1514,6 +1517,7 @@ let copy_other_files stog =
   in
   iter stog.stog_outdir stog.stog_dir stog.stog_files
 ;;
+
 type rule_build =
   Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * Xtmpl.callback) list
 type level_fun =

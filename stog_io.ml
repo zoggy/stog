@@ -83,23 +83,19 @@ let module_requires_of_string str =
 
 let read_module stog file =
   let modname = Filename.chop_extension (Filename.basename file) in
-  try
-    let xml = Xtmpl.xml_of_file file in
-    match xml with
-      Xtmpl.D _ -> assert false
-    | Xtmpl.E (tag, atts, subs) ->
-        let mod_requires =
-          match Xtmpl.get_arg atts ("","requires") with
+  let xml = Xtmpl.xml_of_file file in
+  match xml with
+    Xtmpl.D _ -> assert false
+  | Xtmpl.E (tag, atts, subs) ->
+      let mod_requires =
+        match Xtmpl.get_arg atts ("","requires") with
             None -> Stog_types.Str_set.empty
-          | Some s -> module_requires_of_string s
-        in
-        let mod_defs = module_defs_of_xml subs in
-        let m = { mod_requires ; mod_defs } in
-        let modules = Stog_types.Str_map.add modname m stog.stog_modules in
-        { stog with stog_modules = modules }
-  with
-    Failure msg ->
-      failwith (Printf.sprintf "File %S:\n%s" file msg)
+        | Some s -> module_requires_of_string s
+      in
+      let mod_defs = module_defs_of_xml subs in
+      let m = { mod_requires ; mod_defs } in
+      let modules = Stog_types.Str_map.add modname m stog.stog_modules in
+      { stog with stog_modules = modules }
 
 let read_modules stog =
   let mod_dir = Stog_config.modules_dir stog.stog_dir in
@@ -232,45 +228,42 @@ let fill_elt_from_nodes =
 ;;
 
 let elt_of_file stog file =
-  try
-    let rel_file = Stog_misc.path_under ~parent: stog.stog_dir file in
-    let hid =
-      let s = try Filename.chop_extension rel_file with _ -> rel_file in
-      let s = "/"^s in
-      Stog_types.human_id_of_string s
-    in
-    Stog_msg.verbose ~level: 3 (Printf.sprintf "reading element file %S" file);
-    let xml = Xtmpl.xml_of_file file in
-    let (typ, atts, subs) =
-      match xml with
-        Xtmpl.D _ -> failwith (Printf.sprintf "File %S does not content an XML tree" file)
-      | Xtmpl.E ((_,tag), atts, subs) -> (tag, atts, subs)
-    in
-    let elt = Stog_types.make_elt ~hid ~typ () in
-    let elt = { elt with elt_src = rel_file } in
-    let elt =
-      match Xtmpl.get_arg atts ("","hid") with
-        None -> elt
-      | Some s -> { elt with elt_human_id = Stog_types.human_id_of_string s }
-    in
-    let elt = fill_elt_from_atts elt atts in
-    match Xtmpl.get_arg atts ("", "with-contents") with
-      Some s when bool_of_string s ->
-        (* arguments are also passed in sub nodes, and contents is in
-           subnode "contents" *)
-        fill_elt_from_nodes elt subs
-    | _ ->
-        (* all arguments are passed in attributes, subnodes are the contents *)
-        { elt with elt_body = subs }
-  with
-    Failure s -> failwith (Printf.sprintf "File %S:\n%s" file s)
+  let rel_file = Stog_misc.path_under ~parent: stog.stog_dir file in
+  let hid =
+    let s = try Filename.chop_extension rel_file with _ -> rel_file in
+    let s = "/"^s in
+    Stog_types.human_id_of_string s
+  in
+  Stog_msg.verbose ~level: 3 (Printf.sprintf "reading element file %S" file);
+  let xml = Xtmpl.xml_of_file file in
+  let (typ, atts, subs) =
+    match xml with
+      Xtmpl.D _ -> failwith (Printf.sprintf "File %S does not content an XML tree" file)
+    | Xtmpl.E ((_,tag), atts, subs) -> (tag, atts, subs)
+  in
+  let elt = Stog_types.make_elt ~hid ~typ () in
+  let elt = { elt with elt_src = rel_file } in
+  let elt =
+    match Xtmpl.get_arg atts ("","hid") with
+      None -> elt
+    | Some s -> { elt with elt_human_id = Stog_types.human_id_of_string s }
+  in
+  let elt = fill_elt_from_atts elt atts in
+  match Xtmpl.get_arg atts ("", "with-contents") with
+    Some s when bool_of_string s ->
+      (* arguments are also passed in sub nodes, and contents is in
+         subnode "contents" *)
+      fill_elt_from_nodes elt subs
+  | _ ->
+      (* all arguments are passed in attributes, subnodes are the contents *)
+      { elt with elt_body = subs }
 ;;
 
 let read_files cfg stog dir =
   let stog_cfg_dir = Stog_config.config_dir dir in
   let on_error (e,s1,s2) =
     let msg =  Printf.sprintf "%s: %s %s" (Unix.error_message e) s1 s2 in
-    Stog_msg.error msg
+    Stog_msg.error ~info: "Stog_io.read_files" msg
   in
   let pred_ign =
     let make_pred re =
