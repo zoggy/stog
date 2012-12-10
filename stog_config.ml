@@ -60,7 +60,12 @@ let read_config dir =
     "Regexps of files matching 'elements' regexps but not containing elements"
   in
   let cfg_dir = config_dir dir in
-  if not (Sys.file_exists cfg_dir) then Stog_misc.safe_mkdir cfg_dir ;
+  if not (Sys.file_exists cfg_dir) then
+    begin
+      Stog_msg.warning
+        (Printf.sprintf "Creating inexistent configuration directory %S" cfg_dir);
+      Stog_misc.safe_mkdir cfg_dir;
+    end;
   group#read rc_file;
   group#write rc_file;
   { ignored = o_ignored#get ;

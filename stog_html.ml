@@ -1337,7 +1337,8 @@ let env_of_used_mods stog ?(env=Xtmpl.env_empty) mods =
 
 let compute_elt build_rules env stog elt_id elt =
   Stog_msg.verbose ~level:2
-  (Printf.sprintf "Computing %S" (Stog_types.string_of_human_id elt.elt_human_id));
+  (Printf.sprintf "Computing %s %S"
+    elt.elt_type (Stog_types.string_of_human_id elt.elt_human_id));
   let xmls =
     match elt.elt_out with
       None ->

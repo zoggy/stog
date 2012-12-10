@@ -289,8 +289,14 @@ let read_files cfg stog dir =
     let preds_ok = List.map make_pred cfg.Stog_config.elements in
     let preds_ko = List.map make_pred cfg.Stog_config.not_elements in
     fun entry ->
-      (List.exists (fun f -> f entry) preds_ok) &&
-      not (List.exists (fun f -> f entry) preds_ko)
+      let result =
+        (List.exists (fun f -> f entry) preds_ok) &&
+        not (List.exists (fun f -> f entry) preds_ko)
+      in
+      Stog_msg.verbose ~level:5
+        (Printf.sprintf "File %S %s be processed."
+           entry (if result then "will" else "will not"));
+      result
   in
   let is_dir file = (Unix.stat file).Unix.st_kind = Unix.S_DIR in
   let rec iter stog dir =
