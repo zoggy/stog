@@ -193,6 +193,87 @@ let keyword_index_hid kw =
 let month_index_hid ~year ~month =
   Stog_types.human_id_of_string (Printf.sprintf "/%04d_%02d" year month);;
 
+
+let rec make_fun (name, params, body) acc =
+  let f env atts subs =
+    let vars = List.map
+      (fun (param,default) ->
+         match Xtmpl.get_arg atts param with
+           None -> (param, [], [ Xtmpl.xml_of_string default])
+         | Some v -> (param, [], [ Xtmpl.xml_of_string v ])
+      )
+      params
+    in
+    let env = env_of_defs ~env vars in
+    let env = Xtmpl.env_add "contents" (fun _ _ _ -> subs) env in
+    Xtmpl.apply_to_xmls env body
+  in
+  (name, f) :: acc
+
+
+and env_of_defs ?env defs =
+  let f x acc =
+    match x with
+    | (key, [], body) -> (key, fun _ _ _ -> body) :: acc
+    | _ ->  make_fun x acc
+  in
+  (* fold_right instead of fold_left to reverse list and keep associations
+     in the same order as in declarations *)
+  let l = List.fold_right f defs [] in
+  Xtmpl.env_of_list ?env l
+;;
+
+(** FIXME: handle module requirements and already added modules *)
+let env_of_used_mod stog ?(env=Xtmpl.env_empty) modname =
+  try
+    let m = Stog_types.Str_map.find modname stog.stog_modules in
+    (*prerr_endline (Printf.sprintf "adding %d definitions from module %S"
+      (List.length m.mod_defs) modname);*)
+    env_of_defs ~env m.mod_defs
+  with Not_found ->
+    Stog_msg.warning (Printf.sprintf "No module %S" modname);
+    env
+
+let env_of_used_mods stog ?(env=Xtmpl.env_empty) mods =
+  Stog_types.Str_set.fold (fun name env -> env_of_used_mod stog ~env name) mods env
+;;
+
+let env_add_langswitch env stog elt =
+  match stog.stog_lang with
+    None ->
+      Xtmpl.env_add Stog_tags.langswitch (fun _ _ _ -> []) env
+  | Some lang ->
+      let map_lang lang =
+         let url = elt_url { stog with stog_lang = Some lang } elt in
+         let img_url = Printf.sprintf "%s/%s.png" stog.stog_base_url lang in
+         Xtmpl.E (("", "a"), [("", "href"), url], [
+           Xtmpl.E (("", "img"), [("", "src"), img_url ; ("", "title"), lang ; ("", "alt"), lang], [])])
+      in
+      let f _env args _subs =
+        let languages =
+          match Xtmpl.get_arg args ("", "languages") with
+            Some s -> Stog_misc.split_string s [','; ';' ; ' ']
+          | None -> languages
+        in
+        let languages = List.filter ((<>) lang) languages in
+        List.map map_lang languages
+      in
+      Xtmpl.env_add Stog_tags.langswitch f env
+;;
+
+let elt_env build_rules stog ~env elt_id elt =
+  let env = env_of_defs ~env elt.elt_defs in
+  let env = env_of_used_mods stog ~env elt.elt_used_mods in
+  let rules =
+   (("", Stog_tags.elt_hid),
+    (fun  _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)])) ::
+   (build_rules stog elt_id elt)
+  in
+  let env = Xtmpl.env_of_list ~env rules in
+  let env = env_add_langswitch env stog elt in
+  env
+;;
+
 let make_lang_rules stog =
   match stog.stog_lang with
     None -> []
@@ -667,28 +748,6 @@ let fun_if env args subs =
   | false, [_] -> []
 ;;
 
-let env_add_langswitch env stog elt =
-  match stog.stog_lang with
-    None ->
-      Xtmpl.env_add Stog_tags.langswitch (fun _ _ _ -> []) env
-  | Some lang ->
-      let map_lang lang =
-         let url = elt_url { stog with stog_lang = Some lang } elt in
-         let img_url = Printf.sprintf "%s/%s.png" stog.stog_base_url lang in
-         Xtmpl.E (("", "a"), [("", "href"), url], [
-           Xtmpl.E (("", "img"), [("", "src"), img_url ; ("", "title"), lang ; ("", "alt"), lang], [])])
-      in
-      let f _env args _subs =
-        let languages =
-          match Xtmpl.get_arg args ("", "languages") with
-            Some s -> Stog_misc.split_string s [','; ';' ; ' ']
-          | None -> languages
-        in
-        let languages = List.filter ((<>) lang) languages in
-        List.map map_lang languages
-      in
-      Xtmpl.env_add Stog_tags.langswitch f env
-;;
 
 let fun_twocolumns env args subs =
   (*prerr_endline (Printf.sprintf "two-columns, length(subs)=%d" (List.length subs));*)
@@ -1054,13 +1113,11 @@ let rec elt_to_rss_item stog elt_id elt =
     (List.map f_word elt.elt_topics) @
     (List.map f_word elt.elt_keywords)
   in
-  let desc = intro_of_elt stog elt in
-  let desc =
-    Xtmpl.apply_to_xmls
-    (Xtmpl.env_of_list (build_base_rules stog elt_id elt))
-    desc
+  let desc_xml =
+    let env = elt_env build_base_rules stog ~env:Xtmpl.env_empty elt_id elt in
+    Xtmpl.apply_to_xmls env (intro_of_elt stog elt)
   in
-  let desc = String.concat "" (List.map Xtmpl.string_of_xml desc) in
+  let desc = String.concat "" (List.map Xtmpl.string_of_xml desc_xml) in
   Rss.item ~title: elt.elt_title
   ~desc
   ~link
@@ -1211,6 +1268,7 @@ and build_base_rules stog elt_id elt =
   (make_lang_rules stog) @ l
 
 and elt_list ?rss ?set stog env args _ =
+  let report_error msg = Stog_msg.error ~info: "Stog_html.elt_list" msg in
   let elts =
     match set with
       Some set ->
@@ -1244,16 +1302,21 @@ and elt_list ?rss ?set stog env args _ =
     Stog_tmpl.get_template stog Stog_tmpl.elt_in_list file
   in
   let f_elt (elt_id, elt) =
-    let env = Xtmpl.env_of_list ~env
+    let name = Stog_types.string_of_human_id elt.elt_human_id in
+    (*let env = Xtmpl.env_of_list ~env
       (
        (("", Stog_tags.elt_hid),
         fun _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)])::
        (build_base_rules stog elt_id elt)
       )
-    in
+    in*)
+    let env = elt_env build_base_rules stog ~env elt_id elt in
     match Xtmpl.apply_to_xmls env [tmpl] with
       [xml] -> xml
-    | _ -> assert false
+    | _ ->
+        report_error ("Error while processing " ^ name);
+        assert false
+    | xmls -> Xtmpl.E (("", "toto"), [], xmls)
   in
   let xml = List.map f_elt elts in
   (*prerr_endline "elt_list:";
@@ -1291,49 +1354,6 @@ let apply_stage0_funs stog =
 
 module Sset = Set.Make (struct type t = string let compare = Pervasives.compare end);;
 
-let rec make_fun (name, params, body) acc =
-  let f env atts subs =
-    let vars = List.map
-      (fun (param,default) ->
-         match Xtmpl.get_arg atts param with
-           None -> (param, [], [ Xtmpl.xml_of_string default])
-         | Some v -> (param, [], [ Xtmpl.xml_of_string v ])
-      )
-      params
-    in
-    let env = env_of_defs ~env vars in
-    let env = Xtmpl.env_add "contents" (fun _ _ _ -> subs) env in
-    Xtmpl.apply_to_xmls env body
-  in
-  (name, f) :: acc
-
-
-and env_of_defs ?env defs =
-  let f x acc =
-    match x with
-    | (key, [], body) -> (key, fun _ _ _ -> body) :: acc
-    | _ ->  make_fun x acc
-  in
-  (* fold_right instead of fold_left to reverse list and keep associations
-     in the same order as in declarations *)
-  let l = List.fold_right f defs [] in
-  Xtmpl.env_of_list ?env l
-;;
-
-(** FIXME: handle module requirements and already added modules *)
-let env_of_used_mod stog ?(env=Xtmpl.env_empty) modname =
-  try
-    let m = Stog_types.Str_map.find modname stog.stog_modules in
-    (*prerr_endline (Printf.sprintf "adding %d definitions from module %S"
-      (List.length m.mod_defs) modname);*)
-    env_of_defs ~env m.mod_defs
-  with Not_found ->
-    Stog_msg.warning (Printf.sprintf "No module %S" modname);
-    env
-
-let env_of_used_mods stog ?(env=Xtmpl.env_empty) mods =
-  Stog_types.Str_set.fold (fun name env -> env_of_used_mod stog ~env name) mods env
-;;
 
 let compute_elt build_rules env stog elt_id elt =
   Stog_msg.verbose ~level:2
@@ -1356,15 +1376,7 @@ let compute_elt build_rules env stog elt_id elt =
     | Some xmls ->
         xmls
   in
-  let env = env_of_defs ~env elt.elt_defs in
-  let env = env_of_used_mods stog ~env elt.elt_used_mods in
-  let rules =
-   (("", Stog_tags.elt_hid),
-    (fun  _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)])) ::
-   (build_rules stog elt_id elt)
-  in
-  let env = Xtmpl.env_of_list ~env rules in
-  let env = env_add_langswitch env stog elt in
+  let env = elt_env build_rules stog ~env elt_id elt in
   let result = Xtmpl.apply_to_xmls env xmls in
   { elt with elt_out = Some result }
 ;;
