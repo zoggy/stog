@@ -1,4 +1,6 @@
 Next release:
+  * minor fixes (thanks to Gabriel Scherer)
+  * better error and warning messages (thanks to Gabriel Scherer)
   * add: dependency to ocamlnet to encode urls
   * handle prefix in all xml nodes and attributes (upgrade to Xtmpl 0.5)
   * global definitions now are of the form stog:foo
