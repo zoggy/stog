@@ -79,6 +79,9 @@ val split_string : ?keep_empty:bool -> string -> char list -> string list
 val strip_string : string -> string
 (*/i==v=[String.strip_string]=1.0====*)
 
+(** [strip_blank_lines s] works as {!strip_string}, but only strips
+    full blank lines, without touching spaces or tabulations. *)
+val strip_blank_lines : string -> string
 
 (*i==v=[String.lowercase]=1.0====*)
 (** [lowercase s] lowers the case of the given string, including accentuated characters.

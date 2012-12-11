@@ -55,6 +55,21 @@ let strip_string s =
       |	Some last -> String.sub s first ((last-first)+1)
 (*/c==v=[String.strip_string]=1.0====*)
 
+
+let strip_blank_lines str =
+  let blank_line = function '\n'|'\r' -> true | _ -> false in
+  let prefix, suffix = ref 0, ref 0 in
+  let len = String.length str in
+  while !prefix < len && blank_line str.[!prefix] do
+    incr prefix
+  done;
+  while !suffix > 0 && blank_line str.[!prefix] do
+    decr suffix
+  done;
+  String.sub str !prefix (len - !suffix - !prefix)
+;;
+
+
 (*c==v=[Misc.safe_main]=1.0====*)
 let safe_main main =
   try main ()

@@ -582,7 +582,7 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
     in
     String.concat "" l
   in
-  let code = Stog_misc.strip_string code in
+  let code = Stog_misc.strip_blank_lines code in
   let xml_code =
     match language_options with
       None -> Xtmpl.D code
