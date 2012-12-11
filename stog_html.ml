@@ -1303,13 +1303,6 @@ and elt_list ?rss ?set stog env args _ =
   in
   let f_elt (elt_id, elt) =
     let name = Stog_types.string_of_human_id elt.elt_human_id in
-    (*let env = Xtmpl.env_of_list ~env
-      (
-       (("", Stog_tags.elt_hid),
-        fun _ _ _ -> [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)])::
-       (build_base_rules stog elt_id elt)
-      )
-    in*)
     let env = elt_env build_base_rules stog ~env elt_id elt in
     match Xtmpl.apply_to_xmls env [tmpl] with
       [xml] -> xml
