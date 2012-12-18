@@ -76,9 +76,15 @@ val register_stage0_fun : (Stog_types.stog -> Stog_types.stog) -> unit
 
 type rule_build =
   Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * Xtmpl.callback) list
+
+(** Type to represent a function taking an element id,
+  and element, and returning the new element. *)
 type level_fun =
   Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
 ;;
+
+(** Type to represent a functions called on all elements at a time and returning
+  only the modified elements. *)
 type level_fun_on_elt_list =
   Xtmpl.env -> Stog_types.stog -> (Stog_types.elt_id * Stog_types.elt) list ->
   (Stog_types.elt_id * Stog_types.elt) list

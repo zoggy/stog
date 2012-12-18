@@ -503,9 +503,9 @@ You can specify other nodes:
   <hcode lang="xml"><page title="..." sectionning="section,subsection,paragraph">...</page></hcode>
   will define "section", "subsection" and "paragraph" as sectionning nodes.
 </li>
-<li>for all the site elements, using the "stog-sectionning" attribute in the main element
+<li>for all the site elements, using the "stog:sectionning" attribute in the main element
   (see <elt href="getting_started#mainelement"/>):
-  <hcode lang="xml"><page title="..." stog-sectionning="section,subsection,paragraph">...</page></hcode>
+  <hcode lang="xml"><page title="..." stog:sectionning="section,subsection,paragraph">...</page></hcode>
 </li>
 </ul>
 <p>
@@ -515,7 +515,7 @@ refering to the section (or subsection, or ...), will use the title of the secti
 </p>
 <p>To prevent a sectionning node having a counter associated, you can use
 <icode lang="xml">section-counter="false"</icode> in the element attribute, or
-<icode lang="xml">stog-section-counter="false"</icode> in the main element. "section" can be replaced
+<icode lang="xml">stog:section-counter="false"</icode> in the main element. "section" can be replaced
 by "subsection" or any other node to prevent this node having a counter.
 </p>
 </section>

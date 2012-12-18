@@ -12,7 +12,7 @@ To build Stog, you will need:
 <li><ext-a href="http://config-file.forge.ocamlcore.org/">Config-file >= 1.1</ext-a>.</li>
 <li><ext-a href="http://erratique.ch/software/xmlm">Xmlm >= 1.1.0</ext-a>,</li>
 <li><ext-a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS >= 2.0</ext-a>,</li>
-<li><ext-a href="https://github.com/zoggy/xtmpl">Xtmpl >= 0.4</ext-a>.</li>
+<li><ext-a href="https://github.com/zoggy/xtmpl">Xtmpl >= 0.5</ext-a>.</li>
 </ul>
 <p>
 You will need to have the following tools installed to use
@@ -32,6 +32,25 @@ LaTeX in your pages.</li>
 </p>
 <subsection title="Releases">
 <ul>
+<li><a href="stog-0.5.tar.gz">0.5</a> [2012-12-18]:
+<ul>
+<li>minor fixes (thanks to Gabriel Scherer),</li>
+<li>better error and warning messages (thanks to Gabriel Scherer),</li>
+<li>handle prefix in all xml nodes and attributes (upgrade to Xtmpl 0.5),</li>
+<li>global definitions now are of the form <code>stog:foo</code>,</li>
+<li>add: module system (not yet stable),</li>
+<li>add: new <a href="ref-doc/Stog_cache.html">caching system</a>, available for plugins too,</li>
+<li>add: <a href="ref-doc/Stog_plug.html#VALplugin_config_file">Stog_plug.plugin_config_file</a>,</li>
+<li>add: <a href="ref-doc/Stog_plug.html#VALregister_level_fun_on_elt_list">Stog_plug.register_level_fun_on_elt_list</a>
+    to register functions handling all elements at a time.</li>
+<li>fix: add '.' after counters in section title,</li>
+<li>add: when a basic template is missing, create one and issue a warning;
+    these templates are: <code>page.tmpl</code>, <code>elt-in-list.tmpl</code>,
+    <code>by-keyword.tmpl</code>, <code>by-topic.tmpl</code>, <code>keyword.tmpl</code>,
+    <code>topic.tmpl</code>, <code>by-month.tmpl</code>.
+</li>
+</ul>
+</li>
 <li><a href="stog-0.4.tar.gz">0.4</a> [2012-11-21]:
 <ul>
 <li>handle relative paths in <icode>&lt;include&gt;</icode>, when starting with

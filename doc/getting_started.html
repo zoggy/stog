@@ -131,15 +131,15 @@ Some attributes of this main element are used to specify site-wide information:
 <ul>
 <li><b>title</b>: The title of the blog is the same as this element and can be accessed
 with &lt;site-title/&gt; in templates,</li>
-<li><b>stog-site-description</b>: A short description of the site; use &lt;site-description/&gt;
+<li><b>stog:site-description</b>: A short description of the site; use &lt;site-description/&gt;
 to access it in templates;</li>
-<li><b>stog-site-url</b>: The base url of the site, used to forge urls when generating pages;
+<li><b>stog:site-url</b>: The base url of the site, used to forge urls when generating pages;
 use &lt;site-url/&gt; to insert it in templates,</li>
-<li><b>stog-site-email</b>: A contact email for the site, accessible with &lt;site-email/&gt;,</li>
-<li><b>stog-rss-length</b>: The default length of RSS feeds.</li>
+<li><b>stog:site-email</b>: A contact email for the site, accessible with &lt;site-email/&gt;,</li>
+<li><b>stog:rss-length</b>: The default length of RSS feeds.</li>
 </ul>
 <p>
-In the main element, any attribute beginning with "stog-" will be used as global attribute
+In the main element, any attribute beginning with "stog:" will be used as global attribute
 and accessible in all templates by its name. Other attributes are associated to the element only.
 </p>
 </section>
@@ -162,7 +162,7 @@ It is possible to give more than one directory to <icode>stog</icode>. In this c
 all pages and articles are merged as if all were defined in the last directory
 given. It may be useful to gather blogs or page to generate one big site. Or not.
 </p>
-<p>The <icode>--site-url</icode> option is used to override the <icode>stog-site-url</icode>
+<p>The <icode>--site-url</icode> option is used to override the <icode>stog:site-url</icode>
 field of the main element. It it useful to generate a local site, for example
 <command-line>stog --site-url file:///tmp/website your-directory</command-line>
 to test your site locally with correct links.
@@ -187,10 +187,10 @@ to generate the "fr" part of your web site, removing all <icode>&lt;en&gt;</icod
 </p>
 <!--
 <p>
-If you need more languages, just define "stog-languages" in the main element
+If you need more languages, just define "stog:languages" in the main element
 this way:
 </p>
-<hcode><![CDATA[<type main="true" ... stog-languages="es,de,fr,en">...</type>]]></hcode>
+<hcode><![CDATA[<type main="true" ... stog:languages="es,de,fr,en">...</type>]]></hcode>
 <p>This makes &lt;languages/&gt; returning the list of languages, and it is used by
 the provided
 -->
@@ -344,7 +344,7 @@ so that <ixml>&lt;contents/&gt;</ixml> can be used in the rule body, this way:
 
 <p>
 To define functions available for all elements, you have to define them in
-the main element and prefix their name with "stog-", like "stog-command". Then,
+the main element and prefix their name with "stog:", like "stog:command". Then,
 the <ixml>&lt;command&gt;</ixml> rule will be available in all elements; besides
 it can be redefined in an element to change this rule for this element only.
 </p>
