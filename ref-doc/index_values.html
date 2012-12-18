@@ -24,6 +24,8 @@
 <link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
 <link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
+<link title="Stog_tmpl" rel="Chapter" href="Stog_tmpl.html">
+<link title="Stog_cache" rel="Chapter" href="Stog_cache.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
 <link title="Stog_dyn" rel="Chapter" href="Stog_dyn.html"><title>Stog : Index of values</title>
@@ -60,6 +62,10 @@ Adding a known block id for a given hid.
 <td></td></tr>
 <tr><td><a href="Stog_types.html#VALadd_hid">add_hid</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_cache.html#VALapply_loaders">apply_loaders</a> [<a href="Stog_cache.html">Stog_cache</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_cache.html#VALapply_storers">apply_storers</a> [<a href="Stog_cache.html">Stog_cache</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_tags.html#VALarchive_tree">archive_tree</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>B</td></tr>
@@ -75,12 +81,20 @@ Adding a known block id for a given hid.
 Build the base rules, using the default ones and the <a href="Stog_html.html#VALplugin_rules"><code class="code">Stog_html.plugin_rules</code></a>.
 </div>
 </td></tr>
+<tr><td><a href="Stog_tmpl.html#VALby_keyword">by_keyword</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_tmpl.html#VALby_month">by_month</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_tmpl.html#VALby_topic">by_topic</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
+<td></td></tr>
 <tr><td align="left"><br>C</td></tr>
 <tr><td><a href="Stog_config.html#VALcache_dir">cache_dir</a> [<a href="Stog_config.html">Stog_config</a>]</td>
 <td><div class="info">
 <code class="code">cache_dir dir</code> returns the cache directory, from a stog project directory.
 </div>
 </td></tr>
+<tr><td><a href="Stog_cache.html#VALcache_file">cache_file</a> [<a href="Stog_cache.html">Stog_cache</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_tmap.S.html#VALcard">card</a> [<a href="Stog_tmap.S.html">Stog_tmap.S</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_ocaml.html#VALclose_sessions">close_sessions</a> [<a href="Stog_ocaml.html">Stog_ocaml</a>]</td>
@@ -161,6 +175,18 @@ Get graphviz code from the given stog structure, to create
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALelt_body">elt_body</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_plug.html#VALelt_by_href">elt_by_href</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
+<td><div class="info">
+<code class="code">elt_by_href ?typ stog env href</code> returns the element, hid and
+  optional if matching the given href string, of the form <code class="code">hid[#id]</code>.
+</div>
+</td></tr>
+<tr><td><a href="Stog_html.html#VALelt_by_href">elt_by_href</a> [<a href="Stog_html.html">Stog_html</a>]</td>
+<td><div class="info">
+<code class="code">elt_by_href ?typ stog env href</code> returns the element, hid and
+  optional if matching the given href string, of the form <code class="code">hid[#id]</code>.
+</div>
+</td></tr>
 <tr><td><a href="Stog_types.html#VALelt_by_human_id">elt_by_human_id</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALelt_date">elt_date</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
@@ -171,6 +197,8 @@ Build the final file where the given element will be generated.
 </div>
 </td></tr>
 <tr><td><a href="Stog_tags.html#VALelt_hid">elt_hid</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_tmpl.html#VALelt_in_list">elt_in_list</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALelt_intro">elt_intro</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
@@ -316,6 +344,8 @@ FIXME: move get_in_env elsewhere, but later
 </td></tr>
 <tr><td><a href="Stog_intl.html#VALget_month">get_month</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_tmpl.html#VALget_template">get_template</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_tags.html#VALgraph">graph</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>H</td></tr>
@@ -374,6 +404,8 @@ Same as <a href="Stog_graph.S.html#VALiter_succ"><code class="code">Stog_graph.S
 </div>
 </td></tr>
 <tr><td align="left"><br>K</td></tr>
+<tr><td><a href="Stog_tmpl.html#VALkeyword">keyword</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_tags.html#VALkeyword">keyword</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>L</td></tr>
@@ -401,7 +433,7 @@ Same as <a href="Stog_graph.S.html#VALiter_succ"><code class="code">Stog_graph.S
    to the optional equality function <code class="code">pred</code>.
 </div>
 </td></tr>
-<tr><td><a href="Stog_dyn.html#VALload_file">load_file</a> [<a href="Stog_dyn.html">Stog_dyn</a>]</td>
+<tr><td><a href="Stog_cache.Cache.html#VALload">load</a> [<a href="Stog_cache.Cache.html">Stog_cache.Cache</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_dyn.html#VALload_files">load_files</a> [<a href="Stog_dyn.html">Stog_dyn</a>]</td>
 <td></td></tr>
@@ -440,8 +472,15 @@ Marshal the given graph.
 <td></td></tr>
 <tr><td><a href="Stog_tmap.S.html#VALmodify">modify</a> [<a href="Stog_tmap.S.html">Stog_tmap.S</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_config.html#VALmodules_dir">modules_dir</a> [<a href="Stog_config.html">Stog_config</a>]</td>
+<td><div class="info">
+<code class="code">modules_dir dir</code> returns the modules directory, from a stog project directory.
+</div>
+</td></tr>
 <tr><td align="left"><br>N</td></tr>
 <tr><td><a href="Stog_tags.html#VALn_columns">n_columns</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_cache.Cache.html#VALname">name</a> [<a href="Stog_cache.Cache.html">Stog_cache.Cache</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALnext">next</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
@@ -462,6 +501,8 @@ Marshal the given graph.
 </div>
 </td></tr>
 <tr><td align="left"><br>P</td></tr>
+<tr><td><a href="Stog_tmpl.html#VALpage">page</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_tags.html#VALpage">page</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_date.html#VALparse">parse</a> [<a href="Stog_date.html">Stog_date</a>]</td>
@@ -477,6 +518,12 @@ Parse a string and return the time (seconds since the epoch
 <tr><td><a href="Stog_misc.html#VALpath_under">path_under</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td><div class="info">
 <code class="code">path_under ~parent file</code> returns the path to <code class="code">file</code> from <code class="code">parent</code>.
+</div>
+</td></tr>
+<tr><td><a href="Stog_plug.html#VALplugin_config_file">plugin_config_file</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
+<td><div class="info">
+<code class="code">plugin_config_file stog plugin_name</code> returns the configuration file
+  for this plugin name, for consistency purpose.
 </div>
 </td></tr>
 <tr><td><a href="Stog_html.html#VALplugin_rules">plugin_rules</a> [<a href="Stog_html.html">Stog_html</a>]</td>
@@ -532,6 +579,10 @@ Same as <a href="Stog_graph.S.html#VALrecursive_succs"><code class="code">Stog_g
         one; the given predicate can be used to follow only some edges.
 </div>
 </td></tr>
+<tr><td><a href="Stog_plug.html#VALregister_cache">register_cache</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_cache.html#VALregister_cache">register_cache</a> [<a href="Stog_cache.html">Stog_cache</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_plug.html#VALregister_lang">register_lang</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_intl.html#VALregister_lang">register_lang</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
@@ -539,6 +590,10 @@ Same as <a href="Stog_graph.S.html#VALrecursive_succs"><code class="code">Stog_g
 <tr><td><a href="Stog_plug.html#VALregister_level_fun">register_level_fun</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_html.html#VALregister_level_fun">register_level_fun</a> [<a href="Stog_html.html">Stog_html</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_plug.html#VALregister_level_fun_on_elt_list">register_level_fun_on_elt_list</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_html.html#VALregister_level_fun_on_elt_list">register_level_fun_on_elt_list</a> [<a href="Stog_html.html">Stog_html</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_plug.html#VALregister_rule">register_rule</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
 <td></td></tr>
@@ -604,8 +659,6 @@ Use the given language abbreviation (such as "fr") to set the default
 </td></tr>
 <tr><td><a href="Stog_types.html#VALset_elt">set_elt</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_dyn.html#VALset_load_packages">set_load_packages</a> [<a href="Stog_dyn.html">Stog_dyn</a>]</td>
-<td></td></tr>
 <tr><td><a href="Stog_plug.html#VALset_print_error">set_print_error</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_msg.html#VALset_print_error">set_print_error</a> [<a href="Stog_msg.html">Stog_msg</a>]</td>
@@ -657,6 +710,8 @@ Stage 0 functions registered by plugins.
 </td></tr>
 <tr><td><a href="Stog_plug.html#VALstog">stog</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_cache.Cache.html#VALstore">store</a> [<a href="Stog_cache.Cache.html">Stog_cache.Cache</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_intl.html#VALstring_of_date">string_of_date</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_intl.html#VALstring_of_date_opt">string_of_date_opt</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
@@ -673,6 +728,12 @@ Stage 0 functions registered by plugins.
 <td><div class="info">
 <code class="code">string_of_opt s_opt</code> returns the empty string if
    <code class="code">s_opt = None</code> or <code class="code">s</code> if <code class="code">s_opt = Some s</code>.
+</div>
+</td></tr>
+<tr><td><a href="Stog_misc.html#VALstrip_blank_lines">strip_blank_lines</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
+<td><div class="info">
+<code class="code">strip_blank_lines s</code> works as <a href="Stog_misc.html#VALstrip_string"><code class="code">Stog_misc.strip_string</code></a>, but only strips
+    full blank lines, without touching spaces or tabulations.
 </div>
 </td></tr>
 <tr><td><a href="Stog_misc.html#VALstrip_string">strip_string</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
@@ -710,6 +771,8 @@ Same as <a href="Stog_graph.S.html#VALpred_roots"><code class="code">Stog_graph.
 <tr><td><a href="Stog_tags.html#VALtoc">toc</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_types.html#VALtoday">today</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_tmpl.html#VALtopic">topic</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALtopic">topic</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>

@@ -24,6 +24,8 @@
 <link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
 <link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
+<link title="Stog_tmpl" rel="Chapter" href="Stog_tmpl.html">
+<link title="Stog_cache" rel="Chapter" href="Stog_cache.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
 <link title="Stog_dyn" rel="Chapter" href="Stog_dyn.html"><title>Stog : Index of types</title>
@@ -37,7 +39,7 @@
 <tr><td><a href="Stog_types.html#TYPEbody">body</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>C</td></tr>
-<tr><td><a href="Stog_types.html#TYPEcached_elt">cached_elt</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<tr><td><a href="Stog_tmpl.html#TYPEcontents">contents</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>D</td></tr>
 <tr><td><a href="Stog_types.html#TYPEdate">date</a> [<a href="Stog_types.html">Stog_types</a>]</td>
@@ -88,8 +90,20 @@ Such a structure must be defined for each language to support.
 </div>
 </td></tr>
 <tr><td><a href="Stog_plug.html#TYPElevel_fun">level_fun</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
-<td></td></tr>
+<td><div class="info">
+Type to represent a function taking an element id,
+  and element, and returning the new element.
+</div>
+</td></tr>
 <tr><td><a href="Stog_html.html#TYPElevel_fun">level_fun</a> [<a href="Stog_html.html">Stog_html</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_plug.html#TYPElevel_fun_on_elt_list">level_fun_on_elt_list</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
+<td><div class="info">
+Type to represent a functions called on all elements at a time and returning
+  only the modified elements.
+</div>
+</td></tr>
+<tr><td><a href="Stog_html.html#TYPElevel_fun_on_elt_list">level_fun_on_elt_list</a> [<a href="Stog_html.html">Stog_html</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>M</td></tr>
 <tr><td><a href="Stog_find.html#TYPEmode">mode</a> [<a href="Stog_find.html">Stog_find</a>]</td>
@@ -107,9 +121,13 @@ Such a structure must be defined for each language to support.
 <tr><td align="left"><br>S</td></tr>
 <tr><td><a href="Stog_types.html#TYPEstog">stog</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_types.html#TYPEstog_mod">stog_mod</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_trie.S.html#TYPEsymbol">symbol</a> [<a href="Stog_trie.S.html">Stog_trie.S</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br>T</td></tr>
+<tr><td><a href="Stog_cache.Cache.html#TYPEt">t</a> [<a href="Stog_cache.Cache.html">Stog_cache.Cache</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_date.html#TYPEt">t</a> [<a href="Stog_date.html">Stog_date</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_graph.GMap.html#TYPEt">t</a> [<a href="Stog_graph.GMap.html">Stog_graph.GMap</a>]</td>

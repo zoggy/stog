@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <link rel="Start" href="index.html">
-<link rel="previous" href="Stog_latex.html">
+<link rel="previous" href="Stog_cache.html">
 <link rel="next" href="Stog_plug.html">
 <link rel="Up" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
@@ -28,12 +28,14 @@
 <link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
 <link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
+<link title="Stog_tmpl" rel="Chapter" href="Stog_tmpl.html">
+<link title="Stog_cache" rel="Chapter" href="Stog_cache.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
 <link title="Stog_dyn" rel="Chapter" href="Stog_dyn.html"><title>Stog : Stog_html</title>
 </head>
 <body>
-<div class="navbar"><a class="pre" href="Stog_latex.html" title="Stog_latex">Previous</a>
+<div class="navbar"><a class="pre" href="Stog_cache.html" title="Stog_cache">Previous</a>
 &nbsp;<a class="up" href="index.html" title="Index">Up</a>
 &nbsp;<a class="post" href="Stog_plug.html" title="Stog_plug">Next</a>
 </div>
@@ -50,7 +52,13 @@ Html generation.
 Access to the current stog structure. It is made available
    by the <a href="Stog_html.html#VALgenerate"><code class="code">Stog_html.generate</code></a> function.<br>
 </div>
-<pre><span id="VALplugin_rules"><span class="keyword">val</span> plugin_rules</span> : <code class="type">(string * Xtmpl.callback) list Pervasives.ref</code></pre><div class="info">
+<pre><span id="VALelt_by_href"><span class="keyword">val</span> elt_by_href</span> : <code class="type">?typ:string -><br>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -><br>       Xtmpl.env -> string -> (<a href="Stog_types.html#TYPEelt">Stog_types.elt</a> * string * string option) option</code></pre><div class="info">
+<code class="code">elt_by_href ?typ stog env href</code> returns the element, hid and
+  optional if matching the given href string, of the form <code class="code">hid[#id]</code>.
+  Return None if the element could not be found, of the id could not be found,
+  and an error is issued.<br>
+</div>
+<pre><span id="VALplugin_rules"><span class="keyword">val</span> plugin_rules</span> : <code class="type">(Xmlm.name * Xtmpl.callback) list Pervasives.ref</code></pre><div class="info">
 The rewrite rules registered by plugins.<br>
 </div>
 <pre><span id="VALstage0_funs"><span class="keyword">val</span> stage0_funs</span> : <code class="type">(<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> <a href="Stog_types.html#TYPEstog">Stog_types.stog</a>) list Pervasives.ref</code></pre><div class="info">
@@ -60,12 +68,12 @@ Stage 0 functions registered by plugins.<br>
 Adding a known block id for a given hid. A short and a long title
   are specified. These registered blocks are used by &lt;elt href="..#id"/&gt; nodes.<br>
 </div>
-<pre><span id="VALget_in_env"><span class="keyword">val</span> get_in_env</span> : <code class="type">Xtmpl.env -> string -> string</code></pre><div class="info">
+<pre><span id="VALget_in_env"><span class="keyword">val</span> get_in_env</span> : <code class="type">Xtmpl.env -> Xmlm.name -> string</code></pre><div class="info">
 <code class="code">get_in_env env tag</code> will look for the given string in the environment,
   by building a &lt;tag/&gt; node and evaluating it. If the result is the same node,
   then return <code class="code">""</code> else return the reduced value as a string.<br>
 </div>
-<pre><span id="VALget_in_args_or_env"><span class="keyword">val</span> get_in_args_or_env</span> : <code class="type">Xtmpl.env -> (string * string) list -> string -> string</code></pre><div class="info">
+<pre><span id="VALget_in_args_or_env"><span class="keyword">val</span> get_in_args_or_env</span> : <code class="type">Xtmpl.env -> Xmlm.attribute list -> Xmlm.name -> string</code></pre><div class="info">
 <code class="code">get_in_args_or_env env args s</code> returns the value associated to <code class="code">s</code>
  in <code class="code">args</code> of else return the result of <code class="code">get_in_env env s</code>.<br>
 </div>
@@ -95,7 +103,7 @@ Build an url from the given hid, using the given optional extension.
 Generate a RSS file from the given list of elements. The final RSS
   url must be given as it is embedded in the RSS file.<br>
 </div>
-<pre><span id="VALbuild_base_rules"><span class="keyword">val</span> build_base_rules</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -><br>       <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> (string * Xtmpl.callback) list</code></pre><div class="info">
+<pre><span id="VALbuild_base_rules"><span class="keyword">val</span> build_base_rules</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -><br>       <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> (Xmlm.name * Xtmpl.callback) list</code></pre><div class="info">
 Build the base rules, using the default ones and the <a href="Stog_html.html#VALplugin_rules"><code class="code">Stog_html.plugin_rules</code></a>.<br>
 </div>
 <pre><span id="VALelt_list"><span class="keyword">val</span> elt_list</span> : <code class="type">?rss:string -> ?set:Stog_types.Elt_set.t -> <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> Xtmpl.callback</code></pre><div class="info">
@@ -114,8 +122,10 @@ Generate the target files, with the following steps:<ul>
 </ul>
 <br>
 </div>
-<pre><span id="TYPErule_build"><span class="keyword">type</span> <code class="type"></code>rule_build</span> = <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -><br>       <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> (string * Xtmpl.callback) list</code> </pre>
+<pre><span id="TYPErule_build"><span class="keyword">type</span> <code class="type"></code>rule_build</span> = <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -><br>       <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> (Xmlm.name * Xtmpl.callback) list</code> </pre>
 
 <pre><span id="TYPElevel_fun"><span class="keyword">type</span> <code class="type"></code>level_fun</span> = <code class="type">Xtmpl.env -><br>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a></code> </pre>
 
-<pre><span id="VALregister_level_fun"><span class="keyword">val</span> register_level_fun</span> : <code class="type">int -> <a href="Stog_html.html#TYPElevel_fun">level_fun</a> -> unit</code></pre><pre><span id="VALcompute_elt"><span class="keyword">val</span> compute_elt</span> : <code class="type"><a href="Stog_html.html#TYPErule_build">rule_build</a> -> <a href="Stog_html.html#TYPElevel_fun">level_fun</a></code></pre></body></html>
+<pre><span id="TYPElevel_fun_on_elt_list"><span class="keyword">type</span> <code class="type"></code>level_fun_on_elt_list</span> = <code class="type">Xtmpl.env -><br>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -><br>       (<a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> * <a href="Stog_types.html#TYPEelt">Stog_types.elt</a>) list -><br>       (<a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> * <a href="Stog_types.html#TYPEelt">Stog_types.elt</a>) list</code> </pre>
+
+<pre><span id="VALregister_level_fun"><span class="keyword">val</span> register_level_fun</span> : <code class="type">int -> <a href="Stog_html.html#TYPElevel_fun">level_fun</a> -> unit</code></pre><pre><span id="VALcompute_elt"><span class="keyword">val</span> compute_elt</span> : <code class="type"><a href="Stog_html.html#TYPErule_build">rule_build</a> -> <a href="Stog_html.html#TYPElevel_fun">level_fun</a></code></pre><pre><span id="VALregister_level_fun_on_elt_list"><span class="keyword">val</span> register_level_fun_on_elt_list</span> : <code class="type">int -> <a href="Stog_html.html#TYPElevel_fun_on_elt_list">level_fun_on_elt_list</a> -> unit</code></pre></body></html>

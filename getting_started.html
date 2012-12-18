@@ -158,15 +158,15 @@ Some attributes of this main element are used to specify site-wide information:
 <ul>
 <li><b>title</b>: The title of the blog is the same as this element and can be accessed
 with &lt;site-title/&gt; in templates,</li>
-<li><b>stog-site-description</b>: A short description of the site; use &lt;site-description/&gt;
+<li><b>stog:site-description</b>: A short description of the site; use &lt;site-description/&gt;
 to access it in templates;</li>
-<li><b>stog-site-url</b>: The base url of the site, used to forge urls when generating pages;
+<li><b>stog:site-url</b>: The base url of the site, used to forge urls when generating pages;
 use &lt;site-url/&gt; to insert it in templates,</li>
-<li><b>stog-site-email</b>: A contact email for the site, accessible with &lt;site-email/&gt;,</li>
-<li><b>stog-rss-length</b>: The default length of RSS feeds.</li>
+<li><b>stog:site-email</b>: A contact email for the site, accessible with &lt;site-email/&gt;,</li>
+<li><b>stog:rss-length</b>: The default length of RSS feeds.</li>
 </ul>
 <p>
-In the main element, any attribute beginning with &quot;stog-&quot; will be used as global attribute
+In the main element, any attribute beginning with &quot;stog:&quot; will be used as global attribute
 and accessible in all templates by its name. Other attributes are associated to the element only.
 </p>
 </div>
@@ -189,7 +189,7 @@ It is possible to give more than one directory to <span class="icode">stog</span
 all pages and articles are merged as if all were defined in the last directory
 given. It may be useful to gather blogs or page to generate one big site. Or not.
 </p>
-<p>The <span class="icode">--site-url</span> option is used to override the <span class="icode">stog-site-url</span>
+<p>The <span class="icode">--site-url</span> option is used to override the <span class="icode">stog:site-url</span>
 field of the main element. It it useful to generate a local site, for example
 <pre class="code-sh">stog <span class="hl opt">--</span>site<span class="hl opt">-</span>url <span class="hl kwc">file</span><span class="hl opt">:///</span>tmp<span class="hl opt">/</span>website your<span class="hl opt">-</span>directory</pre>
 to test your site locally with correct links.
@@ -213,6 +213,12 @@ Then you can run <span class="icode">stog</span> with the <span class="icode">--
 to generate the &quot;fr&quot; part of your web site, removing all <span class="icode">&lt;en&gt;</span>.
 </p>
 
+<p>
+Stog will keep computed elements in directories <code>.stog/cache*</code>.
+To prevent stog from using this cache, use the <code>--nocache</code>
+command line option. The cache won't be read, but it will nevertheless
+be updated by contents of computed elements.
+</p>
 </div>
 
 <div class="section"><div class="section-title" id="templates">Evaluation and templating</div>
@@ -363,7 +369,7 @@ so that <span class="icode"><span class="hl kwa">&lt;contents/&gt;</span></span>
 
 <p>
 To define functions available for all elements, you have to define them in
-the main element and prefix their name with &quot;stog-&quot;, like &quot;stog-command&quot;. Then,
+the main element and prefix their name with &quot;stog:&quot;, like &quot;stog:command&quot;. Then,
 the <span class="icode"><span class="hl kwa">&lt;command&gt;</span></span> rule will be available in all elements; besides
 it can be redefined in an element to change this rule for this element only.
 </p>
@@ -511,15 +517,15 @@ Some attributes of this main element are used to specify site-wide information:
 <span class="hl kwa">&lt;ul&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>title<span class="hl kwa">&lt;/b&gt;</span>: The title of the blog is the same as this element and can be accessed
 with <span class="hl kwd">&amp;lt;</span>site-title/<span class="hl kwd">&amp;gt;</span> in templates,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog-site-description<span class="hl kwa">&lt;/b&gt;</span>: A short description of the site; use <span class="hl kwd">&amp;lt;</span>site-description/<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog:site-description<span class="hl kwa">&lt;/b&gt;</span>: A short description of the site; use <span class="hl kwd">&amp;lt;</span>site-description/<span class="hl kwd">&amp;gt;</span>
 to access it in templates;<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog-site-url<span class="hl kwa">&lt;/b&gt;</span>: The base url of the site, used to forge urls when generating pages;
+<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog:site-url<span class="hl kwa">&lt;/b&gt;</span>: The base url of the site, used to forge urls when generating pages;
 use <span class="hl kwd">&amp;lt;</span>site-url/<span class="hl kwd">&amp;gt;</span> to insert it in templates,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog-site-email<span class="hl kwa">&lt;/b&gt;</span>: A contact email for the site, accessible with <span class="hl kwd">&amp;lt;</span>site-email/<span class="hl kwd">&amp;gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog-rss-length<span class="hl kwa">&lt;/b&gt;</span>: The default length of RSS feeds.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog:site-email<span class="hl kwa">&lt;/b&gt;</span>: A contact email for the site, accessible with <span class="hl kwd">&amp;lt;</span>site-email/<span class="hl kwd">&amp;gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog:rss-length<span class="hl kwa">&lt;/b&gt;</span>: The default length of RSS feeds.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/ul&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
-In the main element, any attribute beginning with <span class="hl str">&quot;stog-&quot;</span> will be used as global attribute
+In the main element, any attribute beginning with <span class="hl str">&quot;stog:&quot;</span> will be used as global attribute
 and accessible in all templates by its name. Other attributes are associated to the element only.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>
@@ -542,7 +548,7 @@ It is possible to give more than one directory to <span class="hl kwa">&lt;icode
 all pages and articles are merged as if all were defined in the last directory
 given. It may be useful to gather blogs or page to generate one big site. Or not.
 <span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>The <span class="hl kwa">&lt;icode&gt;</span>--site-url<span class="hl kwa">&lt;/icode&gt;</span> option is used to override the <span class="hl kwa">&lt;icode&gt;</span>stog-site-url<span class="hl kwa">&lt;/icode&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>The <span class="hl kwa">&lt;icode&gt;</span>--site-url<span class="hl kwa">&lt;/icode&gt;</span> option is used to override the <span class="hl kwa">&lt;icode&gt;</span>stog:site-url<span class="hl kwa">&lt;/icode&gt;</span>
 field of the main element. It it useful to generate a local site, for example
 <span class="hl kwa">&lt;command-line&gt;</span>stog --site-url file:///tmp/website your-directory<span class="hl kwa">&lt;/command-line&gt;</span>
 to test your site locally with correct links.
@@ -567,13 +573,19 @@ to generate the <span class="hl str">&quot;fr&quot;</span> part of your web site
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl com">&lt;!--</span>
 <span class="hl com">&lt;p&gt;</span>
-<span class="hl com">If you need more languages, just define &quot;stog-languages&quot; in the main element</span>
+<span class="hl com">If you need more languages, just define &quot;stog:languages&quot; in the main element</span>
 <span class="hl com">this way:</span>
 <span class="hl com">&lt;/p&gt;</span>
-<span class="hl com">&lt;hcode&gt;&lt;![CDATA[&lt;type main=&quot;true&quot; ... stog-languages=&quot;es,de,fr,en&quot;&gt;...&lt;/type&gt;]]&gt;&lt;/hcode&gt;</span>
+<span class="hl com">&lt;hcode&gt;&lt;![CDATA[&lt;type main=&quot;true&quot; ... stog:languages=&quot;es,de,fr,en&quot;&gt;...&lt;/type&gt;]]&gt;&lt;/hcode&gt;</span>
 <span class="hl com">&lt;p&gt;This makes &amp;lt;languages/&amp;gt; returning the list of languages, and it is used by</span>
 <span class="hl com">the provided</span>
 <span class="hl com">--&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Stog will keep computed elements in directories <span class="hl kwa">&lt;code&gt;</span>.stog/cache*<span class="hl kwa">&lt;/code&gt;</span>.
+To prevent stog from using this cache, use the <span class="hl kwa">&lt;code&gt;</span>--nocache<span class="hl kwa">&lt;/code&gt;</span>
+command line option. The cache won't be read, but it will nevertheless
+be updated by contents of computed elements.
+<span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>
 
 <span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;templates&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Evaluation and templating&quot;</span><span class="hl kwa">&gt;</span>
@@ -724,7 +736,7 @@ so that <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</s
 
 <span class="hl kwa">&lt;p&gt;</span>
 To define functions available for all elements, you have to define them in
-the main element and prefix their name with <span class="hl str">&quot;stog-&quot;</span>, like <span class="hl str">&quot;stog-command&quot;</span>. Then,
+the main element and prefix their name with <span class="hl str">&quot;stog:&quot;</span>, like <span class="hl str">&quot;stog:command&quot;</span>. Then,
 the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>command<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> rule will be available in all elements; besides
 it can be redefined in an element to change this rule for this element only.
 <span class="hl kwa">&lt;/p&gt;</span>

@@ -43,7 +43,7 @@ To build Stog, you will need:
 <li><span class="ext-a"><a href="http://config-file.forge.ocamlcore.org/">Config-file &gt;= 1.1</a></span>.</li>
 <li><span class="ext-a"><a href="http://erratique.ch/software/xmlm">Xmlm &gt;= 1.1.0</a></span>,</li>
 <li><span class="ext-a"><a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS &gt;= 2.0</a></span>,</li>
-<li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl &gt;= 0.4</a></span>.</li>
+<li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl &gt;= 0.5</a></span>.</li>
 </ul>
 <p>
 You will need to have the following tools installed to use
@@ -61,8 +61,27 @@ LaTeX in your pages.</li>
 <p>Get the sources from git repository:
 <pre class="code-sh">git clone https<span class="hl opt">://</span>github.com<span class="hl opt">/</span>zoggy<span class="hl opt">/</span>stog.git</pre>
 </p>
-<div class="subsection"><div class="subsection-title" id="f07b-fa0e-319-5720">Releases</div>
+<div class="subsection"><div class="subsection-title" id="3467-b3c3-e16e-bfa3">Releases</div>
 <ul>
+<li><a href="stog-0.5.tar.gz">0.5</a> [2012-12-18]:
+<ul>
+<li>minor fixes (thanks to Gabriel Scherer),</li>
+<li>better error and warning messages (thanks to Gabriel Scherer),</li>
+<li>handle prefix in all xml nodes and attributes (upgrade to Xtmpl 0.5),</li>
+<li>global definitions now are of the form <code>stog:foo</code>,</li>
+<li>add: module system (not yet stable),</li>
+<li>add: new <a href="ref-doc/Stog_cache.html">caching system</a>, available for plugins too,</li>
+<li>add: <a href="ref-doc/Stog_plug.html#VALplugin_config_file">Stog_plug.plugin_config_file</a>,</li>
+<li>add: <a href="ref-doc/Stog_plug.html#VALregister_level_fun_on_elt_list">Stog_plug.register_level_fun_on_elt_list</a>
+    to register functions handling all elements at a time.</li>
+<li>fix: add '.' after counters in section title,</li>
+<li>add: when a basic template is missing, create one and issue a warning;
+    these templates are: <code>page.tmpl</code>, <code>elt-in-list.tmpl</code>,
+    <code>by-keyword.tmpl</code>, <code>by-topic.tmpl</code>, <code>keyword.tmpl</code>,
+    <code>topic.tmpl</code>, <code>by-month.tmpl</code>.
+</li>
+</ul>
+</li>
 <li><a href="stog-0.4.tar.gz">0.4</a> [2012-11-21]:
 <ul>
 <li>handle relative paths in <span class="icode">&lt;include&gt;</span>, when starting with
@@ -139,7 +158,7 @@ To build Stog, you will need:
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://config-file.forge.ocamlcore.org/&quot;</span><span class="hl kwa">&gt;</span>Config-file <span class="hl kwa">&gt;</span>= <span class="hl num">1.1</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://erratique.ch/software/xmlm&quot;</span><span class="hl kwa">&gt;</span>Xmlm <span class="hl kwa">&gt;</span>= <span class="hl num">1.1.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://zoggy.github.com/ocamlrss/&quot;</span><span class="hl kwa">&gt;</span>OCaml-RSS <span class="hl kwa">&gt;</span>= <span class="hl num">2.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span>Xtmpl <span class="hl kwa">&gt;</span>= <span class="hl num">0.4</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span>Xtmpl <span class="hl kwa">&gt;</span>= <span class="hl num">0.5</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/ul&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 You will need to have the following tools installed to use
@@ -159,6 +178,25 @@ LaTeX in your pages.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Releases&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.5.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.5</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">12</span>-<span class="hl num">18</span>]:
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>minor fixes (thanks to Gabriel Scherer),<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>better error and warning messages (thanks to Gabriel Scherer),<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>handle prefix in all xml nodes and attributes (upgrade to Xtmpl <span class="hl num">0.5</span>),<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>global definitions now are of the form <span class="hl kwa">&lt;code&gt;</span>stog:foo<span class="hl kwa">&lt;/code&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add: module system (not yet stable),<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add: new <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_cache.html&quot;</span><span class="hl kwa">&gt;</span>caching system<span class="hl kwa">&lt;/a&gt;</span>, available for plugins too,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add: <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_plug.html#VALplugin_config_file&quot;</span><span class="hl kwa">&gt;</span>Stog_plug.plugin_config_file<span class="hl kwa">&lt;/a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add: <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_plug.html#VALregister_level_fun_on_elt_list&quot;</span><span class="hl kwa">&gt;</span>Stog_plug.register_level_fun_on_elt_list<span class="hl kwa">&lt;/a&gt;</span>
+    to register functions handling all elements at a time.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>fix: add '.' after counters in section title,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add: when a basic template is missing, create one and issue a warning;
+    these templates are: <span class="hl kwa">&lt;code&gt;</span>page.tmpl<span class="hl kwa">&lt;/code&gt;</span>, <span class="hl kwa">&lt;code&gt;</span>elt-in-list.tmpl<span class="hl kwa">&lt;/code&gt;</span>,
+    <span class="hl kwa">&lt;code&gt;</span>by-keyword.tmpl<span class="hl kwa">&lt;/code&gt;</span>, <span class="hl kwa">&lt;code&gt;</span>by-topic.tmpl<span class="hl kwa">&lt;/code&gt;</span>, <span class="hl kwa">&lt;code&gt;</span>keyword.tmpl<span class="hl kwa">&lt;/code&gt;</span>,
+    <span class="hl kwa">&lt;code&gt;</span>topic.tmpl<span class="hl kwa">&lt;/code&gt;</span>, <span class="hl kwa">&lt;code&gt;</span>by-month.tmpl<span class="hl kwa">&lt;/code&gt;</span>.
+<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.4.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.4</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">11</span>-<span class="hl num">21</span>]:
 <span class="hl kwa">&lt;ul&gt;</span>
 <span class="hl kwa">&lt;li&gt;</span>handle relative paths in <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>include<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>, when starting with

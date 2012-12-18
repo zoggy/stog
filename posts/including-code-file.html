@@ -52,10 +52,10 @@ This will give the expected result:
 <span class="hl kwa">let</span> fun_comments env args subs <span class="hl opt">=</span>
   <span class="hl kwa">let</span> stog <span class="hl opt">=</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>stog <span class="hl opt">()</span> <span class="hl kwa">in</span>
   <span class="hl kwa">let</span> tmpl <span class="hl opt">=</span> <span class="hl kwc">Filename</span><span class="hl opt">.</span>concat stog<span class="hl opt">.</span>stog_tmpl_dir <span class="hl str">&quot;disqus.tmpl&quot;</span> <span class="hl kwa">in</span>
-  <span class="hl opt">[</span><span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>xml_of_string <span class="hl opt">(</span><span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>apply_from_file env tmpl<span class="hl opt">)]</span>
+  <span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>apply_to_file env tmpl
 <span class="hl opt">;;</span>
 
-<span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_rule <span class="hl str">&quot;comments&quot;</span> fun_comments<span class="hl opt">;;</span></pre>
+<span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_rule <span class="hl opt">(</span><span class="hl str">&quot;&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;comments&quot;</span><span class="hl opt">)</span> fun_comments<span class="hl opt">;;</span></pre>
 </p>
 <p>
 The <span class="icode">defer_</span> attribute is decremented each time the node should be evaluated.
@@ -72,8 +72,7 @@ and it now highlights its children, that is the contents of the included file.
 <div>
 <div class="elt-keywords">
   <div class="bloc-keywords">
-  Topics: <div class="keywords"><a href="http://zoggy.github.com/stog/topic_stog.html"><span itemprop="keywords">stog</span>
-</a></div>
+  Topics: <div class="keywords"><a href="http://zoggy.github.com/stog/topic_stog.html"><span itemprop="keywords">stog</span></a></div>
   </div>
   <div class="bloc-keywords">
   Keywords: <div class="keywords"><a href="http://zoggy.github.com/stog/kw_highlight.html"><span itemprop="keywords">highlight</span></a>, <a href="http://zoggy.github.com/stog/kw_include.html"><span itemprop="keywords">include</span></a>, <a href="http://zoggy.github.com/stog/kw_code.html"><span itemprop="keywords">code</span></a></div>

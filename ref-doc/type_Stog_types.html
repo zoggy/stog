@@ -23,6 +23,8 @@
 <link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
 <link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
+<link title="Stog_tmpl" rel="Chapter" href="Stog_tmpl.html">
+<link title="Stog_cache" rel="Chapter" href="Stog_cache.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
 <link title="Stog_dyn" rel="Chapter" href="Stog_dyn.html"><title>Stog : Stog_types</title>
@@ -34,30 +36,10 @@
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;human_id&nbsp;=&nbsp;{&nbsp;hid_path&nbsp;:&nbsp;string&nbsp;list;&nbsp;hid_absolute&nbsp;:&nbsp;bool;&nbsp;}<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string_of_human_id&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.human_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;human_id_of_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.human_id<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;def&nbsp;=&nbsp;string&nbsp;*&nbsp;(string&nbsp;*&nbsp;string)&nbsp;list&nbsp;*&nbsp;<span class="constructor">Stog_types</span>.body<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;def&nbsp;=&nbsp;<span class="constructor">Xmlm</span>.name&nbsp;*&nbsp;<span class="constructor">Xmlm</span>.attribute&nbsp;list&nbsp;*&nbsp;<span class="constructor">Stog_types</span>.body<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_def&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.def&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;((string&nbsp;*&nbsp;string)&nbsp;list&nbsp;*&nbsp;<span class="constructor">Stog_types</span>.body)&nbsp;option<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;elt&nbsp;=&nbsp;{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_human_id&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.human_id;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_type&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_body&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.body;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_date&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.date&nbsp;option;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_title&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_keywords&nbsp;:&nbsp;string&nbsp;list;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_topics&nbsp;:&nbsp;string&nbsp;list;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_published&nbsp;:&nbsp;bool;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_defs&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.def&nbsp;list;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_src&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_sets&nbsp;:&nbsp;string&nbsp;list;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_lang_dep&nbsp;:&nbsp;bool;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_xml_doctype&nbsp;:&nbsp;string&nbsp;option;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;elt_out&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.body&nbsp;option;<br>
-&nbsp;&nbsp;}<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;elt_id&nbsp;=&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="constructor">Stog_tmap</span>.key<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_elt&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;?typ:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?hid:<span class="constructor">Stog_types</span>.human_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;today&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.date<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Xmlm</span>.name&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="constructor">Xmlm</span>.attribute&nbsp;list&nbsp;*&nbsp;<span class="constructor">Stog_types</span>.body)&nbsp;option<br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Str_map</span>&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;key&nbsp;=&nbsp;string<br>
@@ -117,6 +99,27 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;choose&nbsp;:&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;elt<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;split&nbsp;:&nbsp;elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;t&nbsp;*&nbsp;bool&nbsp;*&nbsp;t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;elt&nbsp;=&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_human_id&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.human_id;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_type&nbsp;:&nbsp;string;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_body&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.body;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_date&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.date&nbsp;option;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_title&nbsp;:&nbsp;string;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_keywords&nbsp;:&nbsp;string&nbsp;list;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_topics&nbsp;:&nbsp;string&nbsp;list;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_published&nbsp;:&nbsp;bool;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_defs&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.def&nbsp;list;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_src&nbsp;:&nbsp;string;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_sets&nbsp;:&nbsp;string&nbsp;list;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_lang_dep&nbsp;:&nbsp;bool;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_xml_doctype&nbsp;:&nbsp;string&nbsp;option;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_out&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.body&nbsp;option;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt_used_mods&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Str_set</span>.t;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;elt_id&nbsp;=&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="constructor">Stog_tmap</span>.key<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;make_elt&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?typ:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?hid:<span class="constructor">Stog_types</span>.human_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;today&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.date<br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Hid_map</span>&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;symbol&nbsp;=&nbsp;string<br>
@@ -186,10 +189,6 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;map&nbsp;:&nbsp;(<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;mapi&nbsp;:&nbsp;(key&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>b&nbsp;t<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;cached_elt&nbsp;=&nbsp;{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;cache_elt&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.elt;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;cache_blocks&nbsp;:&nbsp;(<span class="constructor">Xtmpl</span>.tree&nbsp;*&nbsp;<span class="constructor">Xtmpl</span>.tree)&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t;<br>
-&nbsp;&nbsp;}<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;edge_type&nbsp;=&nbsp;<span class="constructor">Date</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Topic</span>&nbsp;<span class="keyword">of</span>&nbsp;string&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Keyword</span>&nbsp;<span class="keyword">of</span>&nbsp;string&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Ref</span><br>
 &nbsp;&nbsp;<span class="keyword">module</span>&nbsp;<span class="constructor">Graph</span>&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">sig</span><br>
@@ -231,6 +230,10 @@
 &nbsp;&nbsp;&nbsp;&nbsp;files&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Str_set</span>.t;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;dirs&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.file_tree&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t;<br>
 &nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;stog_mod&nbsp;=&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mod_requires&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Str_set</span>.t;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mod_defs&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.def&nbsp;list;<br>
+&nbsp;&nbsp;}<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;stog&nbsp;=&nbsp;{<br>
 &nbsp;&nbsp;&nbsp;&nbsp;stog_dir&nbsp;:&nbsp;string;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;stog_elts&nbsp;:&nbsp;(<span class="constructor">Stog_types</span>.elt,&nbsp;<span class="constructor">Stog_types</span>.elt)&nbsp;<span class="constructor">Stog_tmap</span>.t;<br>
@@ -252,6 +255,8 @@
 &nbsp;&nbsp;&nbsp;&nbsp;stog_outdir&nbsp;:&nbsp;string;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;stog_main_elt&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.elt_id&nbsp;option;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;stog_files&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.file_tree;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;stog_modules&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog_mod&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;stog_used_mods&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Str_set</span>.t;<br>
 &nbsp;&nbsp;}<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;create_stog&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.stog<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elt&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="constructor">Stog_tmap</span>.key&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt<br>

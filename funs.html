@@ -540,9 +540,9 @@ You can specify other nodes:
   <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">sectionning</span>=<span class="hl str">&quot;section,subsection,paragraph&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/page&gt;</span></pre>
   will define &quot;section&quot;, &quot;subsection&quot; and &quot;paragraph&quot; as sectionning nodes.
 </li>
-<li>for all the site elements, using the &quot;stog-sectionning&quot; attribute in the main element
+<li>for all the site elements, using the &quot;stog:sectionning&quot; attribute in the main element
   (see <a href="http://zoggy.github.com/stog/getting_started.html#mainelement">Stog main element</a>):
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">stog-sectionning</span>=<span class="hl str">&quot;section,subsection,paragraph&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/page&gt;</span></pre>
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span> stog:<span class="hl kwb">sectionning</span>=<span class="hl str">&quot;section,subsection,paragraph&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/page&gt;</span></pre>
 </li>
 </ul>
 <p>
@@ -552,7 +552,7 @@ refering to the section (or subsection, or ...), will use the title of the secti
 </p>
 <p>To prevent a sectionning node having a counter associated, you can use
 <span class="icode"><span class="hl kwb">section-counter</span>=<span class="hl str">&quot;false&quot;</span></span> in the element attribute, or
-<span class="icode"><span class="hl kwb">stog-section-counter</span>=<span class="hl str">&quot;false&quot;</span></span> in the main element. &quot;section&quot; can be replaced
+<span class="icode">stog:<span class="hl kwb">section-counter</span>=<span class="hl str">&quot;false&quot;</span></span> in the main element. &quot;section&quot; can be replaced
 by &quot;subsection&quot; or any other node to prevent this node having a counter.
 </p>
 </div>
@@ -1187,9 +1187,9 @@ You can specify other nodes:
   <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">sectionning</span>=<span class="hl str">&quot;section,subsection,paragraph&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/page&gt;&lt;/hcode&gt;</span>
   will define <span class="hl str">&quot;section&quot;</span>, <span class="hl str">&quot;subsection&quot;</span> and <span class="hl str">&quot;paragraph&quot;</span> as sectionning nodes.
 <span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>for all the site elements, using the <span class="hl str">&quot;stog-sectionning&quot;</span> attribute in the main element
+<span class="hl kwa">&lt;li&gt;</span>for all the site elements, using the <span class="hl str">&quot;stog:sectionning&quot;</span> attribute in the main element
   (see <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;getting_started#mainelement&quot;</span><span class="hl kwa">/&gt;</span>):
-  <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">stog-sectionning</span>=<span class="hl str">&quot;section,subsection,paragraph&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/page&gt;&lt;/hcode&gt;</span>
+  <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span> stog:<span class="hl kwb">sectionning</span>=<span class="hl str">&quot;section,subsection,paragraph&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/page&gt;&lt;/hcode&gt;</span>
 <span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/ul&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
@@ -1199,7 +1199,7 @@ refering to the section (or subsection, or ...), will use the title of the secti
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>To prevent a sectionning node having a counter associated, you can use
 <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">section-counter</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> in the element attribute, or
-<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">stog-section-counter</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> in the main element. <span class="hl str">&quot;section&quot;</span> can be replaced
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>stog:<span class="hl kwb">section-counter</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> in the main element. <span class="hl str">&quot;section&quot;</span> can be replaced
 by <span class="hl str">&quot;subsection&quot;</span> or any other node to prevent this node having a counter.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>

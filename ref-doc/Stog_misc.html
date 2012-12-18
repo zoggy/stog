@@ -28,6 +28,8 @@
 <link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
 <link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
+<link title="Stog_tmpl" rel="Chapter" href="Stog_tmpl.html">
+<link title="Stog_cache" rel="Chapter" href="Stog_cache.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
 <link title="Stog_dyn" rel="Chapter" href="Stog_dyn.html"><title>Stog : Stog_misc</title>
@@ -73,6 +75,10 @@ Separate the given string according to the given list of characters.<br>
 <code class="code">strip_string s</code> removes all leading and trailing spaces from the given string.<br>
 <b>Author(s):</b> Maxence Guesdon<br>
 <b>Version:</b> 1.0<br>
+</div>
+<pre><span id="VALstrip_blank_lines"><span class="keyword">val</span> strip_blank_lines</span> : <code class="type">string -> string</code></pre><div class="info">
+<code class="code">strip_blank_lines s</code> works as <a href="Stog_misc.html#VALstrip_string"><code class="code">Stog_misc.strip_string</code></a>, but only strips
+    full blank lines, without touching spaces or tabulations.<br>
 </div>
 <pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">string -> string</code></pre><div class="info">
 <code class="code">lowercase s</code> lowers the case of the given string, including accentuated characters.<br>

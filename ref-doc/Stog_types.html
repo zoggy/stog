@@ -28,6 +28,8 @@
 <link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
 <link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
+<link title="Stog_tmpl" rel="Chapter" href="Stog_tmpl.html">
+<link title="Stog_cache" rel="Chapter" href="Stog_cache.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
 <link title="Stog_dyn" rel="Chapter" href="Stog_dyn.html"><title>Stog : Stog_types</title>
@@ -87,9 +89,9 @@ Types.<br>
 }
 
 
-<pre><span id="VALstring_of_human_id"><span class="keyword">val</span> string_of_human_id</span> : <code class="type"><a href="Stog_types.html#TYPEhuman_id">human_id</a> -> string</code></pre><pre><span id="VALhuman_id_of_string"><span class="keyword">val</span> human_id_of_string</span> : <code class="type">string -> <a href="Stog_types.html#TYPEhuman_id">human_id</a></code></pre><pre><span id="TYPEdef"><span class="keyword">type</span> <code class="type"></code>def</span> = <code class="type">string * (string * string) list * <a href="Stog_types.html#TYPEbody">body</a></code> </pre>
+<pre><span id="VALstring_of_human_id"><span class="keyword">val</span> string_of_human_id</span> : <code class="type"><a href="Stog_types.html#TYPEhuman_id">human_id</a> -> string</code></pre><pre><span id="VALhuman_id_of_string"><span class="keyword">val</span> human_id_of_string</span> : <code class="type">string -> <a href="Stog_types.html#TYPEhuman_id">human_id</a></code></pre><pre><span id="TYPEdef"><span class="keyword">type</span> <code class="type"></code>def</span> = <code class="type">Xmlm.name * Xmlm.attribute list * <a href="Stog_types.html#TYPEbody">body</a></code> </pre>
 
-<pre><span id="VALget_def"><span class="keyword">val</span> get_def</span> : <code class="type"><a href="Stog_types.html#TYPEdef">def</a> list -><br>       string -> ((string * string) list * <a href="Stog_types.html#TYPEbody">body</a>) option</code></pre><pre><code><span id="TYPEelt"><span class="keyword">type</span> <code class="type"></code>elt</span> = {</code></pre><table class="typetable">
+<pre><span id="VALget_def"><span class="keyword">val</span> get_def</span> : <code class="type"><a href="Stog_types.html#TYPEdef">def</a> list -><br>       Xmlm.name -> (Xmlm.attribute list * <a href="Stog_types.html#TYPEbody">body</a>) option</code></pre><pre><span class="keyword">module</span> <a href="Stog_types.Str_map.html">Str_map</a>: <code class="type">Map.S</code><code class="type">  with type key = string</code></pre><pre><span class="keyword">module</span> <a href="Stog_types.Str_set.html">Str_set</a>: <code class="type">Set.S</code><code class="type">  with type elt = string</code></pre><pre><code><span id="TYPEelt"><span class="keyword">type</span> <code class="type"></code>elt</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
@@ -187,31 +189,20 @@ Types.<br>
 <td align="left" valign="top" >
 <code><span id="TYPEELTelt.elt_out">elt_out</span>&nbsp;:<code class="type"><a href="Stog_types.html#TYPEbody">body</a> option</code>;</code></td>
 
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTelt.elt_used_mods">elt_used_mods</span>&nbsp;:<code class="type">Str_set.t</code>;</code></td>
+
 </tr></table>
 }
 
 
 <pre><span id="TYPEelt_id"><span class="keyword">type</span> <code class="type"></code>elt_id</span> = <code class="type"><a href="Stog_types.html#TYPEelt">elt</a> Stog_tmap.key</code> </pre>
 
-<pre><span id="VALmake_elt"><span class="keyword">val</span> make_elt</span> : <code class="type">?typ:string -> ?hid:<a href="Stog_types.html#TYPEhuman_id">human_id</a> -> unit -> <a href="Stog_types.html#TYPEelt">elt</a></code></pre><pre><span id="VALtoday"><span class="keyword">val</span> today</span> : <code class="type">unit -> <a href="Stog_types.html#TYPEdate">date</a></code></pre><pre><span class="keyword">module</span> <a href="Stog_types.Str_map.html">Str_map</a>: <code class="type">Map.S</code><code class="type">  with type key = string</code></pre><pre><span class="keyword">module</span> <a href="Stog_types.Str_set.html">Str_set</a>: <code class="type">Set.S</code><code class="type">  with type elt = string</code></pre><pre><span class="keyword">module</span> <a href="Stog_types.Hid_map.html">Hid_map</a>: <code class="type"><a href="Stog_trie.S.html">Stog_trie.S</a></code><code class="type">  with type symbol = string</code></pre><pre><span class="keyword">module</span> <a href="Stog_types.Elt_set.html">Elt_set</a>: <code class="type">Set.S</code><code class="type">  with type elt = elt_id</code></pre><pre><span class="keyword">module</span> <a href="Stog_types.Int_map.html">Int_map</a>: <code class="type">Map.S</code><code class="type">  with type key = int</code></pre><pre><code><span id="TYPEcached_elt"><span class="keyword">type</span> <code class="type"></code>cached_elt</span> = {</code></pre><table class="typetable">
-<tr>
-<td align="left" valign="top" >
-<code>&nbsp;&nbsp;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTcached_elt.cache_elt">cache_elt</span>&nbsp;:<code class="type"><a href="Stog_types.html#TYPEelt">elt</a></code>;</code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top" >
-<code>&nbsp;&nbsp;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTcached_elt.cache_blocks">cache_blocks</span>&nbsp;:<code class="type">(Xtmpl.tree * Xtmpl.tree) Str_map.t</code>;</code></td>
-
-</tr></table>
-}
-
-
-<pre><code><span id="TYPEedge_type"><span class="keyword">type</span> <code class="type"></code>edge_type</span> = </code></pre><table class="typetable">
+<pre><span id="VALmake_elt"><span class="keyword">val</span> make_elt</span> : <code class="type">?typ:string -> ?hid:<a href="Stog_types.html#TYPEhuman_id">human_id</a> -> unit -> <a href="Stog_types.html#TYPEelt">elt</a></code></pre><pre><span id="VALtoday"><span class="keyword">val</span> today</span> : <code class="type">unit -> <a href="Stog_types.html#TYPEdate">date</a></code></pre><pre><span class="keyword">module</span> <a href="Stog_types.Hid_map.html">Hid_map</a>: <code class="type"><a href="Stog_trie.S.html">Stog_trie.S</a></code><code class="type">  with type symbol = string</code></pre><pre><span class="keyword">module</span> <a href="Stog_types.Elt_set.html">Elt_set</a>: <code class="type">Set.S</code><code class="type">  with type elt = elt_id</code></pre><pre><span class="keyword">module</span> <a href="Stog_types.Int_map.html">Int_map</a>: <code class="type">Map.S</code><code class="type">  with type key = int</code></pre><pre><code><span id="TYPEedge_type"><span class="keyword">type</span> <code class="type"></code>edge_type</span> = </code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
@@ -255,6 +246,24 @@ Types.<br>
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTfile_tree.dirs">dirs</span>&nbsp;:<code class="type"><a href="Stog_types.html#TYPEfile_tree">file_tree</a> Str_map.t</code>;</code></td>
+
+</tr></table>
+}
+
+
+<pre><code><span id="TYPEstog_mod"><span class="keyword">type</span> <code class="type"></code>stog_mod</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTstog_mod.mod_requires">mod_requires</span>&nbsp;:<code class="type">Str_set.t</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTstog_mod.mod_defs">mod_defs</span>&nbsp;:<code class="type"><a href="Stog_types.html#TYPEdef">def</a> list</code>;</code></td>
 
 </tr></table>
 }
@@ -392,6 +401,20 @@ Types.<br>
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstog.stog_files">stog_files</span>&nbsp;:<code class="type"><a href="Stog_types.html#TYPEfile_tree">file_tree</a></code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTstog.stog_modules">stog_modules</span>&nbsp;:<code class="type"><a href="Stog_types.html#TYPEstog_mod">stog_mod</a> Str_map.t</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTstog.stog_used_mods">stog_used_mods</span>&nbsp;:<code class="type">Str_set.t</code>;</code></td>
 
 </tr></table>
 }

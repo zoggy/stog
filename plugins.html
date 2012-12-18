@@ -46,7 +46,7 @@ Here is an example:
 
 <span class="hl kwa">let</span> fun_list env args subs <span class="hl opt">=</span>
   <span class="hl com">(* get the optional sep attribute ... *)</span>
-  <span class="hl kwa">let</span> sep <span class="hl opt">=</span> <span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>opt_arg args <span class="hl str">&quot;sep&quot;</span> <span class="hl kwa">in</span>
+  <span class="hl kwa">let</span> sep <span class="hl opt">=</span> <span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>opt_arg args <span class="hl opt">(</span><span class="hl str">&quot;&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;sep&quot;</span><span class="hl opt">)</span> <span class="hl kwa">in</span>
   <span class="hl com">(* and parse it as xml *)</span>
   <span class="hl kwa">let</span> xml <span class="hl opt">=</span> <span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>xml_of_string sep <span class="hl kwa">in</span>
   <span class="hl com">(* We can access the stog structure with [Stog_plug.stog ()] .</span>
@@ -70,7 +70,7 @@ Here is an example:
 
 <span class="hl com">(* register the new function, associated to tag &quot;list&quot;.</span>
 <span class="hl com">  Before stog 0.3, this function was called [Stog_plug.register_fun]. *)</span>
-<span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_rule <span class="hl str">&quot;list&quot;</span> fun_list<span class="hl opt">;;</span></pre>
+<span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_rule <span class="hl opt">(</span><span class="hl str">&quot;&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;list&quot;</span><span class="hl opt">)</span> fun_list<span class="hl opt">;;</span></pre>
 <p>
 Have a look at the <a href="http://zoggy.github.com/stog/ref-doc/index.html">Stog library reference documentation</a>.
 </p>
