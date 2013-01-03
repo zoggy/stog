@@ -1287,7 +1287,13 @@ and elt_list ?rss ?set stog env args _ =
   let max = Stog_misc.map_opt int_of_string
     (Xtmpl.get_arg args ("", "max"))
   in
-  let elts = List.rev (Stog_types.sort_ids_elts_by_date elts) in
+  let reverse =
+    match Xtmpl.get_arg args ("", "reverse") with
+      None -> true
+    | Some s -> Stog_io.bool_of_string s
+  in
+  let elts = Stog_types.sort_ids_elts_by_date elts in
+  let elts = if reverse then List.rev elts else elts in
   let elts =
     match max with
       None -> elts

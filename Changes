@@ -1,3 +1,7 @@
+Next release:
+  * add: <elements> node handle reverse="false" attribute not to
+    reverse order of elements (which is default, i.e. the more recent first)
+
 Release 0.5:
   * minor fixes (thanks to Gabriel Scherer)
   * better error and warning messages (thanks to Gabriel Scherer)
