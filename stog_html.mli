@@ -106,6 +106,7 @@ val build_base_rules : Stog_types.stog ->
 (** The calllback to insert a list of elements. Can be called directly
   if provided an additional environment, argument and children nodes. *)
 val elt_list :
+  Stog_types.elt ->
   ?rss:string ->
   ?set:Stog_types.Elt_set.t -> Stog_types.stog -> Xtmpl.callback
 

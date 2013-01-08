@@ -34,9 +34,10 @@ type contents = Stog_types.stog -> Xtmpl.tree
 
 let parse = Xtmpl.xml_of_string ~add_main: false ;;
 
-let get_template stog contents name =
+let get_template stog ?elt contents name =
   let file = Filename.concat stog.stog_tmpl_dir name in
   let contents = contents stog in
+  (match elt with None -> () | Some elt -> Stog_deps.add_dep elt (Stog_deps.File file));
   if not (Sys.file_exists file) then
     (
      Stog_misc.safe_mkdir stog.stog_tmpl_dir ;

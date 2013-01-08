@@ -224,6 +224,7 @@ and env_of_defs ?env defs =
 ;;
 
 (** FIXME: handle module requirements and already added modules *)
+(* FIXME: add dependency ? *)
 let env_of_used_mod stog ?(env=Xtmpl.env_empty) modname =
   try
     let m = Stog_types.Str_map.find modname stog.stog_modules in
@@ -321,6 +322,7 @@ let fun_include stog elt _env args subs =
         (("", "contents"), String.concat "" (List.map Xtmpl.string_of_xml subs)) ::
         args
       in
+      Stog_deps.add_dep elt (Stog_deps.File file);
       [Xtmpl.E (("", Xtmpl.tag_env), args, xml)]
   | None ->
       failwith "Missing 'file' argument for include command"
@@ -343,8 +345,9 @@ let fun_inc stog elt env args subs =
         failwith "Missing block id for inc rule"
   in
   try
-    let hid = match hid with "" -> get_hid env | s ->  s in
-    let hid = Stog_types.human_id_of_string hid in
+    let s_hid = match hid with "" -> get_hid env | s ->  s in
+    let hid = Stog_types.human_id_of_string s_hid in
+    Stog_deps.add_dep elt (Stog_deps.Elt s_hid);
     let (_, elt) = Stog_types.elt_by_human_id stog hid in
     match Stog_types.find_block_by_id elt id with
       Some xml -> [xml]
@@ -418,7 +421,7 @@ let elt_by_href ?typ stog env href =
       let hid = match hid with "" -> get_hid env | s ->  s in
       let hid = Stog_types.human_id_of_string hid in
       let (_, elt) = Stog_types.elt_by_human_id ?typ stog hid in
-        Some elt
+      Some elt
     with
       Failure s ->
         Stog_msg.error ~info: "Stog_html.elt_by_href" s;
@@ -429,7 +432,7 @@ let elt_by_href ?typ stog env href =
   | Some elt -> Some (elt, hid, id)
 ;;
 
-let fun_elt_href ?typ href stog env args subs =
+let fun_elt_href ?typ src_elt href stog env args subs =
   let report_error msg = Stog_msg.error ~info: "Stog_html.fun_elt_href" msg in
   let quotes =
     match Xtmpl.get_arg args ("", "quotes") with
@@ -442,6 +445,7 @@ let fun_elt_href ?typ href stog env args subs =
       match info with
         None -> [Xtmpl.D "??"]
       | Some (elt, hid, id) ->
+          Stog_deps.add_dep src_elt (Stog_deps.Elt hid);
           match subs, id with
           | [], None ->
               let quote = if quotes then "\"" else "" in
@@ -488,7 +492,7 @@ let fun_elt_href ?typ href stog env args subs =
       ]
 ;;
 
-let fun_elt ?typ stog env args subs =
+let fun_elt ?typ src_elt stog env args subs =
   let href =
     match Xtmpl.get_arg args ("", "href") with
       None ->
@@ -498,12 +502,13 @@ let fun_elt ?typ stog env args subs =
         failwith msg
     | Some s -> s
   in
-  fun_elt_href ?typ href stog env args subs
+  fun_elt_href ?typ src_elt href stog env args subs
 ;;
 
 let fun_post = fun_elt ~typ: "post";;
 let fun_page = fun_elt ~typ: "page";;
 
+(* FIXME: add adependency ? *)
 let fun_archive_tree stog _env _ =
   let mk_months map =
     List.sort (fun (m1, _) (m2, _) -> compare m2 m1)
@@ -669,6 +674,7 @@ let fun_search_form stog _env _ _ =
 
 let fun_blog_url stog _env _ _ = [ Xtmpl.D stog.stog_base_url ];;
 
+(* FIXME: add dependency ? *)
 let fun_graph =
   let generated = ref false in
   let report_error msg = Stog_msg.error ~info: "Stog_html.fun_graph" msg in
@@ -1062,7 +1068,7 @@ let intro_of_elt stog elt =
 
 let html_of_topics stog elt env args _ =
   let sep = Xtmpl.xml_of_string (Xtmpl.opt_arg args ~def: ", " ("", "set")) in
-  let tmpl = Stog_tmpl.get_template stog Stog_tmpl.topic "topic.tmpl" in
+  let tmpl = Stog_tmpl.get_template stog ~elt Stog_tmpl.topic "topic.tmpl" in
   let f w =
     let env = Xtmpl.env_of_list ~env [ ("", Stog_tags.topic), (fun _ _ _ -> [Xtmpl.D w]) ] in
     Xtmpl.apply_to_xmls env [tmpl]
@@ -1077,7 +1083,7 @@ let html_of_topics stog elt env args _ =
 
 let html_of_keywords stog elt env args _ =
   let sep = Xtmpl.xml_of_string (Xtmpl.opt_arg args ~def: ", " ("", "set")) in
-  let tmpl = Stog_tmpl.get_template stog Stog_tmpl.keyword "keyword.tmpl" in
+  let tmpl = Stog_tmpl.get_template stog ~elt Stog_tmpl.keyword "keyword.tmpl" in
   let f w =
     let env = Xtmpl.env_of_list ~env [ ("", Stog_tags.keyword), (fun _ _ _ -> [Xtmpl.D w]) ] in
     Xtmpl.apply_to_xmls env [tmpl]
@@ -1232,7 +1238,7 @@ and build_base_rules stog elt_id elt =
       ("", Stog_tags.block), fun_block1 stog ;
       ("", Stog_tags.command_line), fun_command_line ~inline: false stog ;
       ("", Stog_tags.counter), fun_counter ;
-      ("", Stog_tags.elements), elt_list stog ;
+      ("", Stog_tags.elements), elt_list elt stog ;
       ("", Stog_tags.elt_body), mk f_body ;
       ("", Stog_tags.elt_date), mk f_date ;
       ("", Stog_tags.elt_intro), mk f_intro ;
@@ -1267,7 +1273,7 @@ and build_base_rules stog elt_id elt =
   in
   (make_lang_rules stog) @ l
 
-and elt_list ?rss ?set stog env args _ =
+and elt_list elt ?rss ?set stog env args _ =
   let report_error msg = Stog_msg.error ~info: "Stog_html.elt_list" msg in
   let elts =
     match set with
@@ -1305,7 +1311,7 @@ and elt_list ?rss ?set stog env args _ =
         None ->  "elt-in-list.tmpl"
       | Some s -> s
     in
-    Stog_tmpl.get_template stog Stog_tmpl.elt_in_list file
+    Stog_tmpl.get_template stog ~elt Stog_tmpl.elt_in_list file
   in
   let f_elt (elt_id, elt) =
     let name = Stog_types.string_of_human_id elt.elt_human_id in
@@ -1369,7 +1375,7 @@ let compute_elt build_rules env stog elt_id elt =
             | "by-month" -> Stog_tmpl.by_month
             | _ -> Stog_tmpl.page
           in
-          Stog_tmpl.get_template stog default (elt.elt_type^".tmpl")
+          Stog_tmpl.get_template stog ~elt default (elt.elt_type^".tmpl")
         in
         [tmpl]
     | Some xmls ->
@@ -1409,7 +1415,7 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
       (List.map (fun id -> (id, Stog_types.elt stog id)) (Stog_types.Elt_set.elements set))
       rss_file;
     let elt =
-      { elt with Stog_types.elt_body = elt_list ~set ~rss: rss_url stog env [] []}
+      { elt with Stog_types.elt_body = elt_list elt ~set ~rss: rss_url stog env [] []}
     in
     Stog_types.add_elt stog elt
   in
@@ -1437,7 +1443,7 @@ let make_archive_index stog env =
     let elt =
       { Stog_types.elt_human_id = hid ;
         elt_type = "by-month";
-        elt_body = elt_list ~set stog env [] [] ;
+        elt_body = [] ;
         elt_date = None ;
         elt_title = title ;
         elt_keywords = [] ;
@@ -1452,6 +1458,7 @@ let make_archive_index stog env =
         elt_used_mods = Stog_types.Str_set.empty ;
       }
     in
+    let elt = { elt with elt_body = elt_list elt ~set stog env [] [] } in
     Stog_types.add_elt stog elt
   in
   let f_year year mmap stog =
@@ -1740,9 +1747,9 @@ let gather_existing_ids =
 ;;
 
 let rules_fun_elt stog elt_id elt =
-  [ ("", Stog_tags.elt), fun_elt stog ;
-    ("", Stog_tags.post), fun_post stog ;
-    ("", Stog_tags.page), fun_page stog ;
+  [ ("", Stog_tags.elt), fun_elt elt stog ;
+    ("", Stog_tags.post), fun_post elt stog ;
+    ("", Stog_tags.page), fun_page elt stog ;
     ("", Stog_tags.block), fun_block2 ;
   ] @ (build_base_rules stog elt_id elt)
 ;;
