@@ -55,7 +55,12 @@ let set_elt_env elt env =
   elt_envs := Smap.add hid s !elt_envs
 ;;
 
-
+let string_of_time t =
+  let d = Unix.gmtime t in
+  Printf.sprintf "%04d/%02d/%02d-%02d:%02d:%02d"
+    (d.Unix.tm_year + 1900) d.Unix.tm_mon d.Unix.tm_mday
+    d.Unix.tm_hour d.Unix.tm_min d.Unix.tm_sec
+;;
 let get_cached_elements stog env =
   let info_file = cache_info_file stog in
   let info_time = Stog_misc.file_mtime info_file in
@@ -82,12 +87,18 @@ let get_cached_elements stog env =
     let use_cache =
       if same_elt_env then
         begin
+        (* use time of last generation of that element, not source file *)
           let src_file = Filename.concat stog.stog_dir elt.elt_src in
           let src_time = Stog_misc.file_mtime src_file in
           let cache_time = Stog_deps.max_deps_date stog
             (Stog_types.string_of_human_id elt.elt_human_id)
           in
-          let cache_time = max info_time cache_time in
+          (*let cache_time = max info_time cache_time in*)
+          prerr_endline (
+           Printf.sprintf "cache_time for %S = %s, last modified on %s" src_file
+           (string_of_time cache_time)
+           (match src_time with None -> "" | Some d -> string_of_time d)
+          );
           match src_time with
             None -> false
           | Some t_elt -> cache_time > t_elt

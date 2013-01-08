@@ -35,6 +35,12 @@ let max_deps_date stog hid =
           with Not_found -> acc
   in
   let deps = f (Elt hid) Depset.empty in
+  prerr_endline (Printf.sprintf "%S depends on" hid);
+  let print = function
+    File file -> prerr_endline (Printf.sprintf "  File %S" file)
+  | Elt hid -> prerr_endline (Printf.sprintf "  Elt %S" hid)
+  in
+  Depset.iter print deps;
   let max_date dep acc =
     let date_opt =
       match dep with
@@ -53,7 +59,7 @@ let max_deps_date stog hid =
       None ->
         (* the element which we previously depended on does not exist;
            use current date to force recomputing *)
-           Unix.time ()
+        Unix.time ()
     | Some date ->
         max acc date
   in
