@@ -1478,7 +1478,7 @@ let output_elt_cache stog elt =
 ;;
 *)
 
-let output_elt stog elt =
+let output_elt stog env elt =
   let file = elt_dst_file stog elt in
   Stog_misc.safe_mkdir (Filename.dirname file);
   match elt.elt_out with
@@ -1494,13 +1494,17 @@ let output_elt stog elt =
       Printf.fprintf oc "<!DOCTYPE %s>\n" doctype;
       List.iter (fun xml -> output_string oc (Xtmpl.string_of_xml xml)) xmls;
       close_out oc;
+      Stog_cache.set_elt_env elt env;
       Stog_cache.apply_storers stog elt
 ;;
 
-let output_elts ?elts stog =
-  match elts with
-    None -> Stog_tmap.iter (fun _ elt -> output_elt stog elt) stog.stog_elts
-  | Some l -> List.iter (output_elt stog) l
+let output_elts ?elts stog env =
+  begin
+    match elts with
+      None -> Stog_tmap.iter (fun _ elt -> output_elt stog env elt) stog.stog_elts
+    | Some l -> List.iter (output_elt stog env) l
+  end;
+  Stog_cache.output_cache_info stog
 ;;
 
 let copy_other_files stog =
@@ -1609,7 +1613,7 @@ let cached_elements = ref [];;
 let compute_levels ?(use_cache=true) ?elts env stog =
   if use_cache then
     begin
-      let (cached, not_cached) = Stog_cache.get_cached_elements stog in
+      let (cached, not_cached) = Stog_cache.get_cached_elements stog env in
       Stog_msg.verbose (Printf.sprintf "%d elements read from cache" (List.length cached));
       let stog = List.fold_left2
         (fun stog elt_id elt -> Stog_types.set_elt stog elt_id elt)
@@ -1639,14 +1643,14 @@ let generate ?(use_cache=true) ?only_elt stog =
       let stog = make_archive_index stog env in
       let stog = compute_levels ~use_cache env stog in
       Stog_ocaml.close_sessions();
-      output_elts stog;
+      output_elts stog env;
       copy_other_files stog
   | Some s ->
       let hid = Stog_types.human_id_of_string s in
       let (elt_id, _) = Stog_types.elt_by_human_id stog hid in
       let stog = compute_levels ~use_cache ~elts: [elt_id] env stog in
       let (_, elt) = Stog_types.elt_by_human_id stog hid in
-      output_elts ~elts: [elt] stog
+      output_elts ~elts: [elt] stog env
 ;;
 
 (* register default levels *)
