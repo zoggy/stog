@@ -1600,36 +1600,16 @@ let load_cached_elt file =
 ;;
 *)
 
+
 (** This is list is filled by the {!Cache.load} function.
-  After computing cached elements, this list and "cached" in
+  After computing cached elements, this list and [cached] in
   {!get_cached_elements} must have the same length and order. *)
 let cached_elements = ref [];;
-
-let get_cached_elements stog =
-  let f elt_id elt (cached, not_cached) =
-     let src_file = Filename.concat stog.stog_dir elt.elt_src in
-     let src_time = Stog_misc.file_mtime src_file in
-     let cache_file = Stog_cache.cache_file "" stog elt in
-     let cache_time = Stog_misc.file_mtime cache_file in
-     match src_time, cache_time with
-      None, _
-    | _, None -> (cached, elt_id::not_cached)
-    | Some t_elt, Some t_cache ->
-        if t_cache > t_elt then
-          begin
-            Stog_cache.apply_loaders stog elt;
-            (elt_id :: cached, not_cached)
-          end
-        else
-          (cached, elt_id :: not_cached)
-  in
-  Stog_tmap.fold f stog.stog_elts ([], [])
-;;
 
 let compute_levels ?(use_cache=true) ?elts env stog =
   if use_cache then
     begin
-      let (cached, not_cached) = get_cached_elements stog in
+      let (cached, not_cached) = Stog_cache.get_cached_elements stog in
       Stog_msg.verbose (Printf.sprintf "%d elements read from cache" (List.length cached));
       let stog = List.fold_left2
         (fun stog elt_id elt -> Stog_types.set_elt stog elt_id elt)
@@ -1776,11 +1756,11 @@ let () = register_level_fun 160 (compute_elt rules_inc_elt);;
 
 module Cache = struct
   type t =
-  { cache_elt : elt ;
-    cache_blocks : (Xtmpl.tree * Xtmpl.tree) Str_map.t ;
-  }
+      { cache_elt : elt ;
+        cache_blocks : (Xtmpl.tree * Xtmpl.tree) Str_map.t ;
+      }
 
-  let name = ""
+  let name = "_stog"
   let load elt t =
     let hid = Stog_types.string_of_human_id t.cache_elt.elt_human_id in
     blocks := Smap.add hid t.cache_blocks !blocks;

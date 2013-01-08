@@ -41,3 +41,7 @@ val register_cache : (module Cache) -> unit
 
 val apply_loaders : Stog_types.stog -> Stog_types.elt -> unit
 val apply_storers : Stog_types.stog -> Stog_types.elt -> unit
+
+val set_elt_env : string -> Xtmpl.env -> unit
+
+val get_cached_elements : Stog_types.stog -> (Stog_types.elt_id list * Stog_types.elt_id list)
