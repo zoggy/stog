@@ -37,6 +37,8 @@ module type Cache =
   end
 
 val cache_file : string -> Stog_types.stog -> Stog_types.elt -> string
+val stog_cache_name : string
+
 val register_cache : (module Cache) -> unit
 
 val apply_loaders : Stog_types.stog -> Stog_types.elt -> unit

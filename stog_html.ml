@@ -322,7 +322,11 @@ let fun_include stog elt _env args subs =
         (("", "contents"), String.concat "" (List.map Xtmpl.string_of_xml subs)) ::
         args
       in
-      Stog_deps.add_dep elt (Stog_deps.File file);
+      begin
+        match Xtmpl.get_arg args ("", "depend") with
+          Some "false" -> ()
+        | _ -> Stog_deps.add_dep elt (Stog_deps.File file);
+      end;
       [Xtmpl.E (("", Xtmpl.tag_env), args, xml)]
   | None ->
       failwith "Missing 'file' argument for include command"
@@ -445,7 +449,11 @@ let fun_elt_href ?typ src_elt href stog env args subs =
       match info with
         None -> [Xtmpl.D "??"]
       | Some (elt, hid, id) ->
-          Stog_deps.add_dep src_elt (Stog_deps.Elt hid);
+          begin
+            (* use absolute hid, from element *)
+            let hid = Stog_types.string_of_human_id elt.elt_human_id in
+            Stog_deps.add_dep src_elt (Stog_deps.Elt hid);
+          end;
           match subs, id with
           | [], None ->
               let quote = if quotes then "\"" else "" in
@@ -1771,7 +1779,7 @@ module Cache = struct
         cache_blocks : (Xtmpl.tree * Xtmpl.tree) Str_map.t ;
       }
 
-  let name = "_stog"
+  let name = Stog_cache.stog_cache_name
   let load elt t =
     let hid = Stog_types.string_of_human_id t.cache_elt.elt_human_id in
     blocks := Smap.add hid t.cache_blocks !blocks;

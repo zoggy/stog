@@ -319,3 +319,11 @@ let highlight ~opts code =
   | _ ->
       failwith (Printf.sprintf "command failed: %s" com)
 ;;
+
+let string_of_time t =
+  let d = Unix.gmtime t in
+  Printf.sprintf "%04d/%02d/%02d-%02d:%02d:%02d"
+    (d.Unix.tm_year + 1900) (d.Unix.tm_mon+1) d.Unix.tm_mday
+    d.Unix.tm_hour d.Unix.tm_min d.Unix.tm_sec
+;;
+

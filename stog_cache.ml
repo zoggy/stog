@@ -11,6 +11,7 @@ module type Cache = sig
 end;;
 
 let cache_info_file stog = Filename.concat stog.stog_cache_dir "info";;
+let stog_cache_name = "_stog";;
 
 let loaders = ref [];;
 let storers = ref [];;
@@ -55,28 +56,18 @@ let set_elt_env elt env =
   elt_envs := Smap.add hid s !elt_envs
 ;;
 
-let string_of_time t =
-  let d = Unix.gmtime t in
-  Printf.sprintf "%04d/%02d/%02d-%02d:%02d:%02d"
-    (d.Unix.tm_year + 1900) d.Unix.tm_mon d.Unix.tm_mday
-    d.Unix.tm_hour d.Unix.tm_min d.Unix.tm_sec
-;;
 let get_cached_elements stog env =
   let info_file = cache_info_file stog in
-  let info_time = Stog_misc.file_mtime info_file in
-  let info_time =
-    match info_time with
-      None -> 0.0
-    | Some date ->
-        let ic = open_in_bin info_file in
-        let (v : (string Smap.t * Stog_deps.Depset.t Smap.t)) = input_value ic in
-        close_in ic;
-        elt_envs := fst v ;
-        Stog_deps.deps := snd v;
-        date
-  in
+  if Sys.file_exists info_file then
+    begin
+      let ic = open_in_bin info_file in
+      let (v : (string Smap.t * Stog_deps.Depset.t Smap.t)) = input_value ic in
+      close_in ic;
+      elt_envs := fst v ;
+      Stog_deps.deps := snd v
+    end;
   let marsh_env = Marshal.to_string env [Marshal.Closures] in
-  let f elt_id elt (cached, not_cached) =
+  let f elt_id elt (cached, not_cached, kept_deps) =
     let hid = Stog_types.string_of_human_id elt.elt_human_id in
     let same_elt_env =
       try
@@ -87,21 +78,19 @@ let get_cached_elements stog env =
     let use_cache =
       if same_elt_env then
         begin
-        (* use time of last generation of that element, not source file *)
-          let src_file = Filename.concat stog.stog_dir elt.elt_src in
-          let src_time = Stog_misc.file_mtime src_file in
-          let cache_time = Stog_deps.max_deps_date stog
+          let src_cache_file = cache_file stog_cache_name stog elt in
+          let src_cache_time = Stog_misc.file_mtime src_cache_file in
+          let deps_time = Stog_deps.max_deps_date stog
             (Stog_types.string_of_human_id elt.elt_human_id)
           in
-          (*let cache_time = max info_time cache_time in*)
           prerr_endline (
-           Printf.sprintf "cache_time for %S = %s, last modified on %s" src_file
-           (string_of_time cache_time)
-           (match src_time with None -> "" | Some d -> string_of_time d)
+           Printf.sprintf "deps_time for %S = %s, last generated on %s" src_cache_file
+           (Stog_misc.string_of_time deps_time)
+           (match src_cache_time with None -> "" | Some d -> Stog_misc.string_of_time d)
           );
-          match src_time with
+          match src_cache_time with
             None -> false
-          | Some t_elt -> cache_time > t_elt
+          | Some t_elt -> deps_time < t_elt
         end
       else
          false
@@ -109,16 +98,22 @@ let get_cached_elements stog env =
     if use_cache then
       begin
         apply_loaders stog elt;
-        (elt_id :: cached, not_cached)
+        (* keep deps of this element, as it did not changed *)
+        let kept_deps =
+          try Smap.add hid (Smap.find hid !Stog_deps.deps) kept_deps
+          with Not_found -> kept_deps
+        in
+        (elt_id :: cached, not_cached, kept_deps)
       end
     else
       begin
-        (* remove known deps of this element, as it will be recomputed *)
-        Stog_deps.deps := Smap.remove hid !Stog_deps.deps;
-        (cached, elt_id :: not_cached)
+        (* do not keep deps of this element, as it will be recomputed *)
+        (cached, elt_id :: not_cached, kept_deps)
       end
   in
-  Stog_tmap.fold f stog.stog_elts ([], [])
+  let (cached, not_cached, kept_deps) = Stog_tmap.fold f stog.stog_elts ([], [], Smap.empty) in
+  Stog_deps.deps := kept_deps;
+  (cached, not_cached)
 ;;
 
 let output_cache_info stog =
