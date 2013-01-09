@@ -51,7 +51,17 @@ let apply_loaders stog elt =  List.iter (fun f -> f stog elt) !loaders;;
 let apply_storers stog elt =  List.iter (fun f -> f stog elt) !storers;;
 
 let stog_env_digest stog env =
-  let md5_env = Digest.string (Marshal.to_string env [Marshal.Closures]) in
+  let md5_env =
+    try Digest.string (Marshal.to_string env [Marshal.Closures])
+    with Invalid_argument msg ->
+        let msg = Printf.sprintf
+          "%s\n  This may be due to marshalling dynamically loaded code, which is\n  \
+          not supported in all ocaml releases (use the trunk development version\n  \
+          to get this support)." msg
+        in
+        Stog_msg.warning msg;
+        Digest.string ""
+  in
   let md5_stog = Stog_types.stog_md5 stog in
   (Digest.to_hex md5_stog) ^ (Digest.to_hex md5_env)
 ;;
