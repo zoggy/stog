@@ -50,10 +50,16 @@ let register_cache cache =
 let apply_loaders stog elt =  List.iter (fun f -> f stog elt) !loaders;;
 let apply_storers stog elt =  List.iter (fun f -> f stog elt) !storers;;
 
-let set_elt_env elt env =
+let stog_env_digest stog env =
+  let md5_env = Digest.string (Marshal.to_string env [Marshal.Closures]) in
+  let md5_stog = Stog_types.stog_md5 stog in
+  (Digest.to_hex md5_stog) ^ (Digest.to_hex md5_env)
+;;
+
+let set_elt_env elt stog env =
   let hid = Stog_types.string_of_human_id elt.elt_human_id in
-  let s = Marshal.to_string env [Marshal.Closures] in
-  elt_envs := Smap.add hid s !elt_envs
+  let digest = stog_env_digest stog env in
+  elt_envs := Smap.add hid digest !elt_envs
 ;;
 
 let get_cached_elements stog env =
@@ -66,13 +72,13 @@ let get_cached_elements stog env =
       elt_envs := fst v ;
       Stog_deps.deps := snd v
     end;
-  let marsh_env = Marshal.to_string env [Marshal.Closures] in
+  let digest = stog_env_digest stog env in
   let f elt_id elt (cached, not_cached, kept_deps) =
     let hid = Stog_types.string_of_human_id elt.elt_human_id in
     let same_elt_env =
       try
-        let e = Smap.find hid !elt_envs in
-        e = marsh_env
+        let d = Smap.find hid !elt_envs in
+        d = digest
       with Not_found -> false
     in
     let use_cache =

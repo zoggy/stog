@@ -213,6 +213,21 @@ let create_stog dir = {
   }
 ;;
 
+let stog_md5 stog =
+  let stog =
+    { stog with
+      stog_elts = Stog_tmap.create (make_elt ());
+      stog_elts_by_human_id = Hid_map.empty ;
+      stog_graph = Graph.create ();
+      stog_elts_by_kw = Str_map.empty ;
+      stog_elts_by_topic = Str_map.empty ;
+      stog_archives = Int_map.empty ;
+      stog_files = { files = Str_set.empty ; dirs = Str_map.empty } ;
+    }
+  in
+  Digest.string (Marshal.to_string stog [])
+;;
+
 let elt stog id = Stog_tmap.get stog.stog_elts id;;
 let elts_by_human_id ?typ stog h =
   let rev_path = List.rev h.hid_path in

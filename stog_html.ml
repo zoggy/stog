@@ -1509,7 +1509,7 @@ let output_elt stog env elt =
       Printf.fprintf oc "<!DOCTYPE %s>\n" doctype;
       List.iter (fun xml -> output_string oc (Xtmpl.string_of_xml xml)) xmls;
       close_out oc;
-      Stog_cache.set_elt_env elt env;
+      Stog_cache.set_elt_env elt stog env;
       Stog_cache.apply_storers stog elt
 ;;
 

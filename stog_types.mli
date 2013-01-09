@@ -107,6 +107,7 @@ type stog = {
   stog_used_mods : Str_set.t ;
 }
 val create_stog : string -> stog
+val stog_md5 : stog -> string
 
 val elt : stog -> elt Stog_tmap.key -> elt
 
