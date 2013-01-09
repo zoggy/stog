@@ -89,11 +89,11 @@ let get_cached_elements stog env =
           let deps_time = Stog_deps.max_deps_date stog
             (Stog_types.string_of_human_id elt.elt_human_id)
           in
-          prerr_endline (
-           Printf.sprintf "deps_time for %S = %s, last generated on %s" src_cache_file
-           (Stog_misc.string_of_time deps_time)
-           (match src_cache_time with None -> "" | Some d -> Stog_misc.string_of_time d)
-          );
+          Stog_msg.verbose ~level: 5
+           (Printf.sprintf "deps_time for %S = %s, last generated on %s" src_cache_file
+             (Stog_misc.string_of_time deps_time)
+             (match src_cache_time with None -> "" | Some d -> Stog_misc.string_of_time d)
+            );
           match src_cache_time with
             None -> false
           | Some t_elt -> deps_time < t_elt

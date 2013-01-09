@@ -41,6 +41,13 @@ let string_of_elt_time stog hid =
     e -> Printexc.to_string e
 ;;
 
+let print_dep b stog = function
+  File file ->
+    Printf.bprintf b "  File %S modified at %s\n" file (string_of_file_time file)
+| Elt hid ->
+    Printf.bprintf b "  Elt %S modified at %s\n" hid (string_of_elt_time stog hid)
+;;
+
 let max_deps_date stog hid =
   let rec f dep acc =
     if Depset.mem dep acc then
@@ -57,16 +64,12 @@ let max_deps_date stog hid =
               acc
   in
   let deps = f (Elt hid) Depset.empty in
-  prerr_endline (Printf.sprintf "%S depends on" hid);
-  let print = function
-    File file ->
-      prerr_endline
-      (Printf.sprintf "  File %S modified at %s" file (string_of_file_time file))
-  | Elt hid ->
-      prerr_endline
-      (Printf.sprintf "  Elt %S modified at %s" hid (string_of_elt_time stog hid))
-  in
-  Depset.iter print deps;
+  Stog_msg.verbose ~level: 5
+    (let b = Buffer.create 256 in
+     Printf.bprintf b "%S depends on\n%s" hid;
+     Depset.iter (print_dep b stog) deps;
+     Buffer.contents b
+    );
   let max_date dep acc =
     let date_opt =
       match dep with
