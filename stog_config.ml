@@ -66,8 +66,8 @@ let read_config dir =
         (Printf.sprintf "Creating inexistent configuration directory %S" cfg_dir);
       Stog_misc.safe_mkdir cfg_dir;
     end;
+  let file_exists = Sys.file_exists rc_file in
   group#read rc_file;
-  group#write rc_file;
   { ignored = o_ignored#get ;
     elements = o_elts#get ;
     not_elements = o_not_elts#get ;

@@ -73,6 +73,7 @@ let set_elt_env elt stog env =
 ;;
 
 let get_cached_elements stog env =
+  Stog_misc.safe_mkdir stog.stog_cache_dir;
   let info_file = cache_info_file stog in
   if Sys.file_exists info_file then
     begin
