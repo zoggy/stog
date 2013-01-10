@@ -1,4 +1,8 @@
 Next release:
+  * add: --depcut option, used when getting cached elements, to use
+    only one level of dependency between elements; this is useful
+    for example in case the site has a menubar, leading to having
+    almost all elements dependind on almost all elements.
   * add: <include> now handles a depend="false" attribute, to prevent
     adding a dependency of the element on the included file
   * mod: better cache system, using dependencies of each element on other
