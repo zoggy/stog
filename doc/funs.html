@@ -227,7 +227,7 @@ of the element.
 <p>
 <icode lang="xml">&lt;ext-a attributes&gt;...&lt;/ext-a&gt;</icode> is reduced
 to <icode lang="xml">&lt;span class="ext-a"&gt;&lt;a attributes&gt;...&lt;/a&gt;&lt;/ext-a&gt;</icode>.
-This can be used to add specific style link to external sites.
+This can be used to add specific style for links to external sites.
 </p>
 </subsection>
 
@@ -307,6 +307,11 @@ the file path is concatenated to the current element source file path.
 </p>
 <p>
 If the file attribute is an absolute filename, then this absolute filename is used.
+</p>
+<p>
+By default, using <icode>&lt;include&gt;</icode> adds a dependency of the current
+element on the given file. Use <icode>depend="false"</icode> to prevent adding this
+dependency.
 </p>
 <p>At last, all additional attributes to <icode>&lt;include ...&gt;</icode> will
 be added to the environment used to evaluate the contents of the file.
