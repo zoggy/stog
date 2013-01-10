@@ -31,6 +31,7 @@ let output_dir = ref "stog-output";;
 let site_url = ref None ;;
 let tmpl_dir = ref None ;;
 let use_cache = ref true;;
+let depcut = ref false;;
 
 let lang = ref None;;
 let default_lang_to_set = ref None;;
@@ -56,6 +57,7 @@ let set_stog_options stog =
     | Some s -> { stog with Stog_types.stog_lang = Some s }
   in
   let stog = { stog with Stog_types.stog_outdir = !output_dir } in
+  let stog = { stog with Stog_types.stog_depcut = !depcut } in
   stog
 ;;
 
@@ -93,6 +95,9 @@ let options = [
 
     "--nocache", Arg.Clear use_cache,
     " do not use cache to prevent computing unmodified elements" ;
+
+    "--depcut", Arg.Set depcut,
+    " use only 1 level of dependency when getting cached elements";
   ];;
 
 let usage = Printf.sprintf

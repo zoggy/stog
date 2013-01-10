@@ -186,6 +186,7 @@ type stog = {
   stog_files : file_tree ;
   stog_modules : stog_mod Str_map.t ;
   stog_used_mods : Str_set.t ;
+  stog_depcut : bool ;
   }
 
 let create_stog dir = {
@@ -210,6 +211,7 @@ let create_stog dir = {
   stog_files = { files = Str_set.empty ; dirs = Str_map.empty } ;
   stog_modules = Str_map.empty ;
   stog_used_mods = Str_set.empty ;
+  stog_depcut = false ;
   }
 ;;
 
@@ -223,6 +225,7 @@ let stog_md5 stog =
       stog_elts_by_topic = Str_map.empty ;
       stog_archives = Int_map.empty ;
       stog_files = { files = Str_set.empty ; dirs = Str_map.empty } ;
+      stog_depcut = false;
     }
   in
   Digest.string (Marshal.to_string stog [])

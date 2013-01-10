@@ -49,24 +49,29 @@ let print_dep b stog = function
 ;;
 
 let max_deps_date stog hid =
-  let rec f dep acc =
+  let rec f dep (acc, depth) =
     if Depset.mem dep acc then
-      acc
+      (acc, depth)
     else
       let acc = Depset.add dep acc in
       match dep with
-        File file -> acc
+        File file -> (acc, depth)
       | Elt hid ->
           try
-            let elt_deps = Smap.find hid !deps in
-            Depset.fold f elt_deps acc
+            if stog.stog_depcut && depth >= 1 then
+              (acc, depth)
+            else
+              (
+               let elt_deps = Smap.find hid !deps in
+               Depset.fold f elt_deps (acc, depth+1)
+              )
           with Not_found ->
-              acc
+              (acc, depth)
   in
-  let deps = f (Elt hid) Depset.empty in
+  let (deps,_) = f (Elt hid) (Depset.empty,0) in
   Stog_msg.verbose ~level: 5
     (let b = Buffer.create 256 in
-     Printf.bprintf b "%S depends on\n%s" hid;
+     Printf.bprintf b "%S depends on\n" hid;
      Depset.iter (print_dep b stog) deps;
      Buffer.contents b
     );

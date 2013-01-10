@@ -105,6 +105,7 @@ type stog = {
   stog_files : file_tree;
   stog_modules : stog_mod Str_map.t ;
   stog_used_mods : Str_set.t ;
+  stog_depcut : bool ;
 }
 val create_stog : string -> stog
 val stog_md5 : stog -> string
