@@ -100,7 +100,7 @@ belonging to a set,</li>
 <li><b>language-dep</b>: can be set to <i>false</i> to indicate that this page is not
 language dependent, when generating multi-language sites (this affects the name of the
 generated file),</li>
-<li><b>doctype</b>: specify the doctype which will printed into the final XML file. Default is "HTML".</li>
+<li><b>doctype</b>: specify the doctype which will be printed into the final XML file. Default is "HTML".</li>
 </ul>
 <p>
 Any other attribute will be available by its name in the environment when processing the template
@@ -195,10 +195,32 @@ this way:
 the provided
 -->
 <p>
-Stog will keep computed elements in directories <code>.stog/cache*</code>.
+Stog will keep computed elements in directory <code>.stog/cache</code>.
 To prevent stog from using this cache, use the <code>--nocache</code>
 command line option. The cache won't be read, but it will nevertheless
 be updated by contents of computed elements.
+</p>
+<p>
+The caching strategy uses dependencies between elements: if an element
+refers to another one (see <elt href="funs"/>), a dependency will be
+added and stored in the cache directory, so that this dependency will
+be used during the next run of stog. An element can also depend
+on files: the templates used, the files included, ... Dependencies are
+recursively computed.
+</p>
+<p>
+In some cases, using recursive dependencies may be too complete. For example,
+if you have a menubar appearing in all pages, all pages will depend on
+the elements referenced by the menubar, leading to all elements depending
+on all elements. A change in any element will then make every element recomputed
+at each run. To prevent this, the <code>--depcut</code> option specifies
+to use non-recursive dependencies in the caching strategy.
+</p>
+<p>
+A convenient way to use stog is to create a Makefile with different targets,
+to generate your site for a local test and for online publishing.
+Have a look at <ext-a href="https://github.com/zoggy/stog/tree/master/doc/Makefile">this
+Makefile</ext-a> used to build stog documentation.
 </p>
 </section>
 
@@ -215,7 +237,7 @@ of functions applying rewrite rules to element body.
 <p>Various levels are required to ensure some rules will be applied after
 others, for example to verify cross-element links. Each level has a number,
 and levels are applied in order from 0 to n. Pre-defined levels are
-numbered like lines in basic programs: 0, 50, 100, 120, ... making
+numbered like lines in BASIC programs: 0, 50, 100, 120, ... making
 plugins able to insert new levels.
 </p>
 <p>The first application of a level to an element uses the
@@ -240,19 +262,20 @@ is stored in the cache (the <icode>.stog/cache</icode> directory).
 The final XML file is also created from this contents.
 </p>
 <p>Remark: If the element file was not modified since the corresponding
-cache file was stored, the contents of the element is read back from
+cache file was stored, nor its dependencies (see <elt href="#running"/>),
+the contents of the element is read back from
 the cache, and the level functions are not applied to this element.
 </p>
 
 <p>The environment is used in the following way.
-For each encountered tag <icode>t</icode>, <icode>t</icode> is looked up
+For each encountered node with tag <icode>t</icode>, <icode>t</icode> is looked up
 in the environment for its associated <em>function</em> <icode>f</icode>.
 </p>
-<p>If no <icode>f</icode> is found, then the XML tag is left untouched
-and the children of the tag are then analysed.
+<p>If no <icode>f</icode> is found, then the XML node is left untouched
+and the children of the node are then analysed.
 </p>
 <p>If <icode>f</icode> is found, then it is called, given the environment,
-the tag attributes and the children of the tag. Then the function returns
+the attributes and the children of the node. Then the function returns
 a list of XML trees which must then be analysed.
 </p>
 <p>When this analyze reaches a fixpoint, the final XML is returned.
@@ -263,7 +286,8 @@ library.</p>
 before looking up for the tag in the environment.
 </p>
 <p>Stog comes with <page href="funs">predefined functions</page>
-associated to some tags, but more can be created in plugins.
+associated to some tags, but more can be created in
+<elt href="plugins">plugins</elt>.
 </p>
 </section>
 
