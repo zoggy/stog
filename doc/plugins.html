@@ -6,6 +6,8 @@ Plugins are written in OCaml. The compiled OCaml code is then
 loaded in Stog with the <icode>--plugin</icode> or <icode>--package</icode>
 options of <icode>stog</icode> (see <page href="getting_started#running"/>).
 </p>
+<prepare-toc>
+<toc/>
 <section id="writing" title="Writing the code">
 <p>
 A plugin just registers new functions associated to tags.
@@ -48,6 +50,29 @@ This will be evaluated (reduced) to
 <hcode defer_="1" lang="xml">
 <list sep="&lt;b&gt; -- &lt;/b&gt;"><span>first thing</span>second thing<div>something else</div></list>
 </hcode>
-
 </section>
+
+<section id="cache" title="Keeping the cache system in the loop">
+<p>
+The cache system (see <elt href="getting_started#running"/>) must be aware
+of dependencies of each element on other elements and files.
+</p>
+<p>
+If a new rule defined by a plugin uses a file or implies a dependency
+from an element to another, this rule must declare this dependency
+using the <a href="ref-doc/Stog_plug.html#VALadd_dep"><code>Stog_plug.add_dep</code></a> function:
+</p>
+<ocaml>Stog_plug.add_dep : Stog_types.elt -> dependency -> unit</ocaml>
+<p>
+If a plugin computes information which could be cached, it can declare a
+new cache for this informations, using the
+<a href="ref-doc/Stog_plug.html#VALregister_cache"><code>Stog_plug.register_cache</code></a> function:
+</p>
+<ocaml>val register_cache : (module Stog_cache.Cache) -> unit</ocaml>
+<p>
+The Cache module to provide is very simple; have a look at the
+<a href="ref-doc/Stog_cache.Cache.html"><code>Stog_cache.Cache</code></a>module type.
+</p>
+</section>
+</prepare-toc>
 </page>
