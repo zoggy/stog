@@ -30,17 +30,17 @@
 
 module type Cache =
   sig
-    (** This is the type of the information associated to each element in the cache. *)
+    (** The type of the information associated to each element in the cache. *)
     type t
 
-    (** This is the name of the cache, used in for the directory name where
+    (** The name of the cache, used in for the directory name where
       information is cached. *)
     val name : string
 
-    (** This is the function to call when an element is read from the cache. *)
+    (** This function is called when an element is read from the cache. *)
     val load : Stog_types.elt -> t -> unit
 
-    (** This is the function providing the information to associate to an
+    (** This function provides the information to associate to an
          element to store it in the cache. *)
     val store : Stog_types.elt -> t
   end
