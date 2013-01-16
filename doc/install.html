@@ -32,6 +32,29 @@ LaTeX in your pages.</li>
 </p>
 <subsection title="Releases">
 <ul>
+
+<li><a href="stog-0.6.tar.gz">0.6</a> [2013-01-16]:
+<ul>
+<li>mod: do not write the config file if it already exists,</li>
+<li>add: <icode>&lt;elements&gt;</icode> node handles <icode>reverse="false"</icode> attribute not to
+    reverse order of elements (which is default, i.e. the more recent first),</li>
+<li>mod: better cache system, using dependencies of each element on other
+    elements and files; also handles the stog environment used to compute
+    elements in cache, so that a change in the stog environment will
+    make all elements recomputed (for example when language changes),</li>
+<li>add: a rule using a file or another element must add a dependency from
+    the computed element to the element or file it depends on, using
+    <a href="ref-doc/Stog_plug.html#VALadd_dep"><icode>Stog_plug.add_dep</icode></a>,</li>
+<li>add: <icode>&lt;include&gt;</icode> now handles a <icode>depend="false"</icode> attribute, to prevent
+    adding a dependency of the element on the included file,</li>
+<li>add: <icode>--depcut</icode> option, used when getting cached elements, to use
+    only one level of dependency between elements; this is useful
+    for example in case the site has a menubar, leading to having
+    almost all elements depending on almost all elements.</li>
+</ul>
+</li>
+
+
 <li><a href="stog-0.5.tar.gz">0.5</a> [2012-12-18]:
 <ul>
 <li>minor fixes (thanks to Gabriel Scherer),</li>
