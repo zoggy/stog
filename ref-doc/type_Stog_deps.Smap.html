@@ -23,17 +23,17 @@
 <link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
 <link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
-<link title="Stog_deps" rel="Chapter" href="Stog_deps.html">
 <link title="Stog_tmpl" rel="Chapter" href="Stog_tmpl.html">
+<link title="Stog_deps" rel="Chapter" href="Stog_deps.html">
 <link title="Stog_cache" rel="Chapter" href="Stog_cache.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
 <link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
-<link title="Stog_dyn" rel="Chapter" href="Stog_dyn.html"><title>Stog : Stog_types.Str_map</title>
+<link title="Stog_dyn" rel="Chapter" href="Stog_dyn.html"><title>Stog : Stog_deps.Smap</title>
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;key&nbsp;=&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;+<span class="keywordsign">'</span>a&nbsp;t<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;t&nbsp;=&nbsp;<span class="keywordsign">'</span>a&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;empty&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;t<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;is_empty&nbsp;:&nbsp;<span class="keywordsign">'</span>a&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;mem&nbsp;:&nbsp;key&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="keywordsign">'</span>a&nbsp;t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>

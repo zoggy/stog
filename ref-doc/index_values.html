@@ -24,6 +24,7 @@
 <link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
 <link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
+<link title="Stog_deps" rel="Chapter" href="Stog_deps.html">
 <link title="Stog_tmpl" rel="Chapter" href="Stog_tmpl.html">
 <link title="Stog_cache" rel="Chapter" href="Stog_cache.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
@@ -58,6 +59,13 @@ Adding a known block id for a given hid.
 Adding a known block id for a given hid.
 </div>
 </td></tr>
+<tr><td><a href="Stog_plug.html#VALadd_dep">add_dep</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
+<td><div class="info">
+For a given element, add a dependency on a file or another element.
+</div>
+</td></tr>
+<tr><td><a href="Stog_deps.html#VALadd_dep">add_dep</a> [<a href="Stog_deps.html">Stog_deps</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_types.html#VALadd_elt">add_elt</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_types.html#VALadd_hid">add_hid</a> [<a href="Stog_types.html">Stog_types</a>]</td>
@@ -150,6 +158,8 @@ Access to the current stog structure.
 </td></tr>
 <tr><td align="left"><br>D</td></tr>
 <tr><td><a href="Stog_intl.html#VALdata_of_lang">data_of_lang</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_deps.html#VALdeps">deps</a> [<a href="Stog_deps.html">Stog_deps</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_info.html#VALdot_of_graph">dot_of_graph</a> [<a href="Stog_info.html">Stog_info</a>]</td>
 <td><div class="info">
@@ -318,6 +328,8 @@ Generate a RSS file from the given list of elements.
 <td></td></tr>
 <tr><td><a href="Stog_tmap.S.html#VALget">get</a> [<a href="Stog_tmap.S.html">Stog_tmap.S</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_cache.html#VALget_cached_elements">get_cached_elements</a> [<a href="Stog_cache.html">Stog_cache</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_types.html#VALget_def">get_def</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_html.html#VALget_hid">get_hid</a> [<a href="Stog_html.html">Stog_html</a>]</td>
@@ -434,7 +446,10 @@ Same as <a href="Stog_graph.S.html#VALiter_succ"><code class="code">Stog_graph.S
 </div>
 </td></tr>
 <tr><td><a href="Stog_cache.Cache.html#VALload">load</a> [<a href="Stog_cache.Cache.html">Stog_cache.Cache</a>]</td>
-<td></td></tr>
+<td><div class="info">
+This function is called when an element is read from the cache.
+</div>
+</td></tr>
 <tr><td><a href="Stog_dyn.html#VALload_files">load_files</a> [<a href="Stog_dyn.html">Stog_dyn</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_dyn.html#VALload_packages">load_packages</a> [<a href="Stog_dyn.html">Stog_dyn</a>]</td>
@@ -460,6 +475,8 @@ Same as <a href="Stog_graph.S.html#VALiter_succ"><code class="code">Stog_graph.S
 Marshal the given graph.
 </div>
 </td></tr>
+<tr><td><a href="Stog_deps.html#VALmax_deps_date">max_deps_date</a> [<a href="Stog_deps.html">Stog_deps</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_misc.html#VALmd5">md5</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_types.html#VALmerge_stogs">merge_stogs</a> [<a href="Stog_types.html">Stog_types</a>]</td>
@@ -481,7 +498,11 @@ Marshal the given graph.
 <tr><td><a href="Stog_tags.html#VALn_columns">n_columns</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_cache.Cache.html#VALname">name</a> [<a href="Stog_cache.Cache.html">Stog_cache.Cache</a>]</td>
-<td></td></tr>
+<td><div class="info">
+The name of the cache, used in for the directory name where
+      information is cached.
+</div>
+</td></tr>
 <tr><td><a href="Stog_tags.html#VALnext">next</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_graph.S.html#VALnodes_by_pred_order">nodes_by_pred_order</a> [<a href="Stog_graph.S.html">Stog_graph.S</a>]</td>
@@ -500,6 +521,8 @@ Marshal the given graph.
    (length is 0) or <code class="code">Some s</code>.
 </div>
 </td></tr>
+<tr><td><a href="Stog_cache.html#VALoutput_cache_info">output_cache_info</a> [<a href="Stog_cache.html">Stog_cache</a>]</td>
+<td></td></tr>
 <tr><td align="left"><br>P</td></tr>
 <tr><td><a href="Stog_tmpl.html#VALpage">page</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
 <td></td></tr>
@@ -659,6 +682,8 @@ Use the given language abbreviation (such as "fr") to set the default
 </td></tr>
 <tr><td><a href="Stog_types.html#VALset_elt">set_elt</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_cache.html#VALset_elt_env">set_elt_env</a> [<a href="Stog_cache.html">Stog_cache</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_plug.html#VALset_print_error">set_print_error</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_msg.html#VALset_print_error">set_print_error</a> [<a href="Stog_msg.html">Stog_msg</a>]</td>
@@ -710,8 +735,16 @@ Stage 0 functions registered by plugins.
 </td></tr>
 <tr><td><a href="Stog_plug.html#VALstog">stog</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_cache.Cache.html#VALstore">store</a> [<a href="Stog_cache.Cache.html">Stog_cache.Cache</a>]</td>
+<tr><td><a href="Stog_cache.html#VALstog_cache_name">stog_cache_name</a> [<a href="Stog_cache.html">Stog_cache</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_types.html#VALstog_md5">stog_md5</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_cache.Cache.html#VALstore">store</a> [<a href="Stog_cache.Cache.html">Stog_cache.Cache</a>]</td>
+<td><div class="info">
+This function provides the information to associate to an
+         element to store it in the cache.
+</div>
+</td></tr>
 <tr><td><a href="Stog_intl.html#VALstring_of_date">string_of_date</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_intl.html#VALstring_of_date_opt">string_of_date_opt</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
@@ -730,6 +763,8 @@ Stage 0 functions registered by plugins.
    <code class="code">s_opt = None</code> or <code class="code">s</code> if <code class="code">s_opt = Some s</code>.
 </div>
 </td></tr>
+<tr><td><a href="Stog_misc.html#VALstring_of_time">string_of_time</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_misc.html#VALstrip_blank_lines">strip_blank_lines</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td><div class="info">
 <code class="code">strip_blank_lines s</code> works as <a href="Stog_misc.html#VALstrip_string"><code class="code">Stog_misc.strip_string</code></a>, but only strips

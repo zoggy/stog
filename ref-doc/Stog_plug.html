@@ -28,6 +28,7 @@
 <link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
 <link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
+<link title="Stog_deps" rel="Chapter" href="Stog_deps.html">
 <link title="Stog_tmpl" rel="Chapter" href="Stog_tmpl.html">
 <link title="Stog_cache" rel="Chapter" href="Stog_cache.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
@@ -82,4 +83,24 @@ Type to represent a functions called on all elements at a time and returning
   only the modified elements.<br>
 </div>
 
-<pre><span id="VALregister_level_fun"><span class="keyword">val</span> register_level_fun</span> : <code class="type">int -> <a href="Stog_plug.html#TYPElevel_fun">level_fun</a> -> unit</code></pre><pre><span id="VALcompute_elt"><span class="keyword">val</span> compute_elt</span> : <code class="type"><a href="Stog_plug.html#TYPErule_build">rule_build</a> -> <a href="Stog_plug.html#TYPElevel_fun">level_fun</a></code></pre><pre><span id="VALregister_level_fun_on_elt_list"><span class="keyword">val</span> register_level_fun_on_elt_list</span> : <code class="type">int -> <a href="Stog_plug.html#TYPElevel_fun_on_elt_list">level_fun_on_elt_list</a> -> unit</code></pre><pre><span id="VALregister_cache"><span class="keyword">val</span> register_cache</span> : <code class="type">(module Stog_cache.Cache) -> unit</code></pre></body></html>
+<pre><span id="VALregister_level_fun"><span class="keyword">val</span> register_level_fun</span> : <code class="type">int -> <a href="Stog_plug.html#TYPElevel_fun">level_fun</a> -> unit</code></pre><pre><span id="VALcompute_elt"><span class="keyword">val</span> compute_elt</span> : <code class="type"><a href="Stog_plug.html#TYPErule_build">rule_build</a> -> <a href="Stog_plug.html#TYPElevel_fun">level_fun</a></code></pre><pre><span id="VALregister_level_fun_on_elt_list"><span class="keyword">val</span> register_level_fun_on_elt_list</span> : <code class="type">int -> <a href="Stog_plug.html#TYPElevel_fun_on_elt_list">level_fun_on_elt_list</a> -> unit</code></pre><pre><span id="VALregister_cache"><span class="keyword">val</span> register_cache</span> : <code class="type">(module Stog_cache.Cache) -> unit</code></pre><pre><span id="TYPEdependency"><span class="keyword">type</span> <code class="type"></code>dependency</span> = <code class="type"><a href="Stog_deps.html#TYPEdependency">Stog_deps.dependency</a></code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTdependency.File"><span class="constructor">File</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >filename</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTdependency.Elt"><span class="constructor">Elt</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >absolute human id</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
+
+
+<pre><span id="VALadd_dep"><span class="keyword">val</span> add_dep</span> : <code class="type"><a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> <a href="Stog_plug.html#TYPEdependency">dependency</a> -> unit</code></pre><div class="info">
+For a given element, add a dependency on a file or another element.<br>
+</div>
+</body></html>

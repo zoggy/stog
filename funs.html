@@ -248,7 +248,7 @@ of the element.
 <p>
 <span class="icode"><span class="hl kwa">&lt;ext-a</span> attributes<span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/ext-a&gt;</span></span> is reduced
 to <span class="icode"><span class="hl kwa">&lt;span</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;ext-a&quot;</span><span class="hl kwa">&gt;&lt;a</span> attributes<span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/a&gt;&lt;/ext-a&gt;</span></span>.
-This can be used to add specific style link to external sites.
+This can be used to add specific style for links to external sites.
 </p>
 </div>
 
@@ -335,6 +335,11 @@ the file path is concatenated to the current element source file path.
 </p>
 <p>
 If the file attribute is an absolute filename, then this absolute filename is used.
+</p>
+<p>
+By default, using <span class="icode">&lt;include&gt;</span> adds a dependency of the current
+element on the given file. Use <span class="icode">depend=&quot;false&quot;</span> to prevent adding this
+dependency.
 </p>
 <p>At last, all additional attributes to <span class="icode">&lt;include ...&gt;</span> will
 be added to the environment used to evaluate the contents of the file.
@@ -427,7 +432,7 @@ attribute already set to &quot;ocaml&quot;.
 </div>
 
 <div class="subsection"><div class="subsection-title" id="ocaml-eval">ocaml-eval</div>
-<p>This rule evaluate OCaml code. See the following
+<p>This rule evaluates OCaml code. See the following
 blog posts: <a href="http://zoggy.github.com/stog/posts/displaying-evaluated-ocaml-code.html">Displaying evaluated OCaml code</a> and <a href="http://zoggy.github.com/stog/posts/ocaml-sessions.html">OCaml sessions</a>.
 </p>
 </div>
@@ -630,7 +635,7 @@ be reduced to a link to the corresponding element, using the given text.
 </p>
 <p>If the node matching the <span class="icode">href</span> was defined with the
 <a href="http://zoggy.github.com/stog/funs.html#block">block</a> base rule (i.e. without <span class="icode">href</span> attribute),
-then the title associated to this node is used as text for the procuded link, if not
+then the title associated to this node is used as text for the procuded link, if no
 text was given (<span class="icode"><span class="hl kwa">&lt;block</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></span>).
 </p>
 <p>So,</p>
@@ -911,7 +916,7 @@ of the element.
 <span class="hl kwa">&lt;p&gt;</span>
 <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>ext-a attributes<span class="hl kwd">&amp;gt;</span>...<span class="hl kwd">&amp;lt;</span>/ext-a<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> is reduced
 to <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>span <span class="hl kwb">class</span>=<span class="hl str">&quot;ext-a&quot;</span><span class="hl kwd">&amp;gt;&amp;lt;</span>a attributes<span class="hl kwd">&amp;gt;</span>...<span class="hl kwd">&amp;lt;</span>/a<span class="hl kwd">&amp;gt;&amp;lt;</span>/ext-a<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>.
-This can be used to add specific style link to external sites.
+This can be used to add specific style for links to external sites.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/subsection&gt;</span>
 
@@ -991,6 +996,11 @@ the file path is concatenated to the current element source file path.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 If the file attribute is an absolute filename, then this absolute filename is used.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+By default, using <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>include<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> adds a dependency of the current
+element on the given file. Use <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwb">depend</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> to prevent adding this
+dependency.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>At last, all additional attributes to <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>include ...<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> will
 be added to the environment used to evaluate the contents of the file.
@@ -1080,7 +1090,7 @@ attribute already set to <span class="hl str">&quot;ocaml&quot;</span>.
 <span class="hl kwa">&lt;/subsection&gt;</span>
 
 <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;ocaml-eval&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;ocaml-eval&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>This rule evaluate OCaml code. See the following
+<span class="hl kwa">&lt;p&gt;</span>This rule evaluates OCaml code. See the following
 blog posts: <span class="hl kwa">&lt;post</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;displaying-evaluated-ocaml-code&quot;</span><span class="hl kwa">/&gt;</span> and <span class="hl kwa">&lt;post</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ocaml-sessions&quot;</span><span class="hl kwa">/&gt;</span>.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/subsection&gt;</span>
@@ -1272,7 +1282,7 @@ be reduced to a link to the corresponding element, using the given text.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>If the node matching the <span class="hl kwa">&lt;icode&gt;</span>href<span class="hl kwa">&lt;/icode&gt;</span> was defined with the
 <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#block&quot;</span><span class="hl kwa">/&gt;</span> base rule (i.e. without <span class="hl kwa">&lt;icode&gt;</span>href<span class="hl kwa">&lt;/icode&gt;</span> attribute),
-then the title associated to this node is used as text for the procuded link, if not
+then the title associated to this node is used as text for the procuded link, if no
 text was given (<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;&lt;block</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;&lt;/icode&gt;</span>).
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>So,<span class="hl kwa">&lt;/p&gt;</span>

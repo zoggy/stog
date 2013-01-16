@@ -39,7 +39,7 @@
 To build Stog, you will need:
 </p>
 <ul>
-<li><span class="ext-a"><a href="http://caml.inria.fr/">OCaml &gt;= 4.00</a></span> installed,</li>
+<li><span class="ext-a"><a href="http://caml.inria.fr/">OCaml &gt;= 4.01</a></span> installed,</li>
 <li><span class="ext-a"><a href="http://config-file.forge.ocamlcore.org/">Config-file &gt;= 1.1</a></span>.</li>
 <li><span class="ext-a"><a href="http://erratique.ch/software/xmlm">Xmlm &gt;= 1.1.0</a></span>,</li>
 <li><span class="ext-a"><a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS &gt;= 2.0</a></span>,</li>
@@ -63,6 +63,29 @@ LaTeX in your pages.</li>
 </p>
 <div class="subsection"><div class="subsection-title" id="3467-b3c3-e16e-bfa3">Releases</div>
 <ul>
+
+<li><a href="stog-0.6.tar.gz">0.6</a> [2013-01-16]:
+<ul>
+<li>mod: do not write the config file if it already exists,</li>
+<li>add: <span class="icode">&lt;elements&gt;</span> node handles <span class="icode">reverse=&quot;false&quot;</span> attribute not to
+    reverse order of elements (which is default, i.e. the more recent first),</li>
+<li>mod: better cache system, using dependencies of each element on other
+    elements and files; also handles the stog environment used to compute
+    elements in cache, so that a change in the stog environment will
+    make all elements recomputed (for example when language changes),</li>
+<li>add: a rule using a file or another element must add a dependency from
+    the computed element to the element or file it depends on, using
+    <a href="ref-doc/Stog_plug.html#VALadd_dep"><span class="icode">Stog_plug.add_dep</span></a>,</li>
+<li>add: <span class="icode">&lt;include&gt;</span> now handles a <span class="icode">depend=&quot;false&quot;</span> attribute, to prevent
+    adding a dependency of the element on the included file,</li>
+<li>add: <span class="icode">--depcut</span> option, used when getting cached elements, to use
+    only one level of dependency between elements; this is useful
+    for example in case the site has a menubar, leading to having
+    almost all elements depending on almost all elements.</li>
+</ul>
+</li>
+
+
 <li><a href="stog-0.5.tar.gz">0.5</a> [2012-12-18]:
 <ul>
 <li>minor fixes (thanks to Gabriel Scherer),</li>
@@ -128,9 +151,9 @@ directory. Less templates required. User can define elements of any &quot;type&q
 <p>
 Just type
 <pre class="code-sh"><span class="hl kwc">make</span> <span class="hl opt">&amp;&amp;</span> <span class="hl kwc">make install</span></pre>
-This will install <span class="icode">stog</span> and <span class="icode">stog.byte</span>
-in the same directory as <span class="icode">ocamlc</span>. This will also
-install the <tt>stog</tt> library and the
+This will install <span class="icode">stog</span>, <span class="icode">stog.byte</span>
+and <span class="icode">stog-ocaml-session</span> in the same directory as
+<span class="icode">ocamlc</span>. This will also install the <tt>stog</tt> library and the
 <tt>stog.disqus</tt> and <tt>stog.markdown</tt> plugins, with findlib.
 </p>
 </div>
@@ -154,7 +177,7 @@ For information you can see the <a href="#pagesource"> source code of the page</
 To build Stog, you will need:
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://caml.inria.fr/&quot;</span><span class="hl kwa">&gt;</span>OCaml <span class="hl kwa">&gt;</span>= <span class="hl num">4.00</span><span class="hl kwa">&lt;/ext-a&gt;</span> installed,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://caml.inria.fr/&quot;</span><span class="hl kwa">&gt;</span>OCaml <span class="hl kwa">&gt;</span>= <span class="hl num">4.01</span><span class="hl kwa">&lt;/ext-a&gt;</span> installed,<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://config-file.forge.ocamlcore.org/&quot;</span><span class="hl kwa">&gt;</span>Config-file <span class="hl kwa">&gt;</span>= <span class="hl num">1.1</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://erratique.ch/software/xmlm&quot;</span><span class="hl kwa">&gt;</span>Xmlm <span class="hl kwa">&gt;</span>= <span class="hl num">1.1.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://zoggy.github.com/ocamlrss/&quot;</span><span class="hl kwa">&gt;</span>OCaml-RSS <span class="hl kwa">&gt;</span>= <span class="hl num">2.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
@@ -178,6 +201,29 @@ LaTeX in your pages.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Releases&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;ul&gt;</span>
+
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.6.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.6</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>-<span class="hl num">01</span>-<span class="hl num">16</span>]:
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>mod: do not write the config file if it already exists,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add: <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>elements<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> node handles <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwb">reverse</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> attribute not to
+    reverse order of elements (which is default, i.e. the more recent first),<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>mod: better cache system, using dependencies of each element on other
+    elements and files; also handles the stog environment used to compute
+    elements in cache, so that a change in the stog environment will
+    make all elements recomputed (for example when language changes),<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add: a rule using a file or another element must add a dependency from
+    the computed element to the element or file it depends on, using
+    <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_plug.html#VALadd_dep&quot;</span><span class="hl kwa">&gt;&lt;icode&gt;</span>Stog_plug.add_dep<span class="hl kwa">&lt;/icode&gt;&lt;/a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add: <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>include<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> now handles a <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwb">depend</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> attribute, to prevent
+    adding a dependency of the element on the included file,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add: <span class="hl kwa">&lt;icode&gt;</span>--depcut<span class="hl kwa">&lt;/icode&gt;</span> option, used when getting cached elements, to use
+    only one level of dependency between elements; this is useful
+    for example in case the site has a menubar, leading to having
+    almost all elements depending on almost all elements.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/li&gt;</span>
+
+
 <span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.5.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.5</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">12</span>-<span class="hl num">18</span>]:
 <span class="hl kwa">&lt;ul&gt;</span>
 <span class="hl kwa">&lt;li&gt;</span>minor fixes (thanks to Gabriel Scherer),<span class="hl kwa">&lt;/li&gt;</span>
@@ -243,9 +289,9 @@ directory. Less templates required. User can define elements of any <span class=
 <span class="hl kwa">&lt;p&gt;</span>
 Just type
 <span class="hl kwa">&lt;command-line&gt;</span>make <span class="hl kwd">&amp;amp;&amp;amp;</span> make install<span class="hl kwa">&lt;/command-line&gt;</span>
-This will install <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> and <span class="hl kwa">&lt;icode&gt;</span>stog.byte<span class="hl kwa">&lt;/icode&gt;</span>
-in the same directory as <span class="hl kwa">&lt;icode&gt;</span>ocamlc<span class="hl kwa">&lt;/icode&gt;</span>. This will also
-install the <span class="hl kwa">&lt;tt&gt;</span>stog<span class="hl kwa">&lt;/tt&gt;</span> library and the
+This will install <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span>, <span class="hl kwa">&lt;icode&gt;</span>stog.byte<span class="hl kwa">&lt;/icode&gt;</span>
+and <span class="hl kwa">&lt;icode&gt;</span>stog-ocaml-session<span class="hl kwa">&lt;/icode&gt;</span> in the same directory as
+<span class="hl kwa">&lt;icode&gt;</span>ocamlc<span class="hl kwa">&lt;/icode&gt;</span>. This will also install the <span class="hl kwa">&lt;tt&gt;</span>stog<span class="hl kwa">&lt;/tt&gt;</span> library and the
 <span class="hl kwa">&lt;tt&gt;</span>stog.disqus<span class="hl kwa">&lt;/tt&gt;</span> and <span class="hl kwa">&lt;tt&gt;</span>stog.markdown<span class="hl kwa">&lt;/tt&gt;</span> plugins, with findlib.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>

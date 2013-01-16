@@ -23,6 +23,7 @@
 <link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
 <link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
 <link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
+<link title="Stog_deps" rel="Chapter" href="Stog_deps.html">
 <link title="Stog_tmpl" rel="Chapter" href="Stog_tmpl.html">
 <link title="Stog_cache" rel="Chapter" href="Stog_cache.html">
 <link title="Stog_html" rel="Chapter" href="Stog_html.html">
@@ -257,8 +258,10 @@
 &nbsp;&nbsp;&nbsp;&nbsp;stog_files&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.file_tree;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;stog_modules&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog_mod&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;stog_used_mods&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Str_set</span>.t;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;stog_depcut&nbsp;:&nbsp;bool;<br>
 &nbsp;&nbsp;}<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;create_stog&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.stog<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stog_md5&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elt&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="constructor">Stog_tmap</span>.key&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elts_by_human_id&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;?typ:string&nbsp;<span class="keywordsign">-&gt;</span><br>

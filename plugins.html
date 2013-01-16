@@ -37,6 +37,8 @@ Plugins are written in OCaml. The compiled OCaml code is then
 loaded in Stog with the <span class="icode">--plugin</span> or <span class="icode">--package</span>
 options of <span class="icode">stog</span> (see <a href="http://zoggy.github.com/stog/getting_started.html#running">Running Stog</a>).
 </p>
+
+<ul class="toc"><li class="toc-section"><a href="#writing">Writing the code</a></li><li class="toc-section"><a href="#compiling">Compilation</a></li><li class="toc-section"><a href="#using">Using</a></li><li class="toc-section"><a href="#cache">Keeping the cache system in the loop</a></li></ul>
 <div class="section"><div class="section-title" id="writing">Writing the code</div>
 <p>
 A plugin just registers new functions associated to tags.
@@ -101,8 +103,31 @@ With our plugin example, we can use the new &quot;list&quot;:
 This will be evaluated (reduced) to
 </p>
 <pre class="code-xml"><span class="hl kwa">&lt;span&gt;</span>first thing<span class="hl kwa">&lt;/span&gt;&lt;b&gt;</span> -- <span class="hl kwa">&lt;/b&gt;</span>second thing<span class="hl kwa">&lt;b&gt;</span> -- <span class="hl kwa">&lt;/b&gt;&lt;div&gt;</span>something else<span class="hl kwa">&lt;/div&gt;</span></pre>
-
 </div>
+
+<div class="section"><div class="section-title" id="cache">Keeping the cache system in the loop</div>
+<p>
+The cache system (see <a href="http://zoggy.github.com/stog/getting_started.html#running">Running Stog</a>) must be aware
+of dependencies of each element on other elements and files.
+</p>
+<p>
+If a new rule defined by a plugin uses a file or implies a dependency
+from an element to another, this rule must declare this dependency
+using the <a href="ref-doc/Stog_plug.html#VALadd_dep"><code>Stog_plug.add_dep</code></a> function:
+</p>
+<pre class="code-ocaml"><span class="hl kwd">Stog_plug</span><span class="hl opt">.</span>add_dep <span class="hl opt">:</span> <span class="hl kwd">Stog_types</span><span class="hl opt">.</span>elt <span class="hl opt">-&gt;</span> dependency <span class="hl opt">-&gt;</span> <span class="hl kwc">unit</span></pre>
+<p>
+If a plugin computes information which could be cached, it can declare a
+new cache for this informations, using the
+<a href="ref-doc/Stog_plug.html#VALregister_cache"><code>Stog_plug.register_cache</code></a> function:
+</p>
+<pre class="code-ocaml"><span class="hl kwa">val</span> register_cache <span class="hl opt">: (</span><span class="hl kwa">module</span> <span class="hl kwd">Stog_cache</span><span class="hl opt">.</span><span class="hl kwd">Cache</span><span class="hl opt">) -&gt;</span> <span class="hl kwc">unit</span></pre>
+<p>
+The Cache module to provide is very simple; have a look at the
+<a href="ref-doc/Stog_cache.Cache.html"><code>Stog_cache.Cache</code></a>module type.
+</p>
+</div>
+
 
 
 
@@ -119,6 +144,8 @@ Plugins are written in OCaml. The compiled OCaml code is then
 loaded in Stog with the <span class="hl kwa">&lt;icode&gt;</span>--plugin<span class="hl kwa">&lt;/icode&gt;</span> or <span class="hl kwa">&lt;icode&gt;</span>--package<span class="hl kwa">&lt;/icode&gt;</span>
 options of <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> (see <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;getting_started#running&quot;</span><span class="hl kwa">/&gt;</span>).
 <span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;prepare-toc&gt;</span>
+<span class="hl kwa">&lt;toc/&gt;</span>
 <span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;writing&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Writing the code&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 A plugin just registers new functions associated to tags.
@@ -161,8 +188,31 @@ This will be evaluated (reduced) to
 <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;list</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;&amp;lt;b&amp;gt; -- &amp;lt;/b&amp;gt;&quot;</span><span class="hl kwa">&gt;&lt;span&gt;</span>first thing<span class="hl kwa">&lt;/span&gt;</span>second thing<span class="hl kwa">&lt;div&gt;</span>something else<span class="hl kwa">&lt;/div&gt;&lt;/list&gt;</span>
 <span class="hl kwa">&lt;/hcode&gt;</span>
-
 <span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;cache&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Keeping the cache system in the loop&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The cache system (see <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;getting_started#running&quot;</span><span class="hl kwa">/&gt;</span>) must be aware
+of dependencies of each element on other elements and files.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+If a new rule defined by a plugin uses a file or implies a dependency
+from an element to another, this rule must declare this dependency
+using the <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_plug.html#VALadd_dep&quot;</span><span class="hl kwa">&gt;&lt;code&gt;</span>Stog_plug.add_dep<span class="hl kwa">&lt;/code&gt;&lt;/a&gt;</span> function:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;ocaml&gt;</span>Stog_plug.add_dep : Stog_types.elt -<span class="hl kwa">&gt;</span> dependency -<span class="hl kwa">&gt;</span> unit<span class="hl kwa">&lt;/ocaml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+If a plugin computes information which could be cached, it can declare a
+new cache for this informations, using the
+<span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_plug.html#VALregister_cache&quot;</span><span class="hl kwa">&gt;&lt;code&gt;</span>Stog_plug.register_cache<span class="hl kwa">&lt;/code&gt;&lt;/a&gt;</span> function:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;ocaml&gt;</span>val register_cache : (module Stog_cache.Cache) -<span class="hl kwa">&gt;</span> unit<span class="hl kwa">&lt;/ocaml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The Cache module to provide is very simple; have a look at the
+<span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_cache.Cache.html&quot;</span><span class="hl kwa">&gt;&lt;code&gt;</span>Stog_cache.Cache<span class="hl kwa">&lt;/code&gt;&lt;/a&gt;</span>module type.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwa">&lt;/prepare-toc&gt;</span>
 <span class="hl kwa">&lt;/page&gt;</span></pre>
 </div>
 </div>

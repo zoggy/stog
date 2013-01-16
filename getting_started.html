@@ -127,7 +127,7 @@ belonging to a set,</li>
 <li><b>language-dep</b>: can be set to <i>false</i> to indicate that this page is not
 language dependent, when generating multi-language sites (this affects the name of the
 generated file),</li>
-<li><b>doctype</b>: specify the doctype which will printed into the final XML file. Default is &quot;HTML&quot;.</li>
+<li><b>doctype</b>: specify the doctype which will be printed into the final XML file. Default is &quot;HTML&quot;.</li>
 </ul>
 <p>
 Any other attribute will be available by its name in the environment when processing the template
@@ -214,10 +214,32 @@ to generate the &quot;fr&quot; part of your web site, removing all <span class="
 </p>
 
 <p>
-Stog will keep computed elements in directories <code>.stog/cache*</code>.
+Stog will keep computed elements in directory <code>.stog/cache</code>.
 To prevent stog from using this cache, use the <code>--nocache</code>
 command line option. The cache won't be read, but it will nevertheless
 be updated by contents of computed elements.
+</p>
+<p>
+The caching strategy uses dependencies between elements: if an element
+refers to another one (see <a href="http://zoggy.github.com/stog/funs.html">Predefined functions</a>), a dependency will be
+added and stored in the cache directory, so that this dependency will
+be used during the next run of stog. An element can also depend
+on files: the templates used, the files included, ... Dependencies are
+recursively computed.
+</p>
+<p>
+In some cases, using recursive dependencies may be too complete. For example,
+if you have a menubar appearing in all pages, all pages will depend on
+the elements referenced by the menubar, leading to all elements depending
+on all elements. A change in any element will then make every element recomputed
+at each run. To prevent this, the <code>--depcut</code> option specifies
+to use non-recursive dependencies in the caching strategy.
+</p>
+<p>
+A convenient way to use stog is to create a Makefile with different targets,
+to generate your site for a local test and for online publishing.
+Have a look at <span class="ext-a"><a href="https://github.com/zoggy/stog/tree/master/doc/Makefile">this
+Makefile</a></span> used to build stog documentation.
 </p>
 </div>
 
@@ -234,7 +256,7 @@ of functions applying rewrite rules to element body.
 <p>Various levels are required to ensure some rules will be applied after
 others, for example to verify cross-element links. Each level has a number,
 and levels are applied in order from 0 to n. Pre-defined levels are
-numbered like lines in basic programs: 0, 50, 100, 120, ... making
+numbered like lines in BASIC programs: 0, 50, 100, 120, ... making
 plugins able to insert new levels.
 </p>
 <p>The first application of a level to an element uses the
@@ -259,19 +281,20 @@ is stored in the cache (the <span class="icode">.stog/cache</span> directory).
 The final XML file is also created from this contents.
 </p>
 <p>Remark: If the element file was not modified since the corresponding
-cache file was stored, the contents of the element is read back from
+cache file was stored, nor its dependencies (see <a href="http://zoggy.github.com/stog/getting_started.html#running">Running Stog</a>),
+the contents of the element is read back from
 the cache, and the level functions are not applied to this element.
 </p>
 
 <p>The environment is used in the following way.
-For each encountered tag <span class="icode">t</span>, <span class="icode">t</span> is looked up
+For each encountered node with tag <span class="icode">t</span>, <span class="icode">t</span> is looked up
 in the environment for its associated <em>function</em> <span class="icode">f</span>.
 </p>
-<p>If no <span class="icode">f</span> is found, then the XML tag is left untouched
-and the children of the tag are then analysed.
+<p>If no <span class="icode">f</span> is found, then the XML node is left untouched
+and the children of the node are then analysed.
 </p>
 <p>If <span class="icode">f</span> is found, then it is called, given the environment,
-the tag attributes and the children of the tag. Then the function returns
+the attributes and the children of the node. Then the function returns
 a list of XML trees which must then be analysed.
 </p>
 <p>When this analyze reaches a fixpoint, the final XML is returned.
@@ -282,7 +305,8 @@ library.</p>
 before looking up for the tag in the environment.
 </p>
 <p>Stog comes with <a href="http://zoggy.github.com/stog/funs.html">predefined functions</a>
-associated to some tags, but more can be created in plugins.
+associated to some tags, but more can be created in
+<a href="http://zoggy.github.com/stog/plugins.html">plugins</a>.
 </p>
 </div>
 
@@ -415,7 +439,7 @@ will be copied by <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl k
 <span class="hl kwa">&lt;p&gt;</span>
 Here is an example of <span class="hl kwa">&lt;icode&gt;</span>.stog/config<span class="hl kwa">&lt;/icode&gt;</span> file:
 <span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./.stog/config&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./.stog/config&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">depend</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 A default file is generated by <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> if it does not exist.
 <span class="hl kwa">&lt;/p&gt;</span>
@@ -486,7 +510,7 @@ belonging to a set,<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>language-dep<span class="hl kwa">&lt;/b&gt;</span>: can be set to <span class="hl kwa">&lt;i&gt;</span>false<span class="hl kwa">&lt;/i&gt;</span> to indicate that this page is not
 language dependent, when generating multi-language sites (this affects the name of the
 generated file),<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>doctype<span class="hl kwa">&lt;/b&gt;</span>: specify the doctype which will printed into the final XML file. Default is <span class="hl str">&quot;HTML&quot;</span>.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>doctype<span class="hl kwa">&lt;/b&gt;</span>: specify the doctype which will be printed into the final XML file. Default is <span class="hl str">&quot;HTML&quot;</span>.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/ul&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 Any other attribute will be available by its name in the environment when processing the template
@@ -581,10 +605,32 @@ to generate the <span class="hl str">&quot;fr&quot;</span> part of your web site
 <span class="hl com">the provided</span>
 <span class="hl com">--&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
-Stog will keep computed elements in directories <span class="hl kwa">&lt;code&gt;</span>.stog/cache*<span class="hl kwa">&lt;/code&gt;</span>.
+Stog will keep computed elements in directory <span class="hl kwa">&lt;code&gt;</span>.stog/cache<span class="hl kwa">&lt;/code&gt;</span>.
 To prevent stog from using this cache, use the <span class="hl kwa">&lt;code&gt;</span>--nocache<span class="hl kwa">&lt;/code&gt;</span>
 command line option. The cache won't be read, but it will nevertheless
 be updated by contents of computed elements.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The caching strategy uses dependencies between elements: if an element
+refers to another one (see <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;funs&quot;</span><span class="hl kwa">/&gt;</span>), a dependency will be
+added and stored in the cache directory, so that this dependency will
+be used during the next run of stog. An element can also depend
+on files: the templates used, the files included, ... Dependencies are
+recursively computed.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+In some cases, using recursive dependencies may be too complete. For example,
+if you have a menubar appearing in all pages, all pages will depend on
+the elements referenced by the menubar, leading to all elements depending
+on all elements. A change in any element will then make every element recomputed
+at each run. To prevent this, the <span class="hl kwa">&lt;code&gt;</span>--depcut<span class="hl kwa">&lt;/code&gt;</span> option specifies
+to use non-recursive dependencies in the caching strategy.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+A convenient way to use stog is to create a Makefile with different targets,
+to generate your site for a local test and for online publishing.
+Have a look at <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/stog/tree/master/doc/Makefile&quot;</span><span class="hl kwa">&gt;</span>this
+Makefile<span class="hl kwa">&lt;/ext-a&gt;</span> used to build stog documentation.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>
 
@@ -601,7 +647,7 @@ of functions applying rewrite rules to element body.
 <span class="hl kwa">&lt;p&gt;</span>Various levels are required to ensure some rules will be applied after
 others, for example to verify cross-element links. Each level has a number,
 and levels are applied in order from <span class="hl num">0</span> to n. Pre-defined levels are
-numbered like lines in basic programs: <span class="hl num">0</span>, <span class="hl num">50</span>, <span class="hl num">100</span>, <span class="hl num">120</span>, ... making
+numbered like lines in BASIC programs: <span class="hl num">0</span>, <span class="hl num">50</span>, <span class="hl num">100</span>, <span class="hl num">120</span>, ... making
 plugins able to insert new levels.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>The first application of a level to an element uses the
@@ -626,19 +672,20 @@ is stored in the cache (the <span class="hl kwa">&lt;icode&gt;</span>.stog/cache
 The final XML file is also created from this contents.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>Remark: If the element file was not modified since the corresponding
-cache file was stored, the contents of the element is read back from
+cache file was stored, nor its dependencies (see <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#running&quot;</span><span class="hl kwa">/&gt;</span>),
+the contents of the element is read back from
 the cache, and the level functions are not applied to this element.
 <span class="hl kwa">&lt;/p&gt;</span>
 
 <span class="hl kwa">&lt;p&gt;</span>The environment is used in the following way.
-For each encountered tag <span class="hl kwa">&lt;icode&gt;</span>t<span class="hl kwa">&lt;/icode&gt;</span>, <span class="hl kwa">&lt;icode&gt;</span>t<span class="hl kwa">&lt;/icode&gt;</span> is looked up
+For each encountered node with tag <span class="hl kwa">&lt;icode&gt;</span>t<span class="hl kwa">&lt;/icode&gt;</span>, <span class="hl kwa">&lt;icode&gt;</span>t<span class="hl kwa">&lt;/icode&gt;</span> is looked up
 in the environment for its associated <span class="hl kwa">&lt;em&gt;</span>function<span class="hl kwa">&lt;/em&gt; &lt;icode&gt;</span>f<span class="hl kwa">&lt;/icode&gt;</span>.
 <span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>If no <span class="hl kwa">&lt;icode&gt;</span>f<span class="hl kwa">&lt;/icode&gt;</span> is found, then the XML tag is left untouched
-and the children of the tag are then analysed.
+<span class="hl kwa">&lt;p&gt;</span>If no <span class="hl kwa">&lt;icode&gt;</span>f<span class="hl kwa">&lt;/icode&gt;</span> is found, then the XML node is left untouched
+and the children of the node are then analysed.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>If <span class="hl kwa">&lt;icode&gt;</span>f<span class="hl kwa">&lt;/icode&gt;</span> is found, then it is called, given the environment,
-the tag attributes and the children of the tag. Then the function returns
+the attributes and the children of the node. Then the function returns
 a list of XML trees which must then be analysed.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>When this analyze reaches a fixpoint, the final XML is returned.
@@ -649,7 +696,8 @@ library.<span class="hl kwa">&lt;/p&gt;</span>
 before looking up for the tag in the environment.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>Stog comes with <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;funs&quot;</span><span class="hl kwa">&gt;</span>predefined functions<span class="hl kwa">&lt;/page&gt;</span>
-associated to some tags, but more can be created in plugins.
+associated to some tags, but more can be created in
+<span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins&quot;</span><span class="hl kwa">&gt;</span>plugins<span class="hl kwa">&lt;/elt&gt;</span>.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>
 
