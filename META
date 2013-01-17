@@ -1,11 +1,11 @@
-version = "1.0"
+version = "0.6.1"
 description = "Stog"
-requires = "pcre,xtmpl,rss,xmlm"
+requires = "config-file,xtmpl,rss,xmlm"
 archive(byte) = "stog.cma"
 archive(native) = "stog.cmxa"
 
 package "disqus" (
-  version = "1.0"
+  version = "0.6.1"
   description = "Stog disqus plugin"
   archive(byte) = "stog_disqus.cmo"
   archive(native) = "sotg_disqus.cmx"
@@ -14,7 +14,7 @@ package "disqus" (
 )
 
 package "markdown" (
-  version = "1.0"
+  version = "0.6.1"
   description = "Stog markdown plugin"
   archive(byte) = "stog_markdown.cmo"
   archive(native) = "sotg_markdown.cmx"
