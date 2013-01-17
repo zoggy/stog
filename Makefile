@@ -42,7 +42,6 @@ INCLUDES=-I +lablgtk2 -I +lablgtk-extras \
 	`$(OCAMLFIND) query -i-format xmlm` \
 	`$(OCAMLFIND) query -i-format rss` \
 	`$(OCAMLFIND) query -i-format xtmpl` \
-	`$(OCAMLFIND) query -i-format pcre` \
 	`$(OCAMLFIND) query -i-format config-file` \
 	`$(OCAMLFIND) query -i-format compiler-libs.toplevel`
 
@@ -59,8 +58,8 @@ RM=rm -f
 CP=cp -f
 MKDIR=mkdir -p
 
-SYSLIBS= unix.cmxa str.cmxa dynlink.cmxa pcre.cmxa xmlm.cmxa xtmpl.cmx rss.cmxa config_file.cmx
-SYSLIBS_BYTE= unix.cma str.cma dynlink.cma pcre.cma xmlm.cma xtmpl.cmo rss.cma config_file.cmo
+SYSLIBS= unix.cmxa str.cmxa dynlink.cmxa xmlm.cmxa xtmpl.cmx rss.cmxa config_file.cmx
+SYSLIBS_BYTE= unix.cma str.cma dynlink.cma xmlm.cma xtmpl.cmo rss.cma config_file.cmo
 
 GUI_SYSLIBS=lablgtk.cmxa \
 	lablgtksourceview2.cmxa \
