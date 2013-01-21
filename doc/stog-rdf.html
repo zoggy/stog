@@ -1,6 +1,163 @@
 <page title="Stog-rdf"
 navbar-plugins="active"
 >
+<p>
+This plugin allows to easily specify RDF triples within elements,
+to produce a RDF graph for the whole generated site.
+</p>
 
+<section id="download" title="Download">
+<p>
+Stog-writing is <ext-a href="https://github.com/zoggy/stog-rdf">hosted on Github</ext-a>.
+</p>
+<subsection id="releases" title="Releases">
+<a href="stog-rdf-0.6.tar.gz">0.6</a>: First numbered release.
+</subsection>
+</section>
 
+<section id="install" title="Installation and usage">
+<subsection title="Compiling and installing">
+<p>
+To install:
+</p>
+<command-line>
+git clone git@github.com:zoggy/stog-rdf.git
+cd stog-rdf
+make all install
+</command-line>
+<p>
+(you must have <ext-a href="http://ocaml-rdf.forge.ocamlcore.org">OCaml-RDF</ext-a> &gt;= 0.2 installed).
+This will install the <icode>stog-rdf</icode> package with ocamlfind.
+</p>
+</subsection>
+<subsection title="Usage">
+<p>
+To use:
+</p>
+<command-line>stog --package stog-rdf ...</command-line>
+</subsection>
+</section>
+<section id="definetriples" title="Defining RDF triples">
+<p>
+Stog-rdf defines a new rewrite rule associated to level 200, <ixml>rdf</ixml>.
+Each <ixml>&lt;rdf&gt;</ixml> node corresponds to a new triple whose subject
+is the current element url, or the current block id of the current
+element if the <ixml>&lt;rdf&gt;</ixml> node is contained in a XML node with an
+<ixml>id</ixml> attribute.
+</p>
+<p>
+Another function, associated to level 201, merges all RDF
+graphs into one graph and dumps this graph into a file.
+The name of this file is set in the <icode>.stog/config-rdf</icode> file
+(default is <icode>graph.rdf</icode>).
+</p>
+<p>
+Examples:
+</p>
+<hxml><![CDATA[
+<page title="...">
+  ...
+  <rdf pred="..." obj="..."/>
+  ...
+</page>
+]]></hxml>
+<p>
+Subject is the element url, <ixml>pred</ixml> is the URI of the predicate
+(possibly of the form <ixml>prefix:term</ixml>). <ixml>obj</ixml> is the URI of
+the object.
+</p>
+<hxml><![CDATA[
+<page title="...">
+  ...
+  <rdf pred="..." href="..."/>
+  ...
+</page>
+]]></hxml>
+<p>
+Subject and predicate are as in the first example. <ixml>href</ixml> is of
+the form <icode>hid[#id]</icode> to indicate an element of the site, and eventually
+a node id in this element. This is reduced to the complete URI
+of the element of element#id.
+</p>
+<hxml><![CDATA[
+<page title="...">
+   ...
+   <p id="id1">
+     <rdf pred="..." .../>
+   </p>
+</page>
+]]></hxml>
+<p>
+Here the subject is the URI formed by the element url and the id of the
+<ixml>&lt;p&gt;</ixml> node, for example <icode>http://my.example.com/foo/page1.html#id1</icode>
+if my element has hid foo/page1 and base url of the site is <icode>http://my.example.com</icode>.
+</p>
+<p>
+To add the triples, the
+<ixml><![CDATA[<rdf pred="pref:term" ...>...</rdf>]]></ixml> node is rewritten to
+</p>
+<hxml><![CDATA[
+<rdf:Description rdf:about="<element-url>[#id]">
+  <pref:term ...>
+    ...
+  </pref:term>
+</rdf:Description>
+]]></hxml>
+<p>
+and this XML tree is parsed using OCaml-RDF RDF/XML parser to add the triples
+to the element graph. If a <ixml>href</ixml> or <ixml>obj</ixml> attribute was used,
+the corresponding URI is associated to the `rdf:resource` attribute in the rewritten node:
+</p>
+<hxml><![CDATA[
+<rdf:Description rdf:about="<element-url>[#id]">
+  <pref:term rdf:resource="..." ...>
+    ...
+  </pref:term>
+</rdf:Description>
+]]></hxml>
+<p>
+and the whole <ixml>&lt;rdf:Description&gt;</ixml> node is parsed by the RDF/XML parser.
+</p>
+
+</section>
+<section id="namespaces" title="Namespaces">
+<p>
+Namespaces used in RDF triples in the site must be declared in the
+<icode>.stog/config-rdf</icode> file.
+</p>
+<p>
+The <icode>rdf</icode> and <icode>site</icode> namespaces don't need to be
+specified and are automatically handled respectively as
+</p>
+<hxml><![CDATA[
+rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#
+site:<site base url>
+]]></hxml>
+<p>
+(the site base url is the one specified with <icode>stog-site-url</icode> in the main stog element).
+</p>
+</section>
+<section id="tips" title="Tips">
+<p>
+To make definition of triples even easier, one can define rules in the
+element header, for example:
+</p>
+<hxml><![CDATA[
+<page title="..." with-contents="true">
+  <isproof><rdf pred="rdf:hasType" obj="science:proof"/></isproof>
+  <contents>
+    ...
+      <div class="proof" id="proof1">
+        <isproof/>
+      ...
+      </div>
+    ...
+  </contents>
+</page>
+]]></hxml>
+<p>
+This will add a triple
+</p>
+<hxml><![CDATA[<element-url>#proof1 rdf:hasType science:proof]]></hxml>
+</section>
 </page>
