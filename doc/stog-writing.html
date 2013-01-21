@@ -1,0 +1,176 @@
+<page title="Stog-writing"
+navbar-plugins="active"
+with-contents="true"
+>
+<contents>
+<p>
+This plugin adds new rewrite rules to use the following elements in your pages:
+</p>
+<ul>
+<li>footnotes,</li>
+<li>bibliography.</li>
+</ul>
+
+<section id="download" title="Download">
+<p>
+Stog-writing is <ext-a href="https://github.com/zoggy/stog-writing">hosted on Github</ext-a>.
+</p>
+<subsection id="releases" title="Releases">
+<a href="stog-writing-0.6.tar.gz">0.6</a>: First numbered release.
+</subsection>
+</section>
+
+<section id="install" title="Installation and usage">
+<p>
+To install:
+</p>
+<command-line>
+git clone git@github.com:zoggy/stog-writing.git
+cd stog-writing
+make all install
+</command-line>
+<p>
+(you must have <ext-a href="http://cristal.inria.fr/~fpottier/menhir/">Menhir</ext-a> installed).
+This will install the <icode>stog-writing</icode> package with ocamlfind.
+</p>
+<p>
+To use:
+</p>
+<command-line>
+stog --package stog-writing ...
+</command-line>
+
+</section>
+
+<section id="footnotes" title="Footnotes">
+<p>
+Footnotes are defined with the following syntax:
+</p>
+<hxml><note>...</note></hxml>
+<p>
+As usual, you can put any xml in the <ixml>&lt;note&gt;</ixml> node, it will be
+rewritten using the current environment.
+</p>
+<p>
+For this to work, all the XML tree containing notes must be
+included in a node
+</p>
+<hxml>
+<prepare-notes>
+  ...
+</prepare-notes>
+</hxml>
+<p>
+At last, all footnotes are inserted when a <ixml>&lt;notes/&gt;</ixml> node is encountered.
+Numbering is automatic.
+</p>
+<p>
+Example:
+</p>
+<hxml>
+<prepare-notes>
+    ...
+    bla bla bla<note>Hey, this is a footnote</note>.
+    ...
+    pim pam poum<note>This is a second note.</note>.
+    ...
+    <notes/>
+</prepare-notes>
+</hxml>
+</section>
+
+<section id="biblio" title="Bibliography">
+<subsection id="definebib" title="Defining bibliographies">
+<p>
+Bibliographies can be defined in any element header, with the following syntax:
+</p>
+<hxml><![CDATA[
+<bibliographies ...>
+  <bibliography .../>
+  <bibliography .../>
+  ...
+</bibliographies>
+]]></hxml>
+<p>
+The <ixml>&lt;bibliographies&gt;</ixml> node can have the following attributes:
+</p>
+<ul>
+<li><ixml>sort="..."</ixml>:
+  the items in each bibliography will be sorted by default, according
+  to the given list of comma-separated fields,</li>
+<li><ixml>reverse="true"</ixml>:
+   the items in each bibliography will be sorted in reverse order,</li>
+<li><ixml>prefix="..."</ixml>:
+   a default string to use as prefix for ids of entries read from bibtex files.</li>
+</ul>
+<p>
+Each <ixml>&lt;bibliography&gt;</ixml> node can have the following attributes:
+</p>
+<ul>
+<li><ixml>name="..."</ixml>:
+   the name of the bibliography, for further reference; default name is "default";
+              each bibliography must have a site-wide unique name,</li>
+<li><ixml>files="..."</ixml>:
+   a comma-separated list of filenames, in bibtex format;
+   filenames are relative to the element source file,</li>
+<li><ixml>sort</ixml>, <ixml>reverse</ixml> and <ixml>prefix</ixml>:
+  can be used to override the same attributes of the <ixml>&lt;bibliographies&gt;</ixml> node.
+</li>
+</ul>
+<p>
+Using attribute <ixml>bib-files="file1.bib,file2.bib,..."</ixml> in an element
+header is a shortcut for
+</p>
+<hxml>
+<bibliographies>
+  <bibliography files="file1.bib,file2.bib,..."/>
+</bibliographies>
+</hxml>
+</subsection>
+
+<subsection id="usingbib" title="Using bibliographies">
+<p>
+In your pages and posts, you can use this syntax to cite an entry:
+</p>
+<hxml>
+    <cite href="entryid"/>
+</hxml>
+<p>
+The format of the reference can be set by various means, in order of priority:
+</p>
+<ul>
+<li>in the children of the <ixml>&lt;cite&gt;</ixml> node, for example:
+  <hxml><cite href="..."><bib-entry-author/>, <i><bib-entry-title/></i></cite></hxml>
+</li>
+<li>using the <ixml>format</ixml> attribute, for example:
+  <hxml><cite href="entryid" format="$(author): $(title)"/></hxml>
+</li>
+<li>setting <ixml>cite-format</ixml> in the environment, for example in the header
+  of the page/article:
+  <hxml><cite-format><bib-entry-author/>, <i><bib-entry-title/></i></cite-format></hxml>
+</li>
+</ul>
+<p>
+These examples will display the contents of the fields <ixml>author</ixml> and <ixml>title</ixml>
+of the entry as text for the reference link.
+</p>
+<p>The default format is <ixml>[<bib-entry-rank/>]</ixml>.</p>
+<p>The rank is the position of the item in its bibliography.</p>
+<p>
+To include the complete list of entries of a bibliography, use the following node:
+</p>
+<hxml><bibliography/></hxml>
+<p>
+The attribute <ixml>name="..."</ixml> can be used to specify the name of the bibliography to
+insert. Default name is "default".
+</p>
+<p>
+The <ixml>&lt;bibliography&gt;</ixml> node will reduced into the list of its entries,
+each entry being inserted using the <icode>bib_entry.tmpl</icode> template. You can use
+the <icode>bib_entry.tmpl</icode> file included as an example. You will have to place it in your stog
+template directory.
+</p>
+</subsection>
+</section>
+</contents>
+</page>

@@ -31,7 +31,7 @@ STOG=$(STOGDIR)/stog --plugin ../plugins/plugin_example.cmxs --plugin ../plugins
 #STOG=$(STOGDIR)/stog.byte --plugin ../plugins/plugin_example.cmo --plugin ../plugins/stog_disqus.cmo
 DEST_DIR=`pwd`/../doc-output
 BASE_URL_OPTION=
-STOG_OPTIONS= -d $(DEST_DIR) -v --depcut $(BASE_URL_OPTION) $(MORE_OPTS)
+STOG_OPTIONS= -d $(DEST_DIR) -v -v -v --depcut $(BASE_URL_OPTION) $(MORE_OPTS)
 LESSC=lessc
 
 .PHONY: build site test style
