@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0"><channel><title>Stog: stog</title><link>http://zoggy.github.com/stog/topic_stog.html</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>16 Jan 2013 08:00:00 +0000</pubDate><lastBuildDate>16 Jan 2013 08:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.com/stog/</url><title>Stog</title><link>http://zoggy.github.com/stog</link></image><item><title>Stog 0.6</title><link>http://zoggy.github.com/stog/posts/release-0.6.html</link><description>
+<rss version="2.0"><channel><title>Stog: stog</title><link>http://zoggy.github.com/stog/topic_stog.html</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>22 Jan 2013 08:00:00 +0000</pubDate><lastBuildDate>22 Jan 2013 08:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.com/stog/</url><title>Stog</title><link>http://zoggy.github.com/stog</link></image><item><title>Stog in Opam</title><link>http://zoggy.github.com/stog/posts/stog-in-opam.html</link><description>
+&lt;p&gt;
+Stog has been available in
+&lt;span class=&quot;ext-a&quot;&gt;&lt;a href=&quot;http://opam.ocamlpro.com&quot;&gt;Opam&lt;/a&gt;&lt;/span&gt; since release 0.4.
+The &lt;elt href=&quot;/stog-writing&quot;/&gt; and &lt;elt href=&quot;/stog-rdf&quot;/&gt; plugins
+are also available in Opam since yesterday.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.com/stog/posts/stog-in-opam.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>22 Jan 2013 08:00:00 +0000</pubDate><category>stog</category><category>opam</category><category>plugins</category><guid isPermaLink="true">http://zoggy.github.com/stog/posts/stog-in-opam.html</guid></item><item><title>Stog 0.6</title><link>http://zoggy.github.com/stog/posts/release-0.6.html</link><description>
 &lt;p&gt;
 Release 0.6 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
 &lt;/p&gt;
@@ -45,8 +52,4 @@ offers the &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;
 function to evaluate code and display the result. This is nice to provide
 verified code examples on your pages.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.com/stog/posts/displaying-evaluated-ocaml-code.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>11 Mar 2012 08:00:00 +0000</pubDate><category>stog</category><category>ocaml</category><category>evaluation</category><category>code</category><guid isPermaLink="true">http://zoggy.github.com/stog/posts/displaying-evaluated-ocaml-code.html</guid></item><item><title>LaTeX in stog</title><link>http://zoggy.github.com/stog/posts/latex-in-stog.html</link><description>
-&lt;p&gt;
-Stog handles &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;latex&amp;gt;&lt;/span&gt; ... &lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;/latex&amp;gt;&lt;/span&gt;&lt;/span&gt;.
-&lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.com/stog/posts/latex-in-stog.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>09 Mar 2012 08:00:00 +0000</pubDate><category>stog</category><category>latex</category><category>svg</category><guid isPermaLink="true">http://zoggy.github.com/stog/posts/latex-in-stog.html</guid></item></channel></rss>
+&lt;a href=&quot;http://zoggy.github.com/stog/posts/displaying-evaluated-ocaml-code.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>11 Mar 2012 08:00:00 +0000</pubDate><category>stog</category><category>ocaml</category><category>evaluation</category><category>code</category><guid isPermaLink="true">http://zoggy.github.com/stog/posts/displaying-evaluated-ocaml-code.html</guid></item></channel></rss>
