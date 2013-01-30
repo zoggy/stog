@@ -1127,10 +1127,11 @@ let rec elt_to_rss_item stog elt_id elt =
     (List.map f_word elt.elt_topics) @
     (List.map f_word elt.elt_keywords)
   in
-  let desc_xml =
-    let env = elt_env build_base_rules stog ~env:Xtmpl.env_empty elt_id elt in
-    Xtmpl.apply_to_xmls env (intro_of_elt stog elt)
-  in
+  let env = elt_env build_base_rules stog ~env:Xtmpl.env_empty elt_id elt in
+  let author =
+    let author = get_in_env env ("", "author") in
+    if author = "" then None else Some author in
+  let desc_xml = Xtmpl.apply_to_xmls env (intro_of_elt stog elt) in
   let desc = String.concat "" (List.map Xtmpl.string_of_xml desc_xml) in
   Rss.item ~title: elt.elt_title
   ~desc
@@ -1138,6 +1139,7 @@ let rec elt_to_rss_item stog elt_id elt =
   ~pubdate
   ~cats
   ~guid: { Rss.guid_name = link ; guid_permalink = true }
+  ?author
   ()
 
 and generate_rss_feed_file stog ?title link elts file =
