@@ -1,15 +1,16 @@
 <html>
 <head>
-<title><site-title/> : <elt-title/></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title><site-title/> : <elt-title/></title>
 <link rel="stylesheet" type="text/css" href="&lt;site-url/&gt;/style.css"></link>
 </head><body>
 <div id="page">
 <include file="menubar.tmpl"/>
 <div id="header">
-<if elt-type="post">><div class="elt-navbar"><if previous=""><span/><div class="navleft"><previous/></div></if><if next=""><span/><div class="navright"><next/></div></if></div></if>
+<if elt-type="post">><div class="elt-navbar"><if previous=""><main_/><div class="navleft"><previous/></div></if><if next=""><main_/><div class="navright"><next/></div></if></div></if>
 <div class="page-title"><elt-title/></div>
 </div>
-<if withsidebar="true"><include file="sidebar.tmpl"/><span/></if>
+<if withsidebar="true"><include file="sidebar.tmpl"/><main_/></if>
 <if elt-type="post"><div class="date"><elt-date/></div></if>
 <elt-body/>
 
