@@ -38,14 +38,10 @@ CAMLP4O=camlp4o
 OCAMLLIB:=`$(OCAMLC) -where`
 OCAMLFIND=ocamlfind
 
-INCLUDES=-I +lablgtk2 -I +lablgtk-extras \
-	`$(OCAMLFIND) query -i-format xmlm` \
-	`$(OCAMLFIND) query -i-format rss` \
-	`$(OCAMLFIND) query -i-format xtmpl` \
-	`$(OCAMLFIND) query -i-format config-file` \
-	`$(OCAMLFIND) query -i-format compiler-libs.toplevel`
+PACKAGES=xmlm,rss,xtmpl,config-file,dynlink,unix,str
+OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
 
-COMPFLAGS=$(INCLUDES) -annot -rectypes -g #-w +K
+COMPFLAGS= -annot -rectypes -g #-w +K
 OCAMLPP=
 
 PLUGINS_BYTE= \
@@ -57,22 +53,6 @@ PLUGINS_OPT=$(PLUGINS_BYTE:.cmo=.cmxs)
 RM=rm -f
 CP=cp -f
 MKDIR=mkdir -p
-
-SYSLIBS= unix.cmxa str.cmxa dynlink.cmxa xmlm.cmxa xtmpl.cmx rss.cmxa config_file.cmx
-SYSLIBS_BYTE= unix.cma str.cma dynlink.cma xmlm.cma xtmpl.cmo rss.cma config_file.cmo
-
-GUI_SYSLIBS=lablgtk.cmxa \
-	lablgtksourceview2.cmxa \
-	config_file.cmx \
-	gtksv_utils.cmx \
-	gmylist.cmx \
-	okey.cmx
-GUI_SYSLIBS_BYTE=lablgtk.cma \
-	lablgtksourceview2.cma \
-	config_file.cmo \
-	gtksv_utils.cmo \
-	gmylist.cmo \
-	okey.cmo
 
 LIB_CMXFILES= \
 	stog_msg.cmx \
@@ -109,6 +89,10 @@ MAIN_BYTE=$(MAIN).byte
 
 OCAML_SESSION=$(MAIN)-ocaml-session
 
+MK_STOG=mk-$(MAIN)
+MK_STOG_BYTE=mk-$(MAIN_BYTE)
+MK_STOG_OCAML=mk-$(OCAML_SESSION)
+
 OCAML_SESSION_CMOFILES= \
 	stog_ocaml_types.cmo \
 	stog_misc.cmo \
@@ -129,40 +113,78 @@ GUI_MAIN_BYTE=$(GUI_MAIN).byte
 all: opt byte
 gui: guiopt guibyte
 
-opt: $(LIB) $(MAIN) plugins/plugin_example.cmxs $(PLUGINS_OPT)
+opt: $(LIB) $(MAIN) plugins/plugin_example.cmxs $(PLUGINS_OPT) $(MK_STOG)
 guiopt: $(GUI_MAIN)
-byte: $(LIB_BYTE) $(MAIN_BYTE) $(OCAML_SESSION) plugins/plugin_example.cmo $(PLUGINS_BYTE)
+byte: $(LIB_BYTE) $(MAIN_BYTE) $(OCAML_SESSION) plugins/plugin_example.cmo $(PLUGINS_BYTE) \
+	$(MK_STOG_BYTE) $(MK_STOG_OCAML)
 guibyte: $(GUI_MAIN_BYTE)
 
 $(MAIN): $(LIB) stog_main.cmx
-	$(OCAMLOPT) -verbose -linkall -o $@ $(COMPFLAGS) $(SYSLIBS) \
-	$^
+	$(OCAMLFIND) ocamlopt -package $(PACKAGES) -verbose -linkall -linkpkg -o $@ $(COMPFLAGS) $^
 
 $(MAIN_BYTE): $(LIB_BYTE) stog_main.cmo
-	$(OCAMLC) -linkall -o $@ $(COMPFLAGS) $(SYSLIBS_BYTE) \
-	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $^
+	$(OCAMLFIND) ocamlc -package $(PACKAGES) -linkall -linkpkg -o $@ $(COMPFLAGS) $^
+#	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $^
 
 $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
-	$(OCAMLOPT) -a -o $@ $(LIB_CMXFILES)
+	$(OCAMLFIND) ocamlopt -a -o $@ $(LIB_CMXFILES)
 
 $(LIB_BYTE): $(LIB_CMIFILES) $(LIB_CMOFILES)
-	$(OCAMLC) -a -o $@ $(LIB_CMOFILES)
+	$(OCAMLFIND) ocamlc -a -o $@ $(LIB_CMOFILES)
 
 $(OCAML_SESSION): $(OCAML_SESSION_CMIFILES) $(OCAML_SESSION_CMOFILES)
-	$(OCAMLC) -linkall -o $@ $(COMPFLAGS) unix.cma str.cma \
-	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $(OCAML_SESSION_CMOFILES)
-
-
-$(GUI_MAIN): $(LIB) $(GUI_MAIN_CMIFILES) $(GUI_MAIN_CMXFILES)
-	$(OCAMLOPT) -verbose -linkall -o $@ $(COMPFLAGS) $(SYSLIBS) \
-	$(LIB) $(GUI_SYSLIBS) $(GUI_MAIN_CMXFILES)
-
-$(GUI_MAIN_BYTE): $(LIB_BYTE) $(GUI_MAIN_CMIFILES) $(GUI_MAIN_CMOFILES)
-	$(OCAMLC) -linkall -o $@ $(COMPFLAGS) $(SYSLIBS_BYTE) \
-	$(LIB_BYTE) $(GUI_SYSLIBS_BYTE) $(GUI_MAIN_CMOFILES)
+	$(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) -linkpkg -linkall -o $@ $(COMPFLAGS) $(OCAML_SESSION_CMOFILES)
 
 stog_ocaml.cmo: stog_ocaml.ml errors.cmi
-	$(OCAMLC) $(COMPFLAGS) -c $<
+	$(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) $(COMPFLAGS) -c $<
+stog_ocaml_session.cmo: stog_ocaml_session.ml
+	$(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) $(COMPFLAGS) -c $<
+
+# mk scripts
+$(MK_STOG): $(LIB)
+	@echo -n "Creating $@... "
+	@$(RM) $@
+	@echo "# Multi-shell script.  Works under Bourne Shell, MPW Shell, zsh." > $@
+	@echo "if : == x" >> $@
+	@echo "then # Bourne Shell or zsh" >> $@
+	@echo "  exec $(OCAMLFIND) ocamlopt -package stog -linkpkg -linkall \"\$$@\" stog_main.cmx" >> $@
+	@echo "else #MPW Shell" >> $@
+	@echo "  exec $(OCAMLFIND) ocamlopt -package stog -linkpkg -linkall {\"parameters\"} stog_main.cmx" >> $@
+	@echo "End # uppercase E because \"end\" is a keyword in zsh" >> $@
+	@echo "fi" >> $@
+	@chmod ugo+rx $@
+	@chmod a-w $@
+	@echo done
+
+$(MK_STOG_BYTE): $(LIB)
+	@echo -n "Creating $@... "
+	@$(RM) $@
+	@echo "# Multi-shell script.  Works under Bourne Shell, MPW Shell, zsh." > $@
+	@echo "if : == x" >> $@
+	@echo "then # Bourne Shell or zsh" >> $@
+	@echo "  exec $(OCAMLFIND) ocamlc -package stog -linkpkg -linkall \"\$$@\" stog_main.cmo" >> $@
+	@echo "else #MPW Shell" >> $@
+	@echo "  exec $(OCAMLFIND) ocamlc -package stog -linkpkg -linkall {\"parameters\"} stog_main.cmo" >> $@
+	@echo "End # uppercase E because \"end\" is a keyword in zsh" >> $@
+	@echo "fi" >> $@
+	@chmod ugo+rx $@
+	@chmod a-w $@
+	@echo done
+
+$(MK_STOG_OCAML): $(LIB) $(OCAML_SESSION_CMOFILES)
+	@echo -n "Creating $@... "
+	@$(RM) $@
+	@echo "# Multi-shell script.  Works under Bourne Shell, MPW Shell, zsh." > $@
+	@echo "if : == x" >> $@
+	@echo "then # Bourne Shell or zsh" >> $@
+	@echo "  exec $(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) -linkpkg -linkall \"\$$@\" $(OCAML_SESSION_CMOFILES)" >> $@
+	@echo "else #MPW Shell" >> $@
+	@echo "  exec $(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) -linkpkg -linkall {\"parameters\"} $(OCAML_SESSION_CMOFILES)" >> $@
+	@echo "End # uppercase E because \"end\" is a keyword in zsh" >> $@
+	@echo "fi" >> $@
+	@chmod ugo+rx $@
+	@chmod a-w $@
+	@echo done
 
 ##########
 .PHONY: doc webdoc ocamldoc
@@ -189,8 +211,11 @@ install:
 	@$(OCAMLFIND) install stog META \
 		$(PLUGINS_BYTE) $(PLUGINS_OPT) $(PLUGINS_OPT:.cmxs=.cmx) $(PLUGINS_OPT:.cmxs=.o) \
 		$(LIB_CMIFILES) $(LIB_CMXFILES) $(LIB_CMXFILES:.cmx=.o) \
-		$(LIB_BYTE) $(LIB) $(LIB:.cmxa=.a)
-	$(CP) $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) `dirname \`which $(OCAMLC)\``/
+		$(LIB_BYTE) $(LIB) $(LIB:.cmxa=.a) stog_main.cm* stog_main.o \
+		$(OCAML_SESSION_CMOFILES)
+	$(CP) $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
+	  $(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
+		`dirname \`which $(OCAMLC)\``/
 
 uninstall:
 	@$(OCAMLFIND) remove stog
@@ -198,6 +223,7 @@ uninstall:
 #####
 clean:
 	$(RM) $(MAIN) $(MAIN_BYTE) $(GUI_MAIN) $(GUI_MAIN_BYTE) *.cm* *.o *.a *.x *.annot
+	$(RM) $(MK_STOG) $(ML_STOG_BYTE) $(MK_STOG_OCAML)
 	(cd plugins && $(RM) *.cm* *.o *.a *.x *.annot)
 
 # archive :
@@ -219,26 +245,23 @@ noheaders:
 .SUFFIXES: .mli .ml .cmi .cmo .cmx .mll .mly
 
 %.cmi:%.mli
-	$(OCAMLC) $(OCAMLPP) $(COMPFLAGS) -c $<
+	$(OCAMLFIND) ocamlc -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
 
 %.cmo:%.ml
 	if test -f `dirname $<`/`basename $< .ml`.mli && test ! -f `dirname $<`/`basename $< .ml`.cmi ; then \
-	$(OCAMLC) $(OCAMLPP) $(COMPFLAGS) -c `dirname $<`/`basename $< .ml`.mli; fi
-	$(OCAMLC) $(OCAMLPP) $(COMPFLAGS) -c $<
+	$(OCAMLFIND) ocamlc -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c `dirname $<`/`basename $< .ml`.mli; fi
+	$(OCAMLFIND) ocamlc -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
 
 %.cmi %.cmo:%.ml
 	if test -f `dirname $<`/`basename $< .ml`.mli && test ! -f `dirname $<`/`basename $< .ml`.cmi ; then \
-	$(OCAMLC) $(OCAMLPP) $(COMPFLAGS) -c `dirname $<`/`basename $< .ml`.mli; fi
-	$(OCAMLC) $(OCAMLPP) $(COMPFLAGS) -c $<
+	$(OCAMLFIND) ocamlc -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c `dirname $<`/`basename $< .ml`.mli; fi
+	$(OCAMLFIND) ocamlc -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
 
 %.cmx %.o:%.ml
-	$(OCAMLOPT) $(OCAMLPP) $(COMPFLAGS) -c $<
+	$(OCAMLFIND) ocamlopt -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
 
 %.cmxs: %.ml
-	$(OCAMLOPT) $(OCAMLPP) $(COMPFLAGS) -shared -o $@ $<
-
-%.o: %.c
-	$(OCAMLOPT) $(COMPFLAGS) -c $< && $(MV) `basename $@` `dirname $@`
+	$(OCAMLFIND) ocamlopt -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -shared -o $@ $<
 
 %.ml:%.mll
 	$(OCAMLLEX) $<
@@ -246,14 +269,9 @@ noheaders:
 %.mli %.ml:%.mly
 	$(OCAMLYACC) -v $<
 
-stog_coms.cmo stog_coms.cmi: stog_coms.ml
-	$(OCAMLC) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
-stog_coms.cmx: stog_coms.ml
-	$(OCAMLOPT) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
-
 .PHONY: clean depend
 
 .depend depend:
-	ocamldep -pp $(CAMLP4O) *.ml *.mli > .depend
+	$(OCAMLFIND) ocamldep -pp $(CAMLP4O) *.ml *.mli > .depend
 
 include .depend
