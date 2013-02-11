@@ -135,8 +135,6 @@ $(LIB_BYTE): $(LIB_CMIFILES) $(LIB_CMOFILES)
 $(OCAML_SESSION): $(OCAML_SESSION_CMIFILES) $(OCAML_SESSION_CMOFILES)
 	$(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) -linkpkg -linkall -o $@ $(COMPFLAGS) $(OCAML_SESSION_CMOFILES)
 
-stog_ocaml.cmo: stog_ocaml.ml errors.cmi
-	$(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) $(COMPFLAGS) -c $<
 stog_ocaml_session.cmo: stog_ocaml_session.ml
 	$(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) $(COMPFLAGS) -c $<
 
@@ -177,9 +175,9 @@ $(MK_STOG_OCAML): $(LIB) $(OCAML_SESSION_CMOFILES)
 	@echo "# Multi-shell script.  Works under Bourne Shell, MPW Shell, zsh." > $@
 	@echo "if : == x" >> $@
 	@echo "then # Bourne Shell or zsh" >> $@
-	@echo "  exec $(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) -linkpkg -linkall \"\$$@\" $(OCAML_SESSION_CMOFILES)" >> $@
+	@echo "  exec $(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) -linkpkg `ocamlfind query -i-format stog` -linkall \"\$$@\" $(OCAML_SESSION_CMOFILES)" >> $@
 	@echo "else #MPW Shell" >> $@
-	@echo "  exec $(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) -linkpkg -linkall {\"parameters\"} $(OCAML_SESSION_CMOFILES)" >> $@
+	@echo "  exec $(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) -linkpkg `ocamlfind query -i-format stog` -linkall {\"parameters\"} $(OCAML_SESSION_CMOFILES)" >> $@
 	@echo "End # uppercase E because \"end\" is a keyword in zsh" >> $@
 	@echo "fi" >> $@
 	@chmod ugo+rx $@

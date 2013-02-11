@@ -98,6 +98,9 @@ let options = [
 
     "--depcut", Arg.Set depcut,
     " use only 1 level of dependency when getting cached elements";
+
+    "--stog-ocaml-session", Arg.Set_string Stog_ocaml.stog_ocaml_session,
+    "<command> use <command> as stog-ocaml-session program";
   ];;
 
 let usage = Printf.sprintf

@@ -28,6 +28,8 @@
 
 (** Functions to eval and display ocaml in generated pages. *)
 
+val stog_ocaml_session : string ref
+
 val close_sessions : unit -> unit
 
 val fun_eval : Stog_types.stog -> Xtmpl.callback

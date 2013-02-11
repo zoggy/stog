@@ -28,7 +28,7 @@
 
 (** *)
 
-let stog_ocaml_session = "stog-ocaml-session";;
+let stog_ocaml_session = ref "stog-ocaml-session";;
 
 type session =
   { session_out : out_channel ;
@@ -51,7 +51,7 @@ let close_sessions () =
 
 let create_session () =
   try
-    let (ic, oc) = Unix.open_process stog_ocaml_session in
+    let (ic, oc) = Unix.open_process !stog_ocaml_session in
     { session_out = oc ; session_in = ic }
   with
     Unix.Unix_error (e, s1, s2) ->
