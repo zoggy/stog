@@ -1,4 +1,15 @@
+TODO: add -I and -package option to stog-ocaml-session
+
 Next release:
+  * add: new scripts mk-stog, mk-stog.byte, mk-stog-ocaml-session
+    to create custom stog and stog-ocaml-session
+  * add: option --stog-ocaml-session to stog, to indicate the program
+    used to evaluate ocaml code
+  * fix META file
+  * add: support for authors in the RSS feed. Thanks to Gabriel Scherer.
+  * mod: use ocamlfind to compile
+
+Release 0.6[.1]:
   * mod: do not write the config file if it already exists
   * add: --depcut option, used when getting cached elements, to use
     only one level of dependency between elements; this is useful
