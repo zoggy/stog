@@ -1,6 +1,6 @@
-TODO: add -I and -package option to stog-ocaml-session
 
 Next release:
+  * add: -I and -package options to stog-ocaml-session
   * add: new scripts mk-stog, mk-stog.byte, mk-stog-ocaml-session
     to create custom stog and stog-ocaml-session
   * add: option --stog-ocaml-session to stog, to indicate the program
