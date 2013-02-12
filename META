@@ -9,8 +9,8 @@ package "disqus" (
   description = "Stog disqus plugin"
   archive(byte) = "stog_disqus.cmo"
   archive(native) = "stog_disqus.cmx"
-  archive(stog,byte) = "stog_disqus.cmo"
-  archive(stog,native) = "stog_disqus.cmxs"
+  archive(plugin,byte) = "stog_disqus.cmo"
+  archive(plugin,native) = "stog_disqus.cmxs"
 )
 
 package "markdown" (
@@ -18,8 +18,8 @@ package "markdown" (
   description = "Stog markdown plugin"
   archive(byte) = "stog_markdown.cmo"
   archive(native) = "stog_markdown.cmx"
-  archive(stog,byte) = "stog_markdown.cmo"
-  archive(stog,native) = "stog_markdown.cmxs"
+  archive(plugin,byte) = "stog_markdown.cmo"
+  archive(plugin,native) = "stog_markdown.cmxs"
 )
 
 

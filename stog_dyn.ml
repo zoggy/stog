@@ -51,9 +51,9 @@ let load_files =
 ;;
 
 let files_of_packages kind pkg_names =
-  let file = Filename.temp_file "stog" "txt" in
+  let file = Filename.temp_file "stog" ".txt" in
   let com =
-    Printf.sprintf "ocamlfind query %s -predicates stog,%s -r -format %%d/%%a > %s"
+    Printf.sprintf "ocamlfind query %s -predicates plugin,%s -r -format %%d/%%a > %s"
       (String.concat " " (List.map Filename.quote pkg_names))
       (match kind with `Byte -> "byte" | `Native -> "native")
       (Filename.quote file)
