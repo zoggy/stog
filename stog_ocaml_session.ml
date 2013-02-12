@@ -125,32 +125,82 @@ let eval input =
       raise e
 ;;
 
-let ic_input = Unix.in_channel_of_descr (Unix.dup Unix.stdin);;
-let oc_result = Unix.out_channel_of_descr (Unix.dup Unix.stdout);;
-let old_stderr = Unix.dup Unix.stderr;;
-let rec loop () =
-  let finish =
-    try
-      let input = Stog_ocaml_types.read_input ic_input in
-      let res = eval input in
-      Stog_ocaml_types.write_result oc_result res;
-      false
-    with
-      End_of_file -> true
-    | e ->
-        let msg =
-          match e with
-            Failure msg -> msg
-          | e -> Printexc.to_string e
-        in
-        let oc = Unix.out_channel_of_descr old_stderr in
-        output_string oc msg;
-        flush oc;
-        false
-  in
-  if not finish then loop ()
+let add_directory =
+  match Hashtbl.find Toploop.directive_table "directory" with
+    Toploop.Directive_string f -> f
+  | _ -> failwith "Directive \"directory\" not found"
 ;;
 
-loop();;
-close_out oc_result;;
+let option_package s =
+  let packages = String.concat " " (Stog_misc.split_string s [',']) in
+  let temp_file = Filename.temp_file "stogocamlsession" ".txt" in
+  let com = Printf.sprintf "ocamlfind query %s > %s"
+    packages (Filename.quote temp_file)
+  in
+  match Sys.command com with
+    0 ->
+      let dirs = Stog_misc.split_string
+        (Stog_misc.string_of_file temp_file) ['\n' ; '\r']
+      in
+      List.iter add_directory dirs;
+      (try Sys.remove temp_file with _ -> ())
+  | n ->
+      (try Sys.remove temp_file with _ -> ());
+      failwith (Printf.sprintf "Command %S failed with error code %d" com n)
+;;
+
+let parse_options () =
+  let usage = Printf.sprintf "Usage: %s [options]\nwhere options are:" Sys.argv.(0) in
+  Arg.parse
+    [
+      "-I", Arg.String add_directory,
+      "<dir> add <dir> to the list of include directories" ;
+
+      "-package", Arg.String option_package,
+      "<pkg1[,pkg2[,...]]> add ocamlfind packages to the list of include directories" ;
+    ]
+    (fun _ -> ())
+    usage
+;;
+
+let main () =
+  parse_options ();
+  let ic_input = Unix.in_channel_of_descr (Unix.dup Unix.stdin) in
+  let oc_result = Unix.out_channel_of_descr (Unix.dup Unix.stdout) in
+  let old_stderr = Unix.dup Unix.stderr in
+  let rec loop () =
+    let finish =
+      try
+        let input = Stog_ocaml_types.read_input ic_input in
+        let res = eval input in
+        Stog_ocaml_types.write_result oc_result res;
+        false
+      with
+        End_of_file -> true
+      | e ->
+          let msg =
+            match e with
+              Failure msg -> msg
+            | e -> Printexc.to_string e
+          in
+          let oc = Unix.out_channel_of_descr old_stderr in
+          output_string oc msg;
+          flush oc;
+          false
+    in
+    if not finish then loop ()
+  in
+  loop ();
+  close_out oc_result
+;;
+
+try main ()
+with
+  Sys_error s | Failure s ->
+    prerr_endline s;
+    exit 1
+| e ->
+    prerr_endline (Printexc.to_string e);
+    exit 1
+;;
 
