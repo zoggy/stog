@@ -49,13 +49,19 @@ let verbose_level () = !verbose_level ;;
 let warnings = ref 0;;
 let print_warning = ref prerr_endline;;
 
+module Sset = Set.Make (struct type t = string let compare = Pervasives.compare end);;
+let seen_warnings = ref Sset.empty;;
 let warning ?info msg =
   let msg = Printf.sprintf "Warning: %s%s"
     (match info with None -> "" | Some s -> Printf.sprintf "[%s]" s)
     msg
   in
-  incr warnings;
-  !print_warning msg
+  if not (Sset.mem msg !seen_warnings) then
+    begin
+      incr warnings;
+      seen_warnings := Sset.add msg !seen_warnings;
+      !print_warning msg
+    end
 ;;
 
 let set_print_warning = (:=) print_warning;;
