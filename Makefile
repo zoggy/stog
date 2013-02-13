@@ -205,19 +205,30 @@ webdoc:
 	(cd doc && $(MAKE) DEST_DIR=`pwd`/../../stog-pages)
 
 ##########
-install:
+install: install-lib install-bin
+
+install-lib:
 	@$(OCAMLFIND) install stog META \
 		$(PLUGINS_BYTE) $(PLUGINS_OPT) $(PLUGINS_OPT:.cmxs=.cmx) $(PLUGINS_OPT:.cmxs=.o) \
 		$(LIB_CMIFILES) $(LIB_CMXFILES) $(LIB_CMXFILES:.cmx=.o) \
 		$(LIB_BYTE) $(LIB) $(LIB:.cmxa=.a) stog_main.cm* stog_main.o \
 		$(OCAML_SESSION_CMOFILES)
+
+install-bin:
 	$(CP) $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
 	  $(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
 		`dirname \`which $(OCAMLC)\``/
 
-uninstall:
+uninstall: uninstall-lib uninstall-bin
+
+uninstall-lib:
 	@$(OCAMLFIND) remove stog
-	for i in $(MAIN) $(MAIN_BYTE); do $(RM) `dirname \`which $(OCAMLC)\``/$$i; done
+
+uninstall-bin:
+	for i in $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
+		$(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML); \
+		do $(RM) `dirname \`which $(OCAMLC)\``/$$i; done
+
 #####
 clean:
 	$(RM) $(MAIN) $(MAIN_BYTE) $(GUI_MAIN) $(GUI_MAIN_BYTE) *.cm* *.o *.a *.x *.annot
