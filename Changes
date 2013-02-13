@@ -1,3 +1,6 @@
+Next release:
+  * mod: do not issue twice the same warning message
+
 Release 0.7.0:
   * mod: split (un)install target into (un)install-lib and (un)install-bin
   * add: -I and -package options to stog-ocaml-session
