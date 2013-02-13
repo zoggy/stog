@@ -319,7 +319,7 @@ let fun_include stog elt _env args subs =
         | _ -> [Xtmpl.xml_of_string (Stog_misc.string_of_file file)]
       in
       let args =
-        (("", "contents"), String.concat "" (List.map Xtmpl.string_of_xml subs)) ::
+        (("", "contents"), Xtmpl.string_of_xmls subs) ::
         args
       in
       begin
