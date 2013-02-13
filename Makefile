@@ -189,12 +189,13 @@ $(MK_STOG_OCAML): $(LIB) $(OCAML_SESSION_CMOFILES)
 
 ocamldoc:
 	$(MKDIR) ocamldoc
-	$(OCAMLDOC) $(INCLUDES) -rectypes -d ocamldoc -html -t "Stog" \
+	$(OCAMLFIND) ocamldoc -package $(PACKAGES) -rectypes -d ocamldoc -html -t "Stog" \
 	$(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli)
 
+PKGS := $(shell echo $(PACKAGES) | sed -e "s/,/ /g")
 depocamldoc:
 	$(MKDIR) ocamldoc
-	$(OCAMLDOC) $(INCLUDES) -rectypes -d ocamldoc -g odoc_depgraph.cmxs -t "Stog" \
+	$(OCAMLDOC) `$(OCAMLFIND) query -i-format $(PKGS)` -rectypes -d ocamldoc -g odoc_depgraph.cmxs -t "Stog" \
 	$(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli) -width 700 -height 700
 
 doc:
