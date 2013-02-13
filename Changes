@@ -1,5 +1,5 @@
-
-Next release:
+Release 0.7.0:
+  * mod: split (un)install target into (un)install-lib and (un)install-bin
   * add: -I and -package options to stog-ocaml-session
   * add: new scripts mk-stog, mk-stog.byte, mk-stog-ocaml-session
     to create custom stog and stog-ocaml-session
