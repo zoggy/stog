@@ -28,7 +28,7 @@
 
 (** *)
 
-let version = "0.6.1";;
+let version = "0.7.0";;
 
 type t =
   { ignored : string list ; (** list of regexps of filenames to ignore *)
