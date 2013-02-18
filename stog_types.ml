@@ -307,6 +307,24 @@ let sort_ids_elts_by_date elts =
   elts
 ;;
 
+
+let sort_ids_elts_by_rules =
+  let apply_field env field =
+    let xml = [Xtmpl.E (("",field),[],[])] in
+    Xtmpl.apply_to_xmls env xml
+  in
+  let apply_fields fields (id,e,env) =
+     (id,e, List.map (apply_field env) fields)
+  in
+  let compare (_, e1, v1) (_, e2, v2) =
+    Pervasives.compare v1 v2
+  in
+  fun fields elts ->
+    let elts = List.map (apply_fields fields) elts in
+    let elts = List.sort compare elts in
+    List.map (fun (id,e,_) -> (id, e)) elts
+;;
+
 let elt_list ?(by_date=false) ?set stog =
   let pred =
     match set with

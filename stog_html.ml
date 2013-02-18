@@ -1313,7 +1313,17 @@ and elt_list elt ?rss ?set stog env args _ =
       None -> true
     | Some s -> Stog_io.bool_of_string s
   in
-  let elts = Stog_types.sort_ids_elts_by_date elts in
+  let elts =
+    match Xtmpl.get_arg args ("", "sort") with
+      None -> Stog_types.sort_ids_elts_by_date elts
+    | Some s ->
+        let fields = Stog_misc.split_string s [','] in
+        let elts = List.map
+          (fun (id, e) -> (id, e, env_of_defs ~env e.elt_defs))
+          elts
+        in
+        Stog_types.sort_ids_elts_by_rules fields elts
+  in
   let elts = if reverse then List.rev elts else elts in
   let elts =
     match max with

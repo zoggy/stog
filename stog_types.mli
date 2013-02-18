@@ -121,6 +121,8 @@ val add_elt : stog -> elt -> stog
 
 val sort_elts_by_date : elt list -> elt list
 val sort_ids_elts_by_date : ('a * elt) list -> ('a * elt) list
+val sort_ids_elts_by_rules :
+  string list -> ('a * elt * Xtmpl.env) list -> ('a * elt) list
 
 val elt_list :
   ?by_date:bool -> ?set:string -> stog -> (elt Stog_tmap.key * elt) list
