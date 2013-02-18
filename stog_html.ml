@@ -376,6 +376,11 @@ let fun_image _env args legend =
      | None -> ""
     )
   in
+  let cls =
+    match Xtmpl.get_arg args ("", "class") with
+      None -> cls
+    | Some c -> c^" "^cls
+  in
   let pred (s,_) = not (List.mem s [("", "width") ; ("", "src") ; ("", "float")]) in
   let atts = List.filter pred args in
   [
