@@ -48,6 +48,7 @@ site: style
 style:
 	mkdir -p $(DEST_DIR)
 	$(LESSC) less/style.less > $(DEST_DIR)/style.css
+	$(LESSC) less/slides.less > $(DEST_DIR)/slides.css
 
 ocamldoc:
 	rm -fr $(DEST_DIR)/ref-doc
