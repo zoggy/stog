@@ -60,3 +60,6 @@ ocamldoc:
 test:
 	$(MAKE) BASE_URL_OPTION="--site-url file://$(DEST_DIR)" site
 
+tree:
+	tree -I less | grep -v release | grep -v comment | grep -v ocaml\\. \
+	| grep -v gradient.png | grep -v search.png | grep -v left.png | grep -v right.png
