@@ -5,7 +5,9 @@ author="Maxence Guesdon"
 affiliation="INRIA Saclay-Île-de-France"
 duration="30"
 with-contents="true"
+latex-svg-scale="2.0"
 >
+<lx foo=""><latex defer_="1" package="{amsmath,amssym}">$<contents/>$</latex></lx>
 <slide title="" id="" class="">
 <div class="slide &lt;class/&gt;" id="&lt;id/&gt;">
 <h1><title/></h1>
@@ -110,9 +112,91 @@ The template file <icode>.stog/templates/elt-in-list.tmpl</icode>:
 <hxml><include file="elt-in-list.tmpl" raw="true"/></hxml>
 </slide>
 
-
 <slide title="Rewrite rules">
+<p>
+An environment is a map associating tag names to rules. We note <lx>\Gamma(t) = f</lx>
+to say that a function <lx>f</lx> is associated to the tag <lx>t</lx> in the environment <lx>\Gamma</lx>.
+If no function is associated to <lx>t</lx>, then <lx>\Gamma(t) = \bot</lx>.
+</p>
+<p>
+A rule is a function <lx>$f$</lx> taking in parameters: an environment <lx>$\Gamma$</lx>, a list
+of XML node attributes <lx>$l_a$</lx>, a list of XML (sub)nodes <lx>$l_{xml}$</lx>.
+A rule, when applied, returns a list of XML nodes.
+</p>
+<p>
+Let <lx>\mathcal{R}(\Gamma, n)</lx> be the function applying an environment <lx>\Gamma</lx>
+to an XML node <lx>n = (t, l_a, l_{xml})</lx>. <lx>\mathcal{R}_l(\Gamma, l)</lx> applies <lx>\mathcal{R}(\Gamma, x)</lx>
+on each element <lx>x</lx> of the list <lx>l</lx>.
+The algorithm of <lx>\mathcal{R}</lx> is the following:
+</p>
+<ol>
+<li>Apply <lx>\mathcal{R}</lx> on each attribute value, parsed as valid XML, to get a new list
+  of rewritten attributes <lx>l_a'</lx>,
+</li>
+<li>
+If <lx>\Gamma(t) = \bot</lx>, then return [<lx>(t, l_a', \mathcal{R}_l(Gamma, l_{xml}))</lx>].<br/>
+Else, with <lx>\Gamma(t) = f</lx>, return <lx>f(\Gamma, l_a', l_{xml})</lx>.
+</li>
+</ol>
+<p><lx>\mathcal{R}</lx> is called until a fixpoint is reached.</p>
+<p>
+This rewrite engine is implemented in the <ext-a href="http://zoggy.github.com/xtmpl/">Xtmpl</ext-a> library.
+</p>
+</slide>
 
+<slide title="Rewrite rules (2)">
+<p>
+When we define an element, we're defining an environment <lx>\Gamma</lx>.
+</p>
+<p>Example: consider the following element:</p>
+<hxml><page title="Example page"
+author="Maxence Guesdon">
+This is the body of my page
+</page></hxml>
+<p>
+Here we defined an environment <lx>\Gamma</lx> with the following rules:
+</p>
+<ul>
+<li><lx>\Gamma("elt-title") = f_1</lx> with <lx>f_1(\_,\_,\_) =</lx> [ "Example page" ]</li>
+<li><lx>\Gamma("author") = f_2</lx> with <lx>f_2(\_,\_,\_) =</lx> [ "Maxence Guesdon" ]</li>
+<li><lx>\Gamma("elt-body") = f_3</lx> with <lx>f_3(\_,\_,\_) =</lx> [ "This is the body of the page" ]</li>
+</ul>
+<p>
+To <strong>compute</strong> the element's final XML, we apply this environment to the template
+associated to the page type.
+</p>
+<p>Remarks:</p>
+<ul>
+<li>Of source, the initial environment is not empty. So defining an element adds rules to this initial
+environment.
+</li>
+<li>
+Predefined rules and user-defined rules can be more complex.
+</li>
+</ul>
+</slide>
+
+<slide title="The main element">
+<p>
+One of the element must be marked has "main", with a <ixml>main="true"</ixml> attribute.
+This is usually the top <icode>index.html</icode> file but this is not mandatory.
+</p>
+<p>
+The main element is the place to define rules for the initial environment. These rules are defined using
+the <icode>stog:</icode> prefix (like an XML namespace). Defining <icode>stog:foo="bar"</icode> will
+make this rule appear in the initial environment with the name "foo".
+</p>
+<hxml><![CDATA[<page
+  main="true"
+  title="Stog"
+  stog:site-description="Static blog and web site generator"
+  stog:site-email="zoggy 'AT' bat8 'DOT' org"
+  stog:site-url="http://zoggy.github.com/stog"
+  stog:rss-length="10"
+  navbar-home="active"
+>
+....
+</page>]]></hxml>
 </slide>
 
 <slide title="A powerful rule: &lt;icode&gt;&amp;lt;eval-ocaml&amp;gt;&lt;/icode&gt;">
