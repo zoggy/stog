@@ -1,5 +1,7 @@
 Next release:
   * mod: do not issue twice the same warning message
+  * add: <latex> uses latex-svg-scale (default is 1.1) if defined in the
+    environment when producing .svg files
 
 Release 0.7.0:
   * mod: split (un)install target into (un)install-lib and (un)install-bin
