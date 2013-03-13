@@ -38,7 +38,7 @@ let get_in_env env (prefix, s) =
   if node2 = node then "" else Xtmpl.string_of_xmls node2
 ;;
 
-let make_svg outdir ?(packages=[]) ?defs latex_code =
+let make_svg outdir ?(packages=[]) ?(scale=1.1) ?defs latex_code =
   let defs = match defs with None -> "" | Some s -> s^"\n" in
   try Hashtbl.find cache latex_code
   with Not_found ->
@@ -66,8 +66,10 @@ let make_svg outdir ?(packages=[]) ?defs latex_code =
       let log = Filename.temp_file "stog" ".log" in
       let command = Printf.sprintf
         "(latex -output-directory=/tmp -interaction=batchmode %s > %s 2>&1) && \
-         dvisvgm -e --scale=1.1 -M 1.5 --no-fonts %s -s 2>> %s > %s"
-        (Filename.quote tex) (Filename.quote log) (Filename.quote dvi)
+         dvisvgm -e --scale=%f -M 1.5 --no-fonts %s -s 2>> %s > %s"
+        (Filename.quote tex) (Filename.quote log)
+          scale
+        (Filename.quote dvi)
         (Filename.quote log) (Filename.quote svg)
       in
       match Sys.command command with
@@ -95,7 +97,14 @@ let fun_latex stog env args subs =
   let packages = Stog_misc.split_string packages [';'] in
   let showcode = Xtmpl.opt_arg args ("", "showcode") = "true" in
   let defs = match get_in_env env ("", "latex-defs") with "" -> None | s -> Some s in
-  let svg = Filename.basename (make_svg stog.Stog_types.stog_outdir ~packages ?defs code) in
+  let scale =
+    match get_in_env env ("", "latex-svg-scale") with
+      "" -> None
+    | s ->
+        try Some (float_of_string s)
+        with _ -> failwith (Printf.sprintf "Invalid latex-svg-scale %S" s)
+  in
+  let svg = Filename.basename (make_svg stog.Stog_types.stog_outdir ~packages ?scale ?defs code) in
   let url = Printf.sprintf "%s/%s" stog.Stog_types.stog_base_url svg in
   (Xtmpl.E (("","img"),
     [("", "class"), "latex" ;

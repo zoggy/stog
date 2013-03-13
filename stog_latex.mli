@@ -32,5 +32,5 @@
 
 (** FIXME: move get_in_env elsewhere, but later *)
 val get_in_env : Xtmpl.env -> Xmlm.name -> string
-val make_svg : string -> ?packages:string list -> ?defs: string -> string -> string
+val make_svg : string -> ?packages:string list -> ?scale: float -> ?defs: string -> string -> string
 val fun_latex : Stog_types.stog -> Xtmpl.callback
