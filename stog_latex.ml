@@ -86,13 +86,22 @@ let make_svg outdir ?(packages=[]) ?(scale=1.1) ?defs latex_code =
            n command log latex_code)
 ;;
 
-let fun_latex stog env args subs =
-  let code =
-    match subs with
-      [ Xtmpl.D code ] -> code
-    | _ -> failwith (Printf.sprintf "Invalid code: %s"
-         (String.concat "" (List.map Xtmpl.string_of_xml subs)))
+let code_of_subs =
+  let f b = function
+    Xtmpl.D code -> Buffer.add_string b code
+  | xml -> failwith (Printf.sprintf "Invalid latex code: %s" (Xtmpl.string_of_xml xml))
   in
+  function
+    [ Xtmpl.D code] -> code
+  | subs ->
+    let b = Buffer.create 256 in
+    List.iter (f b) subs;
+    Buffer.contents b
+;;
+
+
+let fun_latex stog env args subs =
+  let code = code_of_subs subs in
   let packages = Xtmpl.opt_arg args ("", "packages") in
   let packages = Stog_misc.split_string packages [';'] in
   let showcode = Xtmpl.opt_arg args ("", "showcode") = "true" in
