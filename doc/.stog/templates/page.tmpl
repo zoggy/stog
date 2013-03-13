@@ -3,47 +3,55 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title><site-title/> : <elt-title/></title>
 <link rel="stylesheet" type="text/css" href="&lt;site-url/&gt;/style.css"></link>
-</head><body>
+</head>
+<body>
 <div id="page">
 <include file="menubar.tmpl"/>
 <div id="header">
-<if elt-type="post">><div class="elt-navbar"><if previous=""><main_/><div class="navleft"><previous/></div></if><if next=""><main_/><div class="navright"><next/></div></if></div></if>
-<div class="page-title"><elt-title/></div>
+  <if elt-type="post">
+    <div class="elt-navbar">
+      <if previous=""><main_/><div class="navleft"><previous/></div></if>
+      <if next=""><main_/><div class="navright"><next/></div></if>
+    </div>
+  </if>
+  <div class="page-title"><elt-title/></div>
 </div>
 <if withsidebar="true"><include file="sidebar.tmpl"/><main_/></if>
 <if elt-type="post"><div class="date"><elt-date/></div></if>
+
 <elt-body/>
 
-<if elt-type="post"><div class="comments">
-<div>
-<div class="elt-keywords">
-  <div class="bloc-keywords">
-  Topics: <div class="keywords"><elt-topics sep=", "/></div>
+<if elt-type="post">
+ <div class="comments">
+  <div>
+    <div class="elt-keywords">
+      <div class="bloc-keywords">
+      Topics: <div class="keywords"><elt-topics sep=", "/></div>
+      </div>
+      <div class="bloc-keywords">
+      Keywords: <div class="keywords"><elt-keywords sep=", "/></div>
+      </div>
+    </div>
   </div>
-  <div class="bloc-keywords">
-  Keywords: <div class="keywords"><elt-keywords sep=", "/></div>
+  <div itemprop="articleSection" class="section">
+    <comments/>
   </div>
-</div>
-</div>
-<div itemprop="articleSection" class="section">
-  <comments/>
-</div>
-</div>
+ </div>
 </if>
-<if elt-type="page">
-<div>
-<p class="alert alert-info">
-For information you can see the <a href="#pagesource"> source code of the page</a>.
-</p>
-<div id="pagesource">
-<hcode lang="xml" defer_="1"><include file="./&lt;elt-src/&gt;" raw="true"/>
-</hcode>
-</div>
-</div>
-</if>
-</div>
 
-<footer id="bottombar">
-</footer>
+<if elt-type="page">
+  <div>
+    <p class="alert alert-info">
+    For information you can see the <a href="#pagesource"> source code of the page</a>.
+    </p>
+    <div id="pagesource">
+      <hcode lang="xml" defer_="1"><include file="./&lt;elt-src/&gt;" raw="true"/></hcode>
+    </div>
+  </div>
+</if>
+
+</div> <!-- #page -->
+
+<footer id="bottombar"></footer>
 </body>
 </html>

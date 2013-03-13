@@ -14,12 +14,35 @@ with-contents="true"
 </slide>
 <contents>
 <slide title="What I wanted">
-<p>
-bla bla bla
-</p>
+<ul>
+<li>a static site: easy to deploy, less security problems,</li>
+<li>handling of blog posts, with dates, topics, keywords and associated RSS feeds,</li>
+<li>dynamic comments for blog posts (&#x21D2; using Disqus),</li>
+<li>no new syntax,</li>
+<li>using custom tags (e.g. <icode>section</icode>) to provide semantics in code,</li>
+<li>avoid code duplication,</li>
+<li>ability to use all HTML5 or any XML,</li>
+<li>check internal references,</li>
+<li>displaying evaluated OCaml code,</li>
+<li>support for multiple languages (fr, en, ..),</li>
+<li>ability to add specific features with plugins.</li>
+</ul>
 </slide>
 
-<slide title="Overview (1)">
+<slide title="How it works">
+<p>
+Three steps:
+</p>
+<ol>
+<li>Read configuration file <icode>.stog/config</icode> and directory tree:
+<hcode lang="ocaml" defer_="1"><include raw="true" file="../.stog/config"/></hcode>
+</li>
+<li>Handle "elements",</li>
+<li>Copy other files, i.e. files not ignored and not elements. </li>
+</ol>
+</slide>
+
+<slide title="Step 2: handling &quot;elements&quot;">
 <div class="center">
  <object data="how_it_works.svg" type="image/svg+xml"
   width="90%" title="Handling element files">
@@ -29,7 +52,7 @@ bla bla bla
 </div>
 </slide>
 
-<slide title="Overview (2)">
+<slide title="Step 3: copying other files">
 <div class="center">
  <object data="how_it_works2.svg" type="image/svg+xml"
   width="90%" title="Handling other files">
@@ -39,9 +62,54 @@ bla bla bla
 </div>
 </slide>
 
-<slide title="Templates">
-
+<slide title="Example of element">
+<p>Example: file <icode>doc.html</icode> from Stog's web site:
+</p>
+<hcode lang="xml" defer_="1">
+<include raw="true" file="../doc.html"/>
+</hcode>
 </slide>
+
+<slide title="Another example of element">
+<p>Example: file <icode>posts/release-0.7.0.html</icode> from Stog's web site:
+</p>
+<hcode lang="xml" defer_="1">
+<include raw="true" file="../posts/release-0.7.0.html"/>
+</hcode>
+</slide>
+
+<slide title="Templates (1)">
+<p>
+Templates are regular XML documents, with some XML nodes which will be rewritten.
+</p>
+<p>Templates are in the <icode>.stog/templates/</icode> directory.</p>
+<p>A template can be used in three ways:</p>
+<ul>
+<li>according to an element type, this type being the root node tag of the element:
+  <hxml><page title="...">...</page></hxml>
+  <hxml><post title="...">...</post></hxml>
+  <icode>page</icode> will result in using the <icode>.stog/template/page.tmpl</icode> file has template
+  for the element (and <icode>post.tmpl</icode> for <icode>post</icode> element).
+</li>
+<li>referenced in the <ixml>file</ixml> attribute of a <ixml><![CDATA[<include file="..."/>]]></ixml> node,</li>
+<li>used by other rewrite rules.</li>
+</ul>
+</slide>
+
+<slide title="Templates (2): Example">
+<p>
+The template file <icode>.stog/templates/page.tmpl</icode>:
+</p>
+<hxml><include file="page.tmpl" raw="true"/></hxml>
+</slide>
+
+<slide title="Templates (3): Example (2)">
+<p>
+The template file <icode>.stog/templates/elt-in-list.tmpl</icode>:
+</p>
+<hxml><include file="elt-in-list.tmpl" raw="true"/></hxml>
+</slide>
+
 
 <slide title="Rewrite rules">
 
