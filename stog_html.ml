@@ -1446,6 +1446,7 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
   Stog_types.Str_map.fold f map stog
 ;;
 
+
 let make_topic_indexes stog env =
   make_by_word_indexes stog env topic_index_hid
   "by-topic" stog.stog_elts_by_topic

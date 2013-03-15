@@ -30,6 +30,16 @@
 
 open Stog_types;;
 
+let is_archived_elt stog =
+  match Stog_types.get_def stog.stog_defs ("","archived-elts") with
+  | Some (_,[Xtmpl.D s]) ->
+      let types = Stog_misc.split_string s [',' ; ';'] in
+      let types = List.map Stog_misc.strip_string types in
+      (fun elt_id -> let elt = Stog_types.elt stog elt_id in List.mem elt.elt_type types)
+  | _ ->
+      (fun _ -> true)
+;;
+
 let compute_map f_words f_update stog =
   let f elt_id elt map =
     let on_word map w =
@@ -172,13 +182,17 @@ let add_refs_in_graph stog = stog
 ;;
 
 let compute_archives stog =
+  let pred = is_archived_elt stog in
   let f_mon elt_id m mmap =
     let set =
       try Stog_types.Int_map.find m mmap
       with Not_found -> Stog_types.Elt_set.empty
     in
     let set = Stog_types.Elt_set.add elt_id set in
-    Stog_types.Int_map.add m set mmap
+    let set = Stog_types.Elt_set.filter pred set in
+    match Stog_types.Elt_set.is_empty set with
+      true -> mmap
+    | false -> Stog_types.Int_map.add m set mmap
   in
   let f_art elt_id elt ymap =
     match elt.elt_date with
