@@ -26,11 +26,35 @@ LaTeX in your pages.</li>
 </ul>
 </section>
 
-<section id="download" title="Get the sources">
+<section id="quickdebian" title="Quick install on Debian">
+<p>
+The easiest way to install on a Debian system is as follows:
+</p>
+<ol>
+<li>Install <ext-a href="http://opam.ocamlpro.com">OPAM</ext-a>, the OCaml package manager,
+running the following command with root privileges:
+<command-line>
+$ echo "deb [arch=amd64] http://www.recoil.org/~avsm/ wheezy main" >> /etc/apt/sources.list
+$ apt-get update
+$ apt-get install opam autotools-dev m4
+</command-line>
+</li>
+<li>As a regular user, fetch and install an OCaml version and install Stog. The whole
+can be done with the following opam commands:
+<command-line>
+$ opam init --comp=4.00.1
+$ opam update
+$ opam install stog
+</command-line>
+</li>
+</ol>
+</section>
+
+<section id="download" title="From the sources">
 <p>Get the sources from git repository:
 <command-line>git clone https://github.com/zoggy/stog.git</command-line>
 </p>
-<subsection title="Releases">
+<p>Or pick one of the releases:</p>
 <ul>
 <li><a href="stog-0.7.0.tar.gz">0.7.0</a> [2013-02-13]:
   <inc href="release-0.7.0#changes"/>
@@ -56,7 +80,6 @@ LaTeX in your pages.</li>
     almost all elements depending on almost all elements.</li>
 </ul>
 </li>
-
 
 <li><a href="stog-0.5.tar.gz">0.5</a> [2012-12-18]:
 <ul>
@@ -116,10 +139,8 @@ directory. Less templates required. User can define elements of any "type" (post
 </li>
 <li><a href="stog-0.1.tar.gz">0.1</a> [2012-06-20]: Initial release.</li>
 </ul>
-</subsection>
-</section>
 
-<section id="compilation" title="Compilation">
+<subsection id="compilation" title="Compilation">
 <p>
 Just type
 <command-line>make &amp;&amp; make install</command-line>
@@ -128,6 +149,7 @@ and <icode>stog-ocaml-session</icode> in the same directory as
 <icode>ocamlc</icode>. This will also install the <tt>stog</tt> library and the
 <tt>stog.disqus</tt> and <tt>stog.markdown</tt> plugins, with findlib.
 </p>
+</subsection>
 </section>
 
 </prepare-toc>
