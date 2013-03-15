@@ -281,6 +281,9 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sort_elts_by_date&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;list<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sort_ids_elts_by_date&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a&nbsp;*&nbsp;<span class="constructor">Stog_types</span>.elt)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;*&nbsp;<span class="constructor">Stog_types</span>.elt)&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;sort_ids_elts_by_rules&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keywordsign">'</span>a&nbsp;*&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;*&nbsp;<span class="constructor">Xtmpl</span>.env)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="keywordsign">'</span>a&nbsp;*&nbsp;<span class="constructor">Stog_types</span>.elt)&nbsp;list<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elt_list&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;?by_date:bool&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;?set:string&nbsp;<span class="keywordsign">-&gt;</span><br>

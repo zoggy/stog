@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0"><channel><title>Stog</title><link>http://zoggy.github.com/stog/index.rss</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>13 Feb 2013 08:00:00 +0000</pubDate><lastBuildDate>13 Feb 2013 08:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.com/stog/</url><title>Stog</title><link>http://zoggy.github.com/stog</link></image><item><title>Stog 0.7.0</title><link>http://zoggy.github.com/stog/posts/release-0.7.0.html</link><description>
+<rss version="2.0"><channel><title>Stog</title><link>http://zoggy.github.com/stog/index.rss</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>15 Mar 2013 08:00:00 +0000</pubDate><lastBuildDate>15 Mar 2013 08:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.com/stog/</url><title>Stog</title><link>http://zoggy.github.com/stog</link></image><item><title>Talk about Stog at INRIA</title><link>http://zoggy.github.com/stog/posts/stog-at-inria.html</link><description>
+&lt;p&gt;
+Maxence Guesdon will introduce Stog during a talk at
+&lt;span class=&quot;ext-a&quot;&gt;&lt;a href=&quot;http://www.inria.fr/en/centre/saclay&quot;&gt;INRIA Saclay-Île-de-France&amp;quot;&lt;/a&gt;&lt;/span&gt;
+on &lt;strong&gt;Tuesday, 23&lt;sup&gt;rd&lt;/sup&gt; of April 2013, at 14h&lt;/strong&gt; in room &amp;quot;Grace Hopper&amp;quot;.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.com/stog/posts/stog-at-inria.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.com/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>15 Mar 2013 08:00:00 +0000</pubDate><category>stog</category><category>talk</category><category>inria</category><guid isPermaLink="true">http://zoggy.github.com/stog/posts/stog-at-inria.html</guid></item><item><title>Stog 0.7.0</title><link>http://zoggy.github.com/stog/posts/release-0.7.0.html</link><description>
 &lt;p&gt;
 Release 0.7.0 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
 &lt;/p&gt;
@@ -46,8 +52,4 @@ Release 0.3 of stog is available from the &lt;page href=&quot;install&quot;/&gt;
 &lt;p&gt;
 Release 0.2 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
 &lt;/p&gt;
-</description><pubDate>28 Aug 2012 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.com/stog/posts/release-0.2.html</guid></item><item><title>Stog 0.1</title><link>http://zoggy.github.com/stog/posts/release-0.1.html</link><description>
-&lt;p&gt;
-Release 0.1 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
-&lt;/p&gt;
-</description><pubDate>20 Jun 2012 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.com/stog/posts/release-0.1.html</guid></item></channel></rss>
+</description><pubDate>28 Aug 2012 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.com/stog/posts/release-0.2.html</guid></item></channel></rss>
