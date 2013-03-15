@@ -71,7 +71,10 @@ let compute_keyword_map stog =
 ;;
 
 let compute_graph_with_dates stog =
+  let is_archived = is_archived_elt stog in
+  let pred (elt_id, _) = is_archived elt_id in
   let elts = Stog_types.elt_list ~by_date:true stog in
+  let elts = List.filter pred elts in
   let g = Stog_types.Graph.create () in
   let rec iter g = function
     [] | [_] -> g
