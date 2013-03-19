@@ -72,7 +72,7 @@ let options = [
     "-d", Arg.Set_string output_dir,
     "<dir> set output directory instead of "^ !output_dir ;
 
-    "--site-url", Arg.String (fun s -> site_url := Some s),
+    "--site-url", Arg.String (fun s -> site_url := Some (Stog_types.url_of_string s)),
     "<s> use <s> as site url instead of the one specified in the input stog" ;
 
     "--tmpl", Arg.String (fun s -> tmpl_dir := Some s),

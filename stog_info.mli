@@ -42,7 +42,7 @@ val pred_by_date :
 (** Get graphviz code from the given stog structure, to create
   a graph showing edges between (clickable) elements; the edges are
   annotated by the topic and keywords. *)
-val dot_of_graph : (Stog_types.elt -> string) -> Stog_types.stog -> string
+val dot_of_graph : (Stog_types.elt -> Neturl.url) -> Stog_types.stog -> string
 
 (** Remove from the stog structure the elements having
   {!Stog_types.elt.elt_published}[=false]. *)

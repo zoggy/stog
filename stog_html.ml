@@ -165,15 +165,22 @@ let elt_dst f_concat ?(encode=true) stog base elt =
 let elt_dst_file stog elt =
   elt_dst ~encode: false Filename.concat stog stog.stog_outdir elt;;
 
+
+
 let elt_url stog elt =
-  let url = elt_dst (fun a b -> a^"/"^b) stog stog.stog_base_url elt in
+  let url = elt_dst (fun a b -> a^"/"^b) stog
+    (Stog_types.string_of_url stog.stog_base_url) elt
+  in
   let len = String.length url in
   let s = "/index.html" in
   let len_s = String.length s in
-  if len >= len_s && String.sub url (len - len_s) len_s = s then
-    String.sub url 0 (len-len_s)
-  else
-    url
+  let url =
+    if len >= len_s && String.sub url (len - len_s) len_s = s then
+      String.sub url 0 (len-len_s)
+    else
+      url
+  in
+  url_of_string url
 ;;
 
 
@@ -246,9 +253,13 @@ let env_add_langswitch env stog elt =
   | Some lang ->
       let map_lang lang =
          let url = elt_url { stog with stog_lang = Some lang } elt in
-         let img_url = Printf.sprintf "%s/%s.png" stog.stog_base_url lang in
-         Xtmpl.E (("", "a"), [("", "href"), url], [
-           Xtmpl.E (("", "img"), [("", "src"), img_url ; ("", "title"), lang ; ("", "alt"), lang], [])])
+         let img_url = Stog_types.url_concat stog.stog_base_url (lang^".png") in
+         Xtmpl.E (("", "a"), [("", "href"), (Stog_types.string_of_url url)], [
+           Xtmpl.E (("", "img"),
+            [ ("", "src"), (Stog_types.string_of_url img_url) ;
+              ("", "title"), lang ;
+              ("", "alt"), lang
+            ], [])])
       in
       let f _env args _subs =
         let languages =
@@ -497,11 +508,14 @@ let fun_elt_href ?typ src_elt href stog env args subs =
   match elt with
     None -> [Xtmpl.E (("", "span"), [("", "class"), "unknown-ref"], text)]
   | Some (elt, _, id) ->
-      let href = Printf.sprintf "%s%s" (elt_url stog elt)
-        (match id with None -> "" | Some s -> "#"^s)
+      let href =
+        let url = elt_url stog elt in
+        match id with
+          None -> url
+        | Some id -> Neturl.modify_url ~fragment: id url
       in
       [
-        Xtmpl.E (("", "a"), [("", "href"), href], text)
+        Xtmpl.E (("", "a"), [("", "href"), Stog_types.string_of_url href], text)
       ]
 ;;
 
@@ -544,7 +558,7 @@ let fun_archive_tree stog _env _ =
     let href = url_of_hid stog ~ext: "html" hid in
     let month_str = Stog_intl.get_month stog.stog_lang month in
     Xtmpl.E (("", "li"), [], [
-       Xtmpl.E (("", "a"), [("", "href"), href], [ Xtmpl.D month_str ]) ;
+       Xtmpl.E (("", "a"), [("", "href"), Stog_types.string_of_url href], [ Xtmpl.D month_str ]) ;
        Xtmpl.D (Printf.sprintf "(%d)" (Stog_types.Elt_set.cardinal set))
      ]
     )
@@ -685,7 +699,7 @@ let fun_search_form stog _env _ _ =
   [ Xtmpl.xml_of_file tmpl ]
 ;;
 
-let fun_blog_url stog _env _ _ = [ Xtmpl.D stog.stog_base_url ];;
+let fun_blog_url stog _env _ _ = [ Xtmpl.D (Stog_types.string_of_url stog.stog_base_url) ];;
 
 (* FIXME: add dependency ? *)
 let fun_graph =
@@ -695,8 +709,8 @@ let fun_graph =
     let png_name = "site-graph.png" in
     let small_png_name = "small-"^png_name in
     let svg_file = (Filename.chop_extension png_name) ^ ".svg" in
-    let src = Printf.sprintf "%s/%s" stog.stog_base_url svg_file in
-    let small_src = Printf.sprintf "%s/%s" stog.stog_base_url small_png_name in
+    let src = Stog_types.url_concat stog.stog_base_url svg_file in
+    let small_src = Stog_types.url_concat stog.stog_base_url small_png_name in
     begin
       match !generated with
         true -> ()
@@ -730,8 +744,8 @@ let fun_graph =
               report_error (Printf.sprintf "Command failed: %s" com)
     end;
     [
-      Xtmpl.E (("", "a"), [("", "href"), src], [
-         Xtmpl.E (("", "img"), [("", "src"), small_src ; ("", "alt"), "Graph"], [])
+      Xtmpl.E (("", "a"), [("", "href"), Stog_types.string_of_url src], [
+         Xtmpl.E (("", "img"), [("", "src"), Stog_types.string_of_url small_src ; ("", "alt"), "Graph"], [])
        ])
     ]
 ;;
@@ -1066,14 +1080,19 @@ let intro_of_elt stog elt =
   in
   try
     let xml = iter [] elt.elt_body in
+    let next_url_s =
+      Stog_types.string_of_url (Stog_types.url_concat stog.stog_base_url "next.png")
+    in
     xml @
     [
-      Xtmpl.E (("", "a"), [("", "href"), elt_url stog elt],
-       [ Xtmpl.E (("", "img"),
-          [ ("", "src"), Printf.sprintf "%s/next.png" stog.stog_base_url;
-            ("", "alt"), "next"],
-          [])]
-      )
+      Xtmpl.E (("", "a"),
+         [
+           ("", "href"), Stog_types.string_of_url (elt_url stog elt)],
+         [ Xtmpl.E (("", "img"),
+            [ ("", "src"), next_url_s ;
+              ("", "alt"), "next"],
+            [])]
+        )
     ]
   with
     Not_found -> elt.elt_body
@@ -1089,7 +1108,7 @@ let html_of_topics stog elt env args _ =
   Stog_misc.list_concat ~sep
   (List.map (fun w ->
       let href = url_of_hid stog ~ext: "html" (topic_index_hid w) in
-      Xtmpl.E (("", "a"), [("", "href"), href ], f w))
+      Xtmpl.E (("", "a"), [("", "href"), Stog_types.string_of_url href ], f w))
    elt.elt_topics
   )
 ;;
@@ -1104,7 +1123,7 @@ let html_of_keywords stog elt env args _ =
   Stog_misc.list_concat ~sep
   (List.map (fun w ->
       let href = url_of_hid stog ~ext: "html" (keyword_index_hid w) in
-      Xtmpl.E (("", "a"), [("", "href"), href], f w))
+      Xtmpl.E (("", "a"), [("", "href"), Stog_types.string_of_url href], f w))
    elt.elt_keywords
   )
 ;;
@@ -1112,8 +1131,8 @@ let html_of_keywords stog elt env args _ =
 let rss_date_of_date d =
   let {year; month; day} = d in
   {
-    Rss.year = year ; month ; day;
-    hour = 8 ; minute = 0 ; second = 0 ;
+    Netdate.year = year ; month ; day;
+    hour = 8 ; minute = 0 ; second = 0 ; nanos = 0 ;
     zone = 0 ; week_day = -1 ;
   }
 ;;
@@ -1143,7 +1162,7 @@ let rec elt_to_rss_item stog elt_id elt =
   ~link
   ~pubdate
   ~cats
-  ~guid: { Rss.guid_name = link ; guid_permalink = true }
+  ~guid: (Rss.Guid_permalink link)
   ?author
   ()
 
@@ -1171,7 +1190,7 @@ and generate_rss_feed_file stog ?title link elts file =
           Some (_,xmls) -> Xtmpl.string_of_xmls xmls
         | None -> ""
       in
-      let url = Filename.concat stog.stog_base_url file in
+      let url = Stog_types.url_concat stog.stog_base_url file in
       let image = {
           Rss.image_url = url ;
           image_title = stog.stog_title ;
@@ -1201,7 +1220,7 @@ and generate_rss_feed_file stog ?title link elts file =
 
 and build_base_rules stog elt_id elt =
   let f_title elt _ _ _ = [ Xtmpl.xml_of_string elt.elt_title ] in
-  let f_url elt _ _ _ = [ Xtmpl.D (elt_url stog elt) ] in
+  let f_url elt _ _ _ = [ Xtmpl.D (Stog_types.string_of_url (elt_url stog elt)) ] in
   let f_body elt _ _ _ = elt.elt_body in
   let f_type elt _ _ _ = [Xtmpl.D elt.elt_type] in
   let f_src elt _ _ _ = [Xtmpl.D elt.elt_src] in
@@ -1224,7 +1243,9 @@ and build_base_rules stog elt_id elt =
   let (previous, next) =
     let html_link elt =
       let href = elt_url stog elt in
-      [ Xtmpl.E (("", "a"), [("","href"), href], [ Xtmpl.xml_of_string elt.elt_title ]) ]
+      [ Xtmpl.E (("", "a"),
+         [("","href"), Stog_types.string_of_url href],
+         [ Xtmpl.xml_of_string elt.elt_title ]) ]
     in
     let try_link key search =
       let fallback () =
@@ -1360,7 +1381,7 @@ and elt_list elt ?rss ?set stog env args _ =
         match Xtmpl.get_arg args ("", "rss") with
           None -> None
         | Some file ->
-            let url = Printf.sprintf "%s/%s" stog.stog_base_url file in
+            let url = Stog_types.url_concat stog.stog_base_url file in
             let file = Filename.concat stog.stog_outdir file in
             let title =Xtmpl.get_arg args ("", "title") in
             generate_rss_feed_file stog ?title url elts file;
@@ -1370,7 +1391,7 @@ and elt_list elt ?rss ?set stog env args _ =
     None -> xml
   | Some link ->
       (Xtmpl.E (("", "div"), [("", "class"), "rss-button"], [
-          Xtmpl.E (("", "a"), [("", "href"), link], [
+          Xtmpl.E (("", "a"), [("", "href"), Stog_types.string_of_url link], [
              Xtmpl.E (("", "img"), [("", "src"), "rss.png" ; ("", "alt"), "Rss feed"], [])]) ;
         ])
       ) :: xml
@@ -1434,7 +1455,10 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
     let out_file = elt_dst_file stog elt in
     let rss_file = (Filename.chop_extension out_file)^".rss" in
     let url = elt_url stog elt in
-    let rss_url = (Filename.chop_extension url)^".rss" in
+    let rss_url =
+      let url_s = Stog_types.string_of_url url in
+      Stog_types.url_of_string ((Filename.chop_extension url_s)^".rss")
+    in
     generate_rss_feed_file stog ~title: word url
       (List.map (fun id -> (id, Stog_types.elt stog id)) (Stog_types.Elt_set.elements set))
       rss_file;

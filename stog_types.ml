@@ -177,7 +177,7 @@ type stog = {
   stog_elts_by_kw : Elt_set.t Str_map.t ;
   stog_elts_by_topic : Elt_set.t Str_map.t ;
   stog_archives : Elt_set.t Int_map.t Int_map.t ; (* year -> month -> article set *)
-  stog_base_url : string ;
+  stog_base_url : Neturl.url ;
   stog_email : string ;
   stog_rss_length : int ;
   stog_lang : string option ;
@@ -188,6 +188,18 @@ type stog = {
   stog_used_mods : Str_set.t ;
   stog_depcut : bool ;
   }
+
+let url_of_string s =
+  try Neturl.parse_url ~enable_fragment: true ~accept_8bits: true s
+  with Neturl.Malformed_URL ->
+    failwith (Printf.sprintf "Malformed URL %S" s)
+;;
+let string_of_url = Neturl.string_of_url;;
+
+let url_concat uri s =
+  let path = (Neturl.url_path uri)@[s] in
+  Neturl.modify_url ~path uri
+;;
 
 let create_stog dir = {
   stog_dir = dir ;
@@ -201,7 +213,7 @@ let create_stog dir = {
   stog_elts_by_kw = Str_map.empty ;
   stog_elts_by_topic = Str_map.empty ;
   stog_archives = Int_map.empty ;
-  stog_base_url = "http://yourblog.net" ;
+  stog_base_url = url_of_string "http://yourblog.net" ;
   stog_email = "foo@bar.com" ;
   stog_rss_length = 10 ;
   stog_defs = [] ;
@@ -228,7 +240,7 @@ let stog_md5 stog =
       stog_depcut = false;
     }
   in
-  Digest.string (Marshal.to_string stog [])
+  Digest.string (Marshal.to_string stog [Marshal.Closures])
 ;;
 
 let elt stog id = Stog_tmap.get stog.stog_elts id;;

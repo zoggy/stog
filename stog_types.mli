@@ -96,7 +96,7 @@ type stog = {
   stog_elts_by_kw : Elt_set.t Str_map.t;
   stog_elts_by_topic : Elt_set.t Str_map.t;
   stog_archives : Elt_set.t Int_map.t Int_map.t;
-  stog_base_url : string;
+  stog_base_url : Neturl.url ;
   stog_email : string;
   stog_rss_length : int;
   stog_lang : string option;
@@ -107,6 +107,11 @@ type stog = {
   stog_used_mods : Str_set.t ;
   stog_depcut : bool ;
 }
+
+val url_of_string : string -> Neturl.url
+val string_of_url : Neturl.url -> string
+val url_concat : Neturl.url -> string -> Neturl.url
+
 val create_stog : string -> stog
 val stog_md5 : stog -> string
 

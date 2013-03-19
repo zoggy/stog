@@ -114,10 +114,10 @@ let fun_latex stog env args subs =
         with _ -> failwith (Printf.sprintf "Invalid latex-svg-scale %S" s)
   in
   let svg = Filename.basename (make_svg stog.Stog_types.stog_outdir ~packages ?scale ?defs code) in
-  let url = Printf.sprintf "%s/%s" stog.Stog_types.stog_base_url svg in
+  let url = Stog_types.url_concat stog.Stog_types.stog_base_url svg in
   (Xtmpl.E (("","img"),
     [("", "class"), "latex" ;
-     ("", "src"), url ;
+     ("", "src"), (Stog_types.string_of_url url) ;
      ("", "alt"), code ;
      ("", "title"), code],
      []) ) ::

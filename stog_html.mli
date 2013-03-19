@@ -83,12 +83,12 @@ val highlight : opts:string -> string -> string
 val elt_dst_file : Stog_types.stog -> Stog_types.elt -> string
 
 (** Build the final url of the given element. *)
-val elt_url : Stog_types.stog -> Stog_types.elt -> string
+val elt_url : Stog_types.stog -> Stog_types.elt -> Neturl.url
 
 (** Build an url from the given hid, using the given optional extension.
   This is used for elements created on the fly, like by-word or by-month index. *)
 val url_of_hid :
-  Stog_types.stog -> ?ext:string -> Stog_types.human_id -> string
+  Stog_types.stog -> ?ext:string -> Stog_types.human_id -> Neturl.url
 
 val rss_date_of_date : Stog_types.date -> Rss.date
 val elt_to_rss_item : Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Rss.item
@@ -107,7 +107,7 @@ val build_base_rules : Stog_types.stog ->
   if provided an additional environment, argument and children nodes. *)
 val elt_list :
   Stog_types.elt ->
-  ?rss:string ->
+  ?rss:Neturl.url ->
   ?set:Stog_types.Elt_set.t -> Stog_types.stog -> Xtmpl.callback
 
 (** Generate the target files, with the following steps:
