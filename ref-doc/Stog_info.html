@@ -54,7 +54,7 @@ Get the next element by date.<br>
 <pre><span id="VALpred_by_date"><span class="keyword">val</span> pred_by_date</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> Stog_types.Graph.key -> Stog_types.Graph.key option</code></pre><div class="info">
 Get the previous element by date.<br>
 </div>
-<pre><span id="VALdot_of_graph"><span class="keyword">val</span> dot_of_graph</span> : <code class="type">(<a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> string) -> <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> string</code></pre><div class="info">
+<pre><span id="VALdot_of_graph"><span class="keyword">val</span> dot_of_graph</span> : <code class="type">(<a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> Neturl.url) -> <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> string</code></pre><div class="info">
 Get graphviz code from the given stog structure, to create
   a graph showing edges between (clickable) elements; the edges are
   annotated by the topic and keywords.<br>

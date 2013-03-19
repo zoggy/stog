@@ -46,7 +46,8 @@ To build Stog, you will need:
 <li><span class="ext-a"><a href="http://caml.inria.fr/">OCaml &gt;= 4.00.1</a></span> installed,</li>
 <li><span class="ext-a"><a href="http://config-file.forge.ocamlcore.org/">Config-file &gt;= 1.1</a></span>.</li>
 <li><span class="ext-a"><a href="http://erratique.ch/software/xmlm">Xmlm &gt;= 1.1.0</a></span>,</li>
-<li><span class="ext-a"><a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS &gt;= 2.0</a></span>,</li>
+<li><span class="ext-a"><a href="http://projects.camlcity.org/projects/ocamlnet.html">OCamlnet &gt;= 3.6</a></span>.</li>
+<li><span class="ext-a"><a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS &gt;= 2.1.0</a></span>,</li>
 <li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl &gt;= 0.5</a></span>.</li>
 </ul>
 <p>
@@ -87,6 +88,17 @@ $ opam <span class="hl kwc">install</span> stog</pre>
 </p>
 <p>Or pick one of the releases:</p>
 <ul>
+<li><a href="stog-0.8.0.tar.gz">0.8.0</a> [2013-03-19]:
+  <ul id="changes">
+<li>now depends on <span class="ext-a"><a href="http://zoggy.github.com/ocamlrss/">ocamlrss</a></span> &gt;= 2.1.0,</li>
+<li>handle <code>stog:archived-elts</code> to indicate the types of elements appearing
+    in archive tree,</li>
+<li>do not issue twice the same warning message,</li>
+<li>&lt;latex&gt; uses <code>latex-svg-scale</code>
+   (default is 1.1) if defined in the environment when producing <code>.svg</code> files.
+</li>
+</ul>
+</li>
 <li><a href="stog-0.7.0.tar.gz">0.7.0</a> [2013-02-13]:
   <ul id="changes">
 <li>mod: split (un)install target into (un)install-lib and (un)install-bin,</li>
@@ -216,7 +228,8 @@ To build Stog, you will need:
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://caml.inria.fr/&quot;</span><span class="hl kwa">&gt;</span>OCaml <span class="hl kwa">&gt;</span>= <span class="hl num">4.00.1</span><span class="hl kwa">&lt;/ext-a&gt;</span> installed,<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://config-file.forge.ocamlcore.org/&quot;</span><span class="hl kwa">&gt;</span>Config-file <span class="hl kwa">&gt;</span>= <span class="hl num">1.1</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://erratique.ch/software/xmlm&quot;</span><span class="hl kwa">&gt;</span>Xmlm <span class="hl kwa">&gt;</span>= <span class="hl num">1.1.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://zoggy.github.com/ocamlrss/&quot;</span><span class="hl kwa">&gt;</span>OCaml-RSS <span class="hl kwa">&gt;</span>= <span class="hl num">2.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://projects.camlcity.org/projects/ocamlnet.html&quot;</span><span class="hl kwa">&gt;</span>OCamlnet <span class="hl kwa">&gt;</span>= <span class="hl num">3.6</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://zoggy.github.com/ocamlrss/&quot;</span><span class="hl kwa">&gt;</span>OCaml-RSS <span class="hl kwa">&gt;</span>= <span class="hl num">2.1.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span>Xtmpl <span class="hl kwa">&gt;</span>= <span class="hl num">0.5</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/ul&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
@@ -261,6 +274,9 @@ $ opam install stog
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>Or pick one of the releases:<span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.8.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.8.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>-<span class="hl num">03</span>-<span class="hl num">19</span>]:
+  <span class="hl kwa">&lt;inc</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;release-0.8.0#changes&quot;</span><span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.7.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.7.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>-<span class="hl num">02</span>-<span class="hl num">13</span>]:
   <span class="hl kwa">&lt;inc</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;release-0.7.0#changes&quot;</span><span class="hl kwa">/&gt;</span>
 <span class="hl kwa">&lt;/li&gt;</span>

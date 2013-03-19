@@ -50,9 +50,9 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;escape_html&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;highlight&nbsp;:&nbsp;opts:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elt_dst_file&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
-&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elt_url&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elt_url&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Neturl</span>.url<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;url_of_hid&nbsp;:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?ext:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.human_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?ext:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.human_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Neturl</span>.url<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;rss_date_of_date&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.date&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Rss</span>.date<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elt_to_rss_item&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Rss</span>.item<br>
@@ -65,7 +65,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.elt_id&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(<span class="constructor">Xmlm</span>.name&nbsp;*&nbsp;<span class="constructor">Xtmpl</span>.callback)&nbsp;list<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elt_list&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="keywordsign">-&gt;</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;?rss:string&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;?rss:<span class="constructor">Neturl</span>.url&nbsp;<span class="keywordsign">-&gt;</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;?set:<span class="constructor">Stog_types</span>.<span class="constructor">Elt_set</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Xtmpl</span>.callback<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;generate&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;?use_cache:bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;?only_elt:string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>

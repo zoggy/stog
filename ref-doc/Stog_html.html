@@ -93,10 +93,10 @@ Call the highlight command on the given string and make it produce xhtml code.
 <pre><span id="VALelt_dst_file"><span class="keyword">val</span> elt_dst_file</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> string</code></pre><div class="info">
 Build the final file where the given element will be generated.<br>
 </div>
-<pre><span id="VALelt_url"><span class="keyword">val</span> elt_url</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> string</code></pre><div class="info">
+<pre><span id="VALelt_url"><span class="keyword">val</span> elt_url</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> Neturl.url</code></pre><div class="info">
 Build the final url of the given element.<br>
 </div>
-<pre><span id="VALurl_of_hid"><span class="keyword">val</span> url_of_hid</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> ?ext:string -> <a href="Stog_types.html#TYPEhuman_id">Stog_types.human_id</a> -> string</code></pre><div class="info">
+<pre><span id="VALurl_of_hid"><span class="keyword">val</span> url_of_hid</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> ?ext:string -> <a href="Stog_types.html#TYPEhuman_id">Stog_types.human_id</a> -> Neturl.url</code></pre><div class="info">
 Build an url from the given hid, using the given optional extension.
   This is used for elements created on the fly, like by-word or by-month index.<br>
 </div>
@@ -107,7 +107,7 @@ Generate a RSS file from the given list of elements. The final RSS
 <pre><span id="VALbuild_base_rules"><span class="keyword">val</span> build_base_rules</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -><br>       <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> (Xmlm.name * Xtmpl.callback) list</code></pre><div class="info">
 Build the base rules, using the default ones and the <a href="Stog_html.html#VALplugin_rules"><code class="code">Stog_html.plugin_rules</code></a>.<br>
 </div>
-<pre><span id="VALelt_list"><span class="keyword">val</span> elt_list</span> : <code class="type"><a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -><br>       ?rss:string -> ?set:Stog_types.Elt_set.t -> <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> Xtmpl.callback</code></pre><div class="info">
+<pre><span id="VALelt_list"><span class="keyword">val</span> elt_list</span> : <code class="type"><a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -><br>       ?rss:Neturl.url -><br>       ?set:Stog_types.Elt_set.t -> <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> Xtmpl.callback</code></pre><div class="info">
 The calllback to insert a list of elements. Can be called directly
   if provided an additional environment, argument and children nodes.<br>
 </div>

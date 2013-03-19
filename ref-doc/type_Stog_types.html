@@ -249,7 +249,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;stog_elts_by_topic&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Elt_set</span>.t&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;stog_archives&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Elt_set</span>.t&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Int_map</span>.t&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Int_map</span>.t;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;stog_base_url&nbsp;:&nbsp;string;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;stog_base_url&nbsp;:&nbsp;<span class="constructor">Neturl</span>.url;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;stog_email&nbsp;:&nbsp;string;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;stog_rss_length&nbsp;:&nbsp;int;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;stog_lang&nbsp;:&nbsp;string&nbsp;option;<br>
@@ -260,6 +260,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;stog_used_mods&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.<span class="constructor">Str_set</span>.t;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;stog_depcut&nbsp;:&nbsp;bool;<br>
 &nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;url_of_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Neturl</span>.url<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;string_of_url&nbsp;:&nbsp;<span class="constructor">Neturl</span>.url&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;url_concat&nbsp;:&nbsp;<span class="constructor">Neturl</span>.url&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Neturl</span>.url<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;create_stog&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.stog<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;stog_md5&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;elt&nbsp;:&nbsp;<span class="constructor">Stog_types</span>.stog&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt&nbsp;<span class="constructor">Stog_tmap</span>.key&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Stog_types</span>.elt<br>
