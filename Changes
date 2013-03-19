@@ -1,4 +1,5 @@
-Next release:
+Release 0.8.0:
+  * now depends on ocamlrss >= 2.1.0
   * add: handle stog:archived-elts to indicate the types of elements appearing
     in archive tree
   * mod: do not issue twice the same warning message
