@@ -1,3 +1,6 @@
+Next release:
+  * <elements> handles ','- or ','-separated list of element types
+
 Release 0.8.0:
   * now depends on ocamlrss >= 2.1.0
   * add: handle stog:archived-elts to indicate the types of elements appearing

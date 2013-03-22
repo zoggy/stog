@@ -1323,8 +1323,9 @@ and elt_list elt ?rss ?set stog env args _ =
   let elts =
     match Xtmpl.get_arg args ("", "type") with
       None -> elts
-    | Some typ ->
-        List.filter (fun (_,elt) -> elt.elt_type = typ) elts
+    | Some s ->
+        let types = Stog_misc.split_string s [',' ; ';'] in
+        List.filter (fun (_,elt) -> List.mem elt.elt_type types) elts
   in
   let max = Stog_misc.map_opt int_of_string
     (Xtmpl.get_arg args ("", "max"))
