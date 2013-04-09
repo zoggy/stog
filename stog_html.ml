@@ -1325,7 +1325,7 @@ and elt_list elt ?rss ?set stog env args _ =
       None -> elts
     | Some s ->
         let filter = Stog_filter.filter_of_string s in
-        Stog_filter.filter_elts filter elts
+        Stog_filter.filter_elts env filter elts
   in
   let elts =
     match Xtmpl.get_arg args ("", "type") with

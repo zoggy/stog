@@ -29,7 +29,7 @@
 (** Representation of element filters. *)
 
 type t =
-  | Pred of string * string
+  | Pred of Xtmpl.name * string
   | Or of t * t
   | And of t * t
   | Not of t

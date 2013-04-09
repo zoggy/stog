@@ -24,7 +24,7 @@ let attchar = lowercase | uppercase | digit | '_' | '-'
 let attribute = (lowercase|uppercase) attchar*
 
 rule main = parse
-| '"' { Buffer.reset string_buffer; string lexbuf }
+| '\'' { Buffer.reset string_buffer; string lexbuf }
 | '\n'
     {
       let module L = Lexing in
@@ -47,13 +47,14 @@ rule main = parse
 | '|' { OR }
 | '&' { AND }
 | '!' { NOT }
+| ':' { COLON }
 | eof { EOF }
 | _ { error lexbuf (Printf.sprintf "Invalid character %s" (Lexing.lexeme lexbuf)) }
 
 and string = parse
- "\\\""  { Buffer.add_char string_buffer '"'; string lexbuf }
+ "\\'"  { Buffer.add_char string_buffer '\''; string lexbuf }
 | "\\\\" { Buffer.add_char string_buffer '\\'; string lexbuf }
-| '"'  { String (Buffer.contents string_buffer) }
+| '\''  { String (Buffer.contents string_buffer) }
 | '\n' {
       let module L = Lexing in
       let pos = lexbuf.L.lex_curr_p in
