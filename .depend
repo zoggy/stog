@@ -10,6 +10,10 @@ stog_deps.cmo : stog_types.cmi stog_msg.cmi stog_misc.cmi stog_deps.cmi
 stog_deps.cmx : stog_types.cmx stog_msg.cmx stog_misc.cmx stog_deps.cmi
 stog_dyn.cmo : stog_msg.cmi stog_misc.cmi stog_dyn.cmi
 stog_dyn.cmx : stog_msg.cmx stog_misc.cmx stog_dyn.cmi
+stog_filter_parser.cmo : stog_filter_types.cmi
+stog_filter_parser.cmx : stog_filter_types.cmx
+stog_filter_types.cmo : stog_filter_types.cmi
+stog_filter_types.cmx : stog_filter_types.cmi
 stog_find.cmo : stog_find.cmi
 stog_find.cmx : stog_find.cmi
 stog_graph.cmo : stog_graph.cmi
@@ -38,10 +42,12 @@ stog_io.cmx : stog_types.cmx stog_msg.cmx stog_misc.cmx stog_find.cmx \
     stog_config.cmx stog_io.cmi
 stog_latex.cmo : stog_types.cmi stog_misc.cmi stog_latex.cmi
 stog_latex.cmx : stog_types.cmx stog_misc.cmx stog_latex.cmi
-stog_main.cmo : stog_types.cmi stog_msg.cmi stog_misc.cmi stog_io.cmi \
-    stog_intl.cmi stog_info.cmi stog_html.cmi stog_dyn.cmi stog_config.cmi
-stog_main.cmx : stog_types.cmx stog_msg.cmx stog_misc.cmx stog_io.cmx \
-    stog_intl.cmx stog_info.cmx stog_html.cmx stog_dyn.cmx stog_config.cmx
+stog_main.cmo : stog_types.cmi stog_ocaml.cmi stog_msg.cmi stog_misc.cmi \
+    stog_io.cmi stog_intl.cmi stog_info.cmi stog_html.cmi stog_dyn.cmi \
+    stog_config.cmi
+stog_main.cmx : stog_types.cmx stog_ocaml.cmx stog_msg.cmx stog_misc.cmx \
+    stog_io.cmx stog_intl.cmx stog_info.cmx stog_html.cmx stog_dyn.cmx \
+    stog_config.cmx
 stog_misc.cmo : stog_misc.cmi
 stog_misc.cmx : stog_misc.cmi
 stog_msg.cmo : stog_msg.cmi
@@ -57,9 +63,9 @@ stog_ocaml_session.cmx : stog_ocaml_types.cmx stog_misc.cmx errors.cmi \
 stog_ocaml_types.cmo : stog_ocaml_types.cmi
 stog_ocaml_types.cmx : stog_ocaml_types.cmi
 stog_plug.cmo : stog_types.cmi stog_msg.cmi stog_intl.cmi stog_html.cmi \
-    stog_config.cmi stog_cache.cmi stog_plug.cmi
+    stog_deps.cmi stog_config.cmi stog_cache.cmi stog_plug.cmi
 stog_plug.cmx : stog_types.cmx stog_msg.cmx stog_intl.cmx stog_html.cmx \
-    stog_config.cmx stog_cache.cmx stog_plug.cmi
+    stog_deps.cmx stog_config.cmx stog_cache.cmx stog_plug.cmi
 stog_tags.cmo : stog_tags.cmi
 stog_tags.cmx : stog_tags.cmi
 stog_tmap.cmo : stog_tmap.cmi
@@ -70,8 +76,10 @@ stog_tmpl.cmx : stog_types.cmx stog_msg.cmx stog_misc.cmx stog_deps.cmx \
     stog_tmpl.cmi
 stog_trie.cmo : stog_trie.cmi
 stog_trie.cmx : stog_trie.cmi
-stog_types.cmo : stog_types.cmi
-stog_types.cmx : stog_types.cmi
+stog_types.cmo : stog_trie.cmi stog_tmap.cmi stog_misc.cmi stog_graph.cmi \
+    stog_date.cmi stog_config.cmi stog_types.cmi
+stog_types.cmx : stog_trie.cmx stog_tmap.cmx stog_misc.cmx stog_graph.cmx \
+    stog_date.cmx stog_config.cmx stog_types.cmi
 test_xtmpl.cmo :
 test_xtmpl.cmx :
 errors.cmi :
@@ -80,6 +88,7 @@ stog_config.cmi :
 stog_date.cmi :
 stog_deps.cmi : stog_types.cmi
 stog_dyn.cmi :
+stog_filter_types.cmi :
 stog_find.cmi :
 stog_graph.cmi :
 stog_html.cmi : stog_types.cmi
@@ -92,7 +101,7 @@ stog_msg.cmi :
 stog_ocaml.cmi : stog_types.cmi
 stog_ocaml_session.cmi :
 stog_ocaml_types.cmi :
-stog_plug.cmi : stog_types.cmi stog_intl.cmi stog_cache.cmi
+stog_plug.cmi : stog_types.cmi stog_intl.cmi stog_deps.cmi stog_cache.cmi
 stog_tags.cmi :
 stog_tmap.cmi :
 stog_tmpl.cmi : stog_types.cmi

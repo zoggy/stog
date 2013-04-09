@@ -74,6 +74,10 @@ LIB_CMXFILES= \
 	stog_deps.cmx \
 	stog_tmpl.cmx \
 	stog_cache.cmx \
+	stog_filter_types.cmx \
+	stog_filter_parser.cmx \
+	stog_filter_lexer.cmx \
+	stog_filter.cmx \
 	stog_html.cmx \
 	stog_plug.cmx \
 	stog_dyn.cmx \
