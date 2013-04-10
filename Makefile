@@ -258,6 +258,8 @@ noheaders:
 #############
 .SUFFIXES: .mli .ml .cmi .cmo .cmx .mll .mly
 
+.PRECIOUS: stog_filter_lexer.ml stog_filter_lexer.mli stog_filter_parser.ml
+
 %.cmi:%.mli
 	$(OCAMLFIND) ocamlc -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
 
@@ -279,6 +281,9 @@ noheaders:
 
 %.ml:%.mll
 	$(OCAMLLEX) $<
+
+stog_filter_lexer.mli: stog_filter_lexer.ml
+	$(OCAMLFIND) ocamlc -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -i $^ > $@
 
 %.mli %.ml:%.mly
 	$(OCAMLYACC) -v $<

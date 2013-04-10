@@ -26,47 +26,9 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Filters. *)
 
-open Stog_types;;
-open Stog_filter_types;;
+val filter_of_string : string -> Stog_filter_types.t
 
-let filter_of_string str =
-  let lexbuf = Lexing.from_string str in
-  Stog_filter_parser.filter Stog_filter_lexer.main lexbuf
-;;
-
-module Set =
-  Set.Make
-    (struct
-       type t = (elt_id * elt)
-       let compare (id1,_) (id2, _) = Stog_tmap.compare_key id1 id2
-     end)
-
-let filter_pred env att s (elt_id, elt) =
-  let v =
-    let xml = Xtmpl.xml_of_string s in
-    let xmls = Xtmpl.apply_to_xmls env [xml] in
-    Xtmpl.string_of_xmls xmls
-  in
-  let v_elt =
-    match Stog_types.get_def elt.elt_defs att  with
-      None -> ""
-    | Some (_, body) ->
-        Xtmpl.string_of_xmls (Xtmpl.apply_to_xmls env body)
-  in
-  v = v_elt
-;;
-
-let rec filter env set = function
-  Pred (att, v) -> Set.filter (filter_pred env att v) set
-| Or (f1, f2) -> Set.union (filter env set f1) (filter env set f2)
-| And (f1, f2) -> filter env (filter env set f2) f1
-| Not f -> Set.diff set (filter env set f)
-
-
-let filter_elts env t elts =
-  let set = List.fold_right Set.add elts Set.empty in
-  Set.elements (filter env set t)
-;;
-  
+val filter_elts : Xtmpl.env -> Stog_filter_types.t ->
+  (Stog_types.elt_id * Stog_types.elt) list -> (Stog_types.elt_id * Stog_types.elt) list
