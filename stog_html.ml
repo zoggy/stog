@@ -630,11 +630,17 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
         let code = highlight ~opts code in
         Xtmpl.xml_of_string code
   in
+  let id_atts =
+    match Xtmpl.get_arg args ("","id") with
+      None -> []
+    | Some id -> [("","id"), id]
+  in
   if inline then
-    [ Xtmpl.E (("", "span"), [("", "class"), "icode"], [xml_code]) ]
+    [ Xtmpl.E (("", "span"), id_atts @ [("", "class"), "icode"], [xml_code]) ]
   else
     [ Xtmpl.E (("", "pre"),
-       [ ("", "class"), Printf.sprintf "code-%s" language], [xml_code])
+       id_atts @ [ ("", "class"), Printf.sprintf "code-%s" language],
+       [xml_code])
     ]
 ;;
 
