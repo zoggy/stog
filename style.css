@@ -1168,8 +1168,10 @@ div.page-title {
   font-size: 20pt;
   text-align: left ;
 }
-div.center {
-  text-align: center ;
+div.centered {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 div#elt-body {
   text-align: justify;

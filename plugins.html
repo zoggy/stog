@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>Stog : Developing plugins</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.com/stog/style.css"/>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
 </head>
 <body>
 <div id="page">
@@ -13,12 +13,12 @@
 
 
   <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.com/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.com/stog/install.html">Installation</a></li>
-    <li class="active"><a href="http://zoggy.github.com/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.com/stog/stog-plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.com/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.com/stog/about.html">?</a></li>
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
   <div class="nav pull-right">
 
@@ -39,7 +39,7 @@
 <p>
 Plugins are written in OCaml. The compiled OCaml code is then
 loaded in Stog with the <span class="icode">--plugin</span> or <span class="icode">--package</span>
-options of <span class="icode">stog</span> (see <a href="http://zoggy.github.com/stog/getting_started.html#running">Running Stog</a>).
+options of <span class="icode">stog</span> (see <a href="http://zoggy.github.io/stog/getting_started.html#running">Running Stog</a>).
 </p>
 
 <ul class="toc"><li class="toc-section"><a href="#writing">Writing the code</a></li><li class="toc-section"><a href="#compiling">Compilation</a></li><li class="toc-section"><a href="#using">Using</a></li><li class="toc-section"><a href="#cache">Keeping the cache system in the loop</a></li></ul>
@@ -78,27 +78,33 @@ Here is an example:
 <span class="hl com">  Before stog 0.3, this function was called [Stog_plug.register_fun]. *)</span>
 <span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_rule <span class="hl opt">(</span><span class="hl str">&quot;&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;list&quot;</span><span class="hl opt">)</span> fun_list<span class="hl opt">;;</span></pre>
 <p>
-Have a look at the <a href="http://zoggy.github.com/stog/ref-doc/index.html">Stog library reference documentation</a>.
+Have a look at the <a href="http://zoggy.github.io/stog/ref-doc/index.html">Stog library reference documentation</a>.
 </p>
 </div>
 
 <div class="section"><div class="section-title" id="compiling">Compilation</div>
+<div id="codecompilation">
 <p>
 The plugin is simply compiled with
-<pre class="code-sh">ocamlfind ocamlopt <span class="hl opt">-</span>package stog <span class="hl opt">-</span>rectypes <span class="hl opt">-</span>shared <span class="hl opt">-</span>o plugin_example.cmxs plugin_example.ml</pre>
-for native code or
-<pre class="code-sh">ocamlfind ocamlc <span class="hl opt">-</span>package stog <span class="hl opt">-</span>rectypes <span class="hl opt">-</span>c plugin_example.ml</pre>
-for bytecode.
 </p>
+<pre class="code-sh">ocamlfind ocamlopt <span class="hl opt">-</span>package stog <span class="hl opt">-</span>rectypes <span class="hl opt">-</span>shared <span class="hl opt">-</span>o plugin_example.cmxs plugin_example.ml</pre>
+<p>
+for native code or
+</p>
+<pre class="code-sh">ocamlfind ocamlc <span class="hl opt">-</span>package stog <span class="hl opt">-</span>rectypes <span class="hl opt">-</span>c plugin_example.ml</pre>
+<p>for bytecode.</p>
+</div>
 </div>
 
 <div class="section"><div class="section-title" id="using">Using</div>
+<div id="usingcode">
 <p>
-The plugin is used by specifying it one the <span class="icode">stog</span> command line:
+The plugin is used by specifying it on the <span class="icode">stog</span> command line:
 </p>
 <pre class="code-sh">stog <span class="hl opt">--</span>plugin plugin_example.cmxs ...</pre>
 <p>or, if the plugin is installed with ocamlfind:</p>
 <pre class="code-sh">stog <span class="hl opt">--</span>package plugin_example ...</pre>
+</div>
 <p>
 With our plugin example, we can use the new &quot;list&quot;:
 </p>
@@ -111,7 +117,7 @@ This will be evaluated (reduced) to
 
 <div class="section"><div class="section-title" id="cache">Keeping the cache system in the loop</div>
 <p>
-The cache system (see <a href="http://zoggy.github.com/stog/getting_started.html#running">Running Stog</a>) must be aware
+The cache system (see <a href="http://zoggy.github.io/stog/getting_started.html#running">Running Stog</a>) must be aware
 of dependencies of each element on other elements and files.
 </p>
 <p>
@@ -165,22 +171,28 @@ Have a look at the <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</
 <span class="hl kwa">&lt;/section&gt;</span>
 
 <span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;compiling&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Compilation&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;codecompilation&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 The plugin is simply compiled with
-<span class="hl kwa">&lt;command-line&gt;</span>ocamlfind ocamlopt -package stog -rectypes -shared -o plugin_example.cmxs plugin_example.ml<span class="hl kwa">&lt;/command-line&gt;</span>
-for native code or
-<span class="hl kwa">&lt;command-line&gt;</span>ocamlfind ocamlc -package stog -rectypes -c plugin_example.ml<span class="hl kwa">&lt;/command-line&gt;</span>
-for bytecode.
 <span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;command-line&gt;</span>ocamlfind ocamlopt -package stog -rectypes -shared -o plugin_example.cmxs plugin_example.ml<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+for native code or
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;command-line&gt;</span>ocamlfind ocamlc -package stog -rectypes -c plugin_example.ml<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>for bytecode.<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/div&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>
 
 <span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;using&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Using&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;usingcode&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
-The plugin is used by specifying it one the <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> command line:
+The plugin is used by specifying it on the <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> command line:
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;command-line&gt;</span>stog --plugin plugin_example.cmxs ...<span class="hl kwa">&lt;/command-line&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>or, if the plugin is installed with ocamlfind:<span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;command-line&gt;</span>stog --package plugin_example ...<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;/div&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 With our plugin example, we can use the new <span class="hl str">&quot;list&quot;</span>:
 <span class="hl kwa">&lt;/p&gt;</span>
@@ -223,7 +235,5 @@ The Cache module to provide is very simple; have a look at the
   </div>
 
 </div> 
-
-<footer id="bottombar"/>
 </body>
 </html>

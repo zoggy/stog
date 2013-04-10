@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>Stog : Getting started</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.com/stog/style.css"/>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
 </head>
 <body>
 <div id="page">
@@ -13,12 +13,12 @@
 
 
   <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.com/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.com/stog/install.html">Installation</a></li>
-    <li class="active"><a href="http://zoggy.github.com/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.com/stog/stog-plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.com/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.com/stog/about.html">?</a></li>
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
   <div class="nav pull-right">
 
@@ -136,7 +136,7 @@ generated file),</li>
 <p>
 Any other attribute will be available by its name in the environment when processing the template
 associated to the element type. The element type can be accessed with <span class="icode">&lt;elt-type/&gt;</span>.
-More details in <a href="http://zoggy.github.com/stog/getting_started.html#functions">Attributes and functions</a>.
+More details in <a href="http://zoggy.github.io/stog/getting_started.html#functions">Attributes and functions</a>.
 </p>
 <p>
 To generate the file corresponding to an element, <span class="icode">stog</span> will use the type of
@@ -201,7 +201,7 @@ to test your site locally with correct links.
 <p>The <span class="icode">--plugin</span> option makes <span class="icode">stog</span> dynamically
 load the given OCaml object file. The loaded plugin can define new functions
 to associate to some tags, or even override some pre-defined functions.
-See <a href="http://zoggy.github.com/stog/plugins.html">Developing plugins</a>.
+See <a href="http://zoggy.github.io/stog/plugins.html">Developing plugins</a>.
 </p>
 <p>
 If a plugin was installed with ocamlfind, the <span class="icode">--package</span> option can be used
@@ -225,7 +225,7 @@ be updated by contents of computed elements.
 </p>
 <p>
 The caching strategy uses dependencies between elements: if an element
-refers to another one (see <a href="http://zoggy.github.com/stog/funs.html">Predefined functions</a>), a dependency will be
+refers to another one (see <a href="http://zoggy.github.io/stog/funs.html">Predefined functions</a>), a dependency will be
 added and stored in the cache directory, so that this dependency will
 be used during the next run of stog. An element can also depend
 on files: the templates used, the files included, ... Dependencies are
@@ -277,7 +277,7 @@ This environment is a set of rewrite rules.
 rewritten to the tree of the element body as given in the element file).
 </p>
 <p>The pre-defined levels contain pre-defined functions which apply
-<a href="http://zoggy.github.com/stog/funs.html">default rules</a>, in addition to the rules from
+<a href="http://zoggy.github.io/stog/funs.html">default rules</a>, in addition to the rules from
 the environment and rules added by plugins.
 </p>
 <p>When all levels were applied to elements, the contents of each element
@@ -285,7 +285,7 @@ is stored in the cache (the <span class="icode">.stog/cache</span> directory).
 The final XML file is also created from this contents.
 </p>
 <p>Remark: If the element file was not modified since the corresponding
-cache file was stored, nor its dependencies (see <a href="http://zoggy.github.com/stog/getting_started.html#running">Running Stog</a>),
+cache file was stored, nor its dependencies (see <a href="http://zoggy.github.io/stog/getting_started.html#running">Running Stog</a>),
 the contents of the element is read back from
 the cache, and the level functions are not applied to this element.
 </p>
@@ -308,9 +308,9 @@ library.</p>
 <p>Besides, the contents of the attributes are also analysed to perform such substitutions,
 before looking up for the tag in the environment.
 </p>
-<p>Stog comes with <a href="http://zoggy.github.com/stog/funs.html">predefined functions</a>
+<p>Stog comes with <a href="http://zoggy.github.io/stog/funs.html">predefined functions</a>
 associated to some tags, but more can be created in
-<a href="http://zoggy.github.com/stog/plugins.html">plugins</a>.
+<a href="http://zoggy.github.io/stog/plugins.html">plugins</a>.
 </p>
 </div>
 
@@ -351,7 +351,7 @@ You can also define functions. A function is defined like an attribute
 when having <span class="icode"><span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span></span>, except the
 node defining the name of the function has XML attributes:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;....&quot;</span>
+<pre id="function-def" class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;....&quot;</span>
   <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>
   ...
 <span class="hl kwa">&gt;</span>
@@ -375,9 +375,9 @@ that is the subnodes of the <span class="icode"><span class="hl kwa">&lt;command
 <span class="icode">prompt</span> is an argument for <span class="icode"><span class="hl kwa">&lt;command/&gt;</span></span>, with a default
 value set to &quot;# &quot;. This argument can be changed when &quot;calling&quot; the function:
 </p>
-<pre class="code-xml">... <span class="hl kwa">&lt;command</span> <span class="hl kwb">prompt</span>=<span class="hl str">&quot;mysql&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>select * from table<span class="hl kwa">&lt;/command&gt;</span> ...</pre>
+<pre id="function-app" class="code-xml">... <span class="hl kwa">&lt;command</span> <span class="hl kwb">prompt</span>=<span class="hl str">&quot;mysql&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>select * from table<span class="hl kwa">&lt;/command&gt;</span> ...</pre>
 <p>will be rewritten to</p>
-<pre class="code-xml">... <span class="hl kwa">&lt;pre&gt;</span>mysql<span class="hl kwd">&amp;gt;</span> select * from table<span class="hl kwa">&lt;/pre&gt;</span> ...</pre>
+<pre id="function-app-result" class="code-xml">... <span class="hl kwa">&lt;pre&gt;</span>mysql<span class="hl kwd">&amp;gt;</span> select * from table<span class="hl kwa">&lt;/pre&gt;</span> ...</pre>
 <p>
 Only attributes of the <span class="icode"><span class="hl kwa">&lt;command/&gt;</span></span> nodes which are
 &quot;declared&quot; in the rule attribute list are added to the environment used
@@ -742,7 +742,7 @@ You can also define functions. A function is defined like an attribute
 when having <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&lt;/icode&gt;</span>, except the
 node defining the name of the function has XML attributes:
 <span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;....&quot;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;function-def&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;....&quot;</span>
   <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>
   ...
 <span class="hl kwa">&gt;</span>
@@ -766,9 +766,9 @@ that is the subnodes of the <span class="hl kwa">&lt;ixml&gt;</span><span class=
 <span class="hl kwa">&lt;icode&gt;</span>prompt<span class="hl kwa">&lt;/icode&gt;</span> is an argument for <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;&lt;command/&gt;&lt;/icode&gt;</span>, with a default
 value set to <span class="hl str">&quot;# &quot;</span>. This argument can be changed when <span class="hl str">&quot;calling&quot;</span> the function:
 <span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>... <span class="hl kwa">&lt;command</span> <span class="hl kwb">prompt</span>=<span class="hl str">&quot;mysql&amp;gt; &quot;</span><span class="hl kwa">&gt;</span>select * from table<span class="hl kwa">&lt;/command&gt;</span> ...<span class="hl kwa">&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;function-app&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>... <span class="hl kwa">&lt;command</span> <span class="hl kwb">prompt</span>=<span class="hl str">&quot;mysql&amp;gt; &quot;</span><span class="hl kwa">&gt;</span>select * from table<span class="hl kwa">&lt;/command&gt;</span> ...<span class="hl kwa">&lt;/hcode&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>will be rewritten to<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>... <span class="hl kwa">&lt;command</span> <span class="hl kwb">prompt</span>=<span class="hl str">&quot;mysql&amp;gt; &quot;</span><span class="hl kwa">&gt;</span>select * from table<span class="hl kwa">&lt;/command&gt;</span> ...<span class="hl kwa">&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;function-app-result&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>... <span class="hl kwa">&lt;command</span> <span class="hl kwb">prompt</span>=<span class="hl str">&quot;mysql&amp;gt; &quot;</span><span class="hl kwa">&gt;</span>select * from table<span class="hl kwa">&lt;/command&gt;</span> ...<span class="hl kwa">&lt;/hcode&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 Only attributes of the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>command/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> nodes which are
 <span class="hl str">&quot;declared&quot;</span> in the rule attribute list are added to the environment used
@@ -801,7 +801,5 @@ it can be redefined in an element to change this rule for this element only.
   </div>
 
 </div> 
-
-<footer id="bottombar"/>
 </body>
 </html>
