@@ -1,5 +1,6 @@
 Next release:
-  * <elements> handle filter attribute
+  * <inc> handles id attribute to redefine the id of the included node
+  * <elements> handles filter attribute
   * <elements> handles ','- or ','-separated list of element types
 
 Release 0.8.0:

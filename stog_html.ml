@@ -349,6 +349,7 @@ let fun_inc stog elt env args subs =
       None -> failwith "Missing href for inc rule"
     | Some href -> href
   in
+  let new_id = Xtmpl.get_arg args ("", "id") in
   let (hid, id) =
     try
       let p = String.index href '#' in
@@ -365,11 +366,18 @@ let fun_inc stog elt env args subs =
     Stog_deps.add_dep elt (Stog_deps.Elt s_hid);
     let (_, elt) = Stog_types.elt_by_human_id stog hid in
     match Stog_types.find_block_by_id elt id with
-      Some xml -> [xml]
     | None ->
         failwith
-        (Printf.sprintf "No id %S in element %S"
-         id (Stog_types.string_of_human_id hid))
+          (Printf.sprintf "No id %S in element %S"
+           id (Stog_types.string_of_human_id hid))
+    | Some (Xtmpl.D _) -> assert false
+    | Some ((Xtmpl.E (tag, atts, subs)) as xml)->
+        match new_id with
+          None -> [xml]
+        | Some new_id ->
+            let atts = List.filter (function (("","id"), _) -> false | _ -> true) atts in
+            let atts = (("", "id"), new_id) :: atts in
+            [ Xtmpl.E (tag, atts, subs) ]
   with
     Failure s ->
       Stog_msg.error s;
