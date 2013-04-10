@@ -1,0 +1,8 @@
+<ocaml-eval show-code="false" show-stdout="true">
+open Unix;;
+let t = Unix.gmtime (Unix.time ());;
+let s = Printf.sprintf
+  "This OCaml code was evaluated on %04d/%02d/%02d at %02d:%02d."
+  (t.tm_year + 1900) t.tm_mon t.tm_mday t.tm_hour t.tm_min;;
+print_endline s;;
+</ocaml-eval>

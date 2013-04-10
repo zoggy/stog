@@ -1,0 +1,3 @@
+<ocaml-eval toplevel="true" session="mysession">
+let x = 1;;
+</ocaml-eval>

@@ -14,6 +14,23 @@ latex-svg-scale="2.0"
 <contents/>
 </div>
 </slide>
+
+<showeval codefile="">
+<div class="centered">
+<div class="row">
+  <div class="span9">
+    <hxml defer_="1"><include raw="true" defer_="1" file="&lt;codefile/&gt;"/></hxml>
+  </div>
+</div>
+<div class="row">
+  <div class="span1 showeval-arrow">&#x21b3;</div>
+  <div class="span11">
+      <div><include defer_="1" file="&lt;codefile/&gt;"/></div>
+  </div>
+</div>
+</div>
+</showeval>
+
 <contents>
 <sep_/>
 <slide title="What I wanted">
@@ -46,22 +63,14 @@ Three steps:
 </slide>
 
 <slide title="Step 2: handling &quot;elements&quot;">
-<div class="center">
- <object data="how_it_works.svg" type="image/svg+xml"
-  width="90%" title="Handling element files">
-   <img src="how_it_works.png" width="90%"
-          alt="Handling element files" />
-</object>
+<div class="center centered">
+ <img src="how_it_works.svg" width="800px" alt="Handling element files"/>
 </div>
 </slide>
 
 <slide title="Step 3: copying other files">
-<div class="center">
- <object data="how_it_works2.svg" type="image/svg+xml"
-  width="90%" title="Handling other files">
-   <img src="how_it_works2.png" width="90%"
-          alt="Handling other files" />
-</object>
+<div class="center centered">
+ <img src="how_it_works2.svg" width="800px" alt="Handling other files"/>
 </div>
 </slide>
 
@@ -201,15 +210,46 @@ make this rule appear in the initial environment with the name "foo".
 </slide>
 
 <slide title="A powerful rule: &lt;icode&gt;&amp;lt;eval-ocaml&amp;gt;&lt;/icode&gt;">
-
+<showeval codefile="./inria_code1.xml"/>
+<showeval codefile="./inria_code2.xml"/>
+<showeval codefile="./inria_code3.xml"/>
+<showeval codefile="./inria_code4.xml"/>
 </slide>
 
+<slide title="A powerful rule: &lt;icode&gt;&amp;lt;eval-ocaml&amp;gt;&lt;/icode&gt; (2)">
+<div class="center centered">
+ <img src="ocaml-sessions.svg" alt="Stog and OCaml sessions" width="800px"/>
+</div>
+</slide>
 <slide title="Templates + rewrite rules = not enough!">
-
+<p>
+We must ensure some rules will be applied before or after others. For example:
+</p>
+<ul>
+<li>computation of table of contents must occur before the <ixml>&lt;section&gt;</ixml>
+nodes are rewritten, but after all <ixml>&lt;include&gt;</ixml> have been resolved,</li>
+<li>most of rules must have been applied before resolving internal links.</li>
+</ul>
 </slide>
 
 <slide title="Levels of rewrite rules">
-
+<p>
+Various levels of rewrite rules are defined, in a way mixing
+Linux run levels and BASIC line numbering &#x1f603;
+</p>
+<ul>
+<li>each level is numbered,</li>
+<li>for each level, starting from level 0, the set of rewrite rules
+is applied to each element content:
+  <ul>
+    <li>rules of level 0 are applied to all elements,</li>
+    <li>rules of next level are applied to all the resulting elements,</li>
+    <li>and so on until the last level.</li>
+  </ul>
+</li>
+<li>predefined levels are numbered 0, 50, 100, 120, 150, 160; this lets
+room for additional levels defined in plugins.</li>
+</ul>
 </slide>
 
 <slide title="Functions">
@@ -228,5 +268,17 @@ make this rule appear in the initial environment with the name "foo".
 
 </slide>
 
+<slide title="Questions">
+
+</slide>
+
+<slide title="Why redevelop your own tool ?">
+<ul>
+<li>Why not ?</li>
+<li>I needed a convenient way to evaluate OCaml code,</li>
+<li>I'm not a real engineer for I refuse to be subject to economic considerations and
+   the Myth of Competitiveness.</li>
+</ul>
+</slide>
 </contents>
 </slideshow>
