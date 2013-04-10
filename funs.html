@@ -71,12 +71,12 @@ between &quot;login&quot; and &quot;zoggy&quot;. This will add to the environmen
 an association between the key &quot;login&quot; and
 the function returning the one-element list [&quot;zoggy&quot;], which is used
 later in the &quot;login&quot; attribute:
+</p>
 <pre class="code-xml"><span class="hl kwa">&lt;env_</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;zoggy&quot;</span><span class="hl kwa">&gt;</span>
   ...
   <span class="hl kwa">&lt;user</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;&amp;lt;login/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/user&gt;</span>
   ...
 <span class="hl kwa">&lt;/env_&gt;</span></pre>
-</p>
 <p>Such a function cannot be created in plugins, since functions only return
 XML trees, not a new environment. But your functions can return XML trees
 containing <span class="icode">env_</span> tags to modify the environment used to
@@ -267,8 +267,9 @@ graph to jump to the element.
 <div class="subsection"><div class="subsection-title" id="hcode">hcode</div>
 <p>
 Syntax:
-<pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>your code<span class="hl kwa">&lt;/hcode&gt;</span></pre>
 </p>
+<pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>your code<span class="hl kwa">&lt;/hcode&gt;</span></pre>
+
 <p>
 This function inserts the given pre-formatted code. It uses the
 <span class="ext-a"><a href="http://www.andre-simon.de/doku/highlight/en/highlight.html"><span class="icode">highlight</span></a></span>
@@ -290,11 +291,12 @@ generate inline highlighted code instead of using a box.
 <div class="subsection"><div class="subsection-title" id="if">if</div>
 <p>
 Syntax:
+</p>
 <pre class="code-xml"><span class="hl kwa">&lt;if</span> <span class="hl kwb">attr1</span>=<span class="hl str">&quot;value1&quot;</span> <span class="hl kwb">attr2</span>=<span class="hl str">&quot;value2&quot;</span> ...<span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;XML</span> tree used when all conditions are verified<span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;optional</span> XML tree used when at least one condition is not verified<span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;/if&gt;</span></pre>
-</p>
+
 <p>
 The <span class="icode">if</span> function tests whether each condition expressed as <span class="icode">attr=&quot;value&quot;</span>
 is verified. If so, the first XML child is returned, else the second one is returned.
@@ -322,8 +324,9 @@ a block or not:
 <div class="subsection"><div class="subsection-title" id="include">include</div>
 <p>
 Syntax:
-<pre class="code-xml"><span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;template&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/include&gt;</span></pre>
 </p>
+<pre class="code-xml"><span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;template&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/include&gt;</span></pre>
+
 <p>
 This function will load the file <span class="icode">template</span> from the template directory
 (or fail if the file does not exist). The contents of the file will then be evaluated.
@@ -363,8 +366,9 @@ in the template directory, with the following contents:
 <div class="subsection"><div class="subsection-title" id="image">image</div>
 <p>
 Syntax:
-<pre class="code-xml"><span class="hl kwa">&lt;image</span> <span class="hl kwb">float</span>=<span class="hl str">&quot;[left|right]&quot;</span> <span class="hl kwb">src</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>legend<span class="hl kwa">&lt;/image&gt;</span></pre>
 </p>
+<pre class="code-xml"><span class="hl kwa">&lt;image</span> <span class="hl kwb">float</span>=<span class="hl str">&quot;[left|right]&quot;</span> <span class="hl kwb">src</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>legend<span class="hl kwa">&lt;/image&gt;</span></pre>
+
 <p>
 This inserts an image using an <span class="icode"><span class="hl kwa">&lt;img</span> ...<span class="hl kwa">/&gt;</span></span> node.
 The legend is optional.
@@ -481,11 +485,12 @@ main element.
 <div class="subsection"><div class="subsection-title" id="two-columns">two-columns / n-columns</div>
 <p>
 Syntax:
+</p>
 <pre class="code-xml"><span class="hl kwa">&lt;two-columns&gt;</span>
 <span class="hl kwa">&lt;XML</span> for left column<span class="hl kwa">/&gt;</span>
 <span class="hl kwa">&lt;XML</span> for right column<span class="hl kwa">/&gt;</span>
 <span class="hl kwa">&lt;/two-columns&gt;</span></pre>
-</p>
+
 <p>
 This will put the two given XML nodes in a two-columns layout. Note that the tag used to
 enclose the left and right contents is not kept, so you may use any tag you want, for example:
@@ -505,6 +510,7 @@ This level only contains two rules: <span class="icode">toc</span> and <span cla
 </p>
 <p>
 Syntax:
+</p>
 <pre class="code-xml"><span class="hl kwa">&lt;prepare-toc</span> <span class="hl kwb">depth</span>=<span class="hl str">&quot;[1|2|...]&quot;</span><span class="hl kwa">&gt;</span>
 ...
 <span class="hl kwa">&lt;toc&gt;</span>text<span class="hl kwa">&lt;/toc&gt;</span>
@@ -517,7 +523,7 @@ Syntax:
 <span class="hl kwa">&lt;/section&gt;</span>
 ...
 <span class="hl kwa">&lt;/prepare-toc&gt;</span></pre>
-</p>
+
 <p>
 The <span class="icode"><span class="hl kwa">&lt;toc&gt;</span></span> node is used to insert a table of contents.
 If a text is given, it is added ahead of the table of contents.
@@ -537,9 +543,10 @@ is used to specify the depth of the table of contents.
 <div class="section"><div class="section-title" id="level100">Level 100: Sectionning</div>
 <p>
 Syntax:
+</p>
 <pre class="code-xml"><span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/section&gt;</span>
 <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/subsection&gt;</span></pre>
-</p>
+
 <p>This is used to insert sections and subsections, with a given title. The id,
 if given, will be associated to the section title node.
 </p>
@@ -586,8 +593,9 @@ The default rules defined in this level are the following:
 </p>
 <p>
 Syntax:
-<pre class="code-xml"><span class="hl kwa">&lt;elt</span> href=hid[#id]<span class="hl kwa">&gt;</span>text<span class="hl kwa">&lt;/elt&gt;</span></pre>
 </p>
+<pre class="code-xml"><span class="hl kwa">&lt;elt</span> href=hid[#id]<span class="hl kwa">&gt;</span>text<span class="hl kwa">&lt;/elt&gt;</span></pre>
+
 <p>
 This will return a link to the element specified by its hid. The hid of an element
 is its absolute name from the root directoty of your project. You are not forced
@@ -676,8 +684,9 @@ first defined in the article.
 <div class="section"><div class="section-title" id="level160">Level 160: Including blocks</div>
 <p>
 Syntax:
-<pre class="code-xml"><span class="hl kwa">&lt;inc</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></pre>
 </p>
+<pre class="code-xml"><span class="hl kwa">&lt;inc</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></pre>
+
 <p>
 This rule is used to insert the XML node specified by the <span class="icode">href</span> attribute.
 See <a href="http://zoggy.github.io/stog/funs.html#level150">Level 150: Cross linking</a> for details about how to specify an element. The id of the
@@ -737,12 +746,12 @@ between <span class="hl str">&quot;login&quot;</span> and <span class="hl str">&
 an association between the key <span class="hl str">&quot;login&quot;</span> and
 the function returning the one-element list [<span class="hl str">&quot;zoggy&quot;</span>], which is used
 later in the <span class="hl str">&quot;login&quot;</span> attribute:
+<span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;env_</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;zoggy&quot;</span><span class="hl kwa">&gt;</span>
   ...
   <span class="hl kwa">&lt;user</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;&amp;lt;login/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/user&gt;</span>
   ...
 <span class="hl kwa">&lt;/env_&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>Such a function cannot be created in plugins, since functions only return
 XML trees, not a new environment. But your functions can return XML trees
 containing <span class="hl kwa">&lt;icode&gt;</span>env_<span class="hl kwa">&lt;/icode&gt;</span> tags to modify the environment used to
