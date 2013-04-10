@@ -1731,9 +1731,9 @@ let get_sectionning_tags stog elt =
   match spec with
     None -> [("",Stog_tags.section) ; ("", Stog_tags.subsection)]
   | Some (_,xmls) ->
-     let s = Xtmpl.string_of_xmls xmls in
-     let l = Stog_misc.split_string s [',' ; ';'] in
-     let strip = Stog_misc.strip_string in
+      let s = Xtmpl.string_of_xmls xmls in
+      let l = Stog_misc.split_string s [',' ; ';'] in
+      let strip = Stog_misc.strip_string in
       List.fold_right
         (fun s acc ->
            match Stog_misc.split_string s [':'] with
@@ -1742,7 +1742,7 @@ let get_sectionning_tags stog elt =
            | [pref ; s] -> (strip pref, strip s) :: acc
            | pref :: q -> (strip pref, strip (String.concat ":" q)) :: acc
         )
-      l []
+        l []
 ;;
 
 let rules_toc stog elt_id elt =
