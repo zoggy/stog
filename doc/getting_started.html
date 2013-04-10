@@ -327,7 +327,7 @@ You can also define functions. A function is defined like an attribute
 when having <icode lang="xml">with-contents="true"</icode>, except the
 node defining the name of the function has XML attributes:
 </p>
-<hcode lang="xml"><![CDATA[<page title="...."
+<hcode id="function-def" lang="xml"><![CDATA[<page title="...."
   with-contents="true"
   ...
 >
@@ -351,9 +351,9 @@ that is the subnodes of the <ixml>&lt;command&gt;</ixml> node.
 <icode>prompt</icode> is an argument for <icode lang="xml"><command/></icode>, with a default
 value set to "# ". This argument can be changed when "calling" the function:
 </p>
-<hcode lang="xml">... <command prompt="mysql&gt; ">select * from table</command> ...</hcode>
+<hcode id="function-app" lang="xml">... <command prompt="mysql&gt; ">select * from table</command> ...</hcode>
 <p>will be rewritten to</p>
-<hcode defer_="1" lang="xml">... <command prompt="mysql&gt; ">select * from table</command> ...</hcode>
+<hcode id="function-app-result" defer_="1" lang="xml">... <command prompt="mysql&gt; ">select * from table</command> ...</hcode>
 <p>
 Only attributes of the <ixml>&lt;command/&gt;</ixml> nodes which are
 "declared" in the rule attribute list are added to the environment used

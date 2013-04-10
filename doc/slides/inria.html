@@ -220,6 +220,9 @@ make this rule appear in the initial environment with the name "foo".
 <div class="center centered">
  <img src="ocaml-sessions.svg" alt="Stog and OCaml sessions" width="800px"/>
 </div>
+<p>
+Having separate sessions is useful to prevent name pollution in your OCaml environment.
+</p>
 </slide>
 <slide title="Templates + rewrite rules = not enough!">
 <p>
@@ -253,23 +256,90 @@ room for additional levels defined in plugins.</li>
 </slide>
 
 <slide title="Functions">
-
+<p>One can define "functions" with parameters, to factorize code:</p>
+<inc href="getting_started#function-def"/>
+<p>Now this function can be "called" with a specific value for the <icode>prompt</icode> parameter:</p>
+<inc href="getting_started#function-app"/>
+<p>This will produce the following code:</p>
+<inc href="getting_started#function-app-result"/>
 </slide>
 
 <slide title="Plugins">
+<p>
+Developing plugins consists in writing some OCaml code:
+</p>
+<hcode lang="ocaml" defer_="1">
+<include file="../../plugins/plugin_example.ml" raw="true"/>
+</hcode>
+<p>More complex plugins can define new levels of rewrite rules.</p>
+</slide>
 
+<slide title="Plugins (2)">
+<inc href="plugins#codecompilation"/>
+<inc href="plugins#usingcode"/>
 </slide>
 
 <slide title="Existing plugins">
-
+<p>
+By now, two plugins are already available:
+</p>
+<ul>
+<li><strong>Stog-writing:</strong> bibliography management, footnotes and automatic ids for paragraphs,</li>
+<li><strong>Stog-RDF:</strong> definition of an RDF graph associated to the generated site.
+Some XML nodes are used to (easily) insert edges in the graph.</li>
+</ul>
+<p>
+These two plugins aim at being able to write scientific artiles with semantic information
+about elements of articles:
+</p>
+<ul>
+<li>"this block is a proof of this proposition",</li>
+<li>"this proof applies this theorem",</li>
+<li>...</li>
+</ul>
 </slide>
 
 <slide title="Modules">
+<p>
+A module system will allow reusing functions and definitions. A simple system already exists:
+</p>
+<hxml><![CDATA[
+<page title="My page"
+use="math"
+...>
+]]></hxml>
+<p>This code indicates to use definitions from <icode>.stog/modules/math.stm</icode>:</p>
+<hxml><![CDATA[
+<module name="math">
+<math:qed>&#x220e;</math:qed>
 
+<math:hasauthor href="" affil="">
+  <rdf pred="math:hasAuthor" href="&lt;href/&gt;"/>
+</math:hasauthor>
+
+<math:proof-of href="">
+  <rdf pred="math:proves" href="&lt;href/&gt;"/>
+</math:proof-of>
+
+<math:isproof><rdf pred="rdf:Type" obj="math:proof"/></math:isproof>
+
+<figure id="" title="" href=""><block
+  counter-name="figure" class="figure"
+  label="Figure" href="&lt;href/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+>
+<div class="&lt;class/&gt;" id="&lt;id/&gt;">
+  <div class="title"><title/></div>
+  <div class="contents"><contents/></div>
+</div></block></figure>
+
+...
+]]></hxml>
 </slide>
 
-<slide title="Questions">
-
+<slide title="This is the end">
+<h2>Thanks for your attention !</h2>
+<h2>Questions ?</h2>
 </slide>
 
 <slide title="Why redevelop your own tool ?">

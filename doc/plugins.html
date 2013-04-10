@@ -22,22 +22,28 @@ Have a look at the <a href="&lt;site-url/&gt;/ref-doc/index.html">Stog library r
 </section>
 
 <section id="compiling" title="Compilation">
+<div id="codecompilation">
 <p>
 The plugin is simply compiled with
-<command-line>ocamlfind ocamlopt -package stog -rectypes -shared -o plugin_example.cmxs plugin_example.ml</command-line>
-for native code or
-<command-line>ocamlfind ocamlc -package stog -rectypes -c plugin_example.ml</command-line>
-for bytecode.
 </p>
+<command-line>ocamlfind ocamlopt -package stog -rectypes -shared -o plugin_example.cmxs plugin_example.ml</command-line>
+<p>
+for native code or
+</p>
+<command-line>ocamlfind ocamlc -package stog -rectypes -c plugin_example.ml</command-line>
+<p>for bytecode.</p>
+</div>
 </section>
 
 <section id="using" title="Using">
+<div id="usingcode">
 <p>
-The plugin is used by specifying it one the <icode>stog</icode> command line:
+The plugin is used by specifying it on the <icode>stog</icode> command line:
 </p>
 <command-line>stog --plugin plugin_example.cmxs ...</command-line>
 <p>or, if the plugin is installed with ocamlfind:</p>
 <command-line>stog --package plugin_example ...</command-line>
+</div>
 <p>
 With our plugin example, we can use the new "list":
 </p>
