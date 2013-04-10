@@ -273,8 +273,10 @@ Syntax:
 This function inserts the given pre-formatted code. It uses the
 <span class="ext-a"><a href="http://www.andre-simon.de/doku/highlight/en/highlight.html"><span class="icode">highlight</span></a></span>
 tool to add syntax highlighting. For example, the code examples of this page are
-inserted using <pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/hcode&gt;</span></pre>
+inserted using
 </p>
+<pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/hcode&gt;</span></pre>
+
 </div>
 
 <div class="subsection"><div class="subsection-title" id="icode">icode</div>
@@ -306,15 +308,15 @@ will be verified if <span class="icode">foo</span> is not in the environment.
 <p>
 The <span class="icode">&quot;value&quot;</span> part of the condition must be valid XML, and can contain
 calls to functions, as in:
-<pre class="code-xml"><span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-title</span>=<span class="hl str">&quot;&amp;lt;site-title&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>....<span class="hl kwa">&lt;/if&gt;</span></pre>
 </p>
+<pre class="code-xml"><span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-title</span>=<span class="hl str">&quot;&amp;lt;site-title&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>....<span class="hl kwa">&lt;/if&gt;</span></pre>
 <p>Other example: Testing whether a variable is empty to known whether to output
 a block or not:
+</p>
 <pre class="code-xml"><span class="hl kwa">&lt;if</span> <span class="hl kwb">list</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;span/&gt;</span>
 <span class="hl kwa">&lt;div&gt;</span>The list is not empty, let's print it:<span class="hl kwa">&lt;ul&gt;&lt;list/&gt;&lt;/ul&gt;&lt;/div&gt;</span>
 <span class="hl kwa">&lt;/if&gt;</span></pre>
-</p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="include">include</div>
@@ -350,12 +352,12 @@ be added to the environment used to evaluate the contents of the file.
 </p>
 <p>Here is an example. If we have the <span class="icode">foo.tmpl</span> file
 in the template directory, with the following contents:
+</p>
 <pre class="code-xml"><span class="hl kwa">&lt;p&gt;</span> key=<span class="hl kwa">&lt;key/&gt;</span> value=<span class="hl kwa">&lt;contents/&gt; &lt;/p&gt;</span></pre>
 <p>The following code</p>
 <pre class="code-xml"><span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;foo.tmpl&quot;</span> <span class="hl kwb">key</span>=<span class="hl str">&quot;bar&quot;</span><span class="hl kwa">&gt;</span>the value of bar<span class="hl kwa">&lt;/include&gt;</span></pre>
 <p>will be reduced to</p>
 <pre class="code-xml"><span class="hl kwa">&lt;p&gt;</span> key=bar value=the value of bar <span class="hl kwa">&lt;/p&gt;</span></pre>
-</p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="image">image</div>
@@ -939,8 +941,10 @@ graph to jump to the element.
 This function inserts the given pre-formatted code. It uses the
 <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://www.andre-simon.de/doku/highlight/en/highlight.html&quot;</span><span class="hl kwa">&gt;&lt;icode&gt;</span>highlight<span class="hl kwa">&lt;/icode&gt;&lt;/ext-a&gt;</span>
 tool to add syntax highlighting. For example, the code examples of this page are
-inserted using <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/hcode&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+inserted using
 <span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/hcode&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+
 <span class="hl kwa">&lt;/subsection&gt;</span>
 
 <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;icode&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;icode&quot;</span><span class="hl kwa">&gt;</span>
@@ -971,15 +975,15 @@ will be verified if <span class="hl kwa">&lt;icode&gt;</span>foo<span class="hl 
 <span class="hl kwa">&lt;p&gt;</span>
 The <span class="hl kwa">&lt;icode&gt;</span><span class="hl str">&quot;value&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> part of the condition must be valid XML, and can contain
 calls to functions, as in:
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-title</span>=<span class="hl str">&quot;&amp;lt;site-title&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>....<span class="hl kwa">&lt;/if&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
 <span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-title</span>=<span class="hl str">&quot;&amp;lt;site-title&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>....<span class="hl kwa">&lt;/if&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>Other example: Testing whether a variable is empty to known whether to output
 a block or not:
+<span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;if</span> <span class="hl kwb">list</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;span/&gt;</span>
 <span class="hl kwa">&lt;div&gt;</span>The list is not empty, let's print it:<span class="hl kwa">&lt;ul&gt;&lt;list/&gt;&lt;/ul&gt;&lt;/div&gt;</span>
 <span class="hl kwa">&lt;/if&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/subsection&gt;</span>
 
 <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;include&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;include&quot;</span><span class="hl kwa">&gt;</span>
@@ -1012,12 +1016,12 @@ be added to the environment used to evaluate the contents of the file.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>Here is an example. If we have the <span class="hl kwa">&lt;icode&gt;</span>foo.tmpl<span class="hl kwa">&lt;/icode&gt;</span> file
 in the template directory, with the following contents:
+<span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;p&gt;</span> key=<span class="hl kwa">&lt;key/&gt;</span> value=<span class="hl kwa">&lt;contents/&gt; &lt;/p&gt;</span> ]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>The following code<span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;foo.tmpl&quot;</span> <span class="hl kwb">key</span>=<span class="hl str">&quot;bar&quot;</span><span class="hl kwa">&gt;</span>the value of bar<span class="hl kwa">&lt;/include&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>will be reduced to<span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;p&gt;</span> key=bar value=the value of bar <span class="hl kwa">&lt;/p&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/subsection&gt;</span>
 
 <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;image&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;image&quot;</span><span class="hl kwa">&gt;</span>
