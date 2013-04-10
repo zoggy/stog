@@ -41,12 +41,12 @@ between "login" and "zoggy". This will add to the environment
 an association between the key "login" and
 the function returning the one-element list ["zoggy"], which is used
 later in the "login" attribute:
+</p>
 <hcode lang="xml"><![CDATA[<env_ login="zoggy">
   ...
   <user login="&lt;login/&gt;">...</user>
   ...
 </env_>]]></hcode>
-</p>
 <p>Such a function cannot be created in plugins, since functions only return
 XML trees, not a new environment. But your functions can return XML trees
 containing <icode>env_</icode> tags to modify the environment used to
@@ -245,8 +245,10 @@ graph to jump to the element.
 This function inserts the given pre-formatted code. It uses the
 <ext-a href="http://www.andre-simon.de/doku/highlight/en/highlight.html"><icode>highlight</icode></ext-a>
 tool to add syntax highlighting. For example, the code examples of this page are
-inserted using <hcode lang="xml"><![CDATA[<hcode lang="xml">...</hcode>]]></hcode>
+inserted using
 </p>
+<hcode lang="xml"><![CDATA[<hcode lang="xml">...</hcode>]]></hcode>
+
 </subsection>
 
 <subsection id="icode" title="icode">
@@ -277,15 +279,15 @@ will be verified if <icode>foo</icode> is not in the environment.
 <p>
 The <icode>"value"</icode> part of the condition must be valid XML, and can contain
 calls to functions, as in:
-<hcode lang="xml"><![CDATA[<if elt-title="&lt;site-title&gt;">....</if>]]></hcode>
 </p>
+<hcode lang="xml"><![CDATA[<if elt-title="&lt;site-title&gt;">....</if>]]></hcode>
 <p>Other example: Testing whether a variable is empty to known whether to output
 a block or not:
+</p>
 <hcode lang="xml"><![CDATA[<if list="">
 <span/>
 <div>The list is not empty, let's print it:<ul><list/></ul></div>
 </if>]]></hcode>
-</p>
 </subsection>
 
 <subsection id="include" title="include">
@@ -318,12 +320,12 @@ be added to the environment used to evaluate the contents of the file.
 </p>
 <p>Here is an example. If we have the <icode>foo.tmpl</icode> file
 in the template directory, with the following contents:
+</p>
 <hcode lang="xml"><![CDATA[<p> key=<key/> value=<contents/> </p> ]]></hcode>
 <p>The following code</p>
 <hcode lang="xml"><![CDATA[<include file="foo.tmpl" key="bar">the value of bar</include>]]></hcode>
 <p>will be reduced to</p>
 <hcode lang="xml"><![CDATA[<p> key=bar value=the value of bar </p>]]></hcode>
-</p>
 </subsection>
 
 <subsection id="image" title="image">

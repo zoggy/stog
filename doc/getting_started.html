@@ -146,8 +146,8 @@ and accessible in all templates by its name. Other attributes are associated to 
 <section id="running" title="Running Stog">
 <p>
 To compile your web site, use the following command:
-<command-line><![CDATA[stog <root-directory>]]></command-line>
 </p>
+<command-line><![CDATA[stog <root-directory>]]></command-line>
 <p>Stog will generate your web site in <icode>./stog-output</icode>,
 except if you use the <icode>-d</icode> option to specify another
 output directory.
@@ -163,7 +163,9 @@ given. It may be useful to gather blogs or page to generate one big site. Or not
 </p>
 <p>The <icode>--site-url</icode> option is used to override the <icode>stog:site-url</icode>
 field of the main element. It it useful to generate a local site, for example
+</p>
 <command-line>stog --site-url file:///tmp/website your-directory</command-line>
+<p>
 to test your site locally with correct links.
 </p>
 <p>The <icode>--plugin</icode> option makes <icode>stog</icode> dynamically
