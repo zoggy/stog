@@ -8,7 +8,6 @@
  viewBox="0.00 0.00 565.00 314.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 310)">
 <title>g</title>
-<polygon fill="white" stroke="white" points="-4,5 -4,-310 562,-310 562,5 -4,5"/>
 <!-- article -->
 <g id="node1" class="node"><title>article</title>
 <polygon fill="none" stroke="black" points="195,-306 95,-306 95,-270 195,-270 195,-306"/>

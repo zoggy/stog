@@ -33,6 +33,39 @@ latex-svg-scale="2.0"
 
 <contents>
 <sep_/>
+
+<slide title="History">
+<ul>
+<li>
+Started in August 2011, for my personal needs: website + blog.
+</li>
+<li>
+Improved for my professional needs: OCaml course, software documentation and web sites.
+</li>
+<li>
+Around 9500 lines of OCaml.
+</li>
+<li>
+Development hosted on Github:
+</li>
+<ul>
+<li>code: <ext-a href="http://www.github.com/zoggy/stog">http://www.github.com/zoggy/stog</ext-a></li>
+<li>website+doc: <ext-a href="http://zoggy.github.io/stog">http://zoggy.github.io/stog</ext-a></li>
+</ul>
+<li>
+Some sites generated with Stog:
+<ul>
+  <li><ext-a href="http://gallium.inria.fr/blog/">Gallium's blog</ext-a>,</li>
+  <li><ext-a href="http://form-ocaml.forge.ocamlcore.org/">Introduction au langage OCaml</ext-a>,</li>
+  <li><ext-a href="http://zoggy.github.io/vlmc-suffix-trie/articles/uncommon-suffix-tries.html">a math article</ext-a>,</li>
+  <li>software websites (<ext-a href="http://zoggy.github.io/chamo/">Chamo</ext-a>,
+                     <ext-a href="http://zoggy.github.io/genet/">Genet</ext-a>,
+                     <ext-a href="http://zoggy.github.io/erssical">Erssical</ext-a>).</li>
+</ul>
+</li>
+</ul>
+</slide>
+
 <slide title="What I wanted">
 <ul>
 <li>a static site: easy to deploy, less security problems,</li>
@@ -177,7 +210,7 @@ associated to the page type.
 </p>
 <p>Remarks:</p>
 <ul>
-<li>Of source, the initial environment is not empty. So defining an element adds rules to this initial
+<li>Of course, the initial environment is not empty. So defining an element adds rules to this initial
 environment.
 </li>
 <li>
@@ -224,6 +257,24 @@ make this rule appear in the initial environment with the name "foo".
 Having separate sessions is useful to prevent name pollution in your OCaml environment.
 </p>
 </slide>
+
+<slide title="Some predefined rules">
+<ul>
+<li><icode>&lt;archive-tree&gt;</icode>,</li>
+<li><icode>&lt;block&gt;</icode>: to do the equivalent of LaTeX's <icode>\newenvironment</icode>,</li>
+<li><icode>&lt;elements&gt;</icode>: list elements according to type or other fields, associate RSS feed;</li>
+<li><icode>&lt;graph&gt;</icode>: include a graph of elements, linked by keywords,</li>
+<li><icode>&lt;hcode&gt; and &lt;icode&gt;</icode>: include syntax highlighted code (using Highlight),</li>
+<li><icode>&lt;if&gt;</icode>,</li>
+<li><icode>&lt;inc&gt;</icode>: include a node, to share code between elements,</li>
+<li><icode>&lt;latex&gt;</icode>: include latex rendered as SVG (using latex+dvisvgm),</li>
+<li><icode>&lt;list&gt;</icode>: add a separator between the sub nodes,</li>
+<li><icode>&lt;prepare-toc&gt; and &lt;toc&gt;</icode>: compute and insert table of contents,</li>
+<li><icode>&lt;section&gt;, &lt;subsection&gt;</icode>: default sectionning.</li>
+</ul>
+</slide>
+
+
 <slide title="Templates + rewrite rules = not enough!">
 <p>
 We must ensure some rules will be applied before or after others. For example:
@@ -234,6 +285,7 @@ nodes are rewritten, but after all <ixml>&lt;include&gt;</ixml> have been resolv
 <li>most of rules must have been applied before resolving internal links.</li>
 </ul>
 </slide>
+
 
 <slide title="Levels of rewrite rules">
 <p>
@@ -258,7 +310,8 @@ room for additional levels defined in plugins.</li>
 <slide title="Functions">
 <p>One can define "functions" with parameters, to factorize code:</p>
 <inc href="getting_started#function-def"/>
-<p>Now this function can be "called" with a specific value for the <icode>prompt</icode> parameter:</p>
+<p>Now the <icode>command</icode> function (rule) can be "called" with a specific value
+for the <icode>prompt</icode> parameter:</p>
 <inc href="getting_started#function-app"/>
 <p>This will produce the following code:</p>
 <inc href="getting_started#function-app-result"/>
