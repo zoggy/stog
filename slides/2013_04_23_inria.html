@@ -1,0 +1,754 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog</title>
+
+<meta name="defaultView" content="slideshow"/>
+<meta name="controlVis" content="hidden"/>
+
+<link rel="stylesheet" href="http://zoggy.github.io/stog/slides/slidy.css" type="text/css"/>
+<script src="http://zoggy.github.io/stog/slides/slidy.js" type="text/javascript">_</script>
+
+
+<link rel="stylesheet" href="http://zoggy.github.io/stog/slides.css" type="text/css" media="all"/>
+<meta name="duration" content="30"/>
+</head>
+<body>
+<div class="background"> </div>
+
+<div class="slide cover title">
+<h1>Stog</h1>
+<h2>A static web (site|blog|documentation|article|course|...) generator</h2>
+<div class="cover-details">
+<p>Maxence Guesdon  — INRIA Saclay-Île-de-France</p>
+<p>April 23, 2013</p>
+</div>
+</div>
+
+
+
+
+
+<div class="slide " id="">
+<h1>History</h1>
+
+<ul>
+<li>
+Started in August 2011, for my personal needs: website + blog.
+</li>
+<li>
+Improved for my professional needs: OCaml course, software documentation and web sites.
+</li>
+<li>
+Around 9500 lines of OCaml.
+</li>
+<li>
+Development hosted on Github:
+</li>
+<ul>
+<li>code: <span class="ext-a"><a href="http://www.github.com/zoggy/stog">http://www.github.com/zoggy/stog</a></span></li>
+<li>website+doc: <span class="ext-a"><a href="http://zoggy.github.io/stog">http://zoggy.github.io/stog</a></span></li>
+</ul>
+<li>
+Some sites generated with Stog:
+<ul>
+  <li><span class="ext-a"><a href="http://gallium.inria.fr/blog/">Gallium's blog</a></span>,</li>
+  <li><span class="ext-a"><a href="http://form-ocaml.forge.ocamlcore.org/">Introduction au langage OCaml</a></span>,</li>
+  <li><span class="ext-a"><a href="http://zoggy.github.io/vlmc-suffix-trie/articles/uncommon-suffix-tries.html">a math article</a></span>,</li>
+  <li>software websites (<span class="ext-a"><a href="http://zoggy.github.io/chamo/">Chamo</a></span>,
+                     <span class="ext-a"><a href="http://zoggy.github.io/genet/">Genet</a></span>,
+                     <span class="ext-a"><a href="http://zoggy.github.io/erssical">Erssical</a></span>).</li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>What I wanted</h1>
+
+<ul>
+<li>a static site: easy to deploy, less security problems,</li>
+<li>handling of blog posts, with dates, topics, keywords and associated RSS feeds,</li>
+<li>dynamic comments for blog posts (⇒ using Disqus),</li>
+<li>no new syntax,</li>
+<li>using custom tags (e.g. <span class="icode">section</span>) to provide semantics in code,</li>
+<li>avoid code duplication,</li>
+<li>ability to use all HTML5 or any XML,</li>
+<li>check internal references,</li>
+<li>displaying evaluated OCaml code,</li>
+<li>support for multiple languages (fr, en, ..),</li>
+<li>ability to add specific features with plugins.</li>
+</ul>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>How it works</h1>
+
+<p>
+Three steps:
+</p>
+<ol>
+<li>Read configuration file <span class="icode">.stog/config</span> and directory tree:
+<pre class="code-ocaml"><span class="hl com">(* Regexps of files to ignore *)</span>
+ignored <span class="hl opt">= [</span><span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">.git&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*Makefile&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*tmpl$&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*less$&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">.chamo.*&quot;</span><span class="hl opt">]</span>
+<span class="hl com">(* Regexps of files containing elements *)</span>
+elements <span class="hl opt">= [</span><span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">..xml$&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">.html$&quot;</span><span class="hl opt">]</span>
+<span class="hl com">(* Regexps of files matching 'elements' regexps but not containing elements</span>
+<span class="hl com">   *)</span>
+<span class="hl str">&quot;not-elements&quot;</span> <span class="hl opt">= []</span></pre>
+</li>
+<li>Handle &quot;elements&quot;,</li>
+<li>Copy other files, i.e. files not ignored and not elements. </li>
+</ol>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Step 2: handling &quot;elements&quot;</h1>
+
+<div class="center centered">
+ <img src="how_it_works.svg" width="800px" alt="Handling element files"/>
+</div>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Step 3: copying other files</h1>
+
+<div class="center centered">
+ <img src="how_it_works2.svg" width="800px" alt="Handling other files"/>
+</div>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Example of element</h1>
+
+<p>Example: file <span class="icode">doc.html</span> from Stog's web site:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Documentation&quot;</span>
+<span class="hl kwb">navbar-doc</span>=<span class="hl str">&quot;active&quot;</span>
+<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;alert alert-warning&quot;</span><span class="hl kwa">&gt;</span>
+We assume Stog was correctly installed (see <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;install&quot;</span><span class="hl kwa">/&gt;</span>)
+and the <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> and <span class="hl kwa">&lt;icode&gt;</span>stog-ocaml-session<span class="hl kwa">&lt;/icode&gt;</span>
+executables are in your <span class="hl kwa">&lt;icode&gt;</span>PATH<span class="hl kwa">&lt;/icode&gt;</span>.
+<span class="hl kwa">&lt;/div&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;General considerations&quot;</span><span class="hl kwa">&gt;</span>
+All text is assumed to be UTF-<span class="hl num">8</span>.
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Topics&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;ul</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;toc&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;getting_started&quot;</span> <span class="hl kwb">quotes</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;funs&quot;</span> <span class="hl kwb">quotes</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins&quot;</span> <span class="hl kwb">quotes</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;site-url/&amp;gt;/ref-doc/index.html&quot;</span><span class="hl kwa">&gt;</span>Library reference documentation<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Presentations&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span><span class="hl num">2013</span>/<span class="hl num">04</span>/<span class="hl num">23</span>: <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;slides/2013_04_23_inria&quot;</span><span class="hl kwa">&gt;</span>Talk about Stog at INRIA<span class="hl kwa">&lt;/elt&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Another example of element</h1>
+
+<p>Example: file <span class="icode">posts/release-0.7.0.html</span> from Stog's web site:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;post</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Stog 0.7.0&quot;</span>
+<span class="hl kwb">date</span>=<span class="hl str">&quot;2013/02/13&quot;</span>
+<span class="hl kwb">topics</span>=<span class="hl str">&quot;stog&quot;</span>
+<span class="hl kwb">keywords</span>=<span class="hl str">&quot;release&quot;</span>
+<span class="hl kwb">published</span>=<span class="hl str">&quot;true&quot;</span>
+<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Release <span class="hl num">0.7.0</span> of stog is available from the <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;install&quot;</span><span class="hl kwa">/&gt;</span> page.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;sep_/&gt;</span>
+<span class="hl kwa">&lt;ul</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;changes&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>mod: split (un)install target into (un)install-lib and (un)install-bin,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add: -I and -package options to stog-ocaml-session,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add: new scripts mk-stog, mk-stog.byte, mk-stog-ocaml-session
+    to create custom stog and stog-ocaml-session,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add: option --stog-ocaml-session to stog, to indicate the program
+    used to evaluate ocaml code,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>fix META file,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>add: support for authors in the RSS feed. Thanks to Gabriel Scherer,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>mod: use ocamlfind to compile.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/post&gt;</span></pre>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Templates (1)</h1>
+
+<p>
+Templates are regular XML documents, with some XML nodes which will be rewritten.
+</p>
+<p>Templates are in the <span class="icode">.stog/templates/</span> directory.</p>
+<p>A template can be used in three ways:</p>
+<ul>
+<li>according to an element type, this type being the root node tag of the element:
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/page&gt;</span></pre>
+  <pre class="code-xml"><span class="hl kwa">&lt;post</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/post&gt;</span></pre>
+  <span class="icode">page</span> will result in using the <span class="icode">.stog/template/page.tmpl</span> file has template
+  for the element (and <span class="icode">post.tmpl</span> for <span class="icode">post</span> element).
+</li>
+<li>referenced in the <span class="icode">file</span> attribute of a <span class="icode"><span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></span> node,</li>
+<li>used by other rewrite rules.</li>
+</ul>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Templates (2): Example</h1>
+
+<p>
+The template file <span class="icode">.stog/templates/page.tmpl</span>:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;html&gt;</span>
+<span class="hl kwa">&lt;head&gt;</span>
+<span class="hl kwa">&lt;meta</span> <span class="hl kwb">http-equiv</span>=<span class="hl str">&quot;Content-Type&quot;</span> <span class="hl kwb">content</span>=<span class="hl str">&quot;text/html; charset=utf-8&quot;</span><span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;title&gt;&lt;site-title/&gt;</span> : <span class="hl kwa">&lt;elt-title/&gt;&lt;/title&gt;</span>
+<span class="hl kwa">&lt;link</span> <span class="hl kwb">rel</span>=<span class="hl str">&quot;stylesheet&quot;</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;text/css&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;site-url/&amp;gt;/style.css&quot;</span><span class="hl kwa">&gt;&lt;/link&gt;</span>
+<span class="hl kwa">&lt;/head&gt;</span>
+<span class="hl kwa">&lt;body&gt;</span>
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;page&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;menubar.tmpl&quot;</span><span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;header&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-type</span>=<span class="hl str">&quot;post&quot;</span><span class="hl kwa">&gt;</span>
+    <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;elt-navbar&quot;</span><span class="hl kwa">&gt;</span>
+      <span class="hl kwa">&lt;if</span> <span class="hl kwb">previous</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;&lt;main_/&gt;&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;navleft&quot;</span><span class="hl kwa">&gt;&lt;previous/&gt;&lt;/div&gt;&lt;/if&gt;</span>
+      <span class="hl kwa">&lt;if</span> <span class="hl kwb">next</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;&lt;main_/&gt;&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;navright&quot;</span><span class="hl kwa">&gt;&lt;next/&gt;&lt;/div&gt;&lt;/if&gt;</span>
+    <span class="hl kwa">&lt;/div&gt;</span>
+  <span class="hl kwa">&lt;/if&gt;</span>
+  <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;page-title&quot;</span><span class="hl kwa">&gt;&lt;elt-title/&gt;&lt;/div&gt;</span>
+<span class="hl kwa">&lt;/div&gt;</span>
+<span class="hl kwa">&lt;if</span> <span class="hl kwb">withsidebar</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;sidebar.tmpl&quot;</span><span class="hl kwa">/&gt;&lt;main_/&gt;&lt;/if&gt;</span>
+<span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-type</span>=<span class="hl str">&quot;post&quot;</span><span class="hl kwa">&gt;&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;date&quot;</span><span class="hl kwa">&gt;&lt;elt-date/&gt;&lt;/div&gt;&lt;/if&gt;</span>
+
+<span class="hl kwa">&lt;elt-body/&gt;</span>
+
+<span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-type</span>=<span class="hl str">&quot;post&quot;</span><span class="hl kwa">&gt;</span>
+ <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;comments&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;div&gt;</span>
+    <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;elt-keywords&quot;</span><span class="hl kwa">&gt;</span>
+      <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;bloc-keywords&quot;</span><span class="hl kwa">&gt;</span>
+      Topics: <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;keywords&quot;</span><span class="hl kwa">&gt;&lt;elt-topics</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;, &quot;</span><span class="hl kwa">/&gt;&lt;/div&gt;</span>
+      <span class="hl kwa">&lt;/div&gt;</span>
+      <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;bloc-keywords&quot;</span><span class="hl kwa">&gt;</span>
+      Keywords: <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;keywords&quot;</span><span class="hl kwa">&gt;&lt;elt-keywords</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;, &quot;</span><span class="hl kwa">/&gt;&lt;/div&gt;</span>
+      <span class="hl kwa">&lt;/div&gt;</span>
+    <span class="hl kwa">&lt;/div&gt;</span>
+  <span class="hl kwa">&lt;/div&gt;</span>
+  <span class="hl kwa">&lt;div</span> <span class="hl kwb">itemprop</span>=<span class="hl str">&quot;articleSection&quot;</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;section&quot;</span><span class="hl kwa">&gt;</span>
+    <span class="hl kwa">&lt;comments/&gt;</span>
+  <span class="hl kwa">&lt;/div&gt;</span>
+ <span class="hl kwa">&lt;/div&gt;</span>
+<span class="hl kwa">&lt;/if&gt;</span>
+
+<span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-type</span>=<span class="hl str">&quot;page&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;div&gt;</span>
+    <span class="hl kwa">&lt;p</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;alert alert-info&quot;</span><span class="hl kwa">&gt;</span>
+    For information you can see the <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#pagesource&quot;</span><span class="hl kwa">&gt;</span> source code of the page<span class="hl kwa">&lt;/a&gt;</span>.
+    <span class="hl kwa">&lt;/p&gt;</span>
+    <span class="hl kwa">&lt;div</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;pagesource&quot;</span><span class="hl kwa">&gt;</span>
+      <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./&amp;lt;elt-src/&amp;gt;&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
+    <span class="hl kwa">&lt;/div&gt;</span>
+  <span class="hl kwa">&lt;/div&gt;</span>
+<span class="hl kwa">&lt;/if&gt;</span>
+
+<span class="hl kwa">&lt;/div&gt;</span> <span class="hl com">&lt;!-- #page --&gt;</span>
+<span class="hl kwa">&lt;/body&gt;</span>
+<span class="hl kwa">&lt;/html&gt;</span></pre>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Templates (3): Example (2)</h1>
+
+<p>
+The template file <span class="icode">.stog/templates/elt-in-list.tmpl</span>:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;div</span> <span class="hl kwb">itemprop</span>=<span class="hl str">&quot;blogPosts&quot;</span> <span class="hl kwb">itemscope</span>=<span class="hl str">&quot;&quot;</span> <span class="hl kwb">itemtype</span>=<span class="hl str">&quot;http://schema.org/BlogPosting&quot;</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;elt-item&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;elt-item-title&quot;</span><span class="hl kwa">&gt;</span>
+    <span class="hl kwa">&lt;link</span> <span class="hl kwb">itemprop</span>=<span class="hl str">&quot;url&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;elt-url/&amp;gt;&quot;</span><span class="hl kwa">/&gt;</span>
+    <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;elt-url/&amp;gt;&quot;</span><span class="hl kwa">&gt;&lt;span</span> <span class="hl kwb">itemprop</span>=<span class="hl str">&quot;name&quot;</span><span class="hl kwa">&gt;&lt;elt-title/&gt;&lt;/span&gt;&lt;/a&gt;</span>
+  <span class="hl kwa">&lt;/div&gt;</span>
+  <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;date&quot;</span><span class="hl kwa">&gt;&lt;elt-date/&gt;&lt;/div&gt;</span>
+  <span class="hl kwa">&lt;div</span> <span class="hl kwb">itemprop</span>=<span class="hl str">&quot;headline&quot;</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;elt-intro&quot;</span><span class="hl kwa">&gt;&lt;elt-intro/&gt;&lt;/div&gt;</span>
+<span class="hl kwa">&lt;/div&gt;</span></pre>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Rewrite rules</h1>
+
+<p>
+An environment is a map associating tag names to rules. We note <img class="latex" src="http://zoggy.github.io/stog/_latex1.svg" alt="$\Gamma(t) = f$" title="$\Gamma(t) = f$"/>
+to say that a function <img class="latex" src="http://zoggy.github.io/stog/_latex2.svg" alt="$f$" title="$f$"/> is associated to the tag <img class="latex" src="http://zoggy.github.io/stog/_latex3.svg" alt="$t$" title="$t$"/> in the environment <img class="latex" src="http://zoggy.github.io/stog/_latex4.svg" alt="$\Gamma$" title="$\Gamma$"/>.
+If no function is associated to <img class="latex" src="http://zoggy.github.io/stog/_latex3.svg" alt="$t$" title="$t$"/>, then <img class="latex" src="http://zoggy.github.io/stog/_latex5.svg" alt="$\Gamma(t) = \bot$" title="$\Gamma(t) = \bot$"/>.
+</p>
+<p>
+A rule is a function <img class="latex" src="http://zoggy.github.io/stog/_latex6.svg" alt="$$f$$" title="$$f$$"/> taking in parameters: an environment <img class="latex" src="http://zoggy.github.io/stog/_latex7.svg" alt="$$\Gamma$$" title="$$\Gamma$$"/>, a list
+of XML node attributes <img class="latex" src="http://zoggy.github.io/stog/_latex8.svg" alt="$$l_a$$" title="$$l_a$$"/>, a list of XML (sub)nodes <img class="latex" src="http://zoggy.github.io/stog/_latex9.svg" alt="$$l_{xml}$$" title="$$l_{xml}$$"/>.
+A rule, when applied, returns a list of XML nodes.
+</p>
+<p>
+Let <img class="latex" src="http://zoggy.github.io/stog/_latex10.svg" alt="$\mathcal{R}(\Gamma, n)$" title="$\mathcal{R}(\Gamma, n)$"/> be the function applying an environment <img class="latex" src="http://zoggy.github.io/stog/_latex4.svg" alt="$\Gamma$" title="$\Gamma$"/>
+to an XML node <img class="latex" src="http://zoggy.github.io/stog/_latex11.svg" alt="$n = (t, l_a, l_{xml})$" title="$n = (t, l_a, l_{xml})$"/>. <img class="latex" src="http://zoggy.github.io/stog/_latex12.svg" alt="$\mathcal{R}_l(\Gamma, l)$" title="$\mathcal{R}_l(\Gamma, l)$"/> applies <img class="latex" src="http://zoggy.github.io/stog/_latex13.svg" alt="$\mathcal{R}(\Gamma, x)$" title="$\mathcal{R}(\Gamma, x)$"/>
+on each element <img class="latex" src="http://zoggy.github.io/stog/_latex14.svg" alt="$x$" title="$x$"/> of the list <img class="latex" src="http://zoggy.github.io/stog/_latex15.svg" alt="$l$" title="$l$"/>.
+The algorithm of <img class="latex" src="http://zoggy.github.io/stog/_latex16.svg" alt="$\mathcal{R}$" title="$\mathcal{R}$"/> is the following:
+</p>
+<ol>
+<li>Apply <img class="latex" src="http://zoggy.github.io/stog/_latex16.svg" alt="$\mathcal{R}$" title="$\mathcal{R}$"/> on each attribute value, parsed as valid XML, to get a new list
+  of rewritten attributes <img class="latex" src="http://zoggy.github.io/stog/_latex17.svg" alt="$l_a'$" title="$l_a'$"/>,
+</li>
+<li>
+If <img class="latex" src="http://zoggy.github.io/stog/_latex5.svg" alt="$\Gamma(t) = \bot$" title="$\Gamma(t) = \bot$"/>, then return [<img class="latex" src="http://zoggy.github.io/stog/_latex18.svg" alt="$(t, l_a', \mathcal{R}_l(\Gamma, l_{xml}))$" title="$(t, l_a', \mathcal{R}_l(\Gamma, l_{xml}))$"/>].<br/>
+Else, with <img class="latex" src="http://zoggy.github.io/stog/_latex1.svg" alt="$\Gamma(t) = f$" title="$\Gamma(t) = f$"/>, return <img class="latex" src="http://zoggy.github.io/stog/_latex19.svg" alt="$f(\Gamma, l_a', l_{xml})$" title="$f(\Gamma, l_a', l_{xml})$"/>.
+</li>
+</ol>
+<p><img class="latex" src="http://zoggy.github.io/stog/_latex16.svg" alt="$\mathcal{R}$" title="$\mathcal{R}$"/> is called until a fixpoint is reached.</p>
+<p>
+This rewrite engine is implemented in the <span class="ext-a"><a href="http://zoggy.github.com/xtmpl/">Xtmpl</a></span> library.
+</p>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Rewrite rules (2)</h1>
+
+<p>
+When we define an element, we're defining an environment <img class="latex" src="http://zoggy.github.io/stog/_latex4.svg" alt="$\Gamma$" title="$\Gamma$"/>.
+</p>
+<p>Example: consider the following element:</p>
+<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Example page&quot;</span> <span class="hl kwb">author</span>=<span class="hl str">&quot;Maxence Guesdon&quot;</span><span class="hl kwa">&gt;</span>
+This is the body of my page
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+<p>
+Here we defined an environment <img class="latex" src="http://zoggy.github.io/stog/_latex4.svg" alt="$\Gamma$" title="$\Gamma$"/> with the following rules:
+</p>
+<ul>
+<li><img class="latex" src="http://zoggy.github.io/stog/_latex20.svg" alt="$\Gamma(&amp;quot;elt-title&amp;quot;) = f_1$" title="$\Gamma(&amp;quot;elt-title&amp;quot;) = f_1$"/> with <img class="latex" src="http://zoggy.github.io/stog/_latex21.svg" alt="$f_1(\_,\_,\_) =$" title="$f_1(\_,\_,\_) =$"/> [ &quot;Example page&quot; ]</li>
+<li><img class="latex" src="http://zoggy.github.io/stog/_latex22.svg" alt="$\Gamma(&amp;quot;author&amp;quot;) = f_2$" title="$\Gamma(&amp;quot;author&amp;quot;) = f_2$"/> with <img class="latex" src="http://zoggy.github.io/stog/_latex23.svg" alt="$f_2(\_,\_,\_) =$" title="$f_2(\_,\_,\_) =$"/> [ &quot;Maxence Guesdon&quot; ]</li>
+<li><img class="latex" src="http://zoggy.github.io/stog/_latex24.svg" alt="$\Gamma(&amp;quot;elt-body&amp;quot;) = f_3$" title="$\Gamma(&amp;quot;elt-body&amp;quot;) = f_3$"/> with <img class="latex" src="http://zoggy.github.io/stog/_latex25.svg" alt="$f_3(\_,\_,\_) =$" title="$f_3(\_,\_,\_) =$"/> [ &quot;This is the body of the page&quot; ]</li>
+</ul>
+<p>
+To <strong>compute</strong> the element's final XML, we apply this environment to the template
+associated to the page type.
+</p>
+<p>Remarks:</p>
+<ul>
+<li>Of course, the initial environment is not empty. So defining an element adds rules to this initial
+environment.
+</li>
+<li>
+Predefined rules and user-defined rules can be more complex.
+</li>
+</ul>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>The main element</h1>
+
+<p>
+One of the element must be marked has &quot;main&quot;, with a <span class="icode"><span class="hl kwb">main</span>=<span class="hl str">&quot;true&quot;</span></span> attribute.
+This is usually the top <span class="icode">index.html</span> file but this is not mandatory.
+</p>
+<p>
+The main element is the place to define rules for the initial environment. These rules are defined using
+the <span class="icode">stog:</span> prefix (like an XML namespace). Defining <span class="icode">stog:foo=&quot;bar&quot;</span> will
+make this rule appear in the initial environment with the name &quot;foo&quot;.
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;page</span>
+  <span class="hl kwb">main</span>=<span class="hl str">&quot;true&quot;</span>
+  <span class="hl kwb">title</span>=<span class="hl str">&quot;Stog&quot;</span>
+  stog:<span class="hl kwb">site-description</span>=<span class="hl str">&quot;Static blog and web site generator&quot;</span>
+  stog:<span class="hl kwb">site-email</span>=<span class="hl str">&quot;zoggy 'AT' bat8 'DOT' org&quot;</span>
+  stog:<span class="hl kwb">site-url</span>=<span class="hl str">&quot;http://zoggy.github.com/stog&quot;</span>
+  stog:<span class="hl kwb">rss-length</span>=<span class="hl str">&quot;10&quot;</span>
+  <span class="hl kwb">navbar-home</span>=<span class="hl str">&quot;active&quot;</span>
+<span class="hl kwa">&gt;</span>
+....
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>A powerful rule: <span class="icode">&lt;eval-ocaml&gt;</span></h1>
+
+
+<div class="centered">
+<div class="row">
+  <div class="span10">
+    <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval&gt;</span>let x = <span class="hl num">1</span>;;<span class="hl kwa">&lt;/ocaml-eval&gt;</span></pre>
+  </div>
+</div>
+<div class="row">
+  <div class="span1 showeval-arrow">↳</div>
+  <div class="span11">
+      <div><pre class="code-ocaml"><div><span class="hl kwa">let</span> x <span class="hl opt">=</span> <span class="hl num">1</span><span class="hl opt">;;</span></div></pre></div>
+  </div>
+</div>
+</div>
+
+
+<div class="centered">
+<div class="row">
+  <div class="span10">
+    <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">session</span>=<span class="hl str">&quot;mysession&quot;</span><span class="hl kwa">&gt;</span>
+let x = <span class="hl num">1</span>;;
+<span class="hl kwa">&lt;/ocaml-eval&gt;</span></pre>
+  </div>
+</div>
+<div class="row">
+  <div class="span1 showeval-arrow">↳</div>
+  <div class="span11">
+      <div><pre class="code-ocaml"><div># <span class="hl kwa">let</span> x <span class="hl opt">=</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel">val x : int = 1</div></pre></div>
+  </div>
+</div>
+</div>
+
+
+<div class="centered">
+<div class="row">
+  <div class="span10">
+    <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">error-exc</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&gt;</span>
+List.map string_of_int <span class="hl str">&quot;coucou&quot;</span>;;
+<span class="hl kwa">&lt;/ocaml-eval&gt;</span></pre>
+  </div>
+</div>
+<div class="row">
+  <div class="span1 showeval-arrow">↳</div>
+  <div class="span11">
+      <div><pre class="code-ocaml"><div># <span class="hl kwd">List</span><span class="hl opt">.</span>map string_of_int <span class="hl str">&quot;coucou&quot;</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel ocaml-exc">Line 1, characters 23-31:
+Error: This expression has type string but an expression was expected of type
+         int list</div></pre></div>
+  </div>
+</div>
+</div>
+
+
+<div class="centered">
+<div class="row">
+  <div class="span10">
+    <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">show-code</span>=<span class="hl str">&quot;false&quot;</span> <span class="hl kwb">show-stdout</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>
+open Unix;;
+let t = Unix.gmtime (Unix.time ());;
+let s = Printf.sprintf
+  <span class="hl str">&quot;This OCaml code was evaluated on %04d/%02d/%02d at %02d:%02d.&quot;</span>
+  (t.tm_year + <span class="hl num">1900</span>) t.tm_mon t.tm_mday t.tm_hour t.tm_min;;
+print_endline s;;
+<span class="hl kwa">&lt;/ocaml-eval&gt;</span></pre>
+  </div>
+</div>
+<div class="row">
+  <div class="span1 showeval-arrow">↳</div>
+  <div class="span11">
+      <div><pre class="code-ocaml"><div class="ocaml-toplevel"></div><div class="ocaml-toplevel"></div><div class="ocaml-toplevel"></div><div class="ocaml-toplevel">This OCaml code was evaluated on 2013/03/23 at 14:22.
+</div></pre></div>
+  </div>
+</div>
+</div>
+
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>A powerful rule: <span class="icode">&lt;eval-ocaml&gt;</span> (2)</h1>
+
+<div class="center centered">
+ <img src="ocaml-sessions.svg" alt="Stog and OCaml sessions" width="800px"/>
+</div>
+<p>
+Having separate sessions is useful to prevent name pollution in your OCaml environment.
+</p>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Some predefined rules</h1>
+
+<ul>
+<li><span class="icode">&lt;archive-tree&gt;</span>,</li>
+<li><span class="icode">&lt;block&gt;</span>: to do the equivalent of LaTeX's <span class="icode">\newenvironment</span>,</li>
+<li><span class="icode">&lt;elements&gt;</span>: list elements according to type or other fields, associate RSS feed;</li>
+<li><span class="icode">&lt;graph&gt;</span>: include a graph of elements, linked by keywords,</li>
+<li><span class="icode">&lt;hcode&gt; and &lt;icode&gt;</span>: include syntax highlighted code (using Highlight),</li>
+<li><span class="icode">&lt;if&gt;</span>,</li>
+<li><span class="icode">&lt;inc&gt;</span>: include a node, to share code between elements,</li>
+<li><span class="icode">&lt;latex&gt;</span>: include latex rendered as SVG (using latex+dvisvgm),</li>
+<li><span class="icode">&lt;list&gt;</span>: add a separator between the sub nodes,</li>
+<li><span class="icode">&lt;prepare-toc&gt; and &lt;toc&gt;</span>: compute and insert table of contents,</li>
+<li><span class="icode">&lt;section&gt;, &lt;subsection&gt;</span>: default sectionning.</li>
+</ul>
+
+</div>
+
+
+
+
+<div class="slide " id="">
+<h1>Templates + rewrite rules = not enough!</h1>
+
+<p>
+We must ensure some rules will be applied before or after others. For example:
+</p>
+<ul>
+<li>computation of table of contents must occur before the <span class="icode"><span class="hl kwa">&lt;section&gt;</span></span>
+nodes are rewritten, but after all <span class="icode"><span class="hl kwa">&lt;include&gt;</span></span> have been resolved,</li>
+<li>most of rules must have been applied before resolving internal links.</li>
+</ul>
+
+</div>
+
+
+
+
+<div class="slide " id="">
+<h1>Levels of rewrite rules</h1>
+
+<p>
+Various levels of rewrite rules are defined, in a way mixing
+Linux run levels and BASIC line numbering 😃
+</p>
+<ul>
+<li>each level is numbered,</li>
+<li>for each level, starting from level 0, the set of rewrite rules
+is applied to each element content:
+  <ul>
+    <li>rules of level 0 are applied to all elements,</li>
+    <li>rules of next level are applied to all the resulting elements,</li>
+    <li>and so on until the last level.</li>
+  </ul>
+</li>
+<li>predefined levels are numbered 0, 50, 100, 120, 150, 160; this lets
+room for additional levels defined in plugins.</li>
+</ul>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Functions</h1>
+
+<p>One can define &quot;functions&quot; with parameters, to factorize code:</p>
+<pre id="function-def" class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;....&quot;</span>
+  <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>
+  ...
+<span class="hl kwa">&gt;</span>
+...
+<span class="hl kwa">&lt;command</span> <span class="hl kwb">prompt</span>=<span class="hl str">&quot;#&quot;</span><span class="hl kwa">&gt;&lt;pre&gt;&lt;prompt/&gt; &lt;contents/&gt;&lt;more/&gt;&lt;/pre&gt;&lt;/command&gt;</span>
+...
+<span class="hl kwa">&lt;contents&gt;</span>
+.... <span class="hl kwa">&lt;command&gt;</span>ls -l<span class="hl kwa">&lt;/command&gt;</span>
+<span class="hl kwa">&lt;/contents&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+<p>Now the <span class="icode">command</span> function (rule) can be &quot;called&quot; with a specific value
+for the <span class="icode">prompt</span> parameter:</p>
+<pre id="function-app" class="code-xml">... <span class="hl kwa">&lt;command</span> <span class="hl kwb">prompt</span>=<span class="hl str">&quot;mysql&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>select * from table<span class="hl kwa">&lt;/command&gt;</span> ...</pre>
+<p>This will produce the following code:</p>
+<pre id="function-app-result" class="code-xml">... <span class="hl kwa">&lt;pre&gt;</span>mysql<span class="hl kwd">&amp;gt;</span> select * from table<span class="hl kwa">&lt;/pre&gt;</span> ...</pre>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Plugins</h1>
+
+<p>
+Developing plugins consists in writing some OCaml code:
+</p>
+<pre class="code-ocaml"><span class="hl com">(** Stog plugin example. *)</span>
+
+<span class="hl kwa">let</span> fun_list env args subs <span class="hl opt">=</span>
+  <span class="hl com">(* get the optional sep attribute ... *)</span>
+  <span class="hl kwa">let</span> sep <span class="hl opt">=</span> <span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>opt_arg args <span class="hl opt">(</span><span class="hl str">&quot;&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;sep&quot;</span><span class="hl opt">)</span> <span class="hl kwa">in</span>
+  <span class="hl com">(* and parse it as xml *)</span>
+  <span class="hl kwa">let</span> xml <span class="hl opt">=</span> <span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>xml_of_string sep <span class="hl kwa">in</span>
+  <span class="hl com">(* We can access the stog structure with [Stog_plug.stog ()] .</span>
+<span class="hl com">     We don't use it here.</span>
+<span class="hl com">  *)</span>
+
+  <span class="hl com">(* then insert the separator between all children of the node *)</span>
+  <span class="hl kwa">let rec</span> iter acc <span class="hl opt">=</span> <span class="hl kwa">function</span>
+    <span class="hl opt">[] -&gt;</span> <span class="hl kwc">List</span><span class="hl opt">.</span>rev acc
+  | h <span class="hl opt">::</span> q <span class="hl opt">-&gt;</span>
+      <span class="hl kwa">let</span> acc <span class="hl opt">=</span>
+        <span class="hl kwa">match</span> acc <span class="hl kwa">with</span>
+          <span class="hl opt">[] -&gt; [</span>h<span class="hl opt">]</span>
+        | _ <span class="hl opt">-&gt;</span> h <span class="hl opt">::</span> xml <span class="hl opt">::</span> acc
+      <span class="hl kwa">in</span>
+      iter acc q
+  <span class="hl kwa">in</span>
+  <span class="hl com">(* and finally return the list of xml trees *)</span>
+  iter <span class="hl opt">[]</span> subs
+<span class="hl opt">;;</span>
+
+<span class="hl com">(* register the new function, associated to tag &quot;list&quot;.</span>
+<span class="hl com">  Before stog 0.3, this function was called [Stog_plug.register_fun]. *)</span>
+<span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_rule <span class="hl opt">(</span><span class="hl str">&quot;&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;list&quot;</span><span class="hl opt">)</span> fun_list<span class="hl opt">;;</span></pre>
+<p>More complex plugins can define new levels of rewrite rules.</p>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Plugins (2)</h1>
+
+<div id="codecompilation">
+<p>
+The plugin is simply compiled with
+</p>
+<pre class="code-sh">ocamlfind ocamlopt <span class="hl opt">-</span>package stog <span class="hl opt">-</span>rectypes <span class="hl opt">-</span>shared <span class="hl opt">-</span>o plugin_example.cmxs plugin_example.ml</pre>
+<p>
+for native code or
+</p>
+<pre class="code-sh">ocamlfind ocamlc <span class="hl opt">-</span>package stog <span class="hl opt">-</span>rectypes <span class="hl opt">-</span>c plugin_example.ml</pre>
+<p>for bytecode.</p>
+</div>
+<div id="usingcode">
+<p>
+The plugin is used by specifying it on the <span class="icode">stog</span> command line:
+</p>
+<pre class="code-sh">stog <span class="hl opt">--</span>plugin plugin_example.cmxs ...</pre>
+<p>or, if the plugin is installed with ocamlfind:</p>
+<pre class="code-sh">stog <span class="hl opt">--</span>package plugin_example ...</pre>
+</div>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Existing plugins</h1>
+
+<p>
+By now, two plugins are already available:
+</p>
+<ul>
+<li><strong>Stog-writing:</strong> bibliography management, footnotes and automatic ids for paragraphs,</li>
+<li><strong>Stog-RDF:</strong> definition of an RDF graph associated to the generated site.
+Some XML nodes are used to (easily) insert edges in the graph.</li>
+</ul>
+<p>
+These two plugins aim at being able to write scientific artiles with semantic information
+about elements of articles:
+</p>
+<ul>
+<li>&quot;this block is a proof of this proposition&quot;,</li>
+<li>&quot;this proof applies this theorem&quot;,</li>
+<li>...</li>
+</ul>
+<div class="center centered">
+<img src="example_rdf2.svg" alt="example of RDF graph"/>
+</div>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>Modules</h1>
+
+<p>
+A module system will allow reusing functions and definitions. A simple system already exists:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;My page&quot;</span>
+<span class="hl kwb">use</span>=<span class="hl str">&quot;math&quot;</span>
+...<span class="hl kwa">&gt;</span></pre>
+<p>The code above indicates to use definitions from <span class="icode">.stog/modules/math.stm</span>:</p>
+<pre class="code-xml"><span class="hl kwa">&lt;module</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;math&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;math:qed&gt;</span><span class="hl kwd">&amp;#x220e;</span><span class="hl kwa">&lt;/math:qed&gt;</span>
+
+<span class="hl kwa">&lt;math:hasauthor</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&quot;</span> <span class="hl kwb">affil</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;rdf</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;math:hasAuthor&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;href/&amp;gt;&quot;</span><span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;/math:hasauthor&gt;</span>
+
+<span class="hl kwa">&lt;math:proof-of</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;rdf</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;math:proves&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;href/&amp;gt;&quot;</span><span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;/math:proof-of&gt;</span>
+
+<span class="hl kwa">&lt;math:isproof&gt;&lt;rdf</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;rdf:Type&quot;</span> <span class="hl kwb">obj</span>=<span class="hl str">&quot;math:proof&quot;</span><span class="hl kwa">/&gt;&lt;/math:isproof&gt;</span>
+
+<span class="hl kwa">&lt;figure</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;&lt;block</span>
+  <span class="hl kwb">counter-name</span>=<span class="hl str">&quot;figure&quot;</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;figure&quot;</span>
+  <span class="hl kwb">label</span>=<span class="hl str">&quot;Figure&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;href/&amp;gt;&quot;</span>
+  <span class="hl kwb">id</span>=<span class="hl str">&quot;&amp;lt;id/&amp;gt;&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;&amp;lt;title/&amp;gt;&quot;</span>
+<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;&amp;lt;class/&amp;gt;&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;&amp;lt;id/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;title&quot;</span><span class="hl kwa">&gt;&lt;title/&gt;&lt;/div&gt;</span>
+  <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;contents&quot;</span><span class="hl kwa">&gt;&lt;contents/&gt;&lt;/div&gt;</span>
+<span class="hl kwa">&lt;/div&gt;&lt;/block&gt;&lt;/figure&gt;</span>
+
+...</pre>
+
+</div>
+
+
+
+<div class="slide " id="">
+<h1>This is the end</h1>
+
+<h2>Thanks for your attention !</h2>
+<h2>Questions ?</h2>
+
+</div>
+
+
+
+
+<div class="slide">
+<h1>Credits</h1>
+<p>
+Slideshow scripts from <span class="ext-a"><a href="http://www.w3.org/Talks/Tools/Slidy2/#%281%29">Dave Raggett</a></span>
+</p>
+</div>
+</body>
+</html>

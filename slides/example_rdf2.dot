@@ -1,0 +1,23 @@
+digraph g {
+  rankdir = "TB";
+  //bgcolor = "#e6e6e6";
+  bgcolor = "transparent";
+  article [ label="oa:articles/1", shape="box" ];
+  proof1_5 [ label="oa:articles/1#proof5", shape="box" ];
+  th1 [ label="oa:articles/1#theorem1", shape="box" ];
+
+  article2 [ label="oa:articles/2", shape="box" ];
+  lemma1 [ label="oa:articles/2#lemma1", shape="box" ];
+  proof2_3 [ label="oa:articles/2#proof3", shape="box" ];
+
+  article -> proof1_5 [ label="ns:contains" ] ;
+  article -> th1 [ label="ns:contains" ] ;
+  article2 -> proof2_3 [ label="ns:contains" ] ;
+  article2 -> lemma1 [ label="ns:contains" ] ;
+  proof1_5 -> th1 [ label="ns:proves" ];
+  th1 -> "ns:Theorem" [ label="rdf:Type" ];
+
+  proof2_3 -> lemma1 [ label="ns:proves" ] ;
+  proof2_3 -> th1 [ label="ns:applies" ] ;
+
+}

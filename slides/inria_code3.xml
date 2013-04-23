@@ -1,0 +1,3 @@
+<ocaml-eval toplevel="true" error-exc="false">
+List.map string_of_int "coucou";;
+</ocaml-eval>
