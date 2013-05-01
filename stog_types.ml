@@ -197,8 +197,23 @@ let url_of_string s =
 let string_of_url = Neturl.string_of_url;;
 
 let url_concat uri s =
-  let path = (Neturl.url_path uri)@[s] in
-  Neturl.modify_url ~path uri
+  match s with
+    "" -> uri
+  | _ ->
+      let uri_path = Neturl.url_path uri in
+      let path =
+        (* make sure to consider uri_path to have a path *)
+        match uri_path with
+          [] -> ("" :: [s])
+        | _ -> uri_path @ [s]
+      in
+      try Neturl.modify_url ~path uri
+      with e ->
+          prerr_endline
+            (Printf.sprintf "url_concat: uri=%s url_path=%s, s=%s"
+             (string_of_url uri)
+               (String.concat "/" (Neturl.url_path uri)) s);
+          raise e
 ;;
 
 let create_stog dir = {
