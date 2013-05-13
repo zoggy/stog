@@ -913,6 +913,63 @@ let fun_toc env args subs =
   subs @ [Xtmpl.E (("", "toc-contents"), [], [])]
 ;;
 
+let concat_xmls ?(sep=[]) l =
+  let rec f xml = function
+    [] -> xml
+  | l -> xml @ sep @ l
+  in
+  List.fold_right f l []
+;;
+
+
+let fun_elt_path stog env args subs =
+  let s_hid = get_hid env in
+  let hid = Stog_types.human_id_of_string s_hid in
+  if not hid.hid_absolute then
+    failwith (Printf.sprintf "fun_elt_path: Hid %S not absolute" s_hid);
+
+  let root =
+    match Xtmpl.get_arg args ("", "with-root") with
+      None -> None
+    | Some root_hid ->
+        let root_hid = Stog_types.human_id_of_string root_hid in
+        ignore(Stog_types.elt_by_human_id stog root_hid);
+        Some root_hid
+  in
+  let rec f acc path =
+    (*prerr_endline (Printf.sprintf "path = [%s]" (String.concat "/" path));*)
+    match List.rev path with
+      [] ->
+        begin
+          match root with
+            None -> acc
+          | Some hid -> hid :: acc
+        end
+    | _ :: q ->
+        let hid = { Stog_types.hid_path = path ; hid_absolute = true } in
+        f (hid :: acc) (List.rev q)
+  in
+  let hids =
+    (* remove last component of path to keep only "parent path" *)
+    match List.rev hid.Stog_types.hid_path with
+      [] | [_] -> (match root with None -> [] | Some hid -> [hid])
+    | _ :: q -> f [] (List.rev q)
+  in
+  let map hid =
+    try
+      ignore(Stog_types.elt_by_human_id stog hid);
+      let xml = Xtmpl.E
+        (("", Stog_tags.elt), [("","href"), Stog_types.string_of_human_id hid], [])
+      in
+      [ xml ]
+    with Failure _ ->
+        match List.rev hid.hid_path with
+          [] -> [Xtmpl.D "?"]
+        | h :: _ -> [ Xtmpl.D h ]
+  in
+  concat_xmls ~sep: subs (List.map map hids)
+;;
+
 type block =
   { blk_id : string ;
     blk_label : Xtmpl.tree list option ;
@@ -1293,6 +1350,7 @@ and build_base_rules stog elt_id elt =
       ("", Stog_tags.elt_date), mk f_date ;
       ("", Stog_tags.elt_intro), mk f_intro ;
       ("", Stog_tags.elt_keywords), mk (html_of_keywords stog) ;
+      ("", Stog_tags.elt_path), fun_elt_path stog ;
       ("", Stog_tags.elt_src), mk f_src ;
       ("", Stog_tags.elt_title), mk f_title ;
       ("", Stog_tags.elt_topics), mk (html_of_topics stog) ;

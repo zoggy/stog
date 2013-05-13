@@ -1,3 +1,5 @@
+- a "elt-path" rule
+
 - import directive in element headers
 - to fix: computation of elt graph
 

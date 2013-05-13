@@ -42,6 +42,7 @@ val elt_date : string
 val elt_keywords : string
 val elt_hid : string
 val elt_intro : string
+val elt_path : string
 val elt_src : string
 val elt_title : string
 val elt_topics : string

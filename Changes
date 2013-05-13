@@ -1,4 +1,5 @@
 Next release:
+  * new <elt-path> rule
   * <hcode> and <icode> now keep id attribute in <pre> or <span> resulting element
   * <inc> handles id attribute to redefine the id of the included node
   * <elements> handles filter attribute
