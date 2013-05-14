@@ -957,7 +957,18 @@ let fun_elt_path stog env args subs =
   in
   let map hid =
     try
-      ignore(Stog_types.elt_by_human_id stog hid);
+      let hid =
+        (* try to link to /the/path/index *)
+        try
+          let hid = { hid with hid_path = hid.hid_path @ ["index"] } in
+          ignore(Stog_types.elt_by_human_id stog hid);
+          hid
+        with
+          Failure _ ->
+            (* if no such element exist, try /the/path *)
+            ignore(Stog_types.elt_by_human_id stog hid);
+            hid
+      in
       let xml = Xtmpl.E
         (("", Stog_tags.elt), [("","href"), Stog_types.string_of_human_id hid], [])
       in
