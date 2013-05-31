@@ -22,6 +22,7 @@
   </ul>
   <div class="nav pull-right">
 
+
   </div>
 
 </div>
@@ -92,7 +93,7 @@ them for your own site.
   <div itemprop="headline" class="elt-intro">
 <p>
 Maxence Guesdon introduced Stog during a talk at
-<span class="ext-a"><a href="http://www.inria.fr/en/centre/saclay">INRIA Saclay-Île-de-France&quot;</a></span>
+<span class="ext-a"><a href="http://www.inria.fr/en/centre/saclay">INRIA Saclay-Île-de-France</a></span>
 on Tuesday, 23<sup>rd</sup> of April 2013. The slides are
 available <a href="http://zoggy.github.io/stog/slides/2013_04_23_inria.html">here</a>.
 </p>
@@ -215,12 +216,12 @@ internal toplevel.
 
 
 
-<div>
-    <p class="alert alert-info">
-    For information you can see the <a href="#pagesource"> source code of the page</a>.
-    </p>
-    <div id="pagesource">
-      <pre class="code-xml"><span class="hl kwa">&lt;page</span>
+
+<p class="alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span>
   <span class="hl kwb">main</span>=<span class="hl str">&quot;true&quot;</span>
   <span class="hl kwb">title</span>=<span class="hl str">&quot;Stog&quot;</span>
   stog:<span class="hl kwb">site-description</span>=<span class="hl str">&quot;Static blog and web site generator&quot;</span>
@@ -236,6 +237,15 @@ internal toplevel.
 <span class="hl kwa">&lt;stog:hxml</span> <span class="hl kwb">foo</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;contents/&gt;&lt;/hcode&gt;&lt;/stog:hxml&gt;</span>
 <span class="hl kwa">&lt;stog:ixml</span> <span class="hl kwb">foo</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;contents/&gt;&lt;/icode&gt;&lt;/stog:ixml&gt;</span>
 <span class="hl kwa">&lt;stog:nbsp&gt;</span><span class="hl kwd">&amp;#160;</span><span class="hl kwa">&lt;/stog:nbsp&gt;</span>
+<span class="hl kwa">&lt;stog:eltcode</span> <span class="hl kwb">foo</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;alert alert-info&quot;</span><span class="hl kwa">&gt;</span>
+For information you can see the <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#pagesource&quot;</span><span class="hl kwa">&gt;</span> source code of the page<span class="hl kwa">&lt;/a&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;pagesource&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;&amp;lt;stogdir/&amp;gt;/&amp;lt;elt-src/&amp;gt;&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;/div&gt;</span>
+<span class="hl kwa">&lt;/stog:eltcode&gt;</span>
+
 <span class="hl kwa">&lt;contents&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>In one sentence, Stog is a kind of <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://jekyllrb.com/&quot;</span><span class="hl kwa">&gt;</span>Jekyll<span class="hl kwa">&lt;/ext-a&gt;</span> in OCaml:
 It is a static web site generator, able to handle blog posts as well as regular pages.
@@ -288,8 +298,9 @@ them for your own site.
 <span class="hl kwa">&lt;/section&gt;</span>
 <span class="hl kwa">&lt;/contents&gt;</span>
 <span class="hl kwa">&lt;/page&gt;</span></pre>
-    </div>
-  </div>
+</div>
+
+
 
 </div> 
 </body>

@@ -274,16 +274,8 @@ The template file <span class="icode">.stog/templates/page.tmpl</span>:
  <span class="hl kwa">&lt;/div&gt;</span>
 <span class="hl kwa">&lt;/if&gt;</span>
 
-<span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-type</span>=<span class="hl str">&quot;page&quot;</span><span class="hl kwa">&gt;</span>
-  <span class="hl kwa">&lt;div&gt;</span>
-    <span class="hl kwa">&lt;p</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;alert alert-info&quot;</span><span class="hl kwa">&gt;</span>
-    For information you can see the <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#pagesource&quot;</span><span class="hl kwa">&gt;</span> source code of the page<span class="hl kwa">&lt;/a&gt;</span>.
-    <span class="hl kwa">&lt;/p&gt;</span>
-    <span class="hl kwa">&lt;div</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;pagesource&quot;</span><span class="hl kwa">&gt;</span>
-      <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./&amp;lt;elt-src/&amp;gt;&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
-    <span class="hl kwa">&lt;/div&gt;</span>
-  <span class="hl kwa">&lt;/div&gt;</span>
-<span class="hl kwa">&lt;/if&gt;</span>
+<span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-type</span>=<span class="hl str">&quot;page&quot;</span><span class="hl kwa">&gt;&lt;eltcode/&gt;&lt;/if&gt;</span>
+<span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-type</span>=<span class="hl str">&quot;post&quot;</span><span class="hl kwa">&gt;&lt;eltcode/&gt;&lt;/if&gt;</span>
 
 <span class="hl kwa">&lt;/div&gt;</span> <span class="hl com">&lt;!-- #page --&gt;</span>
 <span class="hl kwa">&lt;/body&gt;</span>
@@ -484,7 +476,7 @@ print_endline s;;
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
   <div class="span11">
-      <div><pre class="code-ocaml"><div class="ocaml-toplevel"></div><div class="ocaml-toplevel"></div><div class="ocaml-toplevel"></div><div class="ocaml-toplevel">This OCaml code was evaluated on 2013/03/23 at 14:22.
+      <div><pre class="code-ocaml"><div class="ocaml-toplevel"></div><div class="ocaml-toplevel"></div><div class="ocaml-toplevel"></div><div class="ocaml-toplevel">This OCaml code was evaluated on 2013/04/31 at 09:54.
 </div></pre></div>
   </div>
 </div>

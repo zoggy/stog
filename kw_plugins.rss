@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0"><channel><title>Stog: plugins</title><link>http://zoggy.github.io/stog/kw_plugins.html</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>22 Jan 2013 08:00:00 +0000</pubDate><lastBuildDate>22 Jan 2013 08:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.io/stog/</url><title>Stog</title><link>http://zoggy.github.io/stog</link></image><item><title>Stog in Opam</title><link>http://zoggy.github.io/stog/posts/stog-in-opam.html</link><description>
+<rss version="2.0"><channel><title>Stog: plugins</title><link>http://zoggy.github.io/stog/kw_plugins.html</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>22 Jan 2013 08:00:00 +0000</pubDate><lastBuildDate>22 Jan 2013 08:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.io/stog</url><title>Stog</title><link>http://zoggy.github.io/stog</link></image><item><title>Stog in Opam</title><link>http://zoggy.github.io/stog/posts/stog-in-opam.html</link><description>
 &lt;p&gt;
 Stog has been available in
 &lt;span class=&quot;ext-a&quot;&gt;&lt;a href=&quot;http://opam.ocamlpro.com&quot;&gt;Opam&lt;/a&gt;&lt;/span&gt; since release 0.4.

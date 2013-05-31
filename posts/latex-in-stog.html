@@ -22,6 +22,7 @@
   </ul>
   <div class="nav pull-right">
 
+
   </div>
 
 </div>
@@ -170,6 +171,52 @@ Another example:
   </div>
  </div>
 
+
+
+<p class="alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+  <pre class="code-xml"><span class="hl kwa">&lt;post</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;LaTeX in stog&quot;</span>
+<span class="hl kwb">date</span>=<span class="hl str">&quot;2012/03/09&quot;</span>
+<span class="hl kwb">topics</span>=<span class="hl str">&quot;stog&quot;</span>
+<span class="hl kwb">keywords</span>=<span class="hl str">&quot;latex, svg&quot;</span>
+<span class="hl kwb">published</span>=<span class="hl str">&quot;true&quot;</span>
+<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Stog handles <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;latex&gt;</span> ... <span class="hl kwa">&lt;/latex&gt;</span>]]<span class="hl kwa">&gt;&lt;/icode&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;sep_/&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Just put some LaTeX code inside and Stog will
+compile it to a SVG file, to show the result in your page.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>The big advantage is that you can zoom in or out and the result
+will scale accordingly.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>How does this work ? The LaTeX code is compiled
+with <span class="hl kwa">&lt;icode&gt;</span>latex -interaction=batchmode<span class="hl kwa">&lt;/icode&gt;</span> to get a <span class="hl kwa">&lt;icode&gt;</span>.dvi<span class="hl kwa">&lt;/icode&gt;</span> file.
+This file is sent to <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://dvisvgm.sourceforge.net/&quot;</span><span class="hl kwa">&gt;&lt;icode&gt;</span>dvisvgm<span class="hl kwa">&lt;/icode&gt;&lt;/ext-a&gt;</span>
+to generate a SVG file.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Example:
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;latex&gt;</span>$a x^<span class="hl num">2</span> + <span class="hl esc">\f</span>rac{<span class="hl num">3</span>}{<span class="hl num">2</span>} x - <span class="hl num">1</span> = \pi$<span class="hl kwa">&lt;/latex&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+will display this: <span class="hl kwa">&lt;latex&gt;</span>$ x^<span class="hl num">2</span> + <span class="hl esc">\f</span>rac{<span class="hl num">3</span>}{<span class="hl num">2</span>} x - <span class="hl num">1</span> = \pi$<span class="hl kwa">&lt;/latex&gt;</span>
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Another example:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./example.tex&quot;</span><span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>The code:
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./example.tex&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/post&gt;</span></pre>
+</div>
 
 
 </div> 
