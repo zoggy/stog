@@ -1,4 +1,5 @@
 Next release:
+  * add: --def command-line option to define a global rule on command line
   * new <elt-path> rule
   * fix Malformed_URL bug when generating with a site-url having an empty path
   * <hcode> and <icode> now keep id attribute in <pre> or <span> resulting element

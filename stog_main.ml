@@ -26,6 +26,8 @@
 (*                                                                               *)
 (*********************************************************************************)
 
+open Stog_types;;
+
 let output_dir = ref "stog-output";;
 
 let site_url = ref None ;;
@@ -33,12 +35,22 @@ let tmpl_dir = ref None ;;
 let use_cache = ref true;;
 let depcut = ref false;;
 
+let stog_defs = ref [] ;;
+
 let lang = ref None;;
 let default_lang_to_set = ref None;;
 
 let plugins = ref [];;
 let packages = ref [];;
 let only_elt = ref None;;
+
+let add_stog_def s =
+  match Stog_misc.split_string s [':'] with
+    [] -> ()
+  | [name] -> stog_defs := !stog_defs @ [(("", name), [], [])]
+  | name :: q ->
+      let contents = Xtmpl.xml_of_string (String.concat ":" q) in
+      stog_defs := !stog_defs @ [(("", name), [], [contents])]
 
 let set_stog_options stog =
   let stog =
@@ -58,6 +70,7 @@ let set_stog_options stog =
   in
   let stog = { stog with Stog_types.stog_outdir = !output_dir } in
   let stog = { stog with Stog_types.stog_depcut = !depcut } in
+  let stog = { stog with Stog_types.stog_defs = stog.stog_defs @ !stog_defs } in
   stog
 ;;
 
@@ -101,6 +114,9 @@ let options = [
 
     "--stog-ocaml-session", Arg.Set_string Stog_ocaml.stog_ocaml_session,
     "<command> use <command> as stog-ocaml-session program";
+
+    "--def", Arg.String add_stog_def,
+    "name:contents add a global rule name with the given contents" ;
   ];;
 
 let usage = Printf.sprintf
