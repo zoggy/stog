@@ -28,6 +28,8 @@
 
 (** Common module for code dynamic loading. *)
 
+val hack_cmxs : bool ref
+
 val load_files : string list -> unit
 
 val load_packages : (string list -> unit)

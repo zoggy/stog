@@ -28,21 +28,69 @@
 
 (** *)
 
+let hack_cmxs = ref false;;
+
+let create_cmxs src =
+  let dst = Filename.temp_file ("stog-"^(Filename.basename src)) ".cmxs" in
+  let options =
+    match Filename.basename (Filename.chop_extension src) with
+      "ulexing" | "cryptokit" | "pcre" -> " -linkall"
+    | _ -> ""
+  in
+  let includes = "-I "^(Filename.quote (Filename.dirname src)) in
+  let com = "ocamlopt -shared -o "^(Filename.quote dst)^" "^includes^options^" "^(Filename.quote src) in
+  match Sys.command com with
+    0 -> dst
+  | _  -> failwith ("Command failed: "^com)
+;;
+
 let _ = Dynlink.allow_unsafe_modules true;;
 
 let load_file file =
+  Stog_msg.verbose (Printf.sprintf "Loading file %s" file);
   try Dynlink.loadfile file
   with Dynlink.Error e ->
       failwith (Dynlink.error_message e)
 
 let loaded_files = ref [];;
+
+let hack_load_file file =
+  (* special case for cryptokit, pcre, by now, who is missing reference to C code in .cmxs *)
+  match Filename.chop_extension (Filename.basename file) with
+    "cryptokit" | "pcre" ->
+      let cmxs = create_cmxs ((Filename.chop_extension file)^".cmxa") in
+      load_file cmxs;
+      Sys.remove cmxs
+  | _ ->
+      match Filename.check_suffix file ".cmxa" ||
+        Filename.check_suffix file ".cmx"
+      with
+        false -> load_file file
+      | true ->
+          (* let's create a .cmxs from this .cmxa if not corresponding .cmxs exists *)
+          let cmxs = (Filename.chop_extension file)^".cmxs" in
+          if Sys.file_exists cmxs then
+            load_file cmxs
+          else
+            (
+             let cmxs = create_cmxs file in
+             load_file cmxs ;
+             (*Sys.remove cmxs*)
+            )
+;;
+
 let load_files =
+  let load_file file =
+    if !hack_cmxs then
+      hack_load_file file
+    else
+      load_file (Dynlink.adapt_filename file)
+  in
   let f file =
     if List.mem file !loaded_files then
       Stog_msg.verbose (Printf.sprintf "Not loading already loaded file %s" file)
     else
       begin
-        Stog_msg.verbose (Printf.sprintf "Loading file %s" file);
         load_file file;
         loaded_files := file :: !loaded_files;
       end

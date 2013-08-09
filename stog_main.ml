@@ -117,6 +117,9 @@ let options = [
 
     "--def", Arg.String add_stog_def,
     "name:contents add a global rule name with the given contents" ;
+
+    "--hackcmxs", Arg.Set Stog_dyn.hack_cmxs,
+    " when a package to load depend on .cmxa or .cmx file, try to build .cmxs.";
   ];;
 
 let usage = Printf.sprintf
