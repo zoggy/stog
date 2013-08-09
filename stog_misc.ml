@@ -28,6 +28,36 @@
 
 (** *)
 
+let create_log_fun_with_set ?prefix ?(print=prerr_endline) env_var =
+  let log_level =
+    ref
+      (try int_of_string (Sys.getenv env_var)
+      with _ -> 0)
+  in
+  let pref =
+    match prefix with
+      None -> ""
+    | Some s -> "[" ^ s ^ "]"
+  in
+  (fun ?loc ?(level=1) f ->
+    if !log_level >= level then
+       begin
+         let loc =
+           match loc with
+             None -> ""
+           | Some s -> "[" ^ s ^ "]"
+         in
+         let sep = match pref, loc with "", "" -> "" | _ -> " " in
+         let s = pref ^ loc ^ sep ^ (f()) in
+         print s
+       end
+  ),
+  ((:=) log_level)
+;;
+
+let create_log_fun ?prefix ?print env_var =
+  fst (create_log_fun_with_set ?prefix ?print env_var);;
+
 (*c==v=[String.strip_string]=1.0====*)
 let strip_string s =
   let len = String.length s in
