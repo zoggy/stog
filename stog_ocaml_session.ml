@@ -67,7 +67,7 @@ let eval_ocaml_phrase phrase =
     Printf.fprintf log_oc "executing phrase: %s\n" phrase;
     let phrase = !Toploop.parse_toplevel_phrase lexbuf in
     Printf.fprintf log_oc "phrase parsed\n";
-    ignore(Toploop.execute_phrase true Format.str_formatter phrase);
+    let ok = Toploop.execute_phrase true Format.str_formatter phrase in
     let exec_output = Format.flush_str_formatter () in
     let err = Stog_misc.string_of_file stderr_file in
     let err = remove_empty_filename err in
@@ -86,7 +86,10 @@ let eval_ocaml_phrase phrase =
      | s -> Format.pp_print_string Format.str_formatter s
     );
     Format.pp_print_string Format.str_formatter exec_output;
-    Stog_ocaml_types.Ok (Stog_misc.strip_string (Format.flush_str_formatter ()), out)
+    if ok then
+      Stog_ocaml_types.Ok (Stog_misc.strip_string (Format.flush_str_formatter ()), out)
+    else
+      Stog_ocaml_types.Handled_error (Stog_misc.strip_string (Format.flush_str_formatter ()), out)
   with
   | e ->
       (* Errors.report_error relies on exported compiler lib; on some

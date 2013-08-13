@@ -110,6 +110,19 @@ let fun_new_env env args subs =
 ;;
 *)
 
+let concat_code =
+  let f b = function
+    Xtmpl.D code -> Buffer.add_string b code
+  | xml ->
+      failwith (Printf.sprintf "XML code in OCaml code: %s"
+       (Xtmpl.string_of_xml xml))
+  in
+  fun xmls ->
+    let b = Buffer.create 256 in
+    List.iter (f b) xmls;
+    Buffer.contents b
+;;
+
 let fun_eval stog env args code =
   try
     let exc = Xtmpl.opt_arg args ~def: "true" ("", "error-exc") = "true" in
@@ -121,13 +134,7 @@ let fun_eval stog env args code =
     let session_name = Xtmpl.get_arg args ("", "session") in
     let id_opt = Xtmpl.opt_arg args ("", "id") in
     let atts = match id_opt with "" -> [] | id -> [("","id"), id] in
-    let code =
-      match code with
-        [ Xtmpl.D code ] -> code
-      | _ ->
-          failwith (Printf.sprintf "Invalid code: %s"
-           (String.concat "" (List.map Xtmpl.string_of_xml code)))
-    in
+    let code = concat_code code in
     let phrases = ocaml_phrases_of_string code in
     let rec iter acc = function
       [] -> List.rev acc
@@ -155,6 +162,7 @@ let fun_eval stog env args code =
         let (output, stdout, raised_exc) =
           match eval_ocaml_phrase ?session_name phrase with
             Stog_ocaml_types.Ok (s, stdout) -> (s, stdout, false)
+          | Stog_ocaml_types.Handled_error (s, stdout) -> (s, stdout, true)
           | Stog_ocaml_types.Exc s -> (s, "", true)
         in
         if raised_exc && exc then

@@ -1,4 +1,7 @@
 Next release:
+  * fix <ocaml-eval>: use return of Toploopexecute_phrase to consider
+    catched exceptions as errors is error-exc="true"
+  * fix: allow list of CDATA in ocaml code
   * add: --def command-line option to define a global rule on command line
   * new <elt-path> rule
   * fix Malformed_URL bug when generating with a site-url having an empty path

@@ -32,7 +32,10 @@ type input =
   { in_phrase : string ;
   }
 
-type result = Exc of string | Ok of string * string
+type result =
+  | Exc of string
+  | Ok of string * string
+  | Handled_error of string * string
 
 let pid = Unix.getpid();;
 
