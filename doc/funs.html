@@ -173,26 +173,30 @@ file is created. If no title is given, the site title is used.</li>
 
 <subsection id="elt-bodyx" title="elt-body">
 <p>
-<icode lang="xml">&lt;elt-body/&gt;</icode> returns the body of the current element.
+<icode lang="xml">&lt;elt-body/&gt;</icode> returns the body of the current element,
+or of the element referenced by the <icode>elt-hid</icode> attribute.
 </p>
 </subsection>
 
 <subsection id="elt-date" title="elt-date">
 <p>
 <icode lang="xml">&lt;elt-date/&gt;</icode> returns the date of the current element,
+or of the element referenced by the <icode>elt-hid</icode> attribute,
 or an empty string if no date were specified.
 </p>
 </subsection>
 
 <subsection id="elt-hid" title="elt-hid">
 <p>
-<icode lang="xml">&lt;elt-hid/&gt;</icode> returns the hid of the current element.
+<icode lang="xml">&lt;elt-hid/&gt;</icode> returns the hid of the current element
+or of the element referenced by the <icode>elt-hid</icode> attribute.
 </p>
 </subsection>
 
 <subsection id="elt-intro" title="elt-intro">
 <p>
-<icode lang="xml">&lt;elt-intro/&gt;</icode> returns the introduction of an element,
+<icode lang="xml">&lt;elt-intro/&gt;</icode> returns the introduction of the current
+element (or of the element referenced by the <icode>elt-hid</icode> attribute),
 that is the body code before the <icode>&lt;sep_/&gt;</icode> marker.
 </p>
 </subsection>
@@ -200,26 +204,31 @@ that is the body code before the <icode>&lt;sep_/&gt;</icode> marker.
 <subsection id="elt-src" title="elt-src">
 <p>
 <icode lang="xml">&lt;elt-src/&gt;</icode> returns the source filename
-of the element.
+of the element or of the element referenced by the <icode>elt-hid</icode> attribute.
 </p>
 </subsection>
 
 <subsection id="elt-title" title="elt-title">
 <p>
-<icode lang="xml">&lt;elt-title/&gt;</icode> returns the title of the current element.
+<icode lang="xml">&lt;elt-title/&gt;</icode> returns the title of the current element
+or of the element referenced by the <icode>elt-hid</icode> attribute.
 </p>
 </subsection>
 
 <subsection id="elt-type" title="elt-type">
 <p>
-<icode lang="xml">&lt;elt-type/&gt;</icode> returns the type of the current element.
+<icode lang="xml">&lt;elt-type/&gt;</icode> returns the type of the current element
+or of the element referenced by the <icode>elt-hid</icode> attribute.
 </p>
 </subsection>
 
 <subsection id="elt-url" title="elt-url">
 <p>
-<icode lang="xml">&lt;elt-url/&gt;</icode> returns the final url of the current element.
+<icode lang="xml">&lt;elt-url/&gt;</icode> returns the final url of the current element
+or of the element referenced by the <icode>elt-hid</icode> attribute:
 </p>
+<hxml><![CDATA[<elt-url elt-hid="/getting_started"/>]]></hxml>
+<p> is reduced to <elt-url elt-hid="/getting_started"/></p>
 </subsection>
 
 

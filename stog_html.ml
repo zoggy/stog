@@ -1218,6 +1218,7 @@ let rss_date_of_date d =
     zone = 0 ; week_day = -1 ;
   }
 ;;
+
 (* FIXME: handle RSS files as any other element ? *)
 let rec elt_to_rss_item stog elt_id elt =
   let link = elt_url stog elt in
@@ -1309,6 +1310,11 @@ and build_base_rules stog elt_id elt =
   let f_date elt _ _ _ = [ Xtmpl.D (Stog_intl.string_of_date_opt stog.stog_lang elt.elt_date) ] in
   let f_intro elt _ _ _ = intro_of_elt stog elt in
   let mk f env atts subs =
+    let env =
+      match Xtmpl.get_arg atts ("", Stog_tags.elt_hid) with
+        None -> env
+      | Some hid -> Xtmpl.env_add_att Stog_tags.elt_hid hid env
+    in
     let nodes = [ Xtmpl.E (("", Stog_tags.elt_hid), [], []) ] in
     let nodes2 = Xtmpl.apply_to_xmls env nodes in
     if nodes2 = nodes then

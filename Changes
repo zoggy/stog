@@ -1,4 +1,7 @@
 Next release:
+  * add: <elt-*> predefined functions handle a elt-hid="hid of element"
+    attribute, to access information about another element rather than
+    the current one.
   * fix <ocaml-eval>: use return of Toploopexecute_phrase to consider
     catched exceptions as errors is error-exc="true"
   * fix: allow list of CDATA in ocaml code
