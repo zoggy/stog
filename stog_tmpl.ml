@@ -34,6 +34,27 @@ type contents = Stog_types.stog -> Xtmpl.tree
 
 let parse = Xtmpl.xml_of_string ~add_main: false ;;
 
+let get_template_file stog elt file =
+  if Filename.is_relative file then
+    begin
+      if Filename.is_implicit file then
+        Filename.concat stog.stog_tmpl_dir file
+      else
+        Filename.concat (Filename.dirname elt.elt_src) file
+    end
+  else
+    file
+;;
+
+let read_template_file stog elt ?(raw=false) file =
+  let file = get_template_file stog elt file in
+  if raw then
+    Xtmpl.D (Stog_misc.string_of_file file)
+  else
+    Xtmpl.xml_of_string (Stog_misc.string_of_file file)
+;;
+
+
 let get_template stog ?elt contents name =
   let file = Filename.concat stog.stog_tmpl_dir name in
   let contents = contents stog in

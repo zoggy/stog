@@ -30,6 +30,25 @@
 
 type contents = Stog_types.stog -> Xtmpl.tree
 
+(** [get_template_file stog elt file] returns absolute filename of the given
+  template filename.
+  If [file] is relative and implicit then it is concatenated to
+  the stog template directory.
+  If [file] is relative and not implicit (i.e. it starts with . or ..), it
+  is concatenated to the element source file directory.
+  Else (the filename is absolute), it is returned as is.
+*)
+val get_template_file : Stog_types.stog -> Stog_types.elt -> string -> string
+
+(** [read_template_file stog elt file] returns the content of the given
+  template filename, after calling {!get_template_file} to get the final
+  filename.
+  @param raw indicate whether to read the template as XML ([false]) or
+  as CData ([true]). Default is [false].
+  *)
+val read_template_file : Stog_types.stog -> Stog_types.elt ->
+  ?raw: bool -> string -> Xtmpl.tree
+
 val get_template : Stog_types.stog -> ?elt: Stog_types.elt -> contents -> string -> Xtmpl.tree
 
 val page : contents

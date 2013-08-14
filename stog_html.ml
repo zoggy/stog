@@ -313,22 +313,8 @@ let fun_counter env atts subs =
 let fun_include stog elt _env args subs =
   match Xtmpl.get_arg args ("", "file") with
   | Some file ->
-      let file =
-        if Filename.is_relative file then
-          begin
-            if Filename.is_implicit file then
-              Filename.concat stog.stog_tmpl_dir file
-            else
-              Filename.concat (Filename.dirname elt.elt_src) file
-          end
-        else
-          file
-      in
-      let xml =
-        match Xtmpl.get_arg args ("", "raw") with
-        | Some "true" -> [Xtmpl.D (Stog_misc.string_of_file file)]
-        | _ -> [Xtmpl.xml_of_string (Stog_misc.string_of_file file)]
-      in
+      let raw = Xtmpl.opt_arg ~def: "false" args ("", "raw") = "true" in
+      let xml = Stog_tmpl.read_template_file stog elt ~raw file in
       let args =
         (("", "contents"), Xtmpl.string_of_xmls subs) ::
         args
@@ -338,7 +324,7 @@ let fun_include stog elt _env args subs =
           Some "false" -> ()
         | _ -> Stog_deps.add_dep elt (Stog_deps.File file);
       end;
-      [Xtmpl.E (("", Xtmpl.tag_env), args, xml)]
+      [Xtmpl.E (("", Xtmpl.tag_env), args, [xml])]
   | None ->
       failwith "Missing 'file' argument for include command"
 ;;
