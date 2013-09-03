@@ -28,7 +28,7 @@
 
 (*i==m=[File.Find]=0.1=t==*)
 (** Finding files.
-@author Didier Rémy
+@author Didier Remy
 @version 0.1
 @cgname File.Find*)
 
