@@ -1,0 +1,21 @@
+<ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_intl</title><contents><div class="ocamldoc-page">
+<code class="code"><span class="keyword">sig</span><br/>
+&#160;&#160;<span class="keyword">type</span>&#160;lang_abbrev&#160;=&#160;string<br/>
+&#160;&#160;<span class="keyword">type</span>&#160;lang_data&#160;=&#160;{<br/>
+&#160;&#160;&#160;&#160;days&#160;:&#160;string&#160;array;<br/>
+&#160;&#160;&#160;&#160;months&#160;:&#160;string&#160;array;<br/>
+&#160;&#160;&#160;&#160;string_of_date&#160;:&#160;<span class="constructor">Stog_types</span>.date&#160;<span class="keywordsign">-&gt;</span>&#160;string;<br/>
+&#160;&#160;}<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;tm_of_date&#160;:&#160;<span class="constructor">Stog_types</span>.date&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Unix</span>.tm<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;french&#160;:&#160;<span class="constructor">Stog_intl</span>.lang_data<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;english&#160;:&#160;<span class="constructor">Stog_intl</span>.lang_data<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;register_lang&#160;:&#160;<span class="constructor">Stog_intl</span>.lang_abbrev&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_intl</span>.lang_data&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;set_default_lang&#160;:&#160;<span class="constructor">Stog_intl</span>.lang_abbrev&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;data_of_lang&#160;:&#160;<span class="constructor">Stog_intl</span>.lang_abbrev&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_intl</span>.lang_data<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;get_month&#160;:&#160;<span class="constructor">Stog_intl</span>.lang_abbrev&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;int&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;string_of_date&#160;:<br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_intl</span>.lang_abbrev&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.date&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;string_of_date_opt&#160;:<br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_intl</span>.lang_abbrev&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.date&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;short_string_of_date&#160;:&#160;<span class="constructor">Stog_types</span>.date&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+<span class="keyword">end</span></code></div></contents></ocamldoc>

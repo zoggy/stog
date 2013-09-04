@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<ocamldoc with-contents="true">
+<title>Stog library reference documentation : Stog_intl</title><contents><div class="ocamldoc-page">
+<div class="navbar"><a class="pre" href="Stog_types.html" title="Stog_types">Previous</a>
+&#160;<a class="up" href="index.html" title="Index">Up</a>
+&#160;<a class="post" href="Stog_find.html" title="Stog_find">Next</a>
+</div>
+<h1>Module <a href="type_Stog_intl.html">Stog_intl</a></h1>
+<pre><span class="keyword">module</span> Stog_intl: <code class="code">sig</code> <a href="Stog_intl.html">..</a> <code class="code">end</code></pre><div class="info">
+Inernationalization<br/>
+</div>
+<hr width="100%"/>
+<pre><span id="TYPElang_abbrev"><span class="keyword">type</span> lang_abbrev</span> = <code class="type">string</code> </pre>
+
+<pre><code><span id="TYPElang_data"><span class="keyword">type</span> lang_data</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&#160;&#160;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTlang_data.days">days</span>&#160;:<code class="type">string array</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&#160;&#160;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTlang_data.months">months</span>&#160;:<code class="type">string array</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&#160;&#160;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTlang_data.string_of_date">string_of_date</span>&#160;:<code class="type"><a href="Stog_types.html#TYPEdate">Stog_types.date</a> -&gt; string</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info">
+Such a structure must be defined for each language to support.<br/>
+</div>
+
+<pre><span id="VALtm_of_date"><span class="keyword">val</span> tm_of_date</span> : <code class="type"><a href="Stog_types.html#TYPEdate">Stog_types.date</a> -&gt; Unix.tm</code></pre><pre><span id="VALfrench"><span class="keyword">val</span> french</span> : <code class="type"><a href="Stog_intl.html#TYPElang_data">lang_data</a></code></pre><pre><span id="VALenglish"><span class="keyword">val</span> english</span> : <code class="type"><a href="Stog_intl.html#TYPElang_data">lang_data</a></code></pre><pre><span id="VALregister_lang"><span class="keyword">val</span> register_lang</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">lang_abbrev</a> -&gt; <a href="Stog_intl.html#TYPElang_data">lang_data</a> -&gt; unit</code></pre><pre><span id="VALset_default_lang"><span class="keyword">val</span> set_default_lang</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">lang_abbrev</a> -&gt; unit</code></pre><div class="info">
+Use the given language abbreviation (such as "fr") to set the default
+     language. The language must have been registered previously (except
+     for predefined "en" and "fr" languages) or else the <code class="code">Failure</code> exception
+     if raised.<br/>
+</div>
+<pre><span id="VALdata_of_lang"><span class="keyword">val</span> data_of_lang</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">lang_abbrev</a> option -&gt; <a href="Stog_intl.html#TYPElang_data">lang_data</a></code></pre><pre><span id="VALget_month"><span class="keyword">val</span> get_month</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">lang_abbrev</a> option -&gt; int -&gt; string</code></pre><pre><span id="VALstring_of_date"><span class="keyword">val</span> string_of_date</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">lang_abbrev</a> option -&gt; <a href="Stog_types.html#TYPEdate">Stog_types.date</a> -&gt; string</code></pre><pre><span id="VALstring_of_date_opt"><span class="keyword">val</span> string_of_date_opt</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">lang_abbrev</a> option -&gt; <a href="Stog_types.html#TYPEdate">Stog_types.date</a> option -&gt; string</code></pre><pre><span id="VALshort_string_of_date"><span class="keyword">val</span> short_string_of_date</span> : <code class="type"><a href="Stog_types.html#TYPEdate">Stog_types.date</a> -&gt; string</code></pre></div></contents></ocamldoc>

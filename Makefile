@@ -212,13 +212,13 @@ doc:
 webdoc:
 	(cd doc && $(MAKE) DEST_DIR=`pwd`/../../stog-pages)
 
-docstog: $(ODOC_STOG)
+docstog: $(ODOC)
 	$(MKDIR) doc/ref-doc
 	rm -fr doc/ref-doc/*html
 	OCAMLFIND_COMMANDS="ocamldoc=ocamldoc.opt" \
 	$(OCAMLDOC) -rectypes `$(OCAMLFIND) query -i-format $(PKGS) -r` -d doc/ref-doc \
 	-t "Stog library reference documentation" -short-functors \
-	-g odoc_depgraph.cmxs -g ./odoc_stog.cmxs -width 700 -height 700 -dot-options '-Nfontsize=40. -Earrowsize=3.0 -Ecolor="#444444" ' \
+	-g odoc_depgraph.cmxs -g ./$(ODOC) -width 700 -height 700 -dot-options '-Nfontsize=40. -Earrowsize=3.0 -Ecolor="#444444" ' \
 	$(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli)
 
 ##########
@@ -235,6 +235,7 @@ install-bin:
 	$(CP) $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
 	  $(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
 		`dirname \`which $(OCAMLC)\``/
+	$(CP) $(ODOC) $(ODOC_BYTE) `$(OCAMLFIND) ocamldoc -customdir`/
 
 uninstall: uninstall-lib uninstall-bin
 

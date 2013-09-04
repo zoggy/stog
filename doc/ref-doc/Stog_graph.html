@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<ocamldoc with-contents="true">
+<title>Stog library reference documentation : Stog_graph</title><contents><div class="ocamldoc-page">
+<div class="navbar"><a class="pre" href="Stog_tmap.html" title="Stog_tmap">Previous</a>
+&#160;<a class="up" href="index.html" title="Index">Up</a>
+&#160;<a class="post" href="Stog_date.html" title="Stog_date">Next</a>
+</div>
+<h1>Module <a href="type_Stog_graph.html">Stog_graph</a></h1>
+<pre><span class="keyword">module</span> Stog_graph: <code class="code">sig</code> <a href="Stog_graph.html">..</a> <code class="code">end</code></pre><div class="info">
+Annotated sparse graphs.<br/>
+</div>
+<hr width="100%"/>
+<pre><span class="keyword">module type</span> <a href="Stog_graph.GMap.html">GMap</a> = <code class="code">sig</code> <a href="Stog_graph.GMap.html">..</a> <code class="code">end</code></pre><pre><span class="keyword">module type</span> <a href="Stog_graph.S.html">S</a> = <code class="code">sig</code> <a href="Stog_graph.S.html">..</a> <code class="code">end</code></pre><div class="info">
+This is the output signature of the functor creating a graph module.
+</div>
+<pre><span class="keyword">module</span> <a href="Stog_graph.Make.html">Make</a> <code class="code">(</code><code class="code">M</code><code class="code"> : </code><code class="type"><a href="Stog_graph.GMap.html">GMap</a></code><code class="code">) </code> <code class="code">(</code><code class="code">Edge</code><code class="code"> : </code><code class="type">Map.OrderedType</code><code class="code">) </code>: <code class="type"><a href="Stog_graph.S.html">S</a></code><code class="type">  with type key = M.key and type edge_data = Edge.t</code></pre><div class="info">
+Making a graph module.
+</div>
+<pre><span class="keyword">module</span> <a href="Stog_graph.Make_with_map.html">Make_with_map</a> <code class="code">(</code><code class="code">P</code><code class="code"> : </code><code class="type">Map.OrderedType</code><code class="code">) </code> <code class="code">(</code><code class="code">Edge</code><code class="code"> : </code><code class="type">Map.OrderedType</code><code class="code">) </code>: <code class="type"><a href="Stog_graph.S.html">S</a></code><code class="type">  with type key = P.t and type edge_data = Edge.t</code></pre><div class="info">
+This is a convenient functor using the <code class="code">Map</code> module of the standard library
+  to build the <a href="Stog_graph.GMap.html"><code class="code">Stog_graph.GMap</code></a> module required by <a href="Stog_graph.Make.html"><code class="code">Stog_graph.Make</code></a> from the <code class="code">P</code> parameter.
+</div>
+</div></contents></ocamldoc>

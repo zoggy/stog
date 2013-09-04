@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<ocamldoc with-contents="true">
+<title>Stog library reference documentation : Stog_trie.Make</title><contents><div class="ocamldoc-page">
+<div class="navbar">&#160;<a class="up" href="Stog_trie.html" title="Stog_trie">Up</a>
+&#160;</div>
+<h1>Functor <a href="type_Stog_trie.Make.html">Stog_trie.Make</a></h1>
+<pre><span class="keyword">module</span> Make <code class="code">(</code><code class="code">P</code><code class="code"> : </code><code class="type">Map.OrderedType</code><code class="code">) </code>: <code class="type"><a href="Stog_trie.S.html">S</a></code><code class="type">  with type symbol = P.t</code></pre><table border="0" cellpadding="3" width="100%">
+<tr>
+<td align="left" valign="top" width="1%%"><b>Parameters: </b></td>
+<td>
+<table class="paramstable">
+<tr>
+<td align="center" valign="top" width="15%">
+<code>P</code></td>
+<td align="center" valign="top">:</td>
+<td><code class="type">Map.OrderedType</code>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<hr width="100%"/>
+<pre><span id="TYPEsymbol"><span class="keyword">type</span> symbol</span> </pre>
+
+<pre><span id="TYPEpath"><span class="keyword">type</span> path</span> = <code class="type"><a href="Stog_trie.S.html#TYPEsymbol">symbol</a> list</code> </pre>
+
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
+
+<pre><span id="EXCEPTIONAlready_present"><span class="keyword">exception</span> Already_present</span> <span class="keyword">of</span> <code class="type"><a href="Stog_trie.S.html#TYPEpath">path</a></code></pre>
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="Stog_trie.S.html#TYPEt">t</a></code></pre><pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="Stog_trie.S.html#TYPEpath">path</a> -&gt; 'a -&gt; 'a <a href="Stog_trie.S.html#TYPEt">t</a> -&gt; 'a <a href="Stog_trie.S.html#TYPEt">t</a></code></pre><div class="info">
+<b>Raises</b> <code>Already_present</code> if the added path already exist in the trie.<br/>
+</div>
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="Stog_trie.S.html#TYPEpath">path</a> -&gt; 'a <a href="Stog_trie.S.html#TYPEt">t</a> -&gt; 'a list</code></pre><div class="info">
+Find all data associated to the given path or below, or an empty list
+         if such a path does not exist.<br/>
+</div>
+</div></contents></ocamldoc>

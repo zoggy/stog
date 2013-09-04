@@ -1,0 +1,15 @@
+<ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_config</title><contents><div class="ocamldoc-page">
+<code class="code"><span class="keyword">sig</span><br/>
+&#160;&#160;<span class="keyword">val</span>&#160;version&#160;:&#160;string<br/>
+&#160;&#160;<span class="keyword">type</span>&#160;t&#160;=&#160;{<br/>
+&#160;&#160;&#160;&#160;ignored&#160;:&#160;string&#160;list;<br/>
+&#160;&#160;&#160;&#160;elements&#160;:&#160;string&#160;list;<br/>
+&#160;&#160;&#160;&#160;not_elements&#160;:&#160;string&#160;list;<br/>
+&#160;&#160;}<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;config_dir&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;config_file&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;tmpl_dir&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;cache_dir&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;modules_dir&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;read_config&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_config</span>.t<br/>
+<span class="keyword">end</span></code></div></contents></ocamldoc>

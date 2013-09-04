@@ -1,0 +1,57 @@
+<ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_html</title><contents><div class="ocamldoc-page">
+<code class="code"><span class="keyword">sig</span><br/>
+&#160;&#160;<span class="keyword">val</span>&#160;current_stog&#160;:&#160;<span class="constructor">Stog_types</span>.stog&#160;option&#160;<span class="constructor">Pervasives</span>.ref<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;elt_by_href&#160;:<br/>
+&#160;&#160;&#160;&#160;?typ:string&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="constructor">Stog_types</span>.elt&#160;*&#160;string&#160;*&#160;string&#160;option)&#160;option<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;plugin_rules&#160;:&#160;(<span class="constructor">Xmlm</span>.name&#160;*&#160;<span class="constructor">Xtmpl</span>.callback)&#160;list&#160;<span class="constructor">Pervasives</span>.ref<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;stage0_funs&#160;:&#160;(<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog)&#160;list&#160;<span class="constructor">Pervasives</span>.ref<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;add_block&#160;:<br/>
+&#160;&#160;&#160;&#160;?on_dup:[&#160;<span class="keywordsign">`</span><span class="constructor">Fail</span>&#160;<span class="keywordsign">|</span>&#160;<span class="keywordsign">`</span><span class="constructor">Ignore</span>&#160;<span class="keywordsign">|</span>&#160;<span class="keywordsign">`</span><span class="constructor">Warn</span>&#160;]&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;hid:string&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;id:string&#160;<span class="keywordsign">-&gt;</span>&#160;short:<span class="constructor">Xtmpl</span>.tree&#160;<span class="keywordsign">-&gt;</span>&#160;long:<span class="constructor">Xtmpl</span>.tree&#160;<span class="keywordsign">-&gt;</span>&#160;unit&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;get_in_env&#160;:&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Xmlm</span>.name&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;get_in_args_or_env&#160;:<br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Xmlm</span>.attribute&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Xmlm</span>.name&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;get_hid&#160;:&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;escape_html&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;highlight&#160;:&#160;opts:string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;elt_dst_file&#160;:&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;elt_url&#160;:&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Neturl</span>.url<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;url_of_hid&#160;:<br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;?ext:string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.human_id&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Neturl</span>.url<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;rss_date_of_date&#160;:&#160;<span class="constructor">Stog_types</span>.date&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Rss</span>.date<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;elt_to_rss_item&#160;:<br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.elt_id&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Rss</span>.item<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;generate_rss_feed_file&#160;:<br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;?title:string&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Rss</span>.url&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="constructor">Stog_types</span>.elt_id&#160;*&#160;<span class="constructor">Stog_types</span>.elt)&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;build_base_rules&#160;:<br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.elt_id&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="constructor">Xmlm</span>.name&#160;*&#160;<span class="constructor">Xtmpl</span>.callback)&#160;list<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;elt_list&#160;:<br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;?rss:<span class="constructor">Neturl</span>.url&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;?set:<span class="constructor">Stog_types</span>.<span class="constructor">Elt_set</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Xtmpl</span>.callback<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;generate&#160;:<br/>
+&#160;&#160;&#160;&#160;?use_cache:bool&#160;<span class="keywordsign">-&gt;</span>&#160;?only_elt:string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+&#160;&#160;<span class="keyword">type</span>&#160;rule_build&#160;=<br/>
+&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.elt_id&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="constructor">Xmlm</span>.name&#160;*&#160;<span class="constructor">Xtmpl</span>.callback)&#160;list<br/>
+&#160;&#160;<span class="keyword">type</span>&#160;level_fun&#160;=<br/>
+&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.elt_id&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.elt<br/>
+&#160;&#160;<span class="keyword">type</span>&#160;level_fun_on_elt_list&#160;=<br/>
+&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;&#160;&#160;(<span class="constructor">Stog_types</span>.elt_id&#160;*&#160;<span class="constructor">Stog_types</span>.elt)&#160;list&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;&#160;&#160;(<span class="constructor">Stog_types</span>.elt_id&#160;*&#160;<span class="constructor">Stog_types</span>.elt)&#160;list<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;register_level_fun&#160;:&#160;int&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_html</span>.level_fun&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;compute_elt&#160;:&#160;<span class="constructor">Stog_html</span>.rule_build&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_html</span>.level_fun<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;register_level_fun_on_elt_list&#160;:<br/>
+&#160;&#160;&#160;&#160;int&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_html</span>.level_fun_on_elt_list&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+<span class="keyword">end</span></code></div></contents></ocamldoc>

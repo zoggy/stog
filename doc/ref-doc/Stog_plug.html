@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<ocamldoc with-contents="true">
+<title>Stog library reference documentation : Stog_plug</title><contents><div class="ocamldoc-page">
+<div class="navbar"><a class="pre" href="Stog_html.html" title="Stog_html">Previous</a>
+&#160;<a class="up" href="index.html" title="Index">Up</a>
+&#160;<a class="post" href="Stog_dyn.html" title="Stog_dyn">Next</a>
+</div>
+<h1>Module <a href="type_Stog_plug.html">Stog_plug</a></h1>
+<pre><span class="keyword">module</span> Stog_plug: <code class="code">sig</code> <a href="Stog_plug.html">..</a> <code class="code">end</code></pre><div class="info">
+Interface for plugins.
+<div class="vertical-space"> </div>
+
+  Even if all modules are accessible from dynamically loaded code,
+  this <a href="Stog_plug.html"><code class="code">Stog_plug</code></a> module should remain compatible from one release to
+  another.<br/>
+</div>
+<hr width="100%"/>
+<pre><span id="VALplugin_config_file"><span class="keyword">val</span> plugin_config_file</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; string -&gt; string</code></pre><div class="info">
+<code class="code">plugin_config_file stog plugin_name</code> returns the configuration file
+  for this plugin name, for consistency purpose.<br/>
+</div>
+<pre><span id="VALregister_lang"><span class="keyword">val</span> register_lang</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">Stog_intl.lang_abbrev</a> -&gt; <a href="Stog_intl.html#TYPElang_data">Stog_intl.lang_data</a> -&gt; unit</code></pre><pre><span id="VALregister_rule"><span class="keyword">val</span> register_rule</span> : <code class="type">Xmlm.name -&gt; Xtmpl.callback -&gt; unit</code></pre><pre><span id="VALunregister_rule"><span class="keyword">val</span> unregister_rule</span> : <code class="type">Xmlm.name -&gt; Xtmpl.callback option</code></pre><div class="info">
+Unregister the rule with the given name from the plugin rules.
+  It only register the last registered rule with this name.
+  If a rule is unregistered, it is returned, else <code class="code">None</code> is returned.<br/>
+</div>
+<pre><span id="VALstog"><span class="keyword">val</span> stog</span> : <code class="type">unit -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><pre><span id="VALelt_by_href"><span class="keyword">val</span> elt_by_href</span> : <code class="type">?typ:string -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       Xtmpl.env -&gt; string -&gt; (<a href="Stog_types.html#TYPEelt">Stog_types.elt</a> * string * string option) option</code></pre><div class="info">
+<code class="code">elt_by_href ?typ stog env href</code> returns the element, hid and
+  optional if matching the given href string, of the form <code class="code">hid[#id]</code>.
+  Return None if the element could not be found, of the id could not be found,
+  and an error is issued.<br/>
+</div>
+<pre><span id="VALadd_block"><span class="keyword">val</span> add_block</span> : <code class="type">?on_dup:[ `Fail | `Ignore | `Warn ] -&gt;<br/>       hid:string -&gt;<br/>       id:string -&gt; short:Xtmpl.tree -&gt; long:Xtmpl.tree -&gt; unit -&gt; unit</code></pre><div class="info">
+Adding a known block id for a given hid. A short and a long title
+  are specified. These registered blocks are used by &lt;elt href="..#id"/&gt; nodes.<br/>
+</div>
+<pre><span id="VALverbose"><span class="keyword">val</span> verbose</span> : <code class="type">?info:string -&gt; ?level:int -&gt; string -&gt; unit</code></pre><pre><span id="VALset_print_verbose"><span class="keyword">val</span> set_print_verbose</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre><pre><span id="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?info:string -&gt; string -&gt; unit</code></pre><pre><span id="VALset_print_warning"><span class="keyword">val</span> set_print_warning</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre><pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?info:string -&gt; ?fatal:int -&gt; string -&gt; unit</code></pre><pre><span id="VALset_print_error"><span class="keyword">val</span> set_print_error</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre><pre><span id="VALregister_stage0_fun"><span class="keyword">val</span> register_stage0_fun</span> : <code class="type">(<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a>) -&gt; unit</code></pre><pre><span id="TYPErule_build"><span class="keyword">type</span> rule_build</span> = <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; (Xmlm.name * Xtmpl.callback) list</code> </pre>
+
+<pre><span id="TYPElevel_fun"><span class="keyword">type</span> level_fun</span> = <code class="type">Xtmpl.env -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a></code> </pre>
+<div class="info">
+Type to represent a function taking an element id,
+  and element, and returning the new element.<br/>
+</div>
+
+<pre><span id="TYPElevel_fun_on_elt_list"><span class="keyword">type</span> level_fun_on_elt_list</span> = <code class="type">Xtmpl.env -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       (<a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> * <a href="Stog_types.html#TYPEelt">Stog_types.elt</a>) list -&gt;<br/>       (<a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> * <a href="Stog_types.html#TYPEelt">Stog_types.elt</a>) list</code> </pre>
+<div class="info">
+Type to represent a functions called on all elements at a time and returning
+  only the modified elements.<br/>
+</div>
+
+<pre><span id="VALregister_level_fun"><span class="keyword">val</span> register_level_fun</span> : <code class="type">int -&gt; <a href="Stog_plug.html#TYPElevel_fun">level_fun</a> -&gt; unit</code></pre><pre><span id="VALcompute_elt"><span class="keyword">val</span> compute_elt</span> : <code class="type"><a href="Stog_plug.html#TYPErule_build">rule_build</a> -&gt; <a href="Stog_plug.html#TYPElevel_fun">level_fun</a></code></pre><pre><span id="VALregister_level_fun_on_elt_list"><span class="keyword">val</span> register_level_fun_on_elt_list</span> : <code class="type">int -&gt; <a href="Stog_plug.html#TYPElevel_fun_on_elt_list">level_fun_on_elt_list</a> -&gt; unit</code></pre><pre><span id="VALregister_cache"><span class="keyword">val</span> register_cache</span> : <code class="type">(module Stog_cache.Cache) -&gt; unit</code></pre><pre><span id="TYPEdependency"><span class="keyword">type</span> dependency</span> = <code class="type"><a href="Stog_deps.html#TYPEdependency">Stog_deps.dependency</a></code> = </pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTdependency.File"><span class="constructor">File</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >filename</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTdependency.Elt"><span class="constructor">Elt</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >absolute human id</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
+
+
+<pre><span id="VALadd_dep"><span class="keyword">val</span> add_dep</span> : <code class="type"><a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; <a href="Stog_plug.html#TYPEdependency">dependency</a> -&gt; unit</code></pre><div class="info">
+For a given element, add a dependency on a file or another element.<br/>
+</div>
+</div></contents></ocamldoc>

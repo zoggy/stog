@@ -1,0 +1,38 @@
+<ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_misc</title><contents><div class="ocamldoc-page">
+<code class="code"><span class="keyword">sig</span><br/>
+&#160;&#160;<span class="keyword">val</span>&#160;safe_main&#160;:&#160;(unit&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;string_of_file&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;file_of_string&#160;:&#160;file:string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;create_log_fun&#160;:<br/>
+&#160;&#160;&#160;&#160;?prefix:string&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;?print:(string&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;?loc:string&#160;<span class="keywordsign">-&gt;</span>&#160;?level:int&#160;<span class="keywordsign">-&gt;</span>&#160;(unit&#160;<span class="keywordsign">-&gt;</span>&#160;string)&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;create_log_fun_with_set&#160;:<br/>
+&#160;&#160;&#160;&#160;?prefix:string&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;?print:(string&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;string&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;(?loc:string&#160;<span class="keywordsign">-&gt;</span>&#160;?level:int&#160;<span class="keywordsign">-&gt;</span>&#160;(unit&#160;<span class="keywordsign">-&gt;</span>&#160;string)&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;*&#160;(int&#160;<span class="keywordsign">-&gt;</span>&#160;unit)<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;split_string&#160;:&#160;?keep_empty:bool&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;char&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;list<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;strip_string&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;strip_blank_lines&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;lowercase&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;list_chop&#160;:&#160;int&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>h&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>h&#160;list<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;mkdir&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;is_prefix&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;bool<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;list_remove_doubles&#160;:&#160;?pred:(<span class="keywordsign">'</span>k&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>k&#160;<span class="keywordsign">-&gt;</span>&#160;bool)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>k&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>k&#160;list<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;md5&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;count_char&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;char&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;encode_string&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;map_opt&#160;:&#160;(<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;option<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;list_concat&#160;:&#160;?sep:<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;list<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;dot_to_svg&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;list_compare&#160;:&#160;(<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;int)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;filename_extension&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;safe_mkdir&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;opt_of_string&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;option<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;string_of_opt&#160;:&#160;string&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;file_mtime&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;float&#160;option<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;path_under&#160;:&#160;parent:string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;highlight&#160;:&#160;opts:string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;string_of_time&#160;:&#160;float&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
+<span class="keyword">end</span></code></div></contents></ocamldoc>

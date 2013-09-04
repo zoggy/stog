@@ -1,4 +1,6 @@
 Next release:
+  * add: ocamldoc generator (odoc_stog.cm{o,xs}) to embed ocamldoc-generated
+    documentation into stog sites
   * add: <elt-*> predefined functions handle a elt-hid="hid of element"
     attribute, to access information about another element rather than
     the current one.
