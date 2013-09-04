@@ -17,7 +17,7 @@ Here is an example:
 <include file="../plugins/plugin_example.ml" raw="true"/>
 </hcode>
 <p>
-Have a look at the <a href="&lt;site-url/&gt;/ref-doc/index.html">Stog library reference documentation</a>.
+Have a look at the <elt href="/ref-doc/index"/>.
 </p>
 </section>
 
@@ -66,18 +66,18 @@ of dependencies of each element on other elements and files.
 <p>
 If a new rule defined by a plugin uses a file or implies a dependency
 from an element to another, this rule must declare this dependency
-using the <a href="ref-doc/Stog_plug.html#VALadd_dep"><code>Stog_plug.add_dep</code></a> function:
+using the <elt href="Stog_plug#VALadd_dep"><code>Stog_plug.add_dep</code></elt> function:
 </p>
 <ocaml>Stog_plug.add_dep : Stog_types.elt -> dependency -> unit</ocaml>
 <p>
 If a plugin computes information which could be cached, it can declare a
 new cache for this informations, using the
-<a href="ref-doc/Stog_plug.html#VALregister_cache"><code>Stog_plug.register_cache</code></a> function:
+<elt href="Stog_plug#VALregister_cache"><code>Stog_plug.register_cache</code></elt> function:
 </p>
 <ocaml>val register_cache : (module Stog_cache.Cache) -> unit</ocaml>
 <p>
 The Cache module to provide is very simple; have a look at the
-<a href="ref-doc/Stog_cache.Cache.html"><code>Stog_cache.Cache</code></a>module type.
+<elt href="Stog_cache.Cache"><code>Stog_cache.Cache</code></elt>module type.
 </p>
 </section>
 </prepare-toc>
