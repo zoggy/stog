@@ -294,8 +294,13 @@ module Generator (G : Odoc_html.Html_generator) =
               "-->", "FOO___" ;
               "->", "-&gt;" ;
               "FOO___", "-->" ;
+              "< ", "&lt; " ;
               "<p>", "<div class=\"vertical-space\"> </div>";
               "<h1></h1>", "" ;
+              "<h2 ", "<div class=\"section-title\" ";
+              "</h2>", "</div>";
+              "<h3 ", "<div class=\"subsection-title\" ";
+              "</h3>", "</div>";
             ]
           in
           let s = List.fold_left
