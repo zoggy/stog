@@ -14,7 +14,7 @@
       <if next=""><main_/><div class="navright"><next/></div></if>
     </div>
   </if>
-  <div class="page-title"><elt-title/></div>
+  <if elt-type="ocamldoc"><main_/><div class="page-title"><elt-title/></div></if>
 </div>
 <if withsidebar="true"><include file="sidebar.tmpl"/><main_/></if>
 <if elt-type="post"><div class="date"><elt-date/></div></if>

@@ -140,7 +140,7 @@ module type S =
          stricly positive value and the edge edge annotation used to get
          this value (it may be possible to have different costs to go from
          [x] to [y] if there are various edges from [x] to [y]). The [cost g x y]
-         function must return [None] if there is no edge from [x] to [y].
+         function must return [None] if there is no edge from [x] to [y].
 
          The algorithm used is described here:
            {{:http://tide4javascript.com/?s=Dijkstra}Djikstra}.
@@ -157,7 +157,7 @@ end
    @param Edge is the module defining the type of the edge annotations.
      The [compare] function is used when adding an edge, to prevent adding
      an edge from [x] to [y] when an edge with the same annotation already
-     exists from [x] to [y].
+     exists from [x] to [y].
    *)
 module Make :
   functor (M : GMap) ->

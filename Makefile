@@ -41,7 +41,7 @@ OCAMLFIND=ocamlfind
 PACKAGES=xmlm,rss,xtmpl,config-file,dynlink,unix,str
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
 
-COMPFLAGS= -annot -rectypes -g #-w +K
+COMPFLAGS=-I +ocamldoc -annot -rectypes -g #-w +K
 OCAMLPP=
 
 PLUGINS_BYTE= \
@@ -49,6 +49,9 @@ PLUGINS_BYTE= \
 	plugins/stog_markdown.cmo \
 	plugins/plugin_example.cmo
 PLUGINS_OPT=$(PLUGINS_BYTE:.cmo=.cmxs)
+
+ODOC=odoc_stog.cmxs
+ODOC_BYTE=$(ODOC_STOG:.cmxs=.cmo)
 
 RM=rm -f
 CP=cp -f
@@ -117,10 +120,10 @@ GUI_MAIN_BYTE=$(GUI_MAIN).byte
 all: opt byte
 gui: guiopt guibyte
 
-opt: $(LIB) $(MAIN) plugins/plugin_example.cmxs $(PLUGINS_OPT) $(MK_STOG)
+opt: $(LIB) $(MAIN) plugins/plugin_example.cmxs $(PLUGINS_OPT) $(MK_STOG) $(ODOC)
 guiopt: $(GUI_MAIN)
 byte: $(LIB_BYTE) $(MAIN_BYTE) $(OCAML_SESSION) plugins/plugin_example.cmo $(PLUGINS_BYTE) \
-	$(MK_STOG_BYTE) $(MK_STOG_OCAML)
+	$(MK_STOG_BYTE) $(MK_STOG_OCAML) $(ODOC_BYTE)
 guibyte: $(GUI_MAIN_BYTE)
 
 $(MAIN): $(LIB) stog_main.cmx
@@ -208,6 +211,15 @@ doc:
 
 webdoc:
 	(cd doc && $(MAKE) DEST_DIR=`pwd`/../../stog-pages)
+
+docstog: $(ODOC_STOG)
+	$(MKDIR) doc/ref-doc
+	rm -fr doc/ref-doc/*html
+	OCAMLFIND_COMMANDS="ocamldoc=ocamldoc.opt" \
+	$(OCAMLDOC) -rectypes `$(OCAMLFIND) query -i-format $(PKGS) -r` -d doc/ref-doc \
+	-t "Stog library reference documentation" -short-functors \
+	-g odoc_depgraph.cmxs -g ./odoc_stog.cmxs -width 700 -height 700 -dot-options '-Nfontsize=40. -Earrowsize=3.0 -Ecolor="#444444" ' \
+	$(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli)
 
 ##########
 install: install-lib install-bin

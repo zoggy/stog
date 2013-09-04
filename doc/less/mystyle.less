@@ -560,3 +560,26 @@ div#elt-body {
   margin-right: 0 ;
   }
 }
+
+.ocamldoc-page {
+  font-size: smaller ;
+}
+
+
+.ocamldoc-page {
+  @import "ocamldoc.less";
+  code {
+    font-size: 10pt;
+    border-width: 0;
+    background-color: transparent ;
+    color: @fgcolor ;
+  }
+  .code { background-color: transparent ; }
+  pre {
+    border-width: 0;
+    background-color: transparent ;
+    white-space: pre-wrap;
+  }
+  a { color: @linkColor ; }
+
+}

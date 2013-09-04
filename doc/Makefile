@@ -51,8 +51,7 @@ style:
 	$(LESSC) less/slides.less > $(DEST_DIR)/slides.css
 
 ocamldoc:
-	rm -fr $(DEST_DIR)/ref-doc
-	(cd .. && $(MAKE) depocamldoc) && cp -fr ../ocamldoc $(DEST_DIR)/ref-doc
+	cp -r ref-doc $(DEST_DIR)/ref-doc
 
 #	cp -f *png tmpl/*png $(DEST_DIR)/
 #	cp -f *.svg $(DEST_DIR)/
