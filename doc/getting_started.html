@@ -17,6 +17,16 @@ from this starting point and generate the same hierarchy in the output directory
 Some of the files will be read as <i>elements</i>, i.e. xml files which will
 be processed through a templating engine to produce the final file.
 </p>
+<div class="alert alert-warning">
+<p>
+The element files being handled as XML documents, the boolean attributes,
+like in HTML5, are not allowed. So, when using Stog to generate HTML5 pages,
+instead of writing
+</p>
+<hxml>&lt;tag att1="..." att2="..." boolean-attribute att3="..." ...&gt;...</hxml>
+<p>you have to give a value to the boolean attribute, for example</p>
+<hxml>&lt;tag att1="..." att2="..." boolean-attribute="true" att3="..." ...&gt;...</hxml>
+</div>
 <p>
 The <icode>.stog</icode> directory in the given root directory contains the
 templates (in directory <icode>templates</icode>) and the
