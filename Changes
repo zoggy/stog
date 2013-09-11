@@ -1,4 +1,7 @@
 Next release:
+  * fix: for elements with doctype=html, prevent self-closing of tags, except
+    HTML5 void elements as listed on
+    http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements
   * add: ocamldoc generator (odoc_stog.cm{o,xs}) to embed ocamldoc-generated
     documentation into stog sites
   * add: <elt-*> predefined functions handle a elt-hid="hid of element"
