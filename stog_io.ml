@@ -30,13 +30,6 @@
 
 open Stog_types;;
 
-let void_tags =
-  List.fold_right Stog_types.Str_set.add
-    [ "area" ; "base" ; "br" ; "col" ; "embed" ; "hr" ; "img" ; "input" ;
-      "keygen" ; "link" ; "meta" ; "param" ; "source" ; "track" ; "wbr" ;
-    ]
-    Stog_types.Str_set.empty
-;;
 
 let first_that_exists =
   let rec iter = function
