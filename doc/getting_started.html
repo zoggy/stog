@@ -24,8 +24,14 @@ like in HTML5, are not allowed. So, when using Stog to generate HTML5 pages,
 instead of writing
 </p>
 <hxml>&lt;tag att1="..." att2="..." boolean-attribute att3="..." ...&gt;...</hxml>
-<p>you have to give a value to the boolean attribute, for example</p>
-<hxml>&lt;tag att1="..." att2="..." boolean-attribute="true" att3="..." ...&gt;...</hxml>
+<p>you have to give a
+<ext-a href="http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#boolean-attributes">value
+to the boolean attribute</ext-a>, for example</p>
+<hxml>&lt;tag att1="..." att2="..." boolean-att="boolean-att" att3="..." ...&gt;...</hxml>
+<p>
+or simply
+</p>
+<hxml>&lt;tag att1="..." att2="..." boolean-att="" att3="..." ...&gt;...</hxml>
 </div>
 <p>
 The <icode>.stog</icode> directory in the given root directory contains the
