@@ -83,8 +83,8 @@ let get_def =
       Not_found -> None
 ;;
 
-module Str_map = Map.Make (struct type t = string let compare = compare end);;
-module Str_set = Set.Make (struct type t = string let compare = compare end);;
+module Str_map = Map.Make (struct type t = string let compare = String.compare end);;
+module Str_set = Set.Make (struct type t = string let compare = String.compare end);;
 
 type elt =
   { elt_human_id : human_id ;

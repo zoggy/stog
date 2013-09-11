@@ -49,7 +49,7 @@ let verbose_level () = !verbose_level ;;
 let warnings = ref 0;;
 let print_warning = ref prerr_endline;;
 
-module Sset = Set.Make (struct type t = string let compare = Pervasives.compare end);;
+module Sset = Set.Make (struct type t = string let compare = String.compare end);;
 let seen_warnings = ref Sset.empty;;
 let warning ?info msg =
   let msg = Printf.sprintf "Warning: %s%s"

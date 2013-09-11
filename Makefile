@@ -81,6 +81,7 @@ LIB_CMXFILES= \
 	stog_filter_parser.cmx \
 	stog_filter_lexer.cmx \
 	stog_filter.cmx \
+	stog_html5.cmx \
 	stog_html.cmx \
 	stog_plug.cmx \
 	stog_dyn.cmx \

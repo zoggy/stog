@@ -1600,23 +1600,6 @@ let make_archive_index stog env =
 ;;
 
 
-(*
-let output_elt_cache stog elt =
-  let cache_file = Filename.concat stog.stog_cache_dir elt.elt_src in
-  let hid = Stog_types.string_of_human_id elt.elt_human_id in
-  let cache_dir = Filename.dirname cache_file in
-  Stog_misc.safe_mkdir cache_dir ;
-  let t = {
-      cache_elt = elt ;
-      cache_blocks = try Smap.find hid !blocks with Not_found -> Smap.empty ;
-    }
-  in
-  let oc = open_out_bin cache_file in
-  output_value oc t;
-  close_out oc
-;;
-*)
-
 let output_elt stog env elt =
   let file = elt_dst_file stog elt in
   Stog_misc.safe_mkdir (Filename.dirname file);
@@ -1631,6 +1614,11 @@ let output_elt stog env elt =
         | Some s -> s
       in
       Printf.fprintf oc "<!DOCTYPE %s>\n" doctype;
+      let xmls =
+        match String.lowercase doctype with
+          "html" -> List.map Stog_html5.hack_self_closed xmls
+        | _ -> xmls
+      in
       List.iter (fun xml -> output_string oc (Xtmpl.string_of_xml xml)) xmls;
       close_out oc;
       Stog_cache.set_elt_env elt stog env;

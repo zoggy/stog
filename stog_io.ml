@@ -30,6 +30,14 @@
 
 open Stog_types;;
 
+let void_tags =
+  List.fold_right Stog_types.Str_set.add
+    [ "area" ; "base" ; "br" ; "col" ; "embed" ; "hr" ; "img" ; "input" ;
+      "keygen" ; "link" ; "meta" ; "param" ; "source" ; "track" ; "wbr" ;
+    ]
+    Stog_types.Str_set.empty
+;;
+
 let first_that_exists =
   let rec iter = function
     [] -> None
@@ -130,7 +138,7 @@ let extract_stog_info_from_elt stog elt =
       let (stog, opt) =
         match h with
         | (("stog", "site-description"), _, xmls) -> { stog with stog_desc = xmls }, None
-        | (("stog", "site-url"), _, xmls) -> 
+        | (("stog", "site-url"), _, xmls) ->
             { stog with stog_base_url = Stog_types.url_of_string (Xtmpl.string_of_xmls xmls) }, None
         | (("stog", "site-email)"), _, xmls) -> { stog with stog_email = Xtmpl.string_of_xmls xmls }, None
         | (("stog", "rss-length"), _,xmls) ->
