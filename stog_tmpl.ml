@@ -120,4 +120,4 @@ let elt_in_list _ = parse
 ;;
 
 let keyword _ = parse "<span itemprop=\"keywords\"><keyword/></span>";;
-let topic = keyword;;
+let topic _ = parse "<span itemprop=\"keywords\"><topic/></span>";;
