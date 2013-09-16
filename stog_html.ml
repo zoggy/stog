@@ -1167,7 +1167,7 @@ let intro_of_elt stog elt =
 ;;
 
 let html_of_topics stog elt env args _ =
-  let sep = Xtmpl.xml_of_string (Xtmpl.opt_arg args ~def: ", " ("", "set")) in
+  let sep = Xtmpl.xml_of_string (Xtmpl.opt_arg args ~def: ", " ("", "sep")) in
   let tmpl = Stog_tmpl.get_template stog ~elt Stog_tmpl.topic "topic.tmpl" in
   let f w =
     let env = Xtmpl.env_of_list ~env [ ("", Stog_tags.topic), (fun _ _ _ -> [Xtmpl.D w]) ] in
@@ -1182,7 +1182,7 @@ let html_of_topics stog elt env args _ =
 ;;
 
 let html_of_keywords stog elt env args _ =
-  let sep = Xtmpl.xml_of_string (Xtmpl.opt_arg args ~def: ", " ("", "set")) in
+  let sep = Xtmpl.xml_of_string (Xtmpl.opt_arg args ~def: ", " ("", "sep")) in
   let tmpl = Stog_tmpl.get_template stog ~elt Stog_tmpl.keyword "keyword.tmpl" in
   let f w =
     let env = Xtmpl.env_of_list ~env [ ("", Stog_tags.keyword), (fun _ _ _ -> [Xtmpl.D w]) ] in
