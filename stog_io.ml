@@ -304,11 +304,13 @@ let read_files cfg stog dir =
   let rec iter stog dir =
     let entries =
       Stog_find.find_list
-      (Stog_find.Custom on_error)
-      [dir]
-      [ Stog_find.Maxdepth 1 ;
-        Stog_find.Predicate pred_ign ;
-      ]
+        (Stog_find.Custom on_error)
+        [dir]
+        ([ Stog_find.Maxdepth 1 ;
+           Stog_find.Predicate pred_ign ;
+         ] @
+         (if cfg.Stog_config.follow_symlinks then [Stog_find.Follow] else [])
+        )
     in
     let entries = List.filter ((<>) dir) entries in
     let (dirs, files) = List.partition is_dir entries in

@@ -36,6 +36,7 @@ type t = {
   ignored : string list;
   elements : string list;
   not_elements : string list;
+  follow_symlinks : bool ;
 }
 
 (** [config_dir dir] returns the stog configuration directory in the given directory. *)

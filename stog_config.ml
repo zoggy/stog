@@ -35,6 +35,7 @@ type t =
     elements : string list ; (** list of regexps for element files *)
     not_elements : string list ;
     (** list of regexps for file matching elements rules but not being  elements *)
+    follow_symlinks : bool ;
   }
 ;;
 
@@ -59,6 +60,9 @@ let read_config dir =
     ["not-elements"] [ ]
     "Regexps of files matching 'elements' regexps but not containing elements"
   in
+  let follow_symlinks = new CF.bool_cp ~group ["follow-symlinks"] false
+    "follow symlinks when bulding source file and directory tree"
+  in
   let cfg_dir = config_dir dir in
   if not (Sys.file_exists cfg_dir) then
     begin
@@ -70,6 +74,7 @@ let read_config dir =
   { ignored = o_ignored#get ;
     elements = o_elts#get ;
     not_elements = o_not_elts#get ;
+    follow_symlinks = follow_symlinks#get ;
   }
 ;;
 

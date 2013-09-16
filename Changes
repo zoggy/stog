@@ -1,4 +1,6 @@
 Next release:
+  * add: option follow-symlinks in .stog/config to follow symlinks or not when
+    building the file and directory source tree
   * fix: for elements with doctype=html, prevent self-closing of tags, except
     HTML5 void elements as listed on
     http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements
