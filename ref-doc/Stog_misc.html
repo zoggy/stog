@@ -1,9 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<ocamldoc with-contents="true">
-<title>Stog library reference documentation : Stog_misc</title><contents><div class="ocamldoc-page">
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Stog_misc</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_msg.html" title="Stog_msg">Previous</a>
-&#160;<a class="up" href="index.html" title="Index">Up</a>
-&#160;<a class="post" href="Stog_config.html" title="Stog_config">Next</a>
+ <a class="up" href="index.html" title="Index">Up</a>
+ <a class="post" href="Stog_config.html" title="Stog_config">Next</a>
 </div>
 <h1>Module <a href="type_Stog_misc.html">Stog_misc</a></h1>
 <pre><span class="keyword">module</span> Stog_misc: <code class="code">sig</code> <a href="Stog_misc.html">..</a> <code class="code">end</code></pre><div class="info">
@@ -90,7 +126,7 @@ Separate the given string according to the given list of characters.<br/>
 </div>
 <pre><span id="VALmd5"><span class="keyword">val</span> md5</span> : <code class="type">string -&gt; string</code></pre><pre><span id="VALcount_char"><span class="keyword">val</span> count_char</span> : <code class="type">string -&gt; char -&gt; int</code></pre><pre><span id="VALencode_string"><span class="keyword">val</span> encode_string</span> : <code class="type">string -&gt; string</code></pre><pre><span id="VALmap_opt"><span class="keyword">val</span> map_opt</span> : <code class="type">('a -&gt; 'b) -&gt; 'a option -&gt; 'b option</code></pre><pre><span id="VALlist_concat"><span class="keyword">val</span> list_concat</span> : <code class="type">?sep:'a -&gt; 'a list -&gt; 'a list</code></pre><pre><span id="VALdot_to_svg"><span class="keyword">val</span> dot_to_svg</span> : <code class="type">string -&gt; string</code></pre><pre><span id="VALlist_compare"><span class="keyword">val</span> list_compare</span> : <code class="type">('a -&gt; 'a -&gt; int) -&gt; 'a list -&gt; 'a list -&gt; int</code></pre><pre><span id="VALfilename_extension"><span class="keyword">val</span> filename_extension</span> : <code class="type">string -&gt; string</code></pre><div class="info">
 <code class="code">filename_extension filename</code> returns extension of <code class="code">filename</code>
-  or <code class="code">""</code> if there is no extension.<br/>
+  or <code class="code">&quot;&quot;</code> if there is no extension.<br/>
 </div>
 <pre><span id="VALsafe_mkdir"><span class="keyword">val</span> safe_mkdir</span> : <code class="type">string -&gt; unit</code></pre><pre><span id="VALopt_of_string"><span class="keyword">val</span> opt_of_string</span> : <code class="type">string -&gt; string option</code></pre><div class="info">
 <code class="code">opt_of_string s</code> returns <code class="code">None</code> if the string if empty
@@ -114,4 +150,13 @@ Return mdification time of the given file, or None if
 Call the highlight command on the given string and make it produce xhtml code.
   Options are passed to the highlight command.<br/>
 </div>
-<pre><span id="VALstring_of_time"><span class="keyword">val</span> string_of_time</span> : <code class="type">float -&gt; string</code></pre></div></contents></ocamldoc>
+<pre><span id="VALstring_of_time"><span class="keyword">val</span> string_of_time</span> : <code class="type">float -&gt; string</code></pre></div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>

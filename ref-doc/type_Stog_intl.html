@@ -1,21 +1,68 @@
-<ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_intl</title><contents><div class="ocamldoc-page">
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Stog_intl</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
 <code class="code"><span class="keyword">sig</span><br/>
-&#160;&#160;<span class="keyword">type</span>&#160;lang_abbrev&#160;=&#160;string<br/>
-&#160;&#160;<span class="keyword">type</span>&#160;lang_data&#160;=&#160;{<br/>
-&#160;&#160;&#160;&#160;days&#160;:&#160;string&#160;array;<br/>
-&#160;&#160;&#160;&#160;months&#160;:&#160;string&#160;array;<br/>
-&#160;&#160;&#160;&#160;string_of_date&#160;:&#160;<span class="constructor">Stog_types</span>.date&#160;<span class="keywordsign">-&gt;</span>&#160;string;<br/>
-&#160;&#160;}<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;tm_of_date&#160;:&#160;<span class="constructor">Stog_types</span>.date&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Unix</span>.tm<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;french&#160;:&#160;<span class="constructor">Stog_intl</span>.lang_data<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;english&#160;:&#160;<span class="constructor">Stog_intl</span>.lang_data<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;register_lang&#160;:&#160;<span class="constructor">Stog_intl</span>.lang_abbrev&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_intl</span>.lang_data&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;set_default_lang&#160;:&#160;<span class="constructor">Stog_intl</span>.lang_abbrev&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;data_of_lang&#160;:&#160;<span class="constructor">Stog_intl</span>.lang_abbrev&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_intl</span>.lang_data<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;get_month&#160;:&#160;<span class="constructor">Stog_intl</span>.lang_abbrev&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;int&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;string_of_date&#160;:<br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_intl</span>.lang_abbrev&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.date&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;string_of_date_opt&#160;:<br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_intl</span>.lang_abbrev&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.date&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;short_string_of_date&#160;:&#160;<span class="constructor">Stog_types</span>.date&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-<span class="keyword">end</span></code></div></contents></ocamldoc>
+  <span class="keyword">type</span> lang_abbrev = string<br/>
+  <span class="keyword">type</span> lang_data = {<br/>
+    days : string array;<br/>
+    months : string array;<br/>
+    string_of_date : <span class="constructor">Stog_types</span>.date <span class="keywordsign">-&gt;</span> string;<br/>
+  }<br/>
+  <span class="keyword">val</span> tm_of_date : <span class="constructor">Stog_types</span>.date <span class="keywordsign">-&gt;</span> <span class="constructor">Unix</span>.tm<br/>
+  <span class="keyword">val</span> french : <span class="constructor">Stog_intl</span>.lang_data<br/>
+  <span class="keyword">val</span> english : <span class="constructor">Stog_intl</span>.lang_data<br/>
+  <span class="keyword">val</span> register_lang : <span class="constructor">Stog_intl</span>.lang_abbrev <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_intl</span>.lang_data <span class="keywordsign">-&gt;</span> unit<br/>
+  <span class="keyword">val</span> set_default_lang : <span class="constructor">Stog_intl</span>.lang_abbrev <span class="keywordsign">-&gt;</span> unit<br/>
+  <span class="keyword">val</span> data_of_lang : <span class="constructor">Stog_intl</span>.lang_abbrev option <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_intl</span>.lang_data<br/>
+  <span class="keyword">val</span> get_month : <span class="constructor">Stog_intl</span>.lang_abbrev option <span class="keywordsign">-&gt;</span> int <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> string_of_date :<br/>
+    <span class="constructor">Stog_intl</span>.lang_abbrev option <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.date <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> string_of_date_opt :<br/>
+    <span class="constructor">Stog_intl</span>.lang_abbrev option <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.date option <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> short_string_of_date : <span class="constructor">Stog_types</span>.date <span class="keywordsign">-&gt;</span> string<br/>
+<span class="keyword">end</span></code></div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>

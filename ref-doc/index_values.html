@@ -1,7 +1,44 @@
-<ocamldoc with-contents="true">
-<title>Stog library reference documentation : Index of values</title><contents><div class="ocamldoc-page">
-<div class="navbar">&#160;<a class="up" href="index.html" title="Index">Up</a>
-&#160;</div>
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Index of values</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
+<div class="navbar"> <a class="up" href="index.html" title="Index">Up</a>
+ </div>
 <h1>Index of values</h1>
 <table>
 <tr><td align="left"><br/></td></tr>
@@ -56,7 +93,7 @@ For a given element, add a dependency on a file or another element.
 <td></td></tr>
 <tr><td><a href="Stog_io.html#VALbool_of_string">bool_of_string</a> [<a href="Stog_io.html">Stog_io</a>]</td>
 <td><div class="info">
-<code class="code">bool_of_string "0" = false</code> and <code class="code">bool_of_string "false" = false</code>.
+<code class="code">bool_of_string &quot;0&quot; = false</code> and <code class="code">bool_of_string &quot;false&quot; = false</code>.
 </div>
 </td></tr>
 <tr><td><a href="Stog_html.html#VALbuild_base_rules">build_base_rules</a> [<a href="Stog_html.html">Stog_html</a>]</td>
@@ -103,7 +140,7 @@ Compute internals graphs between elements.
 <tr><td><a href="Stog_config.html#VALconfig_file">config_file</a> [<a href="Stog_config.html">Stog_config</a>]</td>
 <td><div class="info">
 <code class="code">config_file dir</code> returns the stog <code class="code">config</code> file for a given project directory,
-     that is <code class="code">Filename.concat (config_dir dir) "config"</code>.
+     that is <code class="code">Filename.concat (config_dir dir) &quot;config&quot;</code>.
 </div>
 </td></tr>
 <tr><td><a href="Stog_misc.html#VALcount_char">count_char</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
@@ -270,7 +307,7 @@ Return mdification time of the given file, or None if
 <tr><td><a href="Stog_misc.html#VALfilename_extension">filename_extension</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td><div class="info">
 <code class="code">filename_extension filename</code> returns extension of <code class="code">filename</code>
-  or <code class="code">""</code> if there is no extension.
+  or <code class="code">&quot;&quot;</code> if there is no extension.
 </div>
 </td></tr>
 <tr><td><a href="Stog_filter_parser.html#VALfilter">filter</a> [<a href="Stog_filter_parser.html">Stog_filter_parser</a>]</td>
@@ -342,7 +379,7 @@ Generate a RSS file from the given list of elements.
 <td></td></tr>
 <tr><td><a href="Stog_html.html#VALget_hid">get_hid</a> [<a href="Stog_html.html">Stog_html</a>]</td>
 <td><div class="info">
-<code class="code">get_hid env</code> returns the value associated to <code class="code">"hid"</code> in <code class="code">env</code>.
+<code class="code">get_hid env</code> returns the value associated to <code class="code">&quot;hid&quot;</code> in <code class="code">env</code>.
 </div>
 </td></tr>
 <tr><td><a href="Stog_html.html#VALget_in_args_or_env">get_in_args_or_env</a> [<a href="Stog_html.html">Stog_html</a>]</td>
@@ -644,7 +681,7 @@ Same as <a href="Stog_graph.S.html#VALrecursive_succs"><code class="code">Stog_g
 </td></tr>
 <tr><td><a href="Stog_graph.S.html#VALrecursive_succs">recursive_succs</a> [<a href="Stog_graph.S.html">Stog_graph.S</a>]</td>
 <td><div class="info">
-<code class="code">recursive_succs t key</code> returns the list of all nodes "under" the given
+<code class="code">recursive_succs t key</code> returns the list of all nodes &quot;under&quot; the given
         one; the given predicate can be used to follow only some edges.
 </div>
 </td></tr>
@@ -722,7 +759,7 @@ Remove from the stog structure the elements having
 <td></td></tr>
 <tr><td><a href="Stog_intl.html#VALset_default_lang">set_default_lang</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
 <td><div class="info">
-Use the given language abbreviation (such as "fr") to set the default
+Use the given language abbreviation (such as &quot;fr&quot;) to set the default
      language.
 </div>
 </td></tr>
@@ -921,5 +958,13 @@ Version of stog.
 <tr><td><a href="Stog_ocaml_types.html#VALwrite_result">write_result</a> [<a href="Stog_ocaml_types.html">Stog_ocaml_types</a>]</td>
 <td></td></tr>
 </table>
-</div></contents>
-</ocamldoc>
+</div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>

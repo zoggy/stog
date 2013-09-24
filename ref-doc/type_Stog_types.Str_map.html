@@ -1,30 +1,77 @@
-<ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_types.Str_map</title><contents><div class="ocamldoc-page">
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Stog_types.Str_map</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
 <code class="code"><span class="keyword">sig</span><br/>
-&#160;&#160;<span class="keyword">type</span>&#160;key&#160;=&#160;string<br/>
-&#160;&#160;<span class="keyword">type</span>&#160;+<span class="keywordsign">'</span>a&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;empty&#160;:&#160;<span class="keywordsign">'</span>a&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;is_empty&#160;:&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;bool<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;mem&#160;:&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;bool<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;add&#160;:&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;singleton&#160;:&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;remove&#160;:&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;merge&#160;:<br/>
-&#160;&#160;&#160;&#160;(key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>c&#160;option)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>c&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;compare&#160;:&#160;(<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;int)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;equal&#160;:&#160;(<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;bool)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;bool<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;iter&#160;:&#160;(key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;fold&#160;:&#160;(key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;for_all&#160;:&#160;(key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;bool)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;bool<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;exists&#160;:&#160;(key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;bool)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;bool<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;filter&#160;:&#160;(key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;bool)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;partition&#160;:&#160;(key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;bool)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;*&#160;<span class="keywordsign">'</span>a&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;cardinal&#160;:&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;bindings&#160;:&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;(key&#160;*&#160;<span class="keywordsign">'</span>a)&#160;list<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;min_binding&#160;:&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;key&#160;*&#160;<span class="keywordsign">'</span>a<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;max_binding&#160;:&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;key&#160;*&#160;<span class="keywordsign">'</span>a<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;choose&#160;:&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;key&#160;*&#160;<span class="keywordsign">'</span>a<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;split&#160;:&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;*&#160;<span class="keywordsign">'</span>a&#160;option&#160;*&#160;<span class="keywordsign">'</span>a&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;find&#160;:&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;map&#160;:&#160;(<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;mapi&#160;:&#160;(key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;t<br/>
-<span class="keyword">end</span></code></div></contents></ocamldoc>
+  <span class="keyword">type</span> key = string<br/>
+  <span class="keyword">type</span> +<span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> empty : <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> is_empty : <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> bool<br/>
+  <span class="keyword">val</span> mem : key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> bool<br/>
+  <span class="keyword">val</span> add : key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> singleton : key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> remove : key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> merge :<br/>
+    (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a option <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b option <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>c option) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>c t<br/>
+  <span class="keyword">val</span> compare : (<span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> int) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> int<br/>
+  <span class="keyword">val</span> equal : (<span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> bool<br/>
+  <span class="keyword">val</span> iter : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> unit<br/>
+  <span class="keyword">val</span> fold : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b<br/>
+  <span class="keyword">val</span> for_all : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> bool<br/>
+  <span class="keyword">val</span> exists : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> bool<br/>
+  <span class="keyword">val</span> filter : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> partition : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t * <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> cardinal : <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> int<br/>
+  <span class="keyword">val</span> bindings : <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> (key * <span class="keywordsign">'</span>a) list<br/>
+  <span class="keyword">val</span> min_binding : <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> key * <span class="keywordsign">'</span>a<br/>
+  <span class="keyword">val</span> max_binding : <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> key * <span class="keywordsign">'</span>a<br/>
+  <span class="keyword">val</span> choose : <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> key * <span class="keywordsign">'</span>a<br/>
+  <span class="keyword">val</span> split : key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t * <span class="keywordsign">'</span>a option * <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> find : key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
+  <span class="keyword">val</span> map : (<span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b t<br/>
+  <span class="keyword">val</span> mapi : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b t<br/>
+<span class="keyword">end</span></code></div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>

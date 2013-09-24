@@ -1,9 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<ocamldoc with-contents="true">
-<title>Stog library reference documentation : Stog_types.Graph</title><contents><div class="ocamldoc-page">
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Stog_types.Graph</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_types.Int_map.html" title="Stog_types.Int_map">Previous</a>
-&#160;<a class="up" href="Stog_types.html" title="Stog_types">Up</a>
-&#160;</div>
+ <a class="up" href="Stog_types.html" title="Stog_types">Up</a>
+ </div>
 <h1>Module <a href="type_Stog_types.Graph.html">Stog_types.Graph</a></h1>
 <pre><span class="keyword">module</span> Graph: <code class="type"><a href="Stog_graph.S.html">Stog_graph.S</a></code><code class="type">  with type key = elt_id and type edge_data = edge_type</code></pre><hr width="100%"/>
 <pre><span id="TYPEkey"><span class="keyword">type</span> key</span> </pre>
@@ -65,7 +101,7 @@ Same as <a href="Stog_graph.S.html#VALsucc"><code class="code">Stog_graph.S.succ
 Same as <a href="Stog_graph.S.html#VALpred_roots"><code class="code">Stog_graph.S.pred_roots</code></a> but for vertices with no successor.<br/>
 </div>
 <pre><span id="VALrecursive_succs"><span class="keyword">val</span> recursive_succs</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>       ?pred:(<a href="Stog_graph.S.html#TYPEedge_data">edge_data</a> -&gt; bool) -&gt;<br/>       <a href="Stog_graph.S.html#TYPEkey">key</a> -&gt; <a href="Stog_graph.S.html#TYPEkey">key</a> list</code></pre><div class="info">
-<code class="code">recursive_succs t key</code> returns the list of all nodes "under" the given
+<code class="code">recursive_succs t key</code> returns the list of all nodes &quot;under&quot; the given
         one; the given predicate can be used to follow only some edges.<br/>
 </div>
 <pre><span id="VALrecursive_preds"><span class="keyword">val</span> recursive_preds</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>       ?pred:(<a href="Stog_graph.S.html#TYPEedge_data">edge_data</a> -&gt; bool) -&gt;<br/>       <a href="Stog_graph.S.html#TYPEkey">key</a> -&gt; <a href="Stog_graph.S.html#TYPEkey">key</a> list</code></pre><div class="info">
@@ -109,4 +145,13 @@ Same as <a href="Stog_graph.S.html#VALiter_succ"><code class="code">Stog_graph.S
          The algorithm used is described here:
            <a href="http://tide4javascript.com/?s=Dijkstra">Djikstra</a>.<br/>
 </div>
-</div></contents></ocamldoc>
+</div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>

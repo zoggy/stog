@@ -1,37 +1,73 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<ocamldoc with-contents="true">
-<title>Stog library reference documentation : Stog_filter_lexer.L</title><contents><div class="ocamldoc-page">
-<div class="navbar">&#160;<a class="up" href="Stog_filter_lexer.html" title="Stog_filter_lexer">Up</a>
-&#160;</div>
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Stog_filter_lexer.L</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
+<div class="navbar"> <a class="up" href="Stog_filter_lexer.html" title="Stog_filter_lexer">Up</a>
+ </div>
 <h1>Module <a href="type_Stog_filter_lexer.L.html">Stog_filter_lexer.L</a></h1>
 <pre><span class="keyword">module</span> L: <code class="code">sig</code> <a href="Stog_filter_lexer.L.html">..</a> <code class="code">end</code></pre><hr width="100%"/>
 <pre><span id="TYPEposition"><span class="keyword">type</span> position</span> = <code class="type">Lexing.position</code> = {</pre><table class="typetable">
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTposition.pos_fname">pos_fname</span>&#160;:<code class="type">string</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTposition.pos_fname">pos_fname</span> :<code class="type">string</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTposition.pos_lnum">pos_lnum</span>&#160;:<code class="type">int</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTposition.pos_lnum">pos_lnum</span> :<code class="type">int</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTposition.pos_bol">pos_bol</span>&#160;:<code class="type">int</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTposition.pos_bol">pos_bol</span> :<code class="type">int</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTposition.pos_cnum">pos_cnum</span>&#160;:<code class="type">int</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTposition.pos_cnum">pos_cnum</span> :<code class="type">int</code>;</code></td>
 
 </tr></table>
 }
@@ -39,87 +75,87 @@
 
 <pre><span id="VALdummy_pos"><span class="keyword">val</span> dummy_pos</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPEposition">position</a></code></pre><pre><span id="TYPElexbuf"><span class="keyword">type</span> lexbuf</span> = <code class="type">Lexing.lexbuf</code> = {</pre><table class="typetable">
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTlexbuf.refill_buff">refill_buff</span>&#160;:<code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; unit</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlexbuf.refill_buff">refill_buff</span> :<code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; unit</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span class="keyword">mutable&#160;</span><span id="TYPEELTlexbuf.lex_buffer">lex_buffer</span>&#160;:<code class="type">string</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span class="keyword">mutable </span><span id="TYPEELTlexbuf.lex_buffer">lex_buffer</span> :<code class="type">string</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span class="keyword">mutable&#160;</span><span id="TYPEELTlexbuf.lex_buffer_len">lex_buffer_len</span>&#160;:<code class="type">int</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span class="keyword">mutable </span><span id="TYPEELTlexbuf.lex_buffer_len">lex_buffer_len</span> :<code class="type">int</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span class="keyword">mutable&#160;</span><span id="TYPEELTlexbuf.lex_abs_pos">lex_abs_pos</span>&#160;:<code class="type">int</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span class="keyword">mutable </span><span id="TYPEELTlexbuf.lex_abs_pos">lex_abs_pos</span> :<code class="type">int</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span class="keyword">mutable&#160;</span><span id="TYPEELTlexbuf.lex_start_pos">lex_start_pos</span>&#160;:<code class="type">int</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span class="keyword">mutable </span><span id="TYPEELTlexbuf.lex_start_pos">lex_start_pos</span> :<code class="type">int</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span class="keyword">mutable&#160;</span><span id="TYPEELTlexbuf.lex_curr_pos">lex_curr_pos</span>&#160;:<code class="type">int</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span class="keyword">mutable </span><span id="TYPEELTlexbuf.lex_curr_pos">lex_curr_pos</span> :<code class="type">int</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span class="keyword">mutable&#160;</span><span id="TYPEELTlexbuf.lex_last_pos">lex_last_pos</span>&#160;:<code class="type">int</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span class="keyword">mutable </span><span id="TYPEELTlexbuf.lex_last_pos">lex_last_pos</span> :<code class="type">int</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span class="keyword">mutable&#160;</span><span id="TYPEELTlexbuf.lex_last_action">lex_last_action</span>&#160;:<code class="type">int</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span class="keyword">mutable </span><span id="TYPEELTlexbuf.lex_last_action">lex_last_action</span> :<code class="type">int</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span class="keyword">mutable&#160;</span><span id="TYPEELTlexbuf.lex_eof_reached">lex_eof_reached</span>&#160;:<code class="type">bool</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span class="keyword">mutable </span><span id="TYPEELTlexbuf.lex_eof_reached">lex_eof_reached</span> :<code class="type">bool</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span class="keyword">mutable&#160;</span><span id="TYPEELTlexbuf.lex_mem">lex_mem</span>&#160;:<code class="type">int array</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span class="keyword">mutable </span><span id="TYPEELTlexbuf.lex_mem">lex_mem</span> :<code class="type">int array</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span class="keyword">mutable&#160;</span><span id="TYPEELTlexbuf.lex_start_p">lex_start_p</span>&#160;:<code class="type"><a href="Stog_filter_lexer.L.html#TYPEposition">position</a></code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span class="keyword">mutable </span><span id="TYPEELTlexbuf.lex_start_p">lex_start_p</span> :<code class="type"><a href="Stog_filter_lexer.L.html#TYPEposition">position</a></code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span class="keyword">mutable&#160;</span><span id="TYPEELTlexbuf.lex_curr_p">lex_curr_p</span>&#160;:<code class="type"><a href="Stog_filter_lexer.L.html#TYPEposition">position</a></code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span class="keyword">mutable </span><span id="TYPEELTlexbuf.lex_curr_p">lex_curr_p</span> :<code class="type"><a href="Stog_filter_lexer.L.html#TYPEposition">position</a></code>;</code></td>
 
 </tr></table>
 }
@@ -127,83 +163,92 @@
 
 <pre><span id="VALfrom_channel"><span class="keyword">val</span> from_channel</span> : <code class="type">Pervasives.in_channel -&gt; <a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a></code></pre><pre><span id="VALfrom_string"><span class="keyword">val</span> from_string</span> : <code class="type">string -&gt; <a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a></code></pre><pre><span id="VALfrom_function"><span class="keyword">val</span> from_function</span> : <code class="type">(string -&gt; int -&gt; int) -&gt; <a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a></code></pre><pre><span id="VALlexeme"><span class="keyword">val</span> lexeme</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; string</code></pre><pre><span id="VALlexeme_char"><span class="keyword">val</span> lexeme_char</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; int -&gt; char</code></pre><pre><span id="VALlexeme_start"><span class="keyword">val</span> lexeme_start</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; int</code></pre><pre><span id="VALlexeme_end"><span class="keyword">val</span> lexeme_end</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; int</code></pre><pre><span id="VALlexeme_start_p"><span class="keyword">val</span> lexeme_start_p</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; <a href="Stog_filter_lexer.L.html#TYPEposition">position</a></code></pre><pre><span id="VALlexeme_end_p"><span class="keyword">val</span> lexeme_end_p</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; <a href="Stog_filter_lexer.L.html#TYPEposition">position</a></code></pre><pre><span id="VALnew_line"><span class="keyword">val</span> new_line</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; unit</code></pre><pre><span id="VALflush_input"><span class="keyword">val</span> flush_input</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; unit</code></pre><pre><span id="VALsub_lexeme"><span class="keyword">val</span> sub_lexeme</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; int -&gt; int -&gt; string</code></pre><pre><span id="VALsub_lexeme_opt"><span class="keyword">val</span> sub_lexeme_opt</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; int -&gt; int -&gt; string option</code></pre><pre><span id="VALsub_lexeme_char"><span class="keyword">val</span> sub_lexeme_char</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; int -&gt; char</code></pre><pre><span id="VALsub_lexeme_char_opt"><span class="keyword">val</span> sub_lexeme_char_opt</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; int -&gt; char option</code></pre><pre><span id="TYPElex_tables"><span class="keyword">type</span> lex_tables</span> = <code class="type">Lexing.lex_tables</code> = {</pre><table class="typetable">
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTlex_tables.lex_base">lex_base</span>&#160;:<code class="type">string</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlex_tables.lex_base">lex_base</span> :<code class="type">string</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTlex_tables.lex_backtrk">lex_backtrk</span>&#160;:<code class="type">string</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlex_tables.lex_backtrk">lex_backtrk</span> :<code class="type">string</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTlex_tables.lex_default">lex_default</span>&#160;:<code class="type">string</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlex_tables.lex_default">lex_default</span> :<code class="type">string</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTlex_tables.lex_trans">lex_trans</span>&#160;:<code class="type">string</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlex_tables.lex_trans">lex_trans</span> :<code class="type">string</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTlex_tables.lex_check">lex_check</span>&#160;:<code class="type">string</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlex_tables.lex_check">lex_check</span> :<code class="type">string</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTlex_tables.lex_base_code">lex_base_code</span>&#160;:<code class="type">string</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlex_tables.lex_base_code">lex_base_code</span> :<code class="type">string</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTlex_tables.lex_backtrk_code">lex_backtrk_code</span>&#160;:<code class="type">string</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlex_tables.lex_backtrk_code">lex_backtrk_code</span> :<code class="type">string</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTlex_tables.lex_default_code">lex_default_code</span>&#160;:<code class="type">string</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlex_tables.lex_default_code">lex_default_code</span> :<code class="type">string</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTlex_tables.lex_trans_code">lex_trans_code</span>&#160;:<code class="type">string</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlex_tables.lex_trans_code">lex_trans_code</span> :<code class="type">string</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTlex_tables.lex_check_code">lex_check_code</span>&#160;:<code class="type">string</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlex_tables.lex_check_code">lex_check_code</span> :<code class="type">string</code>;</code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTlex_tables.lex_code">lex_code</span>&#160;:<code class="type">string</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlex_tables.lex_code">lex_code</span> :<code class="type">string</code>;</code></td>
 
 </tr></table>
 }
 
 
-<pre><span id="VALengine"><span class="keyword">val</span> engine</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElex_tables">lex_tables</a> -&gt; int -&gt; <a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; int</code></pre><pre><span id="VALnew_engine"><span class="keyword">val</span> new_engine</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElex_tables">lex_tables</a> -&gt; int -&gt; <a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; int</code></pre></div></contents></ocamldoc>
+<pre><span id="VALengine"><span class="keyword">val</span> engine</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElex_tables">lex_tables</a> -&gt; int -&gt; <a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; int</code></pre><pre><span id="VALnew_engine"><span class="keyword">val</span> new_engine</span> : <code class="type"><a href="Stog_filter_lexer.L.html#TYPElex_tables">lex_tables</a> -&gt; int -&gt; <a href="Stog_filter_lexer.L.html#TYPElexbuf">lexbuf</a> -&gt; int</code></pre></div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>

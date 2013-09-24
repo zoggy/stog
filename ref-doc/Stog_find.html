@@ -1,9 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<ocamldoc with-contents="true">
-<title>Stog library reference documentation : Stog_find</title><contents><div class="ocamldoc-page">
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Stog_find</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_intl.html" title="Stog_intl">Previous</a>
-&#160;<a class="up" href="index.html" title="Index">Up</a>
-&#160;<a class="post" href="Stog_tags.html" title="Stog_tags">Next</a>
+ <a class="up" href="index.html" title="Index">Up</a>
+ <a class="post" href="Stog_tags.html" title="Stog_tags">Next</a>
 </div>
 <h1>Module <a href="type_Stog_find.html">Stog_find</a></h1>
 <pre><span class="keyword">module</span> Stog_find: <code class="code">sig</code> <a href="Stog_find.html">..</a> <code class="code">end</code></pre><div class="info">
@@ -14,44 +50,44 @@ Finding files.<br/>
 <hr width="100%"/>
 <pre><code><span id="TYPEfilter"><span class="keyword">type</span> filter</span> = </code></pre><table class="typetable">
 <tr>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span id="TYPEELTfilter.Maxdepth"><span class="constructor">Maxdepth</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span id="TYPEELTfilter.Type"><span class="constructor">Type</span></span> <span class="keyword">of</span> <code class="type">Unix.file_kind</code></code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span id="TYPEELTfilter.Follow"><span class="constructor">Follow</span></span></code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span id="TYPEELTfilter.Regexp"><span class="constructor">Regexp</span></span> <span class="keyword">of</span> <code class="type">Str.regexp</code></code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span id="TYPEELTfilter.Atime"><span class="constructor">Atime</span></span> <span class="keyword">of</span> <code class="type"><a href="Stog_find.html#TYPEinterval">interval</a></code></code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span id="TYPEELTfilter.Predicate"><span class="constructor">Predicate</span></span> <span class="keyword">of</span> <code class="type">(string -&gt; bool)</code></code></td>
 
 </tr></table>
@@ -59,23 +95,23 @@ Finding files.<br/>
 
 <pre><code><span id="TYPEinterval"><span class="keyword">type</span> interval</span> = </code></pre><table class="typetable">
 <tr>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span id="TYPEELTinterval.Le"><span class="constructor">Le</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span id="TYPEELTinterval.Eq"><span class="constructor">Eq</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span id="TYPEELTinterval.Ge"><span class="constructor">Ge</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
 
 </tr></table>
@@ -83,33 +119,42 @@ Finding files.<br/>
 
 <pre><code><span id="TYPEmode"><span class="keyword">type</span> mode</span> = </code></pre><table class="typetable">
 <tr>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span id="TYPEELTmode.Ignore"><span class="constructor">Ignore</span></span></code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span id="TYPEELTmode.Stderr"><span class="constructor">Stderr</span></span></code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span id="TYPEELTmode.Failure"><span class="constructor">Failure</span></span></code></td>
 
 </tr>
 <tr>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
+<td align="left" valign="top">
 <code><span id="TYPEELTmode.Custom"><span class="constructor">Custom</span></span> <span class="keyword">of</span> <code class="type">(Unix.error * string * string -&gt; unit)</code></code></td>
 
 </tr></table>
 
 
-<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="Stog_find.html#TYPEmode">mode</a> -&gt;<br/>       string list -&gt; <a href="Stog_find.html#TYPEfilter">filter</a> list -&gt; (string -&gt; unit) -&gt; unit</code></pre><pre><span id="VALfind_list"><span class="keyword">val</span> find_list</span> : <code class="type"><a href="Stog_find.html#TYPEmode">mode</a> -&gt; string list -&gt; <a href="Stog_find.html#TYPEfilter">filter</a> list -&gt; string list</code></pre></div></contents></ocamldoc>
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="Stog_find.html#TYPEmode">mode</a> -&gt;<br/>       string list -&gt; <a href="Stog_find.html#TYPEfilter">filter</a> list -&gt; (string -&gt; unit) -&gt; unit</code></pre><pre><span id="VALfind_list"><span class="keyword">val</span> find_list</span> : <code class="type"><a href="Stog_find.html#TYPEmode">mode</a> -&gt; string list -&gt; <a href="Stog_find.html#TYPEfilter">filter</a> list -&gt; string list</code></pre></div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>

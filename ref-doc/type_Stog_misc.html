@@ -1,38 +1,85 @@
-<ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_misc</title><contents><div class="ocamldoc-page">
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Stog_misc</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
 <code class="code"><span class="keyword">sig</span><br/>
-&#160;&#160;<span class="keyword">val</span>&#160;safe_main&#160;:&#160;(unit&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;string_of_file&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;file_of_string&#160;:&#160;file:string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;create_log_fun&#160;:<br/>
-&#160;&#160;&#160;&#160;?prefix:string&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;?print:(string&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;?loc:string&#160;<span class="keywordsign">-&gt;</span>&#160;?level:int&#160;<span class="keywordsign">-&gt;</span>&#160;(unit&#160;<span class="keywordsign">-&gt;</span>&#160;string)&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;create_log_fun_with_set&#160;:<br/>
-&#160;&#160;&#160;&#160;?prefix:string&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;?print:(string&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;string&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;(?loc:string&#160;<span class="keywordsign">-&gt;</span>&#160;?level:int&#160;<span class="keywordsign">-&gt;</span>&#160;(unit&#160;<span class="keywordsign">-&gt;</span>&#160;string)&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;*&#160;(int&#160;<span class="keywordsign">-&gt;</span>&#160;unit)<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;split_string&#160;:&#160;?keep_empty:bool&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;char&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;list<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;strip_string&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;strip_blank_lines&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;lowercase&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;list_chop&#160;:&#160;int&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>h&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>h&#160;list<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;mkdir&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;is_prefix&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;bool<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;list_remove_doubles&#160;:&#160;?pred:(<span class="keywordsign">'</span>k&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>k&#160;<span class="keywordsign">-&gt;</span>&#160;bool)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>k&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>k&#160;list<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;md5&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;count_char&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;char&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;encode_string&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;map_opt&#160;:&#160;(<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;option<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;list_concat&#160;:&#160;?sep:<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;list<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;dot_to_svg&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;list_compare&#160;:&#160;(<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;int)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;filename_extension&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;safe_mkdir&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;opt_of_string&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;option<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;string_of_opt&#160;:&#160;string&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;file_mtime&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;float&#160;option<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;path_under&#160;:&#160;parent:string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;highlight&#160;:&#160;opts:string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;string_of_time&#160;:&#160;float&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-<span class="keyword">end</span></code></div></contents></ocamldoc>
+  <span class="keyword">val</span> safe_main : (unit <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> unit<br/>
+  <span class="keyword">val</span> string_of_file : string <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> file_of_string : file:string <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> unit<br/>
+  <span class="keyword">val</span> create_log_fun :<br/>
+    ?prefix:string <span class="keywordsign">-&gt;</span><br/>
+    ?print:(string <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span><br/>
+    string <span class="keywordsign">-&gt;</span> ?loc:string <span class="keywordsign">-&gt;</span> ?level:int <span class="keywordsign">-&gt;</span> (unit <span class="keywordsign">-&gt;</span> string) <span class="keywordsign">-&gt;</span> unit<br/>
+  <span class="keyword">val</span> create_log_fun_with_set :<br/>
+    ?prefix:string <span class="keywordsign">-&gt;</span><br/>
+    ?print:(string <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span><br/>
+    string <span class="keywordsign">-&gt;</span><br/>
+    (?loc:string <span class="keywordsign">-&gt;</span> ?level:int <span class="keywordsign">-&gt;</span> (unit <span class="keywordsign">-&gt;</span> string) <span class="keywordsign">-&gt;</span> unit) * (int <span class="keywordsign">-&gt;</span> unit)<br/>
+  <span class="keyword">val</span> split_string : ?keep_empty:bool <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> char list <span class="keywordsign">-&gt;</span> string list<br/>
+  <span class="keyword">val</span> strip_string : string <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> strip_blank_lines : string <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> lowercase : string <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> list_chop : int <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>h list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>h list<br/>
+  <span class="keyword">val</span> mkdir : string <span class="keywordsign">-&gt;</span> unit<br/>
+  <span class="keyword">val</span> is_prefix : string <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> bool<br/>
+  <span class="keyword">val</span> list_remove_doubles : ?pred:(<span class="keywordsign">'</span>k <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>k <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>k list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>k list<br/>
+  <span class="keyword">val</span> md5 : string <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> count_char : string <span class="keywordsign">-&gt;</span> char <span class="keywordsign">-&gt;</span> int<br/>
+  <span class="keyword">val</span> encode_string : string <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> map_opt : (<span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a option <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b option<br/>
+  <span class="keyword">val</span> list_concat : ?sep:<span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a list<br/>
+  <span class="keyword">val</span> dot_to_svg : string <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> list_compare : (<span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> int) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a list <span class="keywordsign">-&gt;</span> int<br/>
+  <span class="keyword">val</span> filename_extension : string <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> safe_mkdir : string <span class="keywordsign">-&gt;</span> unit<br/>
+  <span class="keyword">val</span> opt_of_string : string <span class="keywordsign">-&gt;</span> string option<br/>
+  <span class="keyword">val</span> string_of_opt : string option <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> file_mtime : string <span class="keywordsign">-&gt;</span> float option<br/>
+  <span class="keyword">val</span> path_under : parent:string <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> highlight : opts:string <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> string_of_time : float <span class="keywordsign">-&gt;</span> string<br/>
+<span class="keyword">end</span></code></div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>

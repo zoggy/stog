@@ -1,9 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<ocamldoc with-contents="true">
-<title>Stog library reference documentation : Stog_config</title><contents><div class="ocamldoc-page">
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Stog_config</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_misc.html" title="Stog_misc">Previous</a>
-&#160;<a class="up" href="index.html" title="Index">Up</a>
-&#160;<a class="post" href="Stog_trie.html" title="Stog_trie">Next</a>
+ <a class="up" href="index.html" title="Index">Up</a>
+ <a class="post" href="Stog_trie.html" title="Stog_trie">Next</a>
 </div>
 <h1>Module <a href="type_Stog_config.html">Stog_config</a></h1>
 <pre><span class="keyword">module</span> Stog_config: <code class="code">sig</code> <a href="Stog_config.html">..</a> <code class="code">end</code></pre><div class="info">
@@ -15,31 +51,31 @@ Version of stog.<br/>
 </div>
 <pre><code><span id="TYPEt"><span class="keyword">type</span> t</span> = {</code></pre><table class="typetable">
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTt.ignored">ignored</span>&#160;:<code class="type">string list</code>;</code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >list of regexps of filenames to ignore</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTt.ignored">ignored</span> :<code class="type">string list</code>;</code></td>
+<td class="typefieldcomment" align="left" valign="top"><code>(*</code></td><td class="typefieldcomment" align="left" valign="top">list of regexps of filenames to ignore</td><td class="typefieldcomment" align="left" valign="bottom"><code>*)</code></td>
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTt.elements">elements</span>&#160;:<code class="type">string list</code>;</code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >list of regexps for element files</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTt.elements">elements</span> :<code class="type">string list</code>;</code></td>
+<td class="typefieldcomment" align="left" valign="top"><code>(*</code></td><td class="typefieldcomment" align="left" valign="top">list of regexps for element files</td><td class="typefieldcomment" align="left" valign="bottom"><code>*)</code></td>
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTt.not_elements">not_elements</span>&#160;:<code class="type">string list</code>;</code></td>
-<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" >list of regexps for file matching elements rules but not being  elements</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTt.not_elements">not_elements</span> :<code class="type">string list</code>;</code></td>
+<td class="typefieldcomment" align="left" valign="top"><code>(*</code></td><td class="typefieldcomment" align="left" valign="top">list of regexps for file matching elements rules but not being  elements</td><td class="typefieldcomment" align="left" valign="bottom"><code>*)</code></td>
 </tr>
 <tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTt.follow_symlinks">follow_symlinks</span>&#160;:<code class="type">bool</code>;</code></td>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTt.follow_symlinks">follow_symlinks</span> :<code class="type">bool</code>;</code></td>
 
 </tr></table>
 }
@@ -53,7 +89,7 @@ Contents of <code class="code">.stog/config</code> file.<br/>
 </div>
 <pre><span id="VALconfig_file"><span class="keyword">val</span> config_file</span> : <code class="type">string -&gt; string</code></pre><div class="info">
 <code class="code">config_file dir</code> returns the stog <code class="code">config</code> file for a given project directory,
-     that is <code class="code">Filename.concat (config_dir dir) "config"</code>.<br/>
+     that is <code class="code">Filename.concat (config_dir dir) &quot;config&quot;</code>.<br/>
 </div>
 <pre><span id="VALtmpl_dir"><span class="keyword">val</span> tmpl_dir</span> : <code class="type">string -&gt; string</code></pre><div class="info">
 <code class="code">tmpl_dir dir</code> returns the directory containing templates, from a
@@ -71,4 +107,13 @@ Contents of <code class="code">.stog/config</code> file.<br/>
   If the file does not exists, it is created.
   The file is also written back, so that new fields automatically appear in the file.<br/>
 </div>
-</div></contents></ocamldoc>
+</div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>

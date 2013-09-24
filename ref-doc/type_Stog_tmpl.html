@@ -1,18 +1,65 @@
-<ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_tmpl</title><contents><div class="ocamldoc-page">
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Stog_tmpl</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
 <code class="code"><span class="keyword">sig</span><br/>
-&#160;&#160;<span class="keyword">type</span>&#160;contents&#160;=&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Xtmpl</span>.tree<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;get_template_file&#160;:<br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;read_template_file&#160;:<br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span>&#160;?raw:bool&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Xtmpl</span>.tree<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;get_template&#160;:<br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;?elt:<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_tmpl</span>.contents&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Xtmpl</span>.tree<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;page&#160;:&#160;<span class="constructor">Stog_tmpl</span>.contents<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;by_keyword&#160;:&#160;<span class="constructor">Stog_tmpl</span>.contents<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;by_topic&#160;:&#160;<span class="constructor">Stog_tmpl</span>.contents<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;by_month&#160;:&#160;<span class="constructor">Stog_tmpl</span>.contents<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_in_list&#160;:&#160;<span class="constructor">Stog_tmpl</span>.contents<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;keyword&#160;:&#160;<span class="constructor">Stog_tmpl</span>.contents<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;topic&#160;:&#160;<span class="constructor">Stog_tmpl</span>.contents<br/>
-<span class="keyword">end</span></code></div></contents></ocamldoc>
+  <span class="keyword">type</span> contents = <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Xtmpl</span>.tree<br/>
+  <span class="keyword">val</span> get_template_file :<br/>
+    <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.elt <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> read_template_file :<br/>
+    <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.elt <span class="keywordsign">-&gt;</span> ?raw:bool <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> <span class="constructor">Xtmpl</span>.tree<br/>
+  <span class="keyword">val</span> get_template :<br/>
+    <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span><br/>
+    ?elt:<span class="constructor">Stog_types</span>.elt <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_tmpl</span>.contents <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> <span class="constructor">Xtmpl</span>.tree<br/>
+  <span class="keyword">val</span> page : <span class="constructor">Stog_tmpl</span>.contents<br/>
+  <span class="keyword">val</span> by_keyword : <span class="constructor">Stog_tmpl</span>.contents<br/>
+  <span class="keyword">val</span> by_topic : <span class="constructor">Stog_tmpl</span>.contents<br/>
+  <span class="keyword">val</span> by_month : <span class="constructor">Stog_tmpl</span>.contents<br/>
+  <span class="keyword">val</span> elt_in_list : <span class="constructor">Stog_tmpl</span>.contents<br/>
+  <span class="keyword">val</span> keyword : <span class="constructor">Stog_tmpl</span>.contents<br/>
+  <span class="keyword">val</span> topic : <span class="constructor">Stog_tmpl</span>.contents<br/>
+<span class="keyword">end</span></code></div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>

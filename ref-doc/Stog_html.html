@@ -1,16 +1,52 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<ocamldoc with-contents="true">
-<title>Stog library reference documentation : Stog_html</title><contents><div class="ocamldoc-page">
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Stog_html</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_html5.html" title="Stog_html5">Previous</a>
-&#160;<a class="up" href="index.html" title="Index">Up</a>
-&#160;<a class="post" href="Stog_plug.html" title="Stog_plug">Next</a>
+ <a class="up" href="index.html" title="Index">Up</a>
+ <a class="post" href="Stog_plug.html" title="Stog_plug">Next</a>
 </div>
 <h1>Module <a href="type_Stog_html.html">Stog_html</a></h1>
 <pre><span class="keyword">module</span> Stog_html: <code class="code">sig</code> <a href="Stog_html.html">..</a> <code class="code">end</code></pre><div class="info">
 Html generation.
 <div class="vertical-space"> </div>
 
-  While the only function called from "main" is <a href="Stog_html.html#VALgenerate"><code class="code">Stog_html.generate</code></a>,
+  While the only function called from &quot;main&quot; is <a href="Stog_html.html#VALgenerate"><code class="code">Stog_html.generate</code></a>,
   some values are made available for the <a href="Stog_plug.html"><code class="code">Stog_plug</code></a> module.<br/>
 </div>
 <hr width="100%"/>
@@ -32,20 +68,20 @@ Stage 0 functions registered by plugins.<br/>
 </div>
 <pre><span id="VALadd_block"><span class="keyword">val</span> add_block</span> : <code class="type">?on_dup:[ `Fail | `Ignore | `Warn ] -&gt;<br/>       hid:string -&gt;<br/>       id:string -&gt; short:Xtmpl.tree -&gt; long:Xtmpl.tree -&gt; unit -&gt; unit</code></pre><div class="info">
 Adding a known block id for a given hid. A short and a long title
-  are specified. These registered blocks are used by &lt;elt href="..#id"/&gt; nodes.<br/>
+  are specified. These registered blocks are used by &lt;elt href=&quot;..#id&quot;/&gt; nodes.<br/>
 </div>
 <pre><span id="VALget_in_env"><span class="keyword">val</span> get_in_env</span> : <code class="type">Xtmpl.env -&gt; Xmlm.name -&gt; string</code></pre><div class="info">
 <code class="code">get_in_env env tag</code> will look for the given string in the environment,
   by building a &lt;tag/&gt; node and evaluating it. If the result is the same node,
-  then return <code class="code">""</code> else return the reduced value as a string.<br/>
+  then return <code class="code">&quot;&quot;</code> else return the reduced value as a string.<br/>
 </div>
 <pre><span id="VALget_in_args_or_env"><span class="keyword">val</span> get_in_args_or_env</span> : <code class="type">Xtmpl.env -&gt; Xmlm.attribute list -&gt; Xmlm.name -&gt; string</code></pre><div class="info">
 <code class="code">get_in_args_or_env env args s</code> returns the value associated to <code class="code">s</code>
  in <code class="code">args</code> of else return the result of <code class="code">get_in_env env s</code>.<br/>
 </div>
 <pre><span id="VALget_hid"><span class="keyword">val</span> get_hid</span> : <code class="type">Xtmpl.env -&gt; string</code></pre><div class="info">
-<code class="code">get_hid env</code> returns the value associated to <code class="code">"hid"</code> in <code class="code">env</code>.<br/>
-<b>Raises</b> <code>Assert_failure</code> if <code class="code">"hid"</code> is not found in the environment.<br/>
+<code class="code">get_hid env</code> returns the value associated to <code class="code">&quot;hid&quot;</code> in <code class="code">env</code>.<br/>
+<b>Raises</b> <code>Assert_failure</code> if <code class="code">&quot;hid&quot;</code> is not found in the environment.<br/>
 </div>
 <pre><span id="VALescape_html"><span class="keyword">val</span> escape_html</span> : <code class="type">string -&gt; string</code></pre><div class="info">
 Escape html code in the given string: change <code class="code">&amp;</code> to <code class="code">&amp;amp;</code>,
@@ -94,4 +130,13 @@ Generate the target files, with the following steps:<ul>
 
 <pre><span id="TYPElevel_fun_on_elt_list"><span class="keyword">type</span> level_fun_on_elt_list</span> = <code class="type">Xtmpl.env -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       (<a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> * <a href="Stog_types.html#TYPEelt">Stog_types.elt</a>) list -&gt;<br/>       (<a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> * <a href="Stog_types.html#TYPEelt">Stog_types.elt</a>) list</code> </pre>
 
-<pre><span id="VALregister_level_fun"><span class="keyword">val</span> register_level_fun</span> : <code class="type">int -&gt; <a href="Stog_html.html#TYPElevel_fun">level_fun</a> -&gt; unit</code></pre><pre><span id="VALcompute_elt"><span class="keyword">val</span> compute_elt</span> : <code class="type"><a href="Stog_html.html#TYPErule_build">rule_build</a> -&gt; <a href="Stog_html.html#TYPElevel_fun">level_fun</a></code></pre><pre><span id="VALregister_level_fun_on_elt_list"><span class="keyword">val</span> register_level_fun_on_elt_list</span> : <code class="type">int -&gt; <a href="Stog_html.html#TYPElevel_fun_on_elt_list">level_fun_on_elt_list</a> -&gt; unit</code></pre></div></contents></ocamldoc>
+<pre><span id="VALregister_level_fun"><span class="keyword">val</span> register_level_fun</span> : <code class="type">int -&gt; <a href="Stog_html.html#TYPElevel_fun">level_fun</a> -&gt; unit</code></pre><pre><span id="VALcompute_elt"><span class="keyword">val</span> compute_elt</span> : <code class="type"><a href="Stog_html.html#TYPErule_build">rule_build</a> -&gt; <a href="Stog_html.html#TYPElevel_fun">level_fun</a></code></pre><pre><span id="VALregister_level_fun_on_elt_list"><span class="keyword">val</span> register_level_fun_on_elt_list</span> : <code class="type">int -&gt; <a href="Stog_html.html#TYPElevel_fun_on_elt_list">level_fun_on_elt_list</a> -&gt; unit</code></pre></div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>

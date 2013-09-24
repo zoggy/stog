@@ -1,8 +1,44 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<ocamldoc with-contents="true">
-<title>Stog library reference documentation : Stog_tmap.S</title><contents><div class="ocamldoc-page">
-<div class="navbar">&#160;<a class="up" href="Stog_tmap.html" title="Stog_tmap">Up</a>
-&#160;</div>
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Stog_tmap.S</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
+<div class="navbar"> <a class="up" href="Stog_tmap.html" title="Stog_tmap">Up</a>
+ </div>
 <h1>Module type <a href="type_Stog_tmap.S.html">Stog_tmap.S</a></h1>
 <pre><span class="keyword">module type</span> S = <code class="code">sig</code> <a href="Stog_tmap.S.html">..</a> <code class="code">end</code></pre><div class="info">
 Storing data referenced by a unique id.
@@ -19,4 +55,13 @@ Uses maps to store the information,
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('key, 'a)</code> t</span> </pre>
 
-<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">'a -&gt; ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a></code></pre><pre><span id="VALcompare_key"><span class="keyword">val</span> compare_key</span> : <code class="type">'a <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; int</code></pre><pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; 'key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a</code></pre><pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt;<br/>       'a -&gt; 'key <a href="Stog_tmap.S.html#TYPEkey">key</a> * ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a></code></pre><pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a -&gt; 'b -&gt; 'b) -&gt;<br/>       ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; 'b -&gt; 'b</code></pre><pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; ('a -&gt; bool) -&gt; 'key <a href="Stog_tmap.S.html#TYPEkey">key</a></code></pre><pre><span id="VALint"><span class="keyword">val</span> int</span> : <code class="type">'key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; int</code></pre><pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a -&gt; unit) -&gt; ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; unit</code></pre><pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; 'key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a></code></pre><pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt;<br/>       'key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a -&gt; ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a></code></pre><pre><span id="VALcard"><span class="keyword">val</span> card</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; int</code></pre></div></contents></ocamldoc>
+<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">'a -&gt; ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a></code></pre><pre><span id="VALcompare_key"><span class="keyword">val</span> compare_key</span> : <code class="type">'a <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; int</code></pre><pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; 'key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a</code></pre><pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt;<br/>       'a -&gt; 'key <a href="Stog_tmap.S.html#TYPEkey">key</a> * ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a></code></pre><pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a -&gt; 'b -&gt; 'b) -&gt;<br/>       ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; 'b -&gt; 'b</code></pre><pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; ('a -&gt; bool) -&gt; 'key <a href="Stog_tmap.S.html#TYPEkey">key</a></code></pre><pre><span id="VALint"><span class="keyword">val</span> int</span> : <code class="type">'key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; int</code></pre><pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a -&gt; unit) -&gt; ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; unit</code></pre><pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; 'key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a></code></pre><pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt;<br/>       'key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a -&gt; ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a></code></pre><pre><span id="VALcard"><span class="keyword">val</span> card</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; int</code></pre></div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>

@@ -1,43 +1,90 @@
-<ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_tmap</title><contents><div class="ocamldoc-page">
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Stog_tmap</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
 <code class="code"><span class="keyword">sig</span><br/>
-&#160;&#160;<span class="keyword">module</span>&#160;<span class="keyword">type</span>&#160;<span class="constructor">S</span>&#160;=<br/>
-&#160;&#160;&#160;&#160;<span class="keyword">sig</span><br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">type</span>&#160;<span class="keywordsign">'</span>a&#160;key<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">type</span>&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;create&#160;:&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;compare_key&#160;:&#160;<span class="keywordsign">'</span>a&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;get&#160;:&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>key&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;add&#160;:<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>key&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key&#160;*&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;fold&#160;:<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(<span class="keywordsign">'</span>key&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b)&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;find&#160;:<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;bool)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>key&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;int&#160;:&#160;<span class="keywordsign">'</span>key&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;iter&#160;:<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(<span class="keywordsign">'</span>key&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;remove&#160;:<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="keywordsign">'</span>key&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;modify&#160;:<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="keywordsign">'</span>key&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;card&#160;:&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;<span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
-&#160;&#160;&#160;&#160;<span class="keyword">end</span><br/>
-&#160;&#160;<span class="keyword">type</span>&#160;<span class="keywordsign">'</span>a&#160;key<br/>
-&#160;&#160;<span class="keyword">type</span>&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;create&#160;:&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;compare_key&#160;:&#160;<span class="keywordsign">'</span>a&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;get&#160;:&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>key&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;add&#160;:&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>key&#160;key&#160;*&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;fold&#160;:&#160;(<span class="keywordsign">'</span>key&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b)&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;find&#160;:&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;bool)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>key&#160;key<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;int&#160;:&#160;<span class="keywordsign">'</span>key&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;iter&#160;:&#160;(<span class="keywordsign">'</span>key&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;remove&#160;:&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>key&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;modify&#160;:&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>key&#160;key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;card&#160;:&#160;(<span class="keywordsign">'</span>key,&#160;<span class="keywordsign">'</span>a)&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
-<span class="keyword">end</span></code></div></contents></ocamldoc>
+  <span class="keyword">module</span> <span class="keyword">type</span> <span class="constructor">S</span> =<br/>
+    <span class="keyword">sig</span><br/>
+      <span class="keyword">type</span> <span class="keywordsign">'</span>a key<br/>
+      <span class="keyword">type</span> (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t<br/>
+      <span class="keyword">val</span> create : <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t<br/>
+      <span class="keyword">val</span> compare_key : <span class="keywordsign">'</span>a <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key <span class="keywordsign">-&gt;</span> int<br/>
+      <span class="keyword">val</span> get : (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>key <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
+      <span class="keyword">val</span> add :<br/>
+        (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t <span class="keywordsign">-&gt;</span><br/>
+        <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>key <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key * (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t<br/>
+      <span class="keyword">val</span> fold :<br/>
+        (<span class="keywordsign">'</span>key <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b) <span class="keywordsign">-&gt;</span><br/>
+        (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b<br/>
+      <span class="keyword">val</span> find :<br/>
+        (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t <span class="keywordsign">-&gt;</span> (<span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>key <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key<br/>
+      <span class="keyword">val</span> int : <span class="keywordsign">'</span>key <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key <span class="keywordsign">-&gt;</span> int<br/>
+      <span class="keyword">val</span> iter :<br/>
+        (<span class="keywordsign">'</span>key <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span><br/>
+        (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t <span class="keywordsign">-&gt;</span> unit<br/>
+      <span class="keyword">val</span> remove :<br/>
+        (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t <span class="keywordsign">-&gt;</span><br/>
+        <span class="keywordsign">'</span>key <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key <span class="keywordsign">-&gt;</span> (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t<br/>
+      <span class="keyword">val</span> modify :<br/>
+        (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t <span class="keywordsign">-&gt;</span><br/>
+        <span class="keywordsign">'</span>key <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t<br/>
+      <span class="keyword">val</span> card : (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) <span class="constructor">Stog_tmap</span>.<span class="constructor">S</span>.t <span class="keywordsign">-&gt;</span> int<br/>
+    <span class="keyword">end</span><br/>
+  <span class="keyword">type</span> <span class="keywordsign">'</span>a key<br/>
+  <span class="keyword">type</span> (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t<br/>
+  <span class="keyword">val</span> create : <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t<br/>
+  <span class="keyword">val</span> compare_key : <span class="keywordsign">'</span>a key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a key <span class="keywordsign">-&gt;</span> int<br/>
+  <span class="keyword">val</span> get : (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>key key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
+  <span class="keyword">val</span> add : (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>key key * (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t<br/>
+  <span class="keyword">val</span> fold : (<span class="keywordsign">'</span>key key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b) <span class="keywordsign">-&gt;</span> (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b<br/>
+  <span class="keyword">val</span> find : (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t <span class="keywordsign">-&gt;</span> (<span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>key key<br/>
+  <span class="keyword">val</span> int : <span class="keywordsign">'</span>key key <span class="keywordsign">-&gt;</span> int<br/>
+  <span class="keyword">val</span> iter : (<span class="keywordsign">'</span>key key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t <span class="keywordsign">-&gt;</span> unit<br/>
+  <span class="keyword">val</span> remove : (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>key key <span class="keywordsign">-&gt;</span> (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t<br/>
+  <span class="keyword">val</span> modify : (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>key key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t<br/>
+  <span class="keyword">val</span> card : (<span class="keywordsign">'</span>key, <span class="keywordsign">'</span>a) t <span class="keywordsign">-&gt;</span> int<br/>
+<span class="keyword">end</span></code></div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>

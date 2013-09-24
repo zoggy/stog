@@ -1,54 +1,101 @@
-<ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_tags</title><contents><div class="ocamldoc-page">
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog library reference documentation : Stog_tags</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/stog-plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
 <code class="code"><span class="keyword">sig</span><br/>
-&#160;&#160;<span class="keyword">val</span>&#160;site_title&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;site_desc&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;site_url&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;site_email&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;rss_length&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;languages&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;functions&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_body&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_date&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_keywords&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_hid&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_intro&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_path&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_src&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_title&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_topics&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_type&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_url&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;sep&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;archive_tree&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;block&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;command_line&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;counter&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elements&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;ext_a&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;graph&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;hcode&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;icode&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;if_&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;image&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;inc&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;include_&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;keyword&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;langswitch&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;latex&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;list&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;n_columns&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;next&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;ocaml&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;ocaml_eval&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;page&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;post&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;prepare_toc&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;previous&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;search_form&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;section&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;subsection&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;toc&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;topic&#160;:&#160;string<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;two_columns&#160;:&#160;string<br/>
-<span class="keyword">end</span></code></div></contents></ocamldoc>
+  <span class="keyword">val</span> site_title : string<br/>
+  <span class="keyword">val</span> site_desc : string<br/>
+  <span class="keyword">val</span> site_url : string<br/>
+  <span class="keyword">val</span> site_email : string<br/>
+  <span class="keyword">val</span> rss_length : string<br/>
+  <span class="keyword">val</span> languages : string<br/>
+  <span class="keyword">val</span> functions : string<br/>
+  <span class="keyword">val</span> elt : string<br/>
+  <span class="keyword">val</span> elt_body : string<br/>
+  <span class="keyword">val</span> elt_date : string<br/>
+  <span class="keyword">val</span> elt_keywords : string<br/>
+  <span class="keyword">val</span> elt_hid : string<br/>
+  <span class="keyword">val</span> elt_intro : string<br/>
+  <span class="keyword">val</span> elt_path : string<br/>
+  <span class="keyword">val</span> elt_src : string<br/>
+  <span class="keyword">val</span> elt_title : string<br/>
+  <span class="keyword">val</span> elt_topics : string<br/>
+  <span class="keyword">val</span> elt_type : string<br/>
+  <span class="keyword">val</span> elt_url : string<br/>
+  <span class="keyword">val</span> sep : string<br/>
+  <span class="keyword">val</span> archive_tree : string<br/>
+  <span class="keyword">val</span> block : string<br/>
+  <span class="keyword">val</span> command_line : string<br/>
+  <span class="keyword">val</span> counter : string<br/>
+  <span class="keyword">val</span> elements : string<br/>
+  <span class="keyword">val</span> ext_a : string<br/>
+  <span class="keyword">val</span> graph : string<br/>
+  <span class="keyword">val</span> hcode : string<br/>
+  <span class="keyword">val</span> icode : string<br/>
+  <span class="keyword">val</span> if_ : string<br/>
+  <span class="keyword">val</span> image : string<br/>
+  <span class="keyword">val</span> inc : string<br/>
+  <span class="keyword">val</span> include_ : string<br/>
+  <span class="keyword">val</span> keyword : string<br/>
+  <span class="keyword">val</span> langswitch : string<br/>
+  <span class="keyword">val</span> latex : string<br/>
+  <span class="keyword">val</span> list : string<br/>
+  <span class="keyword">val</span> n_columns : string<br/>
+  <span class="keyword">val</span> next : string<br/>
+  <span class="keyword">val</span> ocaml : string<br/>
+  <span class="keyword">val</span> ocaml_eval : string<br/>
+  <span class="keyword">val</span> page : string<br/>
+  <span class="keyword">val</span> post : string<br/>
+  <span class="keyword">val</span> prepare_toc : string<br/>
+  <span class="keyword">val</span> previous : string<br/>
+  <span class="keyword">val</span> search_form : string<br/>
+  <span class="keyword">val</span> section : string<br/>
+  <span class="keyword">val</span> subsection : string<br/>
+  <span class="keyword">val</span> toc : string<br/>
+  <span class="keyword">val</span> topic : string<br/>
+  <span class="keyword">val</span> two_columns : string<br/>
+<span class="keyword">end</span></code></div>
+
+
+
+
+
+
+</div> 
+</body>
+</html>
