@@ -43,15 +43,11 @@ build:
 
 site: style
 	$(STOG) $(STOG_OPTIONS) .
-	$(MAKE) ocamldoc
 
 style:
 	mkdir -p $(DEST_DIR)
 	$(LESSC) less/style.less > $(DEST_DIR)/style.css
 	$(LESSC) less/slides.less > $(DEST_DIR)/slides.css
-
-ocamldoc:
-	cp -fr ref-doc $(DEST_DIR)/
 
 #	cp -f *png tmpl/*png $(DEST_DIR)/
 #	cp -f *.svg $(DEST_DIR)/
