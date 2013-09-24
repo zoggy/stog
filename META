@@ -1,4 +1,4 @@
-version = "0.8.0"
+version = "0.9.0"
 description = "Stog"
 requires = "str,unix,config-file,dynlink,xtmpl,rss,xmlm"
 archive(byte) = "stog.cma"

@@ -40,6 +40,8 @@ templates (in directory <icode>templates</icode>) and the
 using regular expressions, one can indicate which files must be ignored,
 and which files are elements. Files not being ignored nor being elements
 will be copied by <icode>stog</icode> in the target directory.
+The "follow-symlinks" option indicates whether to follow symlinks or not.
+Default is to ignore symlinks.
 </p>
 <p>
 Here is an example of <icode>.stog/config</icode> file:
@@ -115,7 +117,10 @@ belonging to a set,</li>
 <li><b>language-dep</b>: can be set to <i>false</i> to indicate that this page is not
 language dependent, when generating multi-language sites (this affects the name of the
 generated file),</li>
-<li><b>doctype</b>: specify the doctype which will be printed into the final XML file. Default is "HTML".</li>
+<li><b>doctype</b>: specify the doctype which will be printed into the final XML file. Default is "HTML".
+If doctype is "HTML" (case-insensitive), tags are not self-closed, except
+    <ext-a href="http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements">HTML5 void elements</ext-a>.
+</li>
 </ul>
 <p>
 Any other attribute will be available by its name in the environment when processing the template
@@ -184,6 +189,15 @@ field of the main element. It it useful to generate a local site, for example
 <p>
 to test your site locally with correct links.
 </p>
+<p id="optiondef">
+The <icode>--def</icode> option can be used to define an additional global rule. For example
+</p>
+<command-line>stog --def stogdir:`pwd`</command-line>
+<p>
+will make the current working directory accessible using <icode>&lt;stogdir/&gt;</icode>.
+</p>
+
+
 <p>The <icode>--plugin</icode> option makes <icode>stog</icode> dynamically
 load the given OCaml object file. The loaded plugin can define new functions
 to associate to some tags, or even override some pre-defined functions.

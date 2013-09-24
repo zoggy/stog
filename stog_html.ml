@@ -908,7 +908,7 @@ let concat_xmls ?(sep=[]) l =
 ;;
 
 
-let fun_elt_path stog env args subs =
+let fun_elt_path stog _ env args subs =
   let s_hid = get_hid env in
   let hid = Stog_types.human_id_of_string s_hid in
   if not hid.hid_absolute then
@@ -1353,7 +1353,7 @@ and build_base_rules stog elt_id elt =
       ("", Stog_tags.elt_date), mk f_date ;
       ("", Stog_tags.elt_intro), mk f_intro ;
       ("", Stog_tags.elt_keywords), mk (html_of_keywords stog) ;
-      ("", Stog_tags.elt_path), fun_elt_path stog ;
+      ("", Stog_tags.elt_path), mk (fun_elt_path stog) ;
       ("", Stog_tags.elt_src), mk f_src ;
       ("", Stog_tags.elt_title), mk f_title ;
       ("", Stog_tags.elt_topics), mk (html_of_topics stog) ;

@@ -1,4 +1,4 @@
-Next release:
+Release 0.9.0:
   * add: option follow-symlinks in .stog/config to follow symlinks or not when
     building the file and directory source tree
   * fix: for elements with doctype=html, prevent self-closing of tags, except
@@ -9,16 +9,16 @@ Next release:
   * add: <elt-*> predefined functions handle a elt-hid="hid of element"
     attribute, to access information about another element rather than
     the current one.
-  * fix <ocaml-eval>: use return of Toploopexecute_phrase to consider
-    catched exceptions as errors is error-exc="true"
+  * fix <ocaml-eval>: use return of Toploop.execute_phrase to consider
+    catched exceptions as errors if error-exc="true"
   * fix: allow list of CDATA in ocaml code
   * add: --def command-line option to define a global rule on command line
-  * new <elt-path> rule
+  * new <elt-path> rule, to create a navigation bar
   * fix Malformed_URL bug when generating with a site-url having an empty path
   * <hcode> and <icode> now keep id attribute in <pre> or <span> resulting element
   * <inc> handles id attribute to redefine the id of the included node
   * <elements> handles filter attribute
-  * <elements> handles ','- or ','-separated list of element types
+  * <elements> handles ','- or ';'-separated list of element types
 
 Release 0.8.0:
   * now depends on ocamlrss >= 2.1.0

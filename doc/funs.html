@@ -163,10 +163,33 @@ to the selected elements. The given filename is appended to the stog output dire
 A link to the RSS file is also added before the list.</li>
 <li><icode>set="name"</icode> can be used to select only the elements belonging to
 the given set.</li>
-<li><icode>type="type"</icode> filters the elements to keep only the ones of the given
-type.</li>
+<li><icode>type="type1,type2,..."</icode> filters the elements to keep only the ones with one
+of the given types.</li>
 <li><icode>title="title"</icode> specifies the title of the RSS channel, if a RSS
 file is created. If no title is given, the site title is used.</li>
+<li>By default, items are sorted according to the date of each element. Specifying
+<icode>sort="rule1,rule2,..."</icode> make elements sorted according to the given rules,
+expanded for each element.</li>
+<li>By default, items are listed in descending order; <icode>reverse="false"</icode>
+make the elements listed in ascending order.</li>
+<li><icode>tmpl="..."</icode> specifies a template file to use for each element of
+the list. Default is <icode>.stog/templates/elt-in-list.tmpl</icode>.</li>
+<li><icode>filter="p"</icode> specifies to keep only elements verifying
+the given predicate <icode>p</icode>. The predicate can be an expression such as
+  <icode>attribute='value'</icode>
+  The attribute refers to a field defined in the element header, or defined in the main
+  element for the whole site if it has the form "id:id".
+  The expressions accepted as filters follow this grammar:
+  <hcode lang="ocaml"><![CDATA[
+attribute ::= id
+            | id ":" id
+    value ::= "'" string "'"
+     expr ::= "(" expr ")"
+            | attribute "=" value
+            | expr "|" expr       # or
+            | expr "&" expr       # and
+            | "!" expr            # negation]]></hcode>
+</li>
 </ul>
 <p>Example: <icode lang="xml">&lt;elements type="post" max="10" rss="index.rss"/&gt;</icode></p>
 </subsection>
@@ -199,6 +222,41 @@ or of the element referenced by the <icode>elt-hid</icode> attribute.
 element (or of the element referenced by the <icode>elt-hid</icode> attribute),
 that is the body code before the <icode>&lt;sep_/&gt;</icode> marker.
 </p>
+</subsection>
+
+<subsection id="elt-path" title="elt-path">
+<p>
+<icode lang="xml">&lt;elt-path/&gt;</icode> builds a navigation bar in the form
+of a list of links showing the hierarchy to the current element (or the element
+referenced by the <icode>elt-hid</icode> attribute).
+</p>
+<p>
+Suppose we're handling the element whose source file is
+<icode>STOGDIR/foo/bar/gee.html</icode>. Its <icode>elt-hid</icode> is
+<icode>/foo/bar/gee</icode>. The path will contain two parts, one for
+<icode>foo</icode> and one for <icode>bar</icode>.
+If an element <icode>/foo</icode> exists, then a link to this element is
+added. Else, if an element /foo/index exists, then a link to this
+element is added. Else no link is added and the directory name is used,
+with no link. The same is done for the <icode>/foo/bar</icode> element.
+</p>
+<p>
+The separator of path parts is the code given under the
+<ixml>&lt;elt-path&gt;</ixml> node.
+</p>
+<p>To illustrate, the code</p>
+<hxml>&lt;elt-path elt-hid="/foo/bar/gee"&gt; / &lt;/elt-path&gt;</hxml>
+<p>will produce the following code:</p>
+<hxml defer_="1"><elt-path elt-hid="/foo/bar/gee"> / </elt-path></hxml>
+<p>which results in:</p>
+<elt-path elt-hid="/foo/bar/gee"> / </elt-path>
+<p>
+The <icode>with-root="..."</icode> attribute can be used to specify the
+hid of an element used as root. For example:
+</p>
+<hxml>&lt;elt-path elt-hid="/foo/bar/gee" with-root="/index"&gt; / &lt;/elt-path&gt;</hxml>
+<p>will produce the following path:</p>
+<elt-path elt-hid="/foo/bar/gee" with-root="/index"> / </elt-path>
 </subsection>
 
 <subsection id="elt-src" title="elt-src">
@@ -297,6 +355,27 @@ a block or not:
 <span/>
 <div>The list is not empty, let's print it:<ul><list/></ul></div>
 </if>]]></hcode>
+</subsection>
+
+<subsection id="inc" title="inc">
+<include file="syntax.tmpl"><![CDATA[<inc href="foo#id/>]]></include>
+<p>
+This function includes the XML node referenced by the <icode>href</icode>
+attribute. An error is raised if this node does not exist. If an
+<icode>id</icode> attribute is provided, the included node has this new
+id, else the original node id is kept.
+</p>
+<p>
+This function is useful to avoid code duplication. It is used in this
+site to show changes of a release both in the <elt href="install"/>
+page and in blog post such as <elt href="release-0.9.0"/>.
+</p>
+<p>For example, the following code will include the paragraph with
+id "optiondef" of element "getting_started":
+</p>
+<hxml><inc href="getting_started#optiondef"/></hxml>
+<p>This is the result:</p>
+<inc href="getting_started#optiondef"/>
 </subsection>
 
 <subsection id="include" title="include">
