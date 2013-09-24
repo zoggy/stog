@@ -50,6 +50,22 @@ from this starting point and generate the same hierarchy in the output directory
 Some of the files will be read as <i>elements</i>, i.e. xml files which will
 be processed through a templating engine to produce the final file.
 </p>
+<div class="alert alert-warning">
+<p>
+The element files being handled as XML documents, the boolean attributes,
+like in HTML5, are not allowed. So, when using Stog to generate HTML5 pages,
+instead of writing
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;tag</span> <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span> boolean-attribute <span class="hl kwb">att3</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>...</pre>
+<p>you have to give a
+<span class="ext-a"><a href="http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#boolean-attributes">value
+to the boolean attribute</a></span>, for example</p>
+<pre class="code-xml"><span class="hl kwa">&lt;tag</span> <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">boolean-att</span>=<span class="hl str">&quot;boolean-att&quot;</span> <span class="hl kwb">att3</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>...</pre>
+<p>
+or simply
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;tag</span> <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">boolean-att</span>=<span class="hl str">&quot;&quot;</span> <span class="hl kwb">att3</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>...</pre>
+</div>
 <p>
 The <span class="icode">.stog</span> directory in the given root directory contains the
 templates (in directory <span class="icode">templates</span>) and the
@@ -57,6 +73,8 @@ templates (in directory <span class="icode">templates</span>) and the
 using regular expressions, one can indicate which files must be ignored,
 and which files are elements. Files not being ignored nor being elements
 will be copied by <span class="icode">stog</span> in the target directory.
+The &quot;follow-symlinks&quot; option indicates whether to follow symlinks or not.
+Default is to ignore symlinks.
 </p>
 <p>
 Here is an example of <span class="icode">.stog/config</span> file:
@@ -132,7 +150,10 @@ belonging to a set,</li>
 <li><b>language-dep</b>: can be set to <i>false</i> to indicate that this page is not
 language dependent, when generating multi-language sites (this affects the name of the
 generated file),</li>
-<li><b>doctype</b>: specify the doctype which will be printed into the final XML file. Default is &quot;HTML&quot;.</li>
+<li><b>doctype</b>: specify the doctype which will be printed into the final XML file. Default is &quot;HTML&quot;.
+If doctype is &quot;HTML&quot; (case-insensitive), tags are not self-closed, except
+    <span class="ext-a"><a href="http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements">HTML5 void elements</a></span>.
+</li>
 </ul>
 <p>
 Any other attribute will be available by its name in the environment when processing the template
@@ -201,6 +222,15 @@ field of the main element. It it useful to generate a local site, for example
 <p>
 to test your site locally with correct links.
 </p>
+<p id="optiondef">
+The <span class="icode">--def</span> option can be used to define an additional global rule. For example
+</p>
+<pre class="code-sh">stog <span class="hl opt">--</span>def stogdir<span class="hl opt">:</span><span class="hl str">`pwd`</span></pre>
+<p>
+will make the current working directory accessible using <span class="icode">&lt;stogdir/&gt;</span>.
+</p>
+
+
 <p>The <span class="icode">--plugin</span> option makes <span class="icode">stog</span> dynamically
 load the given OCaml object file. The loaded plugin can define new functions
 to associate to some tags, or even override some pre-defined functions.
@@ -435,6 +465,22 @@ from this starting point and generate the same hierarchy in the output directory
 Some of the files will be read as <span class="hl kwa">&lt;i&gt;</span>elements<span class="hl kwa">&lt;/i&gt;</span>, i.e. xml files which will
 be processed through a templating engine to produce the final file.
 <span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;alert alert-warning&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The element files being handled as XML documents, the boolean attributes,
+like in HTML5, are not allowed. So, when using Stog to generate HTML5 pages,
+instead of writing
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span><span class="hl kwd">&amp;lt;</span>tag <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span> boolean-attribute <span class="hl kwb">att3</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwd">&amp;gt;</span>...<span class="hl kwa">&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>you have to give a
+<span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#boolean-attributes&quot;</span><span class="hl kwa">&gt;</span>value
+to the boolean attribute<span class="hl kwa">&lt;/ext-a&gt;</span>, for example<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span><span class="hl kwd">&amp;lt;</span>tag <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">boolean-att</span>=<span class="hl str">&quot;boolean-att&quot;</span> <span class="hl kwb">att3</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwd">&amp;gt;</span>...<span class="hl kwa">&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+or simply
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span><span class="hl kwd">&amp;lt;</span>tag <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">boolean-att</span>=<span class="hl str">&quot;&quot;</span> <span class="hl kwb">att3</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwd">&amp;gt;</span>...<span class="hl kwa">&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;/div&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 The <span class="hl kwa">&lt;icode&gt;</span>.stog<span class="hl kwa">&lt;/icode&gt;</span> directory in the given root directory contains the
 templates (in directory <span class="hl kwa">&lt;icode&gt;</span>templates<span class="hl kwa">&lt;/icode&gt;</span>) and the
@@ -442,6 +488,8 @@ templates (in directory <span class="hl kwa">&lt;icode&gt;</span>templates<span 
 using regular expressions, one can indicate which files must be ignored,
 and which files are elements. Files not being ignored nor being elements
 will be copied by <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> in the target directory.
+The <span class="hl str">&quot;follow-symlinks&quot;</span> option indicates whether to follow symlinks or not.
+Default is to ignore symlinks.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 Here is an example of <span class="hl kwa">&lt;icode&gt;</span>.stog/config<span class="hl kwa">&lt;/icode&gt;</span> file:
@@ -517,7 +565,10 @@ belonging to a set,<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>language-dep<span class="hl kwa">&lt;/b&gt;</span>: can be set to <span class="hl kwa">&lt;i&gt;</span>false<span class="hl kwa">&lt;/i&gt;</span> to indicate that this page is not
 language dependent, when generating multi-language sites (this affects the name of the
 generated file),<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>doctype<span class="hl kwa">&lt;/b&gt;</span>: specify the doctype which will be printed into the final XML file. Default is <span class="hl str">&quot;HTML&quot;</span>.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>doctype<span class="hl kwa">&lt;/b&gt;</span>: specify the doctype which will be printed into the final XML file. Default is <span class="hl str">&quot;HTML&quot;</span>.
+If doctype is <span class="hl str">&quot;HTML&quot;</span> (case-insensitive), tags are not self-closed, except
+    <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements&quot;</span><span class="hl kwa">&gt;</span>HTML5 void elements<span class="hl kwa">&lt;/ext-a&gt;</span>.
+<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/ul&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 Any other attribute will be available by its name in the environment when processing the template
@@ -586,6 +637,15 @@ field of the main element. It it useful to generate a local site, for example
 <span class="hl kwa">&lt;p&gt;</span>
 to test your site locally with correct links.
 <span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;optiondef&quot;</span><span class="hl kwa">&gt;</span>
+The <span class="hl kwa">&lt;icode&gt;</span>--def<span class="hl kwa">&lt;/icode&gt;</span> option can be used to define an additional global rule. For example
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;command-line&gt;</span>stog --def stogdir:`pwd`<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+will make the current working directory accessible using <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>stogdir/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+
+
 <span class="hl kwa">&lt;p&gt;</span>The <span class="hl kwa">&lt;icode&gt;</span>--plugin<span class="hl kwa">&lt;/icode&gt;</span> option makes <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> dynamically
 load the given OCaml object file. The loaded plugin can define new functions
 to associate to some tags, or even override some pre-defined functions.

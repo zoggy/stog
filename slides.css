@@ -1694,6 +1694,222 @@ div#pagesource:target {
     margin-right: 0 ;
   }
 }
+.ocamldoc-page {
+  font-size: smaller ;
+}
+.ocamldoc-page .keyword {
+  font-weight: bold ;
+  color: Red;
+}
+.ocamldoc-page .keywordsign {
+  color: #c04600;
+}
+.ocamldoc-page .superscript {
+  font-size: 4;
+}
+.ocamldoc-page .subscript {
+  font-size: 4;
+}
+.ocamldoc-page .comment {
+  color: Green;
+}
+.ocamldoc-page .constructor {
+  color: Blue;
+}
+.ocamldoc-page .type {
+  color: #5c6585;
+}
+.ocamldoc-page .string {
+  color: Maroon;
+}
+.ocamldoc-page .warning {
+  color: Red ;
+  font-weight: bold;
+}
+.ocamldoc-page .info {
+  margin-left: 3em;
+  margin-right: 3em;
+}
+.ocamldoc-page .param_info {
+  margin-top: 4px;
+  margin-left: 3em;
+  margin-right: 3em;
+}
+.ocamldoc-page .code {
+  color: #465F91 ;
+}
+.ocamldoc-page .typetable {
+  border-style: hidden;
+}
+.ocamldoc-page .paramstable {
+  border-style: hidden ;
+  padding: 5pt 5pt;
+}
+.ocamldoc-page tr {
+  background-color: White;
+}
+.ocamldoc-page td.typefieldcomment {
+  background-color: #FFFFFF ;
+}
+.ocamldoc-page div.sig_block {
+  margin-left: 2em;
+}
+.ocamldoc-page *:target {
+  background: yellow;
+}
+.ocamldoc-page body {
+  font: 13px sans-serif;
+  color: black;
+  text-align: left;
+  padding: 5px;
+  margin: 0;
+}
+.ocamldoc-page h1 {
+  font-size: 20pt ;
+  text-align: center;
+}
+.ocamldoc-page h2 {
+  font-size: 20pt ;
+  border: 1px solid #000000;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  text-align: center;
+  background-color: #90BDFF ;
+  padding: 2px;
+}
+.ocamldoc-page h3 {
+  font-size: 20pt ;
+  border: 1px solid #000000;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  text-align: center;
+  background-color: #90DDFF ;
+  padding: 2px;
+}
+.ocamldoc-page h4 {
+  font-size: 20pt ;
+  border: 1px solid #000000;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  text-align: center;
+  background-color: #90EDFF ;
+  padding: 2px;
+}
+.ocamldoc-page h5 {
+  font-size: 20pt ;
+  border: 1px solid #000000;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  text-align: center;
+  background-color: #90FDFF ;
+  padding: 2px;
+}
+.ocamldoc-page h6 {
+  font-size: 20pt ;
+  border: 1px solid #000000;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  text-align: center;
+  background-color: #90BDFF ;
+  padding: 2px;
+}
+.ocamldoc-page div.h7 {
+  font-size: 20pt ;
+  border: 1px solid #000000;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  text-align: center;
+  background-color: #E0FFFF ;
+  padding: 2px;
+}
+.ocamldoc-page div.h8 {
+  font-size: 20pt ;
+  border: 1px solid #000000;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  text-align: center;
+  background-color: #F0FFFF ;
+  padding: 2px;
+}
+.ocamldoc-page div.h9 {
+  font-size: 20pt ;
+  border: 1px solid #000000;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  text-align: center;
+  background-color: #FFFFFF ;
+  padding: 2px;
+}
+.ocamldoc-page a {
+  color: #416DFF;
+  text-decoration: none;
+}
+.ocamldoc-page a:hover {
+  background-color: #ddd;
+  text-decoration: underline;
+}
+.ocamldoc-page pre {
+  margin-bottom: 4px;
+  font-family: monospace;
+}
+.ocamldoc-page .indextable {
+  border: 1px #ddd solid;
+  border-collapse: collapse;
+}
+.ocamldoc-page .indextable td,
+.ocamldoc-page .indextable th {
+  border: 1px #ddd solid;
+  min-width: 80px;
+}
+.ocamldoc-page .indextable td.module {
+  background-color: #eee ;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+.ocamldoc-page .indextable td.module a {
+  color: 4E6272;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+}
+.ocamldoc-page .indextable td.module a:hover {
+  text-decoration: underline;
+  background-color: transparent;
+}
+.ocamldoc-page .deprecated {
+  color: #888;
+  font-style: italic;
+}
+.ocamldoc-page .indextable tr td div.info {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.ocamldoc-page ul.indexlist {
+  margin-left: 0;
+  padding-left: 0;
+}
+.ocamldoc-page ul.indexlist li {
+  list-style-type: none ;
+  margin-left: 0;
+  padding-left: 0;
+}
+.ocamldoc-page code {
+  font-size: 10pt;
+  border-width: 0;
+  background-color: transparent ;
+  color: #666666;
+}
+.ocamldoc-page .code {
+  background-color: transparent ;
+}
+.ocamldoc-page pre {
+  border-width: 0;
+  background-color: transparent ;
+  white-space: pre-wrap;
+}
+.ocamldoc-page a {
+  color: #f89406;
+}
 div.background {
   background-color: #222222;
   height: 66px;

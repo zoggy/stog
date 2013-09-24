@@ -79,7 +79,7 @@ Here is an example:
 <span class="hl com">  Before stog 0.3, this function was called [Stog_plug.register_fun]. *)</span>
 <span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_rule <span class="hl opt">(</span><span class="hl str">&quot;&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;list&quot;</span><span class="hl opt">)</span> fun_list<span class="hl opt">;;</span></pre>
 <p>
-Have a look at the <a href="http://zoggy.github.io/stog/ref-doc/index.html">Stog library reference documentation</a>.
+Have a look at the <a href="http://zoggy.github.io/stog/ref-doc">Stog library reference documentation</a>.
 </p>
 </div>
 
@@ -124,18 +124,18 @@ of dependencies of each element on other elements and files.
 <p>
 If a new rule defined by a plugin uses a file or implies a dependency
 from an element to another, this rule must declare this dependency
-using the <a href="ref-doc/Stog_plug.html#VALadd_dep"><code>Stog_plug.add_dep</code></a> function:
+using the <a href="http://zoggy.github.io/stog/ref-doc/Stog_plug.html#VALadd_dep"><code>Stog_plug.add_dep</code></a> function:
 </p>
 <pre class="code-ocaml"><span class="hl kwd">Stog_plug</span><span class="hl opt">.</span>add_dep <span class="hl opt">:</span> <span class="hl kwd">Stog_types</span><span class="hl opt">.</span>elt <span class="hl opt">-&gt;</span> dependency <span class="hl opt">-&gt;</span> <span class="hl kwc">unit</span></pre>
 <p>
 If a plugin computes information which could be cached, it can declare a
 new cache for this informations, using the
-<a href="ref-doc/Stog_plug.html#VALregister_cache"><code>Stog_plug.register_cache</code></a> function:
+<a href="http://zoggy.github.io/stog/ref-doc/Stog_plug.html#VALregister_cache"><code>Stog_plug.register_cache</code></a> function:
 </p>
 <pre class="code-ocaml"><span class="hl kwa">val</span> register_cache <span class="hl opt">: (</span><span class="hl kwa">module</span> <span class="hl kwd">Stog_cache</span><span class="hl opt">.</span><span class="hl kwd">Cache</span><span class="hl opt">) -&gt;</span> <span class="hl kwc">unit</span></pre>
 <p>
 The Cache module to provide is very simple; have a look at the
-<a href="ref-doc/Stog_cache.Cache.html"><code>Stog_cache.Cache</code></a>module type.
+<a href="http://zoggy.github.io/stog/ref-doc/Stog_cache.Cache.html"><code>Stog_cache.Cache</code></a>module type.
 </p>
 </div>
 
@@ -167,7 +167,7 @@ Here is an example:
 <span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../plugins/plugin_example.ml&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;</span>
 <span class="hl kwa">&lt;/hcode&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
-Have a look at the <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;site-url/&amp;gt;/ref-doc/index.html&quot;</span><span class="hl kwa">&gt;</span>Stog library reference documentation<span class="hl kwa">&lt;/a&gt;</span>.
+Have a look at the <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;/ref-doc/index&quot;</span><span class="hl kwa">/&gt;</span>.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>
 
@@ -216,18 +216,18 @@ of dependencies of each element on other elements and files.
 <span class="hl kwa">&lt;p&gt;</span>
 If a new rule defined by a plugin uses a file or implies a dependency
 from an element to another, this rule must declare this dependency
-using the <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_plug.html#VALadd_dep&quot;</span><span class="hl kwa">&gt;&lt;code&gt;</span>Stog_plug.add_dep<span class="hl kwa">&lt;/code&gt;&lt;/a&gt;</span> function:
+using the <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;Stog_plug#VALadd_dep&quot;</span><span class="hl kwa">&gt;&lt;code&gt;</span>Stog_plug.add_dep<span class="hl kwa">&lt;/code&gt;&lt;/elt&gt;</span> function:
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;ocaml&gt;</span>Stog_plug.add_dep : Stog_types.elt -<span class="hl kwa">&gt;</span> dependency -<span class="hl kwa">&gt;</span> unit<span class="hl kwa">&lt;/ocaml&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 If a plugin computes information which could be cached, it can declare a
 new cache for this informations, using the
-<span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_plug.html#VALregister_cache&quot;</span><span class="hl kwa">&gt;&lt;code&gt;</span>Stog_plug.register_cache<span class="hl kwa">&lt;/code&gt;&lt;/a&gt;</span> function:
+<span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;Stog_plug#VALregister_cache&quot;</span><span class="hl kwa">&gt;&lt;code&gt;</span>Stog_plug.register_cache<span class="hl kwa">&lt;/code&gt;&lt;/elt&gt;</span> function:
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;ocaml&gt;</span>val register_cache : (module Stog_cache.Cache) -<span class="hl kwa">&gt;</span> unit<span class="hl kwa">&lt;/ocaml&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 The Cache module to provide is very simple; have a look at the
-<span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_cache.Cache.html&quot;</span><span class="hl kwa">&gt;&lt;code&gt;</span>Stog_cache.Cache<span class="hl kwa">&lt;/code&gt;&lt;/a&gt;</span>module type.
+<span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;Stog_cache.Cache&quot;</span><span class="hl kwa">&gt;&lt;code&gt;</span>Stog_cache.Cache<span class="hl kwa">&lt;/code&gt;&lt;/elt&gt;</span>module type.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>
 <span class="hl kwa">&lt;/prepare-toc&gt;</span>

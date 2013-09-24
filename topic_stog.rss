@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0"><channel><title>Stog: stog</title><link>http://zoggy.github.io/stog/topic_stog.html</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>23 Apr 2013 08:00:00 +0000</pubDate><lastBuildDate>23 Apr 2013 08:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.io/stog</url><title>Stog</title><link>http://zoggy.github.io/stog</link></image><item><title>Talk about Stog at INRIA</title><link>http://zoggy.github.io/stog/posts/2013-04-23-stog-at-inria.html</link><description>
+<rss version="2.0"><channel><title>Stog: stog</title><link>http://zoggy.github.io/stog/topic_stog.html</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>24 Sep 2013 08:00:00 +0000</pubDate><lastBuildDate>24 Sep 2013 08:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.io/stog</url><title>Stog</title><link>http://zoggy.github.io/stog</link></image><item><title>Stog 0.9.0</title><link>http://zoggy.github.io/stog/posts/release-0.9.0.html</link><description>
+&lt;p&gt;
+Release 0.9.0 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.9.0.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.io/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>24 Sep 2013 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.9.0.html</guid></item><item><title>Talk about Stog at INRIA</title><link>http://zoggy.github.io/stog/posts/2013-04-23-stog-at-inria.html</link><description>
 &lt;p&gt;
 Maxence Guesdon introduced Stog during a talk at
 &lt;span class=&quot;ext-a&quot;&gt;&lt;a href=&quot;http://www.inria.fr/en/centre/saclay&quot;&gt;INRIA Saclay-Île-de-France&lt;/a&gt;&lt;/span&gt;
@@ -51,8 +55,4 @@ embed the OCaml toplevel, only available as bytecode. As a consequence,
 only the bytecode version of Stog could evaluate OCaml code using the
 internal toplevel.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/ocaml-sessions.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.io/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>21 Nov 2012 08:00:00 +0000</pubDate><category>stog</category><category>ocaml</category><category>evaluation</category><category>code</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/ocaml-sessions.html</guid></item><item><title>Stog 0.3</title><link>http://zoggy.github.io/stog/posts/release-0.3.html</link><description>
-&lt;p&gt;
-Release 0.3 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
-&lt;/p&gt;
-</description><pubDate>30 AUg 2012 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.3.html</guid></item></channel></rss>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/ocaml-sessions.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.io/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>21 Nov 2012 08:00:00 +0000</pubDate><category>stog</category><category>ocaml</category><category>evaluation</category><category>code</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/ocaml-sessions.html</guid></item></channel></rss>

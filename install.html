@@ -48,8 +48,8 @@ To build Stog, you will need:
 <li><span class="ext-a"><a href="http://config-file.forge.ocamlcore.org/">Config-file &gt;= 1.1</a></span>.</li>
 <li><span class="ext-a"><a href="http://erratique.ch/software/xmlm">Xmlm &gt;= 1.1.0</a></span>,</li>
 <li><span class="ext-a"><a href="http://projects.camlcity.org/projects/ocamlnet.html">OCamlnet &gt;= 3.6</a></span>.</li>
-<li><span class="ext-a"><a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS &gt;= 2.1.0</a></span>,</li>
-<li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl &gt;= 0.5</a></span>.</li>
+<li><span class="ext-a"><a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS &gt;= 2.2.2</a></span>,</li>
+<li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl &gt;= 0.6</a></span>.</li>
 </ul>
 <p>
 You will need to have the following tools installed to use
@@ -76,7 +76,7 @@ $ apt<span class="hl opt">-</span>get <span class="hl kwc">install</span> opam a
 </li>
 <li>As a regular user, fetch and install an OCaml version and install Stog. The whole
 can be done with the following opam commands:
-<pre class="code-sh">$ opam init <span class="hl opt">--</span>comp<span class="hl opt">=</span><span class="hl num">4.00.1</span>
+<pre class="code-sh">$ opam init <span class="hl opt">--</span>comp<span class="hl opt">=</span><span class="hl num">4.01</span>
 $ opam update
 $ opam <span class="hl kwc">install</span> stog</pre>
 </li>
@@ -89,6 +89,31 @@ $ opam <span class="hl kwc">install</span> stog</pre>
 
 <p>Or pick one of the releases:</p>
 <ul>
+<li><a href="stog-0.9.0.tar.gz">0.9.0</a> [2013-09-24]:
+  <ul id="changes0.9.0">
+<li>New option follow-symlinks in <span class="icode">.stog/config</span> to follow symlinks
+  or not when building the file and directory source tree,</li>
+<li>For elements with doctype=html, prevent self-closing of tags, except
+    <span class="ext-a"><a href="http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements">HTML5 void elements</a></span>,</li>
+<li>New <a href="http://zoggy.github.io/stog/odoc.html">ocamldoc generator</a> (<span class="icode">odoc_stog.cm{o,xs}</span>)
+    to embed ocamldoc-generated documentation into sites generated with stog,</li>
+<li><span class="icode">&lt;elt-*&gt;</span> predefined functions handle a
+    <span class="icode"><span class="hl kwb">elt-hid</span>=<span class="hl str">&quot;hid of element&quot;</span></span> attribute, to access information about
+    another element rather than the current one,</li>
+<li>Fix <a href="http://zoggy.github.io/stog/funs.html#ocaml-eval">ocaml-eval</a>: use return of <span class="icode">Toploop.execute_phrase</span>
+    to consider catched exceptions as errors if <span class="icode"><span class="hl kwb">error-exc</span>=<span class="hl str">&quot;true&quot;</span></span>,</li>
+<li>Fix: allow list of CDATA in ocaml code,</li>
+<li>New <a href="http://zoggy.github.io/stog/getting_started.html#optiondef"><span class="icode">--def</span> command-line option</a>
+    to define a global rule on command line,</li>
+<li>New <a href="http://zoggy.github.io/stog/funs.html#elt-path">elt-path</a> rule, to create a navigation bar,</li>
+<li>Fix Malformed_URL bug when generating with a site-url having an empty path,</li>
+<li><a href="http://zoggy.github.io/stog/funs.html#hcode">hcode</a> and <a href="http://zoggy.github.io/stog/funs.html#icode">icode</a> now keep id attribute
+    in <span class="icode"><span class="hl kwa">&lt;pre&gt;</span></span> or <span class="icode"><span class="hl kwa">&lt;span&gt;</span></span> resulting element,</li>
+<li><a href="http://zoggy.github.io/stog/funs.html#inc">inc</a> handles id attribute to redefine the id of the included node,</li>
+<li>New <span class="icode">filter</span> attribute for the <a href="http://zoggy.github.io/stog/funs.html#elements">elements</a> rule,</li>
+<li><a href="http://zoggy.github.io/stog/funs.html#elements">elements</a> handles ','- or ';'-separated list of element types.</li>
+</ul>
+</li>
 <li><a href="stog-0.8.0.tar.gz">0.8.0</a> [2013-03-19]:
   <ul id="changes0.8.0">
 <li>now depends on <span class="ext-a"><a href="http://zoggy.github.com/ocamlrss/">ocamlrss</a></span> &gt;= 2.1.0,</li>
@@ -232,8 +257,8 @@ To build Stog, you will need:
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://config-file.forge.ocamlcore.org/&quot;</span><span class="hl kwa">&gt;</span>Config-file <span class="hl kwa">&gt;</span>= <span class="hl num">1.1</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://erratique.ch/software/xmlm&quot;</span><span class="hl kwa">&gt;</span>Xmlm <span class="hl kwa">&gt;</span>= <span class="hl num">1.1.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://projects.camlcity.org/projects/ocamlnet.html&quot;</span><span class="hl kwa">&gt;</span>OCamlnet <span class="hl kwa">&gt;</span>= <span class="hl num">3.6</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://zoggy.github.com/ocamlrss/&quot;</span><span class="hl kwa">&gt;</span>OCaml-RSS <span class="hl kwa">&gt;</span>= <span class="hl num">2.1.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span>Xtmpl <span class="hl kwa">&gt;</span>= <span class="hl num">0.5</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://zoggy.github.com/ocamlrss/&quot;</span><span class="hl kwa">&gt;</span>OCaml-RSS <span class="hl kwa">&gt;</span>= <span class="hl num">2.2.2</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span>Xtmpl <span class="hl kwa">&gt;</span>= <span class="hl num">0.6</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/ul&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 You will need to have the following tools installed to use
@@ -263,7 +288,7 @@ $ apt-get install opam autotools-dev m4
 <span class="hl kwa">&lt;li&gt;</span>As a regular user, fetch and install an OCaml version and install Stog. The whole
 can be done with the following opam commands:
 <span class="hl kwa">&lt;command-line&gt;</span>
-$ opam init --comp=<span class="hl num">4.00.1</span>
+$ opam init --comp=<span class="hl num">4.01</span>
 $ opam update
 $ opam install stog
 <span class="hl kwa">&lt;/command-line&gt;</span>
@@ -277,6 +302,9 @@ $ opam install stog
 
 <span class="hl kwa">&lt;p&gt;</span>Or pick one of the releases:<span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.9.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.9.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>-<span class="hl num">09</span>-<span class="hl num">24</span>]:
+  <span class="hl kwa">&lt;inc</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;release-0.9.0#changes&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;changes0.9.0&quot;</span><span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.8.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.8.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>-<span class="hl num">03</span>-<span class="hl num">19</span>]:
   <span class="hl kwa">&lt;inc</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;release-0.8.0#changes&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;changes0.8.0&quot;</span><span class="hl kwa">/&gt;</span>
 <span class="hl kwa">&lt;/li&gt;</span>

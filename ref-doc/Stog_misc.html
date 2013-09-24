@@ -1,136 +1,117 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<link rel="stylesheet" href="style.css" type="text/css">
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
-<link rel="Start" href="index.html">
-<link rel="previous" href="Stog_msg.html">
-<link rel="next" href="Stog_config.html">
-<link rel="Up" href="index.html">
-<link title="Index of types" rel=Appendix href="index_types.html">
-<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
-<link title="Index of values" rel=Appendix href="index_values.html">
-<link title="Index of modules" rel=Appendix href="index_modules.html">
-<link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="Stog_msg" rel="Chapter" href="Stog_msg.html">
-<link title="Stog_misc" rel="Chapter" href="Stog_misc.html">
-<link title="Stog_config" rel="Chapter" href="Stog_config.html">
-<link title="Stog_trie" rel="Chapter" href="Stog_trie.html">
-<link title="Stog_tmap" rel="Chapter" href="Stog_tmap.html">
-<link title="Stog_graph" rel="Chapter" href="Stog_graph.html">
-<link title="Stog_date" rel="Chapter" href="Stog_date.html">
-<link title="Stog_types" rel="Chapter" href="Stog_types.html">
-<link title="Stog_intl" rel="Chapter" href="Stog_intl.html">
-<link title="Stog_find" rel="Chapter" href="Stog_find.html">
-<link title="Stog_tags" rel="Chapter" href="Stog_tags.html">
-<link title="Stog_io" rel="Chapter" href="Stog_io.html">
-<link title="Stog_info" rel="Chapter" href="Stog_info.html">
-<link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
-<link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
-<link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
-<link title="Stog_deps" rel="Chapter" href="Stog_deps.html">
-<link title="Stog_tmpl" rel="Chapter" href="Stog_tmpl.html">
-<link title="Stog_cache" rel="Chapter" href="Stog_cache.html">
-<link title="Stog_filter_types" rel="Chapter" href="Stog_filter_types.html">
-<link title="Stog_filter_parser" rel="Chapter" href="Stog_filter_parser.html">
-<link title="Stog_filter_lexer" rel="Chapter" href="Stog_filter_lexer.html">
-<link title="Stog_filter" rel="Chapter" href="Stog_filter.html">
-<link title="Stog_html" rel="Chapter" href="Stog_html.html">
-<link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
-<link title="Stog_dyn" rel="Chapter" href="Stog_dyn.html"><title>Stog : Stog_misc</title>
-</head>
-<body>
+<ocamldoc with-contents="true">
+<title>Stog library reference documentation : Stog_misc</title><contents><div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_msg.html" title="Stog_msg">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="Stog_config.html" title="Stog_config">Next</a>
+&#160;<a class="up" href="index.html" title="Index">Up</a>
+&#160;<a class="post" href="Stog_config.html" title="Stog_config">Next</a>
 </div>
 <h1>Module <a href="type_Stog_misc.html">Stog_misc</a></h1>
 <pre><span class="keyword">module</span> Stog_misc: <code class="code">sig</code> <a href="Stog_misc.html">..</a> <code class="code">end</code></pre><div class="info">
-Utilities.<br>
+Utilities.<br/>
 </div>
-<hr width="100%">
-<pre><span id="VALsafe_main"><span class="keyword">val</span> safe_main</span> : <code class="type">(unit -> unit) -> unit</code></pre><div class="info">
+<hr width="100%"/>
+<pre><span id="VALsafe_main"><span class="keyword">val</span> safe_main</span> : <code class="type">(unit -&gt; unit) -&gt; unit</code></pre><div class="info">
 <code class="code">safe_main f</code> calls <code class="code">f ()</code> but handles <code class="code">Sys_error</code> and <code class="code">Failure</code>
-   exceptions by exiting with error code 1.<br>
-<b>Author(s):</b> Maxence Guesdon<br>
-<b>Version:</b> 1.0<br>
+   exceptions by exiting with error code 1.<br/>
+<b>Author(s):</b> Maxence Guesdon<br/>
+<b>Version:</b> 1.0<br/>
 </div>
-<pre><span id="VALstring_of_file"><span class="keyword">val</span> string_of_file</span> : <code class="type">string -> string</code></pre><div class="info">
+<pre><span id="VALstring_of_file"><span class="keyword">val</span> string_of_file</span> : <code class="type">string -&gt; string</code></pre><div class="info">
 <code class="code">string_of_file filename</code> returns the content of <code class="code">filename</code>
-   in the form of one string.<br>
-<b>Author(s):</b> Maxence Guesdon<br>
-<b>Version:</b> 1.0<br>
-<b>Raises</b> <code>Sys_error</code> if the file could not be opened.<br>
+   in the form of one string.<br/>
+<b>Author(s):</b> Maxence Guesdon<br/>
+<b>Version:</b> 1.0<br/>
+<b>Raises</b> <code>Sys_error</code> if the file could not be opened.<br/>
 </div>
-<pre><span id="VALfile_of_string"><span class="keyword">val</span> file_of_string</span> : <code class="type">file:string -> string -> unit</code></pre><div class="info">
+<pre><span id="VALfile_of_string"><span class="keyword">val</span> file_of_string</span> : <code class="type">file:string -&gt; string -&gt; unit</code></pre><div class="info">
 <code class="code">file_of_string ~file str</code> creates a file named
-   <code class="code">filename</code> whose content is <code class="code">str</code>.<br>
-<b>Author(s):</b> Fabrice Lefessant<br>
-<b>Version:</b> 1.1<br>
-<b>Raises</b> <code>Sys_error</code> if the file could not be opened.<br>
+   <code class="code">filename</code> whose content is <code class="code">str</code>.<br/>
+<b>Author(s):</b> Fabrice Lefessant<br/>
+<b>Version:</b> 1.1<br/>
+<b>Raises</b> <code>Sys_error</code> if the file could not be opened.<br/>
 </div>
-<pre><span id="VALsplit_string"><span class="keyword">val</span> split_string</span> : <code class="type">?keep_empty:bool -> string -> char list -> string list</code></pre><div class="info">
-Separate the given string according to the given list of characters.<br>
-<b>Author(s):</b> Maxence Guesdon<br>
-<b>Version:</b> 1.1<br>
+<pre><span id="VALcreate_log_fun"><span class="keyword">val</span> create_log_fun</span> : <code class="type">?prefix:string -&gt;<br/>       ?print:(string -&gt; unit) -&gt;<br/>       string -&gt; ?loc:string -&gt; ?level:int -&gt; (unit -&gt; string) -&gt; unit</code></pre><div class="info">
+Creating a log function.
+  <code class="code">create_log_fun env_var</code> get the log level (an integer) from the given
+  environment variable, and returns a function to print messages.
+  This function takes a level (default is 1) and a function returning
+  the message do print. The function is called only if the log level is
+  higher than or equal to the given level.
+  The <code class="code">loc</code> parameter of the returned function can be used to indicate
+  an additional string to print before the log message.
+  If the environment variable is empty or does not contain an integer,
+  then the log level is set to 0.<br/>
+</div>
+<div class="param_info"><code class="code">prefix</code> : can be used to indicate a string prefixing every message</div>
+<div class="param_info"><code class="code">print</code> : can be given to the function build the log function, to
+  indicate an alternative way to display the message; default is to call
+  <code class="code">prerr_endline</code>.</div>
+<pre><span id="VALcreate_log_fun_with_set"><span class="keyword">val</span> create_log_fun_with_set</span> : <code class="type">?prefix:string -&gt;<br/>       ?print:(string -&gt; unit) -&gt;<br/>       string -&gt;<br/>       (?loc:string -&gt; ?level:int -&gt; (unit -&gt; string) -&gt; unit) * (int -&gt; unit)</code></pre><div class="info">
+Same as <code class="code">create_log_fun</code> but also return a function to change
+       the log level.<br/>
+</div>
+<pre><span id="VALsplit_string"><span class="keyword">val</span> split_string</span> : <code class="type">?keep_empty:bool -&gt; string -&gt; char list -&gt; string list</code></pre><div class="info">
+Separate the given string according to the given list of characters.<br/>
+<b>Author(s):</b> Maxence Guesdon<br/>
+<b>Version:</b> 1.1<br/>
 </div>
 <div class="param_info"><code class="code">keep_empty</code> : is <code class="code">false</code> by default. If set to <code class="code">true</code>,
    the empty strings between separators are kept.</div>
-<pre><span id="VALstrip_string"><span class="keyword">val</span> strip_string</span> : <code class="type">string -> string</code></pre><div class="info">
-<code class="code">strip_string s</code> removes all leading and trailing spaces from the given string.<br>
-<b>Author(s):</b> Maxence Guesdon<br>
-<b>Version:</b> 1.0<br>
+<pre><span id="VALstrip_string"><span class="keyword">val</span> strip_string</span> : <code class="type">string -&gt; string</code></pre><div class="info">
+<code class="code">strip_string s</code> removes all leading and trailing spaces from the given string.<br/>
+<b>Author(s):</b> Maxence Guesdon<br/>
+<b>Version:</b> 1.0<br/>
 </div>
-<pre><span id="VALstrip_blank_lines"><span class="keyword">val</span> strip_blank_lines</span> : <code class="type">string -> string</code></pre><div class="info">
+<pre><span id="VALstrip_blank_lines"><span class="keyword">val</span> strip_blank_lines</span> : <code class="type">string -&gt; string</code></pre><div class="info">
 <code class="code">strip_blank_lines s</code> works as <a href="Stog_misc.html#VALstrip_string"><code class="code">Stog_misc.strip_string</code></a>, but only strips
-    full blank lines, without touching spaces or tabulations.<br>
+    full blank lines, without touching spaces or tabulations.<br/>
 </div>
-<pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">string -> string</code></pre><div class="info">
-<code class="code">lowercase s</code> lowers the case of the given string, including accentuated characters.<br>
-<b>Author(s):</b> Maxence Guesdon<br>
-<b>Version:</b> 1.0<br>
+<pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">string -&gt; string</code></pre><div class="info">
+<code class="code">lowercase s</code> lowers the case of the given string, including accentuated characters.<br/>
+<b>Author(s):</b> Maxence Guesdon<br/>
+<b>Version:</b> 1.0<br/>
 </div>
-<pre><span id="VALlist_chop"><span class="keyword">val</span> list_chop</span> : <code class="type">int -> 'h list -> 'h list</code></pre><div class="info">
+<pre><span id="VALlist_chop"><span class="keyword">val</span> list_chop</span> : <code class="type">int -&gt; 'h list -&gt; 'h list</code></pre><div class="info">
 <code class="code">list_chop n l</code> returns the <code class="code">n</code> first elements of list <code class="code">l</code> or the whole
-   list if <code class="code">n &gt;= List.length l</code>.<br>
-<b>Author(s):</b> Maxence Guesdon<br>
-<b>Version:</b> 1.0<br>
+   list if <code class="code">n &gt;= List.length l</code>.<br/>
+<b>Author(s):</b> Maxence Guesdon<br/>
+<b>Version:</b> 1.0<br/>
 </div>
-<pre><span id="VALmkdir"><span class="keyword">val</span> mkdir</span> : <code class="type">string -> unit</code></pre><pre><span id="VALis_prefix"><span class="keyword">val</span> is_prefix</span> : <code class="type">string -> string -> bool</code></pre><div class="info">
-<code class="code">is_prefix pattern s</code> returns true if string <code class="code">s</code> begins with <code class="code">pattern</code>.<br>
-<b>Author(s):</b> Maxence Guesdon<br>
-<b>Version:</b> 1.0<br>
+<pre><span id="VALmkdir"><span class="keyword">val</span> mkdir</span> : <code class="type">string -&gt; unit</code></pre><pre><span id="VALis_prefix"><span class="keyword">val</span> is_prefix</span> : <code class="type">string -&gt; string -&gt; bool</code></pre><div class="info">
+<code class="code">is_prefix pattern s</code> returns true if string <code class="code">s</code> begins with <code class="code">pattern</code>.<br/>
+<b>Author(s):</b> Maxence Guesdon<br/>
+<b>Version:</b> 1.0<br/>
 </div>
-<pre><span id="VALlist_remove_doubles"><span class="keyword">val</span> list_remove_doubles</span> : <code class="type">?pred:('k -> 'k -> bool) -> 'k list -> 'k list</code></pre><div class="info">
+<pre><span id="VALlist_remove_doubles"><span class="keyword">val</span> list_remove_doubles</span> : <code class="type">?pred:('k -&gt; 'k -&gt; bool) -&gt; 'k list -&gt; 'k list</code></pre><div class="info">
 <code class="code">list_remove_doubles ?pred l</code> remove doubles in the given list <code class="code">l</code>, according
-   to the optional equality function <code class="code">pred</code>. Default equality function is <code class="code">(=)</code>.<br>
-<b>Author(s):</b> Maxence Guesdon<br>
-<b>Version:</b> 1.0<br>
+   to the optional equality function <code class="code">pred</code>. Default equality function is <code class="code">(=)</code>.<br/>
+<b>Author(s):</b> Maxence Guesdon<br/>
+<b>Version:</b> 1.0<br/>
 </div>
-<pre><span id="VALmd5"><span class="keyword">val</span> md5</span> : <code class="type">string -> string</code></pre><pre><span id="VALcount_char"><span class="keyword">val</span> count_char</span> : <code class="type">string -> char -> int</code></pre><pre><span id="VALencode_string"><span class="keyword">val</span> encode_string</span> : <code class="type">string -> string</code></pre><pre><span id="VALmap_opt"><span class="keyword">val</span> map_opt</span> : <code class="type">('a -> 'b) -> 'a option -> 'b option</code></pre><pre><span id="VALlist_concat"><span class="keyword">val</span> list_concat</span> : <code class="type">?sep:'a -> 'a list -> 'a list</code></pre><pre><span id="VALdot_to_svg"><span class="keyword">val</span> dot_to_svg</span> : <code class="type">string -> string</code></pre><pre><span id="VALlist_compare"><span class="keyword">val</span> list_compare</span> : <code class="type">('a -> 'a -> int) -> 'a list -> 'a list -> int</code></pre><pre><span id="VALfilename_extension"><span class="keyword">val</span> filename_extension</span> : <code class="type">string -> string</code></pre><div class="info">
+<pre><span id="VALmd5"><span class="keyword">val</span> md5</span> : <code class="type">string -&gt; string</code></pre><pre><span id="VALcount_char"><span class="keyword">val</span> count_char</span> : <code class="type">string -&gt; char -&gt; int</code></pre><pre><span id="VALencode_string"><span class="keyword">val</span> encode_string</span> : <code class="type">string -&gt; string</code></pre><pre><span id="VALmap_opt"><span class="keyword">val</span> map_opt</span> : <code class="type">('a -&gt; 'b) -&gt; 'a option -&gt; 'b option</code></pre><pre><span id="VALlist_concat"><span class="keyword">val</span> list_concat</span> : <code class="type">?sep:'a -&gt; 'a list -&gt; 'a list</code></pre><pre><span id="VALdot_to_svg"><span class="keyword">val</span> dot_to_svg</span> : <code class="type">string -&gt; string</code></pre><pre><span id="VALlist_compare"><span class="keyword">val</span> list_compare</span> : <code class="type">('a -&gt; 'a -&gt; int) -&gt; 'a list -&gt; 'a list -&gt; int</code></pre><pre><span id="VALfilename_extension"><span class="keyword">val</span> filename_extension</span> : <code class="type">string -&gt; string</code></pre><div class="info">
 <code class="code">filename_extension filename</code> returns extension of <code class="code">filename</code>
-  or <code class="code">""</code> if there is no extension.<br>
+  or <code class="code">""</code> if there is no extension.<br/>
 </div>
-<pre><span id="VALsafe_mkdir"><span class="keyword">val</span> safe_mkdir</span> : <code class="type">string -> unit</code></pre><pre><span id="VALopt_of_string"><span class="keyword">val</span> opt_of_string</span> : <code class="type">string -> string option</code></pre><div class="info">
+<pre><span id="VALsafe_mkdir"><span class="keyword">val</span> safe_mkdir</span> : <code class="type">string -&gt; unit</code></pre><pre><span id="VALopt_of_string"><span class="keyword">val</span> opt_of_string</span> : <code class="type">string -&gt; string option</code></pre><div class="info">
 <code class="code">opt_of_string s</code> returns <code class="code">None</code> if the string if empty
-   (length is 0) or <code class="code">Some s</code>.<br>
-<b>Version:</b> 1.0<br>
+   (length is 0) or <code class="code">Some s</code>.<br/>
+<b>Version:</b> 1.0<br/>
 </div>
-<pre><span id="VALstring_of_opt"><span class="keyword">val</span> string_of_opt</span> : <code class="type">string option -> string</code></pre><div class="info">
+<pre><span id="VALstring_of_opt"><span class="keyword">val</span> string_of_opt</span> : <code class="type">string option -&gt; string</code></pre><div class="info">
 <code class="code">string_of_opt s_opt</code> returns the empty string if
-   <code class="code">s_opt = None</code> or <code class="code">s</code> if <code class="code">s_opt = Some s</code>.<br>
-<b>Version:</b> 1.0<br>
+   <code class="code">s_opt = None</code> or <code class="code">s</code> if <code class="code">s_opt = Some s</code>.<br/>
+<b>Version:</b> 1.0<br/>
 </div>
-<pre><span id="VALfile_mtime"><span class="keyword">val</span> file_mtime</span> : <code class="type">string -> float option</code></pre><div class="info">
+<pre><span id="VALfile_mtime"><span class="keyword">val</span> file_mtime</span> : <code class="type">string -&gt; float option</code></pre><div class="info">
 Return mdification time of the given file, or None if
-  the file does not exist.<br>
+  the file does not exist.<br/>
 </div>
-<pre><span id="VALpath_under"><span class="keyword">val</span> path_under</span> : <code class="type">parent:string -> string -> string</code></pre><div class="info">
-<code class="code">path_under ~parent file</code> returns the path to <code class="code">file</code> from <code class="code">parent</code>.<br>
-<b>Raises</b> <code>Failure</code> if <code class="code">parent</code> is not a prefix of <code class="code">file</code>.<br>
+<pre><span id="VALpath_under"><span class="keyword">val</span> path_under</span> : <code class="type">parent:string -&gt; string -&gt; string</code></pre><div class="info">
+<code class="code">path_under ~parent file</code> returns the path to <code class="code">file</code> from <code class="code">parent</code>.<br/>
+<b>Raises</b> <code>Failure</code> if <code class="code">parent</code> is not a prefix of <code class="code">file</code>.<br/>
 </div>
-<pre><span id="VALhighlight"><span class="keyword">val</span> highlight</span> : <code class="type">opts:string -> string -> string</code></pre><div class="info">
+<pre><span id="VALhighlight"><span class="keyword">val</span> highlight</span> : <code class="type">opts:string -&gt; string -&gt; string</code></pre><div class="info">
 Call the highlight command on the given string and make it produce xhtml code.
-  Options are passed to the highlight command.<br>
+  Options are passed to the highlight command.<br/>
 </div>
-<pre><span id="VALstring_of_time"><span class="keyword">val</span> string_of_time</span> : <code class="type">float -> string</code></pre></body></html>
+<pre><span id="VALstring_of_time"><span class="keyword">val</span> string_of_time</span> : <code class="type">float -&gt; string</code></pre></div></contents></ocamldoc>

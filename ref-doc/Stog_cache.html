@@ -1,52 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<link rel="stylesheet" href="style.css" type="text/css">
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
-<link rel="Start" href="index.html">
-<link rel="previous" href="Stog_tmpl.html">
-<link rel="next" href="Stog_filter_types.html">
-<link rel="Up" href="index.html">
-<link title="Index of types" rel=Appendix href="index_types.html">
-<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
-<link title="Index of values" rel=Appendix href="index_values.html">
-<link title="Index of modules" rel=Appendix href="index_modules.html">
-<link title="Index of module types" rel=Appendix href="index_module_types.html">
-<link title="Stog_msg" rel="Chapter" href="Stog_msg.html">
-<link title="Stog_misc" rel="Chapter" href="Stog_misc.html">
-<link title="Stog_config" rel="Chapter" href="Stog_config.html">
-<link title="Stog_trie" rel="Chapter" href="Stog_trie.html">
-<link title="Stog_tmap" rel="Chapter" href="Stog_tmap.html">
-<link title="Stog_graph" rel="Chapter" href="Stog_graph.html">
-<link title="Stog_date" rel="Chapter" href="Stog_date.html">
-<link title="Stog_types" rel="Chapter" href="Stog_types.html">
-<link title="Stog_intl" rel="Chapter" href="Stog_intl.html">
-<link title="Stog_find" rel="Chapter" href="Stog_find.html">
-<link title="Stog_tags" rel="Chapter" href="Stog_tags.html">
-<link title="Stog_io" rel="Chapter" href="Stog_io.html">
-<link title="Stog_info" rel="Chapter" href="Stog_info.html">
-<link title="Stog_ocaml_types" rel="Chapter" href="Stog_ocaml_types.html">
-<link title="Stog_ocaml" rel="Chapter" href="Stog_ocaml.html">
-<link title="Stog_latex" rel="Chapter" href="Stog_latex.html">
-<link title="Stog_deps" rel="Chapter" href="Stog_deps.html">
-<link title="Stog_tmpl" rel="Chapter" href="Stog_tmpl.html">
-<link title="Stog_cache" rel="Chapter" href="Stog_cache.html">
-<link title="Stog_filter_types" rel="Chapter" href="Stog_filter_types.html">
-<link title="Stog_filter_parser" rel="Chapter" href="Stog_filter_parser.html">
-<link title="Stog_filter_lexer" rel="Chapter" href="Stog_filter_lexer.html">
-<link title="Stog_filter" rel="Chapter" href="Stog_filter.html">
-<link title="Stog_html" rel="Chapter" href="Stog_html.html">
-<link title="Stog_plug" rel="Chapter" href="Stog_plug.html">
-<link title="Stog_dyn" rel="Chapter" href="Stog_dyn.html"><title>Stog : Stog_cache</title>
-</head>
-<body>
+<ocamldoc with-contents="true">
+<title>Stog library reference documentation : Stog_cache</title><contents><div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_tmpl.html" title="Stog_tmpl">Previous</a>
-&nbsp;<a class="up" href="index.html" title="Index">Up</a>
-&nbsp;<a class="post" href="Stog_filter_types.html" title="Stog_filter_types">Next</a>
+&#160;<a class="up" href="index.html" title="Index">Up</a>
+&#160;<a class="post" href="Stog_filter_types.html" title="Stog_filter_types">Next</a>
 </div>
 <h1>Module <a href="type_Stog_cache.html">Stog_cache</a></h1>
 <pre><span class="keyword">module</span> Stog_cache: <code class="code">sig</code> <a href="Stog_cache.html">..</a> <code class="code">end</code></pre><div class="info">
-Caching system.<br>
+Caching system.<br/>
 </div>
-<hr width="100%">
-<pre><span class="keyword">module type</span> <a href="Stog_cache.Cache.html">Cache</a> = <code class="code">sig</code> <a href="Stog_cache.Cache.html">..</a> <code class="code">end</code></pre><pre><span id="VALcache_file"><span class="keyword">val</span> cache_file</span> : <code class="type">string -> <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> string</code></pre><pre><span id="VALstog_cache_name"><span class="keyword">val</span> stog_cache_name</span> : <code class="type">string</code></pre><pre><span id="VALregister_cache"><span class="keyword">val</span> register_cache</span> : <code class="type">(module Stog_cache.Cache) -> unit</code></pre><pre><span id="VALapply_loaders"><span class="keyword">val</span> apply_loaders</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> unit</code></pre><pre><span id="VALapply_storers"><span class="keyword">val</span> apply_storers</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> unit</code></pre><pre><span id="VALoutput_cache_info"><span class="keyword">val</span> output_cache_info</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> unit</code></pre><pre><span id="VALset_elt_env"><span class="keyword">val</span> set_elt_env</span> : <code class="type"><a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -> <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -> Xtmpl.env -> unit</code></pre><pre><span id="VALget_cached_elements"><span class="keyword">val</span> get_cached_elements</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -><br>       Xtmpl.env -> <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> list * <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> list</code></pre></body></html>
+<hr width="100%"/>
+<pre><span class="keyword">module type</span> <a href="Stog_cache.Cache.html">Cache</a> = <code class="code">sig</code> <a href="Stog_cache.Cache.html">..</a> <code class="code">end</code></pre><pre><span id="VALcache_file"><span class="keyword">val</span> cache_file</span> : <code class="type">string -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; string</code></pre><pre><span id="VALstog_cache_name"><span class="keyword">val</span> stog_cache_name</span> : <code class="type">string</code></pre><pre><span id="VALregister_cache"><span class="keyword">val</span> register_cache</span> : <code class="type">(module Stog_cache.Cache) -&gt; unit</code></pre><pre><span id="VALapply_loaders"><span class="keyword">val</span> apply_loaders</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; unit</code></pre><pre><span id="VALapply_storers"><span class="keyword">val</span> apply_storers</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; unit</code></pre><pre><span id="VALoutput_cache_info"><span class="keyword">val</span> output_cache_info</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; unit</code></pre><pre><span id="VALset_elt_env"><span class="keyword">val</span> set_elt_env</span> : <code class="type"><a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; Xtmpl.env -&gt; unit</code></pre><pre><span id="VALget_cached_elements"><span class="keyword">val</span> get_cached_elements</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       Xtmpl.env -&gt; <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> list * <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> list</code></pre></div></contents></ocamldoc>
