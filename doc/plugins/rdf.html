@@ -1,6 +1,8 @@
 <page title="Stog-rdf"
 navbar-plugins="active"
 >
+<prepare-toc depth="1">
+<div class="left-toc"><toc/></div>
 <p>
 This plugin allows to easily specify RDF triples within elements,
 to produce a RDF graph for the whole generated site. It also permits
@@ -14,15 +16,20 @@ The following figure summarizes the way it works:
 Additional rewrite levels are defined:
 </p>
 <ul>
-<li>level 200: contain rules to define triples in the graph of each stog element,</li>
+<li>level 200: contain rules to <elt href="#definetriples">define triples</elt>
+     in the graph of each stog element,</li>
 <li>level 201: gather all graphs into one graph and output it in the destination directory,</li>
-<li>level 202: contain rules to load external graphs,</li>
-<li>level 220: contain rules to query the graphs, either graphs built during element rewriting
-or external graphs.</li>
+<li>level 202: contain rules to <elt href="#sources">load external graphs</elt>,</li>
+<li>level 220: contain rules to <elt href="#querying">query the graphs</elt>,
+  either graphs built during element rewriting or external graphs.</li>
 </ul>
-<prepare-toc>
-<toc/>
 <section id="download" title="Download">
+<div class="alert alert-info">
+Stog-rdf is available in <ext-a href="http://opam.ocamlpro.com/">Opam</ext-a>.
+With opam installed, just type the following command to install stog-rdf:
+<command-line>opam install stog-rdf</command-line>
+</div>
+
 <p>
 Stog-rdf is <ext-a href="https://github.com/zoggy/stog-rdf">hosted on Github</ext-a>.
 You can clone the git repository:
@@ -272,7 +279,8 @@ The options associated to each IRI are the options passed to the
 <ext-a href="http://zoggy.github.io/ocaml-rdf/refdoc/Rdf_graph.html#VALopen_graph">Rdf_graph.open_graph</ext-a>
 function in OCaml-RDF.
 </p>
-<p>The files to load must be in Turtle format, by now.
+<p>By default, files are expected to be in Turtle format.
+Setting the "format" option to "rdf/xml" indicates that the file is in RDF/XML format.
 </p>
 </subsection>
 
