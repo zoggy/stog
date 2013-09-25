@@ -1,0 +1,16 @@
+(* pairs (uri, name) specifying namespaces *)
+namespaces =
+  [("http://super-namespace.net/", "super")]
+(* name of main graph output file *)
+graph_file = "graph.rdf"
+(* pairs (uri, options) specifying graphs to load and associate to uris.
+   Options is a list of pair (name, value). To load a load, use ["file",
+   "myfile.ttl"]. Other options can be given to access graphs from a database
+   (see OCaml-RDF's Rdf_graph documentation) *)
+sources =
+  [
+   ("http://foo.net/", [ (file, "foo_net.ttl") ]) ;
+   ("http://foo.bar.net/",
+    [(storage, mysql2); (database, genet_example); (user, genet);
+     (host, localhost); (password, ""); (port, "3306")])
+  ]

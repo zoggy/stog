@@ -1,0 +1,343 @@
+<page title="Stog-rdf"
+navbar-plugins="active"
+>
+<p>
+This plugin allows to easily specify RDF triples within elements,
+to produce a RDF graph for the whole generated site. It also permits
+executing Sparql queries to include data in the generated pages.
+</p>
+<p>
+The following figure summarizes the way it works:
+</p>
+<img src="rdf_fig.svg" width="300"/>
+<p>
+Additional rewrite levels are defined:
+</p>
+<ul>
+<li>level 200: contain rules to define triples in the graph of each stog element,</li>
+<li>level 201: gather all graphs into one graph and output it in the destination directory,</li>
+<li>level 202: contain rules to load external graphs,</li>
+<li>level 220: contain rules to query the graphs, either graphs built during element rewriting
+or external graphs.</li>
+</ul>
+<prepare-toc>
+<toc/>
+<section id="download" title="Download">
+<p>
+Stog-rdf is <ext-a href="https://github.com/zoggy/stog-rdf">hosted on Github</ext-a>.
+You can clone the git repository:
+</p>
+<command-line>
+git clone git@github.com:zoggy/stog-rdf.git
+</command-line>
+<subsection id="releases" title="Releases">
+<ul>
+<li><a href="stog-rdf-0.8.0.tar.gz">0.8.0</a> [2013/03/20]: Upgrade to Stog 0.8.0.</li>
+<li><a href="stog-rdf-0.7.0.tar.gz">0.7.0</a> [2013/02/13]: Minor fixes.</li>
+<li><a href="stog-rdf-0.6.tar.gz">0.6</a>: First numbered release.</li>
+</ul>
+</subsection>
+</section>
+
+<section id="install" title="Installation and usage">
+<subsection title="Compiling and installing">
+<command-line>
+cd stog-rdf-XXX
+make all install
+</command-line>
+<p>
+(you must have <ext-a href="http://zoggy.github.io/ocaml-rdf/">OCaml-RDF</ext-a> &gt;= 0.7.0 installed).
+This will install the <icode>stog-rdf</icode> package with ocamlfind.
+</p>
+</subsection>
+<subsection title="Usage">
+<p>
+To use:
+</p>
+<command-line>stog --package stog-rdf ...</command-line>
+<p>You can also build a custom stog executable, linked with the plugin:
+</p>
+<command-line>mk-stog --package stog-rdf -o mystog ...</command-line>
+<p>
+If you want to use mysql or postresql backends, do not forget to also link
+the required packages, for example for mysql:
+</p>
+<command-line>mk-stog --package stog-rdf,rdf.mysql -o mystog ...</command-line>
+</subsection>
+
+</section>
+<section id="definetriples" title="Defining RDF triples">
+<p>
+Stog-rdf defines a new rewrite rule <ixml>rdf</ixml> associated to level 200.
+Each <ixml>&lt;rdf&gt;</ixml> node corresponds to a new triple whose subject
+is the current element url, or the current block id of the current
+element if the <ixml>&lt;rdf&gt;</ixml> node is contained in a XML node with an
+<ixml>id</ixml> attribute. This triple is added to the graph associated to
+the current element.
+</p>
+<p>
+Another function, associated to level 201, merges all RDF
+graphs into one graph and dumps this graph into a file.
+The name of this file is set in the <icode>.stog/config-rdf</icode> file
+(default is <icode>graph.rdf</icode>).
+</p>
+<subsection id="tripleexamples" title="Examples">
+<hxml><![CDATA[
+<page title="...">
+  ...
+  <rdf pred="..." obj="..."/>
+  ...
+</page>
+]]></hxml>
+<p>
+Subject is the element url, <ixml>pred</ixml> is the IRI of the predicate
+(possibly of the form <ixml>prefix:term</ixml>). <ixml>obj</ixml> is the IRI of
+the object.
+</p>
+<hxml><![CDATA[
+<page title="...">
+  ...
+  <rdf pred="..." href="..."/>
+  ...
+</page>
+]]></hxml>
+<p>
+Subject and predicate are as in the first example. <ixml>href</ixml> is of
+the form <icode>hid[#id]</icode> to indicate an element of the site, and eventually
+a node id in this element. This is reduced to the complete IRI
+of the element or block referenced by <icode>element#id</icode>.
+</p>
+<hxml><![CDATA[
+<page title="...">
+   ...
+   <p id="id1">
+     <rdf pred="..." .../>
+   </p>
+</page>
+]]></hxml>
+<p>
+Here the subject is the IRI formed by the element url and the id of the
+<ixml>&lt;p&gt;</ixml> node, for example <icode>http://my.example.com/foo/page1.html#id1</icode>
+if my element has hid <icode>foo/page1</icode> and base url of the site is
+<icode>http://my.example.com</icode>.
+</p>
+<p>
+To add the triples, the
+<ixml><![CDATA[<rdf pred="pref:term" ...>...</rdf>]]></ixml> node is rewritten to
+</p>
+<hxml><![CDATA[
+<rdf:Description rdf:about="<element-url>[#id]">
+  <pref:term ...>
+    ...
+  </pref:term>
+</rdf:Description>
+]]></hxml>
+<p>
+and this XML tree is parsed using OCaml-RDF
+<ext-a href="http://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</ext-a> parser to add the triples
+to the element graph. If a <ixml>href</ixml> or <ixml>obj</ixml> attribute was used,
+the corresponding IRI is associated to the `rdf:resource` attribute in the rewritten node:
+</p>
+<hxml><![CDATA[
+<rdf:Description rdf:about="<element-url>[#id]">
+  <pref:term rdf:resource="..." ...>
+    ...
+  </pref:term>
+</rdf:Description>
+]]></hxml>
+<p>
+and the whole <ixml>&lt;rdf:Description&gt;</ixml> node is parsed by the RDF/XML parser.
+</p>
+<p>
+It is possible to insert triple with a subject not being the current element
+or a block of the current element, using the <icode>subject</icode> attribute:
+</p>
+<hxml>&lt;rdf subject="http://foo.bar" pred="..." .../&gt;</hxml>
+<p>
+It is sometimes useful to force the subject to be the current element url even if the
+<ixml>&lt;rdf&gt;</ixml> node is under a XML node with an id:
+</p>
+<hxml>&lt;p id="..."&gt;
+  &lt;rdf subject="&amp;lt;elt-url/&amp;gt;" pred="..." .../&gt;
+&lt;/p&gt;
+</hxml>
+</subsection>
+</section>
+<section id="namespaces" title="Namespaces">
+<p>
+Namespaces used in RDF triples in the site must be declared in the
+<icode>.stog/config-rdf</icode> file.
+</p>
+<p>
+The <icode>rdf</icode> and <icode>site</icode> namespaces don't need to be
+specified and are automatically handled respectively as
+</p>
+<hxml><![CDATA[
+rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#
+site:<site base url>
+]]></hxml>
+<p>
+(the site base url is the one specified with <icode>stog:site-url</icode> in the main stog element).
+</p>
+</section>
+<section id="querying" title="Querying graphs">
+<p>
+The <ixml>&lt;rdf-select&gt;</ixml> rule, registered in level 220, allows to
+execute <ext-a href="http://www.w3.org/TR/sparql11-query">Sparql 1.1</ext-a> queries,
+either on the graph built during rewriting of elements
+(see <elt href="#definetriples"/>) or on loaded graphs
+(see <elt href="#sources"/>).
+</p>
+<p>
+The <ixml>&lt;rdf-select&gt;</ixml> rule takes the following parameters:
+</p>
+<ul>
+<li>the query, which must be a SELECT query,</li>
+<li>the template to apply for each solution of the query,</li>
+<li>an optional separator, inserted between each application of the template,</li>
+<li>optional additional arguments as pairs (name, value), which are added to the
+environment when applying the template.</li>
+</ul>
+<p>
+The parameters for the <ixml>&lt;rdf-select&gt;</ixml> rule are given in the following way:
+</p>
+<hxml>
+  &lt;rdf-select [query="..."] [tmpl="..."] [sep="..."] [with-xmls="true"]&gt;DATA&lt;/rdf-select&gt;
+</hxml>
+<p>
+If <ixml>with-xmls="true"</ixml> does not appear in the attributes and DATA is not empty,
+then DATA is used as query, even if the <ixml>query="..."</ixml> attribute is given.
+</p>
+<p>
+If <ixml>with-xmls="true"</ixml> appears in the attribute, then DATA must be XML nodes.
+These nodes can override the previous definition of the query, the template and the
+separator. For example:
+</p>
+<hxml>
+<rdf-select with-xmls="true">
+  <query>SELECT ?url ?name WHERE { ... }</query>
+  <tmpl><li><a href="&lt;url/&gt;"><name/></a></li></tmpl>
+</rdf-select>
+</hxml>
+<p>If the template is specified in the attribute <ixml>tmpl="s"</ixml>, then <icode>s</icode>
+is considered as being a template file. If the template is specified in a <ixml>&lt;tmpl&gt;</ixml>
+node, then the template is the content of the node.
+</p>
+<p>The separator is always "inline", whether it is given in the <ixml>sep="..."</ixml>
+attribute or in the <ixml>&lt;sep&gt;</ixml> node.
+</p>
+<p>If the query is specified in the attributes and in a <ixml>&lt;query&gt;</ixml> node,
+only the content of the node is used.
+</p>
+<p>Additional attributes and additional nodes are used to enrich the environment used
+when applying the template.
+</p>
+<p>The namespaces defined in <icode>.stog/config-rdf</icode> are used to
+automatically define prefixes at the beginning of the query; they do not
+have to be declared again in the query.
+</p>
+<p>For each solution of the query, the template is applied. The variables appearing
+in the solution (the variables in the SELECT clause of the query) are added to
+the environment before applying the template. In the example above, for each solution,
+the variables <icode>?url</icode> and <icode>?name</icode> are associated,
+in the environment used to evaluate the template, to the RDF terms they are mapped to
+in the solution, and they can be referred to
+using <ixml><url/></ixml> and <ixml><name/></ixml>.
+</p>
+</section>
+
+<section id="sources" title="Using external graphs">
+<p>
+External graphs can be loaded at startup time or with the
+<ixml>&lt;rdf-load&gt;</ixml> rule.
+</p>
+<p>
+Once loaded, these graphs can be used in Sparql queries, using
+<icode>FROM</icode> or <icode>FROM NAMED</icode> clauses.
+</p>
+<subsection id="startupgraphs" title="Loading graphs at startup">
+<p>
+Graphs to load at startup are given in the <icode>sources</icode> parameter
+of the <icode>.stog/config-rdf</icode> file. For each graph, we indicate
+its name (an IRI), and options. Options describe where to load the graph
+from.
+</p>
+<p>
+Here is an example of configuration file describing two graphs to load,
+one from a file, and one from a MySQL database:
+</p>
+<hcode defer_="1" lang="ocaml"><include file="./rdf_config.txt" raw="true"/></hcode>
+<p>
+The options associated to each IRI are the options passed to the
+<ext-a href="http://zoggy.github.io/ocaml-rdf/refdoc/Rdf_graph.html#VALopen_graph">Rdf_graph.open_graph</ext-a>
+function in OCaml-RDF.
+</p>
+<p>The files to load must be in Turtle format, by now.
+</p>
+</subsection>
+
+<subsection id="rdfload" title="Loading graphs with rdf-load">
+<p>
+A graph can be loaded when the XML node <ixml>&lt;rdf-load&gt;</ixml>
+is encountered. This rule is registered in level 202.
+</p>
+<p>The general form of using this rule is:</p>
+<hxml><rdf-load att1="..." att2="..."/></hxml>
+<p>Each attribute defines a pair (name, value) used as an option. The complete
+option list is used as the option lists specified in the <icode>.stog/config-rdf</icode>
+file (see <elt href="#startupgraphs"/>).
+</p>
+<p>The following code loads a graph named <icode>http://foo.net/</icode>
+from a Turtle file <icode>foo_net.ttl</icode> in the same directory
+as the source file of the current element:
+</p>
+<hxml><rdf-load name="http://foo.net/" file="./foo_net.ttl"/></hxml>
+<p>
+If the filename is not explicitely relative to the current directory
+(i.e. if it does not start with "." or "..") then is it used as is.
+</p>
+<p>
+The following code loads a graph named <icode>http://foo.bar.net/</icode>
+from a MySQL database, using the given options:
+</p>
+<hxml>&lt;rdf-load name="http://foo.bar.net/" storage="mysql2"
+  database="genet_example" user="genet" host="localhost" password="" port="3306"/&gt;
+</hxml>
+<p>
+If no <icode>file</icode> attribute is given, and the <ixml>&lt;rdf-load&gt;</ixml>
+node is not empty, then the PCDATA content of the node is used as Turtle code
+describing the triples to load in the graph. For example:
+</p>
+<hxml><![CDATA[<rdf-load name="http://foo.bar.org/"><![CDATA[
+@prefix toto: <http://toto.net/>
+<http://foo.bar.org/toto> a toto:file .
+]]>]]&gt;<![CDATA[</rdf-load>]]></hxml>
+
+</subsection>
+</section>
+
+<section id="tips" title="Tips">
+<p>
+To make definition of triples even easier, one can define rules in the
+element header, for example:
+</p>
+<hxml><![CDATA[
+<page title="..." with-contents="true">
+  <isproof><rdf pred="rdf:hasType" obj="science:proof"/></isproof>
+  <contents>
+    ...
+      <div class="proof" id="proof1">
+        <isproof/>
+      ...
+      </div>
+    ...
+  </contents>
+</page>
+]]></hxml>
+<p>
+This will add a triple
+</p>
+<hxml><![CDATA[<element-url>#proof1 rdf:hasType science:proof]]></hxml>
+</section>
+</prepare-toc>
+</page>

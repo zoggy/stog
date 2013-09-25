@@ -41,8 +41,11 @@ build:
 	rm -f $(DEST_DIR)/*/*html
 	$(MAKE) site
 
-site: style
+site: style plugins/rdf_fig.svg
 	$(STOG) $(STOG_OPTIONS) .
+
+plugins/rdf_fig.svg: plugins/rdf_fig.dot
+	dot -Tsvg -o $@ $<
 
 style:
 	mkdir -p $(DEST_DIR)

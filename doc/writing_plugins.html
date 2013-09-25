@@ -1,0 +1,84 @@
+<page title="Developing plugins"
+navbar-doc="active"
+>
+<p>
+Plugins are written in OCaml. The compiled OCaml code is then
+loaded in Stog with the <icode>--plugin</icode> or <icode>--package</icode>
+options of <icode>stog</icode> (see <page href="getting_started#running"/>).
+</p>
+<prepare-toc>
+<toc/>
+<section id="writing" title="Writing the code">
+<p>
+A plugin just registers new functions associated to tags.
+Here is an example:
+</p>
+<hcode lang="ocaml" defer_="1">
+<include file="../plugins/plugin_example.ml" raw="true"/>
+</hcode>
+<p>
+Have a look at the <elt href="/ref-doc/index"/>.
+</p>
+</section>
+
+<section id="compiling" title="Compilation">
+<div id="codecompilation">
+<p>
+The plugin is simply compiled with
+</p>
+<command-line>ocamlfind ocamlopt -package stog -rectypes -shared -o plugin_example.cmxs plugin_example.ml</command-line>
+<p>
+for native code or
+</p>
+<command-line>ocamlfind ocamlc -package stog -rectypes -c plugin_example.ml</command-line>
+<p>for bytecode.</p>
+</div>
+</section>
+
+<section id="using" title="Using">
+<div id="usingcode">
+<p>
+The plugin is used by specifying it on the <icode>stog</icode> command line:
+</p>
+<command-line>stog --plugin plugin_example.cmxs ...</command-line>
+<p>or, if the plugin is installed with ocamlfind:</p>
+<command-line>stog --package plugin_example ...</command-line>
+</div>
+<p>
+With our plugin example, we can use the new "list":
+</p>
+<hcode lang="xml"><![CDATA[
+<list sep="&lt;b&gt; -- &lt;/b&gt;"><span>first thing</span>second thing<div>something else</div></list>]]>
+</hcode>
+<p>
+This will be evaluated (reduced) to
+</p>
+<hcode defer_="1" lang="xml">
+<list sep="&lt;b&gt; -- &lt;/b&gt;"><span>first thing</span>second thing<div>something else</div></list>
+</hcode>
+</section>
+
+<section id="cache" title="Keeping the cache system in the loop">
+<p>
+The cache system (see <elt href="getting_started#running"/>) must be aware
+of dependencies of each element on other elements and files.
+</p>
+<p>
+If a new rule defined by a plugin uses a file or implies a dependency
+from an element to another, this rule must declare this dependency
+using the <elt href="Stog_plug#VALadd_dep"><code>Stog_plug.add_dep</code></elt> function:
+</p>
+<ocaml>Stog_plug.add_dep : Stog_types.elt -> dependency -> unit</ocaml>
+<p>
+If a plugin computes information which could be cached, it can declare a
+new cache for this informations, using the
+<elt href="Stog_plug#VALregister_cache"><code>Stog_plug.register_cache</code></elt> function:
+</p>
+<ocaml>val register_cache : (module Stog_cache.Cache) -> unit</ocaml>
+<p>
+The Cache module to provide is very simple; have a look at the
+<elt href="Stog_cache.Cache"><code>Stog_cache.Cache</code></elt>module type.
+</p>
+</section>
+</prepare-toc>
+</page>
