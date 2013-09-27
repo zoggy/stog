@@ -187,71 +187,6 @@ site:<site base url>
 (the site base url is the one specified with <icode>stog:site-url</icode> in the main stog element).
 </p>
 </section>
-<section id="querying" title="Querying graphs">
-<p>
-The <ixml>&lt;rdf-select&gt;</ixml> rule, registered in level 220, allows to
-execute <ext-a href="http://www.w3.org/TR/sparql11-query">Sparql 1.1</ext-a> queries,
-either on the graph built during rewriting of elements
-(see <elt href="#definetriples"/>) or on loaded graphs
-(see <elt href="#sources"/>).
-</p>
-<p>
-The <ixml>&lt;rdf-select&gt;</ixml> rule takes the following parameters:
-</p>
-<ul>
-<li>the query, which must be a SELECT query,</li>
-<li>the template to apply for each solution of the query,</li>
-<li>an optional separator, inserted between each application of the template,</li>
-<li>optional additional arguments as pairs (name, value), which are added to the
-environment when applying the template.</li>
-</ul>
-<p>
-The parameters for the <ixml>&lt;rdf-select&gt;</ixml> rule are given in the following way:
-</p>
-<hxml>
-  &lt;rdf-select [query="..."] [tmpl="..."] [sep="..."] [with-xmls="true"]&gt;DATA&lt;/rdf-select&gt;
-</hxml>
-<p>
-If <ixml>with-xmls="true"</ixml> does not appear in the attributes and DATA is not empty,
-then DATA is used as query, even if the <ixml>query="..."</ixml> attribute is given.
-</p>
-<p>
-If <ixml>with-xmls="true"</ixml> appears in the attribute, then DATA must be XML nodes.
-These nodes can override the previous definition of the query, the template and the
-separator. For example:
-</p>
-<hxml>
-<rdf-select with-xmls="true">
-  <query>SELECT ?url ?name WHERE { ... }</query>
-  <tmpl><li><a href="&lt;url/&gt;"><name/></a></li></tmpl>
-</rdf-select>
-</hxml>
-<p>If the template is specified in the attribute <ixml>tmpl="s"</ixml>, then <icode>s</icode>
-is considered as being a template file. If the template is specified in a <ixml>&lt;tmpl&gt;</ixml>
-node, then the template is the content of the node.
-</p>
-<p>The separator is always "inline", whether it is given in the <ixml>sep="..."</ixml>
-attribute or in the <ixml>&lt;sep&gt;</ixml> node.
-</p>
-<p>If the query is specified in the attributes and in a <ixml>&lt;query&gt;</ixml> node,
-only the content of the node is used.
-</p>
-<p>Additional attributes and additional nodes are used to enrich the environment used
-when applying the template.
-</p>
-<p>The namespaces defined in <icode>.stog/config-rdf</icode> are used to
-automatically define prefixes at the beginning of the query; they do not
-have to be declared again in the query.
-</p>
-<p>For each solution of the query, the template is applied. The variables appearing
-in the solution (the variables in the SELECT clause of the query) are added to
-the environment before applying the template. In the example above, for each solution,
-the variables <icode>?url</icode> and <icode>?name</icode> are associated,
-in the environment used to evaluate the template, to the RDF terms they are mapped to
-in the solution, and they can be referred to
-using <ixml><url/></ixml> and <ixml><name/></ixml>.
-</p>
-</section>
 
 <section id="sources" title="Using external graphs">
 <p>
@@ -322,6 +257,78 @@ describing the triples to load in the graph. For example:
 ]]>]]&gt;<![CDATA[</rdf-load>]]></hxml>
 
 </subsection>
+</section>
+
+<section id="querying" title="Querying graphs">
+<p>
+The <ixml>&lt;rdf-select&gt;</ixml> rule, registered in level 220, allows to
+execute <ext-a href="http://www.w3.org/TR/sparql11-query">Sparql 1.1</ext-a> queries,
+either on the graph built during rewriting of elements
+(see <elt href="#definetriples"/>) or on loaded graphs
+(see <elt href="#sources"/>).
+</p>
+<p>
+The <ixml>&lt;rdf-select&gt;</ixml> rule takes the following parameters:
+</p>
+<ul>
+<li>the query, which must be a SELECT query,</li>
+<li>the template to apply for each solution of the query,</li>
+<li>an optional separator, inserted between each application of the template,</li>
+<li>optional additional arguments as pairs (name, value), which are added to the
+environment when applying the template.</li>
+</ul>
+<p>
+The parameters for the <ixml>&lt;rdf-select&gt;</ixml> rule are given in the following way:
+</p>
+<hxml>
+  &lt;rdf-select [query="..."] [tmpl="..."] [sep="..."]&gt;DATA&lt;/rdf-select&gt;
+</hxml>
+<p>
+If DATA does not contain XML nodes and DATA is not empty,
+then DATA is used as query, even if the <ixml>query="..."</ixml> attribute is given.
+</p>
+<p>
+If DATA contains XML nodes, they are used to override the previous definition of the
+query, the template and the separator. For example:
+</p>
+<hxml>
+<rdf-select>
+  <query>SELECT ?url ?name WHERE { ... }</query>
+  <tmpl><li><a href="&lt;url/&gt;"><name/></a></li></tmpl>
+</rdf-select>
+</hxml>
+<p>If the template is specified in the attribute <ixml>tmpl="s"</ixml>, then <icode>s</icode>
+is considered as being a template file. If the template is specified in a <ixml>&lt;tmpl&gt;</ixml>
+node, then the template is the content of the node.
+</p>
+<p>The separator is always "inline", whether it is given in the <ixml>sep="..."</ixml>
+attribute or in the <ixml>&lt;sep&gt;</ixml> node.
+</p>
+<p>If the query is specified in the attributes and in a <ixml>&lt;query&gt;</ixml> node,
+only the content of the node is used.
+</p>
+<p>Additional attributes and additional nodes are used to enrich the environment used
+when applying the template.
+</p>
+<p>The namespaces defined in <icode>.stog/config-rdf</icode> are used to
+automatically define prefixes at the beginning of the query; they do not
+have to be declared again in the query.
+</p>
+<p>For each solution of the query, the template is applied. The variables appearing
+in the solution (the variables in the SELECT clause of the query) are added to
+the environment before applying the template. In the example above, for each solution,
+the variables <icode>?url</icode> and <icode>?name</icode> are associated,
+in the environment used to evaluate the template, to the RDF terms they are mapped to
+in the solution, and they can be referred to
+using <ixml><url/></ixml> and <ixml><name/></ixml>.
+</p>
+<p>
+Moreover, additional variables, postfixed with "_rdf", are also added to the environment
+so that the associated term can be inserted in a Sparql-compatible syntax,
+for example to use result in another Sparql query in the template.
+In the example above, results in Sparql syntax are accessible
+using <ixml><url_rdf/></ixml> and <ixml><name_rdf/></ixml>.
+</p>
 </section>
 
 <section id="tips" title="Tips">
