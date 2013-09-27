@@ -1,0 +1,783 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Stog : Stog-rdf</title>
+<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="&lt;navbar-doc/&gt;"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">
+
+
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  <a href="http://zoggy.github.io/stog/plugins.html">Plugins</a>
+  
+  <div class="page-title">Stog-rdf</div>
+</div>
+
+
+
+
+
+<div class="left-toc"><ul class="toc"><li class="toc-section"><a href="#download">Download</a></li><li class="toc-section"><a href="#install">Installation and usage</a></li><li class="toc-section"><a href="#definetriples">Defining RDF triples</a></li><li class="toc-section"><a href="#namespaces">Namespaces</a></li><li class="toc-section"><a href="#sources">Using external graphs</a></li><li class="toc-section"><a href="#querying">Querying graphs</a></li><li class="toc-section"><a href="#tips">Tips</a></li></ul></div>
+<p>
+This plugin allows to easily specify RDF triples within elements,
+to produce a RDF graph for the whole generated site. It also permits
+executing Sparql queries to include data in the generated pages.
+</p>
+<p>
+The following figure summarizes the way it works:
+</p>
+<img src="rdf_fig.svg" width="300"/>
+<p>
+Additional rewrite levels are defined:
+</p>
+<ul>
+<li>level 200: contain rules to <a href="http://zoggy.github.io/stog/plugins/rdf.html#definetriples">define triples</a>
+     in the graph of each stog element,</li>
+<li>level 201: gather all graphs into one graph and output it in the destination directory,</li>
+<li>level 202: contain rules to <a href="http://zoggy.github.io/stog/plugins/rdf.html#sources">load external graphs</a>,</li>
+<li>level 220: contain rules to <a href="http://zoggy.github.io/stog/plugins/rdf.html#querying">query the graphs</a>,
+  either graphs built during element rewriting or external graphs.</li>
+</ul>
+<div class="section"><div class="section-title" id="download">Download</div>
+<div class="alert alert-info">
+Stog-rdf is available in <span class="ext-a"><a href="http://opam.ocamlpro.com/">Opam</a></span>.
+With opam installed, just type the following command to install stog-rdf:
+<pre class="code-sh">opam <span class="hl kwc">install</span> stog<span class="hl opt">-</span>rdf</pre>
+</div>
+
+<p>
+Stog-rdf is <span class="ext-a"><a href="https://github.com/zoggy/stog-rdf">hosted on Github</a></span>.
+You can clone the git repository:
+</p>
+<pre class="code-sh">git clone git@github.com<span class="hl opt">:</span>zoggy<span class="hl opt">/</span>stog<span class="hl opt">-</span>rdf.git</pre>
+<div class="subsection"><div class="subsection-title" id="releases">Releases</div>
+<ul>
+<li><a href="stog-rdf-0.9.0.tar.gz">0.9.0</a> [2013/09/27]:
+  <ul id="changes0.9.0">
+    <li>Upgrade to OCaml-RDF 0.7.0,</li>
+    <li>Upgrade to Stog 0.9.0,</li>
+    <li>New <span class="icode"><span class="hl kwa">&lt;rdf-select&gt;</span></span> rule to
+      <a href="http://zoggy.github.io/stog/plugins/rdf.html#querying">query graphs</a> using Sparql,</li>
+    <li>New <span class="icode"><span class="hl kwa">&lt;rdf-load&gt;</span></span> rule to
+      <a href="http://zoggy.github.io/stog/plugins/rdf.html#rdfload">load external graphs</a>,</li>
+    <li>Ability to define external graphs to <a href="http://zoggy.github.io/stog/plugins/rdf.html#startupgraphs">load at startup</a>,</li>
+    <li>Bug fixes.</li>
+  </ul>
+</li>
+<li><a href="stog-rdf-0.8.0.tar.gz">0.8.0</a> [2013/03/20]: Upgrade to Stog 0.8.0.</li>
+<li><a href="stog-rdf-0.7.0.tar.gz">0.7.0</a> [2013/02/13]: Minor fixes.</li>
+<li><a href="stog-rdf-0.6.tar.gz">0.6</a>: First numbered release.</li>
+</ul>
+</div>
+</div>
+
+<div class="section"><div class="section-title" id="install">Installation and usage</div>
+<div class="subsection"><div class="subsection-title" id="7df6-dda1-73e1-671a">Compiling and installing</div>
+<pre class="code-sh"><span class="hl kwb">cd</span> stog<span class="hl opt">-</span>rdf<span class="hl opt">-</span>XXX
+<span class="hl kwc">make</span> all <span class="hl kwc">install</span></pre>
+<p>
+(you must have <span class="ext-a"><a href="http://zoggy.github.io/ocaml-rdf/">OCaml-RDF</a></span> &gt;= 0.7.0 installed).
+This will install the <span class="icode">stog-rdf</span> package with ocamlfind.
+</p>
+</div>
+<div class="subsection"><div class="subsection-title" id="3467-b3c3-e16e-bfa3">Usage</div>
+<p>
+To use:
+</p>
+<pre class="code-sh">stog <span class="hl opt">--</span>package stog<span class="hl opt">-</span>rdf ...</pre>
+<p>You can also build a custom stog executable, linked with the plugin:
+</p>
+<pre class="code-sh">mk<span class="hl opt">-</span>stog <span class="hl opt">--</span>package stog<span class="hl opt">-</span>rdf <span class="hl opt">-</span>o mystog ...</pre>
+<p>
+If you want to use mysql or postresql backends, do not forget to also link
+the required packages, for example for mysql:
+</p>
+<pre class="code-sh">mk<span class="hl opt">-</span>stog <span class="hl opt">--</span>package stog<span class="hl opt">-</span>rdf<span class="hl opt">,</span>rdf.mysql <span class="hl opt">-</span>o mystog ...</pre>
+</div>
+
+</div>
+<div class="section"><div class="section-title" id="definetriples">Defining RDF triples</div>
+<p>
+Stog-rdf defines a new rewrite rule <span class="icode">rdf</span> associated to level 200.
+Each <span class="icode"><span class="hl kwa">&lt;rdf&gt;</span></span> node corresponds to a new triple whose subject
+is the current element url, or the current block id of the current
+element if the <span class="icode"><span class="hl kwa">&lt;rdf&gt;</span></span> node is contained in a XML node with an
+<span class="icode">id</span> attribute. This triple is added to the graph associated to
+the current element.
+</p>
+<p>
+Another function, associated to level 201, merges all RDF
+graphs into one graph and dumps this graph into a file.
+The name of this file is set in the <span class="icode">.stog/config-rdf</span> file
+(default is <span class="icode">graph.rdf</span>).
+</p>
+<div class="subsection"><div class="subsection-title" id="tripleexamples">Examples</div>
+<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>
+  ...
+  <span class="hl kwa">&lt;rdf</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">obj</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
+  ...
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+<p>
+Subject is the element url, <span class="icode">pred</span> is the IRI of the predicate
+(possibly of the form <span class="icode">prefix:term</span>). <span class="icode">obj</span> is the IRI of
+the object.
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>
+  ...
+  <span class="hl kwa">&lt;rdf</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
+  ...
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+<p>
+Subject and predicate are as in the first example. <span class="icode">href</span> is of
+the form <span class="icode">hid[#id]</span> to indicate an element of the site, and eventually
+a node id in this element. This is reduced to the complete IRI
+of the element or block referenced by <span class="icode">element#id</span>.
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>
+   ...
+   <span class="hl kwa">&lt;p</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;id1&quot;</span><span class="hl kwa">&gt;</span>
+     <span class="hl kwa">&lt;rdf</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">/&gt;</span>
+   <span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+<p>
+Here the subject is the IRI formed by the element url and the id of the
+<span class="icode"><span class="hl kwa">&lt;p&gt;</span></span> node, for example <span class="icode">http://my.example.com/foo/page1.html#id1</span>
+if my element has hid <span class="icode">foo/page1</span> and base url of the site is
+<span class="icode">http://my.example.com</span>.
+</p>
+<p>
+To add the triples, the
+<span class="icode"><span class="hl kwa">&lt;rdf</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;pref:term&quot;</span> ...<span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/rdf&gt;</span></span> node is rewritten to
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;rdf:Description</span> rdf:<span class="hl kwb">about</span>=<span class="hl str">&quot;&lt;element-url&gt;[#id]&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;pref:term</span> ...<span class="hl kwa">&gt;</span>
+    ...
+  <span class="hl kwa">&lt;/pref:term&gt;</span>
+<span class="hl kwa">&lt;/rdf:Description&gt;</span></pre>
+<p>
+and this XML tree is parsed using OCaml-RDF
+<span class="ext-a"><a href="http://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a></span> parser to add the triples
+to the element graph. If a <span class="icode">href</span> or <span class="icode">obj</span> attribute was used,
+the corresponding IRI is associated to the `rdf:resource` attribute in the rewritten node:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;rdf:Description</span> rdf:<span class="hl kwb">about</span>=<span class="hl str">&quot;&lt;element-url&gt;[#id]&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;pref:term</span> rdf:<span class="hl kwb">resource</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>
+    ...
+  <span class="hl kwa">&lt;/pref:term&gt;</span>
+<span class="hl kwa">&lt;/rdf:Description&gt;</span></pre>
+<p>
+and the whole <span class="icode"><span class="hl kwa">&lt;rdf:Description&gt;</span></span> node is parsed by the RDF/XML parser.
+</p>
+<p>
+It is possible to insert triple with a subject not being the current element
+or a block of the current element, using the <span class="icode">subject</span> attribute:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;rdf</span> <span class="hl kwb">subject</span>=<span class="hl str">&quot;http://foo.bar&quot;</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">/&gt;</span></pre>
+<p>
+It is sometimes useful to force the subject to be the current element url even if the
+<span class="icode"><span class="hl kwa">&lt;rdf&gt;</span></span> node is under a XML node with an id:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;p</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;rdf</span> <span class="hl kwb">subject</span>=<span class="hl str">&quot;&amp;lt;elt-url/&amp;gt;&quot;</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;/p&gt;</span></pre>
+</div>
+</div>
+<div class="section"><div class="section-title" id="namespaces">Namespaces</div>
+<p>
+Namespaces used in RDF triples in the site must be declared in the
+<span class="icode">.stog/config-rdf</span> file.
+</p>
+<p>
+The <span class="icode">rdf</span> and <span class="icode">site</span> namespaces don't need to be
+specified and are automatically handled respectively as
+</p>
+<pre class="code-xml">rdf:http://www.w3.org/<span class="hl num">1999</span>/<span class="hl num">02</span>/<span class="hl num">22</span>-rdf-syntax-ns#
+site:<span class="hl kwa">&lt;site</span> base url<span class="hl kwa">&gt;</span></pre>
+<p>
+(the site base url is the one specified with <span class="icode">stog:site-url</span> in the main stog element).
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="sources">Using external graphs</div>
+<p>
+External graphs can be loaded at startup time or with the
+<span class="icode"><span class="hl kwa">&lt;rdf-load&gt;</span></span> rule.
+</p>
+<p>
+Once loaded, these graphs can be used in Sparql queries, using
+<span class="icode">FROM</span> or <span class="icode">FROM NAMED</span> clauses.
+</p>
+<div class="subsection"><div class="subsection-title" id="startupgraphs">Loading graphs at startup</div>
+<p>
+Graphs to load at startup are given in the <span class="icode">sources</span> parameter
+of the <span class="icode">.stog/config-rdf</span> file. For each graph, we indicate
+its name (an IRI), and options. Options describe where to load the graph
+from.
+</p>
+<p>
+Here is an example of configuration file describing two graphs to load,
+one from a file, and one from a MySQL database:
+</p>
+<pre class="code-ocaml"><span class="hl com">(* pairs (uri, name) specifying namespaces *)</span>
+namespaces <span class="hl opt">=</span>
+  <span class="hl opt">[(</span><span class="hl str">&quot;http://super-namespace.net/&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;super&quot;</span><span class="hl opt">)]</span>
+<span class="hl com">(* name of main graph output file *)</span>
+graph_file <span class="hl opt">=</span> <span class="hl str">&quot;graph.rdf&quot;</span>
+<span class="hl com">(* pairs (uri, options) specifying graphs to load and associate to uris.</span>
+<span class="hl com">   Options is a list of pair (name, value). To load a load, use [&quot;file&quot;,</span>
+<span class="hl com">   &quot;myfile.ttl&quot;]. Other options can be given to access graphs from a database</span>
+<span class="hl com">   (see OCaml-RDF's Rdf_graph documentation) *)</span>
+sources <span class="hl opt">=</span>
+  <span class="hl opt">[</span>
+   <span class="hl opt">(</span><span class="hl str">&quot;http://foo.net/&quot;</span><span class="hl opt">, [ (</span>file<span class="hl opt">,</span> <span class="hl str">&quot;foo_net.ttl&quot;</span><span class="hl opt">) ]) ;</span>
+   <span class="hl opt">(</span><span class="hl str">&quot;http://foo.bar.net/&quot;</span><span class="hl opt">,</span>
+    <span class="hl opt">[(</span>storage<span class="hl opt">,</span> mysql2<span class="hl opt">); (</span>database<span class="hl opt">,</span> genet_example<span class="hl opt">); (</span>user<span class="hl opt">,</span> genet<span class="hl opt">);</span>
+     <span class="hl opt">(</span>host<span class="hl opt">,</span> localhost<span class="hl opt">); (</span>password<span class="hl opt">,</span> <span class="hl str">&quot;&quot;</span><span class="hl opt">); (</span>port<span class="hl opt">,</span> <span class="hl str">&quot;3306&quot;</span><span class="hl opt">)])</span>
+  <span class="hl opt">]</span></pre>
+<p>
+The options associated to each IRI are the options passed to the
+<span class="ext-a"><a href="http://zoggy.github.io/ocaml-rdf/refdoc/Rdf_graph.html#VALopen_graph">Rdf_graph.open_graph</a></span>
+function in OCaml-RDF.
+</p>
+<p>By default, files are expected to be in Turtle format.
+Setting the &quot;format&quot; option to &quot;rdf/xml&quot; indicates that the file is in RDF/XML format.
+</p>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="rdfload">Loading graphs with rdf-load</div>
+<p>
+A graph can be loaded when the XML node <span class="icode"><span class="hl kwa">&lt;rdf-load&gt;</span></span>
+is encountered. This rule is registered in level 202.
+</p>
+<p>The general form of using this rule is:</p>
+<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span> <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<p>Each attribute defines a pair (name, value) used as an option. The complete
+option list is used as the option lists specified in the <span class="icode">.stog/config-rdf</span>
+file (see <a href="http://zoggy.github.io/stog/plugins/rdf.html#startupgraphs">Loading graphs at startup</a>).
+</p>
+<p>The following code loads a graph named <span class="icode">http://foo.net/</span>
+from a Turtle file <span class="icode">foo_net.ttl</span> in the same directory
+as the source file of the current element:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;http://foo.net/&quot;</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./foo_net.ttl&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<p>
+If the filename is not explicitely relative to the current directory
+(i.e. if it does not start with &quot;.&quot; or &quot;..&quot;) then is it used as is.
+</p>
+<p>
+The following code loads a graph named <span class="icode">http://foo.bar.net/</span>
+from a MySQL database, using the given options:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;http://foo.bar.net/&quot;</span> <span class="hl kwb">storage</span>=<span class="hl str">&quot;mysql2&quot;</span>
+  <span class="hl kwb">database</span>=<span class="hl str">&quot;genet_example&quot;</span> <span class="hl kwb">user</span>=<span class="hl str">&quot;genet&quot;</span> <span class="hl kwb">host</span>=<span class="hl str">&quot;localhost&quot;</span> <span class="hl kwb">password</span>=<span class="hl str">&quot;&quot;</span> <span class="hl kwb">port</span>=<span class="hl str">&quot;3306&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<p>
+If no <span class="icode">file</span> attribute is given, and the <span class="icode"><span class="hl kwa">&lt;rdf-load&gt;</span></span>
+node is not empty, then the PCDATA content of the node is used as Turtle code
+describing the triples to load in the graph. For example:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;http://foo.bar.org/&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[
+@prefix toto: <span class="hl kwa">&lt;http:</span>//toto.net<span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;http:</span>//foo.bar.org/toto<span class="hl kwa">&gt;</span> a toto:file .
+]]<span class="hl kwa">&gt;&lt;/rdf-load&gt;</span></pre>
+
+</div>
+</div>
+
+<div class="section"><div class="section-title" id="querying">Querying graphs</div>
+<p>
+The <span class="icode"><span class="hl kwa">&lt;rdf-select&gt;</span></span> rule, registered in level 220, allows to
+execute <span class="ext-a"><a href="http://www.w3.org/TR/sparql11-query">Sparql 1.1</a></span> queries,
+either on the graph built during rewriting of elements
+(see <a href="http://zoggy.github.io/stog/plugins/rdf.html#definetriples">Defining RDF triples</a>) or on loaded graphs
+(see <a href="http://zoggy.github.io/stog/plugins/rdf.html#sources">Using external graphs</a>).
+</p>
+<p>
+The <span class="icode"><span class="hl kwa">&lt;rdf-select&gt;</span></span> rule takes the following parameters:
+</p>
+<ul>
+<li>the query, which must be a SELECT query,</li>
+<li>the template to apply for each solution of the query,</li>
+<li>an optional separator, inserted between each application of the template,</li>
+<li>optional additional arguments as pairs (name, value), which are added to the
+environment when applying the template.</li>
+</ul>
+<p>
+The parameters for the <span class="icode"><span class="hl kwa">&lt;rdf-select&gt;</span></span> rule are given in the following way:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;rdf-select</span> [<span class="hl kwb">query</span>=<span class="hl str">&quot;...&quot;</span>] [<span class="hl kwb">tmpl</span>=<span class="hl str">&quot;...&quot;</span>] [<span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span>]<span class="hl kwa">&gt;</span>DATA<span class="hl kwa">&lt;/rdf-select&gt;</span></pre>
+<p>
+If DATA does not contain XML nodes and DATA is not empty,
+then DATA is used as query, even if the <span class="icode"><span class="hl kwb">query</span>=<span class="hl str">&quot;...&quot;</span></span> attribute is given.
+</p>
+<p>
+If DATA contains XML nodes, they are used to override the previous definition of the
+query, the template and the separator. For example:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;rdf-select&gt;</span>
+  <span class="hl kwa">&lt;query&gt;</span>SELECT ?url ?name WHERE { ... }<span class="hl kwa">&lt;/query&gt;</span>
+  <span class="hl kwa">&lt;tmpl&gt;&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;url/&amp;gt;&quot;</span><span class="hl kwa">&gt;&lt;name/&gt;&lt;/a&gt;&lt;/li&gt;&lt;/tmpl&gt;</span>
+<span class="hl kwa">&lt;/rdf-select&gt;</span></pre>
+<p>If the template is specified in the attribute <span class="icode"><span class="hl kwb">tmpl</span>=<span class="hl str">&quot;s&quot;</span></span>, then <span class="icode">s</span>
+is considered as being a template file. If the template is specified in a <span class="icode"><span class="hl kwa">&lt;tmpl&gt;</span></span>
+node, then the template is the content of the node.
+</p>
+<p>The separator is always &quot;inline&quot;, whether it is given in the <span class="icode"><span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span></span>
+attribute or in the <span class="icode"><span class="hl kwa">&lt;sep&gt;</span></span> node.
+</p>
+<p>If the query is specified in the attributes and in a <span class="icode"><span class="hl kwa">&lt;query&gt;</span></span> node,
+only the content of the node is used.
+</p>
+<p>Additional attributes and additional nodes are used to enrich the environment used
+when applying the template.
+</p>
+<p>The namespaces defined in <span class="icode">.stog/config-rdf</span> are used to
+automatically define prefixes at the beginning of the query; they do not
+have to be declared again in the query.
+</p>
+<p>For each solution of the query, the template is applied. The variables appearing
+in the solution (the variables in the SELECT clause of the query) are added to
+the environment before applying the template. In the example above, for each solution,
+the variables <span class="icode">?url</span> and <span class="icode">?name</span> are associated,
+in the environment used to evaluate the template, to the RDF terms they are mapped to
+in the solution, and they can be referred to
+using <span class="icode"><span class="hl kwa">&lt;url/&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;name/&gt;</span></span>.
+</p>
+<p>
+Moreover, additional variables, postfixed with &quot;_rdf&quot;, are also added to the environment
+so that the associated term can be inserted in a Sparql-compatible syntax,
+for example to use result in another Sparql query in the template.
+In the example above, results in Sparql syntax are accessible
+using <span class="icode"><span class="hl kwa">&lt;url_rdf/&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;name_rdf/&gt;</span></span>.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="tips">Tips</div>
+<p>
+To make definition of triples even easier, one can define rules in the
+element header, for example:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;isproof&gt;&lt;rdf</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;rdf:hasType&quot;</span> <span class="hl kwb">obj</span>=<span class="hl str">&quot;science:proof&quot;</span><span class="hl kwa">/&gt;&lt;/isproof&gt;</span>
+  <span class="hl kwa">&lt;contents&gt;</span>
+    ...
+      <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;proof&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;proof1&quot;</span><span class="hl kwa">&gt;</span>
+        <span class="hl kwa">&lt;isproof/&gt;</span>
+      ...
+      <span class="hl kwa">&lt;/div&gt;</span>
+    ...
+  <span class="hl kwa">&lt;/contents&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+<p>
+This will add a triple
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;element-url&gt;</span>#proof1 rdf:hasType science:proof</pre>
+</div>
+
+
+
+
+
+
+<p class="alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Stog-rdf&quot;</span>
+<span class="hl kwb">navbar-plugins</span>=<span class="hl str">&quot;active&quot;</span>
+<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;prepare-toc</span> <span class="hl kwb">depth</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;left-toc&quot;</span><span class="hl kwa">&gt;&lt;toc/&gt;&lt;/div&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+This plugin allows to easily specify RDF triples within elements,
+to produce a RDF graph for the whole generated site. It also permits
+executing Sparql queries to include data in the generated pages.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The following figure summarizes the way it works:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;img</span> <span class="hl kwb">src</span>=<span class="hl str">&quot;rdf_fig.svg&quot;</span> <span class="hl kwb">width</span>=<span class="hl str">&quot;300&quot;</span><span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Additional rewrite levels are defined:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>level <span class="hl num">200</span>: contain rules to <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#definetriples&quot;</span><span class="hl kwa">&gt;</span>define triples<span class="hl kwa">&lt;/elt&gt;</span>
+     in the graph of each stog element,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>level <span class="hl num">201</span>: gather all graphs into one graph and output it in the destination directory,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>level <span class="hl num">202</span>: contain rules to <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#sources&quot;</span><span class="hl kwa">&gt;</span>load external graphs<span class="hl kwa">&lt;/elt&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>level <span class="hl num">220</span>: contain rules to <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#querying&quot;</span><span class="hl kwa">&gt;</span>query the graphs<span class="hl kwa">&lt;/elt&gt;</span>,
+  either graphs built during element rewriting or external graphs.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;download&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Download&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;alert alert-info&quot;</span><span class="hl kwa">&gt;</span>
+Stog-rdf is available in <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://opam.ocamlpro.com/&quot;</span><span class="hl kwa">&gt;</span>Opam<span class="hl kwa">&lt;/ext-a&gt;</span>.
+With opam installed, just type the following command to install stog-rdf:
+<span class="hl kwa">&lt;command-line&gt;</span>opam install stog-rdf<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;/div&gt;</span>
+
+<span class="hl kwa">&lt;p&gt;</span>
+Stog-rdf is <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/stog-rdf&quot;</span><span class="hl kwa">&gt;</span>hosted on Github<span class="hl kwa">&lt;/ext-a&gt;</span>.
+You can clone the git repository:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;command-line&gt;</span>
+git clone git@github.com:zoggy/stog-rdf.git
+<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;releases&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Releases&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-rdf-0.9.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.9.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>/<span class="hl num">09</span>/<span class="hl num">27</span>]:
+  <span class="hl kwa">&lt;ul</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;changes0.9.0&quot;</span><span class="hl kwa">&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Upgrade to OCaml-RDF <span class="hl num">0.7.0</span>,<span class="hl kwa">&lt;/li&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Upgrade to Stog <span class="hl num">0.9.0</span>,<span class="hl kwa">&lt;/li&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>New <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf-select<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> rule to
+      <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#querying&quot;</span><span class="hl kwa">&gt;</span>query graphs<span class="hl kwa">&lt;/elt&gt;</span> using Sparql,<span class="hl kwa">&lt;/li&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>New <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf-load<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> rule to
+      <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#rdfload&quot;</span><span class="hl kwa">&gt;</span>load external graphs<span class="hl kwa">&lt;/elt&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Ability to define external graphs to <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#startupgraphs&quot;</span><span class="hl kwa">&gt;</span>load at startup<span class="hl kwa">&lt;/elt&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Bug fixes.<span class="hl kwa">&lt;/li&gt;</span>
+  <span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-rdf-0.8.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.8.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>/<span class="hl num">03</span>/<span class="hl num">20</span>]: Upgrade to Stog <span class="hl num">0.8.0</span>.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-rdf-0.7.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.7.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>/<span class="hl num">02</span>/<span class="hl num">13</span>]: Minor fixes.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-rdf-0.6.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.6</span><span class="hl kwa">&lt;/a&gt;</span>: First numbered release.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/subsection&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;install&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Installation and usage&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Compiling and installing&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;command-line&gt;</span>
+cd stog-rdf-XXX
+make all install
+<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+(you must have <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://zoggy.github.io/ocaml-rdf/&quot;</span><span class="hl kwa">&gt;</span>OCaml-RDF<span class="hl kwa">&lt;/ext-a&gt;</span> <span class="hl kwd">&amp;gt;</span>= <span class="hl num">0.7.0</span> installed).
+This will install the <span class="hl kwa">&lt;icode&gt;</span>stog-rdf<span class="hl kwa">&lt;/icode&gt;</span> package with ocamlfind.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/subsection&gt;</span>
+<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Usage&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+To use:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;command-line&gt;</span>stog --package stog-rdf ...<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>You can also build a custom stog executable, linked with the plugin:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;command-line&gt;</span>mk-stog --package stog-rdf -o mystog ...<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+If you want to use mysql or postresql backends, do not forget to also link
+the required packages, for example for mysql:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;command-line&gt;</span>mk-stog --package stog-rdf,rdf.mysql -o mystog ...<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;/subsection&gt;</span>
+
+<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;definetriples&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Defining RDF triples&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Stog-rdf defines a new rewrite rule <span class="hl kwa">&lt;ixml&gt;</span>rdf<span class="hl kwa">&lt;/ixml&gt;</span> associated to level <span class="hl num">200</span>.
+Each <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node corresponds to a new triple whose subject
+is the current element url, or the current block id of the current
+element if the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node is contained in a XML node with an
+<span class="hl kwa">&lt;ixml&gt;</span>id<span class="hl kwa">&lt;/ixml&gt;</span> attribute. This triple is added to the graph associated to
+the current element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Another function, associated to level <span class="hl num">201</span>, merges all RDF
+graphs into one graph and dumps this graph into a file.
+The name of this file is set in the <span class="hl kwa">&lt;icode&gt;</span>.stog/config-rdf<span class="hl kwa">&lt;/icode&gt;</span> file
+(default is <span class="hl kwa">&lt;icode&gt;</span>graph.rdf<span class="hl kwa">&lt;/icode&gt;</span>).
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;tripleexamples&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Examples&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span>&lt;![CDATA[
+<span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>
+  ...
+  <span class="hl kwa">&lt;rdf</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">obj</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
+  ...
+<span class="hl kwa">&lt;/page&gt;</span>
+]]<span class="hl kwa">&gt;&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Subject is the element url, <span class="hl kwa">&lt;ixml&gt;</span>pred<span class="hl kwa">&lt;/ixml&gt;</span> is the IRI of the predicate
+(possibly of the form <span class="hl kwa">&lt;ixml&gt;</span>prefix:term<span class="hl kwa">&lt;/ixml&gt;</span>). <span class="hl kwa">&lt;ixml&gt;</span>obj<span class="hl kwa">&lt;/ixml&gt;</span> is the IRI of
+the object.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span>&lt;![CDATA[
+<span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>
+  ...
+  <span class="hl kwa">&lt;rdf</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span>
+  ...
+<span class="hl kwa">&lt;/page&gt;</span>
+]]<span class="hl kwa">&gt;&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Subject and predicate are as in the first example. <span class="hl kwa">&lt;ixml&gt;</span>href<span class="hl kwa">&lt;/ixml&gt;</span> is of
+the form <span class="hl kwa">&lt;icode&gt;</span>hid[#id]<span class="hl kwa">&lt;/icode&gt;</span> to indicate an element of the site, and eventually
+a node id in this element. This is reduced to the complete IRI
+of the element or block referenced by <span class="hl kwa">&lt;icode&gt;</span>element#id<span class="hl kwa">&lt;/icode&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span>&lt;![CDATA[
+<span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>
+   ...
+   <span class="hl kwa">&lt;p</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;id1&quot;</span><span class="hl kwa">&gt;</span>
+     <span class="hl kwa">&lt;rdf</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">/&gt;</span>
+   <span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span>
+]]<span class="hl kwa">&gt;&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Here the subject is the IRI formed by the element url and the id of the
+<span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>p<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node, for example <span class="hl kwa">&lt;icode&gt;</span>http://my.example.com/foo/page1.html#id1<span class="hl kwa">&lt;/icode&gt;</span>
+if my element has hid <span class="hl kwa">&lt;icode&gt;</span>foo/page1<span class="hl kwa">&lt;/icode&gt;</span> and base url of the site is
+<span class="hl kwa">&lt;icode&gt;</span>http://my.example.com<span class="hl kwa">&lt;/icode&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+To add the triples, the
+<span class="hl kwa">&lt;ixml&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;rdf</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;pref:term&quot;</span> ...<span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/rdf&gt;</span>]]<span class="hl kwa">&gt;&lt;/ixml&gt;</span> node is rewritten to
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span>&lt;![CDATA[
+<span class="hl kwa">&lt;rdf:Description</span> rdf:<span class="hl kwb">about</span>=<span class="hl str">&quot;&lt;element-url&gt;[#id]&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;pref:term</span> ...<span class="hl kwa">&gt;</span>
+    ...
+  <span class="hl kwa">&lt;/pref:term&gt;</span>
+<span class="hl kwa">&lt;/rdf:Description&gt;</span>
+]]<span class="hl kwa">&gt;&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+and this XML tree is parsed using OCaml-RDF
+<span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://www.w3.org/TR/rdf-syntax-grammar/&quot;</span><span class="hl kwa">&gt;</span>RDF/XML<span class="hl kwa">&lt;/ext-a&gt;</span> parser to add the triples
+to the element graph. If a <span class="hl kwa">&lt;ixml&gt;</span>href<span class="hl kwa">&lt;/ixml&gt;</span> or <span class="hl kwa">&lt;ixml&gt;</span>obj<span class="hl kwa">&lt;/ixml&gt;</span> attribute was used,
+the corresponding IRI is associated to the `rdf:resource` attribute in the rewritten node:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span>&lt;![CDATA[
+<span class="hl kwa">&lt;rdf:Description</span> rdf:<span class="hl kwb">about</span>=<span class="hl str">&quot;&lt;element-url&gt;[#id]&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;pref:term</span> rdf:<span class="hl kwb">resource</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>
+    ...
+  <span class="hl kwa">&lt;/pref:term&gt;</span>
+<span class="hl kwa">&lt;/rdf:Description&gt;</span>
+]]<span class="hl kwa">&gt;&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+and the whole <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf:Description<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node is parsed by the RDF/XML parser.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+It is possible to insert triple with a subject not being the current element
+or a block of the current element, using the <span class="hl kwa">&lt;icode&gt;</span>subject<span class="hl kwa">&lt;/icode&gt;</span> attribute:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf <span class="hl kwb">subject</span>=<span class="hl str">&quot;http://foo.bar&quot;</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;...&quot;</span> .../<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+It is sometimes useful to force the subject to be the current element url even if the
+<span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node is under a XML node with an id:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span><span class="hl kwd">&amp;lt;</span>p <span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwd">&amp;gt;</span>
+  <span class="hl kwd">&amp;lt;</span>rdf <span class="hl kwb">subject</span>=<span class="hl str">&quot;&amp;amp;lt;elt-url/&amp;amp;gt;&quot;</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;...&quot;</span> .../<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwd">&amp;lt;</span>/p<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwa">&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;/subsection&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;namespaces&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Namespaces&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Namespaces used in RDF triples in the site must be declared in the
+<span class="hl kwa">&lt;icode&gt;</span>.stog/config-rdf<span class="hl kwa">&lt;/icode&gt;</span> file.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The <span class="hl kwa">&lt;icode&gt;</span>rdf<span class="hl kwa">&lt;/icode&gt;</span> and <span class="hl kwa">&lt;icode&gt;</span>site<span class="hl kwa">&lt;/icode&gt;</span> namespaces don't need to be
+specified and are automatically handled respectively as
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span>&lt;![CDATA[
+rdf:http://www.w3.org/<span class="hl num">1999</span>/<span class="hl num">02</span>/<span class="hl num">22</span>-rdf-syntax-ns#
+site:<span class="hl kwa">&lt;site</span> base url<span class="hl kwa">&gt;</span>
+]]<span class="hl kwa">&gt;&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+(the site base url is the one specified with <span class="hl kwa">&lt;icode&gt;</span>stog:site-url<span class="hl kwa">&lt;/icode&gt;</span> in the main stog element).
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;sources&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Using external graphs&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+External graphs can be loaded at startup time or with the
+<span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf-load<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> rule.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Once loaded, these graphs can be used in Sparql queries, using
+<span class="hl kwa">&lt;icode&gt;</span>FROM<span class="hl kwa">&lt;/icode&gt;</span> or <span class="hl kwa">&lt;icode&gt;</span>FROM NAMED<span class="hl kwa">&lt;/icode&gt;</span> clauses.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;startupgraphs&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Loading graphs at startup&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Graphs to load at startup are given in the <span class="hl kwa">&lt;icode&gt;</span>sources<span class="hl kwa">&lt;/icode&gt;</span> parameter
+of the <span class="hl kwa">&lt;icode&gt;</span>.stog/config-rdf<span class="hl kwa">&lt;/icode&gt;</span> file. For each graph, we indicate
+its name (an IRI), and options. Options describe where to load the graph
+from.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Here is an example of configuration file describing two graphs to load,
+one from a file, and one from a MySQL database:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./rdf_config.txt&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The options associated to each IRI are the options passed to the
+<span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://zoggy.github.io/ocaml-rdf/refdoc/Rdf_graph.html#VALopen_graph&quot;</span><span class="hl kwa">&gt;</span>Rdf_graph.open_graph<span class="hl kwa">&lt;/ext-a&gt;</span>
+function in OCaml-RDF.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>By default, files are expected to be in Turtle format.
+Setting the <span class="hl str">&quot;format&quot;</span> option to <span class="hl str">&quot;rdf/xml&quot;</span> indicates that the file is in RDF/XML format.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/subsection&gt;</span>
+
+<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;rdfload&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Loading graphs with rdf-load&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+A graph can be loaded when the XML node <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf-load<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span>
+is encountered. This rule is registered in level <span class="hl num">202</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>The general form of using this rule is:<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;&lt;rdf-load</span> <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>Each attribute defines a pair (name, value) used as an option. The complete
+option list is used as the option lists specified in the <span class="hl kwa">&lt;icode&gt;</span>.stog/config-rdf<span class="hl kwa">&lt;/icode&gt;</span>
+file (see <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#startupgraphs&quot;</span><span class="hl kwa">/&gt;</span>).
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>The following code loads a graph named <span class="hl kwa">&lt;icode&gt;</span>http://foo.net/<span class="hl kwa">&lt;/icode&gt;</span>
+from a Turtle file <span class="hl kwa">&lt;icode&gt;</span>foo_net.ttl<span class="hl kwa">&lt;/icode&gt;</span> in the same directory
+as the source file of the current element:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;&lt;rdf-load</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;http://foo.net/&quot;</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./foo_net.ttl&quot;</span><span class="hl kwa">/&gt;&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+If the filename is not explicitely relative to the current directory
+(i.e. if it does not start with <span class="hl str">&quot;.&quot;</span> or <span class="hl str">&quot;..&quot;</span>) then is it used as is.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The following code loads a graph named <span class="hl kwa">&lt;icode&gt;</span>http://foo.bar.net/<span class="hl kwa">&lt;/icode&gt;</span>
+from a MySQL database, using the given options:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf-load <span class="hl kwb">name</span>=<span class="hl str">&quot;http://foo.bar.net/&quot;</span> <span class="hl kwb">storage</span>=<span class="hl str">&quot;mysql2&quot;</span>
+  <span class="hl kwb">database</span>=<span class="hl str">&quot;genet_example&quot;</span> <span class="hl kwb">user</span>=<span class="hl str">&quot;genet&quot;</span> <span class="hl kwb">host</span>=<span class="hl str">&quot;localhost&quot;</span> <span class="hl kwb">password</span>=<span class="hl str">&quot;&quot;</span> <span class="hl kwb">port</span>=<span class="hl str">&quot;3306&quot;</span>/<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwa">&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+If no <span class="hl kwa">&lt;icode&gt;</span>file<span class="hl kwa">&lt;/icode&gt;</span> attribute is given, and the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf-load<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span>
+node is not empty, then the PCDATA content of the node is used as Turtle code
+describing the triples to load in the graph. For example:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;rdf-load</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;http://foo.bar.org/&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[
+@prefix toto: <span class="hl kwa">&lt;http:</span>//toto.net<span class="hl kwa">/&gt;</span>
+<span class="hl kwa">&lt;http:</span>//foo.bar.org/toto<span class="hl kwa">&gt;</span> a toto:file .
+]]<span class="hl kwa">&gt;</span>]]<span class="hl kwd">&amp;gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;/rdf-load&gt;</span>]]<span class="hl kwa">&gt;&lt;/hxml&gt;</span>
+
+<span class="hl kwa">&lt;/subsection&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;querying&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Querying graphs&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf-select<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> rule, registered in level <span class="hl num">220</span>, allows to
+execute <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://www.w3.org/TR/sparql11-query&quot;</span><span class="hl kwa">&gt;</span>Sparql <span class="hl num">1.1</span><span class="hl kwa">&lt;/ext-a&gt;</span> queries,
+either on the graph built during rewriting of elements
+(see <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#definetriples&quot;</span><span class="hl kwa">/&gt;</span>) or on loaded graphs
+(see <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#sources&quot;</span><span class="hl kwa">/&gt;</span>).
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf-select<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> rule takes the following parameters:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>the query, which must be a SELECT query,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>the template to apply for each solution of the query,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>an optional separator, inserted between each application of the template,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;</span>optional additional arguments as pairs (name, value), which are added to the
+environment when applying the template.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The parameters for the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>rdf-select<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> rule are given in the following way:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span>
+  <span class="hl kwd">&amp;lt;</span>rdf-select [<span class="hl kwb">query</span>=<span class="hl str">&quot;...&quot;</span>] [<span class="hl kwb">tmpl</span>=<span class="hl str">&quot;...&quot;</span>] [<span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span>]<span class="hl kwd">&amp;gt;</span>DATA<span class="hl kwd">&amp;lt;</span>/rdf-select<span class="hl kwd">&amp;gt;</span>
+<span class="hl kwa">&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+If DATA does not contain XML nodes and DATA is not empty,
+then DATA is used as query, even if the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwb">query</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&lt;/ixml&gt;</span> attribute is given.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+If DATA contains XML nodes, they are used to override the previous definition of the
+query, the template and the separator. For example:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span>
+<span class="hl kwa">&lt;rdf-select&gt;</span>
+  <span class="hl kwa">&lt;query&gt;</span>SELECT ?url ?name WHERE { ... }<span class="hl kwa">&lt;/query&gt;</span>
+  <span class="hl kwa">&lt;tmpl&gt;&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;url/&amp;gt;&quot;</span><span class="hl kwa">&gt;&lt;name/&gt;&lt;/a&gt;&lt;/li&gt;&lt;/tmpl&gt;</span>
+<span class="hl kwa">&lt;/rdf-select&gt;</span>
+<span class="hl kwa">&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>If the template is specified in the attribute <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwb">tmpl</span>=<span class="hl str">&quot;s&quot;</span><span class="hl kwa">&lt;/ixml&gt;</span>, then <span class="hl kwa">&lt;icode&gt;</span>s<span class="hl kwa">&lt;/icode&gt;</span>
+is considered as being a template file. If the template is specified in a <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>tmpl<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span>
+node, then the template is the content of the node.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>The separator is always <span class="hl str">&quot;inline&quot;</span>, whether it is given in the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&lt;/ixml&gt;</span>
+attribute or in the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>sep<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>If the query is specified in the attributes and in a <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>query<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node,
+only the content of the node is used.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>Additional attributes and additional nodes are used to enrich the environment used
+when applying the template.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>The namespaces defined in <span class="hl kwa">&lt;icode&gt;</span>.stog/config-rdf<span class="hl kwa">&lt;/icode&gt;</span> are used to
+automatically define prefixes at the beginning of the query; they do not
+have to be declared again in the query.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>For each solution of the query, the template is applied. The variables appearing
+in the solution (the variables in the SELECT clause of the query) are added to
+the environment before applying the template. In the example above, for each solution,
+the variables <span class="hl kwa">&lt;icode&gt;</span>?url<span class="hl kwa">&lt;/icode&gt;</span> and <span class="hl kwa">&lt;icode&gt;</span>?name<span class="hl kwa">&lt;/icode&gt;</span> are associated,
+in the environment used to evaluate the template, to the RDF terms they are mapped to
+in the solution, and they can be referred to
+using <span class="hl kwa">&lt;ixml&gt;&lt;url/&gt;&lt;/ixml&gt;</span> and <span class="hl kwa">&lt;ixml&gt;&lt;name/&gt;&lt;/ixml&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Moreover, additional variables, postfixed with <span class="hl str">&quot;_rdf&quot;</span>, are also added to the environment
+so that the associated term can be inserted in a Sparql-compatible syntax,
+for example to use result in another Sparql query in the template.
+In the example above, results in Sparql syntax are accessible
+using <span class="hl kwa">&lt;ixml&gt;&lt;url_rdf/&gt;&lt;/ixml&gt;</span> and <span class="hl kwa">&lt;ixml&gt;&lt;name_rdf/&gt;&lt;/ixml&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;tips&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Tips&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+To make definition of triples even easier, one can define rules in the
+element header, for example:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span>&lt;![CDATA[
+<span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;isproof&gt;&lt;rdf</span> <span class="hl kwb">pred</span>=<span class="hl str">&quot;rdf:hasType&quot;</span> <span class="hl kwb">obj</span>=<span class="hl str">&quot;science:proof&quot;</span><span class="hl kwa">/&gt;&lt;/isproof&gt;</span>
+  <span class="hl kwa">&lt;contents&gt;</span>
+    ...
+      <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;proof&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;proof1&quot;</span><span class="hl kwa">&gt;</span>
+        <span class="hl kwa">&lt;isproof/&gt;</span>
+      ...
+      <span class="hl kwa">&lt;/div&gt;</span>
+    ...
+  <span class="hl kwa">&lt;/contents&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span>
+]]<span class="hl kwa">&gt;&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+This will add a triple
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hxml&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;element-url&gt;</span>#proof1 rdf:hasType science:proof]]<span class="hl kwa">&gt;&lt;/hxml&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwa">&lt;/prepare-toc&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+</div>
+
+
+
+</div> 
+</body>
+</html>

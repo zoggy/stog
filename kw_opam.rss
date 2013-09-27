@@ -3,7 +3,7 @@
 &lt;p&gt;
 Stog has been available in
 &lt;span class=&quot;ext-a&quot;&gt;&lt;a href=&quot;http://opam.ocamlpro.com&quot;&gt;Opam&lt;/a&gt;&lt;/span&gt; since release 0.4.
-The &lt;elt href=&quot;/stog-writing&quot;/&gt; and &lt;elt href=&quot;/stog-rdf&quot;/&gt; plugins
+The &lt;elt href=&quot;plugins/writing&quot;/&gt; and &lt;elt href=&quot;plugins/rdf&quot;/&gt; plugins
 are also available in Opam since yesterday.
 &lt;/p&gt;
 &lt;a href=&quot;http://zoggy.github.io/stog/posts/stog-in-opam.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.io/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>22 Jan 2013 08:00:00 +0000</pubDate><category>stog</category><category>opam</category><category>plugins</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-in-opam.html</guid></item></channel></rss>

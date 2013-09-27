@@ -156,7 +156,7 @@ All text is assumed to be UTF-<span class="hl num">8</span>.
 <span class="hl kwa">&lt;ul</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;toc&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;getting_started&quot;</span> <span class="hl kwb">quotes</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;funs&quot;</span> <span class="hl kwb">quotes</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins&quot;</span> <span class="hl kwb">quotes</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;writing_plugins&quot;</span> <span class="hl kwb">quotes</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;odoc&quot;</span> <span class="hl kwb">quotes</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;site-url/&amp;gt;/ref-doc/index.html&quot;</span><span class="hl kwa">&gt;</span>Library reference documentation<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/ul&gt;</span>
@@ -244,6 +244,7 @@ The template file <span class="icode">.stog/templates/page.tmpl</span>:
 <span class="hl kwa">&lt;div</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;page&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;menubar.tmpl&quot;</span><span class="hl kwa">/&gt;</span>
 <span class="hl kwa">&lt;div</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;header&quot;</span><span class="hl kwa">&gt;</span>
+  <span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-type</span>=<span class="hl str">&quot;page&quot;</span><span class="hl kwa">&gt;&lt;elt-path&gt;</span> / <span class="hl kwa">&lt;/elt-path&gt;&lt;/if&gt;</span>
   <span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-type</span>=<span class="hl str">&quot;post&quot;</span><span class="hl kwa">&gt;</span>
     <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;elt-navbar&quot;</span><span class="hl kwa">&gt;</span>
       <span class="hl kwa">&lt;if</span> <span class="hl kwb">previous</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;&lt;main_/&gt;&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;navleft&quot;</span><span class="hl kwa">&gt;&lt;previous/&gt;&lt;/div&gt;&lt;/if&gt;</span>
@@ -477,7 +478,7 @@ print_endline s;;
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
   <div class="span11">
-      <div><pre class="code-ocaml"><div class="ocaml-toplevel"></div><div class="ocaml-toplevel"></div><div class="ocaml-toplevel"></div><div class="ocaml-toplevel">This OCaml code was evaluated on 2013/08/24 at 15:39.
+      <div><pre class="code-ocaml"><div class="ocaml-toplevel"></div><div class="ocaml-toplevel"></div><div class="ocaml-toplevel"></div><div class="ocaml-toplevel">This OCaml code was evaluated on 2013/08/27 at 14:27.
 </div></pre></div>
   </div>
 </div>

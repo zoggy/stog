@@ -1083,6 +1083,21 @@ table .span12 {
   width: 924px;
   margin-left: 0;
 }
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
+}
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
+.invisible {
+  visibility: hidden;
+}
 .sidebox {
   padding: 0 3px 2px;
   border: 1px solid #666666;
@@ -1198,14 +1213,13 @@ div.section-title {
   border-bottom: 1px solid #666666;
 }
 div.subsection {
-  margin-top: 1.5em ;
-  padding-left: 1em;
+  margin-top: 1.3em ;
 }
 div.subsection-title {
-  margin-left: -1em;
-  font-size: 13pt ;
+  font-size: 12pt ;
   font-weight: bold;
   margin-top: 0.8em;
+  margin-bottom: 0.4em;
 }
 div.date {
   font-style: italic ;
@@ -1627,6 +1641,10 @@ ul.toc li a {
 }
 ul.toc li.toc-subsection {
   font-size: 80%;
+}
+.left-toc {
+  float: left ;
+  margin-right: 1em;
 }
 .code-sh {
   background-color: #cbcbd8;

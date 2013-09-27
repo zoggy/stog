@@ -1,0 +1,15 @@
+digraph g {
+  rankdir="TB";
+  ordering="out";
+  node [style="rounded,filled", shape="rect", color="red", fillcolor="lightgrey", fontcolor="black"];
+  ext [ label="External\nRDF graphs" ];
+  src [ label="XML files" ];
+  stog [ label="Stog + stog-rdf", style="filled" ];
+  out [ label="Output XML files"];
+  outrdf [ label="Output RDF graph"];
+
+  ext -> stog ;
+  src -> stog ;
+  stog -> outrdf ;
+  stog -> out ;
+}
