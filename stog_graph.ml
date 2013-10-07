@@ -185,8 +185,8 @@ module Make (M: GMap) (Edge: Map.OrderedType) = struct
    et qui renvoie [true] si l'arc en question doit être supprimé.
    *)
     let rem g (i,j) predic =
-      let succ = M.set g.succ i (List.filter (fun (k,d) -> k <> j or not (predic d)) (succ g i)) in
-      let pred = M.set g.pred j (List.filter (fun (k,d) -> k <> i or not (predic d)) (pred g j)) in
+      let succ = M.set g.succ i (List.filter (fun (k,d) -> k <> j || not (predic d)) (succ g i)) in
+      let pred = M.set g.pred j (List.filter (fun (k,d) -> k <> i || not (predic d)) (pred g j)) in
       { succ = succ ; pred = pred };;
 
 (** Il est également possible de supprimer tous les arcs entre deux sommets [i] et [j],

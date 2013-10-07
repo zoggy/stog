@@ -1,3 +1,6 @@
+Next release:
+* Use "||" instead of deprecated operator "or"
+
 Release 0.9.0:
   * add: option follow-symlinks in .stog/config to follow symlinks or not when
     building the file and directory source tree
