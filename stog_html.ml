@@ -919,8 +919,7 @@ let fun_prepare_toc tags env args subs =
         | (p, s) -> p ^"-"^ s
       in
       Xtmpl.E (("", "li"), [("", "class"), "toc-"^cl],
-       [ Xtmpl.E (("", "elt"), [("", "href"), "#"^name],
-         [ Xtmpl.xml_of_string title ]) ]
+       [ Xtmpl.E (("", "elt"), [("", "href"), "#"^name ; ("","long"), "true"], []) ]
        @
        ( match subs with
           [] -> []
@@ -1882,6 +1881,7 @@ type cutpoint =
     cut_tag : string * string ;
     cut_elt_type : string ;
     cut_hid_sep : string ;
+    cut_insert_link : bool ;
   }
 ;;
 
@@ -1896,7 +1896,10 @@ let cutpoint_of_atts elt atts =
         | h :: q -> (h, String.concat ":" q)
   in
   let sep = Xtmpl.opt_arg atts ~def: "-" ("","hid-sep") in
-  { cut_tag = tag ; cut_elt_type = typ ; cut_hid_sep = sep }
+  let insert_link = not (Xtmpl.opt_arg atts ~def: "true" ("","insert-link") = "false") in
+  { cut_tag = tag ; cut_elt_type = typ ;
+    cut_hid_sep = sep ; cut_insert_link = insert_link ;
+  }
 ;;
 
 let cut_elts =
@@ -1976,11 +1979,15 @@ let cut_elts =
                 }
               in
               let xml =
-                Xtmpl.E (("","div"), [(("","class"), "cutlink "^(snd tag))],
-                 [Xtmpl.E (("","elt"),[("","href"), new_hid_s],[])]
-                )
+                if cp.cut_insert_link then
+                  [ Xtmpl.E (("","div"), [(("","class"), "cutlink "^(snd tag))],
+                     [Xtmpl.E (("","elt"),[("","href"), new_hid_s],[])]
+                    )
+                  ]
+                else
+                  []
               in
-              ([xml], elt :: new_elts)
+              (xml, elt :: new_elts)
             with
               Not_found ->
                 (* not enough information to cut *)
@@ -2072,9 +2079,9 @@ let rules_inc_elt stog elt_id elt =
 ;;
 
 let () = register_level_fun 0 (compute_elt rules_0);;
-let () = register_level_fun_on_elt_list 45 cut_elts;;
-let () = register_level_fun 46 (compute_elt rules_0);;
 let () = register_level_fun 50 (compute_elt rules_toc);;
+let () = register_level_fun_on_elt_list 60 cut_elts;;
+let () = register_level_fun 61 (compute_elt rules_0);;
 let () = register_level_fun 100 (compute_elt rules_sectionning);;
 let () = register_level_fun 120 (gather_existing_ids);;
 let () = register_level_fun 150 (compute_elt rules_fun_elt);;
