@@ -1,4 +1,5 @@
 Next release:
+* Add <cut-elt> rule to cut element into pieces (like hevea's hacha)
 * Use "||" instead of deprecated operator "or"
 
 Release 0.9.0:

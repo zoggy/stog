@@ -129,7 +129,7 @@ type level_fun =
 
 type level_fun_on_elt_list =
   Xtmpl.env -> Stog_types.stog -> (Stog_types.elt_id * Stog_types.elt) list ->
-  (Stog_types.elt_id * Stog_types.elt) list
+  (Stog_types.elt_id * Stog_types.elt) list * Stog_types.elt list
 ;;
 
 

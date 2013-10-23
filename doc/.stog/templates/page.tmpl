@@ -20,7 +20,11 @@
 <if withsidebar="true"><include file="sidebar.tmpl"/><main_/></if>
 <if elt-type="post"><div class="date"><elt-date/></div></if>
 
+<cut-elt tag="section" hid-sep="/">
+<cut-elt tag="subsection" hid-sep="--">
 <elt-body/>
+</cut-elt>
+</cut-elt>
 
 <if elt-type="post">
  <div class="comments">
