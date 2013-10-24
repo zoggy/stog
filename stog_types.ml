@@ -54,10 +54,12 @@ type human_id = {
     hid_path : string list;
     hid_absolute : bool ;
   }
+
 let string_of_human_id hid =
   Printf.sprintf "%s%s"
   (if hid.hid_absolute then "/" else "")
   (String.concat "/" hid.hid_path)
+
 let human_id_of_string s =
   let len = String.length s in
   if len <= 0 then failwith (Printf.sprintf "Invalid human_id: %S" s);

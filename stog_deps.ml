@@ -47,28 +47,31 @@ let add_dep stog elt dep =
           None -> elt.elt_human_id
         | Some hid -> hid
       in
-      let hid = Stog_types.string_of_human_id hid in
-      let dep =
+      let src_hid = Stog_types.string_of_human_id hid in
+
+      let set =
+        try Smap.find src_hid !deps
+        with Not_found -> Depset.empty
+      in
+      let set =
         match dep with
-          File f -> dep
+          File f -> Depset.add dep set
         | Elt hid ->
             (* need the stog to get parent element eventually *)
             let (_,elt) = Stog_types.elt_by_human_id
               stog (Stog_types.human_id_of_string hid)
             in
-            let hid =
+            let dst_hid =
               match elt.elt_parent with
                 None -> hid
               | Some hid -> (Stog_types.string_of_human_id hid)
             in
-            Elt hid
+            if dst_hid = src_hid then
+              set
+            else
+              Depset.add (Elt dst_hid) set
       in
-      let set =
-        try Smap.find hid !deps
-        with Not_found -> Depset.empty
-      in
-      let set = Depset.add dep set in
-      deps := Smap.add hid set !deps
+      deps := Smap.add src_hid set !deps
 ;;
 
 let string_of_file_time f =
@@ -77,10 +80,9 @@ let string_of_file_time f =
   | Some t -> Stog_misc.string_of_time t
 ;;
 
-let string_of_elt_time stog hid =
+let string_of_elt_time stog elt_by_hid hid =
   try
-    let hid = Stog_types.human_id_of_string hid in
-    let (_,elt) = Stog_types.elt_by_human_id stog hid in
+    let elt = elt_by_hid hid in
     let src_file = Filename.concat stog.stog_dir elt.elt_src in
     match Stog_misc.file_mtime src_file with
       None -> "<notime>"
@@ -89,14 +91,15 @@ let string_of_elt_time stog hid =
     e -> Printexc.to_string e
 ;;
 
-let print_dep b stog = function
+let print_dep b elt_by_hid stog = function
   File file ->
     Printf.bprintf b "  File %S modified at %s\n" file (string_of_file_time file)
 | Elt hid ->
-    Printf.bprintf b "  Elt %S modified at %s\n" hid (string_of_elt_time stog hid)
+    Printf.bprintf b "  Elt %S modified at %s\n" hid
+      (string_of_elt_time stog elt_by_hid hid)
 ;;
 
-let max_deps_date stog hid =
+let max_deps_date stog elt_by_hid hid =
   let rec f dep (acc, depth) =
     if Depset.mem dep acc then
       (acc, depth)
@@ -120,7 +123,7 @@ let max_deps_date stog hid =
   Stog_msg.verbose ~level: 5
     (let b = Buffer.create 256 in
      Printf.bprintf b "%S depends on\n" hid;
-     Depset.iter (print_dep b stog) deps;
+     Depset.iter (print_dep b elt_by_hid stog) deps;
      Buffer.contents b
     );
   let max_date dep acc =
@@ -129,12 +132,10 @@ let max_deps_date stog hid =
         File file -> Stog_misc.file_mtime file
       | Elt hid ->
           try
-            let (_,elt) = Stog_types.elt_by_human_id stog
-              (Stog_types.human_id_of_string hid)
-            in
+            let elt = elt_by_hid hid in
             let src = Filename.concat stog.stog_dir elt.elt_src in
             Stog_misc.file_mtime src
-          with Failure _ ->
+          with Not_found ->
               None
     in
     match date_opt with

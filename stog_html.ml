@@ -1641,7 +1641,10 @@ let output_elt stog env elt =
   Stog_misc.safe_mkdir (Filename.dirname file);
   match elt.elt_out with
     None ->
-      failwith (Printf.sprintf "Element %S not computed!" (Stog_types.string_of_human_id elt.elt_human_id))
+      failwith
+        (Printf.sprintf "Element %S not computed!"
+         (Stog_types.string_of_human_id elt.elt_human_id)
+        )
   | Some xmls ->
       let oc = open_out file in
       let doctype =
@@ -1658,7 +1661,7 @@ let output_elt stog env elt =
       List.iter (fun xml -> output_string oc (Xtmpl.string_of_xml xml)) xmls;
       close_out oc;
       Stog_cache.set_elt_env elt stog env;
-      Stog_cache.apply_storers stog elt
+      Stog_cache.cache_elt stog elt
 ;;
 
 let output_elts ?elts stog env =
@@ -1777,21 +1780,25 @@ let load_cached_elt file =
 ;;
 *)
 
-
-(** This is list is filled by the {!Cache.load} function.
-  After computing cached elements, this list and [cached] in
-  {!get_cached_elements} must have the same length and order. *)
-let cached_elements = ref [];;
-
 let compute_levels ?(use_cache=true) ?elts env stog =
   if use_cache then
     begin
-      let (cached, not_cached) = Stog_cache.get_cached_elements stog env in
+      let cached = Stog_cache.get_cached_elements stog env in
       Stog_msg.verbose (Printf.sprintf "%d elements read from cache" (List.length cached));
-      let stog = List.fold_left2
-        (fun stog elt_id elt -> Stog_types.set_elt stog elt_id elt)
-        stog cached !cached_elements
+      let f_elt (stog, cached) cached_elt =
+        try
+          let (elt_id, _) = Stog_types.elt_by_human_id stog cached_elt.elt_human_id in
+          (* replace element by cached one *)
+          let stog = Stog_types.set_elt stog elt_id cached_elt in
+          (stog, elt_id :: cached)
+        with _ ->
+            (* element not loaded but cached; keep it as it may be an
+              element from a cut-elt rule *)
+            let stog = Stog_types.add_elt stog cached_elt in
+            let (elt_id, _) = Stog_types.elt_by_human_id stog cached_elt.elt_human_id in
+            (stog, elt_id :: cached)
       in
+      let (stog, cached) = List.fold_left f_elt (stog, []) cached in
       Intmap.fold (compute_level ~cached env) !levels stog
     end
   else
@@ -2092,22 +2099,20 @@ let () = register_level_fun 160 (compute_elt rules_inc_elt);;
 
 module Cache = struct
   type t =
-      { cache_elt : elt ;
+      {
         cache_blocks : (Xtmpl.tree * Xtmpl.tree) Str_map.t ;
         cache_id_map : (human_id * string option) Str_map.t ;
       }
 
-  let name = Stog_cache.stog_cache_name
+  let name = "_xml"
   let load elt t =
-    let hid = Stog_types.string_of_human_id t.cache_elt.elt_human_id in
+    let hid = Stog_types.string_of_human_id elt.elt_human_id in
     blocks := Smap.add hid t.cache_blocks !blocks;
-    id_map := Hidmap.add elt.elt_human_id t.cache_id_map !id_map ;
-    cached_elements := t.cache_elt :: !cached_elements
+    id_map := Hidmap.add elt.elt_human_id t.cache_id_map !id_map
 
   let store elt =
     let hid = Stog_types.string_of_human_id elt.elt_human_id in
     {
-      cache_elt = elt ;
       cache_blocks = (try Smap.find hid !blocks with Not_found -> Smap.empty);
       cache_id_map = (try Hidmap.find elt.elt_human_id !id_map with Not_found -> Smap.empty) ;
     }

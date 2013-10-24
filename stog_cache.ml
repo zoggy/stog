@@ -49,7 +49,27 @@ let cache_file name stog elt =
   let cache_dir = Filename.concat
     stog.stog_cache_dir name
   in
-  Filename.concat cache_dir elt.elt_src
+  Filename.concat cache_dir
+    ((String.concat "/" elt.elt_human_id.hid_path)^"._elt")
+;;
+
+let get_cached_elts stog =
+  let elt_dir = Filename.concat stog.stog_cache_dir stog_cache_name in
+  let files = Stog_find.find_list Stog_find.Ignore [elt_dir]
+    [Stog_find.Type Unix.S_REG]
+  in
+  let load acc file =
+    try
+      let ic = open_in_bin file in
+      let (elt : Stog_types.elt) = input_value ic in
+      close_in ic;
+      elt :: acc
+    with
+      Failure s | Sys_error s ->
+        Stog_msg.warning s;
+        acc
+  in
+  List.fold_left load [] files
 ;;
 
 let register_cache cache =
@@ -112,7 +132,17 @@ let get_cached_elements stog env =
       Stog_deps.deps := snd v
     end;
   let digest = stog_env_digest stog env in
-  let f elt_id elt (cached, not_cached, kept_deps) =
+
+  let elts = get_cached_elts stog in
+  let elt_by_hid =
+    let map = List.fold_left
+      (fun map elt -> Stog_types.Str_map.add
+         (Stog_types.string_of_human_id elt.elt_human_id) elt map)
+        Stog_types.Str_map.empty elts
+    in
+    fun hid -> Stog_types.Str_map.find hid map
+  in
+  let f (cached, kept_deps) elt =
     let hid = Stog_types.string_of_human_id elt.elt_human_id in
     let same_elt_env =
       try
@@ -125,7 +155,7 @@ let get_cached_elements stog env =
         begin
           let src_cache_file = cache_file stog_cache_name stog elt in
           let src_cache_time = Stog_misc.file_mtime src_cache_file in
-          let deps_time = Stog_deps.max_deps_date stog
+          let deps_time = Stog_deps.max_deps_date stog elt_by_hid
             (Stog_types.string_of_human_id elt.elt_human_id)
           in
           Stog_msg.verbose ~level: 5
@@ -148,17 +178,26 @@ let get_cached_elements stog env =
           try Smap.add hid (Smap.find hid !Stog_deps.deps) kept_deps
           with Not_found -> kept_deps
         in
-        (elt_id :: cached, not_cached, kept_deps)
+        (elt :: cached, kept_deps)
       end
     else
       begin
         (* do not keep deps of this element, as it will be recomputed *)
-        (cached, elt_id :: not_cached, kept_deps)
+        (cached, kept_deps)
       end
   in
-  let (cached, not_cached, kept_deps) = Stog_tmap.fold f stog.stog_elts ([], [], Smap.empty) in
+  let (cached, kept_deps) = List.fold_left f ([], Smap.empty) elts in
   Stog_deps.deps := kept_deps;
-  (cached, not_cached)
+  cached
+;;
+
+let cache_elt stog elt =
+  let cache_file = cache_file stog_cache_name stog elt in
+  Stog_misc.safe_mkdir (Filename.dirname cache_file);
+  let oc = open_out_bin cache_file in
+  output_value oc elt ;
+  close_out oc ;
+  apply_storers stog elt
 ;;
 
 let output_cache_info stog =
