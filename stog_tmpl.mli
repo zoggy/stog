@@ -45,9 +45,11 @@ val get_template_file : Stog_types.stog -> Stog_types.elt -> string -> string
   filename.
   @param raw indicate whether to read the template as XML ([false]) or
   as CData ([true]). Default is [false].
+  @param depend indicate whether to add a dependency from the element
+  on the file. Default is [true].
   *)
 val read_template_file : Stog_types.stog -> Stog_types.elt ->
-  ?raw: bool -> string -> Xtmpl.tree
+  ?depend: bool -> ?raw: bool -> string -> Xtmpl.tree
 
 val get_template : Stog_types.stog -> ?elt: Stog_types.elt -> contents -> string -> Xtmpl.tree
 

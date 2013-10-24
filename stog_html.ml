@@ -348,16 +348,12 @@ let fun_include stog elt _env args subs =
   match Xtmpl.get_arg args ("", "file") with
   | Some file ->
       let raw = Xtmpl.opt_arg ~def: "false" args ("", "raw") = "true" in
-      let xml = Stog_tmpl.read_template_file stog elt ~raw file in
       let args =
         (("", "contents"), Xtmpl.string_of_xmls subs) ::
         args
       in
-      begin
-        match Xtmpl.get_arg args ("", "depend") with
-          Some "false" -> ()
-        | _ -> Stog_deps.add_dep elt (Stog_deps.File file);
-      end;
+      let depend = Xtmpl.opt_arg args ~def: "true" ("", "depend") <> "false" in
+      let xml = Stog_tmpl.read_template_file stog elt ~depend ~raw file in
       [Xtmpl.E (("", Xtmpl.tag_env), args, [xml])]
   | None ->
       failwith "Missing 'file' argument for include command"
@@ -383,7 +379,7 @@ let fun_inc stog elt env args subs =
   try
     let s_hid = match hid with "" -> get_hid env | s ->  s in
     let hid = Stog_types.human_id_of_string s_hid in
-    Stog_deps.add_dep elt (Stog_deps.Elt s_hid);
+    Stog_deps.add_dep stog elt (Stog_deps.Elt s_hid);
     let (_, elt) = Stog_types.elt_by_human_id stog hid in
     let (elt, id) = map_elt_ref stog elt id in
     match Stog_types.find_block_by_id elt id with
@@ -501,7 +497,7 @@ let fun_elt_href ?typ src_elt href stog env args subs =
           begin
             (* use absolute hid, from element *)
             let hid = Stog_types.string_of_human_id elt.elt_human_id in
-            Stog_deps.add_dep src_elt (Stog_deps.Elt hid);
+            Stog_deps.add_dep stog src_elt (Stog_deps.Elt hid);
           end;
           match subs, id with
           | [], None ->
@@ -1557,6 +1553,7 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
     let hid = f_elt_id word in
     let elt =
       { Stog_types.elt_human_id = hid ;
+        elt_parent = None ;
         elt_type = elt_type ;
         elt_body = [] ;
         elt_date = None ;
@@ -1612,6 +1609,7 @@ let make_archive_index stog env =
     in
     let elt =
       { Stog_types.elt_human_id = hid ;
+        elt_parent = None ;
         elt_type = "by-month";
         elt_body = [] ;
         elt_date = None ;
@@ -1974,8 +1972,13 @@ let cut_elts =
               set_id_map elt.elt_human_id atts new_hid false ;
               let (xmls, new_elts) = List.fold_right (fold elt new_hid cutpoints) xmls ([], new_elts) in
               let elt =
-                { elt with elt_human_id = new_hid ; elt_type = cp.cut_elt_type ;
-                  elt_title = title ; elt_body = xmls ; elt_out = None ;
+                { elt with
+                  elt_human_id = new_hid ;
+                  elt_parent = Some elt.elt_human_id ;
+                  elt_type = cp.cut_elt_type ;
+                  elt_title = title ;
+                  elt_body = xmls ;
+                  elt_out = None ;
                 }
               in
               let xml =

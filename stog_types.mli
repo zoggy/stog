@@ -46,6 +46,7 @@ module Str_set : Set.S with type elt = string
 
 type elt = {
   elt_human_id : human_id;
+  elt_parent : human_id option;
   elt_type : string;
   elt_body : body;
   elt_date : date option;

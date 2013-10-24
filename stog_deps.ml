@@ -38,11 +38,31 @@ module Depset =
 
 let deps = ref Smap.empty;;
 
-let add_dep elt dep =
+let add_dep stog elt dep =
   match elt.elt_type with
     "by-keyword" | "by-month" | "by-topic" -> ()
   | _ ->
-      let hid = Stog_types.string_of_human_id elt.elt_human_id in
+      let hid =
+        match elt.elt_parent with
+          None -> elt.elt_human_id
+        | Some hid -> hid
+      in
+      let hid = Stog_types.string_of_human_id hid in
+      let dep =
+        match dep with
+          File f -> dep
+        | Elt hid ->
+            (* need the stog to get parent element eventually *)
+            let (_,elt) = Stog_types.elt_by_human_id
+              stog (Stog_types.human_id_of_string hid)
+            in
+            let hid =
+              match elt.elt_parent with
+                None -> hid
+              | Some hid -> (Stog_types.string_of_human_id hid)
+            in
+            Elt hid
+      in
       let set =
         try Smap.find hid !deps
         with Not_found -> Depset.empty

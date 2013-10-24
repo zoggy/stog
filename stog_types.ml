@@ -88,6 +88,7 @@ module Str_set = Set.Make (struct type t = string let compare = String.compare e
 
 type elt =
   { elt_human_id : human_id ;
+    elt_parent : human_id option ;
     elt_type : string ;
     elt_body : body ;
     elt_date : date option ;
@@ -116,6 +117,7 @@ let today () =
 
 let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
   { elt_human_id = hid ;
+    elt_parent = None ;
     elt_type = typ ;
     elt_body = [] ;
     elt_date = None ;

@@ -46,8 +46,9 @@ let get_template_file stog elt file =
     file
 ;;
 
-let read_template_file stog elt ?(raw=false) file =
+let read_template_file stog elt ?(depend=true) ?(raw=false) file =
   let file = get_template_file stog elt file in
+  if depend then Stog_deps.add_dep stog elt (Stog_deps.File file);
   if raw then
     Xtmpl.D (Stog_misc.string_of_file file)
   else
@@ -58,7 +59,10 @@ let read_template_file stog elt ?(raw=false) file =
 let get_template stog ?elt contents name =
   let file = Filename.concat stog.stog_tmpl_dir name in
   let contents = contents stog in
-  (match elt with None -> () | Some elt -> Stog_deps.add_dep elt (Stog_deps.File file));
+  (match elt with
+     None -> ()
+   | Some elt -> Stog_deps.add_dep stog elt (Stog_deps.File file)
+  );
   if not (Sys.file_exists file) then
     (
      Stog_misc.safe_mkdir stog.stog_tmpl_dir ;

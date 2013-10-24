@@ -102,4 +102,4 @@ type dependency = Stog_deps.dependency =
   | Elt of string (** absolute human id *)
 
 (** For a given element, add a dependency on a file or another element. *)
-val add_dep : Stog_types.elt -> dependency -> unit
+val add_dep : Stog_types.stog -> Stog_types.elt -> dependency -> unit
