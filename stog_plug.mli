@@ -97,9 +97,9 @@ val register_level_fun_on_elt_list : int -> level_fun_on_elt_list -> unit
 
 val register_cache : (module Stog_cache.Cache) -> unit
 
-type dependency = Stog_deps.dependency =
+type dependency =
   | File of string (** filename *)
-  | Elt of string (** absolute human id *)
+  | Elt of Stog_types.elt
 
 (** For a given element, add a dependency on a file or another element. *)
 val add_dep : Stog_types.stog -> Stog_types.elt -> dependency -> unit

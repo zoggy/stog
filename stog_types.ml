@@ -91,6 +91,7 @@ module Str_set = Set.Make (struct type t = string let compare = String.compare e
 type elt =
   { elt_human_id : human_id ;
     elt_parent : human_id option ;
+    elt_children : human_id list ;
     elt_type : string ;
     elt_body : body ;
     elt_date : date option ;
@@ -120,6 +121,7 @@ let today () =
 let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
   { elt_human_id = hid ;
     elt_parent = None ;
+    elt_children = [] ;
     elt_type = typ ;
     elt_body = [] ;
     elt_date = None ;
@@ -291,6 +293,11 @@ let elt_by_human_id ?typ stog h =
           (List.map (fun (id, elt) -> string_of_human_id elt.elt_human_id) l))
       in
       failwith msg
+;;
+
+let elt_children stog =
+  let f hid = snd (elt_by_human_id stog hid) in
+  fun elt -> List.map f elt.elt_children
 ;;
 
 let set_elt stog id elt =

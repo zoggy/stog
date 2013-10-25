@@ -31,10 +31,10 @@
 open Stog_types;;
 
 module Smap = Stog_types.Str_map;;
-type dependency = File of string | Elt of string;;
+type 'a dependency = File of string | Elt of 'a;;
 
 module Depset =
-  Set.Make (struct type t = dependency let compare = Pervasives.compare end)
+  Set.Make (struct type t = string dependency let compare = Pervasives.compare end)
 
 let deps = ref Smap.empty;;
 
@@ -42,36 +42,58 @@ let add_dep stog elt dep =
   match elt.elt_type with
     "by-keyword" | "by-month" | "by-topic" -> ()
   | _ ->
-      let hid =
+      (* we make both the elt and its parent and brothers depend on dep;
+         this is to force recomputing of parent element when
+         one of its children depends on something which changed,
+         and in this case the children element must be invalidated too.
+         By adding the same dependency for all (parent and childre),
+         we ensure that none or all are invalidated and will not be loaded
+         from cache.*)
+      let parent =
         match elt.elt_parent with
-          None -> elt.elt_human_id
-        | Some hid -> hid
+          None -> elt
+        | Some hid ->
+            let (_, elt) = Stog_types.elt_by_human_id stog hid in
+            elt
       in
-      let src_hid = Stog_types.string_of_human_id hid in
+      let srcs = parent :: (Stog_types.elt_children stog parent) in
 
-      let set =
-        try Smap.find src_hid !deps
-        with Not_found -> Depset.empty
-      in
-      let set =
+      let dep =
         match dep with
-          File f -> Depset.add dep set
-        | Elt hid ->
+          File f -> File f
+        | Elt elt ->
             (* need the stog to get parent element eventually *)
-            let (_,elt) = Stog_types.elt_by_human_id
-              stog (Stog_types.human_id_of_string hid)
-            in
             let dst_hid =
               match elt.elt_parent with
-                None -> hid
-              | Some hid -> (Stog_types.string_of_human_id hid)
+                None -> elt.elt_human_id
+              | Some hid -> hid
             in
-            if dst_hid = src_hid then
-              set
-            else
-              Depset.add (Elt dst_hid) set
+            let dst_hid = Stog_types.string_of_human_id dst_hid in
+            Elt dst_hid
+        in
+
+      let src_hids = List.map
+        (fun elt -> Stog_types.string_of_human_id elt.elt_human_id) srcs
       in
-      deps := Smap.add src_hid set !deps
+      let f_elt elt =
+        let src_hid = Stog_types.string_of_human_id elt.elt_human_id in
+        let set =
+          try Smap.find src_hid !deps
+          with Not_found -> Depset.empty
+        in
+        let set =
+          match dep with
+            File _ -> Depset.add dep set
+          | Elt dst_hid ->
+              (* do not add deps from an element to its parent, child or brothers *)
+              if List.mem dst_hid src_hids then
+                set
+              else
+                Depset.add dep set
+        in
+        deps := Smap.add src_hid set !deps
+      in
+      List.iter f_elt srcs
 ;;
 
 let string_of_file_time f =

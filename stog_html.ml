@@ -344,28 +344,8 @@ let fun_counter env atts subs =
       [Xtmpl.D (string_of_int cpt)]
 ;;
 
-let fun_include stog elt _env args subs =
-  match Xtmpl.get_arg args ("", "file") with
-  | Some file ->
-      let raw = Xtmpl.opt_arg ~def: "false" args ("", "raw") = "true" in
-      let args =
-        (("", "contents"), Xtmpl.string_of_xmls subs) ::
-        args
-      in
-      let depend = Xtmpl.opt_arg args ~def: "true" ("", "depend") <> "false" in
-      let xml = Stog_tmpl.read_template_file stog elt ~depend ~raw file in
-      [Xtmpl.E (("", Xtmpl.tag_env), args, [xml])]
-  | None ->
-      failwith "Missing 'file' argument for include command"
-;;
-
-let fun_inc stog elt env args subs =
-  let href =
-    match Xtmpl.get_arg args ("", "href") with
-      None -> failwith "Missing href for inc rule"
-    | Some href -> href
-  in
-  let new_id = Xtmpl.get_arg args ("", "id") in
+let include_href stog elt ?id ~raw ~depend href env =
+  let new_id = id in
   let (hid, id) =
     try
       let p = String.index href '#' in
@@ -374,13 +354,13 @@ let fun_inc stog elt env args subs =
       (hid, String.sub href (p+1) (len - (p+1)))
     with
       Not_found ->
-        failwith "Missing block id for inc rule"
+        failwith "Missing #id part of href in <include> rule"
   in
   try
     let s_hid = match hid with "" -> get_hid env | s ->  s in
     let hid = Stog_types.human_id_of_string s_hid in
-    Stog_deps.add_dep stog elt (Stog_deps.Elt s_hid);
     let (_, elt) = Stog_types.elt_by_human_id stog hid in
+    if depend then Stog_deps.add_dep stog elt (Stog_deps.Elt elt);
     let (elt, id) = map_elt_ref stog elt id in
     match Stog_types.find_block_by_id elt id with
     | None ->
@@ -389,16 +369,46 @@ let fun_inc stog elt env args subs =
            id (Stog_types.string_of_human_id hid))
     | Some (Xtmpl.D _) -> assert false
     | Some ((Xtmpl.E (tag, atts, subs)) as xml)->
-        match new_id with
-          None -> [xml]
-        | Some new_id ->
-            let atts = List.filter (function (("","id"), _) -> false | _ -> true) atts in
-            let atts = (("", "id"), new_id) :: atts in
-            [ Xtmpl.E (tag, atts, subs) ]
+        if raw then
+          [ Xtmpl.D (Xtmpl.string_of_xml xml) ]
+        else
+          match new_id with
+            None -> [xml]
+          | Some new_id ->
+              let atts = List.filter (function (("","id"), _) -> false | _ -> true) atts in
+              let atts = (("", "id"), new_id) :: atts in
+              [ Xtmpl.E (tag, atts, subs) ]
   with
     Failure s ->
       Stog_msg.error s;
       [Xtmpl.D ("??"^href^"??")]
+;;
+
+let include_file stog elt ?id ~raw ~depend file args subs =
+  let args =
+    (("", "contents"), Xtmpl.string_of_xmls subs) ::
+      args
+  in
+  let xml = Stog_tmpl.read_template_file stog elt ~depend ~raw file in
+  [Xtmpl.E (("", Xtmpl.tag_env), args, [xml])]
+;;
+
+let fun_include stog elt env args subs =
+  let raw = Xtmpl.opt_arg ~def: "false" args ("", "raw") = "true" in
+  let id = Xtmpl.get_arg args ("", "id") in
+  let depend = Xtmpl.opt_arg args ~def: "true" ("", "depend") <> "false" in
+  match Xtmpl.get_arg args ("", "file") with
+  | Some file -> include_file stog elt ?id ~raw ~depend file args subs
+  | None ->
+      match Xtmpl.get_arg args ("", "href") with
+        Some href -> include_href stog elt ?id ~raw ~depend href env
+      | None ->
+          failwith "Missing 'file' or 'href' argument for <include> rule"
+;;
+
+let fun_inc stog elt env args subs =
+  Stog_msg.warning "<inc> rule is deprecated; use <include> rule instead";
+  fun_include stog elt env args subs
 ;;
 
 let fun_image _env args legend =
@@ -494,11 +504,7 @@ let fun_elt_href ?typ src_elt href stog env args subs =
       match info with
         None -> [Xtmpl.D "??"]
       | Some (elt, hid, id) ->
-          begin
-            (* use absolute hid, from element *)
-            let hid = Stog_types.string_of_human_id elt.elt_human_id in
-            Stog_deps.add_dep stog src_elt (Stog_deps.Elt hid);
-          end;
+          Stog_deps.add_dep stog src_elt (Stog_deps.Elt elt);
           match subs, id with
           | [], None ->
               let quote = if quotes then "\"" else "" in
@@ -1554,6 +1560,7 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
     let elt =
       { Stog_types.elt_human_id = hid ;
         elt_parent = None ;
+        elt_children = [] ;
         elt_type = elt_type ;
         elt_body = [] ;
         elt_date = None ;
@@ -1610,6 +1617,7 @@ let make_archive_index stog env =
     let elt =
       { Stog_types.elt_human_id = hid ;
         elt_parent = None ;
+        elt_children = [] ;
         elt_type = "by-month";
         elt_body = [] ;
         elt_date = None ;
@@ -2013,7 +2021,12 @@ let cut_elts =
       None -> (elt, [])
     | Some body ->
         let (body, new_elts) = List.fold_right (fold elt elt.elt_human_id []) body ([], []) in
-        ({ elt with elt_out = Some body }, new_elts)
+        let children =
+          match new_elts with
+            [] -> elt.elt_children
+          | _ -> elt.elt_children @ (List.map (fun elt -> elt.elt_human_id) new_elts)
+        in
+        ({ elt with elt_out = Some body ; elt_children = children }, new_elts)
   in
   let add_id_mappings src_hid dst_hid set =
     Sset.iter (fun id -> add_id_map src_hid id dst_hid (Some id)) set

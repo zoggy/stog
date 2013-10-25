@@ -94,10 +94,12 @@ let register_level_fun_on_elt_list = Stog_html.register_level_fun_on_elt_list;;
 
 let register_cache = Stog_cache.register_cache ;;
 
-type dependency = Stog_deps.dependency =
+type dependency =
   | File of string
-  | Elt of string
+  | Elt of Stog_types.elt
 
-let add_dep = Stog_deps.add_dep;;
+let add_dep stog elt = function
+  File f -> Stog_deps.add_dep stog elt (Stog_deps.File f)
+| Elt e -> Stog_deps.add_dep stog elt (Stog_deps.Elt e);;
 
 

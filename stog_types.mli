@@ -45,21 +45,22 @@ module Str_map : Map.S with type key = string
 module Str_set : Set.S with type elt = string
 
 type elt = {
-  elt_human_id : human_id;
-  elt_parent : human_id option;
-  elt_type : string;
-  elt_body : body;
-  elt_date : date option;
-  elt_title : string;
-  elt_keywords : string list;
-  elt_topics : string list;
-  elt_published : bool;
-  elt_defs : def list;
-  elt_src : string;
-  elt_sets : string list; (** list of sets ("blog", "foo", etc.) this element belongs to *)
-  elt_lang_dep : bool; (** whether a file must be generated for each language *)
-  elt_xml_doctype : string option;
-  elt_out : body option;
+  elt_human_id : human_id ;
+  elt_parent : human_id option ;
+  elt_children : human_id list ;
+  elt_type : string ;
+  elt_body : body ;
+  elt_date : date option ;
+  elt_title : string ;
+  elt_keywords : string list ;
+  elt_topics : string list ;
+  elt_published : bool ;
+  elt_defs : def list ;
+  elt_src : string ;
+  elt_sets : string list ; (** list of sets ("blog", "foo", etc.) this element belongs to *)
+  elt_lang_dep : bool ; (** whether a file must be generated for each language *)
+  elt_xml_doctype : string option ;
+  elt_out : body option ;
   elt_used_mods : Str_set.t ;
 }
 type elt_id = elt Stog_tmap.key
@@ -120,6 +121,7 @@ val elt : stog -> elt Stog_tmap.key -> elt
 
 val elts_by_human_id : ?typ:string -> stog -> human_id -> (elt_id * elt) list
 val elt_by_human_id : ?typ:string -> stog -> human_id -> elt_id * elt
+val elt_children : stog -> elt -> elt list
 
 val set_elt : stog -> elt Stog_tmap.key -> elt -> stog
 val add_hid : stog -> human_id -> elt_id -> stog

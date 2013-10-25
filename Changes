@@ -1,4 +1,5 @@
 Next release:
+* <inc> rule is now deprecated, use <include> instead
 * Fix caching system
 * Add <cut-elt> rule to cut element into pieces (like hevea's hacha)
 * Use "||" instead of deprecated operator "or"
