@@ -344,7 +344,7 @@ let fun_counter env atts subs =
       [Xtmpl.D (string_of_int cpt)]
 ;;
 
-let include_href stog elt ?id ~raw ~depend href env =
+let include_href name stog elt ?id ~raw ~depend href env =
   let new_id = id in
   let (hid, id) =
     try
@@ -354,7 +354,7 @@ let include_href stog elt ?id ~raw ~depend href env =
       (hid, String.sub href (p+1) (len - (p+1)))
     with
       Not_found ->
-        failwith "Missing #id part of href in <include> rule"
+        failwith ("Missing #id part of href in <"^name^"> rule")
   in
   try
     let s_hid = match hid with "" -> get_hid env | s ->  s in
@@ -393,7 +393,7 @@ let include_file stog elt ?id ~raw ~depend file args subs =
   [Xtmpl.E (("", Xtmpl.tag_env), args, [xml])]
 ;;
 
-let fun_include stog elt env args subs =
+let fun_include_ name stog elt env args subs =
   let raw = Xtmpl.opt_arg ~def: "false" args ("", "raw") = "true" in
   let id = Xtmpl.get_arg args ("", "id") in
   let depend = Xtmpl.opt_arg args ~def: "true" ("", "depend") <> "false" in
@@ -401,14 +401,17 @@ let fun_include stog elt env args subs =
   | Some file -> include_file stog elt ?id ~raw ~depend file args subs
   | None ->
       match Xtmpl.get_arg args ("", "href") with
-        Some href -> include_href stog elt ?id ~raw ~depend href env
+        Some href -> include_href name stog elt ?id ~raw ~depend href env
       | None ->
-          failwith "Missing 'file' or 'href' argument for <include> rule"
+          failwith ("Missing 'file' or 'href' argument for <"^name^"> rule")
 ;;
 
+let fun_include = fun_include_ (Stog_tags.include_);;
+let fun_late_inc = fun_include_ (Stog_tags.late_inc);;
+
 let fun_inc stog elt env args subs =
-  Stog_msg.warning "<inc> rule is deprecated; use <include> rule instead";
-  fun_include stog elt env args subs
+  Stog_msg.warning ("<"^Stog_tags.inc^"> rule is deprecated; use <"^Stog_tags.late_inc^"> rule instead");
+  fun_late_inc stog elt env args subs
 ;;
 
 let fun_image _env args legend =
@@ -2098,7 +2101,8 @@ let rules_fun_elt stog elt_id elt =
 ;;
 
 let rules_inc_elt stog elt_id elt =
-  [ ("", Stog_tags.inc), fun_inc stog elt ]
+  [ ("", Stog_tags.inc), fun_inc stog elt ;
+    ("", Stog_tags.late_inc), fun_late_inc stog elt ]
 ;;
 
 let () = register_level_fun 0 (compute_elt rules_0);;

@@ -66,6 +66,7 @@ val inc : string
 val include_ : string
 val keyword : string
 val langswitch : string
+val late_inc : string
 val latex : string
 val list : string
 val n_columns : string

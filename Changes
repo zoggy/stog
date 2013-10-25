@@ -1,5 +1,7 @@
 Next release:
-* <inc> rule is now deprecated, use <include> instead
+* <include> and <late-inc> both handle 'file', 'href', 'id' and 'raw'
+  attributes
+* <inc> rule is now deprecated, use <latex-inc> instead
 * Fix caching system
 * Add <cut-elt> rule to cut element into pieces (like hevea's hacha)
 * Use "||" instead of deprecated operator "or"
