@@ -38,6 +38,7 @@ module type Cache = sig
   val store : Stog_types.elt -> t
 end;;
 
+
 let cache_info_file stog = Filename.concat stog.stog_cache_dir "info";;
 let stog_cache_name = "_stog";;
 
@@ -126,7 +127,7 @@ let get_cached_elements stog env =
   if Sys.file_exists info_file then
     begin
       let ic = open_in_bin info_file in
-      let (v : (string Smap.t * Stog_deps.Depset.t Smap.t)) = input_value ic in
+      let (v : (string Smap.t * Stog_types.Depset.t Smap.t)) = input_value ic in
       close_in ic;
       elt_envs := fst v ;
       Stog_deps.deps := snd v

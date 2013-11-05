@@ -33,13 +33,14 @@ module Smap = Stog_types.Str_map;;
 
 let languages = ["fr" ; "en" ];;
 
+
+
 let current_stog = ref None;;
 let plugin_rules = ref [];;
-let stage0_funs : (Stog_types.stog -> Stog_types.stog) list ref = ref [];;
 let blocks = ref Smap.empty ;;
 let counters = ref Smap.empty;;
 
-(** Mapping (hid, id) to (target_hid, id). Uses when cutting elt in pieces. *)
+(** Mapping (hid, id) to (target_hid, id). Used when cutting elt in pieces. *)
 module Hidmap = Map.Make
   (struct type t = Stog_types.human_id let compare = Pervasives.compare end);;
 
@@ -360,7 +361,7 @@ let include_href name stog elt ?id ~raw ~depend href env =
     let s_hid = match hid with "" -> get_hid env | s ->  s in
     let hid = Stog_types.human_id_of_string s_hid in
     let (_, elt) = Stog_types.elt_by_human_id stog hid in
-    if depend then Stog_deps.add_dep stog elt (Stog_deps.Elt elt);
+    if depend then Stog_deps.add_dep stog elt (Stog_types.Elt elt);
     let (elt, id) = map_elt_ref stog elt id in
     match Stog_types.find_block_by_id elt id with
     | None ->
@@ -507,7 +508,7 @@ let fun_elt_href ?typ src_elt href stog env args subs =
       match info with
         None -> [Xtmpl.D "??"]
       | Some (elt, hid, id) ->
-          Stog_deps.add_dep stog src_elt (Stog_deps.Elt elt);
+          Stog_deps.add_dep stog src_elt (Stog_types.Elt elt);
           match subs, id with
           | [], None ->
               let quote = if quotes then "\"" else "" in
@@ -1523,11 +1524,6 @@ and elt_list elt ?rss ?set stog env args _ =
       ) :: xml
 ;;
 
-let apply_stage0_funs stog =
-  Stog_msg.verbose "Calling stage 0 functions";
-  List.fold_right (fun f stog -> f stog) !stage0_funs stog
-;;
-
 module Sset = Set.Make (struct type t = string let compare = Pervasives.compare end);;
 
 
@@ -1722,7 +1718,7 @@ type level_fun_on_elt_list =
   (Stog_types.elt_id * Stog_types.elt) list * Stog_types.elt list
 ;;
 
-module Intmap = Map.Make (struct type t = int let compare = Pervasives.compare end);;
+module Intmap = Stog_types.Int_map
 module Set = Set.Make (struct type t = string let compare = Pervasives.compare end);;
 
 type level_fun_kind =
@@ -1745,104 +1741,7 @@ let register_level_fun_on_elt_list level f =
   register_level_fun_kind level (On_elt_list f);;
 
 
-let compute_level ?elts ?cached env level (funs: level_fun_kind list) stog =
-  Stog_msg.verbose (Printf.sprintf "Computing level %d" level);
-  let f_elt f stog (elt_id, elt) =
-    let elt = f env stog elt_id elt in
-    Stog_types.set_elt stog elt_id elt
-  in
-  let elts =
-    match elts, cached with
-      None, None ->
-        Stog_tmap.fold (fun elt_id elt acc -> (elt_id, elt) :: acc) stog.stog_elts []
-    | None, Some l ->
-        let pred id1 id2 = Stog_tmap.compare_key id1 id2 = 0 in
-        Stog_tmap.fold
-          (fun elt_id elt acc ->
-             if List.exists (pred elt_id) l then acc else (elt_id, elt) :: acc)
-             stog.stog_elts []
-    | Some l, _ ->
-        List.map
-        (fun elt_id -> (elt_id, Stog_types.elt stog elt_id))
-        l
-  in
-  let f_fun stog f =
-    match f with
-      On_elt f -> List.fold_left (f_elt f) stog elts
-    | On_elt_list f ->
-        let (modified, added) = f env stog elts in
-        let stog = List.fold_left
-          (fun stog (elt_id, elt) -> Stog_types.set_elt stog elt_id elt)
-          stog modified
-        in
-        List.fold_left Stog_types.add_elt stog added
-  in
-  List.fold_left f_fun stog funs
-;;
 
-(*
-let load_cached_elt file =
-  let ic = open_in_bin file in
-  let (t : Stog_types.cached_elt) = input_value ic in
-  close_in ic;
-  let hid = Stog_types.string_of_human_id t.cache_elt.elt_human_id in
-  blocks := Smap.add hid t.cache_blocks !blocks;
-  t.cache_elt
-;;
-*)
-
-let compute_levels ?(use_cache=true) ?elts env stog =
-  if use_cache then
-    begin
-      let cached = Stog_cache.get_cached_elements stog env in
-      Stog_msg.verbose (Printf.sprintf "%d elements read from cache" (List.length cached));
-      let f_elt (stog, cached) cached_elt =
-        try
-          let (elt_id, _) = Stog_types.elt_by_human_id stog cached_elt.elt_human_id in
-          (* replace element by cached one *)
-          let stog = Stog_types.set_elt stog elt_id cached_elt in
-          (stog, elt_id :: cached)
-        with _ ->
-            (* element not loaded but cached; keep it as it may be an
-              element from a cut-elt rule *)
-            let stog = Stog_types.add_elt stog cached_elt in
-            let (elt_id, _) = Stog_types.elt_by_human_id stog cached_elt.elt_human_id in
-            (stog, elt_id :: cached)
-      in
-      let (stog, cached) = List.fold_left f_elt (stog, []) cached in
-      Intmap.fold (compute_level ~cached env) !levels stog
-    end
-  else
-    Intmap.fold (compute_level ?elts env) !levels stog
-;;
-
-let generate ?(use_cache=true) ?only_elt stog =
-  begin
-    match stog.stog_lang with
-      None -> ()
-    | Some lang -> Stog_msg.verbose (Printf.sprintf "Generating pages for language %s" lang);
-  end;
-  let stog = apply_stage0_funs stog in
-  current_stog := Some stog;
-  Stog_misc.safe_mkdir stog.stog_outdir;
-  let env = env_of_defs stog.stog_defs in
-  let env = env_of_used_mods stog ~env stog.stog_used_mods in
-  match only_elt with
-    None ->
-      let stog = make_topic_indexes stog env in
-      let stog = make_keyword_indexes stog env in
-      let stog = make_archive_index stog env in
-      let stog = compute_levels ~use_cache env stog in
-      Stog_ocaml.close_sessions();
-      output_elts stog env;
-      copy_other_files stog
-  | Some s ->
-      let hid = Stog_types.human_id_of_string s in
-      let (elt_id, _) = Stog_types.elt_by_human_id stog hid in
-      let stog = compute_levels ~use_cache ~elts: [elt_id] env stog in
-      let (_, elt) = Stog_types.elt_by_human_id stog hid in
-      output_elts ~elts: [elt] stog env
-;;
 
 (* register default levels *)
 

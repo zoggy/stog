@@ -46,9 +46,6 @@ val elt_by_href : ?typ: string -> Stog_types.stog -> Xtmpl.env -> string ->
 (** The rewrite rules registered by plugins. *)
 val plugin_rules : (Xmlm.name * Xtmpl.callback) list ref
 
-(** Stage 0 functions registered by plugins. *)
-val stage0_funs : (Stog_types.stog -> Stog_types.stog) list ref
-
 (** Adding a known block id for a given hid. A short and a long title
   are specified. These registered blocks are used by <elt href="..#id"/> nodes.
   @on_dup specifies what to do when the id to add is already present.
@@ -110,16 +107,6 @@ val elt_list :
   ?rss:Neturl.url ->
   ?set:Stog_types.Elt_set.t -> Stog_types.stog -> Xtmpl.callback
 
-(** Generate the target files, with the following steps:
-  - apply registered stage0 functions to the read stog structure.
-  - create the output directory,
-  - build the base environment from the site global attributes,
-  - compute by-topic, by-keyword and by-month elements,
-  - compute elements,
-  - for each level, for each element, apply level functions on the element
-  - output {!Stog_types.elt.elt_out} field in the destination file.
-*)
-val generate : ?use_cache: bool -> ?only_elt:string -> Stog_types.stog -> unit
 
 type rule_build =
   Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * Xtmpl.callback) list

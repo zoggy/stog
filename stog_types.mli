@@ -73,6 +73,7 @@ val today : unit -> date
 module Hid_map : Stog_trie.S with type symbol = string
 module Elt_set : Set.S with type elt = elt_id
 module Int_map : Map.S with type key = int
+module Int_set : Set.S with type elt = int
 
 type edge_type = Date | Topic of string | Keyword of string | Ref
 
@@ -84,6 +85,9 @@ type stog_mod = {
   mod_requires : Str_set.t ;
   mod_defs : def list ;
 }
+type 'a dependency = File of string | Elt of 'a;;
+module Depset : Set.S with type elt = string dependency;;
+type stog_dependencies = Depset.t Str_map.t;;
 
 type stog = {
   stog_dir : string;
@@ -108,6 +112,7 @@ type stog = {
   stog_modules : stog_mod Str_map.t ;
   stog_used_mods : Str_set.t ;
   stog_depcut : bool ;
+  stog_deps : stog_dependencies ;
 }
 
 val url_of_string : string -> Neturl.url

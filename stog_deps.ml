@@ -31,10 +31,8 @@
 open Stog_types;;
 
 module Smap = Stog_types.Str_map;;
-type 'a dependency = File of string | Elt of 'a;;
 
-module Depset =
-  Set.Make (struct type t = string dependency let compare = Pervasives.compare end)
+module Depset = Stog_types.Depset
 
 let deps = ref Smap.empty;;
 

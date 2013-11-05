@@ -26,8 +26,39 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Rewrite engine *)
 
-val deps : Stog_types.Depset.t Stog_types.Str_map.t ref
-val add_dep : Stog_types.stog -> Stog_types.elt -> Stog_types.elt Stog_types.dependency -> unit
-val max_deps_date : Stog_types.stog -> (string -> Stog_types.elt) -> string -> float
+open Stog_types;;
+
+type 'a level_fun = Xtmpl.env -> (stog * 'a) -> (elt_id * elt) list -> (stog * 'a)
+
+type 'a engine = {
+      eng_data : 'a ;
+      eng_levels : 'a level_fun Stog_types.Int_map.t ;
+      eng_name : string ;
+    }
+
+module type Stog_engine = sig
+    type data
+    val engine : data engine
+    type cache_data
+    val cache_load : data -> elt -> cache_data -> data
+    val cache_store : data -> elt -> cache_data
+  end
+
+type stog_state =
+  { st_stog : stog ;
+    st_engines : (module Stog_engine) list ;
+  };;
+
+(** Generate the target files, with the following steps:
+  - create the output directory,
+  - build the base environment from the site global attributes,
+  - compute by-topic, by-keyword and by-month elements,
+  - compute elements,
+  - for each level, for each element, apply level functions on the element
+  - output {!Stog_types.elt.elt_out} field in the destination file.
+*)
+val generate :
+  ?use_cache: bool -> ?only_elt:string -> Stog_types.stog ->
+    (module Stog_engine) list -> unit

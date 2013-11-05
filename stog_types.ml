@@ -143,6 +143,7 @@ module Hid_map = Stog_trie.Make (struct type t = string let compare = compare en
 module Elt_set = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
 module Elt_map = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
 module Int_map = Map.Make (struct type t = int let compare = compare end);;
+module Int_set = Set.Make (struct type t = int let compare = compare end);;
 
 
 type edge_type =
@@ -170,6 +171,13 @@ type stog_mod = {
   mod_defs : def list ;
 }
 
+type 'a dependency = File of string | Elt of 'a;;
+
+module Depset =
+  Set.Make (struct type t = string dependency let compare = Pervasives.compare end)
+
+type stog_dependencies = Depset.t Str_map.t;;
+
 type stog = {
   stog_dir : string ;
   stog_elts : (elt, elt) Stog_tmap.t ;
@@ -193,6 +201,7 @@ type stog = {
   stog_modules : stog_mod Str_map.t ;
   stog_used_mods : Str_set.t ;
   stog_depcut : bool ;
+  stog_deps : stog_dependencies ;
   }
 
 let url_of_string s =
@@ -245,6 +254,7 @@ let create_stog dir = {
   stog_modules = Str_map.empty ;
   stog_used_mods = Str_set.empty ;
   stog_depcut = false ;
+  stog_deps = Str_map.empty ;
   }
 ;;
 
