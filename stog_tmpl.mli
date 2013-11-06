@@ -28,7 +28,7 @@
 
 (** Default templates. *)
 
-type contents = Stog_types.stog -> Xtmpl.tree
+type contents = Stog_types.stog -> Stog_types.stog * Xtmpl.tree
 
 (** [get_template_file stog elt file] returns absolute filename of the given
   template filename.
@@ -49,9 +49,10 @@ val get_template_file : Stog_types.stog -> Stog_types.elt -> string -> string
   on the file. Default is [true].
   *)
 val read_template_file : Stog_types.stog -> Stog_types.elt ->
-  ?depend: bool -> ?raw: bool -> string -> Xtmpl.tree
+  ?depend: bool -> ?raw: bool -> string -> Stog_types.stog * Xtmpl.tree
 
-val get_template : Stog_types.stog -> ?elt: Stog_types.elt -> contents -> string -> Xtmpl.tree
+val get_template : Stog_types.stog -> ?elt: Stog_types.elt ->
+  contents -> string -> Stog_types.stog * Xtmpl.tree
 
 val page : contents
 val by_keyword : contents

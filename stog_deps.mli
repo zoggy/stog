@@ -28,6 +28,6 @@
 
 (** *)
 
-val deps : Stog_types.Depset.t Stog_types.Str_map.t ref
-val add_dep : Stog_types.stog -> Stog_types.elt -> Stog_types.elt Stog_types.dependency -> unit
+val add_dep : Stog_types.stog -> Stog_types.elt ->
+  Stog_types.elt Stog_types.dependency -> Stog_types.stog
 val max_deps_date : Stog_types.stog -> (string -> Stog_types.elt) -> string -> float

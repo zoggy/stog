@@ -38,12 +38,12 @@
 val plugin_config_file : Stog_types.stog -> string -> string
 
 val register_lang : Stog_intl.lang_abbrev -> Stog_intl.lang_data -> unit
-val register_rule : Xmlm.name -> Xtmpl.callback -> unit
+val register_rule : Xmlm.name -> 'a Xtmpl.callback -> unit
 
 (** Unregister the rule with the given name from the plugin rules.
   It only register the last registered rule with this name.
   If a rule is unregistered, it is returned, else [None] is returned.*)
-val unregister_rule : Xmlm.name -> Xtmpl.callback option
+val unregister_rule : Xmlm.name -> 'a Xtmpl.callback option
 
 val stog : unit -> Stog_types.stog
 
@@ -51,7 +51,7 @@ val stog : unit -> Stog_types.stog
   optional if matching the given href string, of the form [hid[#id]].
   Return None if the element could not be found, of the id could not be found,
   and an error is issued. *)
-val elt_by_href : ?typ: string -> Stog_types.stog -> Xtmpl.env -> string ->
+val elt_by_href : ?typ: string -> Stog_types.stog -> 'a Xtmpl.env -> string ->
   (Stog_types.elt * string * string option) option
 
 (** Adding a known block id for a given hid. A short and a long title

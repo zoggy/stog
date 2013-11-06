@@ -43,30 +43,49 @@ module Set =
        let compare (id1,_) (id2, _) = Stog_tmap.compare_key id1 id2
      end)
 
-let filter_pred env att s (elt_id, elt) =
-  let v =
+let filter_pred env att s data (elt_id, elt) =
+  let (data, v) =
     let xml = Xtmpl.xml_of_string s in
-    let xmls = Xtmpl.apply_to_xmls env [xml] in
-    Xtmpl.string_of_xmls xmls
+    let (data, xmls) = Xtmpl.apply_to_xmls data env [xml] in
+    (data, Xtmpl.string_of_xmls xmls)
   in
-  let v_elt =
+  let (data, v_elt) =
     match Stog_types.get_def elt.elt_defs att  with
-      None -> ""
+      None -> (data, "")
     | Some (_, body) ->
-        Xtmpl.string_of_xmls (Xtmpl.apply_to_xmls env body)
+        let (data, xmls) = Xtmpl.apply_to_xmls data env body in
+        (data, Xtmpl.string_of_xmls xmls)
   in
-  v = v_elt
+  (data, v = v_elt)
 ;;
 
-let rec filter env set = function
-  Pred (att, v) -> Set.filter (filter_pred env att v) set
-| Or (f1, f2) -> Set.union (filter env set f1) (filter env set f2)
-| And (f1, f2) -> filter env (filter env set f2) f1
-| Not f -> Set.diff set (filter env set f)
+let set_filter =
+  let f pred elt (data, set) =
+    let (data,b) = pred data elt in
+    let set = if b then Set.add elt set else set in
+    (data, set)
+  in
+  fun data pred set ->
+    Set.fold (f pred) set (data, Set.empty)
+;;
+
+let rec filter data env set = function
+  Pred (att, v) -> set_filter data (filter_pred env att v) set
+| Or (f1, f2) ->
+    let (data, s1) = filter data env set f1 in
+    let (data, s2) = filter data env set f2 in
+    (data, Set.union s1 s2)
+| And (f1, f2) ->
+    let (data, s2) = filter data env set f2 in
+    filter data env s2 f1
+| Not f ->
+    let (data, s) = filter data env set f in
+    (data, Set.diff set s)
 
 
-let filter_elts env t elts =
+let filter_elts data env t elts =
   let set = List.fold_right Set.add elts Set.empty in
-  Set.elements (filter env set t)
+  let (data, set) = filter data env set t in
+  (data, Set.elements set)
 ;;
   

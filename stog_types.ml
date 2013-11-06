@@ -357,20 +357,23 @@ let sort_ids_elts_by_date elts =
 
 
 let sort_ids_elts_by_rules =
-  let apply_field env field =
+  let apply_field env (data, acc) field =
     let xml = [Xtmpl.E (("",field),[],[])] in
-    Xtmpl.apply_to_xmls env xml
+    let (data, xmls) = Xtmpl.apply_to_xmls data env xml in
+    (data, xmls :: acc)
   in
-  let apply_fields fields (id,e,env) =
-     (id,e, List.map (apply_field env) fields)
+  let apply_fields fields (data,acc) (id,e,env) =
+    let (data, xmls) = List.fold_left (apply_field env) (data,[]) fields in
+    let xmls = List.flatten (List.rev xmls) in
+    (data, (id,e, xmls) :: acc)
   in
   let compare (_, e1, v1) (_, e2, v2) =
     Pervasives.compare v1 v2
   in
-  fun fields elts ->
-    let elts = List.map (apply_fields fields) elts in
+  fun data fields elts ->
+    let (data, elts) = List.fold_left (apply_fields fields) (data,[]) elts in
     let elts = List.sort compare elts in
-    List.map (fun (id,e,_) -> (id, e)) elts
+    (data, List.map (fun (id,e,_) -> (id, e)) elts)
 ;;
 
 let elt_list ?(by_date=false) ?set stog =

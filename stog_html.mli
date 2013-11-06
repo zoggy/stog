@@ -37,14 +37,14 @@
 val current_stog : Stog_types.stog option ref
 
 (** [elt_by_href ?typ stog env href] returns the element, hid and
-  optional if matching the given href string, of the form [hid[#id]].
+  optional id matching the given href string, of the form [hid[#id]].
   Return None if the element could not be found, of the id could not be found,
   and an error is issued. *)
-val elt_by_href : ?typ: string -> Stog_types.stog -> Xtmpl.env -> string ->
+val elt_by_href : ?typ: string -> Stog_types.stog -> 'a Xtmpl.env -> string ->
   (Stog_types.elt * string * string option) option
 
 (** The rewrite rules registered by plugins. *)
-val plugin_rules : (Xmlm.name * Xtmpl.callback) list ref
+val plugin_rules : (Xmlm.name * 'a Xtmpl.callback) list ref
 
 (** Adding a known block id for a given hid. A short and a long title
   are specified. These registered blocks are used by <elt href="..#id"/> nodes.
@@ -58,15 +58,15 @@ val add_block :
 (** [get_in_env env tag] will look for the given string in the environment,
   by building a <tag/> node and evaluating it. If the result is the same node,
   then return [""] else return the reduced value as a string.*)
-val get_in_env : Xtmpl.env -> Xmlm.name -> string
+val get_in_env : 'a Xtmpl.env -> Xmlm.name -> 'a * string
 
 (** [get_in_args_or_env env args s] returns the value associated to [s]
  in [args] of else return the result of [get_in_env env s]. *)
-val get_in_args_or_env : Xtmpl.env -> Xmlm.attribute list -> Xmlm.name -> string
+val get_in_args_or_env : 'a Xtmpl.env -> Xmlm.attribute list -> Xmlm.name -> 'a * string
 
 (** [get_hid env] returns the value associated to ["hid"] in [env].
   @raise Assert_failure if ["hid"] is not found in the environment.*)
-val get_hid : Xtmpl.env -> string
+val get_hid : 'a Xtmpl.env -> 'a * string
 
 (** Escape html code in the given string: change [&] to [&amp;],
   [<] to [&lt;] and [>] to [&gt;].*)
@@ -98,29 +98,29 @@ val generate_rss_feed_file :
 
 (** Build the base rules, using the default ones and the {!plugin_rules}. *)
 val build_base_rules : Stog_types.stog ->
-  Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * Xtmpl.callback) list
+  Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * 'a Xtmpl.callback) list
 
 (** The calllback to insert a list of elements. Can be called directly
   if provided an additional environment, argument and children nodes. *)
 val elt_list :
   Stog_types.elt ->
   ?rss:Neturl.url ->
-  ?set:Stog_types.Elt_set.t -> Stog_types.stog -> Xtmpl.callback
+  ?set:Stog_types.Elt_set.t -> Stog_types.stog -> 'a Xtmpl.callback
 
 
-type rule_build =
-  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * Xtmpl.callback) list
-type level_fun =
-  Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
+type 'a rule_build =
+  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * 'a Xtmpl.callback) list
+type 'a level_fun =
+  'a Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
 ;;
 
-type level_fun_on_elt_list =
-  Xtmpl.env -> Stog_types.stog -> (Stog_types.elt_id * Stog_types.elt) list ->
+type 'a level_fun_on_elt_list =
+  'a Xtmpl.env -> Stog_types.stog -> (Stog_types.elt_id * Stog_types.elt) list ->
   (Stog_types.elt_id * Stog_types.elt) list * Stog_types.elt list
 ;;
 
 
-val register_level_fun : int -> level_fun -> unit
-val compute_elt : rule_build -> level_fun
+val register_level_fun : int -> 'a level_fun -> unit
+val compute_elt : 'a rule_build -> 'a level_fun
 
-val register_level_fun_on_elt_list : int -> level_fun_on_elt_list -> unit
+val register_level_fun_on_elt_list : int -> 'a level_fun_on_elt_list -> unit

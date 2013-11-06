@@ -38,7 +38,7 @@ let deps = ref Smap.empty;;
 
 let add_dep stog elt dep =
   match elt.elt_type with
-    "by-keyword" | "by-month" | "by-topic" -> ()
+    "by-keyword" | "by-month" | "by-topic" -> stog
   | _ ->
       (* we make both the elt and its parent and brothers depend on dep;
          this is to force recomputing of parent element when
@@ -73,7 +73,7 @@ let add_dep stog elt dep =
       let src_hids = List.map
         (fun elt -> Stog_types.string_of_human_id elt.elt_human_id) srcs
       in
-      let f_elt elt =
+      let f_elt stog elt =
         let src_hid = Stog_types.string_of_human_id elt.elt_human_id in
         let set =
           try Smap.find src_hid !deps
@@ -89,9 +89,9 @@ let add_dep stog elt dep =
               else
                 Depset.add dep set
         in
-        deps := Smap.add src_hid set !deps
+        { stog with stog_deps = Smap.add src_hid set stog.stog_deps }
       in
-      List.iter f_elt srcs
+      List.fold_left f_elt stog srcs
 ;;
 
 let string_of_file_time f =

@@ -32,10 +32,10 @@ let gensym = let cpt = ref 0 in fun () -> incr cpt; !cpt;;
 
 let cache = Hashtbl.create 111;;
 
-let get_in_env env (prefix, s) =
+let get_in_env data env (prefix, s) =
   let node = [ Xtmpl.E((prefix,s),[],[]) ] in
-  let node2 = Xtmpl.apply_to_xmls env node in
-  if node2 = node then "" else Xtmpl.string_of_xmls node2
+  let (data, node2) = Xtmpl.apply_to_xmls data env node in
+  if node2 = node then (data, "") else (data, Xtmpl.string_of_xmls node2)
 ;;
 
 let make_svg outdir ?(packages=[]) ?(scale=1.1) ?defs latex_code =
@@ -100,29 +100,40 @@ let code_of_subs =
 ;;
 
 
-let fun_latex stog env args subs =
+let fun_latex (stog, data) env args subs =
   let code = code_of_subs subs in
   let packages = Xtmpl.opt_arg args ("", "packages") in
   let packages = Stog_misc.split_string packages [';'] in
   let showcode = Xtmpl.opt_arg args ("", "showcode") = "true" in
-  let defs = match get_in_env env ("", "latex-defs") with "" -> None | s -> Some s in
-  let scale =
-    match get_in_env env ("", "latex-svg-scale") with
-      "" -> None
-    | s ->
-        try Some (float_of_string s)
-        with _ -> failwith (Printf.sprintf "Invalid latex-svg-scale %S" s)
+  let ((stog, data), defs) =
+    let ((stog, data), s) = get_in_env (stog, data) env ("", "latex-defs") in
+    let defs =  match s with "" -> None | s -> Some s in
+    ((stog, data), defs)
+  in
+  let ((stog, data), scale) =
+    let ((stog, data), s) = get_in_env (stog, data) env ("", "latex-svg-scale") in
+    let scale =
+      match s with
+        "" -> None
+      | s ->
+          try Some (float_of_string s)
+          with _ -> failwith (Printf.sprintf "Invalid latex-svg-scale %S" s)
+    in
+    ((stog, data), scale)
   in
   let svg = Filename.basename (make_svg stog.Stog_types.stog_outdir ~packages ?scale ?defs code) in
   let url = Stog_types.url_concat stog.Stog_types.stog_base_url svg in
-  (Xtmpl.E (("","img"),
-    [("", "class"), "latex" ;
-     ("", "src"), (Stog_types.string_of_url url) ;
-     ("", "alt"), code ;
-     ("", "title"), code],
-     []) ) ::
-  (match showcode with
-     false -> []
-   | true -> [ Xtmpl.E (("","hcode"), [("","lang"), "tex"], [Xtmpl.D code]) ]
-  )
+  let xmls =
+    (Xtmpl.E (("","img"),
+      [("", "class"), "latex" ;
+        ("", "src"), (Stog_types.string_of_url url) ;
+        ("", "alt"), code ;
+        ("", "title"), code],
+      []) ) ::
+      (match showcode with
+         false -> []
+       | true -> [ Xtmpl.E (("","hcode"), [("","lang"), "tex"], [Xtmpl.D code]) ]
+      )
+  in
+  ((stog, data), xmls)
 ;;

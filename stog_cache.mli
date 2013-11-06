@@ -56,6 +56,6 @@ val apply_storers : Stog_types.stog -> Stog_types.elt -> unit
 val cache_elt : Stog_types.stog -> Stog_types.elt -> unit
 val output_cache_info : Stog_types.stog -> unit
 
-val set_elt_env : Stog_types.elt -> Stog_types.stog -> Xtmpl.env -> unit
-val get_cached_elements : Stog_types.stog -> Xtmpl.env -> Stog_types.elt list
+val set_elt_env : Stog_types.elt -> Stog_types.stog -> 'a Xtmpl.env -> unit
+val get_cached_elements : Stog_types.stog -> 'a Xtmpl.env -> Stog_types.elt list
 

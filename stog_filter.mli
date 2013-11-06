@@ -30,5 +30,5 @@
 
 val filter_of_string : string -> Stog_filter_types.t
 
-val filter_elts : Xtmpl.env -> Stog_filter_types.t ->
-  (Stog_types.elt_id * Stog_types.elt) list -> (Stog_types.elt_id * Stog_types.elt) list
+val filter_elts : 'a -> 'a Xtmpl.env -> Stog_filter_types.t ->
+  (Stog_types.elt_id * Stog_types.elt) list -> 'a * (Stog_types.elt_id * Stog_types.elt) list

@@ -30,7 +30,12 @@
 
 open Stog_types;;
 
-type 'a level_fun = Xtmpl.env -> (stog * 'a) -> (elt_id * elt) list -> (stog * 'a)
+
+type 'a fun_type = 'a Xtmpl.env -> 'a -> (elt_id * elt) list -> 'a
+type 'a level_fun =
+  | Fun_stog of stog fun_type
+  | Fun_data of 'a fun_type
+  | Fun_stog_data of (stog * 'a) fun_type
 
 type 'a engine = {
       eng_data : 'a ;
@@ -62,3 +67,10 @@ type stog_state =
 val generate :
   ?use_cache: bool -> ?only_elt:string -> Stog_types.stog ->
     (module Stog_engine) list -> unit
+
+val elt_dst : (string -> string -> string) ->
+  ?encode:bool -> Stog_types.stog -> string -> Stog_types.elt -> string
+
+val env_of_defs : ?env:'a Xtmpl.env -> Stog_types.def list -> 'a Xtmpl.env
+val env_of_used_mods : Stog_types.stog ->
+  ?env:'a Xtmpl.env -> Stog_types.Str_set.t -> 'a Xtmpl.env
