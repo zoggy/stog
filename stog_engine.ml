@@ -581,27 +581,29 @@ let generate ?(use_cache=true) ?only_elt stog engines =
 
 (*** Convenient functions to create level_fun's ***)
 
+let get_elt_out stog elt =
+  match elt.elt_out with
+    None ->
+      let (stog, tmpl) =
+        let default =
+          match elt.elt_type with
+            "by-topic" -> Stog_tmpl.by_topic
+          | "by-keyword" -> Stog_tmpl.by_keyword
+          | "by-month" -> Stog_tmpl.by_month
+          | _ -> Stog_tmpl.page
+        in
+        Stog_tmpl.get_template stog ~elt default (elt.elt_type^".tmpl")
+      in
+      (stog, [tmpl])
+  | Some xmls ->
+      (stog, xmls)
+;;
+
 let fun_apply_stog_elt_rules rules =
   let f_elt env stog (elt_id, elt) =
     let rules = List.map (fun (name, f) -> (name f elt)) rules in
     let env = Xtmpl.env_of_list ~env rules in
-    let (stog, xmls) =
-      match elt.elt_out with
-        None ->
-          let (stog, tmpl) =
-            let default =
-              match elt.elt_type with
-                "by-topic" -> Stog_tmpl.by_topic
-              | "by-keyword" -> Stog_tmpl.by_keyword
-              | "by-month" -> Stog_tmpl.by_month
-              | _ -> Stog_tmpl.page
-            in
-            Stog_tmpl.get_template stog ~elt default (elt.elt_type^".tmpl")
-          in
-          (stog, [tmpl])
-      | Some xmls ->
-          (stog, xmls)
-    in
+    let (stog, xmls) = get_elt_out stog elt in
     let (stog, xmls) = Xtmpl.apply_to_xmls stog env xmls in
     let elt = { elt with elt_out = Some xmls } in
     Stog_types.set_elt stog elt_id elt
