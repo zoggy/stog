@@ -38,7 +38,7 @@ let languages = ["fr" ; "en" ];;
 module Hidmap = Map.Make
   (struct type t = Stog_types.human_id let compare = Pervasives.compare end);;
 
-type data =
+type html_data =
   { blocks : (Xtmpl.tree * Xtmpl.tree) Smap.t Smap.t ;
     counters : int Smap.t Smap.t ;
     id_map : (human_id * string option) Smap.t Hidmap.t ;
@@ -113,7 +113,7 @@ let random_id () =
     (Random.int 0xffff) (Random.int 0xffff)
 ;;
 
-let add_block data ?(on_dup=`Warn) ~hid ~id ~short ~long () =
+let add_block ?(on_dup=`Warn) ~hid ~id ~short ~long data =
   let map =
     try Smap.find hid data.blocks
     with Not_found -> Smap.empty
@@ -399,7 +399,7 @@ let fun_list acc env args subs =
   (acc, iter [] subs)
 ;;
 
-let elt_by_href ?typ stog data env href =
+let elt_by_href ?typ (stog, data) env href =
   let (hid, id) =
     try
       let p = String.index href '#' in
@@ -410,23 +410,27 @@ let elt_by_href ?typ stog data env href =
     with
       Not_found -> (href, "")
   in
-  let (data, info) =
+  let ((stog, data), info) =
     try
-      let (data, hid) = match hid with "" -> get_hid data env | s ->  (data, s) in
+      let ((stog, data), hid) =
+        match hid with
+          "" -> get_hid (stog, data) env
+        | s ->  ((stog, data), s)
+      in
       let hid = Stog_types.human_id_of_string hid in
       let (_, elt) = Stog_types.elt_by_human_id ?typ stog hid in
       let (elt, id) = map_elt_ref data stog elt id in
       let hid = Stog_types.string_of_human_id elt.elt_human_id in
-      (data, Some (elt, hid, id))
+      ((stog, data), Some (elt, hid, id))
     with
       Failure s ->
         Stog_msg.error ~info: "Stog_html.elt_by_href" s;
-        (data, None)
+        ((stog, data), None)
   in
   match info with
-    None -> (data, None)
-  | Some (elt, hid, "") -> (data, Some (elt, hid, None))
-  | Some (elt, hid, id) -> (data, Some (elt, hid, Some id))
+    None -> ((stog, data), None)
+  | Some (elt, hid, "") -> ((stog, data), Some (elt, hid, None))
+  | Some (elt, hid, id) -> ((stog, data), Some (elt, hid, Some id))
 ;;
 
 let fun_elt_href ?typ src_elt href (stog, data) env args subs =
@@ -437,7 +441,7 @@ let fun_elt_href ?typ src_elt href (stog, data) env args subs =
     | Some s -> Stog_io.bool_of_string s
   in
   let (stog, data, elt, text) =
-    let (data, info) = elt_by_href ?typ stog data env href in
+    let ((stog, data), info) = elt_by_href ?typ (stog, data) env href in
     let (stog, text) =
       match info with
         None -> (stog, [Xtmpl.D "??"])
@@ -621,8 +625,8 @@ let concat_name ?(sep=":") (prefix, name) =
   | p -> p ^ sep ^ name
 ;;
 
-let make_fun_section sect_up cls sect_down data env args subs =
-  let (data, hid) = get_hid data env in
+let make_fun_section sect_up cls sect_down (stog, data) env args subs =
+  let ((stog, data), hid) = get_hid (stog, data) env in
   let data = List.fold_left
     (fun data cls_down ->
        set_counter data hid (concat_name ~sep: ":" cls_down) 0
@@ -642,9 +646,9 @@ let make_fun_section sect_up cls sect_down data env args subs =
       )
     ]
   in
-  let f (data, acc) (prefix, cls) =
-    let (data, s) =
-      get_in_env data env (prefix, (concat_name (prefix, cls))^"-counter")
+  let f ((stog, data), acc) (prefix, cls) =
+    let ((stog,data), s) =
+      get_in_env (stog,data) env (prefix, (concat_name (prefix, cls))^"-counter")
     in
     let s =
       if Stog_io.bool_of_string s then
@@ -653,19 +657,19 @@ let make_fun_section sect_up cls sect_down data env args subs =
       else
         ""
     in
-    (data, s :: acc)
+    ((stog, data), s :: acc)
   in
-  let (data, counters) =
-    let (data, cpts) = List.fold_left f (data, []) (cls::sect_up) in
-    (data, String.concat "."  (List.filter ((<>) "") cpts))
+  let ((stog,data), counters) =
+    let ((stog,data), cpts) = List.fold_left f ((stog,data), []) (cls::sect_up) in
+    ((stog,data), String.concat "."  (List.filter ((<>) "") cpts))
   in
-  let (data, counter_name) =
+  let ((stog,data), counter_name) =
     let (pref, name) = cls in
-    let (data, s) = get_in_env data env (pref, (concat_name cls)^"-counter") in
+    let ((stog,data), s) = get_in_env (stog,data) env (pref, (concat_name cls)^"-counter") in
     if (Stog_io.bool_of_string s) then
-      (data, concat_name cls)
+      ((stog,data), concat_name cls)
     else
-      (data, "")
+      ((stog,data), "")
   in
   let label = String.capitalize (snd cls) in
   let xmls =
@@ -685,7 +689,7 @@ let make_fun_section sect_up cls sect_down data env args subs =
       )
     ]
   in
-  (data, xmls)
+  ((stog, data), xmls)
 ;;
 
 let fun_search_form (stog, data) _env _ _ =
@@ -1139,14 +1143,14 @@ let fun_block1 (stog, data) env args subs =
         let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env block.blk_short_f in
          ((stog, data), Xtmpl.E (("", Xtmpl.tag_main), [], xmls))
       in
-      let data = add_block data ~hid ~id: block.blk_id ~short ~long () in
+      let data = add_block ~hid ~id: block.blk_id ~short ~long data in
       let env = Xtmpl.env_add "title" (fun acc _ _ _ -> (acc, [long])) env in
       Xtmpl.apply_to_xmls (stog, data) env block.blk_body
 ;;
 
 let fun_block2 (stog, data) env atts subs =
   match Xtmpl.get_arg atts ("", "href") with
-    None -> subs
+    None -> ((stog, data), subs)
   | Some href ->
       let hid = match Xtmpl.get_arg atts ("", Stog_tags.elt_hid) with
           None -> assert false
@@ -1551,7 +1555,7 @@ and elt_list elt ?rss ?set (stog,data) env args _ =
 
 module Sset = Set.Make (struct type t = string let compare = Pervasives.compare end);;
 
-
+(*
 let compute_elt build_rules env stog elt_id elt =
   Stog_msg.verbose ~level:2
   (Printf.sprintf "Computing %s %S"
@@ -1577,7 +1581,8 @@ let compute_elt build_rules env stog elt_id elt =
   let result = Xtmpl.apply_to_xmls env xmls in
   { elt with elt_out = Some result }
 ;;
-
+*)
+(*
 let make_by_word_indexes stog env f_elt_id elt_type map =
   let f word set stog =
     let hid = f_elt_id word in
@@ -1601,7 +1606,7 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
         elt_used_mods = Stog_types.Str_set.empty ;
       }
     in
-    let out_file = elt_dst_file stog elt in
+    let out_file = Stog_engine.elt_dst_file stog elt in
     let rss_file = (Filename.chop_extension out_file)^".rss" in
     let url = elt_url stog elt in
     let rss_url =
@@ -1666,30 +1671,12 @@ let make_archive_index stog env =
   in
   Stog_types.Int_map.fold f_year stog.stog_archives stog
 ;;
-
-
-
-type rule_build =
-  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * Xtmpl.callback) list
-type level_fun =
-  Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
-;;
-
-type level_fun_on_elt_list =
-  Xtmpl.env -> Stog_types.stog -> (Stog_types.elt_id * Stog_types.elt) list ->
-  (Stog_types.elt_id * Stog_types.elt) list * Stog_types.elt list
-;;
+*)
 
 module Intmap = Stog_types.Int_map
 module Set = Set.Make (struct type t = string let compare = Pervasives.compare end);;
 
-type level_fun_kind =
-  On_elt of level_fun
-| On_elt_list of level_fun_on_elt_list
-;;
-
-let levels = ref (Intmap.empty : level_fun_kind list Intmap.t);;
-
+(*
 let register_level_fun_kind level k =
   let l =
     try Intmap.find level !levels
@@ -1701,13 +1688,13 @@ let register_level_fun level f =
   register_level_fun_kind level (On_elt f);;
 let register_level_fun_on_elt_list level f =
   register_level_fun_kind level (On_elt_list f);;
-
+*)
 
 
 
 (* register default levels *)
 
-let rules_0 = build_base_rules ;;
+let fun_level_0 = Stog_engine.fun_apply_stog_data_elt_rules build_base_rules;;
 
 let get_sectionning_tags stog elt =
   let spec =
@@ -1740,6 +1727,9 @@ let rules_toc stog elt_id elt =
   ]
 ;;
 
+let fun_level_toc = Stog_engine.fun_apply_stog_data_elt_rules rules_toc ;;
+
+
 let rules_sectionning stog elt_id elt =
   let tags = get_sectionning_tags stog elt in
   let rec f acc up = function
@@ -1750,8 +1740,11 @@ let rules_sectionning stog elt_id elt =
   in
   let rules = f [] [] tags in
   (("", Stog_tags.counter), fun_counter)::
-  (("", Stog_tags.block), fun_block1 stog) :: rules
+  (("", Stog_tags.block), fun_block1) :: rules
 ;;
+
+let fun_level_sectionning =
+  Stog_engine.fun_apply_stog_data_elt_rules rules_sectionning ;;
 
 type cutpoint =
   {
@@ -1804,21 +1797,25 @@ let cut_elts =
     ("",t) -> "<"^t^">"
   | (n, t) -> "<"^n^":"^t^">"
   in
-  let set_id_map hid atts new_hid with_id =
+  let set_id_map data hid atts new_hid with_id =
     if hid <> new_hid then
       match Xtmpl.get_arg atts ("","id") with
-        None -> ()
+        None -> data
       | Some id ->
           let new_id = if with_id then Some id else None in
-          add_id_map hid id new_hid new_id
+          id_map_add data hid id new_hid new_id
+    else
+      data
   in
-  let rec iter elt new_hid cutpoints new_elts xml =
+  let rec iter elt new_hid cutpoints data new_elts xml =
     match xml with
-      Xtmpl.D _ -> ([xml], new_elts)
+      Xtmpl.D _ -> (data, [xml], new_elts)
     | Xtmpl.E (("","cut-elt"), atts, xmls) ->
         let cutpoints = (cutpoint_of_atts elt atts) :: cutpoints in
-        let (xmls, new_elts) = List.fold_right (fold elt new_hid cutpoints) xmls ([], new_elts) in
-        (xmls, new_elts)
+        let (data, xmls, new_elts) = List.fold_right
+          (fold elt new_hid cutpoints) xmls (data, [], new_elts)
+        in
+        (data, xmls, new_elts)
 
     | Xtmpl.E (tag, atts, xmls) ->
         let cp_opt =
@@ -1828,15 +1825,17 @@ let cut_elts =
         match cp_opt with
           None ->
             (* not a cut point *)
-            let (xmls, new_elts) = List.fold_right (fold elt new_hid cutpoints) xmls ([], new_elts) in
-            ([Xtmpl.E (tag, atts, xmls)], new_elts)
+            let (data, xmls, new_elts) = List.fold_right
+              (fold elt new_hid cutpoints) xmls (data, [], new_elts)
+            in
+            (data, [Xtmpl.E (tag, atts, xmls)], new_elts)
         | Some cp ->
             try
               let title =
                 match Xtmpl.get_arg atts ("","title") with
                   None ->
                     Stog_msg.warning ("Missing title on cutpoint; not cutting node "^(string_of_tag tag));
-                  raise Not_found
+                    raise Not_found
                 | Some s -> s
               in
               let id =
@@ -1848,8 +1847,11 @@ let cut_elts =
               in
               let new_hid_s = (Stog_types.string_of_human_id new_hid) ^ cp.cut_hid_sep ^ id in
               let new_hid = Stog_types.human_id_of_string new_hid_s in
-              set_id_map elt.elt_human_id atts new_hid false ;
-              let (xmls, new_elts) = List.fold_right (fold elt new_hid cutpoints) xmls ([], new_elts) in
+              let data = set_id_map data elt.elt_human_id atts new_hid false in
+              let (data, xmls, new_elts) =
+                List.fold_right (fold elt new_hid cutpoints)
+                  xmls (data, [], new_elts)
+              in
               let elt =
                 { elt with
                   elt_human_id = new_hid ;
@@ -1869,50 +1871,65 @@ let cut_elts =
                 else
                   []
               in
-              (xml, elt :: new_elts)
+              (data, xml, elt :: new_elts)
             with
               Not_found ->
                 (* not enough information to cut *)
-                let (xmls, new_elts) = List.fold_right (fold elt new_hid cutpoints) xmls ([], new_elts) in
-                (xmls, new_elts)
+                let (data, xmls, new_elts) =
+                  List.fold_right (fold elt new_hid cutpoints)
+                    xmls (data, [], new_elts)
+                in
+                (data, xmls, new_elts)
 
-  and fold elt new_hid cutpoints xml (xmls, new_elts) =
-    let (xmls2, new_elts) = iter elt new_hid cutpoints new_elts xml in
-    (xmls2 @ xmls, new_elts)
+  and fold elt new_hid cutpoints xml (data, xmls, new_elts) =
+    let (data, xmls2, new_elts) = iter elt new_hid cutpoints data new_elts xml in
+    (data, xmls2 @ xmls, new_elts)
   in
-  let cut_elt elt =
+  let cut_elt data elt =
     match elt.elt_out with
-      None -> (elt, [])
+      None -> (data, elt, [])
     | Some body ->
-        let (body, new_elts) = List.fold_right (fold elt elt.elt_human_id []) body ([], []) in
+        let (data, body, new_elts) =
+          List.fold_right (fold elt elt.elt_human_id [])
+            body (data, [], [])
+        in
         let children =
           match new_elts with
             [] -> elt.elt_children
           | _ -> elt.elt_children @ (List.map (fun elt -> elt.elt_human_id) new_elts)
         in
-        ({ elt with elt_out = Some body ; elt_children = children }, new_elts)
+        (data,
+         { elt with elt_out = Some body ; elt_children = children },
+         new_elts)
   in
-  let add_id_mappings src_hid dst_hid set =
-    Sset.iter (fun id -> add_id_map src_hid id dst_hid (Some id)) set
+  let add_id_mappings data src_hid dst_hid set =
+    Sset.fold
+      (fun id data -> id_map_add data src_hid id dst_hid (Some id))
+      set data
   in
-  let set_elt_id_mappings orig_hid all_ids elt =
+  let set_elt_id_mappings orig_hid all_ids data elt =
     let ids = id_set elt in
-    add_id_mappings orig_hid elt.elt_human_id ids ;
-    add_id_mappings elt.elt_human_id orig_hid (Sset.diff all_ids ids)
+    let data = add_id_mappings data orig_hid elt.elt_human_id ids in
+    add_id_mappings data elt.elt_human_id orig_hid (Sset.diff all_ids ids)
   in
-  let f_elt env stog (modified, added) (elt_id, elt) =
-    let (elt2, new_elts) = cut_elt elt in
+  let f_elt env (stog, data) (elt_id, elt) =
+    let (data, elt2, new_elts) = cut_elt data elt in
     match new_elts with
-      [] -> (modified, added)
+      [] ->
+        (* no new elements means the original element was not modified either *)
+        (stog, data)
     | _ ->
         let all_ids = id_set elt in
-        List.iter (set_elt_id_mappings elt.elt_human_id all_ids) new_elts ;
-        let mods = (elt_id, elt2) :: modified in
-        let added = new_elts @ added in
-        (mods, added)
+        let data =
+          List.fold_left (set_elt_id_mappings elt.elt_human_id all_ids)
+          data new_elts
+        in
+        let stog = Stog_types.set_elt stog elt_id elt2 in
+        let stog = List.fold_left Stog_types.add_elt stog new_elts in
+        (stog, data)
   in
-  fun env stog elts ->
-    List.fold_left (f_elt env stog) ([], []) elts
+  fun env (stog, data) elts ->
+    List.fold_left (f_elt env) (stog, data) elts
 ;;
 
 let gather_existing_ids =
@@ -1933,9 +1950,9 @@ let gather_existing_ids =
       in
       List.fold_left (f hid) set subs
   in
-  fun env stog elt_id elt ->
+  fun env (stog, data) (elt_id, elt) ->
     match elt.elt_out with
-      None -> elt
+      None -> (stog, data)
     | Some body ->
         let set =
           let g set xml =
@@ -1948,52 +1965,75 @@ let gather_existing_ids =
         in
         let title = Xtmpl.xml_of_string elt.elt_title in
         let hid = Stog_types.string_of_human_id elt.elt_human_id in
-        Sset.iter
-          (fun id -> add_block ~on_dup: `Ignore ~hid ~id ~short: title ~long: title ()) set;
-        elt
+        let data = Sset.fold
+          (fun id data ->
+             add_block ~on_dup: `Ignore ~hid ~id ~short: title ~long: title data)
+            set data
+        in
+        (stog, data)
+;;
+let fun_level_gather_ids =
+  let f env (stog, data) elts =
+    List.fold_left (gather_existing_ids env) (stog, data) elts
+  in
+  Stog_engine.Fun_stog_data f
 ;;
 
 let rules_fun_elt stog elt_id elt =
-  [ ("", Stog_tags.elt), fun_elt elt stog ;
-    ("", Stog_tags.post), fun_post elt stog ;
-    ("", Stog_tags.page), fun_page elt stog ;
+  [ ("", Stog_tags.elt), fun_elt elt  ;
+    ("", Stog_tags.post), fun_post elt  ;
+    ("", Stog_tags.page), fun_page elt  ;
     ("", Stog_tags.block), fun_block2 ;
-  ] @ (build_base_rules elt_id elt)
+  ] @ (build_base_rules stog elt_id elt)
 ;;
+let fun_level_fun_elt =
+  Stog_engine.fun_apply_stog_data_elt_rules rules_fun_elt ;;
 
 let rules_inc_elt stog elt_id elt =
-  [ ("", Stog_tags.inc), fun_inc stog elt ;
-    ("", Stog_tags.late_inc), fun_late_inc stog elt ]
+  [ ("", Stog_tags.inc), fun_inc elt ;
+    ("", Stog_tags.late_inc), fun_late_inc elt ]
+;;
+let fun_level_inc_elt =
+  Stog_engine.fun_apply_stog_data_elt_rules rules_inc_elt ;;
+
+let levels = List.fold_left
+  (fun map (level, f) -> Intmap.add level f map)
+    Intmap.empty
+    [
+      0, fun_level_0 ;
+      50, fun_level_toc ;
+      60, Stog_engine.Fun_stog_data cut_elts ;
+      61, fun_level_0 ;
+      100, fun_level_sectionning ;
+      120, fun_level_gather_ids ;
+      150, fun_level_fun_elt ;
+      160, fun_level_inc_elt ;
+    ]
 ;;
 
-let () = register_level_fun 0 (compute_elt rules_0);;
-let () = register_level_fun 50 (compute_elt rules_toc);;
-let () = register_level_fun_on_elt_list 60 cut_elts;;
-let () = register_level_fun 61 (compute_elt rules_0);;
-let () = register_level_fun 100 (compute_elt rules_sectionning);;
-let () = register_level_fun 120 (gather_existing_ids);;
-let () = register_level_fun 150 (compute_elt rules_fun_elt);;
-let () = register_level_fun 160 (compute_elt rules_inc_elt);;
-
-module Cache = struct
-  type t =
-      {
+module Html =
+  struct
+    type data = html_data
+    let engine = {
+        Stog_engine.eng_name = "html" ;
+        eng_levels = levels ;
+        eng_data = empty_data ;
+       }
+    type cache_data = {
         cache_blocks : (Xtmpl.tree * Xtmpl.tree) Str_map.t ;
         cache_id_map : (human_id * string option) Str_map.t ;
       }
-
-  let name = "_xml"
-  let load elt t =
-    let hid = Stog_types.string_of_human_id elt.elt_human_id in
-    blocks := Smap.add hid t.cache_blocks !blocks;
-    id_map := Hidmap.add elt.elt_human_id t.cache_id_map !id_map
-
-  let store elt =
-    let hid = Stog_types.string_of_human_id elt.elt_human_id in
-    {
-      cache_blocks = (try Smap.find hid !blocks with Not_found -> Smap.empty);
-      cache_id_map = (try Hidmap.find elt.elt_human_id !id_map with Not_found -> Smap.empty) ;
-    }
-end;;
+    let cache_load data elt t =
+      let hid = Stog_types.string_of_human_id elt.elt_human_id in
+      let blocks = Smap.add hid t.cache_blocks data.blocks in
+      let id_map = Hidmap.add elt.elt_human_id t.cache_id_map data.id_map in
+      { data with blocks ; id_map }
+    let cache_store data elt =
+      let hid = Stog_types.string_of_human_id elt.elt_human_id in
+      {
+        cache_blocks = (try Smap.find hid data.blocks with Not_found -> Smap.empty) ;
+        cache_id_map = (try Hidmap.find elt.elt_human_id data.id_map with Not_found -> Smap.empty) ;
+      }
+  end;;
 
 (*let () = Stog_cache.register_cache (module Cache);;*)

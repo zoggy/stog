@@ -70,15 +70,16 @@ val generate :
 val elt_dst : (string -> string -> string) ->
   ?encode:bool -> Stog_types.stog -> string -> Stog_types.elt -> string
 
+(** Build the final file where the given element will be generated. *)
+val elt_dst_file : Stog_types.stog -> Stog_types.elt -> string
+
 val env_of_defs : ?env:'a Xtmpl.env -> Stog_types.def list -> 'a Xtmpl.env
 val env_of_used_mods : Stog_types.stog ->
   ?env:'a Xtmpl.env -> Stog_types.Str_set.t -> 'a Xtmpl.env
 
-val fun_apply_stog_elt_rules :
-  (Xtmpl.name * (Stog_types.elt -> Stog_types.stog Xtmpl.callback)) list ->
-    'a level_fun
-val fun_apply_stog_data_elt_rules :
-  (Xtmpl.name * (Stog_types.elt -> (Stog_types.stog * 'a) Xtmpl.callback)) list ->
-    'a level_fun
-val fun_apply_data_elt_rules :
-  (Xtmpl.name * (Stog_types.elt -> 'a Xtmpl.callback)) list -> 'a level_fun
+type 'a stog_elt_rules =
+  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xtmpl.name * 'a Xtmpl.callback) list
+
+val fun_apply_stog_elt_rules : Stog_types.stog stog_elt_rules -> 'a level_fun
+val fun_apply_stog_data_elt_rules : (Stog_types.stog * 'a) stog_elt_rules -> 'a level_fun
+val fun_apply_data_elt_rules : 'a stog_elt_rules -> 'a level_fun

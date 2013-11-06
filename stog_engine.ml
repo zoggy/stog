@@ -597,9 +597,9 @@ let get_elt_out stog elt =
       (stog, xmls)
 ;;
 
-let fun_apply_stog_elt_rules rules =
+let fun_apply_stog_elt_rules f_rules =
   let f_elt env stog (elt_id, elt) =
-    let rules = List.map (fun (name, f) -> (name, f elt)) rules in
+    let rules = f_rules stog elt_id elt in
     let env = Xtmpl.env_of_list ~env rules in
     let (stog, xmls) = get_elt_out stog elt in
     let (stog, xmls) = Xtmpl.apply_to_xmls stog env xmls in
@@ -610,9 +610,12 @@ let fun_apply_stog_elt_rules rules =
   Fun_stog f
 ;;
 
-let fun_apply_stog_data_elt_rules rules =
+type 'a stog_elt_rules =
+  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xtmpl.name * 'a Xtmpl.callback) list
+
+let fun_apply_stog_data_elt_rules f_rules =
   let f_elt env (stog, data) (elt_id, elt) =
-    let rules = List.map (fun (name, f) -> (name, f elt)) rules in
+    let rules = f_rules stog elt_id elt in
     let env = Xtmpl.env_of_list ~env rules in
     let (stog, xmls) = get_elt_out stog elt in
     let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env xmls in
@@ -623,9 +626,9 @@ let fun_apply_stog_data_elt_rules rules =
   Fun_stog_data f
 ;;
 
-let fun_apply_data_elt_rules rules =
+let fun_apply_data_elt_rules f_rules =
   let f_elt env (stog, data) (elt_id, elt) =
-    let rules = List.map (fun (name, f) -> (name, f elt)) rules in
+    let rules = f_rules stog elt_id elt in
     let env = Xtmpl.env_of_list ~env rules in
     let (stog, xmls) = get_elt_out stog elt in
     let (data, xmls) = Xtmpl.apply_to_xmls data env xmls in
