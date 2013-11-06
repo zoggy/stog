@@ -31,11 +31,10 @@
 open Stog_types;;
 module Smap = Stog_types.Str_map;;
 
-type 'a fun_type = 'a Xtmpl.env -> 'a -> (elt_id * elt) list -> 'a
 type 'a level_fun =
-  | Fun_stog of stog fun_type
-  | Fun_data of 'a fun_type
-  | Fun_stog_data of (stog * 'a) fun_type
+  | Fun_stog of (stog Xtmpl.env -> stog -> (elt_id * elt) list -> stog)
+  | Fun_data of ('a Xtmpl.env -> stog * 'a -> (elt_id * elt) list -> stog * 'a)
+  | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> (elt_id * elt) list -> stog * 'a)
 
 type 'a engine = {
       eng_data : 'a ;
@@ -73,8 +72,7 @@ let apply_engine level env elts state engine =
             let stog = f env stog elts in
             (stog, E.engine.eng_data)
         | Fun_data f ->
-            let data = f (Obj.magic env) E.engine.eng_data elts in
-            (stog, data)
+            f (Obj.magic env) (stog, E.engine.eng_data) elts
         | Fun_stog_data f ->
             f (Obj.magic env) (stog, E.engine.eng_data) elts
       in
@@ -601,7 +599,7 @@ let get_elt_out stog elt =
 
 let fun_apply_stog_elt_rules rules =
   let f_elt env stog (elt_id, elt) =
-    let rules = List.map (fun (name, f) -> (name f elt)) rules in
+    let rules = List.map (fun (name, f) -> (name, f elt)) rules in
     let env = Xtmpl.env_of_list ~env rules in
     let (stog, xmls) = get_elt_out stog elt in
     let (stog, xmls) = Xtmpl.apply_to_xmls stog env xmls in
@@ -611,4 +609,31 @@ let fun_apply_stog_elt_rules rules =
   let f env stog elts = List.fold_left (f_elt env) stog elts in
   Fun_stog f
 ;;
+
+let fun_apply_stog_data_elt_rules rules =
+  let f_elt env (stog, data) (elt_id, elt) =
+    let rules = List.map (fun (name, f) -> (name, f elt)) rules in
+    let env = Xtmpl.env_of_list ~env rules in
+    let (stog, xmls) = get_elt_out stog elt in
+    let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env xmls in
+    let elt = { elt with elt_out = Some xmls } in
+    (Stog_types.set_elt stog elt_id elt, data)
+  in
+  let f env (stog, data) elts = List.fold_left (f_elt env) (stog, data) elts in
+  Fun_stog_data f
+;;
+
+let fun_apply_data_elt_rules rules =
+  let f_elt env (stog, data) (elt_id, elt) =
+    let rules = List.map (fun (name, f) -> (name, f elt)) rules in
+    let env = Xtmpl.env_of_list ~env rules in
+    let (stog, xmls) = get_elt_out stog elt in
+    let (data, xmls) = Xtmpl.apply_to_xmls data env xmls in
+    let elt = { elt with elt_out = Some xmls } in
+    (Stog_types.set_elt stog elt_id elt, data)
+  in
+  let f env (stog, data) elts = List.fold_left (f_elt env) (stog, data) elts in
+  Fun_data f
+;;
+
 

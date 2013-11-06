@@ -31,11 +31,10 @@
 open Stog_types;;
 
 
-type 'a fun_type = 'a Xtmpl.env -> 'a -> (elt_id * elt) list -> 'a
 type 'a level_fun =
-  | Fun_stog of stog fun_type
-  | Fun_data of 'a fun_type
-  | Fun_stog_data of (stog * 'a) fun_type
+  | Fun_stog of (stog Xtmpl.env -> stog -> (elt_id * elt) list -> stog)
+  | Fun_data of ('a Xtmpl.env -> stog * 'a -> (elt_id * elt) list -> stog * 'a)
+  | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> (elt_id * elt) list -> stog * 'a)
 
 type 'a engine = {
       eng_data : 'a ;
@@ -74,3 +73,12 @@ val elt_dst : (string -> string -> string) ->
 val env_of_defs : ?env:'a Xtmpl.env -> Stog_types.def list -> 'a Xtmpl.env
 val env_of_used_mods : Stog_types.stog ->
   ?env:'a Xtmpl.env -> Stog_types.Str_set.t -> 'a Xtmpl.env
+
+val fun_apply_stog_elt_rules :
+  (Xtmpl.name * (Stog_types.elt -> Stog_types.stog Xtmpl.callback)) list ->
+    'a level_fun
+val fun_apply_stog_data_elt_rules :
+  (Xtmpl.name * (Stog_types.elt -> (Stog_types.stog * 'a) Xtmpl.callback)) list ->
+    'a level_fun
+val fun_apply_data_elt_rules :
+  (Xtmpl.name * (Stog_types.elt -> 'a Xtmpl.callback)) list -> 'a level_fun
