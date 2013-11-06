@@ -38,6 +38,9 @@
   and an error is issued. *)
 val elt_by_href : ?typ: string -> Stog_types.stog -> 'a Xtmpl.env -> string ->
   'a * (Stog_types.elt * string * string option) option
+TODO: déplacer le contenu de html_data dans stog
+Créer un module HTML pour certaines règles, un module Base pour les règles
+de base (include, block, cut_elts, ...)
 
 (*
 (** Adding a known block id for a given hid. A short and a long title
