@@ -70,10 +70,11 @@ val make_elt : ?typ:string -> ?hid:human_id -> unit -> elt
 
 val today : unit -> date
 
-module Hid_map : Stog_trie.S with type symbol = string
+module Hid_trie : Stog_trie.S with type symbol = string
 module Elt_set : Set.S with type elt = elt_id
 module Int_map : Map.S with type key = int
 module Int_set : Set.S with type elt = int
+module Hid_map : Map.S with type key = human_id
 
 type edge_type = Date | Topic of string | Keyword of string | Ref
 
@@ -92,7 +93,7 @@ type stog_dependencies = Depset.t Str_map.t;;
 type stog = {
   stog_dir : string;
   stog_elts : (elt, elt) Stog_tmap.t;
-  stog_elts_by_human_id : elt_id Hid_map.t;
+  stog_elts_by_human_id : elt_id Hid_trie.t;
   stog_defs : def list;
   stog_tmpl_dir : string;
   stog_cache_dir : string;
@@ -113,6 +114,7 @@ type stog = {
   stog_used_mods : Str_set.t ;
   stog_depcut : bool ;
   stog_deps : stog_dependencies ;
+  stog_id_map : (human_id * string option) Str_map.t Hid_map.t ;
 }
 
 val url_of_string : string -> Neturl.url
@@ -144,3 +146,7 @@ val merge_stogs : stog list -> stog
 val make_human_id : stog -> string -> string list
 
 val find_block_by_id : elt -> string -> Xtmpl.tree option
+
+val id_map_add : stog -> Hid_map.key -> Str_map.key -> human_id -> string option -> stog
+val map_href : stog -> Hid_map.key -> Str_map.key -> Hid_map.key * Str_map.key
+val map_elt_ref : stog -> elt -> Str_map.key -> elt * Str_map.key

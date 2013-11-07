@@ -314,7 +314,7 @@ let remove_not_published stog =
   let stog = Stog_tmap.fold
     (fun elt_id elt stog ->
        Stog_types.add_hid stog elt.elt_human_id elt_id)
-    elts { stog with stog_elts_by_human_id = Stog_types.Hid_map.empty }
+    elts { stog with stog_elts_by_human_id = Stog_types.Hid_trie.empty }
   in
   { stog with
     stog_elts = elts ;

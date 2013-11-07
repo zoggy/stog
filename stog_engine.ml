@@ -253,9 +253,17 @@ let get_cached_elements state env =
     if Sys.file_exists info_file then
       begin
         let ic = open_in_bin info_file in
-        let ((elt_envs, deps) : (string Smap.t * Stog_types.Depset.t Smap.t)) = input_value ic in
+        let ((elt_envs, deps, id_map) :
+           (string Smap.t * Stog_types.Depset.t Smap.t *
+            (human_id * string option) Smap.t Stog_types.Hid_map.t)) =
+          input_value ic
+        in
         close_in ic;
-        let stog = { state.st_stog with stog_deps = deps } in
+        let stog = { state.st_stog with
+            stog_deps = deps ;
+            stog_id_map = id_map ;
+          }
+        in
         (elt_envs, stog)
       end
     else
@@ -273,7 +281,7 @@ let get_cached_elements state env =
     in
     fun hid -> Stog_types.Str_map.find hid map
   in
-  let f (state, cached, kept_deps) elt =
+  let f (state, cached, kept_deps, kept_id_map) elt =
     let hid = Stog_types.string_of_human_id elt.elt_human_id in
     let same_elt_env =
       try
@@ -304,21 +312,35 @@ let get_cached_elements state env =
     if use_cache then
       begin
         let state = apply_loaders state elt in
-        (* keep deps of this element, as it did not changed *)
+        (* keep deps of this element, as it did not change *)
         let kept_deps =
           try Smap.add hid (Smap.find hid state.st_stog.stog_deps) kept_deps
           with Not_found -> kept_deps
         in
-        (state, elt :: cached, kept_deps)
+        let kept_id_map =
+          try Stog_types.Hid_map.add elt.elt_human_id
+            (Stog_types.Hid_map.find elt.elt_human_id state.st_stog.stog_id_map) kept_id_map
+          with
+            Not_found -> kept_id_map
+        in
+        (state, elt :: cached, kept_deps, kept_id_map)
       end
     else
       begin
         (* do not keep deps of this element, as it will be recomputed *)
-        (state, cached, kept_deps)
+        (state, cached, kept_deps, kept_id_map)
       end
   in
-  let (state, cached, kept_deps) = List.fold_left f (state, [], Smap.empty) elts in
-  let stog = { state.st_stog with stog_deps = kept_deps } in
+  let (state, cached, kept_deps, kept_id_map) =
+    List.fold_left f
+      (state, [], Smap.empty, Stog_types.Hid_map.empty) elts
+  in
+  let stog = {
+      state.st_stog with
+      stog_deps = kept_deps ;
+      stog_id_map = kept_id_map ;
+    }
+  in
   let state = { state with st_stog = stog } in
   (state, cached)
 ;;

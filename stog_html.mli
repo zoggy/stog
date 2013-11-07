@@ -36,11 +36,8 @@
   optional id matching the given href string, of the form [hid[#id]].
   Return None if the element could not be found, of the id could not be found,
   and an error is issued. *)
-val elt_by_href : ?typ: string -> Stog_types.stog -> 'a Xtmpl.env -> string ->
+val elt_by_href : ?typ: string -> Stog_types.stog -> 'a -> 'a Xtmpl.env -> string ->
   'a * (Stog_types.elt * string * string option) option
-TODO: déplacer le contenu de html_data dans stog
-Créer un module HTML pour certaines règles, un module Base pour les règles
-de base (include, block, cut_elts, ...)
 
 (*
 (** Adding a known block id for a given hid. A short and a long title
@@ -56,15 +53,15 @@ val add_block :
 (** [get_in_env env tag] will look for the given string in the environment,
   by building a <tag/> node and evaluating it. If the result is the same node,
   then return [""] else return the reduced value as a string.*)
-val get_in_env : 'a Xtmpl.env -> Xmlm.name -> 'a * string
+val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * string
 
 (** [get_in_args_or_env env args s] returns the value associated to [s]
  in [args] of else return the result of [get_in_env env s]. *)
-val get_in_args_or_env : 'a Xtmpl.env -> Xmlm.attribute list -> Xmlm.name -> 'a * string
+val get_in_args_or_env : 'a -> 'a Xtmpl.env -> Xmlm.attribute list -> Xmlm.name -> 'a * string
 
 (** [get_hid env] returns the value associated to ["hid"] in [env].
   @raise Assert_failure if ["hid"] is not found in the environment.*)
-val get_hid : 'a Xtmpl.env -> 'a * string
+val get_hid : 'a -> 'a Xtmpl.env -> 'a * string
 
 (** Escape html code in the given string: change [&] to [&amp;],
   [<] to [&lt;] and [>] to [&gt;].*)
@@ -83,13 +80,14 @@ val url_of_hid :
   Stog_types.stog -> ?ext:string -> Stog_types.human_id -> Neturl.url
 
 val rss_date_of_date : Stog_types.date -> Rss.date
-val elt_to_rss_item : Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Rss.item
 
+(*
 (** Generate a RSS file from the given list of elements. The final RSS
   url must be given as it is embedded in the RSS file. *)
 val generate_rss_feed_file :
   Stog_types.stog ->
   ?title:string -> Rss.url -> (Stog_types.elt_id * Stog_types.elt) list -> string -> unit
+*)
 
 (** Build the base rules, using the default ones and the {!plugin_rules}. *)
 val build_base_rules : Stog_types.stog ->

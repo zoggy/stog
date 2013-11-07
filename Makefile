@@ -83,6 +83,7 @@ LIB_CMXFILES= \
 	stog_html5.cmx \
 	stog_engine.cmx \
 	stog_html.cmx \
+	stog_blocks.cmx \
 	stog_dyn.cmx \
 #	stog_plug.cmx \
 

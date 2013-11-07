@@ -139,11 +139,13 @@ let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
   }
 ;;
 
-module Hid_map = Stog_trie.Make (struct type t = string let compare = compare end);;
+module Hid_trie = Stog_trie.Make (struct type t = string let compare = compare end);;
 module Elt_set = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
 module Elt_map = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
 module Int_map = Map.Make (struct type t = int let compare = compare end);;
 module Int_set = Set.Make (struct type t = int let compare = compare end);;
+module Hid_map = Map.Make
+  (struct type t = human_id let compare = Pervasives.compare end);;
 
 
 type edge_type =
@@ -181,7 +183,7 @@ type stog_dependencies = Depset.t Str_map.t;;
 type stog = {
   stog_dir : string ;
   stog_elts : (elt, elt) Stog_tmap.t ;
-  stog_elts_by_human_id : elt_id Hid_map.t ;
+  stog_elts_by_human_id : elt_id Hid_trie.t ;
   stog_defs : def list ;
   stog_tmpl_dir : string ;
   stog_cache_dir : string ;
@@ -202,7 +204,8 @@ type stog = {
   stog_used_mods : Str_set.t ;
   stog_depcut : bool ;
   stog_deps : stog_dependencies ;
-  }
+  stog_id_map : (human_id * string option) Str_map.t Hid_map.t ;
+}
 
 let url_of_string s =
   try Neturl.parse_url ~enable_fragment: true ~accept_8bits: true s
@@ -234,7 +237,7 @@ let url_concat uri s =
 let create_stog dir = {
   stog_dir = dir ;
   stog_elts = Stog_tmap.create (make_elt ());
-  stog_elts_by_human_id = Hid_map.empty ;
+  stog_elts_by_human_id = Hid_trie.empty ;
   stog_tmpl_dir = Stog_config.tmpl_dir dir ;
   stog_cache_dir = Stog_config.cache_dir dir ;
   stog_title = "Site title" ;
@@ -255,6 +258,7 @@ let create_stog dir = {
   stog_used_mods = Str_set.empty ;
   stog_depcut = false ;
   stog_deps = Str_map.empty ;
+  stog_id_map = Hid_map.empty ;
   }
 ;;
 
@@ -262,7 +266,7 @@ let stog_md5 stog =
   let stog =
     { stog with
       stog_elts = Stog_tmap.create (make_elt ());
-      stog_elts_by_human_id = Hid_map.empty ;
+      stog_elts_by_human_id = Hid_trie.empty ;
       stog_graph = Graph.create ();
       stog_elts_by_kw = Str_map.empty ;
       stog_elts_by_topic = Str_map.empty ;
@@ -278,7 +282,7 @@ let elt stog id = Stog_tmap.get stog.stog_elts id;;
 let elts_by_human_id ?typ stog h =
   let rev_path = List.rev h.hid_path in
   (*prerr_endline (Printf.sprintf "lookup rev_path=%s" (String.concat "/" rev_path));*)
-  let ids = Hid_map.find rev_path stog.stog_elts_by_human_id in
+  let ids = Hid_trie.find rev_path stog.stog_elts_by_human_id in
   let l = List.map (fun id -> (id, elt stog id)) ids in
   let pred =
     match h.hid_absolute, typ with
@@ -317,7 +321,7 @@ let set_elt stog id elt =
 
 let add_hid stog hid id =
   let rev_path = List.rev hid.hid_path in
-  let map = Hid_map.add
+  let map = Hid_trie.add
     rev_path id
     stog.stog_elts_by_human_id
   in
@@ -327,7 +331,7 @@ let add_hid stog hid id =
     | "index" :: q ->
         (*prerr_endline (Printf.sprintf "add again %s" (String.concat "/" q));*)
         (* also make this element accessible without "index" *)
-        Hid_map.add q id map
+        Hid_trie.add q id map
     | _ -> map
   in
   { stog with stog_elts_by_human_id = map }
@@ -428,7 +432,7 @@ let make_human_id stog str =
       hid0 (if n = 1 then "" else string_of_int n)
     in
     let hid = [ hid ] in
-    match Hid_map.find hid stog.stog_elts_by_human_id with
+    match Hid_trie.find hid stog.stog_elts_by_human_id with
       [] -> hid
     | _ -> iter (n+1)
   in
@@ -462,4 +466,31 @@ let find_block_by_id =
     with
       Not_found -> None
     | Block_found xml -> Some xml
+;;
+
+let id_map_add stog hid id target_hid target_id =
+  assert hid.hid_absolute ;
+  assert target_hid.hid_absolute ;
+  let map =
+    try Hid_map.find hid stog.stog_id_map
+    with Not_found -> Str_map.empty
+  in
+  let map = Str_map.add id (target_hid, target_id) map in
+  { stog with stog_id_map = Hid_map.add hid map stog.stog_id_map }
+;;
+
+let rec map_href stog hid id =
+  try
+    let map = Hid_map.find hid stog.stog_id_map in
+    match Str_map.find id map with
+      (hid, None) -> (hid, "")
+    | (hid, Some id) -> map_href stog hid id
+  with Not_found -> (hid, id)
+;;
+
+let map_elt_ref stog elt id =
+  let hid = elt.elt_human_id in
+  let (hid, id) = map_href stog hid id in
+  let (_, elt) = elt_by_human_id stog hid in
+  (elt, id)
 ;;
