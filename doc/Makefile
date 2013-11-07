@@ -27,7 +27,7 @@
 #################################################################################
 
 STOGDIR=..
-STOG=$(STOGDIR)/stog --plugin ../plugins/plugin_example.cmxs --plugin ../plugins/stog_disqus.cmxs
+STOG=$(STOGDIR)/stog #--plugin ../plugins/plugin_example.cmxs --plugin ../plugins/stog_disqus.cmxs
 #STOG=$(STOGDIR)/stog.byte --plugin ../plugins/plugin_example.cmo --plugin ../plugins/stog_disqus.cmo
 DEST_DIR=`pwd`/../doc-output
 BASE_URL_OPTION=

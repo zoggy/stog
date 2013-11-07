@@ -67,6 +67,8 @@ val get_hid : 'a -> 'a Xtmpl.env -> 'a * string
   [<] to [&lt;] and [>] to [&gt;].*)
 val escape_html : string -> string
 
+val concat_name : ?sep: string -> (string * string) -> string
+
 (** Call the highlight command on the given string and make it produce xhtml code.
   Options are passed to the highlight command. *)
 val highlight : opts:string -> string -> string
@@ -91,12 +93,16 @@ val generate_rss_feed_file :
 
 (** Build the base rules, using the default ones and the {!plugin_rules}. *)
 val build_base_rules : Stog_types.stog ->
-  Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * 'a Xtmpl.callback) list
+  Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * Stog_types.stog Xtmpl.callback) list
 
 (** The calllback to insert a list of elements. Can be called directly
   if provided an additional environment, argument and children nodes. *)
 val elt_list :
   Stog_types.elt ->
   ?rss:Neturl.url ->
-  ?set:Stog_types.Elt_set.t -> Stog_types.stog -> 'a Xtmpl.callback
+  ?set:Stog_types.Elt_set.t -> Stog_types.stog Xtmpl.callback
+
+val get_sectionning_tags : Stog_types.stog -> Stog_types.elt -> Xtmpl.name list
+
+module Html : Stog_engine.Stog_engine
 

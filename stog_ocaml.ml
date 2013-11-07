@@ -123,7 +123,7 @@ let concat_code =
     Buffer.contents b
 ;;
 
-let fun_eval (stog, data) env args code =
+let fun_eval stog env args code =
   try
     let exc = Xtmpl.opt_arg args ~def: "true" ("", "error-exc") = "true" in
     let toplevel = Xtmpl.opt_arg args ~def: "false" ("", "toplevel") = "true" in
@@ -194,9 +194,9 @@ let fun_eval (stog, data) env args code =
     in
     let xml = iter [] phrases in
     if show_code || toplevel || show_stdout then
-      ((stog, data), [ Xtmpl.E (("","pre"), [("","class"), "code-ocaml"] @ atts, xml) ])
+      (stog, [ Xtmpl.E (("","pre"), [("","class"), "code-ocaml"] @ atts, xml) ])
     else
-      ((stog, data), [ Xtmpl.D "" ])
+      (stog, [ Xtmpl.D "" ])
   with
     e ->
       raise e

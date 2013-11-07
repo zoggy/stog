@@ -100,18 +100,18 @@ let code_of_subs =
 ;;
 
 
-let fun_latex (stog, data) env args subs =
+let fun_latex stog env args subs =
   let code = code_of_subs subs in
   let packages = Xtmpl.opt_arg args ("", "packages") in
   let packages = Stog_misc.split_string packages [';'] in
   let showcode = Xtmpl.opt_arg args ("", "showcode") = "true" in
-  let ((stog, data), defs) =
-    let ((stog, data), s) = get_in_env (stog, data) env ("", "latex-defs") in
+  let (stog, defs) =
+    let (stog, s) = get_in_env stog env ("", "latex-defs") in
     let defs =  match s with "" -> None | s -> Some s in
-    ((stog, data), defs)
+    (stog, defs)
   in
-  let ((stog, data), scale) =
-    let ((stog, data), s) = get_in_env (stog, data) env ("", "latex-svg-scale") in
+  let (stog, scale) =
+    let (stog, s) = get_in_env stog env ("", "latex-svg-scale") in
     let scale =
       match s with
         "" -> None
@@ -119,7 +119,7 @@ let fun_latex (stog, data) env args subs =
           try Some (float_of_string s)
           with _ -> failwith (Printf.sprintf "Invalid latex-svg-scale %S" s)
     in
-    ((stog, data), scale)
+    (stog, scale)
   in
   let svg = Filename.basename (make_svg stog.Stog_types.stog_outdir ~packages ?scale ?defs code) in
   let url = Stog_types.url_concat stog.Stog_types.stog_base_url svg in
@@ -135,5 +135,5 @@ let fun_latex (stog, data) env args subs =
        | true -> [ Xtmpl.E (("","hcode"), [("","lang"), "tex"], [Xtmpl.D code]) ]
       )
   in
-  ((stog, data), xmls)
+  (stog, xmls)
 ;;
