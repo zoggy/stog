@@ -538,11 +538,11 @@ let levels = List.fold_left
   (fun map (level, f) -> Stog_types.Int_map.add level f map)
     Stog_types.Int_map.empty
     [
-      0, fun_level_0 ;
-      61, fun_level_0 ;
+      1, fun_level_0 ; PB QUAND PLUSIEURS ENGINES SUR LE MEME LEVEL
+(*      61, fun_level_0 ;
       100, fun_level_sectionning ;
       120, fun_level_gather_ids ;
-      150, fun_level_fun_elt ;
+      150, fun_level_fun_elt ;*)
     ]
 ;;
 

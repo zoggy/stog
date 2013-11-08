@@ -1429,10 +1429,10 @@ let levels = List.fold_left
     [
       0, fun_level_0 ;
       50, fun_level_toc ;
-      60, Stog_engine.Fun_stog cut_elts ;
+(*      60, Stog_engine.Fun_stog cut_elts ;
       61, fun_level_0 ;
       160, fun_level_inc_elt ;
-      500, (Stog_engine.Fun_stog fun_close_ocaml_sessions) ;
+      500, (Stog_engine.Fun_stog fun_close_ocaml_sessions) ;*)
     ]
 ;;
 
