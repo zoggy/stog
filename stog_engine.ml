@@ -356,7 +356,7 @@ let cache_elt state elt =
 
 let output_cache_info stog elt_envs =
   let info_file = cache_info_file stog in
-  let v = (elt_envs, stog.stog_deps) in
+  let v = (elt_envs, stog.stog_deps, stog.stog_id_map) in
   let oc = open_out_bin info_file in
   output_value oc v;
   close_out oc
