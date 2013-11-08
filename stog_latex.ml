@@ -32,12 +32,6 @@ let gensym = let cpt = ref 0 in fun () -> incr cpt; !cpt;;
 
 let cache = Hashtbl.create 111;;
 
-let get_in_env data env (prefix, s) =
-  let node = [ Xtmpl.E((prefix,s),[],[]) ] in
-  let (data, node2) = Xtmpl.apply_to_xmls data env node in
-  if node2 = node then (data, "") else (data, Xtmpl.string_of_xmls node2)
-;;
-
 let make_svg outdir ?(packages=[]) ?(scale=1.1) ?defs latex_code =
   let defs = match defs with None -> "" | Some s -> s^"\n" in
   try Hashtbl.find cache latex_code
@@ -106,12 +100,12 @@ let fun_latex stog env args subs =
   let packages = Stog_misc.split_string packages [';'] in
   let showcode = Xtmpl.opt_arg args ("", "showcode") = "true" in
   let (stog, defs) =
-    let (stog, s) = get_in_env stog env ("", "latex-defs") in
+    let (stog, s) = Stog_engine.get_in_env stog env ("", "latex-defs") in
     let defs =  match s with "" -> None | s -> Some s in
     (stog, defs)
   in
   let (stog, scale) =
-    let (stog, s) = get_in_env stog env ("", "latex-svg-scale") in
+    let (stog, s) = Stog_engine.get_in_env stog env ("", "latex-svg-scale") in
     let scale =
       match s with
         "" -> None

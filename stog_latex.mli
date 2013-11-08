@@ -30,7 +30,5 @@
 
    Some values are made available so they can be reused by other plugins. *)
 
-(** FIXME: move get_in_env elsewhere, but later *)
-val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * string
 val make_svg : string -> ?packages:string list -> ?scale: float -> ?defs: string -> string -> string
 val fun_latex : Stog_types.stog Xtmpl.callback

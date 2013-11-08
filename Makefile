@@ -72,8 +72,6 @@ LIB_CMXFILES= \
 	stog_io.cmx \
 	stog_info.cmx \
 	stog_ocaml_types.cmx \
-	stog_ocaml.cmx \
-	stog_latex.cmx \
 	stog_deps.cmx \
 	stog_tmpl.cmx \
 	stog_filter_types.cmx \
@@ -82,6 +80,8 @@ LIB_CMXFILES= \
 	stog_filter.cmx \
 	stog_html5.cmx \
 	stog_engine.cmx \
+	stog_ocaml.cmx \
+	stog_latex.cmx \
 	stog_html.cmx \
 	stog_blocks.cmx \
 	stog_dyn.cmx \

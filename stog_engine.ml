@@ -240,7 +240,7 @@ let apply_storers state elt =
     Stog_misc.safe_mkdir cache_dir ;
     let oc = open_out_bin cache_file in
     let t = E.cache_store E.engine.eng_data elt in
-    output_value oc t;
+    Marshal.to_channel oc t [Marshal.Closures];
     close_out oc
   in
   List.iter f_engine state.st_engines
@@ -450,7 +450,6 @@ let run ?(use_cache=true) ?only_elt state =
       let state = { state with st_stog = stog } in
       *)
       let state = compute_levels ~use_cache env state in
-      Stog_ocaml.close_sessions(); (* TODO: move this in a high level fun, e.g. 2000 *)
       (state, env)
   | Some elt_id ->
       let state = compute_levels ~use_cache ~elts: [elt_id] env state in
@@ -500,6 +499,21 @@ let elt_dst_file stog elt =
   elt_dst ~encode: false Filename.concat stog stog.stog_outdir elt;;
 
 
+let elt_url stog elt =
+  let url = elt_dst (fun a b -> a^"/"^b) stog
+    (Stog_types.string_of_url stog.stog_base_url) elt
+  in
+  let len = String.length url in
+  let s = "/index.html" in
+  let len_s = String.length s in
+  let url =
+    if len >= len_s && String.sub url (len - len_s) len_s = s then
+      String.sub url 0 (len-len_s)
+    else
+      url
+  in
+  url_of_string url
+;;
 
 let output_elt state env elt =
   let file = elt_dst_file state.st_stog elt in
@@ -601,6 +615,19 @@ let generate ?(use_cache=true) ?only_elt stog engines =
 
 (*** Convenient functions to create level_fun's ***)
 
+
+let get_in_env data env (prefix, s) =
+  let node = [ Xtmpl.E((prefix,s),[],[]) ] in
+  let (data, node2) = Xtmpl.apply_to_xmls data env node in
+  if node2 = node then (data, "") else (data, Xtmpl.string_of_xmls node2)
+;;
+
+let opt_in_env data env (prefix, s) =
+  let node = [ Xtmpl.E((prefix,s),[],[]) ] in
+  let (data, node2) = Xtmpl.apply_to_xmls data env node in
+  if node2 = node then (data, None) else (data, Some (Xtmpl.string_of_xmls node2))
+;;
+
 let get_elt_out stog elt =
   match elt.elt_out with
     None ->
@@ -619,10 +646,60 @@ let get_elt_out stog elt =
       (stog, xmls)
 ;;
 
+let get_languages data env =
+  match opt_in_env data env ("", "languages") with
+  | (data, None) -> (data, ["fr" ; "en"])
+  | (data, Some s) -> (data, Stog_misc.split_string s [','; ';' ; ' '])
+;;
+
+let env_add_lang_rules data env stog elt =
+  match stog.stog_lang with
+    None ->
+      (data, Xtmpl.env_add Stog_tags.langswitch (fun data _ _ _ -> (data, [])) env)
+  | Some lang ->
+      let (data, languages) = get_languages data env in
+      let map_lang lang =
+         let url = elt_url { stog with stog_lang = Some lang } elt in
+         let img_url = Stog_types.url_concat stog.stog_base_url (lang^".png") in
+         Xtmpl.E (("", "a"), [("", "href"), (Stog_types.string_of_url url)], [
+           Xtmpl.E (("", "img"),
+            [ ("", "src"), (Stog_types.string_of_url img_url) ;
+              ("", "title"), lang ;
+              ("", "alt"), lang
+            ], [])])
+      in
+      let f data _env args _subs =
+        let languages = List.filter ((<>) lang) languages in
+        (data, List.map map_lang languages)
+      in
+      let env = Xtmpl.env_add Stog_tags.langswitch f env in
+      let to_remove = List.filter ((<>) lang) languages in
+      let f_keep acc _env _args subs = (acc, subs) in
+      let f_remove acc _env _args _subs = (acc, []) in
+      let rules =
+        (("", lang), f_keep) ::
+          (List.map (fun lang -> (("", lang), f_remove)) to_remove)
+      in
+      (data, Xtmpl.env_of_list ~env rules)
+;;
+
+let elt_env data env stog elt =
+  let env = env_of_defs ~env elt.elt_defs in
+  let env = env_of_used_mods stog ~env elt.elt_used_mods in
+  let rules = [
+      ("", Stog_tags.elt_hid),
+      (fun  acc _ _ _ ->
+         (acc, [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)]))]
+  in
+  let env = Xtmpl.env_of_list ~env rules in
+  let (data, env) = env_add_lang_rules data env stog elt in
+  (data, env)
+
 let fun_apply_stog_elt_rules f_rules =
   let f_elt env stog (elt_id, elt) =
     let rules = f_rules stog elt_id elt in
     let env = Xtmpl.env_of_list ~env rules in
+    let (stog, env) = elt_env stog env stog elt in
     let (stog, xmls) = get_elt_out stog elt in
     let (stog, xmls) = Xtmpl.apply_to_xmls stog env xmls in
     let elt = { elt with elt_out = Some xmls } in
@@ -639,6 +716,7 @@ let fun_apply_stog_data_elt_rules f_rules =
   let f_elt env (stog, data) (elt_id, elt) =
     let rules = f_rules stog elt_id elt in
     let env = Xtmpl.env_of_list ~env rules in
+    let ((stog, data), env) = elt_env(stog, data) env stog  elt in
     let (stog, xmls) = get_elt_out stog elt in
     let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env xmls in
     let elt = { elt with elt_out = Some xmls } in
@@ -652,6 +730,7 @@ let fun_apply_data_elt_rules f_rules =
   let f_elt env (stog, data) (elt_id, elt) =
     let rules = f_rules stog elt_id elt in
     let env = Xtmpl.env_of_list ~env rules in
+    let (data, env) = elt_env data env stog elt in
     let (stog, xmls) = get_elt_out stog elt in
     let (data, xmls) = Xtmpl.apply_to_xmls data env xmls in
     let elt = { elt with elt_out = Some xmls } in

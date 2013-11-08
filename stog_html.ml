@@ -31,9 +31,7 @@
 open Stog_types;;
 module Smap = Stog_types.Str_map;;
 
-let languages = ["fr" ; "en" ];;
-
-let get_in_env = Stog_latex.get_in_env;;
+let get_in_env = Stog_engine.get_in_env;;
 
 let get_in_args_or_env data env args s =
   match Xtmpl.get_arg args s with
@@ -63,21 +61,6 @@ let escape_html s =
 ;;
 
 
-let elt_url stog elt =
-  let url = Stog_engine.elt_dst (fun a b -> a^"/"^b) stog
-    (Stog_types.string_of_url stog.stog_base_url) elt
-  in
-  let len = String.length url in
-  let s = "/index.html" in
-  let len_s = String.length s in
-  let url =
-    if len >= len_s && String.sub url (len - len_s) len_s = s then
-      String.sub url 0 (len-len_s)
-    else
-      url
-  in
-  url_of_string url
-;;
 
 
 let url_of_hid stog ?ext hid =
@@ -86,7 +69,7 @@ let url_of_hid stog ?ext hid =
     Printf.sprintf "%s%s" (Stog_types.string_of_human_id hid)
       (match ext with None -> "" | Some s -> "."^s)
   in
-  elt_url stog { elt with Stog_types.elt_src = src }
+  Stog_engine.elt_url stog { elt with Stog_types.elt_src = src }
 ;;
 
 let topic_index_hid topic =
@@ -97,34 +80,7 @@ let month_index_hid ~year ~month =
   Stog_types.human_id_of_string (Printf.sprintf "/%04d_%02d" year month);;
 
 
-
-let env_add_langswitch env stog elt =
-  match stog.stog_lang with
-    None ->
-      Xtmpl.env_add Stog_tags.langswitch (fun data _ _ _ -> (data, [])) env
-  | Some lang ->
-      let map_lang lang =
-         let url = elt_url { stog with stog_lang = Some lang } elt in
-         let img_url = Stog_types.url_concat stog.stog_base_url (lang^".png") in
-         Xtmpl.E (("", "a"), [("", "href"), (Stog_types.string_of_url url)], [
-           Xtmpl.E (("", "img"),
-            [ ("", "src"), (Stog_types.string_of_url img_url) ;
-              ("", "title"), lang ;
-              ("", "alt"), lang
-            ], [])])
-      in
-      let f data _env args _subs =
-        let languages =
-          match Xtmpl.get_arg args ("", "languages") with
-            Some s -> Stog_misc.split_string s [','; ';' ; ' ']
-          | None -> languages
-        in
-        let languages = List.filter ((<>) lang) languages in
-        (data, List.map map_lang languages)
-      in
-      Xtmpl.env_add Stog_tags.langswitch f env
-;;
-
+(*
 let elt_env build_rules stog ~env elt_id elt =
   let env = Stog_engine.env_of_defs ~env elt.elt_defs in
   let env = Stog_engine.env_of_used_mods stog ~env elt.elt_used_mods in
@@ -138,18 +94,7 @@ let elt_env build_rules stog ~env elt_id elt =
   let env = env_add_langswitch env stog elt in
   env
 ;;
-
-let make_lang_rules stog =
-  match stog.stog_lang with
-    None -> []
-  | Some lang ->
-      let to_remove = List.filter ((<>) lang) languages in
-      let f_keep acc _env _args subs = (acc, subs) in
-      let f_remove acc _env _args _subs = (acc, []) in
-      (("", lang), f_keep) ::
-      (List.map (fun lang -> (("", lang), f_remove)) to_remove)
-;;
-
+*)
 
 let include_href name stog elt ?id ~raw ~depend href env =
   let new_id = id in
@@ -457,7 +402,7 @@ let fun_graph =
         true -> ()
       | false ->
           generated := true;
-          let dot_code = Stog_info.dot_of_graph (elt_url stog) stog in
+          let dot_code = Stog_info.dot_of_graph (Stog_engine.elt_url stog) stog in
 
           let tmp = Filename.temp_file "stog" "dot" in
           Stog_misc.file_of_string ~file: tmp dot_code;
@@ -738,7 +683,7 @@ let intro_of_elt stog elt =
     [
       Xtmpl.E (("", "a"),
          [
-           ("", "href"), Stog_types.string_of_url (elt_url stog elt)],
+           ("", "href"), Stog_types.string_of_url (Stog_engine.elt_url stog elt)],
          [ Xtmpl.E (("", "img"),
             [ ("", "src"), next_url_s ;
               ("", "alt"), "next"],
@@ -804,7 +749,7 @@ let rss_date_of_date d =
 
 (* FIXME: handle RSS files as any other element ? *)
 let rec elt_to_rss_item stog elt_id elt =
-  let link = elt_url stog elt in
+  let link = Stog_engine.elt_url stog elt in
   let pubdate =
     match elt.elt_date with
       None -> assert false
@@ -817,7 +762,7 @@ let rec elt_to_rss_item stog elt_id elt =
     (List.map f_word elt.elt_topics) @
     (List.map f_word elt.elt_keywords)
   in
-  let env = elt_env build_base_rules stog ~env:(Xtmpl.env_empty()) elt_id elt in
+  let (stog, env) = Stog_engine.elt_env stog (Xtmpl.env_empty()) stog elt in
   let (stog, author) =
     let (stog, author) = get_in_env stog env ("", "author") in
     (stog, Stog_misc.opt_of_string author)
@@ -900,7 +845,7 @@ and build_base_rules stog elt_id elt =
     (acc, [ Xtmpl.xml_of_string elt.elt_title ])
   in
   let f_url elt stog _ _ _ =
-    (stog,[ Xtmpl.D (Stog_types.string_of_url (elt_url stog elt)) ])
+    (stog,[ Xtmpl.D (Stog_types.string_of_url (Stog_engine.elt_url stog elt)) ])
   in
   let f_body elt acc _ _ _ = (acc, elt.elt_body) in
   let f_type elt acc _ _ _ = (acc, [Xtmpl.D elt.elt_type]) in
@@ -932,7 +877,7 @@ and build_base_rules stog elt_id elt =
   in
   let (previous, next) =
     let html_link stog elt =
-      let href = elt_url stog elt in
+      let href = Stog_engine.elt_url stog elt in
       [ Xtmpl.E (("", "a"),
          [("","href"), Stog_types.string_of_url href],
          [ Xtmpl.xml_of_string elt.elt_title ]) ]
@@ -999,7 +944,7 @@ and build_base_rules stog elt_id elt =
       ("", Stog_tags.two_columns), fun_twocolumns ;
     ]
   in
-  (make_lang_rules stog) @ l
+  l
 
 and elt_list elt ?rss ?set stog env args _ =
   let report_error msg = Stog_msg.error ~info: "Stog_html.elt_list" msg in
@@ -1061,7 +1006,7 @@ and elt_list elt ?rss ?set stog env args _ =
   in
   let f_elt (acc_d, acc) (elt_id, elt) =
     let name = Stog_types.string_of_human_id elt.elt_human_id in
-    let env = elt_env build_base_rules stog ~env elt_id elt in
+    let (acc_d, env) = Stog_engine.elt_env acc_d env stog elt in
     let (acc_d, xmls) = Xtmpl.apply_to_xmls acc_d env [tmpl] in
     match xmls with
       [xml] -> (acc_d, xml :: acc)
@@ -1472,6 +1417,10 @@ let rules_inc_elt stog elt_id elt =
 let fun_level_inc_elt =
   Stog_engine.fun_apply_stog_elt_rules rules_inc_elt ;;
 
+let fun_close_ocaml_sessions _ stog _ =
+  Stog_ocaml.close_sessions ();
+  stog;;
+
 let levels = List.fold_left
   (fun map (level, f) -> Intmap.add level f map)
     Intmap.empty
@@ -1481,6 +1430,7 @@ let levels = List.fold_left
       60, Stog_engine.Fun_stog cut_elts ;
       61, fun_level_0 ;
       160, fun_level_inc_elt ;
+      500, (Stog_engine.Fun_stog fun_close_ocaml_sessions) ;
     ]
 ;;
 

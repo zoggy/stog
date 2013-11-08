@@ -73,9 +73,6 @@ val concat_name : ?sep: string -> (string * string) -> string
   Options are passed to the highlight command. *)
 val highlight : opts:string -> string -> string
 
-(** Build the final url of the given element. *)
-val elt_url : Stog_types.stog -> Stog_types.elt -> Neturl.url
-
 (** Build an url from the given hid, using the given optional extension.
   This is used for elements created on the fly, like by-word or by-month index. *)
 val url_of_hid :

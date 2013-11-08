@@ -73,6 +73,9 @@ val elt_dst : (string -> string -> string) ->
 (** Build the final file where the given element will be generated. *)
 val elt_dst_file : Stog_types.stog -> Stog_types.elt -> string
 
+(** Build the final url of the given element. *)
+val elt_url : Stog_types.stog -> Stog_types.elt -> Neturl.url
+
 val env_of_defs : ?env:'a Xtmpl.env -> Stog_types.def list -> 'a Xtmpl.env
 val env_of_used_mods : Stog_types.stog ->
   ?env:'a Xtmpl.env -> Stog_types.Str_set.t -> 'a Xtmpl.env
@@ -80,6 +83,13 @@ val env_of_used_mods : Stog_types.stog ->
 type 'a stog_elt_rules =
   Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xtmpl.name * 'a Xtmpl.callback) list
 
+val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * string
+val opt_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * string option
+
+val elt_env : 'a -> 'a Xtmpl.env -> Stog_types.stog -> Stog_types.elt -> 'a * 'a Xtmpl.env
+
 val fun_apply_stog_elt_rules : Stog_types.stog stog_elt_rules -> 'a level_fun
 val fun_apply_stog_data_elt_rules : (Stog_types.stog * 'a) stog_elt_rules -> 'a level_fun
 val fun_apply_data_elt_rules : 'a stog_elt_rules -> 'a level_fun
+
+val get_languages : 'a -> 'a Xtmpl.env -> 'a * string list

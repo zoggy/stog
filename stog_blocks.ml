@@ -166,7 +166,7 @@ let fun_elt_href ?typ src_elt href (stog, data) env args subs =
     None -> ((stog, data), [Xtmpl.E (("", "span"), [("", "class"), "unknown-ref"], text)])
   | Some (elt, _, id) ->
       let href =
-        let url = Stog_html.elt_url stog elt in
+        let url = Stog_engine.elt_url stog elt in
         match id with
           None -> url
         | Some id -> Neturl.modify_url ~fragment: id url

@@ -16,12 +16,12 @@ stog_deps.cmo : stog_types.cmi stog_msg.cmi stog_misc.cmi stog_deps.cmi
 stog_deps.cmx : stog_types.cmx stog_msg.cmx stog_misc.cmx stog_deps.cmi
 stog_dyn.cmo : stog_msg.cmi stog_misc.cmi stog_dyn.cmi
 stog_dyn.cmx : stog_msg.cmx stog_misc.cmx stog_dyn.cmi
-stog_engine.cmo : stog_types.cmi stog_tmpl.cmi stog_tmap.cmi stog_ocaml.cmi \
-    stog_msg.cmi stog_misc.cmi stog_html5.cmi stog_find.cmi stog_deps.cmi \
-    stog_engine.cmi
-stog_engine.cmx : stog_types.cmx stog_tmpl.cmx stog_tmap.cmx stog_ocaml.cmx \
-    stog_msg.cmx stog_misc.cmx stog_html5.cmx stog_find.cmx stog_deps.cmx \
-    stog_engine.cmi
+stog_engine.cmo : stog_types.cmi stog_tmpl.cmi stog_tmap.cmi stog_tags.cmi \
+    stog_ocaml.cmi stog_msg.cmi stog_misc.cmi stog_html5.cmi stog_find.cmi \
+    stog_deps.cmi stog_engine.cmi
+stog_engine.cmx : stog_types.cmx stog_tmpl.cmx stog_tmap.cmx stog_tags.cmx \
+    stog_ocaml.cmx stog_msg.cmx stog_misc.cmx stog_html5.cmx stog_find.cmx \
+    stog_deps.cmx stog_engine.cmi
 stog_filter.cmo : stog_types.cmi stog_tmap.cmi stog_filter_types.cmi \
     stog_filter_parser.cmi stog_filter_lexer.cmi stog_filter.cmi
 stog_filter.cmx : stog_types.cmx stog_tmap.cmx stog_filter_types.cmx \
@@ -60,8 +60,8 @@ stog_io.cmo : stog_types.cmi stog_msg.cmi stog_misc.cmi stog_find.cmi \
     stog_config.cmi stog_io.cmi
 stog_io.cmx : stog_types.cmx stog_msg.cmx stog_misc.cmx stog_find.cmx \
     stog_config.cmx stog_io.cmi
-stog_latex.cmo : stog_types.cmi stog_misc.cmi stog_latex.cmi
-stog_latex.cmx : stog_types.cmx stog_misc.cmx stog_latex.cmi
+stog_latex.cmo : stog_types.cmi stog_misc.cmi stog_engine.cmi stog_latex.cmi
+stog_latex.cmx : stog_types.cmx stog_misc.cmx stog_engine.cmx stog_latex.cmi
 stog_main.cmo : stog_types.cmi stog_ocaml.cmi stog_msg.cmi stog_misc.cmi \
     stog_io.cmi stog_intl.cmi stog_info.cmi stog_html.cmi stog_engine.cmi \
     stog_dyn.cmi stog_config.cmi
