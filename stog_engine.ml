@@ -699,7 +699,9 @@ let fun_apply_stog_elt_rules f_rules =
   let f_elt env stog (elt_id, elt) =
     let rules = f_rules stog elt_id elt in
     let env = Xtmpl.env_of_list ~env rules in
+    prerr_endline ("let env = "^(Xtmpl.string_of_env env));
     let (stog, env) = elt_env stog env stog elt in
+    prerr_endline ("after elt_env: "^(Xtmpl.string_of_env env));
     let (stog, xmls) = get_elt_out stog elt in
     let (stog, xmls) = Xtmpl.apply_to_xmls stog env xmls in
     let elt = { elt with elt_out = Some xmls } in

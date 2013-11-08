@@ -540,6 +540,7 @@ let fun_exta stog env args subs =
 type toc = Toc of string * string * Xmlm.name * toc list (* name, title, class, subs *)
 
 let fun_prepare_toc tags stog env args subs =
+  prerr_endline "fun_prepare_toc";
   let depth =
     match Xtmpl.get_arg args ("", "depth") with
       None -> max_int
@@ -549,6 +550,7 @@ let fun_prepare_toc tags stog env args subs =
   | Xtmpl.D _ -> acc
   | Xtmpl.E (tag, atts, subs) when List.mem tag tags ->
       begin
+        prerr_endline ("handled tag: "^(snd tag));
         match Xtmpl.get_arg atts ("", "id"), Xtmpl.get_arg atts ("", "title") with
           None, _ | _, None ->
             (*prerr_endline "no name nor title";*)
