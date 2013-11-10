@@ -32,9 +32,9 @@ open Stog_types;;
 
 
 type 'a level_fun =
-  | Fun_stog of (stog Xtmpl.env -> stog -> (elt_id * elt) list -> stog)
-  | Fun_data of ('a Xtmpl.env -> stog * 'a -> (elt_id * elt) list -> stog * 'a)
-  | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> (elt_id * elt) list -> stog * 'a)
+  | Fun_stog of (stog Xtmpl.env -> stog -> elt_id list -> stog)
+  | Fun_data of ('a Xtmpl.env -> stog * 'a -> elt_id list -> stog * 'a)
+  | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> elt_id list -> stog * 'a)
 
 type 'a engine = {
       eng_data : 'a ;
@@ -81,7 +81,7 @@ val env_of_used_mods : Stog_types.stog ->
   ?env:'a Xtmpl.env -> Stog_types.Str_set.t -> 'a Xtmpl.env
 
 type 'a stog_elt_rules =
-  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xtmpl.name * 'a Xtmpl.callback) list
+  Stog_types.stog -> Stog_types.elt_id -> (Xtmpl.name * 'a Xtmpl.callback) list
 
 val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * string
 val opt_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * string option

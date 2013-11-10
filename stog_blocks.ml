@@ -467,7 +467,8 @@ let gather_existing_ids =
       in
       List.fold_left (f hid) set subs
   in
-  fun env (stog, data) (elt_id, elt) ->
+  fun env (stog, data) elt_id ->
+    let elt = Stog_types.elt stog elt_id in
     match elt.elt_out with
       None -> (stog, data)
     | Some body ->
@@ -491,7 +492,7 @@ let gather_existing_ids =
 ;;
 
 let fun_level_0 =
-  let f _ _ _ = [
+  let f _ _ = [
       ("", Stog_tags.block), fun_block1 ;
       ("", Stog_tags.counter), fun_counter ;
     ]
@@ -507,7 +508,8 @@ let fun_level_gather_ids =
 ;;
 
 
-let rules_sectionning stog elt_id elt =
+let rules_sectionning stog elt_id =
+  let elt = Stog_types.elt stog elt_id in
   let tags = Stog_html.get_sectionning_tags stog elt in
   let rec f acc up = function
     [] -> acc
@@ -524,7 +526,8 @@ let fun_level_sectionning =
   Stog_engine.fun_apply_stog_data_elt_rules rules_sectionning ;;
 
 
-let rules_fun_elt stog elt_id elt =
+let rules_fun_elt stog elt_id  =
+  let elt = Stog_types.elt stog elt_id in
   [ ("", Stog_tags.elt), fun_elt elt  ;
     ("", Stog_tags.post), fun_post elt  ;
     ("", Stog_tags.page), fun_page elt  ;
@@ -538,11 +541,11 @@ let levels = List.fold_left
   (fun map (level, f) -> Stog_types.Int_map.add level f map)
     Stog_types.Int_map.empty
     [
-      1, fun_level_0 ; PB QUAND PLUSIEURS ENGINES SUR LE MEME LEVEL
-(*      61, fun_level_0 ;
+      0, fun_level_0 ;
+      61, fun_level_0 ;
       100, fun_level_sectionning ;
       120, fun_level_gather_ids ;
-      150, fun_level_fun_elt ;*)
+      150, fun_level_fun_elt ;
     ]
 ;;
 

@@ -90,7 +90,7 @@ val generate_rss_feed_file :
 
 (** Build the base rules, using the default ones and the {!plugin_rules}. *)
 val build_base_rules : Stog_types.stog ->
-  Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * Stog_types.stog Xtmpl.callback) list
+  Stog_types.elt_id -> (Xmlm.name * Stog_types.stog Xtmpl.callback) list
 
 (** The calllback to insert a list of elements. Can be called directly
   if provided an additional environment, argument and children nodes. *)

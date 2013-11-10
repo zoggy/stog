@@ -32,9 +32,9 @@ open Stog_types;;
 module Smap = Stog_types.Str_map;;
 
 type 'a level_fun =
-  | Fun_stog of (stog Xtmpl.env -> stog -> (elt_id * elt) list -> stog)
-  | Fun_data of ('a Xtmpl.env -> stog * 'a -> (elt_id * elt) list -> stog * 'a)
-  | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> (elt_id * elt) list -> stog * 'a)
+  | Fun_stog of (stog Xtmpl.env -> stog -> elt_id list -> stog)
+  | Fun_data of ('a Xtmpl.env -> stog * 'a -> elt_id list -> stog * 'a)
+  | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> elt_id list -> stog * 'a)
 
 type 'a engine = {
       eng_data : 'a ;
@@ -96,17 +96,14 @@ let (compute_level : ?elts: elt_id list -> ?cached: elt_id list -> 'a Xtmpl.env 
   let elts =
     match elts, cached with
       None, None ->
-        Stog_tmap.fold (fun elt_id elt acc -> (elt_id, elt) :: acc) state.st_stog.stog_elts []
+        Stog_tmap.fold (fun elt_id _ acc -> elt_id :: acc) state.st_stog.stog_elts []
     | None, Some l ->
         let pred id1 id2 = Stog_tmap.compare_key id1 id2 = 0 in
         Stog_tmap.fold
-          (fun elt_id elt acc ->
-             if List.exists (pred elt_id) l then acc else (elt_id, elt) :: acc)
+          (fun elt_id _ acc ->
+             if List.exists (pred elt_id) l then acc else elt_id :: acc)
              state.st_stog.stog_elts []
-    | Some l, _ ->
-        List.map
-        (fun elt_id -> (elt_id, Stog_types.elt state.st_stog elt_id))
-        l
+    | Some l, _ -> l
   in
   (*
   let f_elt f (stog, data) (elt_id, elt) =
@@ -696,10 +693,11 @@ let elt_env data env stog elt =
   (data, env)
 
 let fun_apply_stog_elt_rules f_rules =
-  let f_elt env stog (elt_id, elt) =
-    let rules = f_rules stog elt_id elt in
+  let f_elt env stog elt_id =
+    let rules = f_rules stog elt_id in
     let env = Xtmpl.env_of_list ~env rules in
     prerr_endline ("let env = "^(Xtmpl.string_of_env env));
+    let elt = Stog_types.elt stog elt_id in
     let (stog, env) = elt_env stog env stog elt in
     prerr_endline ("after elt_env: "^(Xtmpl.string_of_env env));
     let (stog, xmls) = get_elt_out stog elt in
@@ -715,13 +713,14 @@ let fun_apply_stog_elt_rules f_rules =
 ;;
 
 type 'a stog_elt_rules =
-  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xtmpl.name * 'a Xtmpl.callback) list
+  Stog_types.stog -> Stog_types.elt_id -> (Xtmpl.name * 'a Xtmpl.callback) list
 
 let fun_apply_stog_data_elt_rules f_rules =
-  let f_elt env (stog, data) (elt_id, elt) =
-    let rules = f_rules stog elt_id elt in
+  let f_elt env (stog, data) elt_id =
+    let rules = f_rules stog elt_id in
     let env = Xtmpl.env_of_list ~env rules in
-    let ((stog, data), env) = elt_env(stog, data) env stog  elt in
+    let elt = Stog_types.elt stog elt_id in
+    let ((stog, data), env) = elt_env (stog, data) env stog  elt in
     let (stog, xmls) = get_elt_out stog elt in
     let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env xmls in
     let elt = { elt with elt_out = Some xmls } in
@@ -732,9 +731,10 @@ let fun_apply_stog_data_elt_rules f_rules =
 ;;
 
 let fun_apply_data_elt_rules f_rules =
-  let f_elt env (stog, data) (elt_id, elt) =
-    let rules = f_rules stog elt_id elt in
+  let f_elt env (stog, data) elt_id =
+    let rules = f_rules stog elt_id in
     let env = Xtmpl.env_of_list ~env rules in
+    let elt = Stog_types.elt stog elt_id in
     let (data, env) = elt_env data env stog elt in
     let (stog, xmls) = get_elt_out stog elt in
     let (data, xmls) = Xtmpl.apply_to_xmls data env xmls in

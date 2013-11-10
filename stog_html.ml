@@ -80,22 +80,6 @@ let month_index_hid ~year ~month =
   Stog_types.human_id_of_string (Printf.sprintf "/%04d_%02d" year month);;
 
 
-(*
-let elt_env build_rules stog ~env elt_id elt =
-  let env = Stog_engine.env_of_defs ~env elt.elt_defs in
-  let env = Stog_engine.env_of_used_mods stog ~env elt.elt_used_mods in
-  let rules =
-   (("", Stog_tags.elt_hid),
-    (fun  acc _ _ _ ->
-        (acc, [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)]))) ::
-      (build_rules stog elt_id elt)
-  in
-  let env = Xtmpl.env_of_list ~env rules in
-  let env = env_add_langswitch env stog elt in
-  env
-;;
-*)
-
 let include_href name stog elt ?id ~raw ~depend href env =
   let new_id = id in
   let (hid, id) =
@@ -842,7 +826,8 @@ and generate_rss_feed_file stog ?title link elts file =
   let result = Rss.print_file ~encoding: "UTF-8" file channel in
   (stog, result)
 
-and build_base_rules stog elt_id elt =
+and build_base_rules stog elt_id =
+  let elt = Stog_types.elt stog elt_id in
   let f_title elt acc _ _ _ =
     (acc, [ Xtmpl.xml_of_string elt.elt_title ])
   in
@@ -1217,7 +1202,8 @@ let get_sectionning_tags stog elt =
         l []
 ;;
 
-let rules_toc stog elt_id elt =
+let rules_toc stog elt_id =
+  let elt = Stog_types.elt stog elt_id in
   let tags = get_sectionning_tags stog elt in
   [ ("", Stog_tags.prepare_toc), (fun_prepare_toc tags);
     ("", Stog_tags.toc), fun_toc ;
@@ -1392,7 +1378,8 @@ let cut_elts =
     let stog = add_id_mappings stog orig_hid elt.elt_human_id ids in
     add_id_mappings stog elt.elt_human_id orig_hid (Sset.diff all_ids ids)
   in
-  let f_elt env stog (elt_id, elt) =
+  let f_elt env stog elt_id =
+    let elt = Stog_types.elt stog elt_id in
     let (stog, elt2, new_elts) = cut_elt stog elt in
     match new_elts with
       [] ->
@@ -1412,7 +1399,8 @@ let cut_elts =
     List.fold_left (f_elt env) stog elts
 ;;
 
-let rules_inc_elt stog elt_id elt =
+let rules_inc_elt stog elt_id =
+  let elt = Stog_types.elt stog elt_id in
   [ ("", Stog_tags.inc), fun_inc elt ;
     ("", Stog_tags.late_inc), fun_late_inc elt ]
 ;;
@@ -1429,10 +1417,10 @@ let levels = List.fold_left
     [
       0, fun_level_0 ;
       50, fun_level_toc ;
-(*      60, Stog_engine.Fun_stog cut_elts ;
+      60, Stog_engine.Fun_stog cut_elts ;
       61, fun_level_0 ;
       160, fun_level_inc_elt ;
-      500, (Stog_engine.Fun_stog fun_close_ocaml_sessions) ;*)
+      500, (Stog_engine.Fun_stog fun_close_ocaml_sessions) ;
     ]
 ;;
 
