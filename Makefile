@@ -37,8 +37,8 @@ CAMLP4O=camlp4o
 OCAMLLIB:=`$(OCAMLC) -where`
 OCAMLFIND=ocamlfind
 
-P=p -p
-PBYTE=p -p a
+P=#p -p
+PBYTE=#p -p a
 
 PACKAGES=xmlm,rss,xtmpl,config-file,dynlink,unix,str
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel

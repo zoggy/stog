@@ -491,7 +491,7 @@ let gather_existing_ids =
         (stog, data)
 ;;
 
-let fun_level_0 =
+let fun_level_base =
   let f _ _ = [
       ("", Stog_tags.block), fun_block1 ;
       ("", Stog_tags.counter), fun_counter ;
@@ -537,23 +537,31 @@ let rules_fun_elt stog elt_id  =
 let fun_level_fun_elt =
   Stog_engine.fun_apply_stog_data_elt_rules rules_fun_elt ;;
 
-let levels = List.fold_left
-  (fun map (level, f) -> Stog_types.Int_map.add level f map)
-    Stog_types.Int_map.empty
-    [
-      0, fun_level_0 ;
-      61, fun_level_0 ;
-      100, fun_level_sectionning ;
-      120, fun_level_gather_ids ;
-      150, fun_level_fun_elt ;
-    ]
+let level_funs =
+  [
+    "base", fun_level_base ;
+    "sectionning", fun_level_sectionning ;
+    "gather-ids", fun_level_gather_ids ;
+    "elt", fun_level_fun_elt ;
+  ]
 ;;
 
-module Blocks =
+let default_levels =
+  [ "base", [ 0 ; 61 ] ;
+    "sectionning", [ 100 ] ;
+    "gather-ids", [ 120 ] ;
+    "elt", [ 150 ] ;
+  ]
+
+let module_name = "blocks";;
+
+let make_module ?levels () =
+  let levels = Stog_html.mk_levels module_name level_funs default_levels ?levels () in
+  let module M =
   struct
     type data = block_data
     let engine = {
-        Stog_engine.eng_name = "blocks" ;
+        Stog_engine.eng_name = module_name ;
         eng_levels = levels ;
         eng_data = empty_data ;
        }
@@ -572,4 +580,8 @@ module Blocks =
       {
         cache_blocks = (try Smap.find hid data.blocks with Not_found -> Smap.empty) ;
       }
-  end;;
+  end
+  in
+  (module M : Stog_engine.Stog_engine)
+;;
+

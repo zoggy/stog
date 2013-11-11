@@ -524,7 +524,6 @@ let fun_exta stog env args subs =
 type toc = Toc of string * string * Xmlm.name * toc list (* name, title, class, subs *)
 
 let fun_prepare_toc tags stog env args subs =
-  prerr_endline "fun_prepare_toc";
   let depth =
     match Xtmpl.get_arg args ("", "depth") with
       None -> max_int
@@ -534,7 +533,6 @@ let fun_prepare_toc tags stog env args subs =
   | Xtmpl.D _ -> acc
   | Xtmpl.E (tag, atts, subs) when List.mem tag tags ->
       begin
-        prerr_endline ("handled tag: "^(snd tag));
         match Xtmpl.get_arg atts ("", "id"), Xtmpl.get_arg atts ("", "title") with
           None, _ | _, None ->
             (*prerr_endline "no name nor title";*)
@@ -1175,7 +1173,7 @@ let register_level_fun_on_elt_list level f =
 
 (* register default levels *)
 
-let fun_level_0 = Stog_engine.fun_apply_stog_elt_rules build_base_rules;;
+let fun_level_base = Stog_engine.fun_apply_stog_elt_rules build_base_rules;;
 
 
 let get_sectionning_tags stog elt =
@@ -1411,24 +1409,51 @@ let fun_close_ocaml_sessions _ stog _ =
   Stog_ocaml.close_sessions ();
   stog;;
 
-let levels = List.fold_left
-  (fun map (level, f) -> Intmap.add level f map)
-    Intmap.empty
-    [
-      0, fun_level_0 ;
-      50, fun_level_toc ;
-      60, Stog_engine.Fun_stog cut_elts ;
-      61, fun_level_0 ;
-      160, fun_level_inc_elt ;
-      500, (Stog_engine.Fun_stog fun_close_ocaml_sessions) ;
-    ]
+
+let level_funs = [
+    "base", fun_level_base ;
+    "toc", fun_level_toc ;
+    "cut", Stog_engine.Fun_stog cut_elts ;
+    "inc", fun_level_inc_elt ;
+    "close-ocaml", (Stog_engine.Fun_stog fun_close_ocaml_sessions) ;
+  ]
+
+let default_levels =
+  [ "base", [ 0 ; 61 ] ;
+    "toc", [ 50 ] ;
+    "cut", [ 60 ] ;
+    "inc", [ 160 ] ;
+    "close-ocaml", [ 500 ] ;
+  ]
 ;;
 
-module Html =
+let mk_levels modname level_funs default_levels =
+  fun ?(levels=default_levels) () ->
+    let f map (name, levels) =
+      let level_fun =
+        try List.assoc name level_funs
+        with Not_found ->
+            let msg = Printf.sprintf
+              "Level function %S unknown in module %S" name modname
+            in
+            failwith msg
+      in
+      List.fold_left
+        (fun map level -> Intmap.add level level_fun map)
+        map levels
+    in
+    List.fold_left f Intmap.empty levels
+;;
+
+let module_name = "html";;
+
+let make_module ?levels () =
+  let levels = mk_levels module_name level_funs default_levels ?levels () in
+  let module M =
   struct
     type data = unit
     let engine = {
-        Stog_engine.eng_name = "html" ;
+        Stog_engine.eng_name = module_name ;
         eng_levels = levels ;
         eng_data = () ;
        }
@@ -1437,6 +1462,8 @@ module Html =
 
     let cache_load data elt t = ()
     let cache_store data elt = ()
-  end;;
+  end
+  in
+  (module M : Stog_engine.Stog_engine)
 
 (*let () = Stog_cache.register_cache (module Cache);;*)

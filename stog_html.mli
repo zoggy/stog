@@ -101,5 +101,14 @@ val elt_list :
 
 val get_sectionning_tags : Stog_types.stog -> Stog_types.elt -> Xtmpl.name list
 
-module Html : Stog_engine.Stog_engine
 
+(** [mk_levels modname funs default_levels] returns a function
+  to create the level map from an optional list of pairs [(funname, [level1 ; level2; ...])].
+  [funs] is a list of pairs [(funname, Stog_engine.level_fun)] and [default_levels]
+  is the default list of associations between funnames and levels.*)
+val mk_levels : string -> (string * 'a Stog_engine.level_fun) list ->
+  (string * Stog_types.Int_map.key list) list ->
+    ?levels:(string * int list) list -> unit ->
+    'a Stog_engine.level_fun Stog_types.Int_map.t
+
+val make_module : ?levels:(string * int list) list -> unit -> (module Stog_engine.Stog_engine)

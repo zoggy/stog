@@ -152,9 +152,8 @@ let main () =
         (*prerr_endline "graph computed";*)
         let stog = set_stog_options stog in
         Stog_engine.generate ~use_cache: !use_cache ?only_elt: !only_elt stog
-          [ (module Stog_blocks.Blocks : Stog_engine.Stog_engine) ;
-            (module Stog_html.Html : Stog_engine.Stog_engine) ;
-
+          [ Stog_blocks.make_module () ;
+            Stog_html.make_module () ;
           ]
   end;
   let err = Stog_msg.errors () in

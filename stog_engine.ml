@@ -696,10 +696,8 @@ let fun_apply_stog_elt_rules f_rules =
   let f_elt env stog elt_id =
     let rules = f_rules stog elt_id in
     let env = Xtmpl.env_of_list ~env rules in
-    prerr_endline ("let env = "^(Xtmpl.string_of_env env));
     let elt = Stog_types.elt stog elt_id in
     let (stog, env) = elt_env stog env stog elt in
-    prerr_endline ("after elt_env: "^(Xtmpl.string_of_env env));
     let (stog, xmls) = get_elt_out stog elt in
     (*prerr_endline (Printf.sprintf "%s = %s"
       (Stog_types.string_of_human_id elt.elt_human_id)
