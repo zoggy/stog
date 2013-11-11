@@ -205,6 +205,7 @@ type stog = {
   stog_depcut : bool ;
   stog_deps : stog_dependencies ;
   stog_id_map : (human_id * string option) Str_map.t Hid_map.t ;
+  stog_levels : (string * int list) list Str_map.t ;
 }
 
 let url_of_string s =
@@ -259,6 +260,7 @@ let create_stog dir = {
   stog_depcut = false ;
   stog_deps = Str_map.empty ;
   stog_id_map = Hid_map.empty ;
+  stog_levels = Str_map.empty ;
   }
 ;;
 

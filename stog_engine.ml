@@ -692,6 +692,9 @@ let elt_env data env stog elt =
   let (data, env) = env_add_lang_rules data env stog elt in
   (data, env)
 
+type 'a stog_elt_rules =
+  Stog_types.stog -> Stog_types.elt_id -> (Xtmpl.name * 'a Xtmpl.callback) list
+
 let fun_apply_stog_elt_rules f_rules =
   let f_elt env stog elt_id =
     let rules = f_rules stog elt_id in
@@ -709,9 +712,6 @@ let fun_apply_stog_elt_rules f_rules =
   let f env stog elts = List.fold_left (f_elt env) stog elts in
   Fun_stog f
 ;;
-
-type 'a stog_elt_rules =
-  Stog_types.stog -> Stog_types.elt_id -> (Xtmpl.name * 'a Xtmpl.callback) list
 
 let fun_apply_stog_data_elt_rules f_rules =
   let f_elt env (stog, data) elt_id =
@@ -743,4 +743,22 @@ let fun_apply_data_elt_rules f_rules =
   Fun_data f
 ;;
 
+(*** Engines ***)
+
+type engine_fun = Stog_types.stog -> (module Stog_engine)
+
+let engines = ref (Stog_types.Str_map.empty : (Stog_types.stog -> (module Stog_engine)) Stog_types.Str_map.t);;
+
+let register_engine name f_engine =
+  engines := Stog_types.Str_map.add name f_engine !engines
+;;
+
+let engine_by_name name =
+  try Some (Stog_types.Str_map.find name !engines)
+  with Not_found -> None
+;;
+
+let engines () = Stog_types.Str_map.fold
+  (fun name f acc -> (name, f) :: acc) !engines []
+;;
 

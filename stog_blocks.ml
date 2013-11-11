@@ -547,11 +547,14 @@ let level_funs =
 ;;
 
 let default_levels =
-  [ "base", [ 0 ; 61 ] ;
-    "sectionning", [ 100 ] ;
-    "gather-ids", [ 120 ] ;
-    "elt", [ 150 ] ;
-  ]
+  List.fold_left
+    (fun map (name, levels) -> Stog_types.Str_map.add name levels map)
+    Stog_types.Str_map.empty
+    [ "base", [ 0 ; 61 ] ;
+      "sectionning", [ 100 ] ;
+      "gather-ids", [ 120 ] ;
+      "elt", [ 150 ] ;
+    ]
 
 let module_name = "blocks";;
 

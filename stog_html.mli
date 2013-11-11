@@ -107,7 +107,7 @@ val get_sectionning_tags : Stog_types.stog -> Stog_types.elt -> Xtmpl.name list
   [funs] is a list of pairs [(funname, Stog_engine.level_fun)] and [default_levels]
   is the default list of associations between funnames and levels.*)
 val mk_levels : string -> (string * 'a Stog_engine.level_fun) list ->
-  (string * Stog_types.Int_map.key list) list ->
+  int list Stog_types.Str_map.t ->
     ?levels:(string * int list) list -> unit ->
     'a Stog_engine.level_fun Stog_types.Int_map.t
 

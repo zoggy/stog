@@ -1419,17 +1419,28 @@ let level_funs = [
   ]
 
 let default_levels =
-  [ "base", [ 0 ; 61 ] ;
-    "toc", [ 50 ] ;
-    "cut", [ 60 ] ;
-    "inc", [ 160 ] ;
-    "close-ocaml", [ 500 ] ;
-  ]
+  List.fold_left
+    (fun map (name, levels) -> Stog_types.Str_map.add name levels map)
+    Stog_types.Str_map.empty
+    [ "base", [ 0 ; 61 ] ;
+      "toc", [ 50 ] ;
+      "cut", [ 60 ] ;
+      "inc", [ 160 ] ;
+      "close-ocaml", [ 500 ] ;
+    ]
 ;;
 
 let mk_levels modname level_funs default_levels =
-  fun ?(levels=default_levels) () ->
-    let f map (name, levels) =
+  fun ?(levels=[]) () ->
+    let levels =
+      List.fold_left
+        (fun map (name, levels) ->
+           Stog_types.Str_map.add name levels map
+        )
+        default_levels
+        levels
+    in
+    let f name levels map =
       let level_fun =
         try List.assoc name level_funs
         with Not_found ->
@@ -1442,7 +1453,7 @@ let mk_levels modname level_funs default_levels =
         (fun map level -> Intmap.add level level_fun map)
         map levels
     in
-    List.fold_left f Intmap.empty levels
+    Stog_types.Str_map.fold f levels Intmap.empty
 ;;
 
 let module_name = "html";;

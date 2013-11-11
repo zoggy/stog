@@ -93,3 +93,11 @@ val fun_apply_stog_data_elt_rules : (Stog_types.stog * 'a) stog_elt_rules -> 'a 
 val fun_apply_data_elt_rules : 'a stog_elt_rules -> 'a level_fun
 
 val get_languages : 'a -> 'a Xtmpl.env -> 'a * string list
+
+(** {2 Registering engines} *)
+
+type engine_fun = Stog_types.stog -> (module Stog_engine)
+
+val engines : unit -> (string * engine_fun) list
+val register_engine : string -> engine_fun -> unit
+val engine_by_name : string -> engine_fun option

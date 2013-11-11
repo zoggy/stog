@@ -115,7 +115,8 @@ type stog = {
   stog_depcut : bool ;
   stog_deps : stog_dependencies ;
   stog_id_map : (human_id * string option) Str_map.t Hid_map.t ;
-}
+  stog_levels : (string * int list) list Str_map.t ;
+  }
 
 val url_of_string : string -> Neturl.url
 val string_of_url : Neturl.url -> string
