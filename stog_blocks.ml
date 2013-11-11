@@ -270,6 +270,50 @@ type block =
     blk_body : Xtmpl.tree list ;
   }
 
+let mk_block ~id ?label ?clas ~title ?counter ~short_fmt ~long_fmt body =
+  { blk_id = id ;
+    blk_label = label ;
+    blk_class = clas ;
+    blk_title = title ;
+    blk_cpt_name = counter ;
+    blk_long_f = long_fmt ;
+    blk_short_f = short_fmt ;
+    blk_body = body ;
+  }
+;;
+
+let node_of_block b =
+  let atts =
+    [
+      ("","id"), b.blk_id ;
+      ("","with-contents"), "true" ;
+    ]
+  in
+  let title = Xtmpl.E (("","title"), [], b.blk_title) in
+  let label =
+    match b.blk_label with
+      None -> []
+    | Some l -> [ Xtmpl.E (("","label"), [], l) ]
+  in
+  let clas =
+    match b.blk_class with
+      None -> []
+    | Some s -> [ Xtmpl.E (("","class"), [], [ Xtmpl.D s ]) ]
+  in
+  let cpt_name =
+    match b.blk_cpt_name with
+      None -> []
+    | Some s -> [ Xtmpl.E (("","counter-name"), [], [ Xtmpl.D s]) ]
+  in
+  let long_f = [ Xtmpl.E (("","long-title-format"), [], b.blk_long_f) ]
+  in
+  let short_f = [ Xtmpl.E (("","short-title-format"), [], b.blk_short_f) ]
+  in
+  let contents = [ Xtmpl.E (("","contents"), [], b.blk_body) ] in
+  let subs = title :: label @ clas @ cpt_name @ long_f @ short_f @ contents in
+  Xtmpl.E (("",Stog_tags.block), atts, subs)
+;;
+
 let block_body_of_subs stog blk = function
   [] ->
     let tmpl_file =

@@ -38,30 +38,25 @@
 val plugin_config_file : Stog_types.stog -> string -> string
 
 val register_lang : Stog_intl.lang_abbrev -> Stog_intl.lang_data -> unit
-val register_rule : Xmlm.name -> 'a Xtmpl.callback -> unit
 
-(** Unregister the rule with the given name from the plugin rules.
-  It only register the last registered rule with this name.
-  If a rule is unregistered, it is returned, else [None] is returned.*)
-val unregister_rule : Xmlm.name -> 'a Xtmpl.callback option
-
-val stog : unit -> Stog_types.stog
+(** [register_html_base_rule name f] registers a new function associated
+     to [name] in the set of base rules of the "html" predefined module. *)
+val register_html_base_rule : Xmlm.name -> Stog_types.stog Xtmpl.callback -> unit
 
 (** [elt_by_href ?typ stog env href] returns the element, hid and
   optional if matching the given href string, of the form [hid[#id]].
   Return None if the element could not be found, of the id could not be found,
   and an error is issued. *)
-val elt_by_href : ?typ: string -> Stog_types.stog -> 'a Xtmpl.env -> string ->
-  (Stog_types.elt * string * string option) option
+val elt_by_href : ?typ: string -> Stog_types.stog -> 'a -> 'a Xtmpl.env -> string ->
+  'a * (Stog_types.elt * string * string option) option
 
-(** Adding a known block id for a given hid. A short and a long title
-  are specified. These registered blocks are used by <elt href="..#id"/> nodes.
-  @on_dup specifies what to do when the id to add is already present.
-  Default is to issue a warning. [`Fail] will raise a [Failure] exception.
-*)
-val add_block :
-  ?on_dup: [`Ignore | `Fail | `Warn] ->
-  hid: string -> id: string -> short: Xtmpl.tree -> long: Xtmpl.tree -> unit -> unit
+(** [mk_block_node ...] creates a [<block ...] with the given information.*)
+val mk_block_node :
+  id: string -> ?label: Xtmpl.tree list -> ?clas: string ->
+    title: Xtmpl.tree list -> ?counter: string ->
+    short_fmt: Xtmpl.tree list -> long_fmt: Xtmpl.tree list -> Xtmpl.tree list -> Xtmpl.tree
+
+(** {2 Outputting message.} *)
 
 val verbose : ?info:string -> ?level: int -> string -> unit
 val set_print_verbose : (string -> unit) -> unit
@@ -72,34 +67,9 @@ val set_print_warning : (string -> unit) -> unit
 val error : ?info:string -> ?fatal: int -> string -> unit
 val set_print_error : (string -> unit) -> unit
 
-val register_stage0_fun : (Stog_types.stog -> Stog_types.stog) -> unit
+(** {2 Dependencies} *)
 
-type rule_build =
-  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * Xtmpl.callback) list
-
-(** Type to represent a function taking an element id,
-  and element, and returning the new element. *)
-type level_fun =
-  Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
-;;
-
-(** Type to represent a functions called on all elements at a time and returning
-  only the modified elements. *)
-type level_fun_on_elt_list =
-  Xtmpl.env -> Stog_types.stog -> (Stog_types.elt_id * Stog_types.elt) list ->
-  (Stog_types.elt_id * Stog_types.elt) list * Stog_types.elt list
-;;
-
-val register_level_fun : int -> level_fun -> unit
-val compute_elt : rule_build -> level_fun
-
-val register_level_fun_on_elt_list : int -> level_fun_on_elt_list -> unit
-
-val register_cache : (module Stog_cache.Cache) -> unit
-
-type dependency =
-  | File of string (** filename *)
-  | Elt of Stog_types.elt
+type dependency = Stog_types.elt Stog_types.dependency
 
 (** For a given element, add a dependency on a file or another element. *)
-val add_dep : Stog_types.stog -> Stog_types.elt -> dependency -> unit
+val add_dep : Stog_types.stog -> Stog_types.elt -> dependency -> Stog_types.stog

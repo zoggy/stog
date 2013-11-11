@@ -36,32 +36,16 @@ let plugin_config_file stog plugin_name =
 
 let register_lang = Stog_intl.register_lang;;
 
-let register_rule name f =
-  Stog_html.plugin_rules := (name, f) :: !Stog_html.plugin_rules ;;
-
-let unregister_rule name =
-  let rec iter acc = function
-    [] -> (List.rev acc, None)
-  | (s,f) :: q ->
-      if s = name then
-        ((List.rev acc) @ q, Some f)
-      else
-        iter ((s,f) :: acc) q
-  in
-  let (rules, found) = iter [] !Stog_html.plugin_rules in
-  Stog_html.plugin_rules := rules;
-  found
-;;
-
-let stog () =
-  match !Stog_html.current_stog with
-    None -> failwith "Current stog not initialized"
-  | Some x -> x
-;;
+let register_html_base_rule = Stog_html.register_base_rule;;
 
 let elt_by_href = Stog_html.elt_by_href
 
-let add_block = Stog_html.add_block;;
+let mk_block_node ~id ?label ?clas ~title ?counter ~short_fmt ~long_fmt body =
+  let b = Stog_blocks.mk_block
+    ~id ?label ?clas ~title ?counter ~short_fmt ~long_fmt body
+  in
+  Stog_blocks.node_of_block b
+;;
 
 let set_print_verbose = Stog_msg.set_print_verbose;;
 let verbose = Stog_msg.verbose;;
@@ -72,34 +56,8 @@ let warning = Stog_msg.warning;;
 let set_print_error = Stog_msg.set_print_error;;
 let error = Stog_msg.error;;
 
-let register_stage0_fun f =
-  Stog_html.stage0_funs := f :: !Stog_html.stage0_funs
-;;
+type dependency = Stog_types.elt Stog_types.dependency
 
-type rule_build =
-  Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> (Xmlm.name * Xtmpl.callback) list
-type level_fun =
-  Xtmpl.env -> Stog_types.stog -> Stog_types.elt_id -> Stog_types.elt -> Stog_types.elt
-;;
-type level_fun_on_elt_list =
-  Xtmpl.env -> Stog_types.stog -> (Stog_types.elt_id * Stog_types.elt) list ->
-  (Stog_types.elt_id * Stog_types.elt) list * Stog_types.elt list
-;;
-
-
-let register_level_fun = Stog_html.register_level_fun;;
-let compute_elt = Stog_html.compute_elt;;
-
-let register_level_fun_on_elt_list = Stog_html.register_level_fun_on_elt_list;;
-
-let register_cache = Stog_cache.register_cache ;;
-
-type dependency =
-  | File of string
-  | Elt of Stog_types.elt
-
-let add_dep stog elt = function
-  File f -> Stog_deps.add_dep stog elt (Stog_deps.File f)
-| Elt e -> Stog_deps.add_dep stog elt (Stog_deps.Elt e);;
+let add_dep = Stog_deps.add_dep
 
 

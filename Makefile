@@ -86,8 +86,8 @@ LIB_CMXFILES= \
 	stog_latex.cmx \
 	stog_html.cmx \
 	stog_blocks.cmx \
+	stog_plug.cmx \
 	stog_dyn.cmx \
-#	stog_plug.cmx \
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)
 LIB_CMIFILES=$(LIB_CMXFILES:.cmx=.cmi)

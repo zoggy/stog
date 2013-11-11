@@ -1,6 +1,6 @@
 (** Stog plugin example. *)
 
-let fun_list env args subs =
+let fun_list stog env args subs =
   (* get the optional sep attribute ... *)
   let sep = Xtmpl.opt_arg args ("", "sep") in
   (* and parse it as xml *)
@@ -21,10 +21,10 @@ let fun_list env args subs =
       iter acc q
   in
   (* and finally return the list of xml trees *)
-  iter [] subs
+  (stog, iter [] subs)
 ;;
 
 (* register the new function, associated to tag "list".
   Before stog 0.3, this function was called [Stog_plug.register_fun]. *)
-let () = Stog_plug.register_rule ("", "list") fun_list;;
+let () = Stog_plug.register_html_base_rule ("", "list") fun_list;;
 

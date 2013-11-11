@@ -60,9 +60,6 @@ let escape_html s =
   Buffer.contents b
 ;;
 
-
-
-
 let url_of_hid stog ?ext hid =
   let elt = Stog_types.make_elt ~hid () in
   let src =
@@ -79,6 +76,10 @@ let keyword_index_hid kw =
 let month_index_hid ~year ~month =
   Stog_types.human_id_of_string (Printf.sprintf "/%04d_%02d" year month);;
 
+let plugin_base_rules = ref [];;
+
+let register_base_rule name f =
+   plugin_base_rules := (name, f) :: !plugin_base_rules ;;
 
 let include_href name stog elt ?id ~raw ~depend href env =
   let new_id = id in
@@ -891,7 +892,7 @@ and build_base_rules stog elt_id =
      try_link ("","next") Stog_info.succ_by_date)
   in
   let l =
-    (*!plugin_rules @*)
+    !plugin_base_rules @
     [
       ("", Stog_tags.archive_tree), fun_archive_tree ;
       ("", Stog_tags.command_line), fun_command_line ~inline: false ;

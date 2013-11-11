@@ -62,7 +62,7 @@ let maybe_arg args key ~default =
     | None -> default
     | Some v -> v
 
-let fun_markdown env args subs =
+let fun_markdown stog env args subs =
   let command = maybe_arg args ("", "command") ~default:"markdown" in
   let args = maybe_arg args ("", "args") ~default:"" in
   let input =
@@ -84,11 +84,11 @@ let fun_markdown env args subs =
   Sys.remove output_file;
   (* markdown may contain HTML portions meant to be processed by
      Xtmpl, so we re-run Xtmpl.apply here *)
-  let applied_output = Xtmpl.apply_to_string env output in
-  applied_output
+  let (stog, applied_output) = Xtmpl.apply_to_string stog env output in
+  (stog, applied_output)
 ;;
 
-let () = Stog_plug.register_rule ("", "markdown") fun_markdown;;
+let () = Stog_plug.register_html_base_rule ("", "markdown") fun_markdown;;
 
 
 

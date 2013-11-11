@@ -101,7 +101,6 @@ val elt_list :
 
 val get_sectionning_tags : Stog_types.stog -> Stog_types.elt -> Xtmpl.name list
 
-
 (** [mk_levels modname funs default_levels] returns a function
   to create the level map from an optional list of pairs [(funname, [level1 ; level2; ...])].
   [funs] is a list of pairs [(funname, Stog_engine.level_fun)] and [default_levels]
@@ -112,3 +111,5 @@ val mk_levels : string -> (string * 'a Stog_engine.level_fun) list ->
     'a Stog_engine.level_fun Stog_types.Int_map.t
 
 val make_module : ?levels:(string * int list) list -> unit -> (module Stog_engine.Stog_engine)
+
+val register_base_rule : Xtmpl.name -> Stog_types.stog Xtmpl.callback -> unit
