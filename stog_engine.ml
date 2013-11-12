@@ -36,15 +36,15 @@ type 'a level_fun =
   | Fun_data of ('a Xtmpl.env -> stog * 'a -> elt_id list -> stog * 'a)
   | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> elt_id list -> stog * 'a)
 
-type 'a engine = {
-      eng_data : 'a ;
-      eng_levels : 'a level_fun Stog_types.Int_map.t ;
-      eng_name : string ;
+type 'a modul = {
+      mod_data : 'a ;
+      mod_levels : 'a level_fun Stog_types.Int_map.t ;
+      mod_name : string ;
     }
 
-module type Stog_engine = sig
+module type Module = sig
     type data
-    val engine : data engine
+    val modul : data modul
 
     type cache_data
     val cache_load : data -> elt -> cache_data -> data
@@ -53,41 +53,41 @@ module type Stog_engine = sig
 
 type stog_state =
   { st_stog : stog ;
-    st_engines : (module Stog_engine) list ;
+    st_modules : (module Module) list ;
   };;
 
 
-let apply_engine level env elts state engine =
-  let module E = (val engine : Stog_engine) in
+let apply_module level env elts state modul =
+  let module E = (val modul : Module) in
   match
-    try Some (Int_map.find level E.engine.eng_levels)
+    try Some (Int_map.find level E.modul.mod_levels)
     with Not_found -> None
   with
-    None -> { state with st_engines = engine :: state.st_engines }
+    None -> { state with st_modules = modul :: state.st_modules }
   | Some f ->
       let stog = state.st_stog in
       let (stog, data) =
         match f with
           Fun_stog f ->
             let stog = f env stog elts in
-            (stog, E.engine.eng_data)
+            (stog, E.modul.mod_data)
         | Fun_data f ->
-            f (Obj.magic env) (stog, E.engine.eng_data) elts
+            f (Obj.magic env) (stog, E.modul.mod_data) elts
         | Fun_stog_data f ->
-            f (Obj.magic env) (stog, E.engine.eng_data) elts
+            f (Obj.magic env) (stog, E.modul.mod_data) elts
       in
-      let engine =
+      let modul =
         let module E2 = struct
           type data = E.data
-          let engine = { E.engine with eng_data = data }
+          let modul = { E.modul with mod_data = data }
           type cache_data = E.cache_data
           let cache_load = E.cache_load
           let cache_store = E.cache_store
           end
         in
-        (module E2 : Stog_engine)
+        (module E2 : Module)
       in
-      { st_stog = stog ; st_engines = engine :: state.st_engines }
+      { st_stog = stog ; st_modules = modul :: state.st_modules }
 ;;
 
 let (compute_level : ?elts: elt_id list -> ?cached: elt_id list -> 'a Xtmpl.env -> int -> stog_state -> stog_state) =
@@ -111,8 +111,8 @@ let (compute_level : ?elts: elt_id list -> ?cached: elt_id list -> 'a Xtmpl.env 
     Stog_types.set_elt stog elt_id elt
   in
   *)
-  let state = List.fold_left (apply_engine level env elts)
-    { state with st_engines = [] } state.st_engines
+  let state = List.fold_left (apply_module level env elts)
+    { state with st_modules = [] } state.st_modules
   in
   state
 (*
@@ -145,11 +145,11 @@ let load_cached_elt file =
 let levels =
   let add level _ set = Stog_types.Int_set.add level set in
   let f set m =
-    let module M = (val m : Stog_engine) in
-    Stog_types.Int_map.fold add M.engine.eng_levels set
+    let module M = (val m : Module) in
+    Stog_types.Int_map.fold add M.modul.mod_levels set
   in
   fun state ->
-    List.fold_left f Stog_types.Int_set.empty state.st_engines
+    List.fold_left f Stog_types.Int_set.empty state.st_modules
 ;;
 
 (***** Caching *****)
@@ -207,40 +207,40 @@ let set_elt_env elt stog env elt_envs =
 ;;
 
 let apply_loaders state elt =
-  let f_engine e =
-    let module E = (val e : Stog_engine) in
-    let cache_file = cache_file E.engine.eng_name state.st_stog elt in
+  let f_modul e =
+    let module E = (val e : Module) in
+    let cache_file = cache_file E.modul.mod_name state.st_stog elt in
     let ic = open_in_bin cache_file in
     let t = input_value ic in
     close_in ic;
-    let data = E.cache_load E.engine.eng_data elt t in
+    let data = E.cache_load E.modul.mod_data elt t in
     let module E2 = struct
       type data = E.data
-      let engine = { E.engine with eng_data = data }
+      let modul = { E.modul with mod_data = data }
       type cache_data = E.cache_data
       let cache_load = E.cache_load
       let cache_store = E.cache_store
      end
     in
-    (module E2 : Stog_engine)
+    (module E2 : Module)
   in
-  let engines = List.map f_engine state.st_engines in
-  let state = { state with st_engines = engines } in
+  let modules = List.map f_modul state.st_modules in
+  let state = { state with st_modules = modules } in
   state
 ;;
 
 let apply_storers state elt =
-  let f_engine e =
-    let module E = (val e : Stog_engine) in
-    let cache_file = cache_file E.engine.eng_name state.st_stog elt in
+  let f_modul e =
+    let module E = (val e : Module) in
+    let cache_file = cache_file E.modul.mod_name state.st_stog elt in
     let cache_dir = Filename.dirname cache_file in
     Stog_misc.safe_mkdir cache_dir ;
     let oc = open_out_bin cache_file in
-    let t = E.cache_store E.engine.eng_data elt in
+    let t = E.cache_store E.modul.mod_data elt in
     Marshal.to_channel oc t [Marshal.Closures];
     close_out oc
   in
-  List.iter f_engine state.st_engines
+  List.iter f_modul state.st_modules
 ;;
 
 let get_cached_elements state env =
@@ -583,7 +583,7 @@ let copy_other_files stog =
   iter stog.stog_outdir stog.stog_dir stog.stog_files
 ;;
 
-let generate ?(use_cache=true) ?only_elt stog engines =
+let generate ?(use_cache=true) ?only_elt stog modules =
   begin
     match stog.stog_lang with
       None -> ()
@@ -598,7 +598,7 @@ let generate ?(use_cache=true) ?only_elt stog engines =
         let (elt_id, _) = Stog_types.elt_by_human_id stog hid in
         Some elt_id
   in
-  let state = { st_stog = stog ; st_engines = engines } in
+  let state = { st_stog = stog ; st_modules = modules } in
   let (state, env) = run ~use_cache ?only_elt state in
   match only_elt with
     None ->
@@ -746,20 +746,20 @@ let fun_apply_data_elt_rules f_rules =
 
 (*** Engines ***)
 
-type engine_fun = Stog_types.stog -> (module Stog_engine)
+type module_fun = Stog_types.stog -> (module Module)
 
-let engines = ref (Stog_types.Str_map.empty : (Stog_types.stog -> (module Stog_engine)) Stog_types.Str_map.t);;
+let modules = ref (Stog_types.Str_map.empty : (Stog_types.stog -> (module Module)) Stog_types.Str_map.t);;
 
-let register_engine name f_engine =
-  engines := Stog_types.Str_map.add name f_engine !engines
+let register_module name f_mod =
+  modules := Stog_types.Str_map.add name f_mod !modules
 ;;
 
-let engine_by_name name =
-  try Some (Stog_types.Str_map.find name !engines)
+let module_by_name name =
+  try Some (Stog_types.Str_map.find name !modules)
   with Not_found -> None
 ;;
 
-let engines () = Stog_types.Str_map.fold
-  (fun name f acc -> (name, f) :: acc) !engines []
+let modules () = Stog_types.Str_map.fold
+  (fun name f acc -> (name, f) :: acc) !modules []
 ;;
 

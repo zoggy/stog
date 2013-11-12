@@ -607,10 +607,10 @@ let make_module ?levels () =
   let module M =
   struct
     type data = block_data
-    let engine = {
-        Stog_engine.eng_name = module_name ;
-        eng_levels = levels ;
-        eng_data = empty_data ;
+    let modul = {
+        Stog_engine.mod_name = module_name ;
+        mod_levels = levels ;
+        mod_data = empty_data ;
        }
 
     type cache_data = {
@@ -629,7 +629,7 @@ let make_module ?levels () =
       }
   end
   in
-  (module M : Stog_engine.Stog_engine)
+  (module M : Stog_engine.Module)
 ;;
 
 let f stog =
@@ -640,4 +640,4 @@ let f stog =
   make_module ?levels ()
 ;;
 
-let () = Stog_engine.register_engine module_name f;;
+let () = Stog_engine.register_module module_name f;;

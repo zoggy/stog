@@ -110,6 +110,6 @@ val mk_levels : string -> (string * 'a Stog_engine.level_fun) list ->
     ?levels:(string * int list) list -> unit ->
     'a Stog_engine.level_fun Stog_types.Int_map.t
 
-val make_module : ?levels:(string * int list) list -> unit -> (module Stog_engine.Stog_engine)
+val make_module : ?levels:(string * int list) list -> unit -> (module Stog_engine.Module)
 
 val register_base_rule : Xtmpl.name -> Stog_types.stog Xtmpl.callback -> unit

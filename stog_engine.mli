@@ -65,7 +65,7 @@ type stog_state =
 *)
 val generate :
   ?use_cache: bool -> ?only_elt:string -> Stog_types.stog ->
-    (module Stog_engine) list -> unit
+    (module Module) list -> unit
 
 val elt_dst : (string -> string -> string) ->
   ?encode:bool -> Stog_types.stog -> string -> Stog_types.elt -> string
