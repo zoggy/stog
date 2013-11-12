@@ -632,3 +632,12 @@ let make_module ?levels () =
   (module M : Stog_engine.Stog_engine)
 ;;
 
+let f stog =
+  let levels =
+    try Some (Stog_types.Str_map.find module_name stog.Stog_types.stog_levels)
+    with Not_found -> None
+  in
+  make_module ?levels ()
+;;
+
+let () = Stog_engine.register_engine module_name f;;

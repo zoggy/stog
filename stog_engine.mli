@@ -36,15 +36,15 @@ type 'a level_fun =
   | Fun_data of ('a Xtmpl.env -> stog * 'a -> elt_id list -> stog * 'a)
   | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> elt_id list -> stog * 'a)
 
-type 'a engine = {
-      eng_data : 'a ;
-      eng_levels : 'a level_fun Stog_types.Int_map.t ;
-      eng_name : string ;
+type 'a modul = {
+      mod_data : 'a ;
+      mod_levels : 'a level_fun Stog_types.Int_map.t ;
+      mod_name : string ;
     }
 
-module type Stog_engine = sig
+module type Module = sig
     type data
-    val engine : data engine
+    val modul : data modul
     type cache_data
     val cache_load : data -> elt -> cache_data -> data
     val cache_store : data -> elt -> cache_data
@@ -52,7 +52,7 @@ module type Stog_engine = sig
 
 type stog_state =
   { st_stog : stog ;
-    st_engines : (module Stog_engine) list ;
+    st_modules : (module Module) list ;
   };;
 
 (** Generate the target files, with the following steps:
@@ -94,10 +94,10 @@ val fun_apply_data_elt_rules : 'a stog_elt_rules -> 'a level_fun
 
 val get_languages : 'a -> 'a Xtmpl.env -> 'a * string list
 
-(** {2 Registering engines} *)
+(** {2 Registering modules} *)
 
-type engine_fun = Stog_types.stog -> (module Stog_engine)
+type module_fun = Stog_types.stog -> (module Module)
 
-val engines : unit -> (string * engine_fun) list
-val register_engine : string -> engine_fun -> unit
-val engine_by_name : string -> engine_fun option
+val modules : unit -> (string * module_fun) list
+val register_module : string -> module_fun -> unit
+val module_by_name : string -> module_fun option

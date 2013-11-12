@@ -1,4 +1,6 @@
 Next release:
+* Change architecture of rewrite engine, with no references,
+  using new version of Xtmpl
 * <include> and <late-inc> both handle 'file', 'href', 'id' and 'raw'
   attributes
 * <inc> rule is now deprecated, use <latex-inc> instead

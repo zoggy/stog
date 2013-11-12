@@ -151,10 +151,10 @@ let main () =
         let stog = Stog_info.compute stog in
         (*prerr_endline "graph computed";*)
         let stog = set_stog_options stog in
-        Stog_engine.generate ~use_cache: !use_cache ?only_elt: !only_elt stog
-          [ Stog_blocks.make_module () ;
-            Stog_html.make_module () ;
-          ]
+        let modules = Stog_engine.modules () in
+        let modules = List.map (fun (_, f) -> f stog) modules in
+        Stog_engine.generate ~use_cache: !use_cache ?only_elt: !only_elt
+          stog modules
   end;
   let err = Stog_msg.errors () in
   let warn = Stog_msg.warnings () in

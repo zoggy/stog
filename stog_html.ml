@@ -432,13 +432,13 @@ let fun_if stog env args subs =
        prerr_endline (Printf.sprintf "fun_if: pred: att=(%s,%s), nodes=%S nodes2=%S, v=%S, v2=%S"
        prefix name (Xtmpl.string_of_xmls nodes)
        (Xtmpl.string_of_xmls nodes2) v (Xtmpl.string_of_xmls v2));
-       *)
+    *)
     let v_xml = Xtmpl.xml_of_string v in
     let v2_xml = Xtmpl.E (("", Xtmpl.tag_main), [], v2) in
     (*
        prerr_endline (Printf.sprintf "v_xml=%S, v2_xml=%S"
        (Xtmpl.string_of_xml v_xml) (Xtmpl.string_of_xml v2_xml));
-       *)
+    *)
     (stog, cond && (v_xml = v2_xml))
   in
   let (stog, cond) = List.fold_left pred (stog, true) args in
@@ -457,6 +457,7 @@ let fun_if stog env args subs =
   (stog, xmls)
 ;;
 
+let fun_dummy_ data _ _ subs = (data, subs);;
 
 let fun_twocolumns stog env args subs =
   (*prerr_endline (Printf.sprintf "two-columns, length(subs)=%d" (List.length subs));*)
@@ -912,6 +913,7 @@ and build_base_rules stog elt_id =
       ("", Stog_tags.hcode), fun_hcode ~inline: false ?lang: None;
       ("", Stog_tags.icode), fun_icode ?lang: None ;
       ("", Stog_tags.if_), fun_if ;
+      ("", Stog_tags.dummy_), fun_dummy_ ;
       ("", Stog_tags.image), fun_image ;
       ("", Stog_tags.include_), mk fun_include ;
       ("", Stog_tags.latex), Stog_latex.fun_latex ;
@@ -1477,5 +1479,14 @@ let make_module ?levels () =
   end
   in
   (module M : Stog_engine.Stog_engine)
+;;
 
-(*let () = Stog_cache.register_cache (module Cache);;*)
+let f stog =
+  let levels =
+    try Some (Stog_types.Str_map.find module_name stog.Stog_types.stog_levels)
+    with Not_found -> None
+  in
+  make_module ?levels ()
+;;
+
+let () = Stog_engine.register_engine module_name f;;
