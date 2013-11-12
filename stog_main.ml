@@ -152,7 +152,12 @@ let main () =
         (*prerr_endline "graph computed";*)
         let stog = set_stog_options stog in
         let modules = Stog_engine.modules () in
-        let modules = List.map (fun (_, f) -> f stog) modules in
+        let modules = List.map
+          (fun (name, f) ->
+             Stog_msg.verbose ~level: 2 ("Initializing module "^name);
+             f stog)
+            modules
+        in
         Stog_engine.generate ~use_cache: !use_cache ?only_elt: !only_elt
           stog modules
   end;
