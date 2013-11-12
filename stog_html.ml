@@ -368,9 +368,6 @@ let fun_search_form stog _env _ _ =
   (stog, [ Xtmpl.xml_of_file tmpl ])
 ;;
 
-let fun_blog_url stog _env _ _ =
-  (stog, [ Xtmpl.D (Stog_types.string_of_url stog.stog_base_url) ])
-;;
 
 (* FIXME: add dependency ? *)
 let fun_graph =
@@ -925,10 +922,6 @@ and build_base_rules stog elt_id =
       ("", Stog_tags.previous), previous;
       ("", Stog_tags.search_form), fun_search_form ;
       ("", Stog_tags.sep), (fun acc _ _ _ -> (acc, []));
-      ("", Stog_tags.site_desc), (fun stog _ _ _ -> (stog, stog.stog_desc)) ;
-      ("", Stog_tags.site_email), (fun stog _ _ _ -> (stog, [ Xtmpl.D stog.stog_email ])) ;
-      ("", Stog_tags.site_title), (fun stog _ _ _ -> (stog, [ Xtmpl.D stog.stog_title ])) ;
-      ("", Stog_tags.site_url), fun_blog_url ;
       ("", Stog_tags.two_columns), fun_twocolumns ;
     ]
   in

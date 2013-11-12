@@ -434,10 +434,22 @@ let env_of_used_mods stog ?(env=Xtmpl.env_empty()) mods =
   Stog_types.Str_set.fold (fun name env -> env_of_used_mod stog ~env name) mods env
 ;;
 
+let fun_site_url stog data _env _ _ =
+  (data, [ Xtmpl.D (Stog_types.string_of_url stog.stog_base_url) ])
+;;
+
 let run ?(use_cache=true) ?only_elt state =
   let stog = state.st_stog in
   let env = env_of_defs stog.stog_defs in
   let env = env_of_used_mods stog ~env stog.stog_used_mods in
+  let env = Xtmpl.env_of_list ~env
+    [
+      ("", Stog_tags.site_desc), (fun data _ _ _ -> (data, stog.stog_desc)) ;
+      ("", Stog_tags.site_email), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_email ])) ;
+      ("", Stog_tags.site_title), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_title ])) ;
+      ("", Stog_tags.site_url), fun_site_url stog ;
+    ]
+  in
   match only_elt with
     None ->
       (* TODO: move this to HTML module:
