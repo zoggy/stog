@@ -355,12 +355,14 @@ let read_block_from_subs stog =
         | "contents", _ -> { blk with blk_body = block_body_of_subs stog blk xmls }
         | _, _ ->
             Stog_msg.warning
-            (Printf.sprintf "Ignoring block node %S" tag);
-            blk
+              (Printf.sprintf "Ignoring block node %S" tag);
+            failwith "ICI" (*blk *)
       end
   | Xtmpl.E _ -> blk
   in
-  List.fold_left f
+  fun b l ->
+    try List.fold_left f b l
+    with e -> prerr_endline (Xtmpl.string_of_xmls l) ; raise e
 ;;
 
 let read_block stog args subs =

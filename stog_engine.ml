@@ -400,7 +400,12 @@ let rec make_fun (name, params, body) acc =
       params
     in
     let env = env_of_defs ~env vars in
-    let env = Xtmpl.env_add "contents" (fun data _ _ _ -> (data, subs)) env in
+    let f data _ atts xmls =
+      match atts, xmls with
+        [], [] -> (data, subs)
+      | _ -> raise Xtmpl.No_change
+    in
+    let env = Xtmpl.env_add "contents" f env in
     Xtmpl.apply_to_xmls data env body
   in
   (name, f) :: acc
