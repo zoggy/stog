@@ -88,9 +88,19 @@ val opt_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * string option
 
 val elt_env : 'a -> 'a Xtmpl.env -> Stog_types.stog -> Stog_types.elt -> 'a * 'a Xtmpl.env
 
+val apply_stog_env_elt : Stog_types.stog ->
+  Stog_types.stog Xtmpl.env -> Stog_types.elt_id -> Stog_types.stog
+
+val apply_stog_data_env_elt : Stog_types.stog * 'a ->
+  (Stog_types.stog * 'a) Xtmpl.env -> Stog_types.elt_id -> Stog_types.stog * 'a
+
+val apply_data_env_elt : Stog_types.stog * 'a ->
+  'a Xtmpl.env -> Stog_types.elt_id -> Stog_types.stog * 'a
+
 val fun_apply_stog_elt_rules : Stog_types.stog stog_elt_rules -> 'a level_fun
 val fun_apply_stog_data_elt_rules : (Stog_types.stog * 'a) stog_elt_rules -> 'a level_fun
 val fun_apply_data_elt_rules : 'a stog_elt_rules -> 'a level_fun
+
 
 val get_languages : 'a -> 'a Xtmpl.env -> 'a * string list
 

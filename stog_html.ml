@@ -819,9 +819,8 @@ and generate_rss_feed_file stog ?title link elts file =
     items
   in
   let channel = Rss.keep_n_items stog.stog_rss_length channel in
-  (* break tail-rec to get a better error backtrace *)
-  let result = Rss.print_file ~encoding: "UTF-8" file channel in
-  (stog, result)
+  Rss.print_file ~encoding: "UTF-8" file channel;
+  stog
 
 and build_base_rules stog elt_id =
   let elt = Stog_types.elt stog elt_id in
@@ -921,7 +920,6 @@ and build_base_rules stog elt_id =
       ("", Stog_tags.ocaml_eval), Stog_ocaml.fun_eval  ;
       ("", Stog_tags.previous), previous;
       ("", Stog_tags.search_form), fun_search_form ;
-      ("", Stog_tags.sep), (fun acc _ _ _ -> (acc, []));
       ("", Stog_tags.two_columns), fun_twocolumns ;
     ]
   in
@@ -985,12 +983,14 @@ and elt_list elt ?rss ?set stog env args _ =
     in
     Stog_tmpl.get_template stog ~elt Stog_tmpl.elt_in_list file
   in
-  let f_elt (acc_d, acc) (elt_id, elt) =
+  let f_elt (stog, acc) (elt_id, elt) =
     let name = Stog_types.string_of_human_id elt.elt_human_id in
-    let (acc_d, env) = Stog_engine.elt_env acc_d env stog elt in
-    let (acc_d, xmls) = Xtmpl.apply_to_xmls acc_d env [tmpl] in
+    let (stog, env) = Stog_engine.elt_env stog env stog elt in
+    let rules = build_base_rules stog elt_id in
+    let env = Xtmpl.env_of_list ~env rules in
+    let (stog, xmls) = Xtmpl.apply_to_xmls stog env [tmpl] in
     match xmls with
-      [xml] -> (acc_d, xml :: acc)
+      [xml] -> (stog, xml :: acc)
     | _ ->
         report_error ("Error while processing " ^ name);
         assert false
@@ -1012,7 +1012,7 @@ and elt_list elt ?rss ?set stog env args _ =
             let url = Stog_types.url_concat stog.stog_base_url file in
             let file = Filename.concat stog.stog_outdir file in
             let title =Xtmpl.get_arg args ("", "title") in
-            let (stog, _) = generate_rss_feed_file stog ?title url elts file in
+            let stog = generate_rss_feed_file stog ?title url elts file in
             (stog, Some url)
   in
   let xml =
@@ -1030,34 +1030,6 @@ and elt_list elt ?rss ?set stog env args _ =
 
 module Sset = Stog_types.Str_set;;
 
-(*
-let compute_elt build_rules env stog elt_id elt =
-  Stog_msg.verbose ~level:2
-  (Printf.sprintf "Computing %s %S"
-    elt.elt_type (Stog_types.string_of_human_id elt.elt_human_id));
-  let xmls =
-    match elt.elt_out with
-      None ->
-        let tmpl =
-           let default =
-             match elt.elt_type with
-              "by-topic" -> Stog_tmpl.by_topic
-            | "by-keyword" -> Stog_tmpl.by_keyword
-            | "by-month" -> Stog_tmpl.by_month
-            | _ -> Stog_tmpl.page
-          in
-          Stog_tmpl.get_template stog ~elt default (elt.elt_type^".tmpl")
-        in
-        [tmpl]
-    | Some xmls ->
-        xmls
-  in
-  let env = elt_env build_rules stog ~env elt_id elt in
-  let result = Xtmpl.apply_to_xmls env xmls in
-  { elt with elt_out = Some result }
-;;
-*)
-(*
 let make_by_word_indexes stog env f_elt_id elt_type map =
   let f word set stog =
     let hid = f_elt_id word in
@@ -1083,17 +1055,17 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
     in
     let out_file = Stog_engine.elt_dst_file stog elt in
     let rss_file = (Filename.chop_extension out_file)^".rss" in
-    let url = elt_url stog elt in
+    let url = Stog_engine.elt_url stog elt in
     let rss_url =
       let url_s = Stog_types.string_of_url url in
       Stog_types.url_of_string ((Filename.chop_extension url_s)^".rss")
     in
-    generate_rss_feed_file stog ~title: word url
+    let stog = generate_rss_feed_file stog ~title: word url
       (List.map (fun id -> (id, Stog_types.elt stog id)) (Stog_types.Elt_set.elements set))
-      rss_file;
-    let elt =
-      { elt with Stog_types.elt_body = elt_list elt ~set ~rss: rss_url stog env [] []}
+      rss_file
     in
+    let (stog, body) = elt_list elt ~set ~rss: rss_url stog env [] [] in
+    let elt = { elt with Stog_types.elt_body = body } in
     Stog_types.add_elt stog elt
   in
   Stog_types.Str_map.fold f map stog
@@ -1138,7 +1110,8 @@ let make_archive_index stog env =
         elt_used_mods = Stog_types.Str_set.empty ;
       }
     in
-    let elt = { elt with elt_body = elt_list elt ~set stog env [] [] } in
+    let (stog, body) = elt_list elt ~set stog env [] [] in
+    let elt = { elt with elt_body = body } in
     Stog_types.add_elt stog elt
   in
   let f_year year mmap stog =
@@ -1146,31 +1119,17 @@ let make_archive_index stog env =
   in
   Stog_types.Int_map.fold f_year stog.stog_archives stog
 ;;
-*)
+
+let add_elts env stog _ =
+  let stog = make_archive_index stog env in
+  let stog = make_keyword_indexes stog env in
+  let stog = make_topic_indexes stog env in
+  stog
+;;
 
 module Intmap = Stog_types.Int_map
-module Set = Set.Make (struct type t = string let compare = Pervasives.compare end);;
-
-(*
-let register_level_fun_kind level k =
-  let l =
-    try Intmap.find level !levels
-    with Not_found -> []
-  in
-  levels := Intmap.add level (k::l) !levels
-;;
-let register_level_fun level f =
-  register_level_fun_kind level (On_elt f);;
-let register_level_fun_on_elt_list level f =
-  register_level_fun_kind level (On_elt_list f);;
-*)
-
-
-
-(* register default levels *)
 
 let fun_level_base = Stog_engine.fun_apply_stog_elt_rules build_base_rules;;
-
 
 let get_sectionning_tags stog elt =
   let spec =
@@ -1401,9 +1360,18 @@ let rules_inc_elt stog elt_id =
 let fun_level_inc_elt =
   Stog_engine.fun_apply_stog_elt_rules rules_inc_elt ;;
 
-let fun_close_ocaml_sessions _ stog _ =
-  Stog_ocaml.close_sessions ();
-  stog;;
+let fun_level_clean =
+  let f env stog elts =
+    Stog_ocaml.close_sessions ();
+    let env = Xtmpl.env_of_list ~env
+      [ ("", Stog_tags.sep), (fun d _ _ _ -> (d, [])) ]
+    in
+    List.fold_left
+      (fun stog elt_id -> Stog_engine.apply_stog_env_elt stog env elt_id)
+      stog elts
+  in
+  Stog_engine.Fun_stog f
+;;
 
 
 let level_funs = [
@@ -1411,7 +1379,8 @@ let level_funs = [
     "toc", fun_level_toc ;
     "cut", Stog_engine.Fun_stog cut_elts ;
     "inc", fun_level_inc_elt ;
-    "close-ocaml", (Stog_engine.Fun_stog fun_close_ocaml_sessions) ;
+    "clean", fun_level_clean ;
+    "add-elts", (Stog_engine.Fun_stog add_elts) ;
   ]
 
 let default_levels =
@@ -1419,10 +1388,11 @@ let default_levels =
     (fun map (name, levels) -> Stog_types.Str_map.add name levels map)
     Stog_types.Str_map.empty
     [ "base", [ 0 ; 61 ] ;
+      "add-elts", [ 30 ] ;
       "toc", [ 50 ] ;
       "cut", [ 60 ] ;
       "inc", [ 160 ] ;
-      "close-ocaml", [ 500 ] ;
+      "clean", [ 500 ] ;
     ]
 ;;
 

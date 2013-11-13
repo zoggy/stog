@@ -46,7 +46,8 @@ let close_sessions () =
     Stog_msg.verbose ~level:1 (Printf.sprintf "closing ocaml session %S" name);
     ignore(Unix.close_process (t.session_in, t.session_out))
   in
-  Smap.iter f !sessions
+  Smap.iter f !sessions;
+  sessions := Smap.empty
 ;;
 
 let create_session () =

@@ -713,19 +713,41 @@ let elt_env data env stog elt =
 type 'a stog_elt_rules =
   Stog_types.stog -> Stog_types.elt_id -> (Xtmpl.name * 'a Xtmpl.callback) list
 
+let apply_stog_env_elt stog env elt_id =
+  let elt = Stog_types.elt stog elt_id in
+  let (stog, env) = elt_env stog env stog elt in
+  let (stog, xmls) = get_elt_out stog elt in
+  (*prerr_endline (Printf.sprintf "%s = %s"
+     (Stog_types.string_of_human_id elt.elt_human_id)
+     (Xtmpl.string_of_xsmls xmls));*)
+  let (stog, xmls) = Xtmpl.apply_to_xmls stog env xmls in
+  let elt = { elt with elt_out = Some xmls } in
+  Stog_types.set_elt stog elt_id elt
+;;
+
+let apply_stog_data_env_elt (stog,data) env elt_id =
+  let elt = Stog_types.elt stog elt_id in
+  let ((stog, data), env) = elt_env (stog, data) env stog elt in
+  let (stog, xmls) = get_elt_out stog elt in
+  (*prerr_endline (Printf.sprintf "env=%s" (Xtmpl.string_of_env env));*)
+  let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env xmls in
+  let elt = { elt with elt_out = Some xmls } in
+  (Stog_types.set_elt stog elt_id elt, data)
+
+let apply_data_env_elt (stog,data) env elt_id =
+  let elt = Stog_types.elt stog elt_id in
+  let (data, env) = elt_env data env stog elt in
+  let (stog, xmls) = get_elt_out stog elt in
+  let (data, xmls) = Xtmpl.apply_to_xmls data env xmls in
+  let elt = { elt with elt_out = Some xmls } in
+  (Stog_types.set_elt stog elt_id elt, data)
+;;
+
 let fun_apply_stog_elt_rules f_rules =
   let f_elt env stog elt_id =
     let rules = f_rules stog elt_id in
     let env = Xtmpl.env_of_list ~env rules in
-    let elt = Stog_types.elt stog elt_id in
-    let (stog, env) = elt_env stog env stog elt in
-    let (stog, xmls) = get_elt_out stog elt in
-    (*prerr_endline (Printf.sprintf "%s = %s"
-      (Stog_types.string_of_human_id elt.elt_human_id)
-      (Xtmpl.string_of_xsmls xmls));*)
-    let (stog, xmls) = Xtmpl.apply_to_xmls stog env xmls in
-    let elt = { elt with elt_out = Some xmls } in
-    Stog_types.set_elt stog elt_id elt
+    apply_stog_env_elt stog env elt_id
   in
   let f env stog elts = List.fold_left (f_elt env) stog elts in
   Fun_stog f
@@ -735,13 +757,7 @@ let fun_apply_stog_data_elt_rules f_rules =
   let f_elt env (stog, data) elt_id =
     let rules = f_rules stog elt_id in
     let env = Xtmpl.env_of_list ~env rules in
-    let elt = Stog_types.elt stog elt_id in
-    let ((stog, data), env) = elt_env (stog, data) env stog elt in
-    let (stog, xmls) = get_elt_out stog elt in
-    (*prerr_endline (Printf.sprintf "env=%s" (Xtmpl.string_of_env env));*)
-    let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env xmls in
-    let elt = { elt with elt_out = Some xmls } in
-    (Stog_types.set_elt stog elt_id elt, data)
+    apply_stog_data_env_elt (stog,data) env elt_id
   in
   let f env (stog, data) elts = List.fold_left (f_elt env) (stog, data) elts in
   Fun_stog_data f
@@ -751,12 +767,7 @@ let fun_apply_data_elt_rules f_rules =
   let f_elt env (stog, data) elt_id =
     let rules = f_rules stog elt_id in
     let env = Xtmpl.env_of_list ~env rules in
-    let elt = Stog_types.elt stog elt_id in
-    let (data, env) = elt_env data env stog elt in
-    let (stog, xmls) = get_elt_out stog elt in
-    let (data, xmls) = Xtmpl.apply_to_xmls data env xmls in
-    let elt = { elt with elt_out = Some xmls } in
-    (Stog_types.set_elt stog elt_id elt, data)
+    apply_data_env_elt (stog,data) env elt_id
   in
   let f env (stog, data) elts = List.fold_left (f_elt env) (stog, data) elts in
   Fun_data f
