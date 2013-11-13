@@ -386,7 +386,7 @@ let compute_levels ?(use_cache=true) ?elts env state =
   if use_cache then
     begin
       let (state, cached) = get_cached_elements state env in
-      Stog_msg.verbose (Printf.sprintf "%d elements read from cache" (List.length cached));
+      Stog_msg.verbose (Printf.sprintf "%d elements kept from cache" (List.length cached));
       let f_elt (stog, cached) cached_elt =
         try
           let (elt_id, _) = Stog_types.elt_by_human_id stog cached_elt.elt_human_id in
