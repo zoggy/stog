@@ -182,10 +182,14 @@ let get_cached_elts stog =
         Stog_msg.warning s;
         acc
   in
-  List.fold_left load [] files
+  let elts = List.fold_left load [] files in
+  Stog_msg.verbose ~info: "cache" ~level: 5
+    ((string_of_int (List.length elts))^" elements found in cache");
+  elts
 ;;
-let stog_env_digest stog env =
-  let md5_env =
+
+let md5_env env =
+  let s =
     try Digest.string (Marshal.to_string env [Marshal.Closures])
     with Invalid_argument msg ->
         let msg = Printf.sprintf
@@ -196,14 +200,19 @@ let stog_env_digest stog env =
         Stog_msg.warning msg;
         Digest.string ""
   in
-  let md5_stog = Stog_types.stog_md5 stog in
-  (Digest.to_hex md5_stog) ^ (Digest.to_hex md5_env)
+  Digest.to_hex s
 ;;
 
-let set_elt_env elt stog env elt_envs =
-  let hid = Stog_types.string_of_human_id elt.elt_human_id in
-  let digest = stog_env_digest stog env in
-  Smap.add hid digest elt_envs
+let stog_env_digest stog env =
+  let md5_env = md5_env env in
+  let md5_stog = Stog_types.stog_md5 stog in
+  md5_stog ^ md5_env
+;;
+
+let set_elt_env elt stog md5_env elt_envs =
+  let digest_stog = Stog_types.stog_md5 stog in
+  let digest = digest_stog ^ md5_env in
+  Stog_types.Hid_map.add elt.elt_human_id digest elt_envs
 ;;
 
 let apply_loaders state elt =
@@ -251,7 +260,7 @@ let get_cached_elements state env =
       begin
         let ic = open_in_bin info_file in
         let ((elt_envs, deps, id_map) :
-           (string Smap.t * Stog_types.Depset.t Smap.t *
+           (string Stog_types.Hid_map.t * Stog_types.Depset.t Smap.t *
             (human_id * string option) Smap.t Stog_types.Hid_map.t)) =
           input_value ic
         in
@@ -264,10 +273,11 @@ let get_cached_elements state env =
         (elt_envs, stog)
       end
     else
-      (Smap.empty, state.st_stog)
+      (Stog_types.Hid_map.empty, state.st_stog)
   in
   let state = { state with st_stog = stog } in
   let digest = stog_env_digest state.st_stog env in
+  Stog_msg.verbose ~info:"cache" ~level: 5 ("digest(stog,env)="^digest);
 
   let elts = get_cached_elts state.st_stog in
   let elt_by_hid =
@@ -279,12 +289,17 @@ let get_cached_elements state env =
     fun hid -> Stog_types.Str_map.find hid map
   in
   let f (state, cached, kept_deps, kept_id_map) elt =
-    let hid = Stog_types.string_of_human_id elt.elt_human_id in
+    let hid = elt.elt_human_id in
     let same_elt_env =
       try
-        let d = Smap.find hid elt_envs in
+        let d = Stog_types.Hid_map.find hid elt_envs in
+        Stog_msg.verbose ~info: "cache" ~level: 5
+          ("digest(hid="^(Stog_types.string_of_human_id hid)^",stog,env)="^d);
         d = digest
-      with Not_found -> false
+      with Not_found ->
+          Stog_msg.verbose ~info: "cache" ~level: 5
+            ("cached elt "^(Stog_types.string_of_human_id hid)^" not found in stog");
+          false
     in
     let use_cache =
       if same_elt_env then
@@ -294,7 +309,7 @@ let get_cached_elements state env =
           let deps_time = Stog_deps.max_deps_date state.st_stog elt_by_hid
             (Stog_types.string_of_human_id elt.elt_human_id)
           in
-          Stog_msg.verbose ~level: 5
+          Stog_msg.verbose ~info: "cache" ~level: 5
            (Printf.sprintf "deps_time for %S = %s, last generated on %s" src_cache_file
              (Stog_misc.string_of_time deps_time)
              (match src_cache_time with None -> "" | Some d -> Stog_misc.string_of_time d)
@@ -304,19 +319,24 @@ let get_cached_elements state env =
           | Some t_elt -> deps_time < t_elt
         end
       else
+        (
+         Stog_msg.verbose ~info: "cache" ~level: 5
+           ("hid="^(Stog_types.string_of_human_id hid)^": not same env");
          false
+        )
     in
     if use_cache then
       begin
         let state = apply_loaders state elt in
         (* keep deps of this element, as it did not change *)
         let kept_deps =
-          try Smap.add hid (Smap.find hid state.st_stog.stog_deps) kept_deps
+          let shid = Stog_types.string_of_human_id hid in
+          try Smap.add shid (Smap.find shid state.st_stog.stog_deps) kept_deps
           with Not_found -> kept_deps
         in
         let kept_id_map =
-          try Stog_types.Hid_map.add elt.elt_human_id
-            (Stog_types.Hid_map.find elt.elt_human_id state.st_stog.stog_id_map) kept_id_map
+          try Stog_types.Hid_map.add hid
+            (Stog_types.Hid_map.find hid state.st_stog.stog_id_map) kept_id_map
           with
             Not_found -> kept_id_map
         in
@@ -456,19 +476,16 @@ let run ?(use_cache=true) ?only_elt state =
       ("", Stog_tags.site_url), fun_site_url stog ;
     ]
   in
+  let md5_env = md5_env env in
+  Stog_msg.verbose ~info: "run" ~level: 5 ("digest(env)="^md5_env);
+
   match only_elt with
     None ->
-      (* TODO: move this to HTML module:
-      let stog = make_topic_indexes stog env in
-      let stog = make_keyword_indexes stog env in
-      let stog = make_archive_index stog env in
-      let state = { state with st_stog = stog } in
-      *)
       let state = compute_levels ~use_cache env state in
-      (state, env)
+      (state, md5_env)
   | Some elt_id ->
       let state = compute_levels ~use_cache ~elts: [elt_id] env state in
-      (state, env)
+      (state, md5_env)
 ;;
 
 
@@ -530,7 +547,7 @@ let elt_url stog elt =
   url_of_string url
 ;;
 
-let output_elt state env elt =
+let output_elt state elt =
   let file = elt_dst_file state.st_stog elt in
   Stog_misc.safe_mkdir (Filename.dirname file);
   match elt.elt_out with
@@ -557,19 +574,19 @@ let output_elt state env elt =
       cache_elt state elt
 ;;
 
-let output_elts ?elts state env =
+let output_elts ?elts state md5_env =
   let stog = state.st_stog in
   let elts =
     match elts with
       None ->
         Stog_tmap.fold
-          (fun _ elt acc -> output_elt state env elt ; elt :: acc)
+          (fun _ elt acc -> output_elt state elt ; elt :: acc)
           stog.stog_elts []
-    | Some l -> List.iter (output_elt state env) l; l
+    | Some l -> List.iter (output_elt state) l; l
   in
   let elt_envs = List.fold_left
-    (fun elt_envs elt -> set_elt_env elt stog env elt_envs)
-      Smap.empty elts
+    (fun elt_envs elt -> set_elt_env elt stog md5_env elt_envs)
+      Stog_types.Hid_map.empty elts
   in
   output_cache_info stog elt_envs
 ;;
@@ -617,14 +634,14 @@ let generate ?(use_cache=true) ?only_elt stog modules =
         Some elt_id
   in
   let state = { st_stog = stog ; st_modules = modules } in
-  let (state, env) = run ~use_cache ?only_elt state in
+  let (state, md5_env) = run ~use_cache ?only_elt state in
   match only_elt with
     None ->
-      output_elts state env;
+      output_elts state md5_env;
       copy_other_files stog
   | Some elt_id ->
       let elt = Stog_types.elt state.st_stog elt_id in
-      output_elts ~elts: [elt] state env
+      output_elts ~elts: [elt] state md5_env
 ;;
 
 

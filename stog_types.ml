@@ -277,7 +277,8 @@ let stog_md5 stog =
       stog_depcut = false;
     }
   in
-  Digest.string (Marshal.to_string stog [Marshal.Closures ; Marshal.No_sharing])
+  let s = Digest.string (Marshal.to_string stog [Marshal.Closures ; Marshal.No_sharing]) in
+  Digest.to_hex s
 ;;
 
 let elt stog id = Stog_tmap.get stog.stog_elts id;;
