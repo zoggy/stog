@@ -400,6 +400,7 @@ let rec make_fun (name, params, body) acc =
       params
     in
     let env = env_of_defs ~env vars in
+    let body = [ Xtmpl.E (("",Xtmpl.tag_env), atts, body) ] in
     let f data _ atts xmls =
       match atts, xmls with
         [], [] -> (data, subs)

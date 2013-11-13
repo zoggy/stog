@@ -1,4 +1,7 @@
 Next release:
+* functions defined in elements now handles all arguments, using
+  default values for the ones specified in function definition
+* Replace main_ with dummy_
 * Change architecture of rewrite engine, with no references,
   using new version of Xtmpl
 * <include> and <late-inc> both handle 'file', 'href', 'id' and 'raw'
@@ -103,4 +106,4 @@ Release 0.3
   * handle doctype attribute in element description
   * define and use stage1 and stage2 functions for plugins
   * more .mlis file and comments in the library
-    
+

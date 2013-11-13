@@ -354,15 +354,12 @@ let read_block_from_subs stog =
         | "short-title-format", _ -> { blk with blk_short_f = xmls }
         | "contents", _ -> { blk with blk_body = block_body_of_subs stog blk xmls }
         | _, _ ->
-            Stog_msg.warning
-              (Printf.sprintf "Ignoring block node %S" tag);
-            failwith "ICI" (*blk *)
+            Stog_msg.warning (Printf.sprintf "Ignoring block node %S" tag);
+            blk
       end
   | Xtmpl.E _ -> blk
   in
-  fun b l ->
-    try List.fold_left f b l
-    with e -> prerr_endline (Xtmpl.string_of_xmls l) ; raise e
+  List.fold_left f
 ;;
 
 let read_block stog args subs =
@@ -583,12 +580,26 @@ let rules_fun_elt stog elt_id  =
 let fun_level_fun_elt =
   Stog_engine.fun_apply_stog_data_elt_rules rules_fun_elt ;;
 
+
+let dump_data env (stog,data) _ =
+  let f_block id (short,long) =
+    prerr_endline
+      ("id="^id^", short="^(Xtmpl.string_of_xml short)^", long="^(Xtmpl.string_of_xml long))
+  in
+  let f s_hid map =
+    prerr_endline ("Blocks for hid="^s_hid^" :");
+    Smap.iter f_block map
+  in
+  Smap.iter f data.blocks ;
+  (stog,data)
+;;
 let level_funs =
   [
     "base", fun_level_base ;
     "sectionning", fun_level_sectionning ;
     "gather-ids", fun_level_gather_ids ;
     "elt", fun_level_fun_elt ;
+    "dump", Stog_engine.Fun_stog_data dump_data ;
   ]
 ;;
 
@@ -596,10 +607,11 @@ let default_levels =
   List.fold_left
     (fun map (name, levels) -> Stog_types.Str_map.add name levels map)
     Stog_types.Str_map.empty
-    [ "base", [ 0 ; 61 ] ;
+    [ "base", [ 61 ] ;
       "sectionning", [ 100 ] ;
       "gather-ids", [ 120 ] ;
       "elt", [ 150 ] ;
+(*      "dump", [ 101 ; 151 ];*)
     ]
 
 let module_name = "blocks";;
