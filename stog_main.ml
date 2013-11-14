@@ -155,7 +155,8 @@ let main () =
         let modules = List.map
           (fun (name, f) ->
              Stog_msg.verbose ~level: 2 ("Initializing module "^name);
-             f stog)
+             f stog
+          )
             modules
         in
         Stog_engine.generate ~use_cache: !use_cache ?only_elt: !only_elt

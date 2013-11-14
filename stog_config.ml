@@ -36,6 +36,7 @@ type t =
     not_elements : string list ;
     (** list of regexps for file matching elements rules but not being  elements *)
     follow_symlinks : bool ;
+    levels : (string * (string * int list) list) list ;
   }
 ;;
 
@@ -63,6 +64,13 @@ let read_config dir =
   let follow_symlinks = new CF.bool_cp ~group ["follow-symlinks"] false
     "follow symlinks when bulding source file and directory tree"
   in
+  let levels = new CF.list_cp
+    (CF.tuple2_wrappers CF.string_wrappers
+     (CF.list_wrappers (CF.tuple2_wrappers CF.string_wrappers (CF.list_wrappers CF.int_wrappers))))
+     ~group ["levels"] []
+     "Run levels of modules, for example:
+      [ (\"html\", [ (\"base\", [ 0 ; 61 ]) ] ) ]"
+  in
   let cfg_dir = config_dir dir in
   if not (Sys.file_exists cfg_dir) then
     begin
@@ -75,6 +83,7 @@ let read_config dir =
     elements = o_elts#get ;
     not_elements = o_not_elts#get ;
     follow_symlinks = follow_symlinks#get ;
+    levels = levels#get ;
   }
 ;;
 

@@ -33,11 +33,12 @@ val version : string
 
 (** Contents of [.stog/config] file. *)
 type t = {
-  ignored : string list;
-  elements : string list;
-  not_elements : string list;
-  follow_symlinks : bool ;
-}
+    ignored : string list;
+    elements : string list;
+    not_elements : string list;
+    follow_symlinks : bool ;
+    levels : (string * (string * int list) list) list ;
+  }
 
 (** [config_dir dir] returns the stog configuration directory in the given directory. *)
 val config_dir : string -> string

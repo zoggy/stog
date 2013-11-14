@@ -356,6 +356,14 @@ let read_stog dir =
   let cfg = Stog_config.read_config dir in
   let stog = read_files cfg stog dir in
   let stog = read_modules stog in
+  let stog =
+    let levels = List.fold_left
+      (fun map (name, levels) ->
+         Stog_types.Str_map.add name levels map)
+        stog.stog_levels cfg.Stog_config.levels
+    in
+    { stog with stog_levels = levels }
+  in
   stog
 ;;
 
