@@ -631,12 +631,12 @@ let make_module ?levels () =
         cache_blocks : (Xtmpl.tree * Xtmpl.tree) Str_map.t ;
       }
 
-    let cache_load data elt t =
+    let cache_load _stog data elt t =
       let hid = Stog_types.string_of_human_id elt.elt_human_id in
       let blocks = Smap.add hid t.cache_blocks data.blocks in
       { data with blocks }
 
-    let cache_store data elt =
+    let cache_store _stog data elt =
       let hid = Stog_types.string_of_human_id elt.elt_human_id in
       {
         cache_blocks = (try Smap.find hid data.blocks with Not_found -> Smap.empty) ;

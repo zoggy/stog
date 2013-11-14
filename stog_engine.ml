@@ -47,8 +47,8 @@ module type Module = sig
     val modul : data modul
 
     type cache_data
-    val cache_load : data -> elt -> cache_data -> data
-    val cache_store : data -> elt -> cache_data
+    val cache_load : stog -> data -> elt -> cache_data -> data
+    val cache_store : stog -> data -> elt -> cache_data
   end
 
 type stog_state =
@@ -222,7 +222,7 @@ let apply_loaders state elt =
     let ic = open_in_bin cache_file in
     let t = input_value ic in
     close_in ic;
-    let data = E.cache_load E.modul.mod_data elt t in
+    let data = E.cache_load state.st_stog E.modul.mod_data elt t in
     let module E2 = struct
       type data = E.data
       let modul = { E.modul with mod_data = data }
@@ -245,7 +245,7 @@ let apply_storers state elt =
     let cache_dir = Filename.dirname cache_file in
     Stog_misc.safe_mkdir cache_dir ;
     let oc = open_out_bin cache_file in
-    let t = E.cache_store E.modul.mod_data elt in
+    let t = E.cache_store state.st_stog E.modul.mod_data elt in
     Marshal.to_channel oc t [Marshal.Closures];
     close_out oc
   in

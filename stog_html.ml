@@ -1437,8 +1437,8 @@ let make_module ?levels () =
 
     type cache_data = unit
 
-    let cache_load data elt t = ()
-    let cache_store data elt = ()
+    let cache_load _ data elt t = ()
+    let cache_store _ data elt = ()
   end
   in
   (module M : Stog_engine.Module)

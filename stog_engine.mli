@@ -46,8 +46,8 @@ module type Module = sig
     type data
     val modul : data modul
     type cache_data
-    val cache_load : data -> elt -> cache_data -> data
-    val cache_store : data -> elt -> cache_data
+    val cache_load : Stog_types.stog -> data -> elt -> cache_data -> data
+    val cache_store : Stog_types.stog -> data -> elt -> cache_data
   end
 
 type stog_state =
