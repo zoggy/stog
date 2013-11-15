@@ -6,25 +6,31 @@
 &#160;<a class="post" href="Stog_ocaml_types.html" title="Stog_ocaml_types">Next</a>
 </div>
 <h1>Module <a href="type_Stog_info.html">Stog_info</a></h1>
-<pre><span class="keyword">module</span> Stog_info: <code class="code">sig</code> <a href="Stog_info.html">..</a> <code class="code">end</code></pre><div class="info">
+
+<pre><span class="keyword">module</span> Stog_info: <code class="code">sig</code> <a href="Stog_info.html">..</a> <code class="code">end</code></pre><div class="info module top">
 Computing information from stog structure (graphs, ...).<br/>
 </div>
 <hr width="100%"/>
-<pre><span id="VALcompute"><span class="keyword">val</span> compute</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><div class="info">
+
+<pre><span id="VALcompute"><span class="keyword">val</span> compute</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><div class="info ">
 Compute internals graphs between elements.<br/>
 </div>
-<pre><span id="VALsucc_by_date"><span class="keyword">val</span> succ_by_date</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; Stog_types.Graph.key -&gt; Stog_types.Graph.key option</code></pre><div class="info">
+
+<pre><span id="VALsucc_by_date"><span class="keyword">val</span> succ_by_date</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; Stog_types.Graph.key -&gt; Stog_types.Graph.key option</code></pre><div class="info ">
 Get the next element by date.<br/>
 </div>
-<pre><span id="VALpred_by_date"><span class="keyword">val</span> pred_by_date</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; Stog_types.Graph.key -&gt; Stog_types.Graph.key option</code></pre><div class="info">
+
+<pre><span id="VALpred_by_date"><span class="keyword">val</span> pred_by_date</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; Stog_types.Graph.key -&gt; Stog_types.Graph.key option</code></pre><div class="info ">
 Get the previous element by date.<br/>
 </div>
-<pre><span id="VALdot_of_graph"><span class="keyword">val</span> dot_of_graph</span> : <code class="type">(<a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; Neturl.url) -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; string</code></pre><div class="info">
+
+<pre><span id="VALdot_of_graph"><span class="keyword">val</span> dot_of_graph</span> : <code class="type">(<a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; Neturl.url) -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; string</code></pre><div class="info ">
 Get graphviz code from the given stog structure, to create
   a graph showing edges between (clickable) elements; the edges are
   annotated by the topic and keywords.<br/>
 </div>
-<pre><span id="VALremove_not_published"><span class="keyword">val</span> remove_not_published</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><div class="info">
+
+<pre><span id="VALremove_not_published"><span class="keyword">val</span> remove_not_published</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><div class="info ">
 Remove from the stog structure the elements having
   <a href="Stog_types.html#TYPEELTelt.elt_published"><code class="code">Stog_types.elt.elt_published</code></a><code class="code">=false</code>.<br/>
 </div>

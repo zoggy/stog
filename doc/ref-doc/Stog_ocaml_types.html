@@ -3,22 +3,25 @@
 <title>Stog library reference documentation : Stog_ocaml_types</title><contents><div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_info.html" title="Stog_info">Previous</a>
 &#160;<a class="up" href="index.html" title="Index">Up</a>
-&#160;<a class="post" href="Stog_ocaml.html" title="Stog_ocaml">Next</a>
+&#160;<a class="post" href="Stog_deps.html" title="Stog_deps">Next</a>
 </div>
 <h1>Module <a href="type_Stog_ocaml_types.html">Stog_ocaml_types</a></h1>
-<pre><span class="keyword">module</span> Stog_ocaml_types: <code class="code">sig</code> <a href="Stog_ocaml_types.html">..</a> <code class="code">end</code></pre><div class="info">
+
+<pre><span class="keyword">module</span> Stog_ocaml_types: <code class="code">sig</code> <a href="Stog_ocaml_types.html">..</a> <code class="code">end</code></pre><div class="info module top">
 Types for interfacing stog and ocaml-session.<br/>
 </div>
 <hr width="100%"/>
+
 <pre><code><span id="TYPEinput"><span class="keyword">type</span> input</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&#160;&#160;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTinput.in_phrase">in_phrase</span>&#160;:<code class="type">string</code>;</code></td>
+<code><span id="TYPEELTinput.in_phrase">in_phrase</span>&#160;: <code class="type">string</code>;</code></td>
 
 </tr></table>
 }
+
 
 
 <pre><code><span id="TYPEresult"><span class="keyword">type</span> result</span> = </code></pre><table class="typetable">
@@ -45,4 +48,8 @@ Types for interfacing stog and ocaml-session.<br/>
 </tr></table>
 
 
-<pre><span id="VALread_input"><span class="keyword">val</span> read_input</span> : <code class="type">Pervasives.in_channel -&gt; <a href="Stog_ocaml_types.html#TYPEinput">input</a></code></pre><pre><span id="VALwrite_input"><span class="keyword">val</span> write_input</span> : <code class="type">Pervasives.out_channel -&gt; <a href="Stog_ocaml_types.html#TYPEinput">input</a> -&gt; unit</code></pre><pre><span id="VALread_result"><span class="keyword">val</span> read_result</span> : <code class="type">Pervasives.in_channel -&gt; <a href="Stog_ocaml_types.html#TYPEresult">result</a></code></pre><pre><span id="VALwrite_result"><span class="keyword">val</span> write_result</span> : <code class="type">Pervasives.out_channel -&gt; <a href="Stog_ocaml_types.html#TYPEresult">result</a> -&gt; unit</code></pre></div></contents></ocamldoc>
+
+<pre><span id="VALread_input"><span class="keyword">val</span> read_input</span> : <code class="type">Pervasives.in_channel -&gt; <a href="Stog_ocaml_types.html#TYPEinput">input</a></code></pre>
+<pre><span id="VALwrite_input"><span class="keyword">val</span> write_input</span> : <code class="type">Pervasives.out_channel -&gt; <a href="Stog_ocaml_types.html#TYPEinput">input</a> -&gt; unit</code></pre>
+<pre><span id="VALread_result"><span class="keyword">val</span> read_result</span> : <code class="type">Pervasives.in_channel -&gt; <a href="Stog_ocaml_types.html#TYPEresult">result</a></code></pre>
+<pre><span id="VALwrite_result"><span class="keyword">val</span> write_result</span> : <code class="type">Pervasives.out_channel -&gt; <a href="Stog_ocaml_types.html#TYPEresult">result</a> -&gt; unit</code></pre></div></contents></ocamldoc>

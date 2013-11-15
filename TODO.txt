@@ -1,6 +1,8 @@
 - import directive in element headers
 - to fix: computation of elt graph
 
+latex:
+- cache <latex> evaluation
 
 microdata:
 - datetime

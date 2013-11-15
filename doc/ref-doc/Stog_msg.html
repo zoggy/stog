@@ -5,8 +5,20 @@
 &#160;<a class="post" href="Stog_misc.html" title="Stog_misc">Next</a>
 </div>
 <h1>Module <a href="type_Stog_msg.html">Stog_msg</a></h1>
-<pre><span class="keyword">module</span> Stog_msg: <code class="code">sig</code> <a href="Stog_msg.html">..</a> <code class="code">end</code></pre><div class="info">
+
+<pre><span class="keyword">module</span> Stog_msg: <code class="code">sig</code> <a href="Stog_msg.html">..</a> <code class="code">end</code></pre><div class="info module top">
 Printing warnings and errors.<br/>
 </div>
 <hr width="100%"/>
-<pre><span id="VALverbose_level"><span class="keyword">val</span> verbose_level</span> : <code class="type">unit -&gt; int</code></pre><pre><span id="VALset_verbose_level"><span class="keyword">val</span> set_verbose_level</span> : <code class="type">int -&gt; unit</code></pre><pre><span id="VALincr_verbose_level"><span class="keyword">val</span> incr_verbose_level</span> : <code class="type">unit -&gt; unit</code></pre><pre><span id="VALverbose"><span class="keyword">val</span> verbose</span> : <code class="type">?info:string -&gt; ?level:int -&gt; string -&gt; unit</code></pre><pre><span id="VALset_print_verbose"><span class="keyword">val</span> set_print_verbose</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre><pre><span id="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?info:string -&gt; string -&gt; unit</code></pre><pre><span id="VALset_print_warning"><span class="keyword">val</span> set_print_warning</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre><pre><span id="VALwarnings"><span class="keyword">val</span> warnings</span> : <code class="type">unit -&gt; int</code></pre><pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?info:string -&gt; ?fatal:int -&gt; string -&gt; unit</code></pre><pre><span id="VALset_print_error"><span class="keyword">val</span> set_print_error</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre><pre><span id="VALerrors"><span class="keyword">val</span> errors</span> : <code class="type">unit -&gt; int</code></pre></div></contents></ocamldoc>
+
+<pre><span id="VALverbose_level"><span class="keyword">val</span> verbose_level</span> : <code class="type">unit -&gt; int</code></pre>
+<pre><span id="VALset_verbose_level"><span class="keyword">val</span> set_verbose_level</span> : <code class="type">int -&gt; unit</code></pre>
+<pre><span id="VALincr_verbose_level"><span class="keyword">val</span> incr_verbose_level</span> : <code class="type">unit -&gt; unit</code></pre>
+<pre><span id="VALverbose"><span class="keyword">val</span> verbose</span> : <code class="type">?info:string -&gt; ?level:int -&gt; string -&gt; unit</code></pre>
+<pre><span id="VALset_print_verbose"><span class="keyword">val</span> set_print_verbose</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre>
+<pre><span id="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?info:string -&gt; string -&gt; unit</code></pre>
+<pre><span id="VALset_print_warning"><span class="keyword">val</span> set_print_warning</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre>
+<pre><span id="VALwarnings"><span class="keyword">val</span> warnings</span> : <code class="type">unit -&gt; int</code></pre>
+<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?info:string -&gt; ?fatal:int -&gt; string -&gt; unit</code></pre>
+<pre><span id="VALset_print_error"><span class="keyword">val</span> set_print_error</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre>
+<pre><span id="VALerrors"><span class="keyword">val</span> errors</span> : <code class="type">unit -&gt; int</code></pre></div></contents></ocamldoc>

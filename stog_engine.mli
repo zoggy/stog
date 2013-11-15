@@ -26,16 +26,24 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Rewrite engine *)
+(** Rewrite engine. *)
 
 open Stog_types;;
 
-
+(** A function associated to a level. All functions take in parameter
+  the environment, the stog and structure and the list of elements
+  to rewrite. They return the new stog structure. Some
+  function ([Fun_data], [Fun_stog_data]) also handle an additional data
+  structure: the callbacks in the environment also handle it, and the
+  function returns it with the stog structure.
+*)
 type 'a level_fun =
   | Fun_stog of (stog Xtmpl.env -> stog -> elt_id list -> stog)
   | Fun_data of ('a Xtmpl.env -> stog * 'a -> elt_id list -> stog * 'a)
   | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> elt_id list -> stog * 'a)
 
+(** A structure containing data and functions associated to levels.
+  Contains also the module name. *)
 type 'a modul = {
       mod_data : 'a ;
       mod_levels : 'a level_fun Stog_types.Int_map.t ;
