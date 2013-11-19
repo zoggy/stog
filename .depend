@@ -1,9 +1,9 @@
 odoc_stog.cmo :
 odoc_stog.cmx :
 stog_blocks.cmo : stog_types.cmi stog_tags.cmi stog_msg.cmi stog_misc.cmi \
-    stog_io.cmi stog_html.cmi stog_engine.cmi stog_deps.cmi
+    stog_io.cmi stog_html.cmi stog_engine.cmi stog_deps.cmi stog_blocks.cmi
 stog_blocks.cmx : stog_types.cmx stog_tags.cmx stog_msg.cmx stog_misc.cmx \
-    stog_io.cmx stog_html.cmx stog_engine.cmx stog_deps.cmx
+    stog_io.cmx stog_html.cmx stog_engine.cmx stog_deps.cmx stog_blocks.cmi
 stog_cache.cmo : stog_types.cmi stog_msg.cmi stog_misc.cmi stog_find.cmi \
     stog_deps.cmi stog_cache.cmi
 stog_cache.cmx : stog_types.cmx stog_msg.cmx stog_misc.cmx stog_find.cmx \
@@ -83,7 +83,7 @@ stog_ocaml_session.cmx : stog_ocaml_types.cmx stog_misc.cmx errors.cmi \
 stog_ocaml_types.cmo : stog_ocaml_types.cmi
 stog_ocaml_types.cmx : stog_ocaml_types.cmi
 stog_plug.cmo : stog_types.cmi stog_msg.cmi stog_intl.cmi stog_html.cmi \
-    stog_deps.cmi stog_config.cmi stog_blocks.cmo stog_plug.cmi
+    stog_deps.cmi stog_config.cmi stog_blocks.cmi stog_plug.cmi
 stog_plug.cmx : stog_types.cmx stog_msg.cmx stog_intl.cmx stog_html.cmx \
     stog_deps.cmx stog_config.cmx stog_blocks.cmx stog_plug.cmi
 stog_tags.cmo : stog_tags.cmi
@@ -103,6 +103,7 @@ stog_types.cmx : stog_trie.cmx stog_tmap.cmx stog_misc.cmx stog_graph.cmx \
 test_xtmpl.cmo :
 test_xtmpl.cmx :
 errors.cmi :
+stog_blocks.cmi : stog_engine.cmi
 stog_cache.cmi : stog_types.cmi
 stog_config.cmi :
 stog_date.cmi :

@@ -99,6 +99,14 @@ let add_block ?(on_dup=`Warn) ~hid ~id ~short ~long data =
   { data with blocks = Smap.add hid map data.blocks }
 ;;
 
+let add_block_for_elt data elt =
+  let hid = Stog_types.string_of_human_id elt.elt_human_id in
+  try ignore(Smap.find hid data.blocks); data
+  with Not_found ->
+      let blocks = Smap.add hid Smap.empty data.blocks in
+      { data with blocks }
+;;
+
 let fun_counter (stog, data) env atts subs =
 (*  prerr_endline (Printf.sprintf "fun_counter args=%s\nenv=%s"
     (String.concat "\n" (List.map (fun (s, v) -> Printf.sprintf "%S, %S" s v) atts))
@@ -515,6 +523,7 @@ let gather_existing_ids =
     match elt.elt_out with
       None -> (stog, data)
     | Some body ->
+        let data = add_block_for_elt data elt in
         let set =
           let g set xml =
             try f elt.elt_human_id set xml

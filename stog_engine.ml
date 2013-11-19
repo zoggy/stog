@@ -67,14 +67,22 @@ let apply_module level env elts state modul =
   | Some f ->
       let stog = state.st_stog in
       let (stog, data) =
-        match f with
-          Fun_stog f ->
-            let stog = f env stog elts in
-            (stog, E.modul.mod_data)
-        | Fun_data f ->
-            f (Obj.magic env) (stog, E.modul.mod_data) elts
-        | Fun_stog_data f ->
-            f (Obj.magic env) (stog, E.modul.mod_data) elts
+        try
+          match f with
+            Fun_stog f ->
+              let stog = f env stog elts in
+              (stog, E.modul.mod_data)
+          | Fun_data f ->
+              f (Obj.magic env) (stog, E.modul.mod_data) elts
+          | Fun_stog_data f ->
+              f (Obj.magic env) (stog, E.modul.mod_data) elts
+        with
+          Xtmpl.Loop stack ->
+            let msg = "Possible loop when applying module "^
+              E.modul.mod_name^" on level "^(string_of_int level)^":\n"^
+              (Xtmpl.string_of_stack stack)
+            in
+            failwith msg
       in
       let modul =
         let module E2 = struct

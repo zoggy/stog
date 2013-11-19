@@ -50,7 +50,9 @@ type 'a modul = {
       mod_name : string ;
     }
 
+(** A module. *)
 module type Module = sig
+    (** Abstract data type *)
     type data
     val modul : data modul
     type cache_data
