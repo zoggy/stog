@@ -89,8 +89,8 @@ let read_module stog file =
     Xtmpl.D _ -> assert false
   | Xtmpl.E (tag, atts, subs) ->
       let mod_requires =
-        match Xtmpl.get_arg atts ("","requires") with
-            None -> Stog_types.Str_set.empty
+        match Xtmpl.get_arg_cdata atts ("","requires") with
+          None -> Stog_types.Str_set.empty
         | Some s -> module_requires_of_string s
       in
       let mod_defs = module_defs_of_xml subs in
@@ -188,19 +188,21 @@ let fill_elt_from_atts =
   let rec iter elt = function
     [] -> elt
   | h :: q ->
+      let to_s = function [Xtmpl.D s] -> s | _ -> "" in
       let elt =
         match h with
         | (("","with-contents"),_) -> elt
-        | (("","title"), s) -> { elt with elt_title = s }
-        | (("","keywords"), s) -> { elt with elt_keywords = keywords_of_string s }
-        | (("","topics"), s) -> { elt with elt_topics = topics_of_string s }
-        | (("","date"), s) -> { elt with elt_date = Some (date_of_string s) }
-        | (("","published"), s) -> { elt with elt_published = bool_of_string s }
-        | (("","sets"), s) -> { elt with elt_sets = sets_of_string s }
-        | (("","language-dep"), s) -> { elt with elt_lang_dep = bool_of_string s }
-        | (("","doctype"), s) -> { elt with elt_xml_doctype = Some s }
-        | (("", "use"), s) -> { elt with elt_used_mods = used_mods_of_string elt.elt_used_mods s }
-        | (att, v) -> { elt with elt_defs = (att, [], [Xtmpl.D v]) :: elt.elt_defs }
+        | (("","title"), v) -> { elt with elt_title = (to_s v) }
+        | (("","keywords"), v) -> { elt with elt_keywords = keywords_of_string (to_s v) }
+        | (("","topics"), v) -> { elt with elt_topics = topics_of_string (to_s v) }
+        | (("","date"), v) -> { elt with elt_date = Some (date_of_string (to_s v)) }
+        | (("","published"), v) -> { elt with elt_published = bool_of_string (to_s v) }
+        | (("","sets"), v) -> { elt with elt_sets = sets_of_string (to_s v) }
+        | (("","language-dep"), v) -> { elt with elt_lang_dep = bool_of_string (to_s v) }
+        | (("","doctype"), v) -> { elt with elt_xml_doctype = Some (to_s v) }
+        | (("", "use"), v) ->
+            { elt with elt_used_mods = used_mods_of_string elt.elt_used_mods (to_s v) }
+        | (att, v) -> { elt with elt_defs = (att, [], v) :: elt.elt_defs }
       in
       iter elt q
   in
@@ -246,12 +248,12 @@ let elt_of_file stog file =
   let elt = Stog_types.make_elt ~hid ~typ () in
   let elt = { elt with elt_src = rel_file } in
   let elt =
-    match Xtmpl.get_arg atts ("","hid") with
+    match Xtmpl.get_arg_cdata atts ("","hid") with
       None -> elt
     | Some s -> { elt with elt_human_id = Stog_types.human_id_of_string s }
   in
   let elt = fill_elt_from_atts elt atts in
-  match Xtmpl.get_arg atts ("", "with-contents") with
+  match Xtmpl.get_arg_cdata atts ("", "with-contents") with
     Some s when bool_of_string s ->
       (* arguments are also passed in sub nodes, and contents is in
          subnode "contents" *)

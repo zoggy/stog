@@ -73,7 +73,7 @@ let human_id_of_string s =
   }
 ;;
 
-type def = Xmlm.name * Xmlm.attribute list * body
+type def = Xtmpl.name * Xtmpl.attribute list * body
 
 let get_def =
   let p name (s,_,_) = s = name in
@@ -454,10 +454,7 @@ let find_block_by_id =
     match xml with
       Xtmpl.D _ -> raise Not_found
     | Xtmpl.E (_, atts, subs) ->
-        match
-          try Some (List.assoc ("","id") atts)
-          with Not_found -> None
-        with
+        match Xtmpl.get_arg_cdata atts ("","id") with
           Some s when s = id -> raise (Block_found xml)
         | _ -> find_in_list id subs
   in

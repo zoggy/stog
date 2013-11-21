@@ -93,8 +93,8 @@ val env_of_used_mods : Stog_types.stog ->
 type 'a stog_elt_rules =
   Stog_types.stog -> Stog_types.elt_id -> (Xtmpl.name * 'a Xtmpl.callback) list
 
-val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * string
-val opt_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * string option
+val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * Xtmpl.tree list
+val opt_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * Xtmpl.tree list option
 
 val elt_env : 'a -> 'a Xtmpl.env -> Stog_types.stog -> Stog_types.elt -> 'a * 'a Xtmpl.env
 

@@ -3,12 +3,8 @@
 let fun_list stog env args subs =
   (* get the optional sep attribute ... *)
   let sep = Xtmpl.opt_arg args ("", "sep") in
-  (* and parse it as xml *)
-  let xml = Xtmpl.xml_of_string sep in
-  (* We can access the stog structure with [Stog_plug.stog ()] .
-     We don't use it here.
-  *)
-
+  (* reverse the separator, for final list will be reversed *)
+  let sep = List.rev sep in
   (* then insert the separator between all children of the node *)
   let rec iter acc = function
     [] -> List.rev acc
@@ -16,7 +12,7 @@ let fun_list stog env args subs =
       let acc =
         match acc with
           [] -> [h]
-        | _ -> h :: xml :: acc
+        | _ -> h :: sep @ acc
       in
       iter acc q
   in

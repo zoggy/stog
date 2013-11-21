@@ -53,11 +53,11 @@ val add_block :
 (** [get_in_env env tag] will look for the given string in the environment,
   by building a <tag/> node and evaluating it. If the result is the same node,
   then return [""] else return the reduced value as a string.*)
-val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * string
+val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * Xtmpl.tree list
 
 (** [get_in_args_or_env env args s] returns the value associated to [s]
  in [args] of else return the result of [get_in_env env s]. *)
-val get_in_args_or_env : 'a -> 'a Xtmpl.env -> Xmlm.attribute list -> Xmlm.name -> 'a * string
+val get_in_args_or_env : 'a -> 'a Xtmpl.env -> Xtmpl.attribute list -> Xmlm.name -> 'a * Xtmpl.tree list
 
 (** [get_hid env] returns the value associated to ["hid"] in [env].
   @raise Assert_failure if ["hid"] is not found in the environment.*)

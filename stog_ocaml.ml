@@ -126,15 +126,15 @@ let concat_code =
 
 let fun_eval stog env args code =
   try
-    let exc = Xtmpl.opt_arg args ~def: "true" ("", "error-exc") = "true" in
-    let toplevel = Xtmpl.opt_arg args ~def: "false" ("", "toplevel") = "true" in
-    let show_code = Xtmpl.opt_arg args ~def: "true" ("", "show-code") <> "false" in
-    let show_stdout = Xtmpl.opt_arg args
+    let exc = Xtmpl.opt_arg_cdata args ~def: "true" ("", "error-exc") = "true" in
+    let toplevel = Xtmpl.opt_arg_cdata args ~def: "false" ("", "toplevel") = "true" in
+    let show_code = Xtmpl.opt_arg_cdata args ~def: "true" ("", "show-code") <> "false" in
+    let show_stdout = Xtmpl.opt_arg_cdata args
       ~def: (if toplevel then "true" else "false") ("", "show-stdout") <> "false"
     in
-    let session_name = Xtmpl.get_arg args ("", "session") in
-    let id_opt = Xtmpl.opt_arg args ("", "id") in
-    let atts = match id_opt with "" -> [] | id -> [("","id"), id] in
+    let session_name = Xtmpl.get_arg_cdata args ("", "session") in
+    let id_opt = Xtmpl.opt_arg_cdata args ("", "id") in
+    let atts = match id_opt with "" -> [] | id -> [("","id"), [Xtmpl.D id]] in
     let code = concat_code code in
     let phrases = ocaml_phrases_of_string code in
     let rec iter acc = function
@@ -177,7 +177,7 @@ let fun_eval stog env args code =
             false ->
               if show_stdout then
                 let xml =
-                  Xtmpl.E (("","div"), [("","class"), "ocaml-toplevel"], [Xtmpl.D stdout])
+                  Xtmpl.E (("","div"), [("","class"), [Xtmpl.D "ocaml-toplevel"]], [Xtmpl.D stdout])
                 in
                 xml :: code :: acc
               else
@@ -187,7 +187,7 @@ let fun_eval stog env args code =
                 (if raised_exc then " ocaml-exc" else "")
               in
               let xml =
-                Xtmpl.E (("","div"), [("","class"), classes], [Xtmpl.D output])
+                Xtmpl.E (("","div"), [("","class"), [Xtmpl.D classes]], [Xtmpl.D output])
               in
               xml :: code :: acc
         in
@@ -195,7 +195,7 @@ let fun_eval stog env args code =
     in
     let xml = iter [] phrases in
     if show_code || toplevel || show_stdout then
-      (stog, [ Xtmpl.E (("","pre"), [("","class"), "code-ocaml"] @ atts, xml) ])
+      (stog, [ Xtmpl.E (("","pre"), [("","class"), [Xtmpl.D "code-ocaml"]] @ atts, xml) ])
     else
       (stog, [ Xtmpl.D "" ])
   with

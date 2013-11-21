@@ -40,7 +40,8 @@ let get_in_args_or_env data env args s =
 ;;
 
 let get_hid data env =
-  let (data, s) = get_in_env data env ("", Stog_tags.elt_hid) in
+  let (data, xmls) = get_in_env data env ("", Stog_tags.elt_hid) in
+  let s = Xtmpl.string_of_xmls xmls in
   assert (s <> "");
   (data, s)
 ;;
@@ -131,24 +132,21 @@ let include_href name stog elt ?id ~raw ~depend href env =
 ;;
 
 let include_file stog elt ?id ~raw ~depend file args subs =
-  let args =
-    (("", "contents"), Xtmpl.string_of_xmls subs) ::
-      args
-  in
+  let args = (("", "contents"), subs) :: args in
   let (stog, xml) = Stog_tmpl.read_template_file stog elt ~depend ~raw file in
   (stog, [Xtmpl.E (("", Xtmpl.tag_env), args, [xml])])
 ;;
 
 let fun_include_ name elt stog env args subs =
-  let raw = Xtmpl.opt_arg ~def: "false" args ("", "raw") = "true" in
+  let raw = Xtmpl.opt_arg_cdata ~def: "false" args ("", "raw") = "true" in
   let id = Xtmpl.get_arg args ("", "id") in
-  let depend = Xtmpl.opt_arg args ~def: "true" ("", "depend") <> "false" in
-  match Xtmpl.get_arg args ("", "file") with
+  let depend = Xtmpl.opt_arg_cdata args ~def: "true" ("", "depend") <> "false" in
+  match Xtmpl.get_arg_cdata args ("", "file") with
   | Some file ->
       let (stog, xml) = include_file stog elt ?id ~raw ~depend file args subs in
       (stog, xml)
   | None ->
-      match Xtmpl.get_arg args ("", "href") with
+      match Xtmpl.get_arg_cdata args ("", "href") with
         Some href -> include_href name stog elt ?id ~raw ~depend href env
       | None ->
           failwith ("Missing 'file' or 'href' argument for <"^name^"> rule")
@@ -166,17 +164,22 @@ let fun_image acc _env args legend =
   let width = Xtmpl.opt_arg args ("", "width") in
   let src = Xtmpl.opt_arg args ("", "src") in
   let cls = Printf.sprintf "img%s"
-    (match Xtmpl.get_arg args ("", "float") with
-       Some "left" -> "-float-left"
-     | Some "right" -> "-float-right"
-     | Some s -> failwith (Printf.sprintf "unhandled image position: %s" s)
+    (match Xtmpl.get_arg_cdata args ("", "float") with
+      Some s ->
+         begin
+           match s with
+             "left" -> "-float-left"
+           | "right" -> "-float-right"
+           | s -> failwith (Printf.sprintf "unhandled image position: %s" s)
+         end
      | None -> ""
     )
   in
+  let cls = [ Xtmpl.D cls ] in
   let cls =
     match Xtmpl.get_arg args ("", "class") with
       None -> cls
-    | Some c -> c^" "^cls
+    | Some c -> c @ [Xtmpl.D " "] @ cls
   in
   let pred (s,_) = not (List.mem s [("", "width") ; ("", "src") ; ("", "float")]) in
   let atts = List.filter pred args in
@@ -184,12 +187,12 @@ let fun_image acc _env args legend =
     [
       Xtmpl.E (("", "div"), [ ("", "class"), cls ],
        (Xtmpl.E (("", "img"),
-         [ ("", "class"), "img" ; ("", "src"), src; ("", "width"), width ] @ atts,
+         [ ("", "class"), [Xtmpl.D "img"] ; ("", "src"), src; ("", "width"), width ] @ atts,
          [])
        ) ::
          (match legend with
             [] -> []
-          | xml -> [ Xtmpl.E (("", "div"), [("", "class"), "legend"], xml) ]
+          | xml -> [ Xtmpl.E (("", "div"), [("", "class"), [Xtmpl.D "legend"]], xml) ]
          )
       )
     ]
@@ -199,15 +202,14 @@ let fun_image acc _env args legend =
 
 let fun_list acc env args subs =
   let sep = Xtmpl.opt_arg args ("", "sep") in
-  let xml = Xtmpl.xml_of_string sep in
-  (* insert the separator between all children of the node *)
+  let sep = List.rev sep in
   let rec iter acc = function
     [] -> List.rev acc
   | h :: q ->
       let acc =
         match acc with
           [] -> [h]
-        | _ -> h :: xml :: acc
+        | _ -> h :: sep @ acc
       in
       iter acc q
   in
@@ -272,7 +274,7 @@ let fun_archive_tree stog _env _atts _subs =
     let href = url_of_hid stog ~ext: "html" hid in
     let month_str = Stog_intl.get_month stog.stog_lang month in
     Xtmpl.E (("", "li"), [], [
-       Xtmpl.E (("", "a"), [("", "href"), Stog_types.string_of_url href], [ Xtmpl.D month_str ]) ;
+       Xtmpl.E (("", "a"), [("", "href"), [Xtmpl.D (Stog_types.string_of_url href)]], [ Xtmpl.D month_str ]) ;
        Xtmpl.D (Printf.sprintf "(%d)" (Stog_types.Elt_set.cardinal set))
      ]
     )
@@ -294,16 +296,16 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
     match lang with
       None ->
         (
-         match Xtmpl.get_arg args ("", "lang-file") with
+         match Xtmpl.get_arg_cdata args ("", "lang-file") with
            None ->
              begin
-               let lang = Xtmpl.opt_arg args ~def: "txt" ("", "lang") in
+               let lang = Xtmpl.opt_arg_cdata args ~def: "txt" ("", "lang") in
                match lang with
                  "txt" -> (lang, None)
                | _ -> (lang, Some (Printf.sprintf "--syntax=%s" lang))
              end
          | Some f ->
-             let lang = Xtmpl.opt_arg args ~def: "" ("", "lang") in
+             let lang = Xtmpl.opt_arg_cdata args ~def: "" ("", "lang") in
              let opts = Printf.sprintf "--config-file=%s" f in
              (lang, Some opts)
         )
@@ -337,16 +339,16 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
         Xtmpl.xml_of_string code
   in
   let id_atts =
-    match Xtmpl.get_arg args ("","id") with
+    match Xtmpl.get_arg_cdata args ("","id") with
       None -> []
-    | Some id -> [("","id"), id]
+    | Some id -> [("","id"), [Xtmpl.D id]]
   in
   let xmls =
     if inline then
-      [ Xtmpl.E (("", "span"), id_atts @ [("", "class"), "icode"], [xml_code]) ]
+      [ Xtmpl.E (("", "span"), id_atts @ [("", "class"), [Xtmpl.D "icode"]], [xml_code]) ]
     else
       [ Xtmpl.E (("", "pre"),
-         id_atts @ [ ("", "class"), Printf.sprintf "code-%s" language],
+         id_atts @ [ ("", "class"), [Xtmpl.D (Printf.sprintf "code-%s" language)]],
          [xml_code])
       ]
   in
@@ -412,8 +414,9 @@ let fun_graph =
               report_error (Printf.sprintf "Command failed: %s" com)
     end;
     let xmls = [
-        Xtmpl.E (("", "a"), [("", "href"), Stog_types.string_of_url src], [
-           Xtmpl.E (("", "img"), [("", "src"), Stog_types.string_of_url small_src ; ("", "alt"), "Graph"], [])
+        Xtmpl.E (("", "a"), [("", "href"), [ Xtmpl.D (Stog_types.string_of_url src) ]], [
+           Xtmpl.E (("", "img"),
+            [("", "src"), [ Xtmpl.D (Stog_types.string_of_url small_src)] ; ("", "alt"), [Xtmpl.D "Graph"]], [])
          ])
       ]
     in
@@ -430,13 +433,13 @@ let fun_if stog env args subs =
        prefix name (Xtmpl.string_of_xmls nodes)
        (Xtmpl.string_of_xmls nodes2) v (Xtmpl.string_of_xmls v2));
     *)
-    let v_xml = Xtmpl.xml_of_string v in
-    let v2_xml = Xtmpl.E (("", Xtmpl.tag_main), [], v2) in
+    (*let v_xml = Xtmpl.xml_of_string v in
+    let v2_xml = Xtmpl.E (("", Xtmpl.tag_main), [], v2) in*)
     (*
        prerr_endline (Printf.sprintf "v_xml=%S, v2_xml=%S"
        (Xtmpl.string_of_xml v_xml) (Xtmpl.string_of_xml v2_xml));
     *)
-    (stog, cond && (v_xml = v2_xml))
+    (stog, cond && (v = v2))
   in
   let (stog, cond) = List.fold_left pred (stog, true) args in
   let subs = List.filter
@@ -473,10 +476,10 @@ let fun_twocolumns stog env args subs =
     | left :: right :: _ -> left, right
   in
   let xmls =
-    [ Xtmpl.E (("", "table"), [("", "class"), "two-columns"],
+    [ Xtmpl.E (("", "table"), [("", "class"), [Xtmpl.D "two-columns"]],
        [ Xtmpl.E (("", "tr"), [],
-          [ Xtmpl.E (("", "td"), [("", "class"), "two-columns-left"], left) ;
-            Xtmpl.E (("", "td"), [("", "class"), "two-columns-right"], right) ;
+          [ Xtmpl.E (("", "td"), [("", "class"), [Xtmpl.D "two-columns-left"]], left) ;
+            Xtmpl.E (("", "td"), [("", "class"), [Xtmpl.D "two-columns-right"]], right) ;
           ]);
        ])
     ]
@@ -496,7 +499,7 @@ let fun_ncolumns stog env args subs =
     let f (n,acc) xmls =
        let acc =
         (Xtmpl.E (("", "td"),
-          [("", "class"), Printf.sprintf "n-columns column-%d" n], xmls)
+          [("", "class"), [ Xtmpl.D (Printf.sprintf "n-columns column-%d" n)]], xmls)
         ) :: acc
       in
       (n+1, acc)
@@ -504,7 +507,7 @@ let fun_ncolumns stog env args subs =
     List.rev (snd (List.fold_left f (0,[]) subs))
   in
   let xmls =
-    [ Xtmpl.E (("", "table"), [("", "class"), "n-columns"],
+    [ Xtmpl.E (("", "table"), [("", "class"), [Xtmpl.D "n-columns"]],
        [ Xtmpl.E (("", "tr"), [], tds) ]
       );
     ]
@@ -514,7 +517,7 @@ let fun_ncolumns stog env args subs =
 
 let fun_exta stog env args subs =
   (stog,
-   [ Xtmpl.E (("", "span"), [("", "class"),"ext-a"],
+   [ Xtmpl.E (("", "span"), [("", "class"), [Xtmpl.D "ext-a"]],
       [ Xtmpl.E (("", "a"), args, subs) ])
    ]
   )
@@ -524,7 +527,7 @@ type toc = Toc of string * string * Xmlm.name * toc list (* name, title, class, 
 
 let fun_prepare_toc tags stog env args subs =
   let depth =
-    match Xtmpl.get_arg args ("", "depth") with
+    match Xtmpl.get_arg_cdata args ("", "depth") with
       None -> max_int
     | Some s -> int_of_string s
   in
@@ -532,7 +535,9 @@ let fun_prepare_toc tags stog env args subs =
   | Xtmpl.D _ -> acc
   | Xtmpl.E (tag, atts, subs) when List.mem tag tags ->
       begin
-        match Xtmpl.get_arg atts ("", "id"), Xtmpl.get_arg atts ("", "title") with
+        match Xtmpl.get_arg_cdata atts ("", "id"),
+          Xtmpl.get_arg_cdata atts ("", "title")
+        with
           None, _ | _, None ->
             (*prerr_endline "no name nor title";*)
             acc
@@ -561,18 +566,19 @@ let fun_prepare_toc tags stog env args subs =
           ("", s) -> s
         | (p, s) -> p ^"-"^ s
       in
-      Xtmpl.E (("", "li"), [("", "class"), "toc-"^cl],
-       [ Xtmpl.E (("", "elt"), [("", "href"), "#"^name ; ("","long"), "true"], []) ]
+      Xtmpl.E (("", "li"), [("", "class"), [Xtmpl.D ("toc-"^cl)] ],
+       [ Xtmpl.E (("", "elt"),
+          [("", "href"), [Xtmpl.D ("#"^name)] ; ("","long"), [Xtmpl.D "true"]], []) ]
        @
        ( match subs with
           [] -> []
         | _ ->
-               [ Xtmpl.E (("", "ul"), [("", "class"), "toc"], List.map xml_of_toc subs) ]
+               [ Xtmpl.E (("", "ul"), [("", "class"), [Xtmpl.D "toc"]], List.map xml_of_toc subs) ]
        )
        )
   in
-  let xml = Xtmpl.E (("", "ul"), [("", "class"), "toc"], List.map xml_of_toc toc) in
-  let atts = [ ("", "toc-contents"), Xtmpl.string_of_xml xml ] in
+  let xml = Xtmpl.E (("", "ul"), [("", "class"), [Xtmpl.D "toc"]], List.map xml_of_toc toc) in
+  let atts = [ ("", "toc-contents"), [ xml ] ] in
   (stog, [ Xtmpl.E (("", Xtmpl.tag_env), atts, subs) ])
 ;;
 
@@ -596,7 +602,7 @@ let fun_elt_path _elt stog env args subs =
     failwith (Printf.sprintf "fun_elt_path: Hid %S not absolute" s_hid);
 
   let root =
-    match Xtmpl.get_arg args ("", "with-root") with
+    match Xtmpl.get_arg_cdata args ("", "with-root") with
       None -> None
     | Some root_hid ->
         let root_hid = Stog_types.human_id_of_string root_hid in
@@ -637,7 +643,7 @@ let fun_elt_path _elt stog env args subs =
             hid
       in
       let xml = Xtmpl.E
-        (("", Stog_tags.elt), [("","href"), Stog_types.string_of_human_id hid], [])
+        (("", Stog_tags.elt), [("","href"), [Xtmpl.D (Stog_types.string_of_human_id hid)]], [])
       in
       [ xml ]
     with Failure _ ->
@@ -666,10 +672,10 @@ let intro_of_elt stog elt =
     [
       Xtmpl.E (("", "a"),
          [
-           ("", "href"), Stog_types.string_of_url (Stog_engine.elt_url stog elt)],
+           ("", "href"), [ Xtmpl.D (Stog_types.string_of_url (Stog_engine.elt_url stog elt))]],
          [ Xtmpl.E (("", "img"),
-            [ ("", "src"), next_url_s ;
-              ("", "alt"), "next"],
+            [ ("", "src"), [ Xtmpl.D next_url_s ] ;
+              ("", "alt"), [ Xtmpl.D "next"]],
             [])]
         )
     ]
@@ -678,7 +684,7 @@ let intro_of_elt stog elt =
 ;;
 
 let html_of_topics elt stog env args _ =
-  let sep = Xtmpl.xml_of_string (Xtmpl.opt_arg args ~def: ", " ("", "sep")) in
+  let sep = Xtmpl.opt_arg args ~def: [Xtmpl.D ", "] ("", "sep") in
   let (stog, tmpl) = Stog_tmpl.get_template stog ~elt Stog_tmpl.topic "topic.tmpl" in
   let f stog w =
     let env = Xtmpl.env_of_list ~env
@@ -691,16 +697,17 @@ let html_of_topics elt stog env args _ =
       (fun (stog, acc) w ->
          let (stog, xmls) = f stog w in
          let href = url_of_hid stog ~ext: "html" (topic_index_hid w) in
-         let xml = Xtmpl.E (("", "a"), [("", "href"), Stog_types.string_of_url href ], xmls) in
-         (stog, xml :: acc)
+         let xml = Xtmpl.E (("", "a"), [("", "href"), [ Xtmpl.D (Stog_types.string_of_url href)] ], xmls) in
+         (stog, [xml] :: acc)
       )
       (stog, []) elt.elt_topics
   in
-  (stog, Stog_misc.list_concat ~sep (List.rev l))
+  let xmls = Stog_misc.list_concat ~sep (List.rev l) in
+  (stog, List.flatten xmls)
 ;;
 
 let html_of_keywords elt stog env args _ =
-  let sep = Xtmpl.xml_of_string (Xtmpl.opt_arg args ~def: ", " ("", "sep")) in
+  let sep = Xtmpl.opt_arg args ~def: [Xtmpl.D ", "] ("", "sep") in
   let (stog, tmpl) = Stog_tmpl.get_template stog ~elt Stog_tmpl.keyword "keyword.tmpl" in
   let f stog w =
     let env = Xtmpl.env_of_list ~env
@@ -713,12 +720,13 @@ let html_of_keywords elt stog env args _ =
       (fun (stog, acc) w ->
          let (stog, xmls) = f stog w in
          let href = url_of_hid stog ~ext: "html" (keyword_index_hid w) in
-         let xml = Xtmpl.E (("", "a"), [("", "href"), Stog_types.string_of_url href ], xmls) in
-         (stog, xml :: acc)
+         let xml = Xtmpl.E (("", "a"), [("", "href"), [Xtmpl.D (Stog_types.string_of_url href)] ], xmls) in
+         (stog, [xml] :: acc)
       )
       (stog, []) elt.elt_keywords
   in
-  (stog, Stog_misc.list_concat ~sep (List.rev l))
+  let xmls = Stog_misc.list_concat ~sep (List.rev l) in
+  (stog, List.flatten xmls)
 ;;
 
 let rss_date_of_date d =
@@ -748,10 +756,11 @@ let rec elt_to_rss_item stog elt_id elt =
   let (stog, env) = Stog_engine.elt_env stog (Xtmpl.env_empty()) stog elt in
   let (stog, author) =
     let (stog, author) = get_in_env stog env ("", "author") in
+    let author = Xtmpl.string_of_xmls author in
     (stog, Stog_misc.opt_of_string author)
   in
   let (stog, desc_xml) = Xtmpl.apply_to_xmls stog env (intro_of_elt stog elt) in
-  let desc = String.concat "" (List.map Xtmpl.string_of_xml desc_xml) in
+  let desc = Xtmpl.string_of_xmls desc_xml in
   let item =
     Rss.item ~title: elt.elt_title
       ~desc
@@ -862,7 +871,7 @@ and build_base_rules stog elt_id =
     let html_link stog elt =
       let href = Stog_engine.elt_url stog elt in
       [ Xtmpl.E (("", "a"),
-         [("","href"), Stog_types.string_of_url href],
+         [("","href"), [Xtmpl.D (Stog_types.string_of_url href)]],
          [ Xtmpl.xml_of_string elt.elt_title ]) ]
     in
     let try_link key search stog _ _ _ =
@@ -933,33 +942,33 @@ and elt_list elt ?rss ?set stog env args _ =
         let l = Stog_types.Elt_set.elements set in
         List.map (fun id -> (id, Stog_types.elt stog id)) l
     | None ->
-        let set = Xtmpl.get_arg args ("", "set") in
+        let set = Xtmpl.get_arg_cdata args ("", "set") in
         Stog_types.elt_list ?set stog
   in
   let (stog, elts) =
-    match Xtmpl.get_arg args ("", "filter") with
+    match Xtmpl.get_arg_cdata args ("", "filter") with
       None -> (stog, elts)
     | Some s ->
         let filter = Stog_filter.filter_of_string s in
         Stog_filter.filter_elts stog env filter elts
   in
   let elts =
-    match Xtmpl.get_arg args ("", "type") with
+    match Xtmpl.get_arg_cdata args ("", "type") with
       None -> elts
     | Some s ->
         let types = Stog_misc.split_string s [',' ; ';'] in
         List.filter (fun (_,elt) -> List.mem elt.elt_type types) elts
   in
   let max = Stog_misc.map_opt int_of_string
-    (Xtmpl.get_arg args ("", "max"))
+    (Xtmpl.get_arg_cdata args ("", "max"))
   in
   let reverse =
-    match Xtmpl.get_arg args ("", "reverse") with
+    match Xtmpl.get_arg_cdata args ("", "reverse") with
       None -> true
     | Some s -> Stog_io.bool_of_string s
   in
   let (stog, elts) =
-    match Xtmpl.get_arg args ("", "sort") with
+    match Xtmpl.get_arg_cdata args ("", "sort") with
       None -> (stog, Stog_types.sort_ids_elts_by_date elts)
     | Some s ->
         let fields = Stog_misc.split_string s [','] in
@@ -977,7 +986,7 @@ and elt_list elt ?rss ?set stog env args _ =
   in
   let (stog, tmpl) =
     let file =
-      match Xtmpl.get_arg args ("", "tmpl") with
+      match Xtmpl.get_arg_cdata args ("", "tmpl") with
         None ->  "elt-in-list.tmpl"
       | Some s -> s
     in
@@ -1006,12 +1015,12 @@ and elt_list elt ?rss ?set stog env args _ =
     match rss with
       Some link -> (stog, Some link)
     | None ->
-        match Xtmpl.get_arg args ("", "rss") with
+        match Xtmpl.get_arg_cdata args ("", "rss") with
           None -> (stog, None)
         | Some file ->
             let url = Stog_types.url_concat stog.stog_base_url file in
             let file = Filename.concat stog.stog_outdir file in
-            let title =Xtmpl.get_arg args ("", "title") in
+            let title =Xtmpl.get_arg_cdata args ("", "title") in
             let stog = generate_rss_feed_file stog ?title url elts file in
             (stog, Some url)
   in
@@ -1019,9 +1028,9 @@ and elt_list elt ?rss ?set stog env args _ =
     match rss with
       None -> xmls
     | Some link ->
-        (Xtmpl.E (("", "div"), [("", "class"), "rss-button"], [
-            Xtmpl.E (("", "a"), [("", "href"), Stog_types.string_of_url link], [
-             Xtmpl.E (("", "img"), [("", "src"), "rss.png" ; ("", "alt"), "Rss feed"], [])]) ;
+        (Xtmpl.E (("", "div"), [("", "class"), [Xtmpl.D "rss-button"]], [
+            Xtmpl.E (("", "a"), [("", "href"), [Xtmpl.D (Stog_types.string_of_url link)]], [
+             Xtmpl.E (("", "img"), [("", "src"), [Xtmpl.D "rss.png"] ; ("", "alt"), [Xtmpl.D "Rss feed"]], [])]) ;
           ])
         ) :: xmls
   in
@@ -1175,17 +1184,17 @@ type cutpoint =
 ;;
 
 let cutpoint_of_atts elt atts =
-  let typ = Xtmpl.opt_arg atts ~def: elt.elt_type ("","type") in
+  let typ = Xtmpl.opt_arg_cdata atts ~def: elt.elt_type ("","type") in
   let tag =
-    match Xtmpl.get_arg atts ("","tag") with
+    match Xtmpl.get_arg_cdata atts ("","tag") with
       None -> failwith "Missing 'tag' attribute for <cut-elt> node"
     | Some s ->
         match Stog_misc.split_string s [':'] with
           [] | [_] -> ("", s)
         | h :: q -> (h, String.concat ":" q)
   in
-  let sep = Xtmpl.opt_arg atts ~def: "-" ("","hid-sep") in
-  let insert_link = not (Xtmpl.opt_arg atts ~def: "true" ("","insert-link") = "false") in
+  let sep = Xtmpl.opt_arg_cdata atts ~def: "-" ("","hid-sep") in
+  let insert_link = not (Xtmpl.opt_arg_cdata atts ~def: "true" ("","insert-link") = "false") in
   { cut_tag = tag ; cut_elt_type = typ ;
     cut_hid_sep = sep ; cut_insert_link = insert_link ;
   }
@@ -1197,7 +1206,7 @@ let cut_elts =
       Xtmpl.D _ -> set
     | Xtmpl.E (tag, atts, subs) ->
         let set =
-          match Xtmpl.get_arg atts ("", "id") with
+          match Xtmpl.get_arg_cdata atts ("", "id") with
             None
           | Some "" -> set
           | Some id -> Sset.add id set
@@ -1218,7 +1227,7 @@ let cut_elts =
   in
   let set_id_map stog hid atts new_hid with_id =
     if hid <> new_hid then
-      match Xtmpl.get_arg atts ("","id") with
+      match Xtmpl.get_arg_cdata atts ("","id") with
         None -> stog
       | Some id ->
           let new_id = if with_id then Some id else None in
@@ -1251,14 +1260,14 @@ let cut_elts =
         | Some cp ->
             try
               let title =
-                match Xtmpl.get_arg atts ("","title") with
+                match Xtmpl.get_arg_cdata atts ("","title") with
                   None ->
                     Stog_msg.warning ("Missing title on cutpoint; not cutting node "^(string_of_tag tag));
                     raise Not_found
                 | Some s -> s
               in
               let id =
-                match Xtmpl.get_arg atts ("","id") with
+                match Xtmpl.get_arg_cdata atts ("","id") with
                   None ->
                     Stog_msg.warning ("Missing id on cutpoint; not cutting node "^(string_of_tag tag));
                     raise Not_found
@@ -1283,8 +1292,8 @@ let cut_elts =
               in
               let xml =
                 if cp.cut_insert_link then
-                  [ Xtmpl.E (("","div"), [(("","class"), "cutlink "^(snd tag))],
-                     [Xtmpl.E (("","elt"),[("","href"), new_hid_s],[])]
+                  [ Xtmpl.E (("","div"), [(("","class"), [Xtmpl.D ("cutlink "^(snd tag))])],
+                     [Xtmpl.E (("","elt"),[("","href"), [Xtmpl.D new_hid_s]],[])]
                     )
                   ]
                 else

@@ -37,9 +37,9 @@ type human_id = { hid_path : string list; hid_absolute : bool; }
 val string_of_human_id : human_id -> string
 val human_id_of_string : string -> human_id
 
-type def = Xmlm.name * Xmlm.attribute list * body
+type def = Xtmpl.name * Xtmpl.attribute list * body
 
-val get_def : def list -> Xmlm.name -> (Xmlm.attribute list * body) option
+val get_def : def list -> Xmlm.name -> (Xtmpl.attribute list * body) option
 
 module Str_map : Map.S with type key = string
 module Str_set : Set.S with type elt = string

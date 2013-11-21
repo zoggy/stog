@@ -400,8 +400,8 @@ let rec make_fun (name, params, body) acc =
     let vars = List.map
       (fun (param,default) ->
          match Xtmpl.get_arg atts param with
-           None -> (param, [], [ Xtmpl.xml_of_string default])
-         | Some v -> (param, [], [ Xtmpl.xml_of_string v ])
+           None -> (param, [], default)
+         | Some v -> (param, [], v)
       )
       params
     in
@@ -630,13 +630,13 @@ let generate ?(use_cache=true) ?only_elt stog modules =
 let get_in_env data env (prefix, s) =
   let node = [ Xtmpl.E((prefix,s),[],[]) ] in
   let (data, node2) = Xtmpl.apply_to_xmls data env node in
-  if node2 = node then (data, "") else (data, Xtmpl.string_of_xmls node2)
+  if node2 = node then (data, []) else (data, node2)
 ;;
 
 let opt_in_env data env (prefix, s) =
   let node = [ Xtmpl.E((prefix,s),[],[]) ] in
   let (data, node2) = Xtmpl.apply_to_xmls data env node in
-  if node2 = node then (data, None) else (data, Some (Xtmpl.string_of_xmls node2))
+  if node2 = node then (data, None) else (data, Some node2)
 ;;
 
 let get_elt_out stog elt =
@@ -659,8 +659,10 @@ let get_elt_out stog elt =
 
 let get_languages data env =
   match opt_in_env data env ("", "languages") with
+  | (data, Some [Xtmpl.D s]) -> (data, Stog_misc.split_string s [','; ';' ; ' '])
+  | (data, Some xmls) -> 
+      failwith ("Invalid languages specification: "^(Xtmpl.string_of_xmls xmls))
   | (data, None) -> (data, ["fr" ; "en"])
-  | (data, Some s) -> (data, Stog_misc.split_string s [','; ';' ; ' '])
 ;;
 
 let env_add_lang_rules data env stog elt =
@@ -672,11 +674,11 @@ let env_add_lang_rules data env stog elt =
       let map_lang lang =
          let url = elt_url { stog with stog_lang = Some lang } elt in
          let img_url = Stog_types.url_concat stog.stog_base_url (lang^".png") in
-         Xtmpl.E (("", "a"), [("", "href"), (Stog_types.string_of_url url)], [
+         Xtmpl.E (("", "a"), [("", "href"), [ Xtmpl.D (Stog_types.string_of_url url) ]], [
            Xtmpl.E (("", "img"),
-            [ ("", "src"), (Stog_types.string_of_url img_url) ;
-              ("", "title"), lang ;
-              ("", "alt"), lang
+            [ ("", "src"), [ Xtmpl.D (Stog_types.string_of_url img_url) ] ;
+              ("", "title"), [ Xtmpl.D lang ] ;
+              ("", "alt"), [ Xtmpl.D lang]
             ], [])])
       in
       let f data _env args _subs =
