@@ -196,30 +196,8 @@ let get_cached_elts stog =
   elts
 ;;
 
-let md5_env env =
-  let s =
-    try Digest.string (Marshal.to_string env [Marshal.Closures])
-    with Invalid_argument msg ->
-        let msg = Printf.sprintf
-          "%s\n  This may be due to marshalling dynamically loaded code, which is\n  \
-          not supported in all ocaml releases (use the trunk development version\n  \
-          to get this support)." msg
-        in
-        Stog_msg.warning msg;
-        Digest.string ""
-  in
-  Digest.to_hex s
-;;
-
-let stog_env_digest stog env =
-  let md5_env = md5_env env in
-  let md5_stog = Stog_types.stog_md5 stog in
-  md5_stog ^ md5_env
-;;
-
-let set_elt_env elt stog md5_env elt_envs =
-  let digest_stog = Stog_types.stog_md5 stog in
-  let digest = digest_stog ^ md5_env in
+let set_elt_env elt stog elt_envs =
+  let digest = Stog_types.stog_md5 stog in
   Stog_types.Hid_map.add elt.elt_human_id digest elt_envs
 ;;
 
@@ -284,8 +262,8 @@ let get_cached_elements state env =
       (Stog_types.Hid_map.empty, state.st_stog)
   in
   let state = { state with st_stog = stog } in
-  let digest = stog_env_digest state.st_stog env in
-  Stog_msg.verbose ~info:"cache" ~level: 5 ("digest(stog,env)="^digest);
+  let digest = Stog_types.stog_md5 state.st_stog in
+  Stog_msg.verbose ~info:"cache" ~level: 5 ("digest(stog)="^digest);
 
   let elts = get_cached_elts state.st_stog in
   let elt_by_hid =
@@ -302,7 +280,7 @@ let get_cached_elements state env =
       try
         let d = Stog_types.Hid_map.find hid elt_envs in
         Stog_msg.verbose ~info: "cache" ~level: 5
-          ("digest(hid="^(Stog_types.string_of_human_id hid)^",stog,env)="^d);
+          ("digest(hid="^(Stog_types.string_of_human_id hid)^",stog)="^d);
         d = digest
       with Not_found ->
           Stog_msg.verbose ~info: "cache" ~level: 5
@@ -484,18 +462,11 @@ let run ?(use_cache=true) ?only_elt state =
       ("", Stog_tags.site_url), fun_site_url stog ;
     ]
   in
-  let md5_env = md5_env env in
-  Stog_msg.verbose ~info: "run" ~level: 5 ("digest(env)="^md5_env);
-
   match only_elt with
-    None ->
-      let state = compute_levels ~use_cache env state in
-      (state, md5_env)
+    None -> compute_levels ~use_cache env state
   | Some elt_id ->
-      let state = compute_levels ~use_cache ~elts: [elt_id] env state in
-      (state, md5_env)
+      compute_levels ~use_cache ~elts: [elt_id] env state
 ;;
-
 
 let encode_for_url s =
   let len = String.length s in
@@ -582,7 +553,7 @@ let output_elt state elt =
       cache_elt state elt
 ;;
 
-let output_elts ?elts state md5_env =
+let output_elts ?elts state =
   let stog = state.st_stog in
   let elts =
     match elts with
@@ -593,7 +564,7 @@ let output_elts ?elts state md5_env =
     | Some l -> List.iter (output_elt state) l; l
   in
   let elt_envs = List.fold_left
-    (fun elt_envs elt -> set_elt_env elt stog md5_env elt_envs)
+    (fun elt_envs elt -> set_elt_env elt stog elt_envs)
       Stog_types.Hid_map.empty elts
   in
   output_cache_info stog elt_envs
@@ -642,14 +613,14 @@ let generate ?(use_cache=true) ?only_elt stog modules =
         Some elt_id
   in
   let state = { st_stog = stog ; st_modules = modules } in
-  let (state, md5_env) = run ~use_cache ?only_elt state in
+  let state = run ~use_cache ?only_elt state in
   match only_elt with
     None ->
-      output_elts state md5_env;
+      output_elts state ;
       copy_other_files stog
   | Some elt_id ->
       let elt = Stog_types.elt state.st_stog elt_id in
-      output_elts ~elts: [elt] state md5_env
+      output_elts ~elts: [elt] state
 ;;
 
 
