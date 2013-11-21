@@ -23,13 +23,13 @@ Html generation.
   and an error is issued.<br/>
 </div>
 
-<pre><span id="VALget_in_env"><span class="keyword">val</span> get_in_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; Xmlm.name -&gt; 'a * string</code></pre><div class="info ">
+<pre><span id="VALget_in_env"><span class="keyword">val</span> get_in_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; Xmlm.name -&gt; 'a * Xtmpl.tree list</code></pre><div class="info ">
 <code class="code">get_in_env env tag</code> will look for the given string in the environment,
   by building a &lt;tag/&gt; node and evaluating it. If the result is the same node,
   then return <code class="code">""</code> else return the reduced value as a string.<br/>
 </div>
 
-<pre><span id="VALget_in_args_or_env"><span class="keyword">val</span> get_in_args_or_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; Xmlm.attribute list -&gt; Xmlm.name -&gt; 'a * string</code></pre><div class="info ">
+<pre><span id="VALget_in_args_or_env"><span class="keyword">val</span> get_in_args_or_env</span> : <code class="type">'a -&gt;<br/>       'a Xtmpl.env -&gt; Xtmpl.attribute list -&gt; Xmlm.name -&gt; 'a * Xtmpl.tree list</code></pre><div class="info ">
 <code class="code">get_in_args_or_env env args s</code> returns the value associated to <code class="code">s</code>
  in <code class="code">args</code> of else return the result of <code class="code">get_in_env env s</code>.<br/>
 </div>
