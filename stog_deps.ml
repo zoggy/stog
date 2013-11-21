@@ -34,8 +34,6 @@ module Smap = Stog_types.Str_map;;
 
 module Depset = Stog_types.Depset
 
-let deps = ref Smap.empty;;
-
 let add_dep stog elt dep =
   match elt.elt_type with
     "by-keyword" | "by-month" | "by-topic" -> stog
@@ -76,12 +74,14 @@ let add_dep stog elt dep =
       let f_elt stog elt =
         let src_hid = Stog_types.string_of_human_id elt.elt_human_id in
         let set =
-          try Smap.find src_hid !deps
+          try Smap.find src_hid stog.stog_deps
           with Not_found -> Depset.empty
         in
         let set =
           match dep with
-            File _ -> Depset.add dep set
+            File f ->
+              (*prerr_endline ("add dep "^src_hid^" -> "^f);*)
+              Depset.add dep set
           | Elt dst_hid ->
               (* do not add deps from an element to its parent, child or brothers *)
               if List.mem dst_hid src_hids then
@@ -133,7 +133,7 @@ let max_deps_date stog elt_by_hid hid =
               (acc, depth)
             else
               (
-               let elt_deps = Smap.find hid !deps in
+               let elt_deps = Smap.find hid stog.stog_deps in
                Depset.fold f elt_deps (acc, depth+1)
               )
           with Not_found ->

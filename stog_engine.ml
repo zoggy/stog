@@ -359,6 +359,14 @@ let cache_elt state elt =
 
 let output_cache_info stog elt_envs =
   let info_file = cache_info_file stog in
+  (*Stog_tmap.iter
+    (fun elt_id elt ->
+       ignore(Stog_deps.max_deps_date stog
+        (fun hid -> snd (Stog_types.elt_by_human_id stog (Stog_types.human_id_of_string hid)))
+          (Stog_types.string_of_human_id elt.Stog_types.elt_human_id))
+    )
+       stog.Stog_types.stog_elts;
+  *)
   let v = (elt_envs, stog.stog_deps, stog.stog_id_map) in
   let oc = open_out_bin info_file in
   output_value oc v;
@@ -617,7 +625,7 @@ let generate ?(use_cache=true) ?only_elt stog modules =
   match only_elt with
     None ->
       output_elts state ;
-      copy_other_files stog
+      copy_other_files state.st_stog
   | Some elt_id ->
       let elt = Stog_types.elt state.st_stog elt_id in
       output_elts ~elts: [elt] state
@@ -660,7 +668,7 @@ let get_elt_out stog elt =
 let get_languages data env =
   match opt_in_env data env ("", "languages") with
   | (data, Some [Xtmpl.D s]) -> (data, Stog_misc.split_string s [','; ';' ; ' '])
-  | (data, Some xmls) -> 
+  | (data, Some xmls) ->
       failwith ("Invalid languages specification: "^(Xtmpl.string_of_xmls xmls))
   | (data, None) -> (data, ["fr" ; "en"])
 ;;
