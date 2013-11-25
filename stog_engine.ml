@@ -405,19 +405,19 @@ let compute_levels ?(use_cache=true) ?elts env state =
 
 let rec make_fun (name, params, body) acc =
   let f data env atts subs =
-    let vars = List.map
-      (fun (param,default) ->
+    let vars = Xtmpl.Name_map.fold
+      (fun param default acc ->
          match Xtmpl.get_arg atts param with
-           None -> (param, [], default)
-         | Some v -> (param, [], v)
+           None -> (param, Xtmpl.empty_atts, default) :: acc
+         | Some v -> (param, Xtmpl.empty_atts, v) :: acc
       )
-      params
+      params []
     in
     let env = env_of_defs ~env vars in
     let body = [ Xtmpl.E (("",Xtmpl.tag_env), atts, body) ] in
     let f data _ atts xmls =
-      match atts, xmls with
-        [], [] -> (data, subs)
+      match Xtmpl.Name_map.is_empty atts, xmls with
+        true, [] -> (data, subs)
       | _ -> raise Xtmpl.No_change
     in
     let env = Xtmpl.env_add "contents" f env in
@@ -429,7 +429,8 @@ let rec make_fun (name, params, body) acc =
 and env_of_defs ?env defs =
   let f x acc =
     match x with
-    | (key, [], body) -> (key, fun data _ _ _ -> (data, body)) :: acc
+    | (key, atts, body) when Xtmpl.Name_map.is_empty atts ->
+        (key, fun data _ _ _ -> (data, body)) :: acc
     | _ ->  make_fun x acc
   in
   (* fold_right instead of fold_left to reverse list and keep associations
@@ -636,13 +637,13 @@ let generate ?(use_cache=true) ?only_elt stog modules =
 
 
 let get_in_env data env (prefix, s) =
-  let node = [ Xtmpl.E((prefix,s),[],[]) ] in
+  let node = [ Xtmpl.E((prefix,s), Xtmpl.empty_atts, []) ] in
   let (data, node2) = Xtmpl.apply_to_xmls data env node in
   if node2 = node then (data, []) else (data, node2)
 ;;
 
 let opt_in_env data env (prefix, s) =
-  let node = [ Xtmpl.E((prefix,s),[],[]) ] in
+  let node = [ Xtmpl.E((prefix,s), Xtmpl.empty_atts, []) ] in
   let (data, node2) = Xtmpl.apply_to_xmls data env node in
   if node2 = node then (data, None) else (data, Some node2)
 ;;
@@ -680,14 +681,19 @@ let env_add_lang_rules data env stog elt =
   | Some lang ->
       let (data, languages) = get_languages data env in
       let map_lang lang =
-         let url = elt_url { stog with stog_lang = Some lang } elt in
-         let img_url = Stog_types.url_concat stog.stog_base_url (lang^".png") in
-         Xtmpl.E (("", "a"), [("", "href"), [ Xtmpl.D (Stog_types.string_of_url url) ]], [
+        let url = elt_url { stog with stog_lang = Some lang } elt in
+        let img_url = Stog_types.url_concat stog.stog_base_url (lang^".png") in
+        Xtmpl.E (("", "a"), 
+         Xtmpl.atts_of_list [("", "href"), [ Xtmpl.D (Stog_types.string_of_url url) ]],
+         [
            Xtmpl.E (("", "img"),
-            [ ("", "src"), [ Xtmpl.D (Stog_types.string_of_url img_url) ] ;
-              ("", "title"), [ Xtmpl.D lang ] ;
-              ("", "alt"), [ Xtmpl.D lang]
-            ], [])])
+            Xtmpl.atts_of_list
+              [ ("", "src"), [ Xtmpl.D (Stog_types.string_of_url img_url) ] ;
+                ("", "title"), [ Xtmpl.D lang ] ;
+                ("", "alt"), [ Xtmpl.D lang]
+              ],
+            [])]
+        )
       in
       let f data _env args _subs =
         let languages = List.filter ((<>) lang) languages in

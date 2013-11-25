@@ -47,10 +47,10 @@ let only_elt = ref None;;
 let add_stog_def s =
   match Stog_misc.split_string s [':'] with
     [] -> ()
-  | [name] -> stog_defs := !stog_defs @ [(("", name), [], [])]
+  | [name] -> stog_defs := !stog_defs @ [(("", name), Xtmpl.empty_atts, [])]
   | name :: q ->
       let contents = Xtmpl.xml_of_string (String.concat ":" q) in
-      stog_defs := !stog_defs @ [(("", name), [], [contents])]
+      stog_defs := !stog_defs @ [(("", name), Xtmpl.empty_atts, [contents])]
 
 let set_stog_options stog =
   let stog =

@@ -185,28 +185,25 @@ let add_elt stog elt =
 
 
 let fill_elt_from_atts =
-  let rec iter elt = function
-    [] -> elt
-  | h :: q ->
-      let to_s = function [Xtmpl.D s] -> s | _ -> "" in
-      let elt =
-        match h with
-        | (("","with-contents"),_) -> elt
-        | (("","title"), v) -> { elt with elt_title = (to_s v) }
-        | (("","keywords"), v) -> { elt with elt_keywords = keywords_of_string (to_s v) }
-        | (("","topics"), v) -> { elt with elt_topics = topics_of_string (to_s v) }
-        | (("","date"), v) -> { elt with elt_date = Some (date_of_string (to_s v)) }
-        | (("","published"), v) -> { elt with elt_published = bool_of_string (to_s v) }
-        | (("","sets"), v) -> { elt with elt_sets = sets_of_string (to_s v) }
-        | (("","language-dep"), v) -> { elt with elt_lang_dep = bool_of_string (to_s v) }
-        | (("","doctype"), v) -> { elt with elt_xml_doctype = Some (to_s v) }
-        | (("", "use"), v) ->
-            { elt with elt_used_mods = used_mods_of_string elt.elt_used_mods (to_s v) }
-        | (att, v) -> { elt with elt_defs = (att, [], v) :: elt.elt_defs }
-      in
-      iter elt q
+  let to_s = function [Xtmpl.D s] -> s | _ -> "" in
+  let f name v elt =
+    match name with
+    | ("","with-contents")-> elt
+    | ("","title") -> { elt with elt_title = (to_s v) }
+    | ("","keywords") -> { elt with elt_keywords = keywords_of_string (to_s v) }
+    | ("","topics") -> { elt with elt_topics = topics_of_string (to_s v) }
+    | ("","date") -> { elt with elt_date = Some (date_of_string (to_s v)) }
+    | ("","published") -> { elt with elt_published = bool_of_string (to_s v) }
+    | ("","sets") -> { elt with elt_sets = sets_of_string (to_s v) }
+    | ("","language-dep") -> { elt with elt_lang_dep = bool_of_string (to_s v) }
+    | ("","doctype") -> { elt with elt_xml_doctype = Some (to_s v) }
+    | ("", "use") ->
+        { elt with elt_used_mods = used_mods_of_string elt.elt_used_mods (to_s v) }
+    | _ -> 
+        let defs = (name, Xtmpl.empty_atts, v) :: elt.elt_defs in
+        { elt with elt_defs = defs  }
   in
-  iter
+  Xtmpl.Name_map.fold f 
 ;;
 
 let fill_elt_from_nodes =
@@ -252,7 +249,7 @@ let elt_of_file stog file =
       None -> elt
     | Some s -> { elt with elt_human_id = Stog_types.human_id_of_string s }
   in
-  let elt = fill_elt_from_atts elt atts in
+  let elt = fill_elt_from_atts atts elt in
   match Xtmpl.get_arg_cdata atts ("", "with-contents") with
     Some s when bool_of_string s ->
       (* arguments are also passed in sub nodes, and contents is in

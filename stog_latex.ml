@@ -120,15 +120,19 @@ let fun_latex stog env args subs =
   let url = Stog_types.url_concat stog.Stog_types.stog_base_url svg in
   let xmls =
     (Xtmpl.E (("","img"),
-      [("", "class"), [Xtmpl.D "latex"] ;
-        ("", "src"), [Xtmpl.D (Stog_types.string_of_url url) ] ;
-        ("", "alt"), [Xtmpl.D code] ;
-        ("", "title"), [Xtmpl.D code]
-      ],
+      Xtmpl.atts_of_list 
+        [ ("", "class"), [Xtmpl.D "latex"] ;
+          ("", "src"), [Xtmpl.D (Stog_types.string_of_url url) ] ;
+          ("", "alt"), [Xtmpl.D code] ;
+          ("", "title"), [Xtmpl.D code]
+        ],
       []) ) ::
       (match showcode with
          false -> []
-       | true -> [ Xtmpl.E (("","hcode"), [("","lang"), [Xtmpl.D "tex"]], [Xtmpl.D code]) ]
+       | true ->
+           [ Xtmpl.E (("","hcode"), 
+              Xtmpl.one_att ("","lang") [Xtmpl.D "tex"],
+              [Xtmpl.D code]) ]
       )
   in
   (stog, xmls)

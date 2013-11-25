@@ -134,7 +134,9 @@ let fun_eval stog env args code =
     in
     let session_name = Xtmpl.get_arg_cdata args ("", "session") in
     let id_opt = Xtmpl.opt_arg_cdata args ("", "id") in
-    let atts = match id_opt with "" -> [] | id -> [("","id"), [Xtmpl.D id]] in
+    let atts = Xtmpl.atts_of_list 
+      (match id_opt with "" -> [] | id -> [("","id"), [Xtmpl.D id]])
+    in
     let code = concat_code code in
     let phrases = ocaml_phrases_of_string code in
     let rec iter acc = function
@@ -154,7 +156,7 @@ let fun_eval stog env args code =
             begin
               let code = Stog_misc.highlight ~opts phrase in
               let code = if toplevel then Printf.sprintf "# %s" code else code in
-              Xtmpl.E (("","div"), [], [Xtmpl.xml_of_string code])
+              Xtmpl.E (("","div"), Xtmpl.empty_atts, [Xtmpl.xml_of_string code])
             end
            else
             Xtmpl.D ""
@@ -177,7 +179,9 @@ let fun_eval stog env args code =
             false ->
               if show_stdout then
                 let xml =
-                  Xtmpl.E (("","div"), [("","class"), [Xtmpl.D "ocaml-toplevel"]], [Xtmpl.D stdout])
+                  Xtmpl.E (("","div"),
+                   Xtmpl.one_att ("","class") [Xtmpl.D "ocaml-toplevel"],
+                   [Xtmpl.D stdout])
                 in
                 xml :: code :: acc
               else
@@ -187,7 +191,9 @@ let fun_eval stog env args code =
                 (if raised_exc then " ocaml-exc" else "")
               in
               let xml =
-                Xtmpl.E (("","div"), [("","class"), [Xtmpl.D classes]], [Xtmpl.D output])
+                Xtmpl.E (("","div"),
+                 Xtmpl.one_att ("","class") [Xtmpl.D classes],
+                 [Xtmpl.D output])
               in
               xml :: code :: acc
         in
@@ -195,7 +201,10 @@ let fun_eval stog env args code =
     in
     let xml = iter [] phrases in
     if show_code || toplevel || show_stdout then
-      (stog, [ Xtmpl.E (("","pre"), [("","class"), [Xtmpl.D "code-ocaml"]] @ atts, xml) ])
+      (stog, [ Xtmpl.E (("","pre"),
+          Xtmpl.atts_of_list ~atts [("","class"), [Xtmpl.D "code-ocaml"]],
+          xml)
+       ])
     else
       (stog, [ Xtmpl.D "" ])
   with

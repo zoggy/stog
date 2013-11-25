@@ -47,7 +47,6 @@ type message = {
 type 'a tree = 'a tree_node
 and 'a tree_node = Node of 'a * 'a tree list
 
-
 type body = Xtmpl.tree list
 
 type human_id = {
@@ -73,7 +72,7 @@ let human_id_of_string s =
   }
 ;;
 
-type def = Xtmpl.name * Xtmpl.attribute list * body
+type def = Xtmpl.name * Xtmpl.attributes * body
 
 let get_def =
   let p name (s,_,_) = s = name in
@@ -365,7 +364,7 @@ let sort_ids_elts_by_date elts =
 
 let sort_ids_elts_by_rules =
   let apply_field env (data, acc) field =
-    let xml = [Xtmpl.E (("",field),[],[])] in
+    let xml = [Xtmpl.E (("",field), Xtmpl.empty_atts,[])] in
     let (data, xmls) = Xtmpl.apply_to_xmls data env xml in
     (data, xmls :: acc)
   in
