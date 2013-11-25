@@ -56,7 +56,7 @@ style:
 #	cp -f *.svg $(DEST_DIR)/
 
 test:
-	$(MAKE) BASE_URL_OPTION="--site-url file://$(DEST_DIR)" site
+	$(MAKE) BASE_URL_OPTION="--local" site
 
 tree:
 	tree -I less | grep -v release | grep -v comment | grep -v ocaml\\. \

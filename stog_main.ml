@@ -34,6 +34,7 @@ let site_url = ref None ;;
 let tmpl_dir = ref None ;;
 let use_cache = ref true;;
 let depcut = ref false;;
+let local = ref false;;
 
 let stog_defs = ref [] ;;
 
@@ -53,10 +54,17 @@ let add_stog_def s =
       stog_defs := !stog_defs @ [(("", name), Xtmpl.empty_atts, [contents])]
 
 let set_stog_options stog =
+  let stog = { stog with Stog_types.stog_outdir = !output_dir } in
   let stog =
-    match !site_url with
-      None -> stog
-    | Some s -> { stog with Stog_types.stog_base_url = s }
+    match !site_url, !local with
+      None, false -> stog
+    | None, true ->
+        let url = "file://" ^ stog.stog_outdir in
+        let url = Stog_types.url_of_string url in
+        { stog with Stog_types.stog_base_url = url }
+    | Some s, false -> { stog with Stog_types.stog_base_url = s }
+    | Some _, true ->
+        failwith "Please choose --local or --site-url but not both"
   in
   let stog =
     match !tmpl_dir with
@@ -68,7 +76,6 @@ let set_stog_options stog =
       None -> stog
     | Some s -> { stog with Stog_types.stog_lang = Some s }
   in
-  let stog = { stog with Stog_types.stog_outdir = !output_dir } in
   let stog = { stog with Stog_types.stog_depcut = !depcut } in
   let stog = { stog with Stog_types.stog_defs = stog.stog_defs @ !stog_defs } in
   stog
@@ -87,6 +94,9 @@ let options = [
 
     "--site-url", Arg.String (fun s -> site_url := Some (Stog_types.url_of_string s)),
     "<s> use <s> as site url instead of the one specified in the input stog" ;
+
+    "--local", Arg.Set local,
+    " set site-url as file://<destination directory>" ;
 
     "--tmpl", Arg.String (fun s -> tmpl_dir := Some s),
     "<dir> use <dir> as template directory instead tmpl of stog dir";
