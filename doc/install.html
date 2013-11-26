@@ -27,28 +27,17 @@ LaTeX in your pages.</li>
 </ul>
 </section>
 
-<section id="quickdebian" title="Quick install on Debian">
+<section id="quickdebian" title="Quick install with Opam">
 <p>
-The easiest way to install on a Debian system is as follows:
+The easiest way to install is to use  <ext-a href="http://opam.ocamlpro.com">OPAM</ext-a>.
+Install Opam, then, as a regular user, fetch and install an OCaml version and install Stog.
+The whole can be done with the following opam commands:
 </p>
-<ol>
-<li>Install <ext-a href="http://opam.ocamlpro.com">OPAM</ext-a>, the OCaml package manager,
-running the following command with root privileges:
-<command-line>
-$ echo "deb [arch=amd64] http://www.recoil.org/~avsm/ wheezy main" >> /etc/apt/sources.list
-$ apt-get update
-$ apt-get install opam autotools-dev m4
-</command-line>
-</li>
-<li>As a regular user, fetch and install an OCaml version and install Stog. The whole
-can be done with the following opam commands:
 <command-line>
 $ opam init --comp=4.01
 $ opam update
 $ opam install stog
 </command-line>
-</li>
-</ol>
 </section>
 
 <section id="download" title="From the sources">
@@ -153,8 +142,9 @@ Just type
 </p>
 <command-line>make &amp;&amp; make install</command-line>
 <p>
-This will install <icode>stog</icode>, <icode>stog.byte</icode>
-and <icode>stog-ocaml-session</icode> in the same directory as
+This will install <icode>stog</icode>, <icode>stog.byte</icode>,
+<icode>stog-ocaml-session</icode>, <icode>mk-stog</icode>, <icode>mk-stog.byte</icode>
+and <icode>mk-stog-ocaml-session</icode> in the same directory as
 <icode>ocamlc</icode>. This will also install the <icode>stog</icode> library and the
 <icode>stog.disqus</icode> and <icode>stog.markdown</icode> plugins, with findlib.
 </p>
