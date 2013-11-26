@@ -5,3 +5,4 @@ elements = [".*\\..xml$"; ".*\\.html$"]
 (* Regexps of files matching 'elements' regexps but not containing elements
    *)
 "not-elements" = []
+"follow-symlinks" = false

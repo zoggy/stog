@@ -39,7 +39,7 @@ templates (in directory <icode>templates</icode>) and the
 <icode>config</icode> file, containing stog configuration. In this file,
 using regular expressions, one can indicate which files must be ignored,
 and which files are elements. Files not being ignored nor being elements
-will be copied by <icode>stog</icode> in the target directory.
+will be copied by <icode>stog</icode> to the target directory.
 The "follow-symlinks" option indicates whether to follow symlinks or not.
 Default is to ignore symlinks.
 </p>
@@ -55,8 +55,9 @@ When launched, <icode>stog</icode> performs the following actions:
 </p>
 <ol>
 <li>Read the given directory hierarachy;</li>
-<li>Create the output directory;</li>
-<li>Generate element files in this directory;</li>
+<li>Create the terget directory if it does not exist;</li>
+<li>Apply the rewrite engine on elements;</li>
+<li>Generate resulting element files in the target directory;</li>
 <li>Copy all other files in the target directory, of course
   keeping the source directory structure.</li>
 </ol>
