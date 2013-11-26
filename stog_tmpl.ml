@@ -89,10 +89,16 @@ let page stog =
     <head>
       <title><site-title/> : <elt-title/></title>
       <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
+      <link href=\"&lt;site-url/&gt;/style.css\" rel=\"stylesheet\" type=\"text/css\"/>
     </head>
     <body>
-      <h1><elt-title/></h1>
-      <elt-body/>
+      <div id=\"page\">
+        <div id=\"header\">
+          <div class=\"page-title\"><elt-title/></div>
+        </div>
+        <if elt-type=\"post\"><div class=\"date\"><elt-date/></div></if>
+        <elt-body/>
+      </div>
     </body>
   </html>"
   in

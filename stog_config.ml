@@ -75,7 +75,7 @@ let read_config dir =
   if not (Sys.file_exists cfg_dir) then
     begin
       Stog_msg.warning
-        (Printf.sprintf "Creating inexistent configuration directory %S" cfg_dir);
+        (Printf.sprintf "Creating non-existent configuration directory %S" cfg_dir);
       Stog_misc.safe_mkdir cfg_dir;
     end;
   group#read rc_file;

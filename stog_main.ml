@@ -59,7 +59,13 @@ let set_stog_options stog =
     match !site_url, !local with
       None, false -> stog
     | None, true ->
-        let url = "file://" ^ stog.stog_outdir in
+        let d =
+          if Filename.is_relative stog.stog_outdir then
+            Filename.concat (Sys.getcwd()) stog.stog_outdir
+          else
+            stog.stog_outdir
+        in
+        let url = "file://" ^ d in
         let url = Stog_types.url_of_string url in
         { stog with Stog_types.stog_base_url = url }
     | Some s, false -> { stog with Stog_types.stog_base_url = s }

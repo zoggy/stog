@@ -167,9 +167,7 @@ let cache_info_file stog = Filename.concat stog.stog_cache_dir "info";;
 let stog_cache_name = "_stog";;
 
 let cache_file name stog elt =
-  let cache_dir = Filename.concat
-    stog.stog_cache_dir name
-  in
+  let cache_dir = Filename.concat stog.stog_cache_dir name in
   Filename.concat cache_dir
     ((String.concat "/" elt.elt_human_id.hid_path)^"._elt")
 ;;
@@ -683,7 +681,7 @@ let env_add_lang_rules data env stog elt =
       let map_lang lang =
         let url = elt_url { stog with stog_lang = Some lang } elt in
         let img_url = Stog_types.url_concat stog.stog_base_url (lang^".png") in
-        Xtmpl.E (("", "a"), 
+        Xtmpl.E (("", "a"),
          Xtmpl.atts_of_list [("", "href"), [ Xtmpl.D (Stog_types.string_of_url url) ]],
          [
            Xtmpl.E (("", "img"),
