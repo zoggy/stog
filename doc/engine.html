@@ -1,4 +1,5 @@
 <page title="Evaluation and templating">
+<section id="howitworks" title="How it works">
 <div class="float-right">
 <a href="engine.svg">
 <image height="700" src="engine.png" alt="engine's big picture"
@@ -41,6 +42,7 @@ final stog structure are outtputted to files in the target directory, according
 to their path in the source directory. The cache is updated with information
 about dependencies and contents of elements. For each module, a specific
 function is called to cache the final data associated to the module.
+All cache information is stored in the <icode>.stog/cache</icode> directory.
 </p>
 <p>
 The cached elements and dependencies will be used next time Stog is run,
@@ -54,7 +56,8 @@ on the elements' contents (which are XML trees) but can also perform other
 actions like gathering information in the module-specific data structure
 to use it in a higher level.
 </p>
-<p>Various levels are required to ensure some rules will be applied after
+<p>Various levels are required to ensure some treatments or rewrite rules
+will be applied after
 others, for example to verify cross-element links. Levels used by predefined
 modules are numbered like lines in BASIC programs: 0, 50, 100, 120, ... making
 plugins able to insert new levels.
@@ -69,29 +72,21 @@ if the element has type "page", then a template <icode>page.tmpl</icode> will
 be looked for.
 </p>
 -->
-<p>An environment is built containing the
-<a href="stog-main-element">site-wide attributes</a> and the element attributes.
-This environment is a set of rewrite rules.
-</p>
-<p>In each level, each function of the level is applied to the element current body
-(the "first current body" is the template, where <icode>&lt;elt-body/&gt;</icode> will be
-rewritten to the tree of the element body as given in the element file).
-</p>
-<p>The pre-defined levels contain pre-defined functions which apply
-<page href="funs">default rules</page>, in addition to the rules from
-the environment and rules added by plugins.
-</p>
-<p>When all levels were applied to elements, the contents of each element
-is stored in the cache (the <icode>.stog/cache</icode> directory).
-The final XML file is also created from this contents.
-</p>
-<p>Remark: If the element file was not modified since the corresponding
-cache file was stored, nor its dependencies (see <elt href="running"/>),
-the contents of the element is read back from
-the cache, and the level functions are not applied to this element.
-</p>
+</section>
 
-<p>The environment is used in the following way.
+<section id="env" title="Environment">
+<p>An environment is built containing the
+<a href="stog-main-element">site-wide attributes</a>.
+This environment is a set of rewrite rules. It is passed to every "level function".
+</p>
+<p>
+A "level function" can enrich this environment with the attributes of an element
+(using <elt href="Stog_engine#VALelt_env">this function</elt>). This is what
+most of the default level functions do, in addition to defining rewrite rules,
+to get the "rewrite environment" to apply on each element to compute.
+</p>
+<p>
+The environment is used in the following way to rewrite XML trees.
 For each encountered node with tag <icode>t</icode>, <icode>t</icode> is looked up
 in the environment for its associated <em>function</em> <icode>f</icode>.
 </p>
@@ -109,8 +104,9 @@ library.</p>
 <p>Besides, the contents of the attributes are also analysed to perform such substitutions,
 before looking up for the tag in the environment.
 </p>
-<p>Stog comes with <page href="funs">predefined functions</page>
+<p>Stog comes with <page href="funs">predefined functions</page> (in two default modules)
 associated to some tags, but more can be created in
 <elt href="writing_plugins">plugins</elt>.
 </p>
+</section>
 </page>
