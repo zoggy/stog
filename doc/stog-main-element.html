@@ -1,0 +1,24 @@
+<page title="Stog main element">
+<p>
+One <elt href="stog-elements">element</elt> is called the main element. This element is a regular
+element with the <icode>main</icode> attribute set to "true". There can be only
+one main element.
+</p>
+<p>
+Some attributes of this main element are used to specify site-wide information:
+</p>
+<ul>
+<li><b>title</b>: The title of the blog is the same as this element and can be accessed
+with &lt;site-title/&gt; in templates,</li>
+<li><b>stog:site-description</b>: A short description of the site; use &lt;site-description/&gt;
+to access it in templates;</li>
+<li><b>stog:site-url</b>: The base url of the site, used to forge urls when generating pages;
+use &lt;site-url/&gt; to insert it in templates,</li>
+<li><b>stog:site-email</b>: A contact email for the site, accessible with &lt;site-email/&gt;,</li>
+<li><b>stog:rss-length</b>: The default length of RSS feeds.</li>
+</ul>
+<p>
+In the main element, any attribute beginning with "stog:" will be used as global attribute
+and accessible in all templates by its name. Other attributes are associated to the element only.
+</p>
+</page>

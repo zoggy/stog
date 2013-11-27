@@ -1,3 +1,6 @@
+- rules <elt-date> and <elt-datetime> should handle a format attribute
+
+
 - import directive in element headers
 - to fix: computation of elt graph
 

@@ -43,11 +43,16 @@ let first_that_exists =
 ;;
 
 let date_of_string s =
+  try Netdate.parse s
+  with _ -> failwith ("Invalid date: "^s)
+;;
+(*
   try Scanf.sscanf s "%d/%d/%d" (fun year month day -> {day; month; year})
   with
   | Scanf.Scan_failure _ -> failwith ("Invalid date: "^s)
   | End_of_file -> failwith (Printf.sprintf "Incomplete date \"%s\"" s)
 ;;
+*)
 
 let topics_of_string s =
   List.map Stog_misc.strip_string
@@ -199,11 +204,11 @@ let fill_elt_from_atts =
     | ("","doctype") -> { elt with elt_xml_doctype = Some (to_s v) }
     | ("", "use") ->
         { elt with elt_used_mods = used_mods_of_string elt.elt_used_mods (to_s v) }
-    | _ -> 
+    | _ ->
         let defs = (name, Xtmpl.empty_atts, v) :: elt.elt_defs in
         { elt with elt_defs = defs  }
   in
-  Xtmpl.Name_map.fold f 
+  Xtmpl.Name_map.fold f
 ;;
 
 let fill_elt_from_nodes =

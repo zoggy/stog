@@ -28,21 +28,7 @@
 
 (** *)
 
-type date = {
-  year : int;
-  month : int;
-  day : int;
-}
-type time = Stog_date.t ;;
-
-type message = {
-    mes_time : time ;
-    mes_subject : string ;
-    mes_from : string ;
-    mes_to : string list ;
-    mes_body : string ;
-    mes_id : string;
-  }
+type date = Netdate.t
 
 type 'a tree = 'a tree_node
 and 'a tree_node = Node of 'a * 'a tree list
@@ -108,14 +94,7 @@ type elt =
   }
 and elt_id = elt Stog_tmap.key
 
-let today () =
-  let t = Unix.gmtime (Unix.time()) in
-  {
-    year = t.Unix.tm_year + 1900;
-    month = t.Unix.tm_mon+1;
-    day = t.Unix.tm_mday
-  }
-;;
+let today () = Netdate.create (Unix.time()) ;;
 
 let make_elt ?(typ="dummy") ?(hid={ hid_path = [] ; hid_absolute = false }) () =
   { elt_human_id = hid ;

@@ -1,4 +1,5 @@
 Next release:
+* new base rule <elt-datetime>
 * new option --local
 * functions defined in elements now handles all arguments, using
   default values for the ones specified in function definition

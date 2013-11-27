@@ -577,22 +577,22 @@ let fun_prepare_toc tags stog env args subs =
       in
       Xtmpl.E (("", "li"), Xtmpl.one_att ("", "class") [Xtmpl.D ("toc-"^cl)],
        [ Xtmpl.E (("", "elt"),
-          Xtmpl.atts_of_list 
-            [("", "href"), [Xtmpl.D ("#"^name)] ; ("","long"), [Xtmpl.D "true"]], 
+          Xtmpl.atts_of_list
+            [("", "href"), [Xtmpl.D ("#"^name)] ; ("","long"), [Xtmpl.D "true"]],
           []) ]
        @
        ( match subs with
           [] -> []
         | _ ->
-              [ Xtmpl.E (("", "ul"), 
+              [ Xtmpl.E (("", "ul"),
                  Xtmpl.one_att ("", "class") [Xtmpl.D "toc"],
                  List.map xml_of_toc subs)
               ]
        )
        )
   in
-  let xml = 
-    Xtmpl.E (("", "ul"), 
+  let xml =
+    Xtmpl.E (("", "ul"),
      Xtmpl.one_att ("", "class") [Xtmpl.D "toc"],
      List.map xml_of_toc toc)
   in
@@ -744,7 +744,7 @@ let html_of_keywords elt stog env args _ =
       (fun (stog, acc) w ->
          let (stog, xmls) = f stog w in
          let href = url_of_hid stog ~ext: "html" (keyword_index_hid w) in
-         let xml = Xtmpl.E (("", "a"), 
+         let xml = Xtmpl.E (("", "a"),
             Xtmpl.one_att ("", "href") [Xtmpl.D (Stog_types.string_of_url href)],
             xmls)
          in
@@ -756,22 +756,13 @@ let html_of_keywords elt stog env args _ =
   (stog, List.flatten xmls)
 ;;
 
-let rss_date_of_date d =
-  let {year; month; day} = d in
-  {
-    Netdate.year = year ; month ; day;
-    hour = 8 ; minute = 0 ; second = 0 ; nanos = 0 ;
-    zone = 0 ; week_day = -1 ;
-  }
-;;
-
 (* FIXME: handle RSS files as any other element ? *)
 let rec elt_to_rss_item stog elt_id elt =
   let link = Stog_engine.elt_url stog elt in
   let pubdate =
     match elt.elt_date with
       None -> assert false
-    | Some d -> rss_date_of_date d
+    | Some d -> d
   in
   let f_word w =
     { Rss.cat_name = w ; Rss.cat_domain = None }
@@ -820,9 +811,7 @@ and generate_rss_feed_file stog ?title link elts file =
   let pubdate =
     match elts with
       [] -> None
-    | (_,h) :: _ ->
-        Some (rss_date_of_date
-         (match h.elt_date with None -> assert false | Some d -> d))
+    | (_,h) :: _ -> h.elt_date
   in
   let image =
     try
@@ -871,6 +860,9 @@ and build_base_rules stog elt_id =
   let f_src elt acc _ _ _ = (acc, [Xtmpl.D elt.elt_src]) in
   let f_date elt stog _ _ _ =
     (stog,[ Xtmpl.D (Stog_intl.string_of_date_opt stog.stog_lang elt.elt_date) ])
+  in
+  let f_datetime elt stog _ _ _ =
+    (stog,[ Xtmpl.D (Stog_intl.string_of_datetime_opt stog.stog_lang elt.elt_date) ])
   in
   let f_intro elt stog _ _ _ =
     (stog, intro_of_elt stog elt)
@@ -932,6 +924,7 @@ and build_base_rules stog elt_id =
       ("", Stog_tags.elements), (fun acc -> elt_list elt acc) ;
       ("", Stog_tags.elt_body), mk f_body ;
       ("", Stog_tags.elt_date), mk f_date ;
+      ("", Stog_tags.elt_datetime), mk f_datetime ;
       ("", Stog_tags.elt_intro), mk f_intro ;
       ("", Stog_tags.elt_keywords), mk html_of_keywords ;
       ("", Stog_tags.elt_path), mk fun_elt_path ;
@@ -1060,8 +1053,8 @@ and elt_list elt ?rss ?set stog env args _ =
           [
             Xtmpl.E (("", "a"), Xtmpl.one_att ("", "href") [Xtmpl.D (Stog_types.string_of_url link)],
              [
-               Xtmpl.E (("", "img"), 
-                Xtmpl.atts_of_list [("", "src"), [Xtmpl.D "rss.png"] ; ("", "alt"), [Xtmpl.D "Rss feed"]], 
+               Xtmpl.E (("", "img"),
+                Xtmpl.atts_of_list [("", "src"), [Xtmpl.D "rss.png"] ; ("", "alt"), [Xtmpl.D "Rss feed"]],
                 [])
              ]) ;
           ])
@@ -1325,7 +1318,7 @@ let cut_elts =
               in
               let xml =
                 if cp.cut_insert_link then
-                  [ Xtmpl.E (("","div"), 
+                  [ Xtmpl.E (("","div"),
                      Xtmpl.one_att ("","class") [Xtmpl.D ("cutlink "^(snd tag))],
                      [Xtmpl.E (("","elt"), Xtmpl.one_att ("","href") [Xtmpl.D new_hid_s],[])]
                     )

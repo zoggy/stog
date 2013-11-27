@@ -39,6 +39,7 @@ val functions : string
 val elt : string
 val elt_body : string
 val elt_date : string
+val elt_datetime : string
 val elt_keywords : string
 val elt_hid : string
 val elt_intro : string

@@ -1,0 +1,84 @@
+<page title="Stog elements">
+<p>
+An element is an Xml tree, defined in a file matched by the regular expressions
+given in the <elt href="overview#config-file">configuration file</elt>.
+It has one of the following forms. First form:
+</p>
+<hcode lang="xml">
+<![CDATA[<type title="Element title"
+ attribute="value"
+ attribute2="value2"
+ ...
+>
+Here is the body of the element.
+</type>
+]]>
+</hcode>
+<p>Second form, almost the same, except that <icode>with-contents="true"</icode>
+indicates that more attributes are given in subnodes, and the body is in the
+<icode>contents</icode> subnode:
+</p>
+<hcode lang="xml">
+<![CDATA[<type title="Element title"
+ with-contents="true"
+ attribute="value"
+ ...
+>
+ <attribute2>value2</attribute2>
+ ...
+ <contents>Here is the body of the element.</contents>
+</type>
+]]>
+</hcode>
+<p>
+<icode>type</icode> can be any string (like "post", "page", ...) and defines the type
+of the element. This allows different treatements according to the element type.
+</p>
+<p>
+You can specify any attribute for an element. Some attributes are used
+internally:
+</p>
+<ul>
+<li><b>title</b>: this is the title of the element; use <icode>&lt;elt-title/&gt;</icode>
+in templates to access it,</li>
+<li><b>keywords</b>: the list of comma-separated keywords associated to the element;
+use <icode>&lt;elt-keywords/&gt;</icode> in templates to insert the list of keywords
+with links to by-keyword index,</li>
+<li><b>topics</b>: same as keywords, but for topics (access with <icode>&lt;elt-topics/&gt;</icode>),</li>
+<li><b>date</b>: the element date, used for sorting in list. The date format follows
+<ext-a href="https://tools.ietf.org/html/rfc3339">RFC 3339</ext-a>,
+for example <i>2013/11/26</i> or <i>2013/11/26 09:16:45</i>.
+Use <icode>&lt;elt-date/&gt;</icode> or <icode>&lt;elt-datetime/&gt;</icode>
+in templates to insert it.
+The function
+<ext-a href="http://projects.camlcity.org/projects/dl/ocamlnet-3.7.3/doc/html-main/Netdate.html#VALparse">Netdate.parse</ext-a> from OCamlnet is used to parse dates,</li>
+<li><b>published</b>: can be set to <i>false</i> to prevent the element from being generated;
+useful when an element is not ready yet for publication,</li>
+<li><b>sets</b>: a comma-separated list of set names; sets can be used to list elements
+belonging to a set,</li>
+<li><b>language-dep</b>: can be set to <i>false</i> to indicate that this page is not
+language dependent, when generating multi-language sites (this affects the name of the
+generated file),</li>
+<li><b>doctype</b>: specify the doctype which will be printed into the final XML file. Default is "HTML".
+If doctype is "HTML" (case-insensitive), tags are not self-closed, except
+    <ext-a href="http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements">HTML5 void elements</ext-a>.
+</li>
+</ul>
+<p>
+Any other attribute will be available by its name in the environment when processing the template
+associated to the element type. The element type can be accessed with <icode>&lt;elt-type/&gt;</icode>.
+More details in <elt href="atts-functions"></elt>.
+</p>
+<p>
+To generate the file corresponding to an element, <icode>stog</icode> will use the type of
+the element (for example "post") to load the associated template (for example "post.tmpl" in
+the templates directory).
+</p>
+<p>You can have a look at the source of the pages of this site at the bottom of each page.
+The sources of this site can be a good starting point. You can browse it in the
+<ext-a href="https://github.com/zoggy/stog/tree/master/doc">doc directory of the
+distribution</ext-a>.
+</p>
+<hr width="100%"/>
+<notes/>
+</page>

@@ -27,45 +27,54 @@
 (*********************************************************************************)
 
 open Stog_types
+open Netdate
 
 type lang_abbrev = string
 
 type lang_data = {
-  days : string array; (* 7 *)
-  months : string array; (* 12 *)
-  string_of_date : date -> string;
+    days : string array; (* 7 *)
+    months : string array; (* 12 *)
+    string_of_date : date -> string;
+    string_of_datetime : date -> string;
 }
-
-let tm_of_date {year; month; day} =
-  let tm = { Unix.tm_mday = day ; tm_mon = (month-1) ; tm_year = (year - 1900) ;
-             tm_sec = 0 ; tm_min = 0 ; tm_hour = 0 ; tm_wday = 0 ;
-             tm_yday = 0 ; tm_isdst = false ; } in
-  snd (Unix.mktime tm)
 
 let french =
   let days =
     [| "dimanche" ; "lundi" ; "mardi" ; "mercredi" ;
-       "jeudi" ; "vendredi" ; "samedi" |] in
+       "jeudi" ; "vendredi" ; "samedi" |]
+  in
   let months = [|
     "janvier" ; "février" ; "mars" ; "avril" ; "mai" ; "juin" ;
-    "juillet" ; "août" ; "septembre" ; "octobre" ; "novembre" ; "décembre" |] in
-  let string_of_date ({year;month;day} as date) =
-    let tm = tm_of_date date in
+    "juillet" ; "août" ; "septembre" ; "octobre" ; "novembre" ; "décembre" |]
+  in
+  let string_of_date date =
     Printf.sprintf "%s %d %s %d"
-      days.(tm.Unix.tm_wday) day months.(month-1) year in
-  { days; months; string_of_date }
+      days.(date.week_day) date.day months.(date.month-1) date.year
+  in
+  let string_of_datetime date =
+    Printf.sprintf "%s à %dh%02d"
+      (string_of_date date) date.hour date.minute
+  in
+  { days; months; string_of_date ; string_of_datetime }
 
 let english =
   let days =
     [| "Sunday" ; "Monday" ; "Tuesday" ; "Wednesday" ;
-       "Thursday" ; "Friday" ; "Saturday" |] in
+       "Thursday" ; "Friday" ; "Saturday" |]
+  in
   let months = [|
     "January" ; "February" ; "March" ; "April" ; "May" ; "June" ;
-    "July" ; "August" ; "September" ; "October" ; "November" ; "December" |] in
-  let string_of_date {year;month;day} =
+    "July" ; "August" ; "September" ; "October" ; "November" ; "December" |]
+  in
+  let string_of_date date =
     Printf.sprintf "%s %d, %d"
-      months.(month-1) day year in
-  { days; months; string_of_date }
+      months.(date.month-1) date.day date.year
+  in
+  let string_of_datetime date =
+    Printf.sprintf "%s at %dh%02d"
+      (string_of_date date) date.hour date.minute
+  in
+  { days; months; string_of_date ; string_of_datetime }
 
 let languages = ref Stog_types.Str_map.empty;;
 
@@ -105,10 +114,17 @@ let get_month lang m =
 
 let string_of_date lang d =
   (data_of_lang lang).string_of_date d
+let string_of_datetime lang d =
+  (data_of_lang lang).string_of_datetime d
 
 let string_of_date_opt lang = function
   None -> ""
 | Some d -> (data_of_lang lang).string_of_date d
+;;
+
+let string_of_datetime_opt lang = function
+  None -> ""
+| Some d -> (data_of_lang lang).string_of_datetime d
 ;;
 
 let short_string_of_date { year; month; day } =

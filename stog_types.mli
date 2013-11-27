@@ -28,7 +28,7 @@
 
 (** Types. *)
 
-type date = { year : int; month : int; day : int; }
+type date = Netdate.t
 
 type body = Xtmpl.tree list
 

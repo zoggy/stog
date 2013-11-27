@@ -78,8 +78,6 @@ val highlight : opts:string -> string -> string
 val url_of_hid :
   Stog_types.stog -> ?ext:string -> Stog_types.human_id -> Neturl.url
 
-val rss_date_of_date : Stog_types.date -> Rss.date
-
 (*
 (** Generate a RSS file from the given list of elements. The final RSS
   url must be given as it is embedded in the RSS file. *)

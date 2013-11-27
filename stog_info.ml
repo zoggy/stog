@@ -200,7 +200,7 @@ let compute_archives stog =
   let f_art elt_id elt ymap =
     match elt.elt_date with
       None -> ymap
-    | Some  {year; month; day = _} ->
+    | Some  {Netdate.year = year; Netdate.month = month } ->
         let mmap =
           try Stog_types.Int_map.find year ymap
           with Not_found -> Stog_types.Int_map.empty
@@ -277,7 +277,7 @@ let dot_of_graph f_href stog =
     let href = f_href elt in
     (Printf.sprintf "id%d" (Stog_tmap.int id),
      elt.elt_title,
-     ["shape", "rect"; "color", col; "fontcolor", col; 
+     ["shape", "rect"; "color", col; "fontcolor", col;
        "href", Stog_types.string_of_url href])
   in
   Stog_types.Graph.dot_of_graph ~f_edge ~f_node g

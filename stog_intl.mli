@@ -32,12 +32,12 @@ type lang_abbrev = string
 
 (** Such a structure must be defined for each language to support. *)
 type lang_data = {
-  days : string array;
-  months : string array;
-  string_of_date : Stog_types.date -> string;
+    days : string array;
+    months : string array;
+    string_of_date : Stog_types.date -> string;
+    string_of_datetime : Stog_types.date -> string;
 }
 
-val tm_of_date : Stog_types.date -> Unix.tm
 val french : lang_data
 val english : lang_data
 
@@ -52,6 +52,11 @@ val set_default_lang : lang_abbrev -> unit
 val data_of_lang : lang_abbrev option -> lang_data
 
 val get_month : lang_abbrev option -> int -> string
+
 val string_of_date : lang_abbrev option -> Stog_types.date -> string
 val string_of_date_opt : lang_abbrev option -> Stog_types.date option -> string
+
+val string_of_datetime : lang_abbrev option -> Stog_types.date -> string
+val string_of_datetime_opt : lang_abbrev option -> Stog_types.date option -> string
+
 val short_string_of_date : Stog_types.date -> string
