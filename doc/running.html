@@ -1,18 +1,9 @@
-<page title="Getting started"
-navbar-doc="active"
-with-contents="true"
->
-<contents>
-<prepare-toc depth="1">
-<toc>Sections:</toc>
-
-
-<section id="running" title="Running Stog">
+<page title="Running Stog">
 <p>
 To compile your web site, use the following command:
 </p>
 <command-line><![CDATA[stog <root-directory>]]></command-line>
-<p>Stog will generate your web site in <icode>./stog-output</icode>,
+<p>Stog will generate the result in <icode>./stog-output</icode>,
 except if you use the <icode>-d</icode> option to specify another
 output directory.
 </p>
@@ -31,6 +22,10 @@ field of the main element. It it useful to generate a local site, for example
 <command-line>stog --site-url file:///tmp/website your-directory</command-line>
 <p>
 to test your site locally with correct links.
+</p>
+<p>
+As a shortcut, the <icode>--local</icode> option sets <icode>stog:site-url</icode> to
+<icode>file://&lt;absolute path of output directory/&gt;</icode>.
 </p>
 <p id="optiondef">
 The <icode>--def</icode> option can be used to define an additional global rule. For example
@@ -96,75 +91,4 @@ to generate your site for a local test and for online publishing.
 Have a look at <ext-a href="https://github.com/zoggy/stog/tree/master/doc/Makefile">this
 Makefile</ext-a> used to build stog documentation.
 </p>
-</section>
-
-<section id="templates" title="Evaluation and templating">
-<p>
-The final files corresponding to elements are built the following way.
-</p>
-<p>Various rewrite levels are defined in Stog, and plugins can add more levels.
-</p>
-<p>A level is composed of a list of functions, each function taking an element
-and returning the (eventually modified) element. Pre-defined levels are composed
-of functions applying rewrite rules to element body.
-</p>
-<p>Various levels are required to ensure some rules will be applied after
-others, for example to verify cross-element links. Each level has a number,
-and levels are applied in order from 0 to n. Pre-defined levels are
-numbered like lines in BASIC programs: 0, 50, 100, 120, ... making
-plugins able to insert new levels.
-</p>
-<p>The first application of a level to an element uses the
-type of the element to load the corresponding template; for example,
-if the element has type "page", then a template <icode>page.tmpl</icode> will
-be looked for.
-</p>
-<p>An environment is built containing the
-<a href="stog-main-element">site-wide attributes</a> and the element attributes.
-This environment is a set of rewrite rules.
-</p>
-<p>In each level, each function of the level is applied to the element current body
-(the "first current body" is the template, where <icode>&lt;elt-body/&gt;</icode> will be
-rewritten to the tree of the element body as given in the element file).
-</p>
-<p>The pre-defined levels contain pre-defined functions which apply
-<page href="funs">default rules</page>, in addition to the rules from
-the environment and rules added by plugins.
-</p>
-<p>When all levels were applied to elements, the contents of each element
-is stored in the cache (the <icode>.stog/cache</icode> directory).
-The final XML file is also created from this contents.
-</p>
-<p>Remark: If the element file was not modified since the corresponding
-cache file was stored, nor its dependencies (see <elt href="#running"/>),
-the contents of the element is read back from
-the cache, and the level functions are not applied to this element.
-</p>
-
-<p>The environment is used in the following way.
-For each encountered node with tag <icode>t</icode>, <icode>t</icode> is looked up
-in the environment for its associated <em>function</em> <icode>f</icode>.
-</p>
-<p>If no <icode>f</icode> is found, then the XML node is left untouched
-and the children of the node are then analysed.
-</p>
-<p>If <icode>f</icode> is found, then it is called, given the environment,
-the attributes and the children of the node. Then the function returns
-a list of XML trees which must then be analysed.
-</p>
-<p>When this analyze reaches a fixpoint, the final XML is returned.
-</p>
-<p>This work is performed by the <ext-a href="https://github.com/zoggy/xtmpl">Xtmpl</ext-a>
-library.</p>
-<p>Besides, the contents of the attributes are also analysed to perform such substitutions,
-before looking up for the tag in the environment.
-</p>
-<p>Stog comes with <page href="funs">predefined functions</page>
-associated to some tags, but more can be created in
-<elt href="writing_plugins">plugins</elt>.
-</p>
-</section>
-
-</prepare-toc>
-</contents>
 </page>

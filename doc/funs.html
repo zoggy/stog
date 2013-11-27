@@ -8,7 +8,7 @@ with-contents="true"
 <contents>
 <p>
 Some rules are pre-defined and can be used in your elements and templates.
-They are gouped in different levels (see <elt href="getting_started#templates"/>).
+They are gouped in different levels (see <elt href="engine"/>).
 We give here the list of pre-defined rules applied at each pre-defined level.
 </p>
 <p>For most of the rules, you should look at the generated XML to modify
@@ -286,8 +286,8 @@ or of the element referenced by the <icode>elt-hid</icode> attribute.
 <icode lang="xml">&lt;elt-url/&gt;</icode> returns the final url of the current element
 or of the element referenced by the <icode>elt-hid</icode> attribute:
 </p>
-<hxml><![CDATA[<elt-url elt-hid="/getting_started"/>]]></hxml>
-<p> is reduced to <elt-url elt-hid="/getting_started"/></p>
+<hxml><![CDATA[<elt-url elt-hid="/engine"/>]]></hxml>
+<p> is reduced to <elt-url elt-hid="/engine"/></p>
 </subsection>
 
 
@@ -372,11 +372,11 @@ site to show changes of a release both in the <elt href="/install"/>
 page and in blog post such as <elt href="release-0.9.0"/>.
 </p>
 <p>For example, the following code will include the paragraph with
-id "optiondef" of element "getting_started":
+id "optiondef" of element "running":
 </p>
-<hxml><inc href="getting_started#optiondef"/></hxml>
+<hxml><inc href="running#optiondef"/></hxml>
 <p>This is the result:</p>
-<inc href="getting_started#optiondef"/>
+<inc href="running#optiondef"/>
 </subsection>
 
 <subsection id="include" title="include">

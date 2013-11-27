@@ -1,0 +1,105 @@
+<page title="Evaluation and templating">
+<div class="float-right">
+<a href="engine.svg">
+<image height="700" src="engine.png" alt="engine's big picture"
+title="Data flow in Stog's engine.
+ Click on the image to open the .svg file, which
+includes some links to reference documentation.">
+Data flow in Stog's engine.</image></a>
+</div>
+<p>
+The figure on the side shows the global architecture of the
+Stog engine and the flow of data.
+</p>
+<p><elt href="stog-elements"/> are read from the source directory
+and a <elt href="Stog_types#TYPEstog">stog</elt> structure is created.
+As some elements may be in the cache and do not need to be recomputed,
+the small yellow boxes represent the filtering of elements in the stog
+structure to create a list of elements to compute.
+</p>
+<p>
+Two modules are represented on the figure (Module 1 and Module 2). More modules
+can be present, for example when loading <elt href="writing_plugins">plugins</elt>.
+</p>
+<p>These modules define functions associated to <em>levels</em>: Here
+the Module 1 has functions for levels 0, 20 and 30, while Module 2 has
+functions for levels 1 and 20.
+</p>
+<p>For each level, in ascending order, the stog structure is passed
+to the function at this level, for each module where there is one.
+These functions take the stog structure and the list of elements
+to compute. They return a new stog structure (which may be unchanged, if
+no element was changed or created).
+</p>
+<p>These "level functions" also take as parameter a data structure which is
+specific for each module. This data structure is also returned by the functions,
+as in a regular "fold" function.
+</p>
+
+
+<p>
+The final files corresponding to <elt href="stog-elements">elements</elt>
+are built the following way.
+</p>
+<p>Various rewrite levels are defined in Stog, and plugins can add more levels.
+</p>
+<p>A level is composed of a list of functions, each function taking an element
+and returning the (eventually modified) element. Pre-defined levels are composed
+of functions applying rewrite rules to element body.
+</p>
+<p>Various levels are required to ensure some rules will be applied after
+others, for example to verify cross-element links. Each level has a number,
+and levels are applied in order from 0 to n. Pre-defined levels are
+numbered like lines in BASIC programs: 0, 50, 100, 120, ... making
+plugins able to insert new levels.
+</p>
+<p>The first application of a level to an element uses the
+type of the element to load the corresponding template; for example,
+if the element has type "page", then a template <icode>page.tmpl</icode> will
+be looked for.
+</p>
+<p>An environment is built containing the
+<a href="stog-main-element">site-wide attributes</a> and the element attributes.
+This environment is a set of rewrite rules.
+</p>
+<p>In each level, each function of the level is applied to the element current body
+(the "first current body" is the template, where <icode>&lt;elt-body/&gt;</icode> will be
+rewritten to the tree of the element body as given in the element file).
+</p>
+<p>The pre-defined levels contain pre-defined functions which apply
+<page href="funs">default rules</page>, in addition to the rules from
+the environment and rules added by plugins.
+</p>
+<p>When all levels were applied to elements, the contents of each element
+is stored in the cache (the <icode>.stog/cache</icode> directory).
+The final XML file is also created from this contents.
+</p>
+<p>Remark: If the element file was not modified since the corresponding
+cache file was stored, nor its dependencies (see <elt href="running"/>),
+the contents of the element is read back from
+the cache, and the level functions are not applied to this element.
+</p>
+
+<p>The environment is used in the following way.
+For each encountered node with tag <icode>t</icode>, <icode>t</icode> is looked up
+in the environment for its associated <em>function</em> <icode>f</icode>.
+</p>
+<p>If no <icode>f</icode> is found, then the XML node is left untouched
+and the children of the node are then analysed.
+</p>
+<p>If <icode>f</icode> is found, then it is called, given the environment,
+the attributes and the children of the node. Then the function returns
+a list of XML trees which must then be analysed.
+</p>
+<p>When this analyze reaches a fixpoint, the final XML is returned.
+</p>
+<p>This work is performed by the <ext-a href="https://github.com/zoggy/xtmpl">Xtmpl</ext-a>
+library.</p>
+<p>Besides, the contents of the attributes are also analysed to perform such substitutions,
+before looking up for the tag in the environment.
+</p>
+<p>Stog comes with <page href="funs">predefined functions</page>
+associated to some tags, but more can be created in
+<elt href="writing_plugins">plugins</elt>.
+</p>
+</page>
