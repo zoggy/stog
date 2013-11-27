@@ -358,8 +358,8 @@ a block or not:
 </if>]]></hcode>
 </subsection>
 
-<subsection id="inc" title="inc">
-<include file="syntax.tmpl"><![CDATA[<inc href="foo#id/>]]></include>
+<subsection id="late-inc" title="late-inc">
+<include file="syntax.tmpl"><![CDATA[<late-inc href="foo#id/>]]></include>
 <p>
 This function includes the XML node referenced by the <icode>href</icode>
 attribute. An error is raised if this node does not exist. If an
@@ -374,9 +374,9 @@ page and in blog post such as <elt href="release-0.9.0"/>.
 <p>For example, the following code will include the paragraph with
 id "optiondef" of element "running":
 </p>
-<hxml><inc href="running#optiondef"/></hxml>
+<hxml><late-inc href="running#optiondef"/></hxml>
 <p>This is the result:</p>
-<inc href="running#optiondef"/>
+<late-inc href="running#optiondef"/>
 </subsection>
 
 <subsection id="include" title="include">
@@ -722,7 +722,7 @@ first defined in the article.
 </section>
 
 <section id="level160" title="Level 160: Including blocks">
-<include file="syntax.tmpl"><![CDATA[<inc href="..."/>]]></include>
+<include file="syntax.tmpl"><![CDATA[<late-inc href="..."/>]]></include>
 <p>
 This rule is used to insert the XML node specified by the <icode>href</icode> attribute.
 See <elt href="#level150"/> for details about how to specify an element. The id of the
