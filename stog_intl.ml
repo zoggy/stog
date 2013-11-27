@@ -49,7 +49,8 @@ let french =
   in
   let string_of_date date =
     Printf.sprintf "%s %d %s %d"
-      days.(date.week_day) date.day months.(date.month-1) date.year
+      days.(Netdate.week_day date)
+      date.day months.(date.month-1) date.year
   in
   let string_of_datetime date =
     Printf.sprintf "%s à %dh%02d"
