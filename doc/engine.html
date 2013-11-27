@@ -13,7 +13,7 @@ Stog engine and the flow of data.
 </p>
 <p><elt href="stog-elements"/> are read from the source directory
 and a <elt href="Stog_types#TYPEstog">stog</elt> structure is created.
-As some elements may be in the cache and do not need to be recomputed,
+Since some elements may be in the cache and do not need to be recomputed,
 the small yellow boxes represent the filtering of elements in the stog
 structure to create a list of elements to compute.
 </p>
@@ -31,33 +31,44 @@ These functions take the stog structure and the list of elements
 to compute. They return a new stog structure (which may be unchanged, if
 no element was changed or created).
 </p>
-<p>These "level functions" also take as parameter a data structure which is
+<p>These "level functions" also take in parameter a data structure which is
 specific for each module. This data structure is also returned by the functions,
 as in a regular "fold" function.
 </p>
-
-
 <p>
-The final files corresponding to <elt href="stog-elements">elements</elt>
-are built the following way.
+When the functions of all levels have been applied, the elements in the
+final stog structure are outtputted to files in the target directory, according
+to their path in the source directory. The cache is updated with information
+about dependencies and contents of elements. For each module, a specific
+function is called to cache the final data associated to the module.
 </p>
-<p>Various rewrite levels are defined in Stog, and plugins can add more levels.
+<p>
+The cached elements and dependencies will be used next time Stog is run,
+to know which elements must be recomputed, and cached module data will
+be used to initialize the data structure specific to each module.
 </p>
-<p>A level is composed of a list of functions, each function taking an element
-and returning the (eventually modified) element. Pre-defined levels are composed
-of functions applying rewrite rules to element body.
+<p>
+Stog comes with two predefined modules, "html" and "blocks", each defining
+function for various levels. The "level functions" often apply rewrite rules
+on the elements' contents (which are XML trees) but can also perform other
+actions like gathering information in the module-specific data structure
+to use it in a higher level.
 </p>
 <p>Various levels are required to ensure some rules will be applied after
-others, for example to verify cross-element links. Each level has a number,
-and levels are applied in order from 0 to n. Pre-defined levels are
-numbered like lines in BASIC programs: 0, 50, 100, 120, ... making
+others, for example to verify cross-element links. Levels used by predefined
+modules are numbered like lines in BASIC programs: 0, 50, 100, 120, ... making
 plugins able to insert new levels.
 </p>
+<p>Modules can define functions for negative levels, for example to make
+sure they will be applied before level 0.
+</p>
+<!--
 <p>The first application of a level to an element uses the
 type of the element to load the corresponding template; for example,
 if the element has type "page", then a template <icode>page.tmpl</icode> will
 be looked for.
 </p>
+-->
 <p>An environment is built containing the
 <a href="stog-main-element">site-wide attributes</a> and the element attributes.
 This environment is a set of rewrite rules.
