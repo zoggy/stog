@@ -233,6 +233,23 @@ let fill_elt_from_nodes =
   List.fold_left f
 ;;
 
+let fill_elt_from_atts_and_subs elt atts subs =
+  let elt =
+    match Xtmpl.get_arg_cdata atts ("","hid") with
+      None -> elt
+    | Some s -> { elt with elt_human_id = Stog_types.human_id_of_string s }
+  in
+  let elt = fill_elt_from_atts atts elt in
+  match Xtmpl.get_arg_cdata atts ("", "with-contents") with
+    Some s when bool_of_string s ->
+      (* arguments are also passed in sub nodes, and contents is in
+         subnode "contents" *)
+      fill_elt_from_nodes elt subs
+  | _ ->
+      (* all arguments are passed in attributes, subnodes are the contents *)
+      { elt with elt_body = subs }
+;;
+
 let elt_of_file stog file =
   let rel_file = Stog_misc.path_under ~parent: stog.stog_dir file in
   let hid =
@@ -249,20 +266,7 @@ let elt_of_file stog file =
   in
   let elt = Stog_types.make_elt ~hid ~typ () in
   let elt = { elt with elt_src = rel_file } in
-  let elt =
-    match Xtmpl.get_arg_cdata atts ("","hid") with
-      None -> elt
-    | Some s -> { elt with elt_human_id = Stog_types.human_id_of_string s }
-  in
-  let elt = fill_elt_from_atts atts elt in
-  match Xtmpl.get_arg_cdata atts ("", "with-contents") with
-    Some s when bool_of_string s ->
-      (* arguments are also passed in sub nodes, and contents is in
-         subnode "contents" *)
-      fill_elt_from_nodes elt subs
-  | _ ->
-      (* all arguments are passed in attributes, subnodes are the contents *)
-      { elt with elt_body = subs }
+  fill_elt_from_atts_and_subs elt atts subs
 ;;
 
 let read_files cfg stog dir =

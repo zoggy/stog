@@ -34,3 +34,7 @@ val bool_of_string : string -> bool
 
 (** Build a {!Stog_types.stog} structure from the given directory. *)
 val read_stog : string -> Stog_types.stog
+
+(** *)
+val fill_elt_from_atts_and_subs : Stog_types.elt ->
+  Xtmpl.attributes -> Stog_types.body -> Stog_types.elt

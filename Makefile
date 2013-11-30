@@ -85,6 +85,7 @@ LIB_CMXFILES= \
 	stog_latex.cmx \
 	stog_html.cmx \
 	stog_blocks.cmx \
+	stog_multi_elt.cmx \
 	stog_plug.cmx \
 	stog_dyn.cmx \
 
