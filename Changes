@@ -1,4 +1,5 @@
 Next release:
+* add multi elements
 * new base rule <elt-datetime>
 * new option --local
 * functions defined in elements now handles all arguments, using
