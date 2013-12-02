@@ -174,7 +174,7 @@ let fun_elt_href ?typ src_elt href (stog, data) env args subs =
     None -> 
       ((stog, data), 
        [Xtmpl.E (("", "span"), 
-          Xtmpl.one_att ("", "class") [Xtmpl.D "unknown-ref"],
+          Xtmpl.atts_one ("", "class") [Xtmpl.D "unknown-ref"],
           text)
        ])
   | Some (elt, _, id) ->
@@ -185,7 +185,7 @@ let fun_elt_href ?typ src_elt href (stog, data) env args subs =
         | Some id -> Neturl.modify_url ~fragment: id url
       in
       let xml = Xtmpl.E (("", "a"), 
-         Xtmpl.one_att ("", "href") [Xtmpl.D (Stog_types.string_of_url href)],
+         Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_types.string_of_url href)],
          text) 
       in
       ((stog, data), [ xml ])
@@ -216,15 +216,15 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
      )
     data sect_down
   in
-  let att_id = Xtmpl.one_att ("", "id") [Xtmpl.E (("","id"), Xtmpl.empty_atts, [])] in
+  let att_id = Xtmpl.atts_one ("", "id") [Xtmpl.E (("","id"), Xtmpl.atts_empty, [])] in
   let class_name = Stog_html.concat_name ~sep: "-" cls in
   let body =
     [ Xtmpl.E (("", "div"), 
-       Xtmpl.one_att ("", "class") [Xtmpl.D class_name],
+       Xtmpl.atts_one ("", "class") [Xtmpl.D class_name],
        (
         (Xtmpl.E (("", "div"),
-          Xtmpl.one_att ~atts: att_id ("", "class") [Xtmpl.D (class_name^"-title")],
-          [Xtmpl.E (("", "title"), Xtmpl.empty_atts, [])])) ::
+          Xtmpl.atts_one ~atts: att_id ("", "class") [Xtmpl.D (class_name^"-title")],
+          [Xtmpl.E (("", "title"), Xtmpl.atts_empty, [])])) ::
         subs
        )
       )
@@ -241,7 +241,7 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
       | [Xtmpl.D "0"] -> []
       | _ ->
           [ Xtmpl.E (("","counter"), 
-             Xtmpl.one_att ("","counter-name") [Xtmpl.D (Stog_html.concat_name (prefix, cls))],
+             Xtmpl.atts_one ("","counter-name") [Xtmpl.D (Stog_html.concat_name (prefix, cls))],
              [])
           ]
     in
@@ -273,17 +273,17 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
            ("", "with-contents"), [Xtmpl.D "true"]
          ],
        [
-         Xtmpl.E (("", "long-title-format"), Xtmpl.empty_atts,
+         Xtmpl.E (("", "long-title-format"), Xtmpl.atts_empty,
           counters @
             (if counters = [] then [] else [Xtmpl.D ". "]) @
-            [Xtmpl.E (("","title"), Xtmpl.empty_atts, [])]
+            [Xtmpl.E (("","title"), Xtmpl.atts_empty, [])]
           ) ;
-          Xtmpl.E (("", "short-title-format"), Xtmpl.empty_atts,
+          Xtmpl.E (("", "short-title-format"), Xtmpl.atts_empty,
            (match counter_name with
-              "" -> [ Xtmpl.E (("","title"), Xtmpl.empty_atts, []) ]
+              "" -> [ Xtmpl.E (("","title"), Xtmpl.atts_empty, []) ]
             | _ -> counters
            ));
-          Xtmpl.E (("", "contents"), Xtmpl.empty_atts, body) ;
+          Xtmpl.E (("", "contents"), Xtmpl.atts_empty, body) ;
        ]
       )
     ]
@@ -322,27 +322,27 @@ let node_of_block b =
         ("","with-contents"), [Xtmpl.D "true"] ;
       ]
   in
-  let title = Xtmpl.E (("","title"), Xtmpl.empty_atts, b.blk_title) in
+  let title = Xtmpl.E (("","title"), Xtmpl.atts_empty, b.blk_title) in
   let label =
     match b.blk_label with
       None -> []
-    | Some l -> [ Xtmpl.E (("","label"), Xtmpl.empty_atts, l) ]
+    | Some l -> [ Xtmpl.E (("","label"), Xtmpl.atts_empty, l) ]
   in
   let clas =
     match b.blk_class with
       None -> []
-    | Some s -> [ Xtmpl.E (("","class"), Xtmpl.empty_atts, [ Xtmpl.D s ]) ]
+    | Some s -> [ Xtmpl.E (("","class"), Xtmpl.atts_empty, [ Xtmpl.D s ]) ]
   in
   let cpt_name =
     match b.blk_cpt_name with
       None -> []
-    | Some s -> [ Xtmpl.E (("","counter-name"), Xtmpl.empty_atts, [ Xtmpl.D s]) ]
+    | Some s -> [ Xtmpl.E (("","counter-name"), Xtmpl.atts_empty, [ Xtmpl.D s]) ]
   in
-  let long_f = [ Xtmpl.E (("","long-title-format"), Xtmpl.empty_atts, b.blk_long_f) ]
+  let long_f = [ Xtmpl.E (("","long-title-format"), Xtmpl.atts_empty, b.blk_long_f) ]
   in
-  let short_f = [ Xtmpl.E (("","short-title-format"), Xtmpl.empty_atts, b.blk_short_f) ]
+  let short_f = [ Xtmpl.E (("","short-title-format"), Xtmpl.atts_empty, b.blk_short_f) ]
   in
-  let contents = [ Xtmpl.E (("","contents"), Xtmpl.empty_atts, b.blk_body) ] in
+  let contents = [ Xtmpl.E (("","contents"), Xtmpl.atts_empty, b.blk_body) ] in
   let subs = title :: label @ clas @ cpt_name @ long_f @ short_f @ contents in
   Xtmpl.E (("",Stog_tags.block), atts, subs)
 ;;
@@ -414,9 +414,9 @@ let read_block stog args subs =
     | Some l -> l
   in
   let blk_cpt_name = Xtmpl.get_arg_cdata args ("", "counter-name") in
-  let xml_title = Xtmpl.E (("", "title"), Xtmpl.empty_atts, []) in
-  let xml_label =  Xtmpl.E (("", "label"), Xtmpl.empty_atts, []) in
-  let xml_cpt s = Xtmpl.E (("", "counter"), Xtmpl.one_att ("", "counter-name") [Xtmpl.D s], []) in
+  let xml_title = Xtmpl.E (("", "title"), Xtmpl.atts_empty, []) in
+  let xml_label =  Xtmpl.E (("", "label"), Xtmpl.atts_empty, []) in
+  let xml_cpt s = Xtmpl.E (("", "counter"), Xtmpl.atts_one ("", "counter-name") [Xtmpl.D s], []) in
   let blk_long_f =
     match Xtmpl.get_arg args ("", "long-title-format") with
       None ->
@@ -492,11 +492,11 @@ let fun_block1 (stog, data) env args subs =
       in
       let ((stog, data), long) =
         let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env block.blk_long_f in
-        ((stog, data), Xtmpl.E (("", Xtmpl.tag_main), Xtmpl.empty_atts, xmls))
+        ((stog, data), Xtmpl.E (("", Xtmpl.tag_main), Xtmpl.atts_empty, xmls))
       in
       let ((stog, data), short) =
         let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env block.blk_short_f in
-         ((stog, data), Xtmpl.E (("", Xtmpl.tag_main), Xtmpl.empty_atts, xmls))
+         ((stog, data), Xtmpl.E (("", Xtmpl.tag_main), Xtmpl.atts_empty, xmls))
       in
       let data = add_block ~hid ~id: block.blk_id ~short ~long data in
       let env = Xtmpl.env_add "title" (fun acc _ _ _ -> (acc, [long])) env in

@@ -30,8 +30,31 @@
 
 open Stog_types;;
 
-let mk_elt elt elt_id stog = function
-  Xtmpl.D _ -> stog
+let mk_elt elt_id (stog,elt) = function
+  Xtmpl.D _ -> (stog,elt)
+| Xtmpl.E (("","contents"), atts, subs) ->
+    begin
+      match Xtmpl.get_arg_cdata atts ("","type") with
+        None ->
+          let msg = "Missing type attribute in <contents> in "^
+            (Stog_types.string_of_human_id elt.elt_human_id)
+            in
+            Stog_msg.error msg;
+            (stog, elt)
+      | Some typ ->
+          let atts = Xtmpl.atts_remove ("","type") atts in
+          (match elt.elt_body with
+            [] -> ()
+           | _ ->
+               Stog_msg.warning
+                 (Printf.sprintf "Element %s: more than one <contents> node"
+                  (Stog_types.string_of_human_id elt.elt_human_id)
+                 )
+          );
+          let elt = { elt with elt_body = subs ; elt_type = typ } in
+          let elt = Stog_io.fill_elt_from_atts_and_subs elt atts subs in
+          (stog, elt)
+    end
 | Xtmpl.E ((_,typ),atts,subs) ->
     let hid =
       match Xtmpl.get_arg_cdata atts ("","hid") with
@@ -49,7 +72,7 @@ let mk_elt elt elt_id stog = function
     in
     let new_elt = { elt with elt_out = None ; elt_type = typ ; elt_human_id = hid } in
     let new_elt = Stog_io.fill_elt_from_atts_and_subs new_elt atts subs in
-    Stog_types.add_elt stog new_elt
+    (Stog_types.add_elt stog new_elt, elt)
 ;;
 
 let f_multi_elt stog elt_id =
@@ -59,8 +82,8 @@ let f_multi_elt stog elt_id =
       None -> elt.elt_body
     | Some xmls -> xmls
   in
-  let stog = List.fold_left (mk_elt elt elt_id) stog xmls in
   let elt = { elt with elt_body = [] ; elt_out = None } in
+  let (stog, elt) = List.fold_left (mk_elt elt_id) (stog, elt) xmls in
   Stog_types.set_elt stog elt_id elt
   (* remove original elt ? *)
 ;;

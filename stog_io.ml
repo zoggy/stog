@@ -205,7 +205,7 @@ let fill_elt_from_atts =
     | ("", "use") ->
         { elt with elt_used_mods = used_mods_of_string elt.elt_used_mods (to_s v) }
     | _ ->
-        let defs = (name, Xtmpl.empty_atts, v) :: elt.elt_defs in
+        let defs = (name, Xtmpl.atts_empty, v) :: elt.elt_defs in
         { elt with elt_defs = defs  }
   in
   Xtmpl.Name_map.fold f

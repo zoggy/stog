@@ -156,7 +156,7 @@ let fun_eval stog env args code =
             begin
               let code = Stog_misc.highlight ~opts phrase in
               let code = if toplevel then Printf.sprintf "# %s" code else code in
-              Xtmpl.E (("","div"), Xtmpl.empty_atts, [Xtmpl.xml_of_string code])
+              Xtmpl.E (("","div"), Xtmpl.atts_empty, [Xtmpl.xml_of_string code])
             end
            else
             Xtmpl.D ""
@@ -180,7 +180,7 @@ let fun_eval stog env args code =
               if show_stdout then
                 let xml =
                   Xtmpl.E (("","div"),
-                   Xtmpl.one_att ("","class") [Xtmpl.D "ocaml-toplevel"],
+                   Xtmpl.atts_one ("","class") [Xtmpl.D "ocaml-toplevel"],
                    [Xtmpl.D stdout])
                 in
                 xml :: code :: acc
@@ -192,7 +192,7 @@ let fun_eval stog env args code =
               in
               let xml =
                 Xtmpl.E (("","div"),
-                 Xtmpl.one_att ("","class") [Xtmpl.D classes],
+                 Xtmpl.atts_one ("","class") [Xtmpl.D classes],
                  [Xtmpl.D output])
               in
               xml :: code :: acc

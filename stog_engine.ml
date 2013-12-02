@@ -406,8 +406,8 @@ let rec make_fun (name, params, body) acc =
     let vars = Xtmpl.Name_map.fold
       (fun param default acc ->
          match Xtmpl.get_arg atts param with
-           None -> (param, Xtmpl.empty_atts, default) :: acc
-         | Some v -> (param, Xtmpl.empty_atts, v) :: acc
+           None -> (param, Xtmpl.atts_empty, default) :: acc
+         | Some v -> (param, Xtmpl.atts_empty, v) :: acc
       )
       params []
     in
@@ -635,13 +635,13 @@ let generate ?(use_cache=true) ?only_elt stog modules =
 
 
 let get_in_env data env (prefix, s) =
-  let node = [ Xtmpl.E((prefix,s), Xtmpl.empty_atts, []) ] in
+  let node = [ Xtmpl.E((prefix,s), Xtmpl.atts_empty, []) ] in
   let (data, node2) = Xtmpl.apply_to_xmls data env node in
   if node2 = node then (data, []) else (data, node2)
 ;;
 
 let opt_in_env data env (prefix, s) =
-  let node = [ Xtmpl.E((prefix,s), Xtmpl.empty_atts, []) ] in
+  let node = [ Xtmpl.E((prefix,s), Xtmpl.atts_empty, []) ] in
   let (data, node2) = Xtmpl.apply_to_xmls data env node in
   if node2 = node then (data, None) else (data, Some node2)
 ;;

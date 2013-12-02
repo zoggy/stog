@@ -131,7 +131,7 @@ let fun_latex stog env args subs =
          false -> []
        | true ->
            [ Xtmpl.E (("","hcode"), 
-              Xtmpl.one_att ("","lang") [Xtmpl.D "tex"],
+              Xtmpl.atts_one ("","lang") [Xtmpl.D "tex"],
               [Xtmpl.D code]) ]
       )
   in

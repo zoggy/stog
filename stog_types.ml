@@ -343,7 +343,7 @@ let sort_ids_elts_by_date elts =
 
 let sort_ids_elts_by_rules =
   let apply_field env (data, acc) field =
-    let xml = [Xtmpl.E (("",field), Xtmpl.empty_atts,[])] in
+    let xml = [Xtmpl.E (("",field), Xtmpl.atts_empty,[])] in
     let (data, xmls) = Xtmpl.apply_to_xmls data env xml in
     (data, xmls :: acc)
   in
