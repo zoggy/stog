@@ -61,6 +61,7 @@ val elements : string
 val ext_a : string
 val graph : string
 val hcode : string
+val hid_sep : string
 val icode : string
 val if_ : string
 val image : string

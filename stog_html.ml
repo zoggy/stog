@@ -1219,7 +1219,7 @@ let cutpoint_of_atts elt atts =
           [] | [_] -> ("", s)
         | h :: q -> (h, String.concat ":" q)
   in
-  let sep = Xtmpl.opt_arg_cdata atts ~def: "-" ("","hid-sep") in
+  let sep = Xtmpl.opt_arg_cdata atts ~def: "-" ("", Stog_tags.hid_sep) in
   let insert_link = not (Xtmpl.opt_arg_cdata atts ~def: "true" ("","insert-link") = "false") in
   { cut_tag = tag ; cut_elt_type = typ ;
     cut_hid_sep = sep ; cut_insert_link = insert_link ;

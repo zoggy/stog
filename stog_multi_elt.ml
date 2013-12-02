@@ -30,7 +30,15 @@
 
 open Stog_types;;
 
-let mk_elt elt_id (stog,elt) = function
+let get_hid_sep elt =
+  match Stog_types.get_def elt.elt_defs ("",Stog_tags.hid_sep) with
+    None -> "/"
+  | Some (_, [ Xtmpl.D s ]) -> s
+  | Some (_, xmls) ->
+      failwith ("Invalid "^(Stog_tags.hid_sep^": "^(Xtmpl.string_of_xmls xmls)))
+;;
+
+let mk_elt hid_sep elt_id (stog,elt) = function
   Xtmpl.D _ -> (stog,elt)
 | Xtmpl.E (("","contents"), atts, subs) ->
     begin
@@ -67,7 +75,7 @@ let mk_elt elt_id (stog,elt) = function
               in
               failwith msg
           | Some id ->
-              let hid = (Stog_types.string_of_human_id elt.elt_human_id)^"/"^id in
+              let hid = (Stog_types.string_of_human_id elt.elt_human_id) ^ hid_sep ^ id in
               Stog_types.human_id_of_string hid
     in
     let new_elt = { elt with elt_out = None ; elt_type = typ ; elt_human_id = hid } in
@@ -83,7 +91,8 @@ let f_multi_elt stog elt_id =
     | Some xmls -> xmls
   in
   let elt = { elt with elt_body = [] ; elt_out = None } in
-  let (stog, elt) = List.fold_left (mk_elt elt_id) (stog, elt) xmls in
+  let hid_sep = get_hid_sep elt in
+  let (stog, elt) = List.fold_left (mk_elt hid_sep elt_id) (stog, elt) xmls in
   Stog_types.set_elt stog elt_id elt
   (* remove original elt ? *)
 ;;
