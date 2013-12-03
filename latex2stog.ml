@@ -167,7 +167,7 @@ let rec resolve_includes com tex_file s =
 ;;
 
 
-let parse sectionning tex_file =
+let parse sectionning environments tex_file =
   let source = Stog_misc.string_of_file tex_file in
   let source = remove_comments source in
   let source = resolve_includes "include" tex_file source in
@@ -192,6 +192,7 @@ let parse sectionning tex_file =
 
 let prefix = ref None;;
 let sectionning = ref [ "section" ; "subsection" ; "subsubsection" ];;
+let envs = ref [ "proof"; "lemma" ; "proposition" ; "figure" ; "theorem"];;
 
 let options =
   [ "-p", Arg.String (fun s -> prefix := Some s),
@@ -201,6 +202,11 @@ let options =
       (fun s -> sectionning := List.map
          Stog_misc.strip_string (Stog_misc.split_string s [','])),
     "... specify sectionning commands, separated by commas" ;
+
+    "-e", Arg.String
+      (fun s -> envs := List.map
+         Stog_misc.strip_string (Stog_misc.split_string s [','])),
+    "... specify environments, separated by commas" ;
   ];;
 
 let usage = Sys.argv.(0) ^" [options] file.tex\nwhere options are:";;
@@ -214,7 +220,7 @@ let main () =
       [] | _ :: _ :: _ ->
         failwith (Arg.usage_string options usage)
     | [tex_file] ->
-        let tex = parse !sectionning tex_file in
+        let tex = parse !sectionning !envs tex_file in
         match tex.body with
           [ Source s ] -> print_endline s
         | l -> print_endline (string_of_tree_list l)
