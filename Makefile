@@ -104,6 +104,9 @@ MK_STOG=mk-$(MAIN)
 MK_STOG_BYTE=mk-$(MAIN_BYTE)
 MK_STOG_OCAML=mk-$(OCAML_SESSION)
 
+LATEX2STOG=latex2stog
+LATEX2STOG_BYTE=latex2stog.byte
+
 OCAML_SESSION_CMOFILES= \
 	stog_ocaml_types.cmo \
 	stog_misc.cmo \
@@ -124,10 +127,15 @@ GUI_MAIN_BYTE=$(GUI_MAIN).byte
 all: opt byte
 gui: guiopt guibyte
 
-opt: $(LIB) $(MAIN) plugins/plugin_example.cmxs $(PLUGINS_OPT) $(MK_STOG) $(ODOC)
+opt: $(LIB) $(MAIN) $(LATEX2STOG) \
+	plugins/plugin_example.cmxs $(PLUGINS_OPT) $(MK_STOG) $(ODOC)
+
 guiopt: $(GUI_MAIN)
-byte: $(LIB_BYTE) $(MAIN_BYTE) $(OCAML_SESSION) plugins/plugin_example.cmo $(PLUGINS_BYTE) \
+
+byte: $(LIB_BYTE) $(MAIN_BYTE) $(LATEX2STOG_BYTE) \
+	$(OCAML_SESSION) plugins/plugin_example.cmo $(PLUGINS_BYTE) \
 	$(MK_STOG_BYTE) $(MK_STOG_OCAML) $(ODOC_BYTE)
+
 guibyte: $(GUI_MAIN_BYTE)
 
 $(MAIN): $(LIB) stog_main.cmx
@@ -148,6 +156,12 @@ $(OCAML_SESSION): $(OCAML_SESSION_CMIFILES) $(OCAML_SESSION_CMOFILES)
 
 stog_ocaml_session.cmo: stog_ocaml_session.ml
 	$(OCAMLFIND) ocamlc$(PBYTE) -package $(OCAML_SESSION_PACKAGES) $(COMPFLAGS) -c $<
+
+$(LATEX2STOG): stog_misc.cmx latex2stog.cmx
+	$(OCAMLFIND) ocamlopt$(P) -o $@ -package $(PACKAGES) -linkall -linkpkg $^
+
+$(LATEX2STOG_BYTE): stog_misc.cmo latex2stog.cmo
+	$(OCAMLFIND) ocamlc$(P) -o $@ -package $(PACKAGES) -linkall -linkpkg $^
 
 # mk scripts
 $(MK_STOG): $(LIB)
