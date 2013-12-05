@@ -56,7 +56,6 @@ type stog_state =
     st_modules : (module Module) list ;
   };;
 
-
 let apply_module level env elts state modul =
   let module E = (val modul : Module) in
   match
