@@ -868,23 +868,16 @@ and build_base_rules stog elt_id =
     (stog, intro_of_elt stog elt)
   in
   let mk f stog env atts subs =
-    let env =
-      match Xtmpl.get_arg atts ("", Stog_tags.elt_hid) with
-        None -> env
-      | Some hid -> Xtmpl.env_add_att Stog_tags.elt_hid hid env
+    let elt =
+      match Xtmpl.get_arg_cdata atts ("", Stog_tags.elt_hid) with
+        None -> Stog_types.elt stog elt_id
+      | Some hid ->
+          let (_, elt) = Stog_types.elt_by_human_id
+            stog (Stog_types.human_id_of_string hid)
+          in
+          elt
     in
-    let nodes = [ Xtmpl.E (("", Stog_tags.elt_hid), Xtmpl.atts_empty, []) ] in
-    let (stog, nodes2) = Xtmpl.apply_to_xmls stog env nodes in
-    if nodes2 = nodes then
-      (stog, [])
-    else
-      (
-       match nodes2 with
-         [Xtmpl.D s] ->
-           let (_, elt) = Stog_types.elt_by_human_id stog (Stog_types.human_id_of_string s) in
-           f elt stog env atts subs
-       | _ -> (stog, [])
-      )
+    f elt stog env atts subs
   in
   let (previous, next) =
     let html_link stog elt =
