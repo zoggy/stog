@@ -149,6 +149,10 @@ let cut_sectionning =
     { tex with body = cut tex.body sections }
 ;;
 
+let cut_envs = ()
+
+;;
+
 let rec resolve_includes com tex_file s =
   let dir = Filename.dirname tex_file in
   let re_include = Str.regexp ("\\"^com^"{\\([^}]+\\)}") in
@@ -166,6 +170,22 @@ let rec resolve_includes com tex_file s =
   Str.global_substitute re_include f s
 ;;
 
+let to_xml =
+  let rec iter = function
+    Source s -> Xtmpl.D s
+  | Block b ->
+     let atts =
+        (("","title"), [ Xtmpl.D b.title ]) ::
+        (match b.id with
+           None -> []
+         | Some id -> [("","id"), [ Xtmpl.D id ] ]
+        )
+     in
+     let atts = Xtmpl.atts_of_list atts in
+     Xtmpl.E (("",b.tag), atts, List.map iter b.subs)
+  in
+  fun l -> List.map iter l
+;;
 
 let parse sectionning environments tex_file =
   let source = Stog_misc.string_of_file tex_file in
@@ -221,9 +241,21 @@ let main () =
         failwith (Arg.usage_string options usage)
     | [tex_file] ->
         let tex = parse !sectionning !envs tex_file in
+        (*
         match tex.body with
           [ Source s ] -> print_endline s
         | l -> print_endline (string_of_tree_list l)
+        *)
+        let prefix =
+          match !prefix with
+            None -> Filename.basename (Filename.chop_extension tex_file)
+          | Some s -> s
+        in
+        let preamb_file = prefix^"_preambule.tex" in
+        let xml_file = prefix^"_body.xml" in
+        Stog_misc.file_of_string ~file: preamb_file tex.preambule ;
+        Stog_misc.file_of_string ~file: xml_file
+          (Xtmpl.string_of_xml (Xtmpl.E (("","dummy_"),Xtmpl.atts_empty, to_xml tex.body)));
   with
     Failure msg -> prerr_endline msg ; exit 1
 ;;
