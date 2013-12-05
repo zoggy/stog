@@ -169,11 +169,11 @@ let cut_sectionning =
     { tex with body = cut tex.body sections }
 ;;
 
-let re_open = Str.regexp "\\\\begin{\\([^}*]+\\)\\*?}\n?\\(\\\\label{\\([^}]+\\)}\\)?" ;;
+let re_open = Str.regexp "\\\\begin{\\([^}*]+\\)\\*?}\\(\\[\\([^]]+\\)\\]\\)?\n?\\(\\\\label{\\([^}]+\\)}\\)?" ;;
 let re_close = Str.regexp "\\\\end{\\([^}*]+\\)\\*?}" ;;
 
 type env_limit =
-  Begin of int * int * string * string option
+  Begin of int * int * string * string option * string option
 | End of int * int * string
 ;;
 
@@ -203,7 +203,11 @@ let next_env_limit source pos =
       begin
         let begin_matched = Str.matched_string source in
         let begin_name = Str.matched_group 1 source in
-        let id = try Some (Str.matched_group 3 source) with _ -> None in
+        let title =
+          try Some (Str.matched_group 3 source)
+          with _ -> None
+          in
+        let id = try Some (Str.matched_group 5 source) with _ -> None in
         let p_end =
           try Some (Str.search_forward re_close source pos)
           with Not_found -> None
@@ -214,7 +218,7 @@ let next_env_limit source pos =
             let name = Str.matched_group 1 source in
             Some (End (p, p + String.length matched, name))
         | _ ->
-            Some (Begin (p_begin, p_begin + String.length begin_matched, begin_name, id))
+            Some (Begin (p_begin, p_begin + String.length begin_matched, begin_name, title, id))
       end
 ;;
 
@@ -228,13 +232,13 @@ let rec cut_envs map source len acc stack pos =
     None ->
       let s = String.sub source pos (len - pos) in
       (List.rev ((Source s) :: acc), len-1)
-  | Some (Begin (p_start,p_stop,tag,id)) ->
+  | Some (Begin (p_start,p_stop,tag,title,id)) ->
        let s = String.sub source pos (p_start - pos) in
        let acc = (Source s) :: acc in
        let (subs, p_end) =
          cut_envs map source len [] (tag :: stack) p_stop
        in
-       let b = { tag = map_tag map tag ; id ; title = None ; subs } in
+       let b = { tag = map_tag map tag ; id ; title ; subs } in
        let acc = (Block b) :: acc in
        cut_envs map source len acc stack p_end
   | Some (End (p_start,p_stop,tag)) ->
