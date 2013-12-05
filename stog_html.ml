@@ -792,7 +792,10 @@ let rec elt_to_rss_item stog elt_id elt =
   (stog, item)
 
 and generate_rss_feed_file stog ?title link elts file =
-  let elts = List.rev (Stog_types.sort_ids_elts_by_date elts) in
+  let elts = (* no reverse since the list is reversed
+    below in a List.fold_left when converting to items *)
+    Stog_types.sort_ids_elts_by_date elts
+  in
   let elts = List.filter
     (fun (_,elt) -> match elt.elt_date with None -> false | _ -> true)  elts
   in
