@@ -81,7 +81,7 @@ module Functional = functor (Map : Map_par with type key = int) ->
           map : 'a Map.t ;
         }
 
-    let compare_key : int -> int -> int = Pervasives.compare;;
+    let compare_key (x : int) y = Pervasives.compare x y;;
 
     let create _ =
       { counter = ref 0;
@@ -118,7 +118,7 @@ module Functional = functor (Map : Map_par with type key = int) ->
 ;;
 
 module Map =
-  Functional (Map.Make (struct type t = int let compare = (Pervasives.compare : int -> int -> int) end));;
+  Functional (Map.Make (struct type t = int let compare (x : int) y = Pervasives.compare x y end));;
 
 
 include Map
