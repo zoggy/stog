@@ -93,13 +93,13 @@ let code_of_subs =
     Buffer.contents b
 ;;
 
-
 let fun_latex stog env args subs =
   let code = code_of_subs subs in
   let packages = Xtmpl.opt_arg_cdata args ("", "packages") in
   let packages = Stog_misc.split_string packages [';'] in
   let showcode = Xtmpl.opt_arg_cdata args ("", "showcode") = "true" in
   let (stog, defs) =
+    (* FIXME: allow getting definitions from a file *)
     let (stog, xmls) = Stog_engine.get_in_env stog env ("", "latex-defs") in
     let defs = match xmls with [] -> None | _ -> Some (Xtmpl.string_of_xmls xmls) in
     (stog, defs)
@@ -120,7 +120,7 @@ let fun_latex stog env args subs =
   let url = Stog_types.url_concat stog.Stog_types.stog_base_url svg in
   let xmls =
     (Xtmpl.E (("","img"),
-      Xtmpl.atts_of_list 
+      Xtmpl.atts_of_list
         [ ("", "class"), [Xtmpl.D "latex"] ;
           ("", "src"), [Xtmpl.D (Stog_types.string_of_url url) ] ;
           ("", "alt"), [Xtmpl.D code] ;
@@ -130,7 +130,7 @@ let fun_latex stog env args subs =
       (match showcode with
          false -> []
        | true ->
-           [ Xtmpl.E (("","hcode"), 
+           [ Xtmpl.E (("","hcode"),
               Xtmpl.atts_one ("","lang") [Xtmpl.D "tex"],
               [Xtmpl.D code]) ]
       )
