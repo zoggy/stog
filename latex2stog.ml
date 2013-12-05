@@ -203,10 +203,7 @@ let next_env_limit source pos =
       begin
         let begin_matched = Str.matched_string source in
         let begin_name = Str.matched_group 1 source in
-        let title =
-          try Some (Str.matched_group 3 source)
-          with _ -> None
-          in
+        let title = try Some (Str.matched_group 3 source) with _ -> None in
         let id = try Some (Str.matched_group 5 source) with _ -> None in
         let p_end =
           try Some (Str.search_forward re_close source pos)
