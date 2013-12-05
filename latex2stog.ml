@@ -48,8 +48,11 @@ let rec string_of_tree = function
 and string_of_tree_list l =
   String.concat "\n" (List.map string_of_tree l)
 
+type preambule_section = (string option * string)
+type preambule = preambule_section list
+
 type tex_file = {
-    preambule : string ;
+    preambule : preambule ;
     body : tree list ;
   }
 
@@ -94,7 +97,6 @@ let str_cut s_re re ?(start=0) ?(fail=true) s =
 ;;
 
 let mk_blocks com source =
-  prerr_endline ("mk_block for "^com);
   let re_com = Str.regexp ("\\\\"^com^"{\\([^}]+\\)}") in
   let len = String.length source in
   let rec iter acc ?title ?id start =
@@ -104,7 +106,6 @@ let mk_blocks com source =
     in
     match p_opt with
       None ->
-        prerr_endline (com^" not found");
         begin
           match title with
            None -> (Source (String.sub source start (len - start))) :: acc
@@ -114,7 +115,6 @@ let mk_blocks com source =
             (Block b) :: acc
         end
     | Some stop ->
-        prerr_endline (com^" found");
         let acc =
           begin
             match title with
@@ -187,6 +187,63 @@ let to_xml =
   fun l -> List.map iter l
 ;;
 
+let mk_preambule s =
+  let lines = Stog_misc.split_string s [ '\n' ; '\r' ] in
+  let preambule =
+    match lines with
+      [] -> assert false
+    | _ :: q -> String.concat "\n" q
+  in
+  let re_open = Str.regexp "^%<\\([a-z]+\\)>" in
+  let re_close name = Str.regexp ("^%</" ^ name ^ ">") in
+  let len = String.length preambule in
+  let rec iter acc pos =
+    let p =
+      try Some (Str.search_forward re_open preambule pos)
+      with Not_found ->
+         prerr_endline "no more %< >";
+         None
+    in
+    match p with
+      None ->
+        let s = String.sub preambule pos (len - pos) in
+        List.rev ((None, s) :: acc)
+    | Some p ->
+        let s = String.sub preambule pos (len - pos) in
+        let acc = (None, s) :: acc in
+        let matched = Str.matched_string preambule in
+        let name = Str.matched_group 1 preambule in
+        prerr_endline ("found %<"^name^">");
+        let p = p + String.length matched in
+        let p_end =
+          try Str.search_forward (re_close name) preambule p
+          with Not_found ->
+            let msg = "Missing %</"^name^">" in
+            failwith msg
+        in
+        let s = String.sub preambule p (p_end - p) in
+        let p = p_end + String.length (Str.matched_string preambule) in
+        iter ((Some name, s) :: acc) p
+  in
+  iter [] 0
+;;
+
+let string_of_preambule ?(tags=[]) ?(notags=[]) p =
+  let pred =
+    match tags with
+      [] -> (fun _ -> true)
+    | l -> (fun (tag, _) -> List.mem tag l)
+  in
+  let nopred =
+    match notags with
+      [] -> (fun _ -> true)
+    | l -> (fun (tag, _) -> not (List.mem tag l))
+  in
+  let pred s = pred s && nopred s in
+  let sections = List.filter pred p in
+  String.concat "\n" (List.map snd sections)
+;;
+
 let parse sectionning environments tex_file =
   let source = Stog_misc.string_of_file tex_file in
   let source = remove_comments source in
@@ -196,12 +253,7 @@ let parse sectionning environments tex_file =
   let (preambule, body) =
     let (preambule, _, s) = str_cut begin_document re_begin_document source in
     let (body, _, _) = str_cut end_document re_end_document s in
-    let lines = Stog_misc.split_string preambule [ '\n' ; '\r' ] in
-    let preambule =
-      match lines with
-        [] -> assert false
-      | _ :: q -> String.concat "\n" q
-    in
+    let preambule = mk_preambule preambule in
     (preambule, body)
   in
   let tex = { preambule ; body = [ Source body ] } in
@@ -251,9 +303,15 @@ let main () =
             None -> Filename.basename (Filename.chop_extension tex_file)
           | Some s -> s
         in
-        let preamb_file = prefix^"_preambule.tex" in
+        let mathjax_file = prefix^"_mathjax.tex" in
+        let latex_file = prefix^"_latex.tex" in
         let xml_file = prefix^"_body.xml" in
-        Stog_misc.file_of_string ~file: preamb_file tex.preambule ;
+
+        Stog_misc.file_of_string ~file: mathjax_file
+          (string_of_preambule ~tags: [None ; Some "mathjax"] tex.preambule) ;
+        Stog_misc.file_of_string ~file: latex_file
+          (string_of_preambule ~notags: [Some "mathjax"] tex.preambule) ;
+
         Stog_misc.file_of_string ~file: xml_file
           (Xtmpl.string_of_xml (Xtmpl.E (("","dummy_"),Xtmpl.atts_empty, to_xml tex.body)));
   with
