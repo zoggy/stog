@@ -361,11 +361,13 @@ type tex_com_result =
 
 type tex_eval = Xtmpl.tree list list -> tex_com_result
 
-let blocks_of_tokens tokens =
+let blocks_of_tokens map tokens =
   let rec get_n n = function
     [] when n > 0 -> raise Not_found
-  | [] -> []
-  | h :: q -> h :: (get_n (n-1) q)
+  | h :: q when n > 0 ->
+    let (next, q2) = get_n (n-1) q in
+    (h :: next, q2)
+  | l -> ([], l)
   in
   let rec add_chars b = function
     (Tex c) :: q
@@ -399,7 +401,19 @@ let blocks_of_tokens tokens =
      in
      iter ((List.rev xmls) @ acc) q
   and command acc name tokens =
-    iter ((Xtmpl.D name) :: acc) tokens
+    match try Some(SMap.find name map) with Not_found -> None with
+     None -> iter ((Xtmpl.D ("\\"^name)) :: acc) tokens
+   | Some f ->
+       match f [] with
+         Result l -> iter ((List.rev l) @ acc) tokens
+       | Arity n -> apply_fun f acc n tokens
+
+  and apply_fun f acc arity tokens =
+    let (l,q) = get_n arity tokens in
+    let args = List.map (fun x -> iter [] [x]) l in
+    match f args with
+      Arity n -> apply_fun f acc n tokens
+    | Result l -> iter ((List.rev l) @ acc) q
   in
   iter [] tokens
 ;;
@@ -577,6 +591,22 @@ let env_map =
   List.fold_left (fun acc (s, tag) -> SMap.add s tag acc) SMap.empty l
 ;;
 
+let fun_emph = function
+  [] -> Arity 1
+| h :: _ -> Result [Xtmpl.E(("","em"),Xtmpl.atts_empty,h)]
+;;
+
+let funs =
+  let funs = [
+    "emph", fun_emph ;
+    ]
+  in
+  List.fold_left
+    (fun acc (name,f) -> SMap.add name f acc)
+    SMap.empty
+    funs
+;;
+
 let parse sectionning environments tex_file =
   let source = Stog_misc.string_of_file tex_file in
   let source = remove_comments source in
@@ -584,7 +614,7 @@ let parse sectionning environments tex_file =
   let source = resolve_includes "input" tex_file source in
   let source = remove_comments source in
   let tokens = tokenize source in
-  let xmls = blocks_of_tokens tokens in
+  let xmls = blocks_of_tokens funs tokens in
   prerr_endline (Xtmpl.string_of_xmls xmls);
   let (preambule, body) =
     let (preambule, _, s) = str_cut begin_document re_begin_document source in
