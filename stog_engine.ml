@@ -645,6 +645,14 @@ let opt_in_env data env (prefix, s) =
   if node2 = node then (data, None) else (data, Some node2)
 ;;
 
+
+let get_hid data env =
+  let (data, xmls) = get_in_env data env ("", Stog_tags.elt_hid) in
+  let s = Xtmpl.string_of_xmls xmls in
+  assert (s <> "");
+  (data, s)
+;;
+
 let get_elt_out stog elt =
   match elt.elt_out with
     None ->
@@ -709,6 +717,16 @@ let env_add_lang_rules data env stog elt =
 
 let elt_env data env stog elt =
   let env = env_of_defs ~env elt.elt_defs in
+(*  prerr_endline
+    (Printf.sprintf "elt=%s\ndefs=%s"
+      (Stog_types.string_of_human_id elt.elt_human_id)
+      (String.concat "\n"
+        (List.map (fun ((p,name),_,subs) -> Printf.sprintf "%s:%s=>%s" p name (Xtmpl.string_of_xmls subs))
+          elt.elt_defs)
+      )
+    );
+  prerr_endline ("env_of_defs => "^(Xtmpl.string_of_env env));
+*)
   let env = env_of_used_mods stog ~env elt.elt_used_mods in
   let rules = [
       ("", Stog_tags.elt_hid),

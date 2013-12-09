@@ -39,12 +39,7 @@ let get_in_args_or_env data env args s =
   | Some s -> (data, s)
 ;;
 
-let get_hid data env =
-  let (data, xmls) = get_in_env data env ("", Stog_tags.elt_hid) in
-  let s = Xtmpl.string_of_xmls xmls in
-  assert (s <> "");
-  (data, s)
-;;
+let get_hid = Stog_engine.get_hid;;
 
 let escape_html s =
   let b = Buffer.create 256 in

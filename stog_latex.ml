@@ -32,7 +32,7 @@ let gensym = let cpt = ref 0 in fun () -> incr cpt; !cpt;;
 
 let cache = Hashtbl.create 111;;
 
-let make_svg outdir ?(packages=[]) ?(scale=1.1) ?defs latex_code =
+let make_svg outdir ?(packages=[]) ?(scale=1.1) ?(def_files=[]) ?defs latex_code =
   let defs = match defs with None -> "" | Some s -> s^"\n" in
   try Hashtbl.find cache latex_code
   with Not_found ->
@@ -41,13 +41,16 @@ let make_svg outdir ?(packages=[]) ?(scale=1.1) ?defs latex_code =
 "\\documentclass[12pt]{article}
 \\pagestyle{empty}
 \\usepackage[utf8x]{inputenc}
-%s%s
+%s%s%s
 \\begin{document}
 %s
 \\end{document}
 "
         (String.concat ""
          (List.map (fun s -> Printf.sprintf "\\usepackage%s\n" s) packages))
+         (String.concat "\n"
+           (List.map (fun file -> "\\input{"^file^"}") def_files)
+         )
          defs
         latex_code
       in
@@ -98,8 +101,37 @@ let fun_latex stog env args subs =
   let packages = Xtmpl.opt_arg_cdata args ("", "packages") in
   let packages = Stog_misc.split_string packages [';'] in
   let showcode = Xtmpl.opt_arg_cdata args ("", "showcode") = "true" in
+  let (stog, def_files) =
+    let (stog, xmls) = Stog_engine.get_in_env stog env ("", "latex-defs-files") in
+    match xmls with
+      [] ->
+        (stog, [])
+    | _ ->
+        let s =
+          match xmls with
+            [Xtmpl.D s] -> s
+          | _ ->
+              let msg = "Invalid filenames: "^(Xtmpl.string_of_xmls xmls) in
+              failwith msg
+        in
+        let files = List.map Stog_misc.strip_string
+          (Stog_misc.split_string s [',' ; ';'])
+        in
+        let files = List.filter ((<>) "") files in
+        match files with
+          [] -> (stog, files)
+        | _ ->
+            let (stog, hid) = Stog_engine.get_hid stog env in
+            let (_, elt) = Stog_types.elt_by_human_id stog (Stog_types.human_id_of_string hid) in
+            let dir = Filename.dirname elt.Stog_types.elt_src in
+            let f filename =
+              if Filename.is_relative filename
+              then Filename.concat dir filename
+              else filename
+            in
+            (stog, List.map f files)
+  in
   let (stog, defs) =
-    (* FIXME: allow getting definitions from a file *)
     let (stog, xmls) = Stog_engine.get_in_env stog env ("", "latex-defs") in
     let defs = match xmls with [] -> None | _ -> Some (Xtmpl.string_of_xmls xmls) in
     (stog, defs)
@@ -116,7 +148,9 @@ let fun_latex stog env args subs =
     in
     (stog, scale)
   in
-  let svg = Filename.basename (make_svg stog.Stog_types.stog_outdir ~packages ?scale ?defs code) in
+  let svg = Filename.basename
+    (make_svg stog.Stog_types.stog_outdir ~packages ?scale ~def_files ?defs code)
+  in
   let url = Stog_types.url_concat stog.Stog_types.stog_base_url svg in
   let xmls =
     (Xtmpl.E (("","img"),

@@ -30,5 +30,5 @@
 
    Some values are made available so they can be reused by other plugins. *)
 
-val make_svg : string -> ?packages:string list -> ?scale: float -> ?defs: string -> string -> string
+val make_svg : string -> ?packages:string list -> ?scale: float -> ?def_files: string list -> ?defs: string -> string -> string
 val fun_latex : Stog_types.stog Xtmpl.callback

@@ -96,6 +96,10 @@ type 'a stog_elt_rules =
 val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * Xtmpl.tree list
 val opt_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * Xtmpl.tree list option
 
+(** [get_hid env] returns the value associated to ["hid"] in [env].
+  @raise Assert_failure if ["hid"] is not found in the environment.*)
+val get_hid : 'a -> 'a Xtmpl.env -> 'a * string
+
 val elt_env : 'a -> 'a Xtmpl.env -> Stog_types.stog -> Stog_types.elt -> 'a * 'a Xtmpl.env
 
 val apply_stog_env_elt : Stog_types.stog ->

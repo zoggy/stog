@@ -83,7 +83,7 @@ let remove_comments s =
   let re = Str.regexp "^%$" in
   let f s = "" in
   let s = Str.global_substitute re f s in
-  let re = Str.regexp "[^\\\\]%\\([^<].*$\\)$" in
+  let re = Str.regexp "[^\\\\]%\\([^<\n].*$\\)$" in
   let f s =
     let matched = Str.matched_string s in
     (*prerr_endline ("matched='"^matched^"'");*)
@@ -169,15 +169,14 @@ let cut_sectionning =
     { tex with body = cut tex.body sections }
 ;;
 
-let re_open = Str.regexp "\\\\begin{\\([^}*]+\\)\\*?}\\(\\[\\([^]]+\\)\\]\\)?\n?\\(\\\\label{\\([^}]+\\)}\\)?" ;;
-let re_close = Str.regexp "\\\\end{\\([^}*]+\\)\\*?}" ;;
 
-type env_limit =
-  Begin of int * int * string * string option * string option
-| End of int * int * string
+type ('b, 'e) com_limit =
+  Begin of int * int * 'b
+| End of int * int * 'e
 ;;
+type env_limit = (string * string option * string option, string) com_limit
 
-let next_env_limit source pos =
+let next_com_limit re_open f_begin re_close f_end source pos =
   let p_begin =
     try
       let p = Str.search_forward re_open source pos in
@@ -196,15 +195,12 @@ let next_env_limit source pos =
           None -> None
         | Some p ->
             let matched = Str.matched_string source in
-            let name = Str.matched_group 1 source in
-            Some (End (p, p + String.length matched, name))
+            Some (End (p, p + String.length matched, f_end source))
       end
   | Some p_begin ->
       begin
         let begin_matched = Str.matched_string source in
-        let begin_name = Str.matched_group 1 source in
-        let title = try Some (Str.matched_group 3 source) with _ -> None in
-        let id = try Some (Str.matched_group 5 source) with _ -> None in
+        let begin_data = f_begin source in
         let p_end =
           try Some (Str.search_forward re_close source pos)
           with Not_found -> None
@@ -212,96 +208,263 @@ let next_env_limit source pos =
         match p_end with
         | Some p when p < p_begin->
             let matched = Str.matched_string source in
-            let name = Str.matched_group 1 source in
-            Some (End (p, p + String.length matched, name))
+            Some (End (p, p + String.length matched, f_end source))
         | _ ->
-            Some (Begin (p_begin, p_begin + String.length begin_matched, begin_name, title, id))
+            Some (Begin (p_begin, p_begin + String.length begin_matched, begin_data))
       end
 ;;
 
-let map_tag map tag =
-  try SMap.find tag map
-  with Not_found -> ("", tag)
+type token =
+  Tex of char
+| Tex_block of char * token list
+| Tex_command of string
+| Tex_blank of char
+| Tex_math1 of string
+| Tex_math2 of string
+
+type state = Normal | Escaping | Command of string | Math1 of string | Math2 of string
+
+let rec string_of_token = function
+| Tex c
+| Tex_blank c -> String.make 1 c
+| Tex_block (c, l) ->
+    let b = Buffer.create 256 in
+    Buffer.add_string b ("|BLOCK "^(String.make 1 c)^"");
+    List.iter (fun t -> Buffer.add_string b (string_of_token t)) l;
+    Buffer.add_string b "}|" ;
+    Buffer.contents b
+| Tex_command name -> "|COMMAND "^name^"|"
+| Tex_math1 s -> "$...$"
+| Tex_math2 s -> "\\[...\\]"
 ;;
 
-let rec cut_envs map source len acc stack pos =
-  match next_env_limit source pos with
-    None ->
-      let s = String.sub source pos (len - pos) in
-      (List.rev ((Source s) :: acc), len-1)
-  | Some (Begin (p_start,p_stop,tag,title,id)) ->
-       let s = String.sub source pos (p_start - pos) in
-       let acc = (Source s) :: acc in
-       let (subs, p_end) =
-         cut_envs map source len [] (tag :: stack) p_stop
-       in
-       let b = { tag = map_tag map tag ; id ; title ; subs } in
-       let acc = (Block b) :: acc in
-       cut_envs map source len acc stack p_end
-  | Some (End (p_start,p_stop,tag)) ->
-       match stack with
-         [] -> failwith ("too many \\end{"^tag^"} in\n"^(String.sub source pos (p_stop - pos)))
-       | t :: _ when t <> tag ->
-           let msg = "Expected \\end{"^t^"} but found \\end{"^tag^"} in "^
-             (String.sub source pos (len -pos))
-           in
-           failwith msg
-       | _ :: q ->
-           let s = String.sub source pos (p_start - pos) in
-           let subs = List.rev ((Source s) :: acc) in
-           (subs, p_stop)
-;;
-
-(*
-let rec cut_envs map source =
-  let re_open = Str.regexp "^\\\\begin{\\([a-z]+\\)}.*\\(\\\\label{\\([^]]+\\)}\\)?" in
-  let re_open_ name = Str.regexp ("\\\\begin{" ^ name ^ "}") in
-  let re_close name = Str.regexp ("\\\\end{" ^ name ^ "}") in
-  let len = String.length source in
-  let rec iter map acc pos =
-    let p =
-      try Some (Str.search_forward re_open source pos)
-      with Not_found ->
-         prerr_endline "no more \\begin{...}";
-         None
+let tokenize =
+  let close_of_open = function
+    '{' -> '}'
+  | '[' -> ']'
+  | _ -> assert false
+  in
+  let cur_s source cur =
+    let (start,len) = cur in
+    if start >= len then "" else String.sub source start len
+  in
+  let extend (start,len) = (start, len+1) in
+  let is_com_char = function
+       'a'..'z' | 'A'..'Z' | '0'..'9' | '-' | '_' | ':' | '~'-> true
+     | _ -> false
+  in
+  let is_blank = function
+  | ' ' | '\t' | '\n' | '\r' -> true
+  | _ -> false
+  in
+  let fail source msg i =
+    let len = String.length source in
+    let context = 80 in
+    let before =
+      let p = max 0 (i-context) in
+      String.sub source p (i-p)
     in
-    match p with
+    let after =
+      let i = min (len-1) i in
+      let p = min (len-1) (i+context) in
+      String.sub source i (p-i)
+    in
+    let msg = Printf.sprintf "character %d: %s\n%s\n<--HERE-->%s" i msg before after in
+    failwith msg
+  in
+  let rec iter source len state acc bchar i =
+     if i >= len then
+       match bchar with
+         Some c ->
+           List.iter (fun t -> prerr_string (string_of_token t)) (List.rev acc);
+           let msg = Printf.sprintf "Missing closing '%c'" c in
+           fail source msg i
+       | None ->
+           match state with
+             Normal -> (List.rev acc, -1)
+           | Escaping ->
+              fail source "Missing character after '\\'" i
+           | Command com ->
+              (List.rev ((Tex_command com) :: acc), -1)
+           | Math1 s | Math2 s ->
+              fail source ("Unterminated math formula: "^s) i
+     else
+       match state, source.[i] with
+       | Math1 s, '$' -> iter source len Normal ((Tex_math1 s) :: acc) bchar (i+1)
+       | Math1 s, c -> iter source len (Math1 (s^(String.make 1 c))) acc bchar (i+1)
+       | Math2 s, '\\' ->
+          if i+1 < len then
+            match source.[i+1] with
+              ']' -> iter source len Normal ((Tex_math2 s) :: acc) bchar (i+2)
+            | _ -> iter source len (Math2 (s^"\\")) acc bchar (i+1)
+          else
+            iter source len (Math2 s) acc bchar (i+1)
+       | Math2 s, c -> iter source len (Math2 (s^(String.make 1 c))) acc bchar (i+1)
+       | Escaping, '[' ->
+          iter source len (Math2 "") acc bchar (i+1)
+       | Escaping, c ->
+           if is_com_char c then
+             iter source len (Command (String.make 1 c)) acc bchar (i+1)
+           else
+             iter source len Normal ((Tex c) :: acc) bchar (i+1)
+       | Normal, '$' ->
+           iter source len (Math1 "") acc bchar (i+1)
+       | Normal, c when c = ']' || c = '}' ->
+         let close =
+           match c, bchar with
+           | '}', Some '}' -> true
+           | '}', _ ->
+             List.iter (fun t -> prerr_endline (string_of_token t)) acc;
+             fail source "Too many }'s" i
+           | ']', Some ']' -> true
+           | ']', _ -> false
+           | _ -> assert false
+         in
+         if close then
+           (List.rev acc, i)
+         else
+           iter source len Normal ((Tex c) :: acc) bchar (i+1)
+       | Command com, c when c = ']' || c = '}' ->
+           let acc = (Tex_command com) :: acc in
+           iter source len Normal acc bchar i
+       | Normal, '{'
+       | Normal, '[' ->
+          let c = source.[i] in
+          let cc = close_of_open c in
+          let (l, i) = iter source len Normal [] (Some cc) (i+1) in
+          let acc = (Tex_block (c, l)) :: acc in
+          iter source len Normal acc bchar (i+1)
+       | Normal, '\\' ->
+          iter source len Escaping acc bchar (i+1)
+       | Normal, c ->
+          let acc =
+            let x = if is_blank c then Tex_blank c else Tex c in
+            x :: acc
+          in
+          iter source len Normal acc bchar (i+1)
+       | Command com, c ->
+          if is_com_char c then
+            iter source len (Command (com^(String.make 1 c))) acc bchar (i+1)
+          else
+            iter source len Normal ((Tex_command com) :: acc) bchar i
+  in
+  fun source ->
+    let len = String.length source in
+    let (l, _) = iter source len Normal [] None 0 in
+    l
+;;
+
+type tex_com_result =
+  Arity of int
+| Result of Xtmpl.tree list
+;;
+
+type tex_eval = Xtmpl.tree list list -> tex_com_result
+
+let blocks_of_tokens tokens =
+  let rec get_n n = function
+    [] when n > 0 -> raise Not_found
+  | [] -> []
+  | h :: q -> h :: (get_n (n-1) q)
+  in
+  let rec add_chars b = function
+    (Tex c) :: q
+  | (Tex_blank c) :: q ->
+    Buffer.add_char b c;
+    add_chars b q
+  | l -> l
+  in
+  let rec iter acc = function
+    [] -> List.rev acc
+  |(Tex_math1 s) :: q ->
+     let s = "$"^s^"$" in
+     let acc = (Xtmpl.D s) :: acc in
+     iter acc q
+  | (Tex_math2 s) :: q ->
+     let s = "\\["^s^"\\]" in
+     let acc = (Xtmpl.D s) :: acc in
+     iter acc q
+  | ((Tex _) :: _ | (Tex_blank _) :: _) as l ->
+     let b = Buffer.create 256 in
+     let rest = add_chars b l in
+     iter ((Xtmpl.D (Buffer.contents b)) :: acc) rest
+  | (Tex_command name) :: q ->
+     command acc name q
+  | (Tex_block (c, subs)) :: q ->
+     let subs = iter [] subs in
+     let xmls =
+       match c with
+         '{' -> subs
+       | c -> [ Xtmpl.E (("",String.make 1 c), Xtmpl.atts_empty, subs) ]
+     in
+     iter ((List.rev xmls) @ acc) q
+  and command acc name tokens =
+    iter ((Xtmpl.D name) :: acc) tokens
+  in
+  iter [] tokens
+;;
+
+
+let cut_envs =
+  let re_open = Str.regexp
+    "\\\\begin{\\([^}*]+\\)\\*?}\\(\\[\\([^]]+\\)\\]\\)?\n?\\(\\\\label{\\([^}]+\\)}\\)?"
+  in
+  let re_close = Str.regexp "\\\\end{\\([^}*]+\\)\\*?}" in
+  let f_begin source =
+    let name = Str.matched_group 1 source in
+    let title = try Some (Str.matched_group 3 source) with _ -> None in
+    let id = try Some (Str.matched_group 5 source) with _ -> None in
+    (name, title, id)
+  in
+  let f_end source = Str.matched_group 1 source in
+  let next_env_limit = next_com_limit re_open f_begin re_close f_end in
+  let map_tag map tag =
+    try SMap.find tag map
+    with Not_found -> ("", tag)
+  in
+  let rec iter map source acc stack pos =
+    let len = String.length source in
+    match next_env_limit source pos with
       None ->
         let s = String.sub source pos (len - pos) in
-        List.rev ((Source s) :: acc)
-    | Some p ->
-        let s = String.sub source pos (p - pos) in
-        let acc = (Source s) :: acc in
-        let matched = Str.matched_string source in
-        let name = Str.matched_group 1 source in
-        let id = try Some (Str.matched_group 3 source) with _ -> None in
-        prerr_endline ("found \\begin{"^name^"} id="^(Stog_misc.string_of_opt id));
-        let p = p + String.length matched in
-        let p_end =
-          try Str.search_forward (re_close name) source p
-          with Not_found ->
-            let msg = "Missing \\end{"^name^"}" in
-            failwith msg
-        in
-        let s = String.sub source p (p_end - p) in
-        let p = p_end + String.length (Str.matched_string source) in
-        let subs = cut_envs map s in
-        let tag = try SMap.find name map with Not_found -> name in
-        let b = { tag ; id ; title = None ; subs } in
-        iter map ((Block b) :: acc) p
+        (List.rev ((Source s) :: acc), len-1)
+    | Some (Begin (p_start,p_stop,(tag,title,id))) ->
+         let s = String.sub source pos (p_start - pos) in
+         let acc = (Source s) :: acc in
+         let (subs, p_end) =
+           iter map source [] (tag :: stack) p_stop
+         in
+         let b = { tag = map_tag map tag ; id ; title ; subs } in
+         let acc = (Block b) :: acc in
+         iter map source acc stack p_end
+    | Some (End (p_start,p_stop,tag)) ->
+         match stack with
+           [] -> failwith ("too many \\end{"^tag^"} in\n"^(String.sub source pos (p_stop - pos)))
+         | t :: _ when t <> tag ->
+             let msg = "Expected \\end{"^t^"} but found \\end{"^tag^"} in "^
+               (String.sub source pos (len -pos))
+             in
+             failwith msg
+         | _ :: q ->
+             let s = String.sub source pos (p_start - pos) in
+             let subs = List.rev ((Source s) :: acc) in
+             (subs, p_stop)
   in
-  iter map [] 0
+  iter
 ;;
-*)
 
-let rec cut_envs_in_tree map = function
-  Source s -> fst (cut_envs map s (String.length s) [] [] 0)
+let rec gen_cut_tree f par = function
+  Source s -> fst (f s [] par 0)
 | Block b ->
-  [ Block { b with subs = cut_envs_in_tree_list map b.subs } ]
+  [ Block { b with subs = gen_cut_tree_list f par b.subs } ]
 
-and cut_envs_in_tree_list map l =
-  let l = List.map (cut_envs_in_tree map) l in
+and gen_cut_tree_list f par l =
+  let l = List.map (gen_cut_tree f par) l in
   List.flatten l
+;;
+
+let cut_envs_in_tree_list map =
+  gen_cut_tree_list (cut_envs map) []
 ;;
 
 let rec resolve_includes com tex_file s =
@@ -420,6 +583,9 @@ let parse sectionning environments tex_file =
   let source = resolve_includes "include" tex_file source in
   let source = resolve_includes "input" tex_file source in
   let source = remove_comments source in
+  let tokens = tokenize source in
+  let xmls = blocks_of_tokens tokens in
+  prerr_endline (Xtmpl.string_of_xmls xmls);
   let (preambule, body) =
     let (preambule, _, s) = str_cut begin_document re_begin_document source in
     let (body, _, _) = str_cut end_document re_end_document s in
@@ -483,9 +649,11 @@ let main () =
         let xml_file = prefix^"_body.xml" in
 
         Stog_misc.file_of_string ~file: mathjax_file
-          (string_of_stog_directives ~tags: [None ; Some "mathjax"] tex.preambule) ;
+          (string_of_stog_directives
+            ~tags: [None ; Some "mathjax"] ~notags: [Some "ignore"] tex.preambule) ;
         Stog_misc.file_of_string ~file: latex_file
-          (string_of_stog_directives ~notags: [Some "mathjax"] tex.preambule) ;
+          (string_of_stog_directives
+            ~notags: [Some "mathjax" ; Some "ignore"] tex.preambule) ;
 
         Stog_misc.file_of_string ~file: xml_file
           (Xtmpl.string_of_xml (Xtmpl.E (("","dummy_"),Xtmpl.atts_empty, to_xml tex.body)));
