@@ -368,6 +368,12 @@ let fun_end com eval tokens =
   ([Block (block ("end", env) [])], rest)
 ;;
 
+let fun_label com eval tokens =
+  let (arg, rest) = get_args com eval 1 tokens in
+  let id = string_tree (List.hd arg) in
+  ([Block (block ~id ("", "label") [])], rest)
+;;
+
 let funs sectionning =
   let dummy0 =
     [ "medskip" ; "bigskip" ]
@@ -388,9 +394,11 @@ let funs sectionning =
       "textbf", fun_bf ;
       "texttt", fun_texttt ;
       "ref", fun_ref ;
+      "eqref", fun_ref ;
       "begin", fun_begin ;
       "end", fun_end ;
       "dots", mk_const_fun 0 [Source "..."] ;
+      "label", fun_label ;
       ]
   in
   List.fold_left
@@ -427,10 +435,10 @@ let mk_envs =
        search_end tag (x::acc) q
   in
 *)
-  let rec iter acc stack l =
+  let rec iter map acc stack l =
     match l, stack with
     | [], [] -> List.rev acc
-    |  [], (com,_,_) :: _ -> failwith ("Missing end:"^com)
+    | [], (com,_,_) :: _ -> failwith ("Missing end:"^com)
     | (Block { tag = ("end", command) }) :: q, [] ->
          let msg = "Unexpected end:"^command in
          failwith msg
@@ -438,11 +446,18 @@ let mk_envs =
          let msg = "Expected end:"^c^" but found end:"^command in
          failwith msg
     | (Block { tag = ("end", command) }) :: q, (_,b,old_acc) :: stack ->
-         let b = { b with tag = ("",command) ; subs = List.rev acc } in
-         iter ((Block b) :: old_acc) stack q
+         prerr_endline ("end:"^command);
+         let tag = try SMap.find command map with Not_found -> ("",command) in
+         let b = { b with tag ; subs = List.rev acc } in
+         iter map ((Block b) :: old_acc) stack q
 
     | (Block ({ tag = ("begin", command) } as b)) :: q, stack ->
-        iter [] ((command,b,acc)::stack) q
+        prerr_endline ("begin:"^command);
+        iter map [] ((command,b,acc)::stack) q
+    | (Block b) :: q, stack ->
+        let subs = iter map [] [] b.subs in
+        let b = Block { b with subs } in
+        iter map (b :: acc) stack q
 (*
         match search_end ("end",command) [] q with
         | None -> failwith ("Could not find end:"^command)
@@ -452,9 +467,9 @@ let mk_envs =
             iter ((Block b) :: acc) rest
       end
 *)
-    | x :: q, stack -> iter (x :: acc) stack q
+    | x :: q, stack -> iter map (x :: acc) stack q
   in
-  iter [] []
+  fun map -> iter map [] []
 ;;
 
 let mk_sections =
@@ -478,6 +493,10 @@ let mk_sections =
         let l = iter command [] subs in
         let b = { b with tag = ("",command) ; subs = l } in
         iter command ((Block b) :: acc) q
+    | (Block b) :: q ->
+        let subs = iter command [] b.subs in
+        let b = Block { b with subs } in
+        iter command (b :: acc) q
     | x :: q -> iter command (x :: acc) q
   in
   fun commands body ->
@@ -487,9 +506,45 @@ let mk_sections =
       commands
 ;;
 
+let add_ids =
+  let rec find_label acc = function
+    [] -> None
+  | (Block { tag = ("", "label") ; id = Some id}) :: q ->
+     prerr_endline ("found id="^id);
+     Some (id, (List.rev acc) @ q)
+  | ((Block { tag = ("","[")}) as x) :: q ->
+     find_label (x::acc) q
+  | (Source s) :: q when Stog_misc.strip_string s = "" ->
+     find_label acc q
+  | x :: q -> None
+  in
+  let rec iter acc = function
+    | [] -> List.rev acc
+    | ((Source _) as x) :: q -> iter (x::acc) q
+    | (Block b) :: q ->
+        let (id, subs) =
+          match find_label [] b.subs with
+          | Some (id, subs) -> (Some id, subs)
+          | None ->
+            (* try looking in reverse order, for a \label at the end of block,
+               for example in figure *)
+            match find_label [] (List.rev b.subs) with
+              Some (id, subs) -> (Some id, List.rev subs)
+            | None -> (b.id, b.subs)
+        in
+        let subs = iter [] subs in
+        let b = Block { b with id ; subs } in
+        iter (b :: acc) q
+  in
+  iter []
+;;
+
 let to_xml =
   let rec iter = function
     Source s -> Xtmpl.D s
+  | Block ({ tag = ("","[") } as b) ->
+     let subs = (Xtmpl.D "[") :: (List.map iter b.subs) @ [ Xtmpl.D "]"] in
+     Xtmpl.E (("","span"), Xtmpl.atts_empty, subs)
   | Block b ->
      let atts =
         (match b.title with [] -> [] | t -> [("","title"), (List.map iter t)]) @
@@ -587,6 +642,7 @@ let env_map =
   let l = [
     "equation", ("math", "equation") ;
     "eqnarray", ("math", "eqnarray") ;
+    "align", ("math", "eqnarray") ;
     "theo", ("math", "theorem") ;
     "lemma", ("math", "lemma") ;
     "prop", ("math", "prop") ;
@@ -594,7 +650,8 @@ let env_map =
     "proof", ("math", "proof") ;
   ]
   in
-  List.fold_left (fun acc (s, tag) -> SMap.add s tag acc) SMap.empty l
+  List.fold_left
+    (fun acc (s, tag) -> SMap.add s tag (SMap.add (s^"*") tag acc)) SMap.empty l
 ;;
 
 
@@ -625,7 +682,8 @@ let parse sectionning environments tex_file =
     body
   in
   let body = mk_sections sectionning body in
-  let body = mk_envs body in
+  let body = mk_envs env_map body in
+  let body = add_ids body in
   let tex = { tex with body } in
   tex
 ;;
