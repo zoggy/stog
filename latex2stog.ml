@@ -35,10 +35,15 @@ type tree =
 
 and block = {
     tag : Xtmpl.name ;
-    title : string option;
+    title : tree list ;
     id : string option ;
     subs : tree list ;
+    atts : Xtmpl.attributes ;
   }
+
+let block ?(atts=Xtmpl.atts_empty) ?id ?(title=[]) tag subs =
+  { tag ; title ; id ; subs ; atts }
+;;
 
 let string_of_tag = function
   ("",s) -> s
@@ -48,7 +53,7 @@ let string_of_tag = function
 let rec string_of_tree = function
   Source s -> "<source>"^s^"</source>"
 | Block b ->
-  "<"^(string_of_tag b.tag)^" title="^(Stog_misc.string_of_opt b.title)^" id="^(match b.id with None -> "_" | Some s -> s)^">\n"^
+  "<"^(string_of_tag b.tag)^" title="^(string_of_tree_list b.title)^" id="^(match b.id with None -> "_" | Some s -> s)^">\n"^
   (string_of_tree_list b.subs)^"\n</"^(string_of_tag b.tag)^">\n"
 
 and string_of_tree_list l =
@@ -115,105 +120,6 @@ let str_cut s_re re ?(start=0) ?(fail=true) s =
       else
         (s, "", "")
 ;;
-
-let mk_blocks com source =
-  let re_com = Str.regexp ("\\\\"^com^"\\*?{\\([^}]+\\)}\n?\\(\\\\label{\\([^}]+\\)}\\)?") in
-  let len = String.length source in
-  let rec iter acc ?title ?id start =
-    let p_opt =
-      try Some (Str.search_forward re_com source start)
-      with Not_found -> None
-    in
-    match p_opt with
-      None ->
-        begin
-          match title with
-           None -> (Source (String.sub source start (len - start))) :: acc
-         | Some t ->
-            let body = Source (String.sub source start (len - start)) in
-            let b = { tag = ("", com) ; title = t ; id = id ; subs = [ body ] } in
-            (Block b) :: acc
-        end
-    | Some stop ->
-        let acc =
-          begin
-            match title with
-             None -> (Source (String.sub source start (stop - start))) :: acc
-           | Some t ->
-              let body = Source (String.sub source start (stop - start)) in
-              let b = { tag = ("", com) ; title = t ; id = id ; subs = [ body ] } in
-              (Block b) :: acc
-          end
-        in
-        let title = Some (Str.matched_group 1 source) in
-        let id = try Some (Str.matched_group 3 source) with _ -> None in
-        iter acc ~title ?id (stop+(String.length (Str.matched_string source)))
-  in
-  List.rev (iter [] 0)
-;;
-
-let cut_sectionning =
-  let rec cut body = function
-    [] -> body
-  | com :: q ->
-    let body = List.fold_left (cut_sect com) [] body in
-    cut body q
-
-  and cut_sect com acc = function
-    Block b ->
-      acc @ [Block { b with subs = List.fold_left (cut_sect com) [] b.subs }]
-  | Source s ->
-      acc @ (mk_blocks com s)
-  in
-  fun sections tex ->
-    { tex with body = cut tex.body sections }
-;;
-
-
-type ('b, 'e) com_limit =
-  Begin of int * int * 'b
-| End of int * int * 'e
-;;
-type env_limit = (string * string option * string option, string) com_limit
-
-let next_com_limit re_open f_begin re_close f_end source pos =
-  let p_begin =
-    try
-      let p = Str.search_forward re_open source pos in
-      prerr_endline ("begin: matched_string="^(Str.matched_string source));
-      Some p
-    with Not_found -> None
-  in
-  match p_begin with
-    None ->
-      begin
-        let p_end =
-          try Some (Str.search_forward re_close source pos)
-          with Not_found -> None
-        in
-        match p_end with
-          None -> None
-        | Some p ->
-            let matched = Str.matched_string source in
-            Some (End (p, p + String.length matched, f_end source))
-      end
-  | Some p_begin ->
-      begin
-        let begin_matched = Str.matched_string source in
-        let begin_data = f_begin source in
-        let p_end =
-          try Some (Str.search_forward re_close source pos)
-          with Not_found -> None
-        in
-        match p_end with
-        | Some p when p < p_begin->
-            let matched = Str.matched_string source in
-            Some (End (p, p + String.length matched, f_end source))
-        | _ ->
-            Some (Begin (p_begin, p_begin + String.length begin_matched, begin_data))
-      end
-;;
-
 type token =
   Tex of char
 | Tex_block of char * token list
@@ -244,13 +150,8 @@ let tokenize =
   | '[' -> ']'
   | _ -> assert false
   in
-  let cur_s source cur =
-    let (start,len) = cur in
-    if start >= len then "" else String.sub source start len
-  in
-  let extend (start,len) = (start, len+1) in
   let is_com_char = function
-       'a'..'z' | 'A'..'Z' | '0'..'9' | '-' | '_' | ':' | '~'-> true
+       'a'..'z' | 'A'..'Z' | '0'..'9' | '-' | ':' | '~' | '*' -> true
      | _ -> false
   in
   let is_blank = function
@@ -258,6 +159,7 @@ let tokenize =
   | _ -> false
   in
   let fail source msg i =
+    let i = max 0 (i - 1) in
     let len = String.length source in
     let context = 80 in
     let before =
@@ -354,21 +256,20 @@ let tokenize =
     l
 ;;
 
-type tex_com_result =
-  Arity of int
-| Result of Xtmpl.tree list
-;;
+(*type tex_eval = eval_tokens -> token list -> (tree list * token list)*)
 
-type tex_eval = Xtmpl.tree list list -> tex_com_result
-
-let blocks_of_tokens map tokens =
-  let rec get_n n = function
-    [] when n > 0 -> raise Not_found
+let rec get_args com eval_tokens n = function
+    [] when n > 0 ->
+      let msg = "Command \\"^com^": missing argument" in
+      failwith msg
+  | (Tex_blank _) :: q -> get_args com eval_tokens n q
   | h :: q when n > 0 ->
-    let (next, q2) = get_n (n-1) q in
+    let h = eval_tokens [h] in
+    let (next, q2) = get_args com eval_tokens (n-1) q in
     (h :: next, q2)
   | l -> ([], l)
-  in
+
+let rec blocks_of_tokens map tokens =
   let rec add_chars b = function
     (Tex c) :: q
   | (Tex_blank c) :: q ->
@@ -380,16 +281,16 @@ let blocks_of_tokens map tokens =
     [] -> List.rev acc
   |(Tex_math1 s) :: q ->
      let s = "$"^s^"$" in
-     let acc = (Xtmpl.D s) :: acc in
+     let acc = (Source s) :: acc in
      iter acc q
   | (Tex_math2 s) :: q ->
      let s = "\\["^s^"\\]" in
-     let acc = (Xtmpl.D s) :: acc in
+     let acc = (Source s) :: acc in
      iter acc q
   | ((Tex _) :: _ | (Tex_blank _) :: _) as l ->
      let b = Buffer.create 256 in
      let rest = add_chars b l in
-     iter ((Xtmpl.D (Buffer.contents b)) :: acc) rest
+     iter ((Source (Buffer.contents b)) :: acc) rest
   | (Tex_command name) :: q ->
      command acc name q
   | (Tex_block (c, subs)) :: q ->
@@ -397,88 +298,210 @@ let blocks_of_tokens map tokens =
      let xmls =
        match c with
          '{' -> subs
-       | c -> [ Xtmpl.E (("",String.make 1 c), Xtmpl.atts_empty, subs) ]
+       | c ->
+         let b = block ("",String.make 1 c) subs in
+         [ Block b ]
      in
      iter ((List.rev xmls) @ acc) q
   and command acc name tokens =
     match try Some(SMap.find name map) with Not_found -> None with
-     None -> iter ((Xtmpl.D ("\\"^name)) :: acc) tokens
+     None -> iter ((Source ("\\"^name^"{}")) :: acc) tokens
    | Some f ->
-       match f [] with
-         Result l -> iter ((List.rev l) @ acc) tokens
-       | Arity n -> apply_fun f acc n tokens
-
-  and apply_fun f acc arity tokens =
-    let (l,q) = get_n arity tokens in
-    let args = List.map (fun x -> iter [] [x]) l in
-    match f args with
-      Arity n -> apply_fun f acc n tokens
-    | Result l -> iter ((List.rev l) @ acc) q
+       let (res, tokens) = f name (blocks_of_tokens map) tokens in
+       iter ((List.rev res) @ acc) tokens
   in
   iter [] tokens
 ;;
 
-
-let cut_envs =
-  let re_open = Str.regexp
-    "\\\\begin{\\([^}*]+\\)\\*?}\\(\\[\\([^]]+\\)\\]\\)?\n?\\(\\\\label{\\([^}]+\\)}\\)?"
-  in
-  let re_close = Str.regexp "\\\\end{\\([^}*]+\\)\\*?}" in
-  let f_begin source =
-    let name = Str.matched_group 1 source in
-    let title = try Some (Str.matched_group 3 source) with _ -> None in
-    let id = try Some (Str.matched_group 5 source) with _ -> None in
-    (name, title, id)
-  in
-  let f_end source = Str.matched_group 1 source in
-  let next_env_limit = next_com_limit re_open f_begin re_close f_end in
-  let map_tag map tag =
-    try SMap.find tag map
-    with Not_found -> ("", tag)
-  in
-  let rec iter map source acc stack pos =
-    let len = String.length source in
-    match next_env_limit source pos with
-      None ->
-        let s = String.sub source pos (len - pos) in
-        (List.rev ((Source s) :: acc), len-1)
-    | Some (Begin (p_start,p_stop,(tag,title,id))) ->
-         let s = String.sub source pos (p_start - pos) in
-         let acc = (Source s) :: acc in
-         let (subs, p_end) =
-           iter map source [] (tag :: stack) p_stop
-         in
-         let b = { tag = map_tag map tag ; id ; title ; subs } in
-         let acc = (Block b) :: acc in
-         iter map source acc stack p_end
-    | Some (End (p_start,p_stop,tag)) ->
-         match stack with
-           [] -> failwith ("too many \\end{"^tag^"} in\n"^(String.sub source pos (p_stop - pos)))
-         | t :: _ when t <> tag ->
-             let msg = "Expected \\end{"^t^"} but found \\end{"^tag^"} in "^
-               (String.sub source pos (len -pos))
-             in
-             failwith msg
-         | _ :: q ->
-             let s = String.sub source pos (p_start - pos) in
-             let subs = List.rev ((Source s) :: acc) in
-             (subs, p_stop)
-  in
-  iter
+let string_tree = function
+  [Source s] -> s
+| t ->
+  let msg = "Not a simple string: "^(string_of_tree_list t) in
+  failwith msg
 ;;
 
-let rec gen_cut_tree f par = function
-  Source s -> fst (f s [] par 0)
-| Block b ->
-  [ Block { b with subs = gen_cut_tree_list f par b.subs } ]
-
-and gen_cut_tree_list f par l =
-  let l = List.map (gen_cut_tree f par) l in
-  List.flatten l
+let mk_one_arg_fun name tag =
+  fun eval tokens ->
+    let (arg, rest) = get_args name eval 1 tokens in
+    ([Block (block tag (List.hd arg))], rest)
 ;;
 
-let cut_envs_in_tree_list map =
-  gen_cut_tree_list (cut_envs map) []
+let mk_const_fun n res =
+  match n with
+    0 -> (fun name eval tokens -> (res, tokens))
+  | _ ->
+    (fun name eval tokens ->
+      let (_, rest) = get_args name eval n tokens in
+      (res, rest)
+    )
+;;
+
+let fun_emph com = mk_one_arg_fun com ("","em");;
+let fun_bf com = mk_one_arg_fun com ("","strong");;
+let fun_texttt com = mk_one_arg_fun com ("","code");;
+
+let fun_ref com eval tokens =
+  let (arg, rest) = get_args com eval 1 tokens in
+  let label = "#"^(string_tree (List.hd arg)) in
+  let atts = Xtmpl.atts_one ("", "href") [Xtmpl.D label] in
+  ([Block (block ~atts ("", Stog_tags.elt) [])], rest)
+;;
+
+let fun_section com eval tokens =
+  let (arg, rest) = get_args com eval 1 tokens in
+  let tag =
+    let len = String.length com in
+    if len > 0 && com.[len-1] = '*' then String.sub com 0 (len-1) else com
+  in
+  ([Block (block ~title: (List.hd arg) ("latex", tag) [])], rest)
+;;
+
+let fun_begin com eval tokens =
+  let (arg, rest) = get_args com eval 1 tokens in
+  let env = string_tree (List.hd arg) in
+  ([Block (block ("begin", env) [])], rest)
+;;
+
+let fun_end com eval tokens =
+  let (arg, rest) = get_args com eval 1 tokens in
+  let env = string_tree (List.hd arg) in
+  ([Block (block ("end", env) [])], rest)
+;;
+
+let funs sectionning =
+  let dummy0 =
+    [ "medskip" ; "bigskip" ]
+  in
+  let dummy1 =
+    [ "vspace" ]
+  in
+  let funs =
+    (List.fold_left
+      (fun acc com -> (com, fun_section) :: (com^"*", fun_section) :: acc)
+       [] sectionning
+    ) @
+    (List.map (fun com -> (com, mk_const_fun 0 [])) dummy0) @
+    (List.map (fun com -> (com, mk_const_fun 1 [])) dummy1) @
+    [
+      "emph", fun_emph ;
+      "bf", fun_bf ;
+      "textbf", fun_bf ;
+      "texttt", fun_texttt ;
+      "ref", fun_ref ;
+      "begin", fun_begin ;
+      "end", fun_end ;
+      "dots", mk_const_fun 0 [Source "..."] ;
+      ]
+  in
+  List.fold_left
+    (fun acc (name,f) -> SMap.add name f acc)
+    SMap.empty
+    funs
+;;
+
+let flatten_blocks =
+  let rec iter tags acc = function
+  | [] -> List.rev acc
+  | ((Source _) as x) :: q -> iter tags (x::acc) q
+  | (Block b) :: q ->
+    if List.mem b.tag tags then
+      iter tags acc (b.subs @ q)
+    else
+      (
+       let b = { b with subs = iter tags [] b.subs } in
+       iter tags ((Block b) :: acc) q
+      )
+  in
+  fun tags trees -> iter tags [] trees
+;;
+
+let mk_envs =
+(*
+  let rec search_end tag acc = function
+    [] -> None
+  | ((Source _) as x) :: q -> search_end tag (x::acc) q
+  | ((Block b) as x) :: q ->
+     if b.tag = tag then
+       Some (List.rev acc, q)
+     else
+       search_end tag (x::acc) q
+  in
+*)
+  let rec iter acc stack l =
+    match l, stack with
+    | [], [] -> List.rev acc
+    |  [], (com,_,_) :: _ -> failwith ("Missing end:"^com)
+    | (Block { tag = ("end", command) }) :: q, [] ->
+         let msg = "Unexpected end:"^command in
+         failwith msg
+    | (Block { tag = ("end", command) }) :: q, (c,_,_) :: _ when c <> command ->
+         let msg = "Expected end:"^c^" but found end:"^command in
+         failwith msg
+    | (Block { tag = ("end", command) }) :: q, (_,b,old_acc) :: stack ->
+         let b = { b with tag = ("",command) ; subs = List.rev acc } in
+         iter ((Block b) :: old_acc) stack q
+
+    | (Block ({ tag = ("begin", command) } as b)) :: q, stack ->
+        iter [] ((command,b,acc)::stack) q
+(*
+        match search_end ("end",command) [] q with
+        | None -> failwith ("Could not find end:"^command)
+        | Some (l,rest) ->
+            let l = iter [] l in
+            let b = { b with tag = ("",command) ; subs = l } in
+            iter ((Block b) :: acc) rest
+      end
+*)
+    | x :: q, stack -> iter (x :: acc) stack q
+  in
+  iter [] []
+;;
+
+let mk_sections =
+  let rec search_end tag acc = function
+    [] -> None
+  | ((Source _) as x) :: q -> search_end tag (x::acc) q
+  | ((Block b) as x) :: q ->
+     if b.tag = tag then
+       Some (List.rev acc, x :: q)
+     else
+       search_end tag (x::acc) q
+  in
+  let rec iter command acc = function
+    | [] -> List.rev acc
+    | (Block ({ tag = ("latex", c) } as b)) :: q when c = command ->
+        let (subs, q) =
+          match search_end ("latex",command) [] q with
+          | None -> (q, [])
+          | Some (l,rest) -> (l, rest)
+        in
+        let l = iter command [] subs in
+        let b = { b with tag = ("",command) ; subs = l } in
+        iter command ((Block b) :: acc) q
+    | x :: q -> iter command (x :: acc) q
+  in
+  fun commands body ->
+    List.fold_left
+      (fun acc com -> iter com [] acc)
+      body
+      commands
+;;
+
+let to_xml =
+  let rec iter = function
+    Source s -> Xtmpl.D s
+  | Block b ->
+     let atts =
+        (match b.title with [] -> [] | t -> [("","title"), (List.map iter t)]) @
+        (match b.id with
+           None -> []
+         | Some id -> [("","id"), [ Xtmpl.D id ] ]
+        )
+     in
+     let atts = Xtmpl.atts_of_list ~atts: b.atts atts in
+     Xtmpl.E (b.tag, atts, List.map iter b.subs)
+  in
+  fun l -> List.map iter l
 ;;
 
 let rec resolve_includes com tex_file s =
@@ -496,23 +519,6 @@ let rec resolve_includes com tex_file s =
     resolve_includes com filename s
   in
   Str.global_substitute re_include f s
-;;
-
-let to_xml =
-  let rec iter = function
-    Source s -> Xtmpl.D s
-  | Block b ->
-     let atts =
-        (match b.title with None -> [] | Some t -> [("","title"), [ Xtmpl.D t]])@
-        (match b.id with
-           None -> []
-         | Some id -> [("","id"), [ Xtmpl.D id ] ]
-        )
-     in
-     let atts = Xtmpl.atts_of_list atts in
-     Xtmpl.E (b.tag, atts, List.map iter b.subs)
-  in
-  fun l -> List.map iter l
 ;;
 
 let cut_with_stog_directives source =
@@ -591,21 +597,7 @@ let env_map =
   List.fold_left (fun acc (s, tag) -> SMap.add s tag acc) SMap.empty l
 ;;
 
-let fun_emph = function
-  [] -> Arity 1
-| h :: _ -> Result [Xtmpl.E(("","em"),Xtmpl.atts_empty,h)]
-;;
 
-let funs =
-  let funs = [
-    "emph", fun_emph ;
-    ]
-  in
-  List.fold_left
-    (fun acc (name,f) -> SMap.add name f acc)
-    SMap.empty
-    funs
-;;
 
 let parse sectionning environments tex_file =
   let source = Stog_misc.string_of_file tex_file in
@@ -613,9 +605,6 @@ let parse sectionning environments tex_file =
   let source = resolve_includes "include" tex_file source in
   let source = resolve_includes "input" tex_file source in
   let source = remove_comments source in
-  let tokens = tokenize source in
-  let xmls = blocks_of_tokens funs tokens in
-  prerr_endline (Xtmpl.string_of_xmls xmls);
   let (preambule, body) =
     let (preambule, _, s) = str_cut begin_document re_begin_document source in
     let (body, _, _) = str_cut end_document re_end_document s in
@@ -627,8 +616,16 @@ let parse sectionning environments tex_file =
     (preambule, body)
   in
   let tex = { preambule ; body = [Source body] } in
-  let tex = cut_sectionning sectionning tex in
-  let body = cut_envs_in_tree_list env_map tex.body in
+  (*let tex = cut_sectionning sectionning tex in*)
+  (*let body = (*cut_envs_in_tree_list env_map*) tex.body in*)
+  let tokens = tokenize body in
+  let body = blocks_of_tokens (funs sectionning) tokens in
+  let body = flatten_blocks
+    [("begin","refsection") ; ("end","refsection")]
+    body
+  in
+  let body = mk_sections sectionning body in
+  let body = mk_envs body in
   let tex = { tex with body } in
   tex
 ;;
