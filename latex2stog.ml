@@ -93,8 +93,8 @@ print_int p;;
 
 let remove_comments s =
   (*let re = Str.regexp "[^\\\\]%\\(\\([^<].*$\\)\\|$\\)" in*)
-  let re = Str.regexp "^%$" in
-  let f s = "" in
+  let re = Str.regexp "^%+$" in
+  let f s = "\n" in
   let s = Str.global_substitute re f s in
   let re = Str.regexp "[^\\\\]%\\([^<\n].*$\\)$" in
   let f s =
@@ -161,6 +161,12 @@ let rec string_of_token = function
 | Tex_math2 s -> "\\["^s^"\\]"
 ;;
 
+let string_of_token_list l =
+  let b = Buffer.create 256 in
+  List.iter (fun t -> Buffer.add_string b (string_of_token t)) l;
+  Buffer.contents b
+;;
+
 let tokenize =
   let is_com_char = function
        'a'..'z' | 'A'..'Z' | '0'..'9' | '-' | ':' | '~' | '*' -> true
@@ -223,7 +229,7 @@ let tokenize =
            if is_com_char c then
              iter source len (Command (String.make 1 c)) acc bchar (i+1)
            else
-             iter source len Normal ((Tex c) :: acc) bchar (i+1)
+             iter source len Normal ((Tex c) :: (Tex '\\') :: acc) bchar (i+1)
        | Blank s, c when is_blank c ->
           let state = Blank (s^(String.make 1 c)) in
           iter source len state acc bchar (i+1)
@@ -328,7 +334,7 @@ let rec blocks_of_tokens map tokens =
      let acc = (Source s) :: acc in
      iter acc q
   | (Tex_blank s) :: q when count_newlines s >= 2 ->
-     let acc = (Block (block ("latex", "latexpar") [])) :: acc in
+     let acc = (Block (block ("latex", "p") [])) :: acc in
      iter acc q
   | ((Tex _) :: _ | (Tex_blank _) :: _) as l ->
      let b = Buffer.create 256 in
@@ -365,10 +371,74 @@ let string_tree = function
   failwith msg
 ;;
 
+let rec read_id acc = function
+  | [] -> acc
+  | (Tex c) :: q -> read_id (acc^(String.make 1 c)) q
+  | _ -> failwith ("Invalid label: "^acc^"?")
+;;
+
+let rec get_label acc = function
+    [] -> (None, List.rev acc)
+  | Tex_command "label" :: Tex_block ('{', l) :: q ->
+     let id = read_id "" l in
+     (Some id, (List.rev acc) @ q)
+  | x :: q -> get_label (x :: acc) q
+;;
+
+let gen_equation_contents tokens =
+  let (id, tokens) = get_label [] tokens in
+  let math = Source (string_of_token_list tokens) in
+  [ Block (block ?id ("math","equation") [ math ])]
+;;
+
+let gen_eqnarray_contents tokens =
+  let rec cut_by_newline acc cur = function
+    [] ->
+      (match cur with
+        [] -> List.rev acc
+      | _ -> List.rev ((List.rev cur) :: acc)
+      )
+  | Tex_dbs :: q ->
+      (match cur with
+         [] -> cut_by_newline acc cur q
+       | _ ->
+         let acc = (List.rev cur) :: acc in
+         cut_by_newline acc [] q
+       )
+  | x :: q -> cut_by_newline acc (x::cur) q
+  in
+  let lines = cut_by_newline [] [] tokens in
+  let cut_line line =
+    let s = string_of_token_list line in
+    let l = Stog_misc.split_string s ['&'] in
+    List.map (fun s -> Source ("$" ^ s ^ "$")) l
+  in
+  let f_col col =
+    Block (block ("","td") [ col ])
+  in
+  let f_line line =
+    let (id, line) = get_label [] line in
+    let cols = cut_line line in
+    let tr = block ?id ("","tr") (List.map f_col cols) in
+    Block tr
+  in
+  List.map f_line lines
+;;
+
+
 let mk_one_arg_fun name tag =
   fun eval tokens ->
     let (arg, rest) = get_args name eval 1 tokens in
     ([Block (block tag (List.hd arg))], rest)
+;;
+
+let mk_ignore_opt f x name eval tokens =
+  let (arg, rest) = get_args name eval 1 tokens in
+  match arg with
+    [ [Block { tag = ("","[") }] ] ->
+    f name x eval rest
+  | _ ->
+    f name x eval tokens
 ;;
 
 let mk_const_fun n res =
@@ -384,6 +454,7 @@ let mk_const_fun n res =
 let fun_emph com = mk_one_arg_fun com ("","em");;
 let fun_bf com = mk_one_arg_fun com ("","strong");;
 let fun_texttt com = mk_one_arg_fun com ("","code");;
+let fun_caption = mk_ignore_opt mk_one_arg_fun ("","legend");;
 
 let fun_ref com eval tokens =
   let (arg, rest) = get_args com eval 1 tokens in
@@ -392,20 +463,60 @@ let fun_ref com eval tokens =
   ([Block (block ~atts ("", Stog_tags.elt) [])], rest)
 ;;
 
+let remove_end_star s =
+  let len = String.length s in
+  if len > 0 && s.[len-1] = '*' then String.sub s 0 (len-1) else s
+;;
+
 let fun_section com eval tokens =
   let (arg, rest) = get_args com eval 1 tokens in
-  let tag =
-    let len = String.length com in
-    if len > 0 && com.[len-1] = '*' then String.sub com 0 (len-1) else com
-  in
+  let tag = remove_end_star com in
   ([Block (block ~title: (List.hd arg) ("latex", tag) [])], rest)
+;;
+
+let search_end_ com eval tokens =
+  let rec iter acc = function
+    [] -> None
+  | ((Tex_command "end") as x) :: q ->
+    let (arg,rest) = get_args "end" eval 1 q in
+    let s = string_tree (List.hd arg) in
+    if s = com then
+      (
+       prerr_endline ("search_end_ com="^com^" found");
+       Some ((List.rev acc), rest)
+      )
+    else
+      iter (x :: acc) q
+  | x :: q ->
+     iter (x :: acc) q
+  in
+  iter [] tokens
 ;;
 
 let fun_begin com eval tokens =
   let (arg, rest) = get_args com eval 1 tokens in
   let env = string_tree (List.hd arg) in
-(*  TODO: cas special pour eqnarray[*]: chercher la fin et garder le tex tel quel ?*)
-  ([Block (block ("begin", env) [])], rest)
+  match env with
+    "eqnarray" | "eqnarray*"
+  | "equation" | "equation*" ->
+      begin
+        match search_end_ env eval rest with
+          None -> failwith ("Could not find \\end{"^env^"}")
+        | Some (subs, rest) ->
+           let tag = remove_end_star env in
+           let contents =
+             match tag with
+               "eqnarray" ->
+                 let subs = gen_eqnarray_contents subs in
+                 let b = block ("math",tag) subs in
+                 [ Block b ]
+             | "equation" -> gen_equation_contents subs
+             | _ -> assert false
+           in
+           (contents, rest)
+      end
+  | _ ->
+    ([Block (block ("begin", env) [])], rest)
 ;;
 
 let fun_end com eval tokens =
@@ -445,6 +556,7 @@ let funs sectionning =
       "end", fun_end ;
       "dots", mk_const_fun 0 [Source "..."] ;
       "label", fun_label ;
+      "caption", fun_caption ;
       ]
   in
   List.fold_left
@@ -519,78 +631,66 @@ let mk_envs =
 ;;
 
 let mk_sections =
-  let rec search_end tag stopon acc = function
+  let rec search_end tag stop acc = function
     [] -> None
-  | ((Source _) as x) :: q -> search_end tag stopon (x::acc) q
+  | ((Source _) as x) :: q -> search_end tag stop (x::acc) q
   | ((Block b) as x) :: q ->
      if b.tag = tag then
        Some (List.rev acc, x :: q)
      else
-       if SSSet.mem b.tag stopon then
+       if stop b.tag then
          Some (List.rev acc, x :: q)
        else
-         search_end tag stopon (x::acc) q
+         search_end tag stop (x::acc) q
   in
-  let rec iter stopon command acc = function
+  let rec iter stop command acc = function
     | [] -> List.rev acc
     | (Block ({ tag = ("latex", c) } as b)) :: q when c = command ->
         let (subs, q) =
-          match search_end ("latex",command) stopon [] q with
+          match search_end ("latex",command) stop [] q with
           | None -> (q, [])
           | Some (l,rest) -> (l, rest)
         in
-        let l = iter stopon command [] subs in
+        let l = iter stop command [] subs in
         let b = { b with tag = ("",command) ; subs = l } in
-        iter stopon command ((Block b) :: acc) q
+        let acc = match b.subs with [] -> acc | _ -> (Block b) :: acc in
+        iter stop command acc q
     | (Block b) :: q ->
-        let subs = iter stopon command [] b.subs in
+        let subs = iter stop command [] b.subs in
         let b = Block { b with subs } in
-        iter stopon command (b :: acc) q
-    | x :: q -> iter stopon command (x :: acc) q
+        iter stop command (b :: acc) q
+    | x :: q -> iter stop command (x :: acc) q
   in
-  fun ?(stopon=SSSet.empty) commands body ->
+  fun ?(stop=fun _ -> false) commands body ->
     List.fold_left
-      (fun acc com -> iter stopon com [] acc)
+      (fun acc com -> iter stop com [] acc)
       body
       commands
 ;;
 
 let mk_pars sectionning body =
-  let stopon = List.fold_left (fun acc s -> SSSet.add ("",s) acc) SSSet.empty sectionning in
-  mk_sections ~stopon ["latexpar"] body
+  let set =
+     List.fold_left (fun acc s -> SSSet.add ("",s) acc)
+       SSSet.empty
+       sectionning
+  in
+  let stop = function
+    ("begin",_) | ("end", _)
+  | ("", "eqnarray") -> true
+  | t -> SSSet.mem t set
+  in
+  mk_sections ~stop ["p"] body
 ;;
 
-let handle_eqnarrays =
-(*
-  let rec cut_by_dbs acc cur = function
-    [] ->
-      (match cut with
-        [] -> List.rev acc
-      | _ -> List.rev ((List.rev cur) :: acc)
-      )
-  | ((Source _) as x) :: q ->
-     cut_by_dbs acc (x::cur) q
-  |
-  in
-*)
-  let f subs = subs
-
-  in
-  let rec iter acc = function
-    [] -> List.rev acc
-  | ((Source _) as x) :: q ->
-    iter (x :: acc) q
-  | (Block ({ tag = ("","eqnarray") } as b)) :: q ->
-      let b = { b with subs = f b.subs } in
-      iter ((Block b) :: acc) q
-  | (Block b) :: q ->
-     let subs = iter [] b.subs in
-     iter ((Block { b with subs }) :: acc) q
-  in
-  iter []
+let traversable_tags_for_ids =
+  List.fold_left
+    (fun set tag -> SSSet.add tag set)
+    SSSet.empty
+    [
+      ("","legend") ;
+      ("","center") ;
+    ]
 ;;
-
-
 
 let add_ids =
   let rec find_label acc = function
@@ -600,6 +700,26 @@ let add_ids =
      Some (id, (List.rev acc) @ q)
   | ((Block { tag = ("","[")}) as x) :: q ->
      find_label (x::acc) q
+  | ((Block { tag = ("","latexnewline")}) as x) :: q ->
+     find_label (x::acc) q
+  | (Block ({ tag } as b)) :: q when SSSet.mem tag traversable_tags_for_ids ->
+     prerr_endline ("traversing block "^(fst tag)^":"^(snd tag));
+     begin
+       match find_label [] b.subs with
+       | Some (id, l) ->
+            let b = { b with subs = l } in
+            let acc = List.rev ((Block b) :: acc) in
+            Some (id, acc @ q)
+       | None ->
+          (* try looking in reverse order, for a \label at the end of block,
+             for example in figure *)
+            match find_label [] (List.rev b.subs) with
+            | None -> find_label ((Block b) :: acc) q
+            | Some (id, l) ->
+                let b = { b with subs = List.rev l } in
+                let acc = List.rev ((Block b) :: acc) in
+                Some (id, acc @ q)
+     end
   | (Source s) :: q when Stog_misc.strip_string s = "" ->
      find_label acc q
   | x :: q -> None
@@ -614,9 +734,9 @@ let add_ids =
           | None ->
             (* try looking in reverse order, for a \label at the end of block,
                for example in figure *)
-            match find_label [] (List.rev b.subs) with
-              Some (id, subs) -> (Some id, List.rev subs)
-            | None -> (b.id, b.subs)
+              match find_label [] (List.rev b.subs) with
+                Some (id, subs) -> (Some id, List.rev subs)
+              | None -> (b.id, b.subs)
         in
         let subs = iter [] subs in
         let b = Block { b with id ; subs } in
@@ -734,6 +854,7 @@ let env_map =
     "prop", ("math", "prop") ;
     "rem", ("math", "remark") ;
     "proof", ("math", "proof") ;
+    "pte", ("math", "property") ;
   ]
   in
   List.fold_left
@@ -768,9 +889,8 @@ let parse sectionning environments tex_file =
     body
   in
   let body = mk_sections sectionning body in
-  let body = mk_envs env_map body in
   let body = mk_pars sectionning body in
-  let body = handle_eqnarrays body in
+  let body = mk_envs env_map body in
   let body = add_ids body in
   let tex = { tex with body } in
   tex
