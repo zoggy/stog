@@ -29,6 +29,14 @@
 (** LaTeX to Stog translator. *)
 
 module SMap = Map.Make (String);;
+module SSSet = Set.Make
+  (struct type t = string * string
+    let compare (s1,s2) (s3,s4) =
+      match String.compare s1 s3 with
+        0 -> String.compare s2 s4
+      | n -> n
+   end)
+
 type tree =
   Source of string
 | Block of block
@@ -124,32 +132,36 @@ type token =
   Tex of char
 | Tex_block of char * token list
 | Tex_command of string
-| Tex_blank of char
+| Tex_blank of string
+| Tex_dbs (* double backslash *)
+| Tex_amp (* ampersand *)
 | Tex_math1 of string
 | Tex_math2 of string
 
-type state = Normal | Escaping | Command of string | Math1 of string | Math2 of string
+type state = Normal | Blank of string | Escaping | Command of string | Math1 of string | Math2 of string
 
-let rec string_of_token = function
-| Tex c
-| Tex_blank c -> String.make 1 c
-| Tex_block (c, l) ->
-    let b = Buffer.create 256 in
-    Buffer.add_string b ("|BLOCK "^(String.make 1 c)^"");
-    List.iter (fun t -> Buffer.add_string b (string_of_token t)) l;
-    Buffer.add_string b "}|" ;
-    Buffer.contents b
-| Tex_command name -> "|COMMAND "^name^"|"
-| Tex_math1 s -> "$...$"
-| Tex_math2 s -> "\\[...\\]"
-;;
-
-let tokenize =
-  let close_of_open = function
+let close_of_open = function
     '{' -> '}'
   | '[' -> ']'
   | _ -> assert false
-  in
+;;
+
+let rec string_of_token = function
+| Tex c -> String.make 1 c
+| Tex_blank s -> s
+| Tex_dbs -> "\\\\"
+| Tex_block (c, l) ->
+    let b = Buffer.create 256 in
+    Buffer.add_char b c ;
+    List.iter (fun t -> Buffer.add_string b (string_of_token t)) l;
+    Buffer.add_char b (close_of_open c);
+    Buffer.contents b
+| Tex_command name -> "\\"^name
+| Tex_math1 s -> "$"^s^"$"
+| Tex_math2 s -> "\\["^s^"\\]"
+;;
+
+let tokenize =
   let is_com_char = function
        'a'..'z' | 'A'..'Z' | '0'..'9' | '-' | ':' | '~' | '*' -> true
      | _ -> false
@@ -183,7 +195,8 @@ let tokenize =
            fail source msg i
        | None ->
            match state with
-             Normal -> (List.rev acc, -1)
+             Normal
+           | Blank _ -> (List.rev acc, -1)
            | Escaping ->
               fail source "Missing character after '\\'" i
            | Command com ->
@@ -204,11 +217,18 @@ let tokenize =
        | Math2 s, c -> iter source len (Math2 (s^(String.make 1 c))) acc bchar (i+1)
        | Escaping, '[' ->
           iter source len (Math2 "") acc bchar (i+1)
+       | Escaping, '\\' ->
+          iter source len Normal (Tex_dbs :: acc) bchar (i+1)
        | Escaping, c ->
            if is_com_char c then
              iter source len (Command (String.make 1 c)) acc bchar (i+1)
            else
              iter source len Normal ((Tex c) :: acc) bchar (i+1)
+       | Blank s, c when is_blank c ->
+          let state = Blank (s^(String.make 1 c)) in
+          iter source len state acc bchar (i+1)
+       | Blank s, _ ->
+          iter source len Normal ((Tex_blank s) :: acc) bchar i
        | Normal, '$' ->
            iter source len (Math1 "") acc bchar (i+1)
        | Normal, c when c = ']' || c = '}' ->
@@ -238,11 +258,10 @@ let tokenize =
           iter source len Normal acc bchar (i+1)
        | Normal, '\\' ->
           iter source len Escaping acc bchar (i+1)
+       | Normal, c when is_blank c ->
+          iter source len (Blank (String.make 1 c)) acc bchar (i+1)
        | Normal, c ->
-          let acc =
-            let x = if is_blank c then Tex_blank c else Tex c in
-            x :: acc
-          in
+          let acc = (Tex c) :: acc in
           iter source len Normal acc bchar (i+1)
        | Command com, c ->
           if is_com_char c then
@@ -269,12 +288,33 @@ let rec get_args com eval_tokens n = function
     (h :: next, q2)
   | l -> ([], l)
 
+let count_newlines =
+  let rec iter s len acc i =
+    if i >= len then
+      acc
+    else
+      match s.[i] with
+        '\n' -> iter s len (acc+1) (i+1)
+      | _ -> iter s len acc (i+1)
+   in
+   fun s ->
+     let len = String.length s in
+     iter s len 0 0
+;;
+
 let rec blocks_of_tokens map tokens =
   let rec add_chars b = function
-    (Tex c) :: q
-  | (Tex_blank c) :: q ->
-    Buffer.add_char b c;
-    add_chars b q
+  | (Tex c) :: q ->
+      Buffer.add_char b c;
+      add_chars b q
+  | ((Tex_blank s) :: q) as l ->
+    if count_newlines s >= 2 then
+      l
+    else
+      (
+       Buffer.add_string b s;
+       add_chars b q
+      )
   | l -> l
   in
   let rec iter acc = function
@@ -287,10 +327,15 @@ let rec blocks_of_tokens map tokens =
      let s = "\\["^s^"\\]" in
      let acc = (Source s) :: acc in
      iter acc q
+  | (Tex_blank s) :: q when count_newlines s >= 2 ->
+     let acc = (Block (block ("latex", "latexpar") [])) :: acc in
+     iter acc q
   | ((Tex _) :: _ | (Tex_blank _) :: _) as l ->
      let b = Buffer.create 256 in
      let rest = add_chars b l in
      iter ((Source (Buffer.contents b)) :: acc) rest
+  | Tex_dbs :: q ->
+     iter ((Block (block ("","latexnewline") [])) :: acc) q
   | (Tex_command name) :: q ->
      command acc name q
   | (Tex_block (c, subs)) :: q ->
@@ -359,6 +404,7 @@ let fun_section com eval tokens =
 let fun_begin com eval tokens =
   let (arg, rest) = get_args com eval 1 tokens in
   let env = string_tree (List.hd arg) in
+(*  TODO: cas special pour eqnarray[*]: chercher la fin et garder le tex tel quel ?*)
   ([Block (block ("begin", env) [])], rest)
 ;;
 
@@ -384,7 +430,7 @@ let funs sectionning =
   let funs =
     (List.fold_left
       (fun acc com -> (com, fun_section) :: (com^"*", fun_section) :: acc)
-       [] sectionning
+       [] (sectionning)(* @ ["latexpar"])*)
     ) @
     (List.map (fun com -> (com, mk_const_fun 0 [])) dummy0) @
     (List.map (fun com -> (com, mk_const_fun 1 [])) dummy1) @
@@ -473,38 +519,78 @@ let mk_envs =
 ;;
 
 let mk_sections =
-  let rec search_end tag acc = function
+  let rec search_end tag stopon acc = function
     [] -> None
-  | ((Source _) as x) :: q -> search_end tag (x::acc) q
+  | ((Source _) as x) :: q -> search_end tag stopon (x::acc) q
   | ((Block b) as x) :: q ->
      if b.tag = tag then
        Some (List.rev acc, x :: q)
      else
-       search_end tag (x::acc) q
+       if SSSet.mem b.tag stopon then
+         Some (List.rev acc, x :: q)
+       else
+         search_end tag stopon (x::acc) q
   in
-  let rec iter command acc = function
+  let rec iter stopon command acc = function
     | [] -> List.rev acc
     | (Block ({ tag = ("latex", c) } as b)) :: q when c = command ->
         let (subs, q) =
-          match search_end ("latex",command) [] q with
+          match search_end ("latex",command) stopon [] q with
           | None -> (q, [])
           | Some (l,rest) -> (l, rest)
         in
-        let l = iter command [] subs in
+        let l = iter stopon command [] subs in
         let b = { b with tag = ("",command) ; subs = l } in
-        iter command ((Block b) :: acc) q
+        iter stopon command ((Block b) :: acc) q
     | (Block b) :: q ->
-        let subs = iter command [] b.subs in
+        let subs = iter stopon command [] b.subs in
         let b = Block { b with subs } in
-        iter command (b :: acc) q
-    | x :: q -> iter command (x :: acc) q
+        iter stopon command (b :: acc) q
+    | x :: q -> iter stopon command (x :: acc) q
   in
-  fun commands body ->
+  fun ?(stopon=SSSet.empty) commands body ->
     List.fold_left
-      (fun acc com -> iter com [] acc)
+      (fun acc com -> iter stopon com [] acc)
       body
       commands
 ;;
+
+let mk_pars sectionning body =
+  let stopon = List.fold_left (fun acc s -> SSSet.add ("",s) acc) SSSet.empty sectionning in
+  mk_sections ~stopon ["latexpar"] body
+;;
+
+let handle_eqnarrays =
+(*
+  let rec cut_by_dbs acc cur = function
+    [] ->
+      (match cut with
+        [] -> List.rev acc
+      | _ -> List.rev ((List.rev cur) :: acc)
+      )
+  | ((Source _) as x) :: q ->
+     cut_by_dbs acc (x::cur) q
+  |
+  in
+*)
+  let f subs = subs
+
+  in
+  let rec iter acc = function
+    [] -> List.rev acc
+  | ((Source _) as x) :: q ->
+    iter (x :: acc) q
+  | (Block ({ tag = ("","eqnarray") } as b)) :: q ->
+      let b = { b with subs = f b.subs } in
+      iter ((Block b) :: acc) q
+  | (Block b) :: q ->
+     let subs = iter [] b.subs in
+     iter ((Block { b with subs }) :: acc) q
+  in
+  iter []
+;;
+
+
 
 let add_ids =
   let rec find_label acc = function
@@ -683,6 +769,8 @@ let parse sectionning environments tex_file =
   in
   let body = mk_sections sectionning body in
   let body = mk_envs env_map body in
+  let body = mk_pars sectionning body in
+  let body = handle_eqnarrays body in
   let body = add_ids body in
   let tex = { tex with body } in
   tex
