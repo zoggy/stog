@@ -134,7 +134,6 @@ type token =
 | Tex_command of string
 | Tex_blank of string
 | Tex_dbs (* double backslash *)
-| Tex_amp (* ampersand *)
 | Tex_math1 of string
 | Tex_math2 of string
 
@@ -242,14 +241,14 @@ let tokenize =
            match c, bchar with
            | '}', Some '}' -> true
            | '}', _ ->
-             List.iter (fun t -> prerr_endline (string_of_token t)) acc;
+             prerr_endline (string_of_token_list (List.rev acc));
              fail source "Too many }'s" i
            | ']', Some ']' -> true
            | ']', _ -> false
            | _ -> assert false
          in
          if close then
-           (List.rev acc, i)
+           (List.rev acc, i+1)
          else
            iter source len Normal ((Tex c) :: acc) bchar (i+1)
        | Command com, c when c = ']' || c = '}' ->
@@ -259,9 +258,9 @@ let tokenize =
        | Normal, '[' ->
           let c = source.[i] in
           let cc = close_of_open c in
-          let (l, i) = iter source len Normal [] (Some cc) (i+1) in
+          let (l, next) = iter source len Normal [] (Some cc) (i+1) in
           let acc = (Tex_block (c, l)) :: acc in
-          iter source len Normal acc bchar (i+1)
+          iter source len Normal acc bchar next
        | Normal, '\\' ->
           iter source len Escaping acc bchar (i+1)
        | Normal, c when is_blank c ->
@@ -287,10 +286,31 @@ let rec get_args com eval_tokens n = function
     [] when n > 0 ->
       let msg = "Command \\"^com^": missing argument" in
       failwith msg
-  | (Tex_blank _) :: q -> get_args com eval_tokens n q
+  | ((Tex_blank _) :: q) as l ->
+     begin
+       match get_args com eval_tokens n q with
+         [], _ -> ([], l)
+       | x -> x
+     end
   | h :: q when n > 0 ->
     let h = eval_tokens [h] in
     let (next, q2) = get_args com eval_tokens (n-1) q in
+    (h :: next, q2)
+  | l -> ([], l)
+;;
+
+let rec get_token_args com n = function
+    [] when n > 0 ->
+      let msg = "get_token_args: Command \\"^com^": missing argument" in
+      failwith msg
+  | ((Tex_blank _) :: q) as l ->
+     begin
+       match get_token_args com n q with
+         [], _ -> ([], l)
+       | x -> x
+     end
+  | h :: q when n > 0 ->
+    let (next, q2) = get_token_args com (n-1) q in
     (h :: next, q2)
   | l -> ([], l)
 
@@ -336,9 +356,11 @@ let rec blocks_of_tokens map tokens =
   | (Tex_blank s) :: q when count_newlines s >= 2 ->
      let acc = (Block (block ("latex", "p") [])) :: acc in
      iter acc q
-  | ((Tex _) :: _ | (Tex_blank _) :: _) as l ->
+  | ((Tex_blank _) :: _ | (Tex _) :: _) as l ->
      let b = Buffer.create 256 in
+     (*prerr_endline (string_of_token_list l);*)
      let rest = add_chars b l in
+     (*prerr_endline (Printf.sprintf "blank|tex => %S" (Buffer.contents b));*)
      iter ((Source (Buffer.contents b)) :: acc) rest
   | Tex_dbs :: q ->
      iter ((Block (block ("","latexnewline") [])) :: acc) q
@@ -350,7 +372,7 @@ let rec blocks_of_tokens map tokens =
        match c with
          '{' -> subs
        | c ->
-         let b = block ("",String.make 1 c) subs in
+         let b = block ("", String.make 1 c) subs in
          [ Block b ]
      in
      iter ((List.rev xmls) @ acc) q
@@ -385,8 +407,12 @@ let rec get_label acc = function
   | x :: q -> get_label (x :: acc) q
 ;;
 
-let gen_equation_contents tokens =
-  let (id, tokens) = get_label [] tokens in
+let gen_equation_contents ?id tokens =
+  let (id, tokens) =
+    match id with
+      Some id -> Some id, tokens
+    | None -> get_label [] tokens
+  in
   let math = Source (string_of_token_list tokens) in
   [ Block (block ?id ("math","equation") [ math ])]
 ;;
@@ -411,15 +437,26 @@ let gen_eqnarray_contents tokens =
   let cut_line line =
     let s = string_of_token_list line in
     let l = Stog_misc.split_string s ['&'] in
-    List.map (fun s -> Source ("$" ^ s ^ "$")) l
+    List.map tokenize l
   in
-  let f_col col =
-    Block (block ("","td") [ col ])
+  let rec f_col ?id acc = function
+    [] -> acc
+  | tokens :: q ->
+    let subs =
+      match id with
+      | Some id ->  gen_equation_contents ~id tokens
+      | None ->
+        match string_of_token_list tokens with
+          "" -> [Source "" ]
+        | s -> [ Source ("$" ^ s ^ "$") ]
+    in
+    let acc = (Block (block ("","td") subs)) :: acc in
+    f_col acc q
   in
   let f_line line =
-    let (id, line) = get_label [] line in
+    let (id,line) = get_label [] line in
     let cols = cut_line line in
-    let tr = block ?id ("","tr") (List.map f_col cols) in
+    let tr = block ("","tr") (f_col ?id [] (List.rev cols)) in
     Block tr
   in
   List.map f_line lines
@@ -433,9 +470,9 @@ let mk_one_arg_fun name tag =
 ;;
 
 let mk_ignore_opt f x name eval tokens =
-  let (arg, rest) = get_args name eval 1 tokens in
+  let (arg, rest) = get_token_args name 1 tokens in
   match arg with
-    [ [Block { tag = ("","[") }] ] ->
+    [ Tex_block ('[',_) ] ->
     f name x eval rest
   | _ ->
     f name x eval tokens
@@ -455,6 +492,9 @@ let fun_emph com = mk_one_arg_fun com ("","em");;
 let fun_bf com = mk_one_arg_fun com ("","strong");;
 let fun_texttt com = mk_one_arg_fun com ("","code");;
 let fun_caption = mk_ignore_opt mk_one_arg_fun ("","legend");;
+let fun_item =
+  let f name _ eval tokens = ([Block (block ("latex","li") [])], tokens) in
+  mk_ignore_opt f ()
 
 let fun_ref com eval tokens =
   let (arg, rest) = get_args com eval 1 tokens in
@@ -541,7 +581,7 @@ let funs sectionning =
   let funs =
     (List.fold_left
       (fun acc com -> (com, fun_section) :: (com^"*", fun_section) :: acc)
-       [] (sectionning)(* @ ["latexpar"])*)
+       [] (sectionning)
     ) @
     (List.map (fun com -> (com, mk_const_fun 0 [])) dummy0) @
     (List.map (fun com -> (com, mk_const_fun 1 [])) dummy1) @
@@ -557,6 +597,7 @@ let funs sectionning =
       "dots", mk_const_fun 0 [Source "..."] ;
       "label", fun_label ;
       "caption", fun_caption ;
+      "item", fun_item ;
       ]
   in
   List.fold_left
@@ -679,7 +720,8 @@ let mk_pars sectionning body =
   | ("", "eqnarray") -> true
   | t -> SSSet.mem t set
   in
-  mk_sections ~stop ["p"] body
+  let body = mk_sections ~stop ["p"] body in
+  mk_sections ~stop ["li"] body
 ;;
 
 let traversable_tags_for_ids =
@@ -720,8 +762,8 @@ let add_ids =
                 let acc = List.rev ((Block b) :: acc) in
                 Some (id, acc @ q)
      end
-  | (Source s) :: q when Stog_misc.strip_string s = "" ->
-     find_label acc q
+  | ((Source s) as x) :: q when Stog_misc.strip_string s = "" ->
+     find_label (x :: acc) q
   | x :: q -> None
   in
   let rec iter acc = function
@@ -855,6 +897,9 @@ let env_map =
     "rem", ("math", "remark") ;
     "proof", ("math", "proof") ;
     "pte", ("math", "property") ;
+    "itemize", ("", "ul") ;
+    "enumerate", ("", "ol") ;
+    "defi", ("math", "definition") ;
   ]
   in
   List.fold_left
