@@ -721,6 +721,11 @@ let mk_pars sectionning body =
   | t -> SSSet.mem t set
   in
   let body = mk_sections ~stop ["p"] body in
+  let stop = function
+    ("end","enumerate") | ("end", "itemize")
+  | ("begin","enumerate") | ("begin", "itemize") -> true
+  | t -> SSSet.mem t set
+  in
   mk_sections ~stop ["li"] body
 ;;
 
@@ -900,6 +905,7 @@ let env_map =
     "itemize", ("", "ul") ;
     "enumerate", ("", "ol") ;
     "defi", ("math", "definition") ;
+    "cor", ("math", "corollary") ;
   ]
   in
   List.fold_left
