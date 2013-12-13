@@ -439,24 +439,38 @@ let gen_eqnarray_contents tokens =
     let l = Stog_misc.split_string s ['&'] in
     List.map tokenize l
   in
-  let rec f_col ?id acc = function
-    [] -> acc
-  | tokens :: q ->
-    let subs =
-      match id with
-      | Some id ->  gen_equation_contents ~id tokens
-      | None ->
+  let math ?id tokens =
+    match id with
+      Some id -> gen_equation_contents ~id tokens
+    | None ->
         match string_of_token_list tokens with
           "" -> [Source "" ]
         | s -> [ Source ("$" ^ s ^ "$") ]
-    in
+  in
+  let rec f_col ?id acc = function
+    [] -> acc
+  | tokens :: q ->
+    let subs = math ?id tokens in
     let acc = (Block (block ("","td") subs)) :: acc in
     f_col acc q
+  in
+  let td cls subs =
+    let atts = Xtmpl.atts_one ("","class") [Xtmpl.D cls] in
+    let b = block ~atts ("","td") subs in
+    Block b
+  in
+  let f_cols ?id = function
+    [ c1 ; c2 ; c3 ] ->
+      [ td "right" (math c1) ;
+        td "center" (math c2) ;
+        td "left" (math ?id c3) ;
+    ]
+  | l -> f_col ?id [] (List.rev l)
   in
   let f_line line =
     let (id,line) = get_label [] line in
     let cols = cut_line line in
-    let tr = block ("","tr") (f_col ?id [] (List.rev cols)) in
+    let tr = block ("","tr") (f_cols ?id cols) in
     Block tr
   in
   List.map f_line lines
@@ -491,6 +505,8 @@ let mk_const_fun n res =
 let fun_emph com = mk_one_arg_fun com ("","em");;
 let fun_bf com = mk_one_arg_fun com ("","strong");;
 let fun_texttt com = mk_one_arg_fun com ("","code");;
+let fun_superscript com = mk_one_arg_fun com ("","sup");;
+
 let fun_caption = mk_ignore_opt mk_one_arg_fun ("","legend");;
 let fun_item =
   let f name _ eval tokens = ([Block (block ("latex","li") [])], tokens) in
@@ -590,6 +606,7 @@ let funs sectionning =
       "bf", fun_bf ;
       "textbf", fun_bf ;
       "texttt", fun_texttt ;
+      "textsuperscript", fun_superscript ;
       "ref", fun_ref ;
       "eqref", fun_ref ;
       "begin", fun_begin ;
