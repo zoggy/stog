@@ -29,13 +29,16 @@
 (** LaTeX to Stog translator. *)
 
 module SMap = Map.Make (String);;
-module SSSet = Set.Make
-  (struct type t = string * string
+
+module SSOrd =
+  struct type t = string * string
     let compare (s1,s2) (s3,s4) =
       match String.compare s1 s3 with
         0 -> String.compare s2 s4
       | n -> n
-   end)
+  end
+module SSMap = Map.Make(SSOrd)
+module SSSet = Set.Make(SSOrd)
 
 type tree =
   Source of string
@@ -224,6 +227,8 @@ let tokenize =
           iter source len (Math2 "") acc bchar (i+1)
        | Escaping, '\\' ->
           iter source len Normal (Tex_dbs :: acc) bchar (i+1)
+       | Escaping, '@' ->
+          iter source len Normal ((Tex_command "@") :: acc) bchar (i+1)
        | Escaping, c ->
            if is_com_char c then
              iter source len (Command (String.make 1 c)) acc bchar (i+1)
@@ -506,6 +511,7 @@ let fun_emph com = mk_one_arg_fun com ("","em");;
 let fun_bf com = mk_one_arg_fun com ("","strong");;
 let fun_texttt com = mk_one_arg_fun com ("","code");;
 let fun_superscript com = mk_one_arg_fun com ("","sup");;
+let fun_arobas = mk_const_fun 0 [Source " "];;
 
 let fun_caption = mk_ignore_opt mk_one_arg_fun ("","legend");;
 let fun_item =
@@ -571,6 +577,19 @@ let fun_begin com eval tokens =
            in
            (contents, rest)
       end
+  | "picture" ->
+      begin
+        match search_end_ env eval rest with
+          None -> failwith ("Could not find \\end{"^env^"}")
+        | Some (subs, rest) ->
+          let contents =
+            let s = string_of_token_list subs in
+            let s = "\\begin{picture}"^s^"\\end{picture}" in
+            let b = block ("","latex") [Source s] in
+            [ Block b ]
+          in
+          (contents, rest)
+      end
   | _ ->
     ([Block (block ("begin", env) [])], rest)
 ;;
@@ -607,6 +626,7 @@ let funs sectionning =
       "textbf", fun_bf ;
       "texttt", fun_texttt ;
       "textsuperscript", fun_superscript ;
+      "@", fun_arobas ;
       "ref", fun_ref ;
       "eqref", fun_ref ;
       "begin", fun_begin ;
@@ -809,6 +829,19 @@ let add_ids =
   iter []
 ;;
 
+let rec map_block map = function
+  (Source _) as x -> [x]
+| Block b ->
+    let b = { b with subs = map_blocks map b.subs } in
+    match
+      try Some (SSMap.find b.tag map)
+      with Not_found -> None
+    with
+        None -> [Block b]
+      | Some f -> f b
+
+and map_blocks map l = List.flatten (List.map (map_block map) l);;
+
 let to_xml =
   let rec iter = function
     Source s -> Xtmpl.D s
@@ -929,7 +962,21 @@ let env_map =
     (fun acc (s, tag) -> SMap.add s tag (SMap.add (s^"*") tag acc)) SMap.empty l
 ;;
 
-
+let block_map =
+  let l =
+    [ ("","legend"),
+      (fun b ->
+        [ Block { b with
+             tag = ("","div") ;
+             atts = Xtmpl.atts_one ~atts: b.atts ("","class") [Xtmpl.D "legend"] ;
+            }
+        ]
+       ) ;
+    ]
+  in
+  List.fold_left
+    (fun acc (tag, f) -> SSMap.add tag f acc) SSMap.empty l
+;;
 
 let parse sectionning environments tex_file =
   let source = Stog_misc.string_of_file tex_file in
@@ -959,6 +1006,7 @@ let parse sectionning environments tex_file =
   let body = mk_sections sectionning body in
   let body = mk_pars sectionning body in
   let body = mk_envs env_map body in
+  let body = map_blocks block_map body in
   let body = add_ids body in
   let tex = { tex with body } in
   tex
