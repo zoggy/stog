@@ -512,11 +512,17 @@ let fun_bf com = mk_one_arg_fun com ("","strong");;
 let fun_texttt com = mk_one_arg_fun com ("","code");;
 let fun_superscript com = mk_one_arg_fun com ("","sup");;
 let fun_arobas = mk_const_fun 0 [Source " "];;
-
 let fun_caption = mk_ignore_opt mk_one_arg_fun ("","legend");;
 let fun_item =
   let f name _ eval tokens = ([Block (block ("latex","li") [])], tokens) in
   mk_ignore_opt f ()
+
+let fun_scalebox com eval tokens =
+  let (args,rest) = get_args com eval 2 tokens in
+  match args with
+    [_ ; a] -> (a, rest)
+  | _ -> assert false
+;;
 
 let fun_ref com eval tokens =
   let (arg, rest) = get_args com eval 1 tokens in
@@ -577,14 +583,14 @@ let fun_begin com eval tokens =
            in
            (contents, rest)
       end
-  | "picture" ->
+  | "picture" | "tikzpicture" ->
       begin
         match search_end_ env eval rest with
           None -> failwith ("Could not find \\end{"^env^"}")
         | Some (subs, rest) ->
           let contents =
             let s = string_of_token_list subs in
-            let s = "\\begin{picture}"^s^"\\end{picture}" in
+            let s = "\\begin{"^env^"}"^s^"\\end{"^env^"}" in
             let b = block ("","latex") [Source s] in
             [ Block b ]
           in
@@ -635,6 +641,7 @@ let funs sectionning =
       "label", fun_label ;
       "caption", fun_caption ;
       "item", fun_item ;
+      "scalebox", fun_scalebox ;
       ]
   in
   List.fold_left
