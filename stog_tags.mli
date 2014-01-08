@@ -59,6 +59,7 @@ val counter : string
 val dummy_ : string
 val elements : string
 val ext_a : string
+val error_ : string
 val graph : string
 val hcode : string
 val hid_sep : string

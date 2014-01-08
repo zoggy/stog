@@ -607,6 +607,12 @@ let concat_xmls ?(sep=[]) l =
   List.fold_right f l []
 ;;
 
+let fun_error_ stog env args subs =
+  let (stog, xmls) = Xtmpl.apply_to_xmls stog env subs in
+  let s = Xtmpl.string_of_xmls xmls in
+  Stog_msg.error s;
+  (stog, [])
+;;
 
 let fun_elt_path _elt stog env args subs =
   let (stog, s_hid) = get_hid stog env in
@@ -925,6 +931,7 @@ and build_base_rules stog elt_id =
       ("", Stog_tags.elt_type), mk f_type ;
       ("", Stog_tags.elt_url), mk f_url ;
       ("", Stog_tags.ext_a), fun_exta ;
+      ("", Stog_tags.error_), fun_error_ ;
       ("", Stog_tags.graph), fun_graph ;
       ("", Stog_tags.hcode), fun_hcode ~inline: false ?lang: None;
       ("", Stog_tags.icode), fun_icode ?lang: None ;

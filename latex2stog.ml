@@ -809,7 +809,7 @@ let traversable_tags_for_ids =
     SSSet.empty
     [
       ("","legend") ;
-      ("","center") ;
+      ("","center") ;(* FIXME*)
     ]
 ;;
 
