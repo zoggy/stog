@@ -517,6 +517,8 @@ let fun_item =
   let f name _ eval tokens = ([Block (block ("latex","li") [])], tokens) in
   mk_ignore_opt f ()
 
+let fun_oe = mk_const_fun 0 [Source "œ"];;
+
 let fun_scalebox com eval tokens =
   let (args,rest) = get_args com eval 2 tokens in
   match args with
@@ -530,6 +532,27 @@ let fun_ref com eval tokens =
   let atts = Xtmpl.atts_one ("", "href") [Xtmpl.D label] in
   ([Block (block ~atts ("", Stog_tags.elt) [])], rest)
 ;;
+
+let fun_cite com (eval : token list -> tree list) tokens =
+  let (arg, rest) = get_token_args com 1 tokens in
+  let (opt, arg, rest) =
+    match arg with
+      [ Tex_block ('[',b) ] ->
+        let b = eval b in
+        let (arg, rest) = get_args com eval 1 rest in
+        (Some b, arg, rest)
+    | _ -> (None, [eval arg], rest)
+  in
+  let id = string_tree (List.hd arg) in
+  let atts = Xtmpl.atts_one ("", "href") [Xtmpl.D id] in
+  let res =
+    [ Block (block ~atts ("", "cite") []) ] @
+    (match opt with
+      None -> []
+    | Some b -> Source " (" :: b @ [ Source ")" ]
+    )
+  in
+  (res, rest)
 
 let remove_end_star s =
   let len = String.length s in
@@ -614,10 +637,13 @@ let fun_label com eval tokens =
 
 let funs sectionning =
   let dummy0 =
-    [ "medskip" ; "bigskip" ]
+    [ "medskip" ; "bigskip" ; "sc" ; "newpage" ;
+      "frontmatter" ; "mainmatter";
+      "dominitoc" ; "tableofcontents" ;
+      "Huge" ; "huge" ; "Large" ; "large" ;  ]
   in
   let dummy1 =
-    [ "vspace" ]
+    [ "vspace" ; "pagestyle" ; "title" ; "date" ; "author"]
   in
   let funs =
     (List.fold_left
@@ -642,6 +668,10 @@ let funs sectionning =
       "caption", fun_caption ;
       "item", fun_item ;
       "scalebox", fun_scalebox ;
+      "cite", fun_cite ;
+      "textcite", fun_cite ;
+      "footfullcite", fun_cite ;
+      "oe", fun_oe ;
       ]
   in
   List.fold_left
