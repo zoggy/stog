@@ -645,7 +645,7 @@ let fun_label com eval tokens =
 
 let funs sectionning =
   let dummy0 =
-    [ "medskip" ; "bigskip" ; "sc" ; "newpage" ;
+    [ "smallskip" ; "medskip" ; "bigskip" ; "sc" ; "newpage" ;
       "frontmatter" ; "mainmatter";
       "dominitoc" ; "tableofcontents" ;
       "Huge" ; "huge" ; "Large" ; "large" ;  ]
