@@ -1043,8 +1043,8 @@ let parse sectionning environments tex_file =
   let body = mk_sections sectionning body in
   let body = mk_pars sectionning body in
   let body = mk_envs env_map body in
-  let body = map_blocks block_map body in
   let body = add_ids body in
+  let body = map_blocks block_map body in
   let tex = { tex with body } in
   tex
 ;;
