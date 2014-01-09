@@ -586,6 +586,14 @@ let search_end_ com eval tokens =
 
 let fun_begin com eval tokens =
   let (arg, rest) = get_args com eval 1 tokens in
+  let (title, rest) =
+    let (opt, rest2) = get_token_args com 1 rest in
+    match opt with
+      [ Tex_block ('[',b) ] ->
+        let opt = eval b in
+        (Some opt, rest2)
+    | _ -> (None, rest)
+  in
   let env = string_tree (List.hd arg) in
   match env with
     "eqnarray" | "eqnarray*"
@@ -599,7 +607,7 @@ let fun_begin com eval tokens =
              match tag with
                "eqnarray" ->
                  let subs = gen_eqnarray_contents subs in
-                 let b = block ("math",tag) subs in
+                 let b = block ("math",tag) ?title subs in
                  [ Block b ]
              | "equation" -> gen_equation_contents subs
              | _ -> assert false
@@ -614,13 +622,13 @@ let fun_begin com eval tokens =
           let contents =
             let s = string_of_token_list subs in
             let s = "\\begin{"^env^"}"^s^"\\end{"^env^"}" in
-            let b = block ("","latex") [Source s] in
+            let b = block ("","latex") ?title [Source s] in
             [ Block b ]
           in
           (contents, rest)
       end
   | _ ->
-    ([Block (block ("begin", env) [])], rest)
+    ([Block (block ("begin", env) ?title [])], rest)
 ;;
 
 let fun_end com eval tokens =
