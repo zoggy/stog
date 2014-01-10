@@ -798,7 +798,7 @@ let mk_pars sectionning body =
        sectionning
   in
   let stop = function
-    ("begin",_) | ("end", _)
+    ("begin",_) | ("end", _) | ("math", _)
   | ("", "eqnarray") -> true
   | t -> SSSet.mem t set
   in
