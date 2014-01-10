@@ -132,9 +132,10 @@ let fun_eval stog env args code =
     let show_stdout = Xtmpl.opt_arg_cdata args
       ~def: (if toplevel then "true" else "false") ("", "show-stdout") <> "false"
     in
+    let in_xml_block = Xtmpl.opt_arg_cdata args ~def: "true" ("", "in-xml-block") <> "false" in
     let session_name = Xtmpl.get_arg_cdata args ("", "session") in
     let id_opt = Xtmpl.opt_arg_cdata args ("", "id") in
-    let atts = Xtmpl.atts_of_list 
+    let atts = Xtmpl.atts_of_list
       (match id_opt with "" -> [] | id -> [("","id"), [Xtmpl.D id]])
     in
     let code = concat_code code in
@@ -156,7 +157,8 @@ let fun_eval stog env args code =
             begin
               let code = Stog_misc.highlight ~opts phrase in
               let code = if toplevel then Printf.sprintf "# %s" code else code in
-              Xtmpl.E (("","div"), Xtmpl.atts_empty, [Xtmpl.xml_of_string code])
+              let xml_code = Xtmpl.xml_of_string code in
+              Xtmpl.E (("","div"), Xtmpl.atts_empty, [xml_code])
             end
            else
             Xtmpl.D ""
@@ -179,10 +181,13 @@ let fun_eval stog env args code =
             false ->
               if show_stdout then
                 let xml =
-                  Xtmpl.E (("","div"),
-                   Xtmpl.atts_one ("","class") [Xtmpl.D "ocaml-toplevel"],
-                   [Xtmpl.D stdout])
-                in
+                  if in_xml_block then
+                    Xtmpl.E (("","div"),
+                     Xtmpl.atts_one ("","class") [Xtmpl.D "ocaml-toplevel"],
+                     [Xtmpl.D stdout])
+                  else
+                     Xtmpl.D stdout
+                  in
                 xml :: code :: acc
               else
                 code::acc
@@ -201,14 +206,35 @@ let fun_eval stog env args code =
     in
     let xml = iter [] phrases in
     if show_code || toplevel || show_stdout then
-      (stog, [ Xtmpl.E (("","pre"),
-          Xtmpl.atts_of_list ~atts [("","class"), [Xtmpl.D "code-ocaml"]],
-          xml)
-       ])
+      let xml =
+        if in_xml_block then
+          [ Xtmpl.E (("","pre"),
+             Xtmpl.atts_of_list ~atts [("","class"), [Xtmpl.D "code-ocaml"]],
+             xml)
+          ]
+        else
+          xml
+      in
+      (stog, xml)
     else
       (stog, [ Xtmpl.D "" ])
   with
     e ->
       raise e
 ;;
+
+
+let fun_printf stog env args subs =
+  let code = concat_code subs in
+  let format = Xtmpl.opt_arg_cdata args ~def: "%s" ("", "format") in
+  let code = "Printf.printf \""^format^"\" "^code^"; flush Pervasives.stdout;;" in
+  let args = Xtmpl.atts_of_list ~atts: args
+    [ ("","show-stdout"), [Xtmpl.D "true"] ;
+      ("","show-code"), [Xtmpl.D "false"] ;
+      ("","in-xml-block"), [Xtmpl.D "false"] ;
+    ]
+  in
+  fun_eval stog env args [Xtmpl.D code]
+;;
+
 

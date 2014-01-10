@@ -33,3 +33,4 @@ val stog_ocaml_session : string ref
 val close_sessions : unit -> unit
 
 val fun_eval : Stog_types.stog Xtmpl.callback
+val fun_printf : Stog_types.stog Xtmpl.callback
