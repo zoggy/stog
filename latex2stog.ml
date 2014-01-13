@@ -40,6 +40,13 @@ module SSOrd =
 module SSMap = Map.Make(SSOrd)
 module SSSet = Set.Make(SSOrd)
 
+type param = {
+  prefix : string option ;
+  ext_file_prefix : string ;
+  envs : string list ;
+  sectionning : string list ;
+ }
+
 type tree =
   Source of string
 | Block of block
@@ -532,6 +539,7 @@ let mk_const_fun n res =
 ;;
 
 let fun_emph com = mk_one_arg_fun com ("","em");;
+let fun_it com = mk_one_arg_fun com ("","i");;
 let fun_bf com = mk_one_arg_fun com ("","strong");;
 let fun_texttt com = mk_one_arg_fun com ("","code");;
 let fun_superscript com = mk_one_arg_fun com ("","sup");;
@@ -552,6 +560,32 @@ let fun_scalebox com eval tokens =
     [_ ; a] -> (a, rest)
   | _ -> assert false
 ;;
+
+let file_extension filename =
+  try
+    let len = String.length filename in
+    let p = String.rindex filename '.' in
+    Some (String.sub filename (p+1) (len-p-1))
+  with Not_found -> None
+;;
+
+let fun_includegraphics params com eval tokens =
+  let f com () eval tokens =
+    let (arg, rest) = get_args com eval 1 tokens in
+    let file = params.ext_file_prefix^(string_tree (List.hd arg)) in
+    let file =
+      match file_extension file with
+      | None -> file^".png"
+      | Some "pdf" | Some "eps" -> (Filename.chop_extension file)^".png"
+      | _ -> file
+    in
+    let atts = Xtmpl.atts_one ("","src") [Xtmpl.D file] in
+    let b = block ~atts ("","img") [] in
+    ([ Block b ], rest)
+  in
+  mk_ignore_opt f () com eval tokens
+;;
+
 
 let fun_ref com eval tokens =
   let (arg, rest) = get_args com eval 1 tokens in
@@ -621,7 +655,7 @@ let gen_asy_file =
   fun () -> incr cpt; Printf.sprintf "asy_fig_%d.svg" !cpt
 ;;
 
-let fun_begin com eval tokens =
+let fun_begin params com eval tokens =
   let (arg, rest) = get_args com eval 1 tokens in
   let (title, rest) =
     let (opt, rest2) = get_token_args com 1 rest in
@@ -670,7 +704,9 @@ let fun_begin com eval tokens =
            None -> failwith ("Could not find \\end{"^env^"}")
          | Some (subs, rest) ->
              let s = string_of_token_list subs in
-             let atts = Xtmpl.atts_one ("","outfile") [Xtmpl.D (gen_asy_file())] in
+             let atts = Xtmpl.atts_one ("","outfile")
+               [Xtmpl.D (params.ext_file_prefix ^ (gen_asy_file())) ]
+             in
              let b = block ~atts ("","asy") [Source s] in
              ([ Block b ], rest)
       end
@@ -690,7 +726,7 @@ let fun_label com eval tokens =
   ([Block (block ~id ("", "label") [])], rest)
 ;;
 
-let funs sectionning =
+let funs params =
   let dummy0 =
     [ "smallskip" ; "medskip" ; "bigskip" ; "sc" ; "newpage" ;
       "frontmatter" ; "mainmatter";
@@ -705,12 +741,13 @@ let funs sectionning =
   let funs =
     (List.fold_left
       (fun acc com -> (com, fun_section) :: (com^"*", fun_section) :: acc)
-       [] (sectionning)
+       [] (params.sectionning)
     ) @
     (List.map (fun com -> (com, mk_const_fun 0 [])) dummy0) @
     (List.map (fun com -> (com, mk_const_fun 1 [])) dummy1) @
     [
       "emph", fun_emph ;
+      "it", fun_it ;
       "bf", fun_bf ;
       "textbf", fun_bf ;
       "texttt", fun_texttt ;
@@ -718,7 +755,7 @@ let funs sectionning =
       "@", fun_arobas ;
       "ref", fun_ref ;
       "eqref", fun_ref ;
-      "begin", fun_begin ;
+      "begin", fun_begin params ;
       "end", fun_end ;
       "dots", mk_const_fun 0 [Source "..."] ;
       "label", fun_label ;
@@ -731,6 +768,7 @@ let funs sectionning =
       "oe", fun_oe ;
       "numprint", fun_numprint ;
       "hspace", fun_hspace ;
+      "includegraphics", fun_includegraphics params ;
       ]
   in
   List.fold_left
@@ -842,11 +880,11 @@ let mk_sections =
       commands
 ;;
 
-let mk_pars sectionning body =
+let mk_pars params body =
   let set =
      List.fold_left (fun acc s -> SSSet.add ("",s) acc)
        SSSet.empty
-       sectionning
+       params.sectionning
   in
   let stop = function
     ("begin",_) | ("end", _) | ("math", _)
@@ -1080,7 +1118,7 @@ let block_map =
     (fun acc (tag, f) -> SSMap.add tag f acc) SSMap.empty l
 ;;
 
-let parse sectionning environments tex_file =
+let parse params tex_file =
   let source = Stog_misc.string_of_file tex_file in
   let source = remove_comments source in
   let source = resolve_includes "include" tex_file source in
@@ -1102,13 +1140,13 @@ let parse sectionning environments tex_file =
   (*let tex = cut_sectionning sectionning tex in*)
   (*let body = (*cut_envs_in_tree_list env_map*) tex.body in*)
   let tokens = tokenize body in
-  let body = blocks_of_tokens (funs sectionning) tokens in
+  let body = blocks_of_tokens (funs params) tokens in
   let body = flatten_blocks
     [("begin","refsection") ; ("end","refsection")]
     body
   in
-  let body = mk_sections sectionning body in
-  let body = mk_pars sectionning body in
+  let body = mk_sections params.sectionning body in
+  let body = mk_pars params body in
   let body = mk_envs env_map body in
   let body = add_ids body in
   let body = map_blocks block_map body in
@@ -1119,6 +1157,7 @@ let parse sectionning environments tex_file =
 let prefix = ref None;;
 let sectionning = ref [ "section" ; "subsection" ; "subsubsection" ];;
 let envs = ref [ "proof"; "lemma" ; "proposition" ; "figure" ; "theorem"];;
+let ext_file_prefix = ref "";;
 
 let options =
   [ "-p", Arg.String (fun s -> prefix := Some s),
@@ -1133,6 +1172,9 @@ let options =
       (fun s -> envs := List.map
          Stog_misc.strip_string (Stog_misc.split_string s [','])),
     "... specify environments, separated by commas" ;
+
+    "--ext-file-prefix", Arg.Set_string ext_file_prefix,
+      "s use s as prefix for external files (images, ...)" ;
   ];;
 
 let usage = Sys.argv.(0) ^" [options] file.tex\nwhere options are:";;
@@ -1146,7 +1188,14 @@ let main () =
       [] | _ :: _ :: _ ->
         failwith (Arg.usage_string options usage)
     | [tex_file] ->
-        let tex = parse !sectionning !envs tex_file in
+        let params = {
+          prefix = !prefix ;
+          ext_file_prefix = !ext_file_prefix ;
+          sectionning = !sectionning ;
+          envs = !envs ;
+          }
+        in
+        let tex = parse params tex_file in
         (*
         match tex.body with
           [ Source s ] -> print_endline s
