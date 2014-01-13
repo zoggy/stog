@@ -1,4 +1,6 @@
 Next release:
+* new show-without-ids attribute for <prepare-toc> to handle
+  sections without id
 * add multi elements
 * new base rule <elt-datetime>
 * new option --local

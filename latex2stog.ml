@@ -560,7 +560,12 @@ let remove_end_star s =
 ;;
 
 let fun_section com eval tokens =
-  let (arg, rest) = get_args com eval 1 tokens in
+  let (arg, rest) =
+    let (opt, rest) = get_token_args com 1 tokens in
+    match opt with
+      [ Tex_block ('[',_) ] -> get_args com eval 1 rest
+    | _ -> ([eval opt], rest)
+  in
   let tag = remove_end_star com in
   ([Block (block ~title: (List.hd arg) ("latex", tag) [])], rest)
 ;;

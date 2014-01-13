@@ -536,7 +536,7 @@ let fun_exta stog env args subs =
   )
 ;;
 
-type toc = Toc of string * string * Xmlm.name * toc list (* name, title, class, subs *)
+type toc = Toc of string option * Xtmpl.tree list * Xmlm.name * toc list (* name, title, class, subs *)
 
 let fun_prepare_toc tags stog env args subs =
   let depth =
@@ -544,23 +544,30 @@ let fun_prepare_toc tags stog env args subs =
       None -> max_int
     | Some s -> int_of_string s
   in
+  let show_noids =
+    Xtmpl.opt_arg_cdata args ~def: "false" ("", "show-without-ids") <> "false"
+  in
   let rec iter d acc = function
   | Xtmpl.D _ -> acc
   | Xtmpl.E (tag, atts, subs) when List.mem tag tags ->
       begin
         match Xtmpl.get_arg_cdata atts ("", "id"),
-          Xtmpl.get_arg_cdata atts ("", "title")
+          Xtmpl.get_arg atts ("", "title")
         with
-          None, _ | _, None ->
-            (*prerr_endline "no name nor title";*)
+          None, None
+        | Some _, None ->
             acc
-        | Some name, Some title ->
-            if d > depth
+        | id, Some title ->
+            let name, ok =
+              match id with
+                None -> (None, show_noids)
+              | Some id -> (Some id, true)
+            in
+            if (not ok) || d > depth
             then acc
             else
               (
                let subs = List.rev (List.fold_left (iter (d+1)) [] subs) in
-               (*prerr_endline (Printf.sprintf "depth=%d, d=%d, title=%s" depth d title);*)
                (Toc (name, title, tag, subs)) :: acc
               )
       end
@@ -580,20 +587,24 @@ let fun_prepare_toc tags stog env args subs =
         | (p, s) -> p ^"-"^ s
       in
       Xtmpl.E (("", "li"), Xtmpl.atts_one ("", "class") [Xtmpl.D ("toc-"^cl)],
-       [ Xtmpl.E (("", "elt"),
-          Xtmpl.atts_of_list
-            [("", "href"), [Xtmpl.D ("#"^name)] ; ("","long"), [Xtmpl.D "true"]],
-          []) ]
-       @
-       ( match subs with
-          [] -> []
-        | _ ->
+       (match name with
+         None -> title
+       | Some name ->
+            [ Xtmpl.E (("", "elt"),
+               Xtmpl.atts_of_list
+                 [("", "href"), [Xtmpl.D ("#"^name)] ; ("","long"), [Xtmpl.D "true"]],
+               []) ]
+       )
+         @
+         ( match subs with
+            [] -> []
+          | _ ->
               [ Xtmpl.E (("", "ul"),
                  Xtmpl.atts_one ("", "class") [Xtmpl.D "toc"],
                  List.map xml_of_toc subs)
               ]
-       )
-       )
+         )
+      )
   in
   let xml =
     Xtmpl.E (("", "ul"),
