@@ -22,4 +22,13 @@ package "markdown" (
   archive(plugin,native) = "stog_markdown.cmxs"
 )
 
+package "asy" (
+  version = "0.9.0"
+  description = "Stog asymptote plugin"
+  archive(byte) = "stog_asy.cmo"
+  archive(native) = "stog_asy.cmx"
+  archive(plugin,byte) = "stog_asy.cmo"
+  archive(plugin,native) = "stog_asy.cmxs"
+)
+
 

@@ -47,6 +47,7 @@ COMPFLAGS=-I +ocamldoc -annot -rectypes -g #-w +K
 OCAMLPP=
 
 PLUGINS_BYTE= \
+	plugins/stog_asy.cmo \
 	plugins/stog_disqus.cmo \
 	plugins/stog_markdown.cmo \
 	plugins/plugin_example.cmo
