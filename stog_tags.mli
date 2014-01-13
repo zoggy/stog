@@ -53,6 +53,7 @@ val elt_url : string
 val sep : string
 
 val archive_tree : string
+val as_xml : string
 val block : string
 val command_line : string
 val counter : string
@@ -77,6 +78,7 @@ val n_columns : string
 val next : string
 val ocaml : string
 val ocaml_eval : string
+val ocaml_printf : string
 val page : string
 val post : string
 val prepare_toc : string

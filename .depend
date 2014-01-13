@@ -1,7 +1,9 @@
 foo.cmo :
 foo.cmx :
-latex2stog.cmo : stog_misc.cmi
-latex2stog.cmx : stog_misc.cmx
+latex2stog.cmo : stog_tags.cmi stog_misc.cmi
+latex2stog.cmx : stog_tags.cmx stog_misc.cmx
+latex2stog_tmp.cmo :
+latex2stog_tmp.cmx :
 odoc_stog.cmo :
 odoc_stog.cmx :
 stog_blocks.cmo : stog_types.cmi stog_tags.cmi stog_msg.cmi stog_misc.cmi \

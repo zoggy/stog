@@ -369,6 +369,15 @@ let fun_search_form stog _env _ _ =
   (stog, [ Xtmpl.xml_of_file tmpl ])
 ;;
 
+let fun_as_xml =
+  let rec iter = function
+    Xtmpl.D s -> Xtmpl.xml_of_string s
+  | Xtmpl.E (t, atts, subs) ->
+    Xtmpl.E (t, atts, List.map iter subs)
+  in
+  fun x _env _ subs ->
+    (x, List.map iter subs)
+;;
 
 (* FIXME: add dependency ? *)
 let fun_graph =
@@ -917,6 +926,7 @@ and build_base_rules stog elt_id =
     !plugin_base_rules @
     [
       ("", Stog_tags.archive_tree), fun_archive_tree ;
+      ("", Stog_tags.as_xml), fun_as_xml ;
       ("", Stog_tags.command_line), fun_command_line ~inline: false ;
       ("", Stog_tags.elements), (fun acc -> elt_list elt acc) ;
       ("", Stog_tags.elt_body), mk f_body ;
@@ -945,7 +955,7 @@ and build_base_rules stog elt_id =
       ("", Stog_tags.next), next;
       ("", Stog_tags.ocaml), fun_ocaml ~inline: false ;
       ("", Stog_tags.ocaml_eval), Stog_ocaml.fun_eval  ;
-      ("ocaml", "printf"), Stog_ocaml.fun_printf  ;
+      ("", Stog_tags.ocaml_printf), Stog_ocaml.fun_printf  ;
       ("", Stog_tags.previous), previous;
       ("", Stog_tags.search_form), fun_search_form ;
       ("", Stog_tags.two_columns), fun_twocolumns ;
