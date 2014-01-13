@@ -110,11 +110,18 @@ let remove_comments s =
   s
 ;;
 
+let nbsp = "\xc2\xa0";;  (* \xc2\xa0 : non breakable space *)
+
 let replace_strings s =
   let rules = [
-    Str.regexp_string "<<~", "\xc2\xab\xc2\xa0" ; (* \xc2\xa0 : non breakable space *)
-    Str.regexp_string "~>>", "\xc2\xa0\xc2\xbb" ;
-    ]
+    Str.regexp_string "<<~", "\xc2\xab"^nbsp ;
+    Str.regexp_string "~>>", nbsp^"\xc2\xbb" ;
+    Str.regexp_string "~\\ref", nbsp^"\\ref" ;
+    Str.regexp_string "~\\eqref", nbsp^"\\eqref" ;
+    Str.regexp_string "~\\cite", nbsp^"\\cite" ;
+    Str.regexp_string "~\\textcite", nbsp^"\\textcite" ;
+    Str.regexp_string "~:", nbsp^":" ;
+  ]
   in
   let repl s (re, s2) = Str.global_replace re s2 s in
   List.fold_left repl s rules
@@ -528,6 +535,8 @@ let fun_item =
 
 let fun_oe = mk_const_fun 0 [Source "œ"];;
 
+let fun_numprint com = mk_one_arg_fun com ("","span");;
+
 let fun_scalebox com eval tokens =
   let (args,rest) = get_args com eval 2 tokens in
   match args with
@@ -641,6 +650,15 @@ let fun_begin com eval tokens =
           in
           (contents, rest)
       end
+  | "asy" ->
+      begin
+         match search_end_ env eval rest with
+           None -> failwith ("Could not find \\end{"^env^"}")
+         | Some (subs, rest) ->
+             let s = string_of_token_list subs in
+             let b = block ("","asy") [Source s] in
+             ([ Block b ], rest)
+      end
   | _ ->
     ([Block (block ("begin", env) ?title [])], rest)
 ;;
@@ -661,11 +679,13 @@ let funs sectionning =
   let dummy0 =
     [ "smallskip" ; "medskip" ; "bigskip" ; "sc" ; "newpage" ;
       "frontmatter" ; "mainmatter";
-      "dominitoc" ; "tableofcontents" ;
+      "dominitoc" ; "tableofcontents" ; "minitoc" ;
       "Huge" ; "huge" ; "Large" ; "large" ;  ]
   in
   let dummy1 =
-    [ "vspace" ; "pagestyle" ; "title" ; "date" ; "author"]
+    [ "vspace" ; "pagestyle" ; "title" ; "date" ; "author" ;
+      "printbibliography" ;
+    ]
   in
   let funs =
     (List.fold_left
@@ -694,6 +714,7 @@ let funs sectionning =
       "textcite", fun_cite ;
       "footfullcite", fun_cite ;
       "oe", fun_oe ;
+      "numprint", fun_numprint ;
       ]
   in
   List.fold_left
@@ -909,7 +930,13 @@ let to_xml =
      Xtmpl.E (("","span"), Xtmpl.atts_empty, subs)
   | Block b ->
      let atts =
-        (match b.title with [] -> [] | t -> [("","title"), (List.map iter t)]) @
+        (match b.title with
+          [] -> []
+        | t when b.tag = ("", "figure") -> []
+          (* hack: do not use figure option as title, because optional arg
+            is used for position *)
+        | t -> [("","title"), (List.map iter t)]
+        ) @
         (match b.id with
            None -> []
          | Some id -> [("","id"), [ Xtmpl.D id ] ]
