@@ -230,11 +230,19 @@ let tokenize =
      else
        match state, source.[i] with
        | Math1 s, '$' -> iter source len Normal ((Tex_math1 s) :: acc) bchar (i+1)
+       | Math1 s, '\\' ->
+          if i+1 < len then
+            match source.[i+1] with
+            | '/' -> iter source len (Math1 (s^" ")) acc bchar (i+2)
+            | _ -> iter source len (Math1 (s^"\\")) acc bchar (i+1)
+          else
+            iter source len (Math1 s) acc bchar (i+1)
        | Math1 s, c -> iter source len (Math1 (s^(String.make 1 c))) acc bchar (i+1)
        | Math2 s, '\\' ->
           if i+1 < len then
             match source.[i+1] with
               ']' -> iter source len Normal ((Tex_math2 s) :: acc) bchar (i+2)
+            | '/' -> iter source len (Math2 (s^" ")) acc bchar (i+2)
             | _ -> iter source len (Math2 (s^"\\")) acc bchar (i+1)
           else
             iter source len (Math2 s) acc bchar (i+1)
