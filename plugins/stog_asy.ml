@@ -55,6 +55,31 @@ let concat_code =
     Buffer.contents b
 ;;
 
+let prefix_ids =
+  let rec iter p = function
+    (Xtmpl.D _) as t -> t
+  | Xtmpl.E (tag, atts, subs) ->
+      let atts =
+       match Xtmpl.get_arg_cdata atts ("","id") with
+         None -> atts
+       | Some s ->
+            Xtmpl.atts_replace ("","id") [ Xtmpl.D (p^s) ] atts
+      in
+      let atts =
+        match Xtmpl.get_arg_cdata atts ("http://www.w3.org/1999/xlink","href") with
+         None -> atts
+       | Some s ->
+            let len = String.length s in
+            let s = String.sub s 1 (len -1) (* remove beginning '#' *) in
+            Xtmpl.atts_replace ("http://www.w3.org/1999/xlink","href") [ Xtmpl.D ("#"^p^s) ] atts
+      in
+      Xtmpl.E (tag, atts, List.map (iter p) subs)
+
+  in
+  fun p t ->
+    iter p t
+;;
+
 let fun_asy stog env args subs =
   let code = concat_code subs in
   let (infile, finalize_src) =
@@ -80,13 +105,12 @@ let fun_asy stog env args subs =
   let xml =
     match Sys.command com with
       0 ->
-        let _xml = Xtmpl.xml_of_file outfile in
-        (*finalize_file () ;*)
+        let xml = Xtmpl.xml_of_file outfile in
+        let md5 = Digest.to_hex (Digest.string outfile) in
+        let xml = prefix_ids md5 xml in
+        finalize_file () ;
         finalize_src ();
-        let atts = Xtmpl.atts_of_list
-          [ ("","src"), [ Xtmpl.D outfile ] ]
-        in
-        [ Xtmpl.E (("","img"), atts, []) ]
+        [ xml ]
     | _ ->
         Stog_msg.error ("Command failed: "^com);
         []
