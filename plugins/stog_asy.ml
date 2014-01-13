@@ -31,13 +31,22 @@
 
 Example of use:
 
-    <asy file="foo.svg">
+    <asy src="foo.asy" outfile="foo.svg">
       asymptote code
     </asy>
 
-It calls 'asy -f svg' to create a SVG file. If file attribute is
-given, then the given name is used. Else the resulting svg file
-is included and the generated file is removed.
+It calls [asy -f svg -o outfile src] to create a SVG file.
+
+If [outfile] attribute is given, then the given name is used to
+store the result file and an <img> tag is used to display
+the svg file. Else the resulting svg file is included and the
+generated file is removed.
+
+Source code is found in the file indicated with the [src] attribute
+if present. Else it is the content of the [<asy>] node.
+
+An additional attribute, [args], is handled to pass extra arguments
+to the [asy] command.
 
 The dvisvgm tool must be installed.
 *)
