@@ -542,6 +542,7 @@ let fun_item =
   mk_ignore_opt f ()
 
 let fun_oe = mk_const_fun 0 [Source "œ"];;
+let fun_hspace = mk_const_fun 1 [Block (block ("","span") [Source nbsp])]
 
 let fun_numprint com = mk_one_arg_fun com ("","span");;
 
@@ -729,6 +730,7 @@ let funs sectionning =
       "footfullcite", fun_cite ;
       "oe", fun_oe ;
       "numprint", fun_numprint ;
+      "hspace", fun_hspace ;
       ]
   in
   List.fold_left
