@@ -117,7 +117,7 @@ let fun_asy stog env atts subs =
     | Some f ->
         let absf =
           if Filename.is_relative f then
-            Filename.concat elt_dir f
+            Filename.concat stog.Stog_types.stog_outdir (Filename.concat elt_dir f)
           else f
         in
         (f, absf, false, fun () -> ())
