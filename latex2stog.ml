@@ -110,6 +110,15 @@ let remove_comments s =
   s
 ;;
 
+let replace_strings s =
+  let rules = [
+    Str.regexp_string "<<~", "\xc2\xab\xc2\xa0" ; (* \xc2\xa0 : non breakable space *)
+    Str.regexp_string "~>>", "\xc2\xa0\xc2\xbb" ;
+    ]
+  in
+  let repl s (re, s2) = Str.global_replace re s2 s in
+  List.fold_left repl s rules
+;;
 
 let str_cut s_re re ?(start=0) ?(fail=true) s =
   try
@@ -1034,6 +1043,8 @@ let parse sectionning environments tex_file =
   let source = resolve_includes "include" tex_file source in
   let source = resolve_includes "input" tex_file source in
   let source = remove_comments source in
+  let source = replace_strings source in
+
   let (preambule, body) =
     let (preambule, _, s) = str_cut begin_document re_begin_document source in
     let (body, _, _) = str_cut end_document re_end_document s in
