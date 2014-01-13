@@ -80,37 +80,66 @@ let prefix_ids =
     iter p t
 ;;
 
-let fun_asy stog env args subs =
+let fun_asy stog env atts subs =
   let code = concat_code subs in
+  let (stog, hid) = Stog_engine.get_hid stog env in
+  let hid = Stog_types.human_id_of_string hid in
+  let (_, elt) = Stog_types.elt_by_human_id stog hid in
+  let elt_dir = Filename.dirname elt.Stog_types.elt_src in
   let (infile, finalize_src) =
-    match Xtmpl.get_arg_cdata args ("","src") with
+    match Xtmpl.get_arg_cdata atts ("","src") with
       None ->
         let f = Filename.temp_file "stog" ".asy" in
         Stog_misc.file_of_string ~file: f code ;
         (f, (fun () -> try Unix.unlink f with _ -> ()))
-    | Some f -> (f, fun () -> ())
+    | Some f ->
+        let f =
+          if Filename.is_relative f then
+            Filename.concat elt_dir f
+          else f
+        in
+        (f, fun () -> ())
   in
-  let (outfile, finalize_file) =
-    match Xtmpl.get_arg_cdata args ("","file") with
+  let (outfile, abs_outfile, inc, finalize_outfile) =
+    match Xtmpl.get_arg_cdata atts ("","outfile") with
       None ->
         let f = Filename.temp_file "stog" ".svg" in
-        (f, (fun () -> try Unix.unlink f with _ -> ()))
-    | Some f -> (f, fun () -> ())
+        (f, f, true, (fun () -> try Unix.unlink f with _ -> ()))
+    | Some f ->
+        let absf =
+          if Filename.is_relative f then
+            Filename.concat elt_dir f
+          else f
+        in
+        (f, absf, false, fun () -> ())
   in
-  let args = Xtmpl.opt_arg_cdata ~def: "" args ("", "args") in
+  let args = Xtmpl.opt_arg_cdata ~def: "" atts ("", "args") in
   let com = Printf.sprintf "asy -f svg %s -o %s %s"
-    args (Filename.quote outfile)
+    args (Filename.quote abs_outfile)
     (Filename.quote infile)
   in
   let xml =
     match Sys.command com with
       0 ->
-        let xml = Xtmpl.xml_of_file outfile in
+        let xml = Xtmpl.xml_of_file abs_outfile in
         let md5 = Digest.to_hex (Digest.string outfile) in
         let xml = prefix_ids md5 xml in
-        finalize_file () ;
+        finalize_outfile () ;
         finalize_src ();
-        [ xml ]
+        if inc then
+          [ xml ]
+        else
+          begin
+            let atts = Xtmpl.atts_remove ("","args")
+              (Xtmpl.atts_remove ("","outfile")
+               (Xtmpl.atts_remove ("","src") atts)
+              )
+            in
+            let atts = Xtmpl.atts_one ~atts
+              ("","src") [ Xtmpl.D outfile ]
+            in
+            [ Xtmpl.E (("","img"), atts, []) ]
+          end
     | _ ->
         Stog_msg.error ("Command failed: "^com);
         []

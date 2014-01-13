@@ -607,6 +607,11 @@ let search_end_ com eval tokens =
   iter [] tokens
 ;;
 
+let gen_asy_file =
+  let cpt = ref 0 in
+  fun () -> incr cpt; Printf.sprintf "asy_fig_%d.svg" !cpt
+;;
+
 let fun_begin com eval tokens =
   let (arg, rest) = get_args com eval 1 tokens in
   let (title, rest) =
@@ -656,7 +661,8 @@ let fun_begin com eval tokens =
            None -> failwith ("Could not find \\end{"^env^"}")
          | Some (subs, rest) ->
              let s = string_of_token_list subs in
-             let b = block ("","asy") [Source s] in
+             let atts = Xtmpl.atts_one ("","outfile") [Xtmpl.D (gen_asy_file())] in
+             let b = block ~atts ("","asy") [Source s] in
              ([ Block b ], rest)
       end
   | _ ->
