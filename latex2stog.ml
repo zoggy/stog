@@ -642,8 +642,14 @@ let fun_section com eval tokens =
      let (args, rest2) = get_token_args com 2 rest in
      match args with
        [(Tex_command "label") ; _ ] ->
-         args @ [Tex_blank "\n"] @ rest2
-     | _ -> (Tex_blank "\n") :: rest
+         let rest3 =
+           match rest2 with
+             (Tex_blank s) :: q -> (Tex_blank ("\n"^s)) :: q
+           | _ -> (Tex_blank "\n") :: rest2
+         in
+         args @ rest3
+     | (Tex_blank s) :: q -> (Tex_blank ("\n\n"^s)) :: q @ rest2
+     | _ -> (Tex_blank "\n\n") :: rest
   in
   ([Block (block ~title: (List.hd arg) ("latex", tag) [])], rest)
 ;;
@@ -1045,8 +1051,8 @@ let rec resolve_includes com tex_file s =
 ;;
 
 let cut_with_stog_directives source =
-  let re_open = Str.regexp "^%<\\([a-z]+\\)>" in
-  let re_close name = Str.regexp ("^%</" ^ name ^ ">") in
+  let re_open = Str.regexp "\n?%<\\([a-z]+\\)>[^\n]*$\n" in
+  let re_close name = Str.regexp ("^%</" ^ name ^ ">[^\n]*$\n?") in
   let len = String.length source in
   let rec iter acc pos =
     let p =
@@ -1069,11 +1075,14 @@ let cut_with_stog_directives source =
         let p_end =
           try Str.search_forward (re_close name) source p
           with Not_found ->
-            let msg = "Missing %</"^name^">" in
+            let msg = "Missing %</"^name^"> in\n"^
+              (String.sub source p (min 200 (len - p)))
+            in
             failwith msg
         in
         let s = String.sub source p (p_end - p) in
         let p = p_end + String.length (Str.matched_string source) in
+        (*prerr_endline ("<"^name^">=>"^s^"</"^name^">");*)
         iter ((Some name, s) :: acc) p
   in
   iter [] 0
@@ -1145,7 +1154,7 @@ let env_map =
     "align", ("math", "eqnarray") ;
     "theo", ("math", "theorem") ;
     "lemma", ("math", "lemma") ;
-    "prop", ("math", "prop") ;
+    "prop", ("math", "proposition") ;
     "rem", ("math", "remark") ;
     "proof", ("math", "proof") ;
     "pte", ("math", "property") ;
