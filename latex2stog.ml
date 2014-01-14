@@ -762,7 +762,7 @@ let funs params =
     [ "smallskip" ; "medskip" ; "bigskip" ; "sc" ; "newpage" ;
       "frontmatter" ; "mainmatter"; "maketitle" ;
       "dominitoc" ; "tableofcontents" ; "minitoc" ;
-      "Huge" ; "huge" ; "Large" ; "large" ;  ]
+      "Huge" ; "huge" ; "Large" ; "large" ; "small" ]
   in
   let dummy1 =
     [ "vspace" ; "pagestyle" ; "title" ; "date" ; "author" ;
