@@ -1154,7 +1154,7 @@ let env_map =
     "align", ("math", "eqnarray") ;
     "theo", ("math", "theorem") ;
     "lemma", ("math", "lemma") ;
-    "prop", ("math", "proposition") ;
+    "prop", ("math", "prop") ;
     "rem", ("math", "remark") ;
     "proof", ("math", "proof") ;
     "pte", ("math", "property") ;
