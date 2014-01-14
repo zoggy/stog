@@ -12,6 +12,7 @@ stog-gui
 stog-output
 doc-output
 mk-stog*
+latex2stog
 stog_filter_parser.mli
 stog_filter_parser.ml
 stog_filter_parser.output
