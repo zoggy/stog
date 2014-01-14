@@ -726,16 +726,20 @@ let fun_label com eval tokens =
   ([Block (block ~id ("", "label") [])], rest)
 ;;
 
+let fun_footnote com eval tokens =
+  let (arg, rest) = get_args com eval 1 tokens in
+  ([Block (block ("", "note") (List.hd arg))], rest)
+ 
 let funs params =
   let dummy0 =
     [ "smallskip" ; "medskip" ; "bigskip" ; "sc" ; "newpage" ;
-      "frontmatter" ; "mainmatter";
+      "frontmatter" ; "mainmatter"; "maketitle" ;
       "dominitoc" ; "tableofcontents" ; "minitoc" ;
       "Huge" ; "huge" ; "Large" ; "large" ;  ]
   in
   let dummy1 =
     [ "vspace" ; "pagestyle" ; "title" ; "date" ; "author" ;
-      "printbibliography" ;
+      "printbibliography" ; "bibliographystyle" ;
     ]
   in
   let funs =
@@ -769,6 +773,7 @@ let funs params =
       "numprint", fun_numprint ;
       "hspace", fun_hspace ;
       "includegraphics", fun_includegraphics params ;
+      "footnote", fun_footnote ;
       ]
   in
   List.fold_left
