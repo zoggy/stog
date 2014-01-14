@@ -628,6 +628,13 @@ let fun_section com eval tokens =
     | _ -> ([eval opt], rest)
   in
   let tag = remove_end_star com in
+  let rest =
+    (* add a newline, so that a paragraph will start after the section
+       beginning *)
+    match rest with
+      (Tex_blank s) :: q -> (Tex_blank ("\n"^s)) :: q
+    | _ -> (Tex_blank "\n") :: rest
+  in
   ([Block (block ~title: (List.hd arg) ("latex", tag) [])], rest)
 ;;
 
@@ -729,7 +736,8 @@ let fun_label com eval tokens =
 let fun_footnote com eval tokens =
   let (arg, rest) = get_args com eval 1 tokens in
   ([Block (block ("", "note") (List.hd arg))], rest)
- 
+;;
+
 let funs params =
   let dummy0 =
     [ "smallskip" ; "medskip" ; "bigskip" ; "sc" ; "newpage" ;
