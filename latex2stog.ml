@@ -639,10 +639,10 @@ let fun_section com eval tokens =
   (* add a blank after the section beginning, but before
      a label if there is one attached to the section *)
   let rest =
-     let (args, rest) = get_token_args com 2 rest in
+     let (args, rest2) = get_token_args com 2 rest in
      match args with
        [(Tex_command "label") ; _ ] ->
-         args @ [Tex_blank "\n"] @ rest
+         args @ [Tex_blank "\n"] @ rest2
      | _ -> (Tex_blank "\n") :: rest
   in
   ([Block (block ~title: (List.hd arg) ("latex", tag) [])], rest)
