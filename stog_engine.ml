@@ -458,9 +458,7 @@ let fun_site_url stog data _env _ _ =
 
 let run ?(use_cache=true) ?only_elt state =
   let stog = state.st_stog in
-  let env = env_of_defs stog.stog_defs in
-  let env = env_of_used_mods stog ~env stog.stog_used_mods in
-  let env = Xtmpl.env_of_list ~env
+  let env = Xtmpl.env_of_list
     [
       ("", Stog_tags.site_desc), (fun data _ _ _ -> (data, stog.stog_desc)) ;
       ("", Stog_tags.site_email), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_email ])) ;
@@ -468,6 +466,8 @@ let run ?(use_cache=true) ?only_elt state =
       ("", Stog_tags.site_url), fun_site_url stog ;
     ]
   in
+  let env = env_of_used_mods ~env stog stog.stog_used_mods in
+  let env = env_of_defs ~env stog.stog_defs in
   match only_elt with
     None -> compute_levels ~use_cache env state
   | Some elt_id ->
@@ -716,6 +716,7 @@ let env_add_lang_rules data env stog elt =
 ;;
 
 let elt_env data env stog elt =
+  let env = env_of_used_mods stog ~env elt.elt_used_mods in
   let env = env_of_defs ~env elt.elt_defs in
 (*  prerr_endline
     (Printf.sprintf "elt=%s\ndefs=%s"
@@ -727,7 +728,6 @@ let elt_env data env stog elt =
     );
   prerr_endline ("env_of_defs => "^(Xtmpl.string_of_env env));
 *)
-  let env = env_of_used_mods stog ~env elt.elt_used_mods in
   let rules = [
       ("", Stog_tags.elt_hid),
       (fun  acc _ _ _ ->
