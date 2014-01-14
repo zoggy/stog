@@ -691,6 +691,7 @@ let fun_begin params com eval tokens =
   let env = string_tree (List.hd arg) in
   match env with
     "eqnarray" | "eqnarray*"
+  | "align" | "align*"
   | "equation" | "equation*" ->
       begin
         match search_end_ env eval rest with
@@ -699,9 +700,9 @@ let fun_begin params com eval tokens =
            let tag = remove_end_star env in
            let contents =
              match tag with
-               "eqnarray" ->
+               | "align" | "eqnarray" ->
                  let subs = gen_eqnarray_contents subs in
-                 let b = block ("math",tag) ?title subs in
+                 let b = block ("math","eqnarray") ?title subs in
                  [ Block b ]
              | "equation" -> gen_equation_contents subs
              | _ -> assert false
