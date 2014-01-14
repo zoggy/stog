@@ -113,7 +113,8 @@ let fun_counter (stog, data) env atts subs =
     (Xtmpl.string_of_env env));
 *)
   match Xtmpl.get_arg_cdata atts ("", "counter-name") with
-    None -> ((stog, data), subs)
+    None
+  | Some "" -> ((stog, data), subs)
   | Some name ->
       let ((stog, data), hid) = Stog_html.get_hid (stog, data) env in
       let cpt = get_counter data hid name in
@@ -171,9 +172,9 @@ let fun_elt_href ?typ src_elt href (stog, data) env args subs =
     (stog, data, info, text)
   in
   match elt with
-    None -> 
-      ((stog, data), 
-       [Xtmpl.E (("", "span"), 
+    None ->
+      ((stog, data),
+       [Xtmpl.E (("", "span"),
           Xtmpl.atts_one ("", "class") [Xtmpl.D "unknown-ref"],
           text)
        ])
@@ -184,9 +185,9 @@ let fun_elt_href ?typ src_elt href (stog, data) env args subs =
           None -> url
         | Some id -> Neturl.modify_url ~fragment: id url
       in
-      let xml = Xtmpl.E (("", "a"), 
+      let xml = Xtmpl.E (("", "a"),
          Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_types.string_of_url href)],
-         text) 
+         text)
       in
       ((stog, data), [ xml ])
 ;;
@@ -219,7 +220,7 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
   let att_id = Xtmpl.atts_one ("", "id") [Xtmpl.E (("","id"), Xtmpl.atts_empty, [])] in
   let class_name = Stog_html.concat_name ~sep: "-" cls in
   let body =
-    [ Xtmpl.E (("", "div"), 
+    [ Xtmpl.E (("", "div"),
        Xtmpl.atts_one ("", "class") [Xtmpl.D class_name],
        (
         (Xtmpl.E (("", "div"),
@@ -240,7 +241,7 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
         [Xtmpl.D "false"]
       | [Xtmpl.D "0"] -> []
       | _ ->
-          [ Xtmpl.E (("","counter"), 
+          [ Xtmpl.E (("","counter"),
              Xtmpl.atts_one ("","counter-name") [Xtmpl.D (Stog_html.concat_name (prefix, cls))],
              [])
           ]
@@ -255,7 +256,7 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
   in
   let ((stog,data), counter_name) =
     let (pref, name) = cls in
-    let ((stog,data), xmls) = 
+    let ((stog,data), xmls) =
       Stog_html.get_in_env (stog,data) env (pref, (Stog_html.concat_name cls)^"-counter")
     in
     match xmls with
@@ -316,7 +317,7 @@ let mk_block ~id ?label ?clas ~title ?counter ~short_fmt ~long_fmt body =
 
 let node_of_block b =
   let atts =
-    Xtmpl.atts_of_list 
+    Xtmpl.atts_of_list
       [
         ("","id"), [Xtmpl.D b.blk_id] ;
         ("","with-contents"), [Xtmpl.D "true"] ;
@@ -377,7 +378,10 @@ let read_block_from_subs stog =
             Stog_msg.warning
             (Printf.sprintf  "Ignoring class of block: %S" (s_xmls xmls));
             blk
-        | "counter-name", [Xtmpl.D s] -> { blk with blk_cpt_name = Some s }
+        | "counter-name", [Xtmpl.D s] when Stog_misc.strip_string s = ""->
+            blk
+        | "counter-name", [Xtmpl.D s] ->
+            { blk with blk_cpt_name = Some s }
         | "counter-name", _ ->
             Stog_msg.warning
             (Printf.sprintf "Ignoring counter-name of block: %S" (s_xmls xmls));
@@ -408,7 +412,7 @@ let read_block stog args subs =
   in
   let blk_label = Xtmpl.get_arg args ("", "label") in
   let blk_class = Xtmpl.get_arg_cdata args ("", "class") in
-  let blk_title = 
+  let blk_title =
     match Xtmpl.get_arg args ("", "title") with
       None -> [ Xtmpl.D " " ]
     | Some l -> l
@@ -461,7 +465,7 @@ let fun_block1 (stog, data) env args subs =
             let ((stog, data), hid) = Stog_html.get_hid (stog, data) env in
             let xmls =
               [ Xtmpl.E (("", Stog_tags.block),
-                 Xtmpl.atts_of_list [("", Stog_tags.elt_hid), [Xtmpl.D hid] ; ("", "href"), [Xtmpl.D s]], 
+                 Xtmpl.atts_of_list [("", Stog_tags.elt_hid), [Xtmpl.D hid] ; ("", "href"), [Xtmpl.D s]],
                  subs)
               ]
             in
@@ -520,7 +524,7 @@ let fun_block2 (stog, data) env atts subs =
       let xmls =
         [ Xtmpl.E (("", Stog_tags.elt),
            Xtmpl.atts_of_list
-             [("", "href"), [Xtmpl.D url] ; ("", "quotes"), [Xtmpl.D quotes]], 
+             [("", "href"), [Xtmpl.D url] ; ("", "quotes"), [Xtmpl.D quotes]],
            [])
         ]
       in
