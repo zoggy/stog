@@ -241,7 +241,7 @@ let tokenize =
        | Math1 s, '\\' ->
           if i+1 < len then
             match source.[i+1] with
-            | '/' -> iter source len (Math1 (s^" ")) acc bchar (i+2)
+            | '/' | ' ' -> iter source len (Math1 (s^" ")) acc bchar (i+2)
             | _ -> iter source len (Math1 (s^"\\")) acc bchar (i+1)
           else
             iter source len (Math1 s) acc bchar (i+1)
@@ -250,7 +250,7 @@ let tokenize =
           if i+1 < len then
             match source.[i+1] with
               ']' -> iter source len Normal ((Tex_math2 s) :: acc) bchar (i+2)
-            | '/' -> iter source len (Math2 (s^" ")) acc bchar (i+2)
+            | '/' | ' ' -> iter source len (Math2 (s^" ")) acc bchar (i+2)
             | _ -> iter source len (Math2 (s^"\\")) acc bchar (i+1)
           else
             iter source len (Math2 s) acc bchar (i+1)
@@ -261,6 +261,8 @@ let tokenize =
           iter source len Normal (Tex_dbs :: acc) bchar (i+1)
        | Escaping, '@' ->
           iter source len Normal ((Tex_command "@") :: acc) bchar (i+1)
+       | Escaping, '%' ->
+          iter source len Normal ((Tex '%') :: acc) bchar (i+1)
        | Escaping, c ->
            if is_com_char c then
              iter source len (Command (String.make 1 c)) acc bchar (i+1)
@@ -787,6 +789,7 @@ let funs params =
       "begin", fun_begin params ;
       "end", fun_end ;
       "dots", mk_const_fun 0 [Source "..."] ;
+      "ldots", mk_const_fun 0 [Source "..."] ;
       "label", fun_label ;
       "caption", fun_caption ;
       "item", fun_item ;
@@ -938,7 +941,7 @@ let traversable_tags_for_ids =
     SSSet.empty
     [
       ("","legend") ;
-      ("","center") ;(* FIXME*)
+      ("","center") ;
     ]
 ;;
 
