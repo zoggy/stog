@@ -45,6 +45,7 @@ type param = {
   ext_file_prefix : string ;
   envs : string list ;
   sectionning : string list ;
+  image_sizes : string SMap.t ;
  }
 
 type tree =
@@ -544,6 +545,7 @@ let fun_bf com = mk_one_arg_fun com ("","strong");;
 let fun_texttt com = mk_one_arg_fun com ("","code");;
 let fun_superscript com = mk_one_arg_fun com ("","sup");;
 let fun_arobas = mk_const_fun 0 [Source " "];;
+let fun_hfill = mk_const_fun 0 [Source nbsp];;
 let fun_caption = mk_ignore_opt mk_one_arg_fun ("","legend");;
 let fun_item =
   let f name _ eval tokens = ([Block (block ("latex","li") [])], tokens) in
@@ -580,6 +582,12 @@ let fun_includegraphics params com eval tokens =
       | _ -> file
     in
     let atts = Xtmpl.atts_one ("","src") [Xtmpl.D file] in
+    let atts =
+      try
+        let size = SMap.find file params.image_sizes in
+        Xtmpl.atts_one ~atts ("","width") [Xtmpl.D size]
+      with Not_found -> atts
+    in
     let b = block ~atts ("","img") [] in
     ([ Block b ], rest)
   in
@@ -628,12 +636,14 @@ let fun_section com eval tokens =
     | _ -> ([eval opt], rest)
   in
   let tag = remove_end_star com in
+  (* add a blank after the section beginning, but before
+     a label if there is one attached to the section *)
   let rest =
-    (* add a newline, so that a paragraph will start after the section
-       beginning *)
-    match rest with
-      (Tex_blank s) :: q -> (Tex_blank ("\n"^s)) :: q
-    | _ -> (Tex_blank "\n") :: rest
+     let (args, rest) = get_token_args com 2 rest in
+     match args with
+       [(Tex_command "label") ; _ ] ->
+         args @ [Tex_blank "\n"] @ rest
+     | _ -> (Tex_blank "\n") :: rest
   in
   ([Block (block ~title: (List.hd arg) ("latex", tag) [])], rest)
 ;;
@@ -779,7 +789,9 @@ let funs params =
       "footfullcite", fun_cite ;
       "oe", fun_oe ;
       "numprint", fun_numprint ;
+      "nombre", fun_numprint ;
       "hspace", fun_hspace ;
+      "hfill", fun_hfill ;
       "includegraphics", fun_includegraphics params ;
       "footnote", fun_footnote ;
       ]
@@ -1068,14 +1080,46 @@ let cut_with_stog_directives source =
 
 ;;
 
-let mk_preambule s =
+let apply_directive params s =
+  match Stog_misc.split_string s [' '] with
+    "imagesize" :: file :: size :: _ ->
+       let map = SMap.add file size params.image_sizes in
+       { params with image_sizes = map }
+  | _ ->
+    prerr_endline ("ignored directive: "^s); params
+;;
+
+let get_params params s =
+  let len = String.length s in
+  let re =  Str.regexp "^%<<\\([^\n]+\\)\n" in
+  let rec iter params acc p =
+     match
+       try Some (Str.search_forward re s p)
+       with Not_found -> None
+     with
+       None ->
+         let s_end = String.sub s p (len-p) in
+         (s_end::acc, params)
+     | Some p2 ->
+         let matched = Str.matched_string s in
+         let s_before = String.sub s p (p2 -p) in
+         let group = Str.matched_group 1 s in
+         let params = apply_directive params group in
+         iter params (s_before :: acc) (p2 + (String.length matched))
+  in
+  let (acc, params) = iter params [] 0 in
+  (String.concat "" (List.rev acc), params)
+;;
+
+let mk_preambule params s =
+  let (s, params) = get_params params s in
   let lines = Stog_misc.split_string s [ '\n' ; '\r' ] in
   let preambule =
     match lines with
       [] -> assert false
     | _ :: q -> String.concat "\n" q
   in
-  cut_with_stog_directives preambule
+  (cut_with_stog_directives preambule, params)
 ;;
 
 let string_of_stog_directives ?(tags=[]) ?(notags=[]) p =
@@ -1139,15 +1183,16 @@ let parse params tex_file =
   let source = remove_comments source in
   let source = replace_strings source in
 
-  let (preambule, body) =
+  let (preambule, body, params) =
     let (preambule, _, s) = str_cut begin_document re_begin_document source in
     let (body, _, _) = str_cut end_document re_end_document s in
+    let (body, params) = get_params params body in
     let body =
       let l = cut_with_stog_directives body in
       string_of_stog_directives ~notags: [Some "ignore"] l
     in
-    let preambule = mk_preambule preambule in
-    (preambule, body)
+    let (preambule, params) = mk_preambule params preambule in
+    (preambule, body, params)
   in
   let tex = { preambule ; body = [Source body] } in
   (*let tex = cut_sectionning sectionning tex in*)
@@ -1164,7 +1209,7 @@ let parse params tex_file =
   let body = add_ids body in
   let body = map_blocks block_map body in
   let tex = { tex with body } in
-  tex
+  (tex, params)
 ;;
 
 let prefix = ref None;;
@@ -1206,9 +1251,10 @@ let main () =
           ext_file_prefix = !ext_file_prefix ;
           sectionning = !sectionning ;
           envs = !envs ;
+          image_sizes = SMap.empty ;
           }
         in
-        let tex = parse params tex_file in
+        let (tex, params) = parse params tex_file in
         (*
         match tex.body with
           [ Source s ] -> print_endline s
