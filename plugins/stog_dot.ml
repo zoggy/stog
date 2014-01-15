@@ -74,6 +74,7 @@ let fun_dot stog env atts subs =
   let (_, elt) = Stog_types.elt_by_human_id stog hid in
   let elt_dir = Filename.dirname elt.Stog_types.elt_src in
   let command = Xtmpl.opt_arg_cdata ~def: "dot" atts ("","command") in
+  let typ = Xtmpl.opt_arg_cdata ~def: "svg" atts ("", "type") in
   let (infile, finalize_src) =
     match Xtmpl.get_arg_cdata atts ("","src") with
       None ->
@@ -88,50 +89,59 @@ let fun_dot stog env atts subs =
         in
         (f, fun () -> ())
   in
-  let (outfile, abs_outfile, inc, finalize_outfile) =
-    match Xtmpl.get_arg_cdata atts ("","outfile") with
-      None ->
-        let f = Filename.temp_file "stog" ".svg" in
-        (f, f, true, (fun () -> try Unix.unlink f with _ -> ()))
-    | Some f ->
-        let absf =
-          if Filename.is_relative f then
-            Filename.concat stog.Stog_types.stog_outdir (Filename.concat elt_dir f)
-          else f
-        in
-        (f, absf, false, fun () -> ())
-  in
-  let args = Xtmpl.opt_arg_cdata ~def: "" atts ("", "args") in
-  let com = Printf.sprintf "%s -Tsvg %s -o %s %s"
-    (Filename.quote command)
-    args (Filename.quote abs_outfile)
-    (Filename.quote infile)
-  in
-  let xml =
-    match Sys.command com with
-      0 ->
-        let xml = Xtmpl.xml_of_file abs_outfile in
-        finalize_outfile () ;
-        finalize_src ();
-        if inc then
-          [ xml ]
-        else
-          begin
-            let atts = Xtmpl.atts_remove ("","args")
-              (Xtmpl.atts_remove ("","outfile")
-               (Xtmpl.atts_remove ("","src") atts)
-              )
-            in
-            let atts = Xtmpl.atts_one ~atts
-              ("","src") [ Xtmpl.D outfile ]
-            in
-            [ Xtmpl.E (("","img"), atts, []) ]
-          end
-    | _ ->
-        Stog_msg.error ("Command failed: "^com);
-        []
-  in
-  (stog, xml)
+  try
+    let (outfile, abs_outfile, inc, finalize_outfile) =
+      match Xtmpl.get_arg_cdata atts ("","outfile") with
+        None ->
+          if typ <> "svg" then
+            failwith "<dot>: please specify outfile attribute if file type is not 'svg'";
+          let f = Filename.temp_file "stog" ".svg" in
+          (f, f, true, (fun () -> try Unix.unlink f with _ -> ()))
+      | Some f ->
+          let absf =
+            if Filename.is_relative f then
+              Filename.concat stog.Stog_types.stog_outdir (Filename.concat elt_dir f)
+            else f
+          in
+          (f, absf, false, fun () -> ())
+    in
+    let args = Xtmpl.opt_arg_cdata ~def: "" atts ("", "args") in
+    let com = Printf.sprintf "%s -T%s %s -o %s %s"
+      (Filename.quote command) (Filename.quote typ)
+        args (Filename.quote abs_outfile)
+        (Filename.quote infile)
+    in
+    let xml =
+      match Sys.command com with
+        0 ->
+          if inc then
+            begin
+              let xml = Xtmpl.xml_of_file abs_outfile in
+              [ xml ]
+            end
+          else
+            begin
+              let atts = Xtmpl.atts_remove ("","args")
+                (Xtmpl.atts_remove ("","outfile")
+                 (Xtmpl.atts_remove ("","src") atts)
+                )
+              in
+              let atts = Xtmpl.atts_one ~atts
+                ("","src") [ Xtmpl.D outfile ]
+              in
+              [ Xtmpl.E (("","img"), atts, []) ]
+            end
+      | _ ->
+          Stog_msg.error ("Command failed: "^com);
+          []
+    in
+    finalize_outfile () ;
+    finalize_src ();
+    (stog, xml)
+  with
+    Failure msg ->
+      Stog_msg.error msg ;
+      (stog, [])
 ;;
 
 let () = Stog_plug.register_html_base_rule ("", "dot") fun_dot;;
