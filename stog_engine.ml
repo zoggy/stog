@@ -645,6 +645,11 @@ let opt_in_env data env (prefix, s) =
   if node2 = node then (data, None) else (data, Some node2)
 ;;
 
+let get_in_args_or_env data env args s =
+  match Xtmpl.get_arg args s with
+    None -> get_in_env data env s
+  | Some s -> (data, s)
+;;
 
 let get_hid data env =
   let (data, xmls) = get_in_env data env ("", Stog_tags.elt_hid) in

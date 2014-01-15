@@ -33,12 +33,6 @@ module Smap = Stog_types.Str_map;;
 
 let get_in_env = Stog_engine.get_in_env;;
 
-let get_in_args_or_env data env args s =
-  match Xtmpl.get_arg args s with
-    None -> get_in_env data env s
-  | Some s -> (data, s)
-;;
-
 let get_hid = Stog_engine.get_hid;;
 
 let escape_html s =

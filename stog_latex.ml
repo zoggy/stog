@@ -32,75 +32,21 @@ let gensym = let cpt = ref 0 in fun () -> incr cpt; !cpt;;
 
 let cache = Hashtbl.create 111;;
 
-let make_svg outdir ?(packages=[]) ?(scale=1.1) ?(def_files=[]) ?defs latex_code =
-  let defs = match defs with None -> "" | Some s -> s^"\n" in
-  try Hashtbl.find cache latex_code
-  with Not_found ->
-      let tex = Filename.temp_file "stog" ".tex" in
-      let code = Printf.sprintf
-"\\documentclass[12pt]{article}
-\\pagestyle{empty}
-\\usepackage[utf8x]{inputenc}
-%s%s%s
-\\begin{document}
-%s
-\\end{document}
-"
-        (String.concat ""
-         (List.map (fun s -> Printf.sprintf "\\usepackage%s\n" s) packages))
-         (String.concat "\n"
-           (List.map (fun file -> "\\input{"^file^"}") def_files)
-         )
-         defs
-        latex_code
-      in
-      let base = Filename.chop_extension tex in
-      let dvi = base^".dvi" in
-      let svg = Filename.concat outdir
-        (Filename.basename (Printf.sprintf "_latex%d.svg" (gensym())))
-      in
-      Stog_misc.file_of_string ~file: tex code;
-      let log = Filename.temp_file "stog" ".log" in
-      let command = Printf.sprintf
-        "(latex -output-directory=/tmp -interaction=batchmode %s > %s 2>&1) && \
-         dvisvgm -e --scale=%f -M 1.5 --no-fonts %s -s 2>> %s > %s"
-        (Filename.quote tex) (Filename.quote log)
-          scale
-        (Filename.quote dvi)
-        (Filename.quote log) (Filename.quote svg)
-      in
-      match Sys.command command with
-        0 ->
-          List.iter (fun f -> try Sys.remove f with _ -> ())
-          [ tex ; dvi ; log ];
-          Hashtbl.add cache latex_code svg;
-          svg
-      | n ->
-          let log = Stog_misc.string_of_file log in
-          (try Sys.remove log with _ -> ());
-          failwith
-          (Printf.sprintf "Command failed [%d]: %s\n=== log ===\n%s\n=== tex code ===\n%s"
-           n command log latex_code)
+let latex_code_use_packages l =
+  String.concat ""
+    (List.map (fun s -> Printf.sprintf "\\usepackage%s\n" s) l)
 ;;
 
-let code_of_subs =
-  let f b = function
-    Xtmpl.D code -> Buffer.add_string b code
-  | xml -> failwith (Printf.sprintf "Invalid latex code: %s" (Xtmpl.string_of_xml xml))
-  in
-  function
-    [ Xtmpl.D code] -> code
-  | subs ->
-    let b = Buffer.create 256 in
-    List.iter (f b) subs;
-    Buffer.contents b
+let build_preambule ~packages ~defs ~def_files =
+  Printf.sprintf "\\pagestyle{empty}\n\\usepackage[utf8x]{inputenc}\n%s\n%s\n%s"
+   (latex_code_use_packages packages)
+    (String.concat "\n"
+     (List.map (fun file -> "\\input{"^file^"}") def_files)
+    )
+    defs
 ;;
 
-let fun_latex stog env args subs =
-  let code = code_of_subs subs in
-  let packages = Xtmpl.opt_arg_cdata args ("", "packages") in
-  let packages = Stog_misc.split_string packages [';'] in
-  let showcode = Xtmpl.opt_arg_cdata args ("", "showcode") = "true" in
+let get_latex_defs stog env =
   let (stog, def_files) =
     let (stog, xmls) = Stog_engine.get_in_env stog env ("", "latex-defs-files") in
     match xmls with
@@ -133,9 +79,88 @@ let fun_latex stog env args subs =
   in
   let (stog, defs) =
     let (stog, xmls) = Stog_engine.get_in_env stog env ("", "latex-defs") in
-    let defs = match xmls with [] -> None | _ -> Some (Xtmpl.string_of_xmls xmls) in
+    let defs = match xmls with [] -> "" | _ -> Xtmpl.string_of_xmls xmls in
     (stog, defs)
   in
+  (stog, defs, def_files)
+;;
+
+let make_svg outdir ?(packages=[]) ?(scale=1.1) ?(def_files=[]) ?defs latex_code =
+  let defs = match defs with None -> "" | Some s -> s^"\n" in
+  try Hashtbl.find cache latex_code
+  with Not_found ->
+      let tex = Filename.temp_file "stog" ".tex" in
+      let code = Printf.sprintf
+        "\\documentclass[12pt]{article}
+%s
+\\begin{document}
+%s
+\\end{document}
+"
+          (build_preambule ~packages ~defs ~def_files)
+          latex_code
+      in
+      let base = Filename.chop_extension tex in
+      let dvi = base^".dvi" in
+      let svg = Filename.concat outdir
+        (Filename.basename (Printf.sprintf "_latex%d.svg" (gensym())))
+      in
+      Stog_misc.file_of_string ~file: tex code;
+      let log = Filename.temp_file "stog" ".log" in
+      let command = Printf.sprintf
+        "(latex -output-directory=/tmp -interaction=batchmode %s > %s 2>&1) && \
+         dvisvgm -e --scale=%f -M 1.5 --no-fonts %s -s 2>> %s > %s"
+          (Filename.quote tex) (Filename.quote log)
+          scale
+          (Filename.quote dvi)
+          (Filename.quote log) (Filename.quote svg)
+      in
+      match Sys.command command with
+        0 ->
+          List.iter (fun f -> try Sys.remove f with _ -> ())
+            [ tex ; dvi ; log ];
+          Hashtbl.add cache latex_code svg;
+          svg
+      | n ->
+          let log = Stog_misc.string_of_file log in
+          (try Sys.remove log with _ -> ());
+          failwith
+            (Printf.sprintf "Command failed [%d]: %s\n=== log ===\n%s\n=== tex code ===\n%s"
+             n command log latex_code)
+;;
+
+let code_of_subs =
+  let f b = function
+    Xtmpl.D code -> Buffer.add_string b code
+  | xml -> failwith (Printf.sprintf "Invalid latex code: %s" (Xtmpl.string_of_xml xml))
+  in
+  function
+    [ Xtmpl.D code] -> code
+  | subs ->
+    let b = Buffer.create 256 in
+    List.iter (f b) subs;
+    Buffer.contents b
+;;
+
+let get_packages stog env args =
+  let (stog, s) =
+    match Xtmpl.get_arg_cdata args ("","packages") with
+      Some s -> (stog, s)
+    | None ->
+        let (stog, xmls) = Stog_engine.get_in_args_or_env stog env args ("latex","packages") in
+        match xmls with
+          [Xtmpl.D s] -> (stog, s)
+        | _ -> (stog, "")
+  in
+  let l = List.map Stog_misc.strip_string (Stog_misc.split_string s [';']) in
+  (stog, l)
+;;
+
+let fun_latex stog env args subs =
+  let code = code_of_subs subs in
+  let (stog, packages) = get_packages stog env args in
+  let showcode = Xtmpl.opt_arg_cdata args ("", "showcode") = "true" in
+  let (stog, defs, def_files) = get_latex_defs stog env in
   let (stog, scale) =
     let (stog, xmls) = Stog_engine.get_in_env stog env ("", "latex-svg-scale") in
     let scale =
@@ -149,7 +174,7 @@ let fun_latex stog env args subs =
     (stog, scale)
   in
   let svg = Filename.basename
-    (make_svg stog.Stog_types.stog_outdir ~packages ?scale ~def_files ?defs code)
+    (make_svg stog.Stog_types.stog_outdir ~packages ?scale ~def_files ~defs code)
   in
   let url = Stog_types.url_concat stog.Stog_types.stog_base_url svg in
   let xmls =
@@ -174,8 +199,13 @@ let fun_latex stog env args subs =
 
 
 let fun_latex_body stog env args subs =
+  let (stog, packages) = get_packages stog env args in
+  let (stog, defs, def_files) = get_latex_defs stog env in
   let code = code_of_subs subs in
-  let code = "\\begin{document}"^code^"\\end{document}" in
+  let code =
+    (build_preambule ~packages ~defs ~def_files)^
+      "\n\\begin{document}"^code^"\\end{document}"
+  in
 
   let (stog, hid) = Stog_engine.get_hid stog env in
   let hid = Stog_types.human_id_of_string hid in
@@ -191,11 +221,11 @@ let fun_latex_body stog env args subs =
     | _ -> Stog_tags.default_sectionning
   in
   let params = {
-    prefix = None ;
-    ext_file_prefix = "" ;
-    envs = [] ;
-    Stog_of_latex.sectionning = sectionning ;
-    image_sizes = Stog_of_latex.SMap.empty ;
+      prefix = None ;
+      ext_file_prefix = "" ;
+      envs = [] ;
+      Stog_of_latex.sectionning = sectionning ;
+      image_sizes = Stog_of_latex.SMap.empty ;
     }
   in
   let (tex,_) = Stog_of_latex.parse params code elt_dir in

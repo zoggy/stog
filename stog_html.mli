@@ -55,10 +55,6 @@ val add_block :
   then return [""] else return the reduced value as a string.*)
 val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * Xtmpl.tree list
 
-(** [get_in_args_or_env env args s] returns the value associated to [s]
- in [args] of else return the result of [get_in_env env s]. *)
-val get_in_args_or_env : 'a -> 'a Xtmpl.env -> Xtmpl.attributes -> Xmlm.name -> 'a * Xtmpl.tree list
-
 (** [get_hid env] returns the value associated to ["hid"] in [env].
   @raise Assert_failure if ["hid"] is not found in the environment.*)
 val get_hid : 'a -> 'a Xtmpl.env -> 'a * string
