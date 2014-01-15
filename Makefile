@@ -49,6 +49,7 @@ OCAMLPP=
 PLUGINS_BYTE= \
 	plugins/stog_asy.cmo \
 	plugins/stog_disqus.cmo \
+	plugins/stog_dot.cmo \
 	plugins/stog_markdown.cmo \
 	plugins/plugin_example.cmo
 PLUGINS_OPT=$(PLUGINS_BYTE:.cmo=.cmxs)

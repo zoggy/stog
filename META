@@ -31,4 +31,13 @@ package "asy" (
   archive(plugin,native) = "stog_asy.cmxs"
 )
 
+package "dot" (
+  version = "0.9.0"
+  description = "Stog graphviz plugin"
+  archive(byte) = "stog_dot.cmo"
+  archive(native) = "stog_dot.cmx"
+  archive(plugin,byte) = "stog_dot.cmo"
+  archive(plugin,native) = "stog_dot.cmxs"
+)
+
 
