@@ -77,7 +77,7 @@ let plugin_base_rules = ref [];;
 let register_base_rule name f =
    plugin_base_rules := (name, f) :: !plugin_base_rules ;;
 
-let include_href name stog elt ?id ~raw ~depend href env =
+let include_href name stog elt ?id ~raw ~subsonly ~depend href env =
   let new_id = id in
   let (hid, id) =
     try
@@ -108,15 +108,20 @@ let include_href name stog elt ?id ~raw ~depend href env =
            id (Stog_types.string_of_human_id hid))
     | Some (Xtmpl.D _) -> assert false
     | Some ((Xtmpl.E (tag, atts, subs)) as xml)->
-        let xmls =
-          if raw then
-            [ Xtmpl.D (Xtmpl.string_of_xml xml) ]
-          else
-            match new_id with
-              None -> [xml]
-            | Some new_id ->
-                let atts = Xtmpl.atts_replace ("","id") new_id atts in
-                [ Xtmpl.E (tag, atts, subs) ]
+        let xmls = 
+          match raw, subsonly with
+            true, false ->
+              [ Xtmpl.D (Xtmpl.string_of_xml xml) ]
+          | true, true ->
+              List.map (fun xml -> Xtmpl.D (Xtmpl.string_of_xml xml)) subs
+          | false, true ->
+              subs
+          | false, false ->
+              match new_id with
+                None -> [xml]
+              | Some new_id ->
+                  let atts = Xtmpl.atts_replace ("","id") new_id atts in
+                  [ Xtmpl.E (tag, atts, subs) ]
         in
         (stog, xmls)
   with
@@ -133,6 +138,7 @@ let include_file stog elt ?id ~raw ~depend file args subs =
 
 let fun_include_ name elt stog env args subs =
   let raw = Xtmpl.opt_arg_cdata ~def: "false" args ("", "raw") = "true" in
+  let subsonly = Xtmpl.opt_arg_cdata ~def: "false" args ("", "subs-only") = "true" in
   let id = Xtmpl.get_arg args ("", "id") in
   let depend = Xtmpl.opt_arg_cdata args ~def: "true" ("", "depend") <> "false" in
   match Xtmpl.get_arg_cdata args ("", "file") with
@@ -141,7 +147,7 @@ let fun_include_ name elt stog env args subs =
       (stog, xml)
   | None ->
       match Xtmpl.get_arg_cdata args ("", "href") with
-        Some href -> include_href name stog elt ?id ~raw ~depend href env
+        Some href -> include_href name stog elt ?id ~raw ~subsonly ~depend href env
       | None ->
           failwith ("Missing 'file' or 'href' argument for <"^name^"> rule")
 ;;

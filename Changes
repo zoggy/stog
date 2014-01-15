@@ -1,4 +1,9 @@
 Next release:
+* <include href="..."> and <late-inc href="..."> handle a
+  "subs-only" attribute to insert only contents of the referenced
+  XML node
+* new commands: ocaml-printf, as-xml
+* new plugins: stog_asy, stog_dot
 * new show-without-ids attribute for <prepare-toc> to handle
   sections without id
 * add multi elements
