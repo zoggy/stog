@@ -34,7 +34,7 @@ The <icode>--def</icode> option can be used to define an additional global rule.
 </p>
 <command-line>stog --def stogdir:`pwd`</command-line>
 <p>
-will make the current working directory accessible using <icode>&lt;stogdir/&gt;</icode>.
+will make the current working directory accessible using <ixml>&lt;stogdir/&gt;</ixml>.
 </p>
 
 
@@ -49,12 +49,12 @@ to specify a list of comma-separated packages to load. <icode>ocamlfind</icode> 
 then be used to get the location and required files to load these packages, in bytecode
 for <icode>stog.byte</icode> or native-code for <icode>stog</icode>.
 </p>
-<p>At last, the <icode>--lang</icode> option is used to generate the website
+<p>The <icode>--lang</icode> option is used to generate the website
 for one language. By default, the only known languages are "en" and "fr".
 If you use the <icode>--lang en</icode> option, then pages will be generated
-in <icode>.en.html</icode> files and all <icode>&lt;fr&gt;</icode> nodes will be removed.
+in <icode>.en.html</icode> files and all <ixml>&lt;fr&gt;</ixml> nodes will be removed.
 Then you can run <icode>stog</icode> with the <icode>--lang fr</icode>
-to generate the "fr" part of your web site, removing all <icode>&lt;en&gt;</icode>.
+to generate the "fr" part of your web site, removing all <ixml>&lt;en&gt;</ixml>.
 </p>
 <!--
 <p>

@@ -2,7 +2,7 @@
 navbar-doc="active"
 >
 <p>
-An element is an Xml tree, defined in a file matched by the regular expressions
+An element is an XML tree, defined in a file matched by the regular expressions
 given in the <elt href="overview#config-file">configuration file</elt>.
 It has one of the following forms. First form:
 </p>
@@ -16,9 +16,9 @@ Here is the body of the element.
 </type>
 ]]>
 </hcode>
-<p>Second form, almost the same, except that <icode>with-contents="true"</icode>
+<p>Second form, almost the same, except that <ixml>with-contents="true"</ixml>
 indicates that more attributes are given in subnodes, and the body is in the
-<icode>contents</icode> subnode:
+<ixml>contents</ixml> subnode:
 </p>
 <hcode lang="xml">
 <![CDATA[<type title="Element title"
@@ -34,23 +34,23 @@ indicates that more attributes are given in subnodes, and the body is in the
 </hcode>
 <p>
 <icode>type</icode> can be any string (like "post", "page", ...) and defines the type
-of the element. This allows different treatements according to the element type.
+of the element. This allows different treatments according to the element type.
 </p>
 <p>
 You can specify any attribute for an element. Some attributes are used
 internally:
 </p>
 <ul>
-<li><b>title</b>: this is the title of the element; use <icode>&lt;elt-title/&gt;</icode>
+<li><b>title</b>: this is the title of the element; use <ixml>&lt;elt-title/&gt;</ixml>
 in templates to access it,</li>
 <li><b>keywords</b>: the list of comma-separated keywords associated to the element;
-use <icode>&lt;elt-keywords/&gt;</icode> in templates to insert the list of keywords
+use <ixml>&lt;elt-keywords/&gt;</ixml> in templates to insert the list of keywords
 with links to by-keyword index,</li>
-<li><b>topics</b>: same as keywords, but for topics (access with <icode>&lt;elt-topics/&gt;</icode>),</li>
+<li><b>topics</b>: same as keywords, but for topics (access with <ixml>&lt;elt-topics/&gt;</ixml>),</li>
 <li><b>date</b>: the element date, used for sorting in list. The date format follows
 <ext-a href="https://tools.ietf.org/html/rfc3339">RFC 3339</ext-a>,
 for example <i>2013/11/26</i> or <i>2013/11/26 09:16:45</i>.
-Use <icode>&lt;elt-date/&gt;</icode> or <icode>&lt;elt-datetime/&gt;</icode>
+Use <ixml>&lt;elt-date/&gt;</ixml> or <ixml>&lt;elt-datetime/&gt;</ixml>
 in templates to insert it.
 The function
 <ext-a href="http://projects.camlcity.org/projects/dl/ocamlnet-3.7.3/doc/html-main/Netdate.html#VALparse">Netdate.parse</ext-a> from OCamlnet is used to parse dates,</li>
@@ -68,7 +68,7 @@ If doctype is "HTML" (case-insensitive), tags are not self-closed, except
 </ul>
 <p>
 Any other attribute will be available by its name in the environment when processing the template
-associated to the element type. The element type can be accessed with <icode>&lt;elt-type/&gt;</icode>.
+associated to the element type. The element type can be accessed with <ixml>&lt;elt-type/&gt;</ixml>.
 More details in <elt href="atts-functions"></elt>.
 </p>
 <p>

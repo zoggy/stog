@@ -65,8 +65,8 @@ value set to "# ". This argument can be changed when "calling" the function:
 <p>will be rewritten to</p>
 <hcode id="function-app-result" defer_="1" lang="xml">... <command prompt="mysql&gt; ">select * from table</command> ...</hcode>
 <p>
-Only attributes of the <ixml>&lt;command/&gt;</ixml> nodes which are
-"declared" in the rule attribute list are added to the environment used
+Even attributes of the <ixml>&lt;command/&gt;</ixml> nodes which are
+not "declared" in the rule attribute list are added to the environment used
 when applying the <ixml>&lt;command&gt;</ixml> rule.
 </p>
 <p>It is not unusual to declare only one dummy parameter to create a function
