@@ -73,6 +73,7 @@ val keyword : string
 val langswitch : string
 val late_inc : string
 val latex : string
+val latex_body : string
 val list : string
 val n_columns : string
 val next : string
@@ -80,14 +81,18 @@ val ocaml : string
 val ocaml_eval : string
 val ocaml_printf : string
 val page : string
+val paragraph : string
 val post : string
 val prepare_toc : string
 val previous : string
 val search_form : string
 val section : string
 val subsection : string
+val subsubsection : string
 val toc : string
 val topic : string
 val two_columns : string
+
+val default_sectionning : string list
 
 

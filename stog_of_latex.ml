@@ -1038,8 +1038,7 @@ let to_xml =
   fun l -> List.map iter l
 ;;
 
-let rec resolve_includes com tex_file s =
-  let dir = Filename.dirname tex_file in
+let rec resolve_includes com dir s =
   let re_include = Str.regexp ("\\\\"^com^"{\\([^}]+\\)}") in
   let f s =
     let filename = Str.matched_group 1 s in
@@ -1130,7 +1129,7 @@ let mk_preambule params s =
   let lines = Stog_misc.split_string s [ '\n' ; '\r' ] in
   let preambule =
     match lines with
-      [] -> assert false
+      [] -> ""
     | _ :: q -> String.concat "\n" q
   in
   (cut_with_stog_directives preambule, params)
@@ -1189,11 +1188,10 @@ let block_map =
     (fun acc (tag, f) -> SSMap.add tag f acc) SSMap.empty l
 ;;
 
-let parse params tex_file =
-  let source = Stog_misc.string_of_file tex_file in
+let parse params source src_dir =
   let source = remove_comments source in
-  let source = resolve_includes "include" tex_file source in
-  let source = resolve_includes "input" tex_file source in
+  let source = resolve_includes "include" src_dir source in
+  let source = resolve_includes "input" src_dir source in
   let source = remove_comments source in
   let source = replace_strings source in
 

@@ -171,3 +171,33 @@ let fun_latex stog env args subs =
   in
   (stog, xmls)
 ;;
+
+
+let fun_latex_body stog env args subs =
+  let code = code_of_subs subs in
+  let code = "\\begin{document}"^code^"\\end{document}" in
+
+  let (stog, hid) = Stog_engine.get_hid stog env in
+  let hid = Stog_types.human_id_of_string hid in
+  let (_, elt) = Stog_types.elt_by_human_id stog hid in
+  let elt_dir = Filename.dirname elt.Stog_types.elt_src in
+
+  let (stog, xmls) = Stog_engine.get_in_env stog env ("","sectionning") in
+  let sectionning =
+    match xmls with
+      [Xtmpl.D s] ->
+        List.map Stog_misc.strip_string
+          (Stog_misc.split_string s [','])
+    | _ -> Stog_tags.default_sectionning
+  in
+  let params = {
+    prefix = None ;
+    ext_file_prefix = "" ;
+    envs = [] ;
+    Stog_of_latex.sectionning = sectionning ;
+    image_sizes = Stog_of_latex.SMap.empty ;
+    }
+  in
+  let (tex,_) = Stog_of_latex.parse params code elt_dir in
+  (stog, Stog_of_latex.to_xml tex.Stog_of_latex.body)
+;;

@@ -113,8 +113,7 @@ let fun_counter (stog, data) env atts subs =
     (Xtmpl.string_of_env env));
 *)
   match Xtmpl.get_arg_cdata atts ("", "counter-name") with
-    None
-  | Some "" -> ((stog, data), subs)
+    None -> ((stog, data), subs)
   | Some name ->
       let ((stog, data), hid) = Stog_html.get_hid (stog, data) env in
       let cpt = get_counter data hid name in

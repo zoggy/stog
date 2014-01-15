@@ -1,7 +1,7 @@
 foo.cmo :
 foo.cmx :
-latex2stog.cmo : stog_tags.cmi stog_misc.cmi
-latex2stog.cmx : stog_tags.cmx stog_misc.cmx
+latex2stog.cmo : stog_of_latex.cmo stog_misc.cmi
+latex2stog.cmx : stog_of_latex.cmx stog_misc.cmx
 latex2stog_tmp.cmo :
 latex2stog_tmp.cmx :
 odoc_stog.cmo :
@@ -60,8 +60,10 @@ stog_io.cmo : stog_types.cmi stog_msg.cmi stog_misc.cmi stog_find.cmi \
     stog_config.cmi stog_io.cmi
 stog_io.cmx : stog_types.cmx stog_msg.cmx stog_misc.cmx stog_find.cmx \
     stog_config.cmx stog_io.cmi
-stog_latex.cmo : stog_types.cmi stog_misc.cmi stog_engine.cmi stog_latex.cmi
-stog_latex.cmx : stog_types.cmx stog_misc.cmx stog_engine.cmx stog_latex.cmi
+stog_latex.cmo : stog_types.cmi stog_of_latex.cmo stog_misc.cmi \
+    stog_engine.cmi stog_latex.cmi
+stog_latex.cmx : stog_types.cmx stog_of_latex.cmx stog_misc.cmx \
+    stog_engine.cmx stog_latex.cmi
 stog_main.cmo : stog_types.cmi stog_ocaml.cmi stog_msg.cmi stog_misc.cmi \
     stog_io.cmi stog_intl.cmi stog_info.cmi stog_engine.cmi stog_dyn.cmi \
     stog_config.cmi
@@ -86,6 +88,8 @@ stog_ocaml_session.cmx : stog_ocaml_types.cmx stog_misc.cmx errors.cmi \
     stog_ocaml_session.cmi
 stog_ocaml_types.cmo : stog_ocaml_types.cmi
 stog_ocaml_types.cmx : stog_ocaml_types.cmi
+stog_of_latex.cmo : stog_tags.cmi stog_msg.cmi stog_misc.cmi
+stog_of_latex.cmx : stog_tags.cmx stog_msg.cmx stog_misc.cmx
 stog_plug.cmo : stog_types.cmi stog_msg.cmi stog_intl.cmi stog_html.cmi \
     stog_deps.cmi stog_config.cmi stog_blocks.cmi stog_plug.cmi
 stog_plug.cmx : stog_types.cmx stog_msg.cmx stog_intl.cmx stog_html.cmx \

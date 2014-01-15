@@ -73,6 +73,7 @@ let keyword = "keyword"
 let langswitch = "langswitch"
 let late_inc = "late-inc"
 let latex = "latex"
+let latex_body = "latex-body"
 let list = "list"
 let n_columns = "n-columns"
 let next = "next"
@@ -80,12 +81,21 @@ let ocaml = "ocaml"
 let ocaml_eval = "ocaml-eval"
 let ocaml_printf = "ocaml-printf"
 let page = "page"
+let paragraph = "paragraph"
 let post = "post"
 let prepare_toc = "prepare-toc"
 let previous = "previous"
 let search_form = "search-form"
 let section = "section"
 let subsection = "subsection"
+let subsubsection = "subsubsection"
 let toc = "toc"
 let topic = "topic"
 let two_columns = "two-columns"
+
+let default_sectionning =
+  [ section ;
+    subsection ;
+    subsubsection ;
+    paragraph ;
+  ]

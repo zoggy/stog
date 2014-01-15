@@ -72,7 +72,9 @@ let main () =
           image_sizes = SMap.empty ;
           }
         in
-        let (tex, params) = Stog_of_latex.parse params tex_file in
+        let source = Stog_misc.string_of_file tex_file in
+        let src_dir = Filename.dirname tex_file in
+        let (tex, params) = Stog_of_latex.parse params source src_dir in
         (*
         match tex.body with
           [ Source s ] -> print_endline s

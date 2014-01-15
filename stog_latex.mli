@@ -32,3 +32,4 @@
 
 val make_svg : string -> ?packages:string list -> ?scale: float -> ?def_files: string list -> ?defs: string -> string -> string
 val fun_latex : Stog_types.stog Xtmpl.callback
+val fun_latex_body : Stog_types.stog Xtmpl.callback

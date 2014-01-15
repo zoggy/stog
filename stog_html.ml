@@ -108,7 +108,7 @@ let include_href name stog elt ?id ~raw ~subsonly ~depend href env =
            id (Stog_types.string_of_human_id hid))
     | Some (Xtmpl.D _) -> assert false
     | Some ((Xtmpl.E (tag, atts, subs)) as xml)->
-        let xmls = 
+        let xmls =
           match raw, subsonly with
             true, false ->
               [ Xtmpl.D (Xtmpl.string_of_xml xml) ]
@@ -967,6 +967,7 @@ and build_base_rules stog elt_id =
       ("", Stog_tags.image), fun_image ;
       ("", Stog_tags.include_), mk fun_include ;
       ("", Stog_tags.latex), Stog_latex.fun_latex ;
+      ("", Stog_tags.latex_body), Stog_latex.fun_latex_body ;
       ("", Stog_tags.list), fun_list ;
       ("", Stog_tags.n_columns), fun_ncolumns ;
       ("", Stog_tags.next), next;
@@ -1200,7 +1201,7 @@ let get_sectionning_tags stog elt =
         Stog_types.get_def stog.stog_defs ("", "sectionning")
   in
   match spec with
-    None -> [("",Stog_tags.section) ; ("", Stog_tags.subsection)]
+    None -> List.map (fun t -> ("",t)) Stog_tags.default_sectionning
   | Some (_,xmls) ->
       let s = Xtmpl.string_of_xmls xmls in
       let l = Stog_misc.split_string s [',' ; ';'] in
