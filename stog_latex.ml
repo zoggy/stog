@@ -147,7 +147,7 @@ let get_packages stog env args =
     match Xtmpl.get_arg_cdata args ("","packages") with
       Some s -> (stog, s)
     | None ->
-        let (stog, xmls) = Stog_engine.get_in_args_or_env stog env args ("latex","packages") in
+        let (stog, xmls) = Stog_engine.get_in_args_or_env stog env args ("","latex-packages") in
         match xmls with
           [Xtmpl.D s] -> (stog, s)
         | _ -> (stog, "")
