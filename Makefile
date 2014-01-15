@@ -84,6 +84,7 @@ LIB_CMXFILES= \
 	stog_html5.cmx \
 	stog_engine.cmx \
 	stog_ocaml.cmx \
+	stog_of_latex.cmx \
 	stog_latex.cmx \
 	stog_html.cmx \
 	stog_blocks.cmx \
@@ -159,10 +160,10 @@ $(OCAML_SESSION): $(OCAML_SESSION_CMIFILES) $(OCAML_SESSION_CMOFILES)
 stog_ocaml_session.cmo: stog_ocaml_session.ml
 	$(OCAMLFIND) ocamlc$(PBYTE) -package $(OCAML_SESSION_PACKAGES) $(COMPFLAGS) -c $<
 
-$(LATEX2STOG): stog_tags.cmx stog_misc.cmx latex2stog.cmx
+$(LATEX2STOG): stog_tags.cmx stog_misc.cmx stog_msg.cmx stog_of_latex.cmx latex2stog.cmx
 	$(OCAMLFIND) ocamlopt$(P) -o $@ -package $(PACKAGES) -linkall -linkpkg $^
 
-$(LATEX2STOG_BYTE): stog_tags.cmo stog_misc.cmo latex2stog.cmo
+$(LATEX2STOG_BYTE): stog_tags.cmo stog_misc.cmo stog_msg.cmo stog_of_latex.cmo latex2stog.cmo
 	$(OCAMLFIND) ocamlc$(P) -o $@ -package $(PACKAGES) -linkall -linkpkg $^
 
 # mk scripts
