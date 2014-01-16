@@ -634,12 +634,7 @@ let fun_error_ stog env args subs =
   (stog, [])
 ;;
 
-let fun_elt_path _elt stog env args subs =
-  let (stog, s_hid) = get_hid stog env in
-  let hid = Stog_types.human_id_of_string s_hid in
-  if not hid.hid_absolute then
-    failwith (Printf.sprintf "fun_elt_path: Hid %S not absolute" s_hid);
-
+let fun_elt_path elt stog env args subs =
   let root =
     match Xtmpl.get_arg_cdata args ("", "with-root") with
       None -> None
@@ -661,6 +656,7 @@ let fun_elt_path _elt stog env args subs =
         let hid = { Stog_types.hid_path = path ; hid_absolute = true } in
         f (hid :: acc) (List.rev q)
   in
+  let hid = elt.Stog_types.elt_human_id in
   let hids =
     (* remove last component of path to keep only "parent path" *)
     match List.rev hid.Stog_types.hid_path with
@@ -939,6 +935,7 @@ and build_base_rules stog elt_id =
       ("", Stog_tags.archive_tree), fun_archive_tree ;
       ("", Stog_tags.as_xml), fun_as_xml ;
       ("", Stog_tags.command_line), fun_command_line ~inline: false ;
+      ("", Stog_tags.dummy_), fun_dummy_ ;
       ("", Stog_tags.elements), (fun acc -> elt_list elt acc) ;
       ("", Stog_tags.elt_body), mk f_body ;
       ("", Stog_tags.elt_date), mk f_date ;
@@ -957,7 +954,6 @@ and build_base_rules stog elt_id =
       ("", Stog_tags.hcode), fun_hcode ~inline: false ?lang: None;
       ("", Stog_tags.icode), fun_icode ?lang: None ;
       ("", Stog_tags.if_), fun_if ;
-      ("", Stog_tags.dummy_), fun_dummy_ ;
       ("", Stog_tags.image), fun_image ;
       ("", Stog_tags.include_), mk fun_include ;
       ("", Stog_tags.latex), Stog_latex.fun_latex ;
@@ -1479,7 +1475,7 @@ let mk_levels modname level_funs default_levels =
     Stog_types.Str_map.fold f levels Intmap.empty
 ;;
 
-let module_name = "html";;
+let module_name = "base";;
 
 let make_module ?levels () =
   let levels = mk_levels module_name level_funs default_levels ?levels () in

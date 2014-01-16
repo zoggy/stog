@@ -18,17 +18,17 @@ Release 0.9.0 of stog is available from the <page href="/install"/> page.
 <li><icode>&lt;elt-*&gt;</icode> predefined functions handle a
     <ixml>elt-hid="hid of element"</ixml> attribute, to access information about
     another element rather than the current one,</li>
-<li>Fix <elt href="funs#ocaml-eval"/>: use return of <icode>Toploop.execute_phrase</icode>
+<li>Fix <elt href="module_base#ocaml-eval"/>: use return of <icode>Toploop.execute_phrase</icode>
     to consider catched exceptions as errors if <ixml>error-exc="true"</ixml>,</li>
 <li>Fix: allow list of CDATA in ocaml code,</li>
 <li>New <elt href="running#optiondef"><icode>--def</icode> command-line option</elt>
     to define a global rule on command line,</li>
-<li>New <elt href="funs#elt-path"/> rule, to create a navigation bar,</li>
+<li>New <elt href="module_base#elt-path"/> rule, to create a navigation bar,</li>
 <li>Fix Malformed_URL bug when generating with a site-url having an empty path,</li>
-<li><elt href="funs#hcode"/> and <elt href="funs#icode"/> now keep id attribute
+<li><elt href="module_base#hcode"/> and <elt href="module_base#icode"/> now keep id attribute
     in <ixml>&lt;pre&gt;</ixml> or <ixml>&lt;span&gt;</ixml> resulting element,</li>
-<li><elt href="funs#late-inc"/> handles id attribute to redefine the id of the included node,</li>
-<li>New <icode>filter</icode> attribute for the <elt href="funs#elements"/> rule,</li>
-<li><elt href="funs#elements"/> handles ','- or ';'-separated list of element types.</li>
+<li><elt href="module_base#late-inc"/> handles id attribute to redefine the id of the included node,</li>
+<li>New <icode>filter</icode> attribute for the <elt href="module_base#elements"/> rule,</li>
+<li><elt href="module_base#elements"/> handles ','- or ';'-separated list of element types.</li>
 </ul>
 </post>

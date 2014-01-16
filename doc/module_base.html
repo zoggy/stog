@@ -1,0 +1,695 @@
+<module title="Module Base"
+navbar-doc="active"
+>
+<p>
+In the following descriptions, the current element refers to the element
+whose hid is retrieved by the <ixml>&lt;elt-hid/&gt;</ixml> function.
+</p>
+<p>
+We list here the functions of the module, which can be associated to
+levels (see <elt href="funs"/>):
+</p>
+<prepare-toc depth="1">
+<toc/>
+
+<section id="base" title="base">
+<p>
+This function applies the following rules, mainly for simple formatting
+and referencing to the site or the current element information.
+</p>
+<p>
+Plugins can add rules to this list, using the
+<elt href="Stog_html#VALregister_base_rule"><icode lang="ocaml">Stog_html.register_base_rule</icode></elt>
+function, possibly redefining pre-defined rules with the same names.
+</p>
+<n-columns>
+<left>
+<ul>
+<li><elt href="#archive-tree"/></li>
+<li><elt href="#as-xml"/></li>
+<li><elt href="#command-line"/></li>
+<li><elt href="#dummy_"/></li>
+<li><elt href="#elements"/></li>
+<li><elt href="#elt-bodyx"/></li>
+<li><elt href="#elt-date"/></li>
+<li><elt href="#elt-datetime"/></li>
+<li><elt href="#elt-hid"/></li>
+<li><elt href="#elt-intro"/></li>
+</ul>
+</left>
+<middle>
+<ul>
+<li><elt href="#elt-keywordsx"/></li>
+<li><elt href="#elt-path"/></li>
+<li><elt href="#elt-src"/></li>
+<li><elt href="#elt-title"/></li>
+<li><elt href="#elt-type"/></li>
+<li><elt href="#elt-url"/></li>
+<li><elt href="#error_"/></li>
+<li><elt href="#ext-a"/></li>
+<li><elt href="#graphx"/></li>
+<li><elt href="#hcode"/></li>
+</ul>
+</middle>
+<right>
+<ul>
+<li><elt href="#icode"/></li>
+<li><elt href="#if"/></li>
+<li><elt href="#image"/></li>
+<li><elt href="#keyword"/></li>
+<li><elt href="#include"/></li>
+<li><elt href="#latex"/></li>
+<li><elt href="#latex-body"/></li>
+<li><elt href="#list"/></li>
+<li><elt href="#ocaml"/></li>
+<li><elt href="#ocaml-eval"/></li>
+</ul>
+</right>
+<col4>
+<ul>
+<li><elt href="#ocaml-printf"/></li>
+<li><elt href="#previous"/></li>
+<li><elt href="#sep_"/></li>
+<li><elt href="#site-descriptionx"/></li>
+<li><elt href="#site-email"/></li>
+<li><elt href="#site-titlex"/></li>
+<li><elt href="#site-url"/></li>
+<li><elt href="#two-columns"/></li>
+</ul>
+</col4>
+</n-columns>
+
+<subsection id="archive-tree" title="archive-tree">
+<p>
+<ixml>&lt;archive-tree/&gt;</ixml> inserts the articles archive tree.
+</p>
+</subsection>
+
+<subsection id="as-xml" title="as-xml">
+<p>
+<ixml>&lt;as-xml/&gt;</ixml> parses the contents of the node as XML.
+For example, <hcode>&lt;as-xml&gt;&amp;lt;coucou/&amp;gt;&lt;/as-xml&gt;</hcode>
+will be replaced by
+  <hcode defer_="1"><as-xml>&lt;coucou/&gt;</as-xml></hcode>
+</p>
+</subsection>
+
+<subsection id="command-line" title="command-line">
+<p>
+<ixml>&lt;command-line&gt;</ixml> works like
+<a href="#hcode"><ixml>&lt;hcode&gt;</ixml></a>
+with the <code>lang</code>
+attribute already set to "sh".
+</p>
+</subsection>
+
+<subsection id="dummy_" title="dummy_">
+<p>
+<ixml>&lt;dummy_/&gt;</ixml> is replaced by the contents of the node.
+It is useful to insert an empty tree where a tree is required, for example
+in a <elt href="#if"/>.
+</p>
+</subsection>
+
+<subsection id="elements" title="elements">
+<p>
+<ixml>&lt;elements .../&gt;</ixml> inserts the list of
+published elements.
+</p>
+<p>The following optional attributes can be specified:</p>
+<ul>
+<li><ixml>max="n"</ixml> can be used to list only the <code>n</code> most recent
+elements.</li>
+<li><ixml>rss="filename"</ixml> triggers the creation of a RSS file corresponding
+to the selected elements. The given filename is appended to the stog output directory.
+A link to the RSS file is also added before the list.</li>
+<li><ixml>set="name"</ixml> can be used to select only the elements belonging to
+the given set.</li>
+<li><ixml>type="type1,type2,..."</ixml> filters the elements to keep only the ones with one
+of the given types.</li>
+<li><ixml>title="title"</ixml> specifies the title of the RSS channel, if a RSS
+file is created. If no title is given, the site title is used.</li>
+<li>By default, items are sorted according to the date of each element. Specifying
+<ixml>sort="rule1,rule2,..."</ixml> make elements sorted according to the given rules,
+expanded for each element.</li>
+<li>By default, items are listed in descending order; <ixml>reverse="false"</ixml>
+make the elements listed in ascending order.</li>
+<li><ixml>tmpl="..."</ixml> specifies a template file to use for each element of
+the list. Default is <code>.stog/templates/elt-in-list.tmpl</code>.</li>
+<li><ixml>filter="p"</ixml> specifies to keep only elements verifying
+the given predicate <code>p</code>. The predicate can be an expression such as
+  <ixml>attribute='value'</ixml>
+  The attribute refers to a field defined in the element header, or defined in the main
+  element for the whole site if it has the form "id:id".
+  The expressions accepted as filters follow this grammar:
+  <hcode lang="ocaml"><![CDATA[
+attribute ::= id
+            | id ":" id
+    value ::= "'" string "'"
+     expr ::= "(" expr ")"
+            | attribute "=" value
+            | expr "|" expr       # or
+            | expr "&" expr       # and
+            | "!" expr            # negation]]></hcode>
+</li>
+</ul>
+<p>Example: <ixml>&lt;elements type="post" max="10" rss="index.rss"/&gt;</ixml></p>
+</subsection>
+
+<subsection id="elt-bodyx" title="elt-body">
+<p>
+<ixml>&lt;elt-body/&gt;</ixml> returns the body of the current element,
+or of the element referenced by the <code>elt-hid</code> attribute.
+</p>
+</subsection>
+
+<subsection id="elt-date" title="elt-date">
+<p>
+<ixml>&lt;elt-date/&gt;</ixml> returns the date of the current element,
+or of the element referenced by the <code>elt-hid</code> attribute,
+or an empty string if no date were specified.
+</p>
+</subsection>
+
+<subsection id="elt-datetime" title="elt-datetime">
+<p>
+<ixml>&lt;elt-datetime/&gt;</ixml> returns the date and time of the current element,
+or of the element referenced by the <code>elt-hid</code> attribute,
+or an empty string if no date were specified.
+</p>
+</subsection>
+
+<subsection id="elt-hid" title="elt-hid">
+<p>
+<ixml>&lt;elt-hid/&gt;</ixml> returns the hid of the current element
+or of the element referenced by the <code>elt-hid</code> attribute.
+</p>
+</subsection>
+
+<subsection id="elt-intro" title="elt-intro">
+<p>
+<ixml>&lt;elt-intro/&gt;</ixml> returns the introduction of the current
+element (or of the element referenced by the <code>elt-hid</code> attribute),
+that is the body code before the <ixml>&lt;sep_/&gt;</ixml> marker.
+</p>
+</subsection>
+
+<subsection id="elt-path" title="elt-path">
+<p>
+<ixml>&lt;elt-path/&gt;</ixml> builds a navigation bar in the form
+of a list of links showing the hierarchy to the current element (or the element
+referenced by the <code>elt-hid</code> attribute).
+</p>
+<p>
+Suppose we're handling the element whose source file is
+<code>STOGDIR/foo/bar/gee.html</code>. Its <icode>elt-hid</icode> is
+<code>/foo/bar/gee</code>. The path will contain two parts, one for
+<code>foo</code> and one for <code>bar</code>.
+If an element <code>/foo</code> exists, then a link to this element is
+added. Else, if an element /foo/index exists, then a link to this
+element is added. Else no link is added and the directory name is used,
+with no link. The same is done for the <code>/foo/bar</code> element.
+</p>
+<p>
+The separator of path parts is the code given under the
+<ixml>&lt;elt-path&gt;</ixml> node.
+</p>
+<p>To illustrate, the code</p>
+<hxml>&lt;elt-path elt-hid="/foo/bar/gee"&gt; / &lt;/elt-path&gt;</hxml>
+<p>will produce the following code:</p>
+<hxml defer_="1"><elt-path elt-hid="/foo/bar/gee"> / </elt-path></hxml>
+<p>which results in:</p>
+<elt-path elt-hid="/foo/bar/gee"> / </elt-path>
+<p>
+The <ixml>with-root="..."</ixml> attribute can be used to specify the
+hid of an element used as root. For example:
+</p>
+<hxml>&lt;elt-path elt-hid="/foo/bar/gee" with-root="/index"&gt; / &lt;/elt-path&gt;</hxml>
+<p>will produce the following path:</p>
+<elt-path elt-hid="/foo/bar/gee" with-root="/index"> / </elt-path>
+</subsection>
+
+<subsection id="elt-src" title="elt-src">
+<p>
+<ixml>&lt;elt-src/&gt;</ixml> returns the source filename
+of the element or of the element referenced by the <code>elt-hid</code> attribute.
+</p>
+</subsection>
+
+<subsection id="elt-title" title="elt-title">
+<p>
+<ixml>&lt;elt-title/&gt;</ixml> returns the title of the current element
+or of the element referenced by the <code>elt-hid</code> attribute.
+</p>
+</subsection>
+
+<subsection id="elt-type" title="elt-type">
+<p>
+<ixml>&lt;elt-type/&gt;</ixml> returns the type of the current element
+or of the element referenced by the <code>elt-hid</code> attribute.
+</p>
+</subsection>
+
+<subsection id="elt-url" title="elt-url">
+<p>
+<ixml>&lt;elt-url/&gt;</ixml> returns the final url of the current element
+or of the element referenced by the <code>elt-hid</code> attribute:
+</p>
+<hxml><![CDATA[<elt-url elt-hid="/engine"/>]]></hxml>
+<p> is reduced to <elt-url elt-hid="/engine"/></p>
+</subsection>
+
+<subsection id="error_" title="error_">
+<p>
+When encountered, <ixml>&lt;error_/&gt;</ixml> will produce an error
+message from the contents of the node. It is useful with <elt href="#if"/> to
+ensure some condition is verified, for example to make sure a variable is
+not empty in the environment.
+</p>
+</subsection>
+
+<subsection id="ext-a" title="ext-a">
+<p>
+<ixml>&lt;ext-a attributes&gt;...&lt;/ext-a&gt;</ixml> is reduced
+to <ixml>&lt;span class="ext-a"&gt;&lt;a attributes&gt;...&lt;/a&gt;&lt;/ext-a&gt;</ixml>.
+This can be used to add specific style for links to external sites.
+</p>
+</subsection>
+
+<subsection id="graphx" title="graph">
+<p>
+<ixml>&lt;graph/&gt;</ixml> computes the graph of elements in SVG format, and returns
+a link to this graph displayed as a small graph. One can click on an element in the generated SVG
+graph to jump to the element.
+</p>
+</subsection>
+
+<subsection id="hcode" title="hcode">
+<include file="syntax.tmpl"><![CDATA[<hcode lang="...">your code</hcode>]]></include>
+<p>
+This function inserts the given pre-formatted code. It uses the
+<ext-a href="http://www.andre-simon.de/doku/highlight/en/highlight.html"><code>highlight</code></ext-a>
+tool to add syntax highlighting. For example, the code examples of this page are
+inserted using
+</p>
+<hcode lang="xml"><![CDATA[<hcode lang="xml">...</hcode>]]></hcode>
+
+</subsection>
+
+<subsection id="icode" title="icode">
+<p>
+<ixml>&lt;icode&gt;</ixml> works like
+<a href="#hcode"><ixml>&lt;hcode&gt;</ixml></a> but is used to
+generate inline highlighted code instead of using a box.
+</p>
+</subsection>
+
+<subsection id="if" title="if">
+<include file="syntax.tmpl"><![CDATA[
+<if attr1="value1" attr2="value2" ...>
+<XML tree used when all conditions are verified>
+<optional XML tree used when at least one condition is not verified>
+</if>
+]]></include>
+<p>
+The <ixml>if</ixml> function tests whether each condition expressed as <ixml>attr="value"</ixml>
+is verified. If so, the first XML child is returned, else the second one is returned.
+To test the value of <code>attr</code>, <code>attr</code> is looked up in the current
+environment. If its value is the same as the given value, the condition is verified.
+For  this evaluation, a tag <code>t</code> not found in the environment in not
+reduced to itself but to the empty string, so that the condition in
+<ixml>&lt;if foo=""&gt;...&lt;/if&gt;</ixml>
+will be verified if <code>foo</code> is not in the environment.
+</p>
+<p>
+The <code>"value"</code> part of the condition must be valid XML, and can contain
+calls to functions, as in:
+</p>
+<hcode lang="xml"><![CDATA[<if elt-title="&lt;site-title&gt;">....</if>]]></hcode>
+<p>Other example: Testing whether a variable is empty to known whether to output
+a block or not:
+</p>
+<hcode lang="xml"><![CDATA[<if list="">
+<span/>
+<div>The list is not empty, let's print it:<ul><list/></ul></div>
+</if>]]></hcode>
+</subsection>
+
+
+<subsection id="image" title="image">
+<include file="syntax.tmpl"><![CDATA[<image float="[left|right]" src="..." ...>legend</image>]]></include>
+<p>
+This inserts an image using an <ixml>&lt;img .../&gt;</ixml> node.
+The legend is optional.
+</p>
+<p>
+The <code>float</code> attribute can be used to change a class in the generated code,
+so you can set the style of the image to be left or right floating.
+</p>
+<p>
+Additional attributes are passed to the generated <ixml>&lt;img&gt;</ixml> node.
+</p>
+</subsection>
+
+<subsection id="keyword" title="keyword">
+<p>
+<ixml>&lt;keyword/&gt;</ixml> inserts the name of the current keyword,
+when computing keyword list (in template <code>keyword.tmpl</code>).
+</p>
+</subsection>
+
+<subsection id="include" title="include">
+<include file="syntax.tmpl"><![CDATA[<include file="template">...</include>]]></include>
+<p>
+This function will load the file <code>template</code> from the template directory
+(or fail if the file does not exist). The contents of the file will then be evaluated.
+The code between <ixml>&lt;include ...&gt;</ixml> and <ixml>&lt;/include&gt;</ixml>
+is added to the environment used to evaluate the contents of the file, associated to
+the name <code>contents</code>.
+</p>
+<p>
+With the additional attribute <ixml>raw="true"</ixml>, the contents of the loaded file
+is considered as PCData. This is useful for example to insert code.
+</p>
+<p>
+If the file attribute begins with "." or "..", that is the filename is explicitely relative,
+the file path is concatenated to the current element source file path.
+</p>
+<p>
+If the file attribute is an absolute filename, then this absolute filename is used.
+</p>
+<p>
+By default, using <ixml>&lt;include&gt;</ixml> adds a dependency of the current
+element on the given file. Use <ixml>depend="false"</ixml> to prevent adding this
+dependency.
+</p>
+<p>All additional attributes to <ixml>&lt;include ...&gt;</ixml> will
+be added to the environment used to evaluate the contents of the file.
+</p>
+<p>Here is an example. If we have the <code>foo.tmpl</code> file
+in the template directory, with the following contents:
+</p>
+<hcode lang="xml"><![CDATA[<p> key=<key/> value=<contents/> </p> ]]></hcode>
+<p>The following code</p>
+<hcode lang="xml"><![CDATA[<include file="foo.tmpl" key="bar">the value of bar</include>]]></hcode>
+<p>will be reduced to</p>
+<hcode lang="xml"><![CDATA[<p> key=bar value=the value of bar </p>]]></hcode>
+<p>
+It is possible to include only the contents of the XML node read in the
+file, by setting the attribute <ixml>subs-only="true"</ixml>.
+</p>
+<p>
+Instead of including a file, it is possible to include a block
+of an element, by referring to its hid and id in the
+<code>href</code> attribute:
+</p>
+<hxml><![CDATA[<include href="foo#id/>]]></hxml>
+<p>
+This code includes the XML node referenced by the <code>href</code>
+attribute. An error is raised if the element does not exist, if
+no fragment id is provided, or if the fragment id does not exist
+in the referenced element.
+If an <code>id</code> attribute is provided, the included node has this new
+id, else the original node id is kept; this is useful to avoid conflicts
+with other ids.
+</p>
+<p>
+This rule is useful to avoid code duplication. It is used in this
+site to show changes of a release both in the <elt href="/install"/>
+page and in blog post such as <elt href="release-0.9.0"/>.
+</p>
+<p>For example, the following code will include the paragraph with
+id "optiondef" of element "running":
+</p>
+<hxml><late-inc href="running#optiondef"/></hxml>
+<p>This is the result:</p>
+<late-inc href="running#optiondef"/>
+</subsection>
+
+
+<subsection id="elt-keywordsx" title="elt-keywords / elt-topics">
+<p>
+<ixml>&lt;elt-keywords sep="..."/&gt;</ixml> and
+<ixml>&lt;elt-topics sep="..."/&gt;</ixml> respectively return
+the keyword and topic list of
+the current element, as defined in the element. The optional <code>sep</code> attribute
+can be used to specify a separator between each keyword or topic.
+</p>
+<p>Each keyword will be displayed using a <code>keyword.tmpl</code> template file.
+Each topic will be displayed using a <code>topic.tmpl</code> template file.
+</p>
+<p>
+In these templates, <ixml>&lt;keyword/&gt;</ixml>
+(resp. <ixml>&lt;topic/&gt;</ixml>) inserts the name of the current keyword
+(resp. topic), when computing keyword (resp. topic) list.
+</p>
+</subsection>
+
+<subsection id="latex" title="latex">
+<p>
+<ixml>&lt;latex&gt;...&lt;/latex&gt;</ixml> is used to compile
+latex code and display it as SVG in the page. Read
+<post href="latex-in-stog">this post</post> for details.
+</p>
+</subsection>
+
+<subsection id="latex-body" title="latex-body">
+<p>
+<ixml>&lt;latex-body&gt;...&lt;/latex-body&gt;</ixml> is not documented yet.
+You can try to put some LaTeX code as contents and see...
+</p>
+</subsection>
+
+<subsection id="list" title="list">
+<hcode lang="xml"><list sep="..."><node1>...</node1><node2>...</node2>...</list></hcode>
+<p>will is reduced to the list of subnodes, separated by the given <code>sep</code> attribute.</p>
+<p>For example:</p>
+<hcode lang="xml"><list sep=", "><b>apple</b><b>banana</b><b>orange</b></list></hcode>
+<p>will be reduced to</p>
+<hcode defer_="1" lang="xml"><list sep=", "><b>apple</b><b>banana</b><b>orange</b></list></hcode>
+</subsection>
+
+<subsection id="previous" title="previous / next">
+<p>
+<ixml>&lt;previous/&gt;</ixml> and
+<ixml>&lt;next/&gt;</ixml> respectively return a link to the previous and next
+element according to the chronological order of element dates.
+</p>
+</subsection>
+
+<subsection id="ocaml" title="ocaml">
+<p>
+<ixml>&lt;ocaml&gt;</ixml> works like
+<a href="#hcode"><ixml>&lt;hcode&gt;</ixml></a>
+with the <code>lang</code>
+attribute already set to "ocaml".
+</p>
+</subsection>
+
+<subsection id="ocaml-eval" title="ocaml-eval">
+<p>This rule evaluates OCaml code. See the following
+blog posts: <post href="displaying-evaluated-ocaml-code"/> and <post href="ocaml-sessions"/>.
+</p>
+</subsection>
+
+<subsection id="ocaml-printf" title="ocaml-printf">
+<p>This rule returns a formatted string from the arguments.
+See the following blog post: <post href="ocaml-printf"/>.
+</p>
+</subsection>
+
+<subsection id="sep_" title="sep_">
+<p>
+<ixml>&lt;sep_/&gt;</ixml> is the tag used to indicate the end of the introduction
+of an element. It is reduced to an empty string.
+</p>
+</subsection>
+
+<subsection id="site-descriptionx" title="site-description">
+<p>
+<ixml>&lt;site-description/&gt;</ixml> returns the site description
+as specified in the main element.
+</p>
+</subsection>
+
+<subsection id="site-email" title="site-email">
+<p>
+<ixml>&lt;site-email/&gt;</ixml> returns the site contact email
+as specified in the main element.
+</p>
+</subsection>
+
+<subsection id="site-titlex" title="site-title">
+<p>
+<ixml>&lt;site-title/&gt;</ixml> returns the site title as specified in the
+main element.
+</p>
+</subsection>
+
+<subsection id="site-url" title="site-url">
+<p>
+<ixml>&lt;site-url/&gt;</ixml> returns the site url as specified in the
+main element.
+</p>
+</subsection>
+
+<subsection id="two-columns" title="two-columns / n-columns">
+<include file="syntax.tmpl"><![CDATA[<two-columns>
+<XML for left column/>
+<XML for right column/>
+</two-columns>]]></include>
+<p>
+This will put the two given XML nodes in a two-columns layout. Note that the tag used to
+enclose the left and right contents is not kept, so you may use any tag you want, for example:
+</p>
+<hcode lang="xml"><![CDATA[
+<two-columns><left>bla bla bla</left><right>bla bla bla</right></two-columns>
+]]></hcode>
+<p>
+<ixml>&lt;n-columns&gt;</ixml> works the same way but produces as many columns as there are
+children in the node.
+</p>
+</subsection>
+
+</section>
+
+<section id="add-elts" title="add-elts">
+<p>
+This function creates new elements:
+</p>
+<ul>
+<li>The archive pages, one for each month when there is at least
+one element in this month (see also <elt href="#archive-tree"/>),
+</li>
+<li>The keyword pages, one for each keyword appearing in elements,</li>
+<li>The topic pages, one for each topic appearing in elements.</li>
+</ul>
+</section>
+
+<section id="toc" title="toc">
+<p>
+This function only contains two rules: <ixml>&lt;toc&gt;</ixml> and <ixml>&lt;prepare-toc&gt;</ixml>.
+</p>
+<include file="syntax.tmpl"><![CDATA[<prepare-toc depth="[1|2|...]">
+...
+<toc>text</toc>
+...
+<section ...>
+  <subsection ...>
+
+  </subsection>
+  ...
+</section>
+...
+</prepare-toc>]]></include>
+<p>
+The <ixml>&lt;toc&gt;</ixml> node is used to insert a table of contents.
+If a text is given, it is added ahead of the table of contents.
+</p>
+<p>
+Since the <ixml>&lt;toc&gt;</ixml> node does not include the sections and subsections, it is
+not sufficient to build the table of contents. So it will use what is returned by
+the function associated to "toc-contents" in its environment.
+</p>
+<p>This function is added to the environment by the <ixml>&lt;prepare-toc&gt;</ixml> node,
+which includes all the sections and subsections. The <ixml>&lt;depth&gt;</ixml> attribute
+is used to specify the depth of the table of contents.
+</p>
+<p>The nodes used for sectionning can be changed, see the
+<elt href="module_blocks#sectionning"/> function of the <elt href="module_blocks"/>.</p>
+</section>
+
+<section id="cut" title="cut">
+<p>
+This function applies the <ixml>&lt;cut-elt&gt;</ixml> rule to cut
+an element in pieces according to some specified nodes.
+</p>
+<include file="syntax.tmpl"><![CDATA[<foo title="My document">
+...
+<cut-elt tag="section">
+...
+<section id="sec1" title="Section 1">
+  ...
+</section>
+
+<section id="sec2" title="Section 2">
+  ...
+</section>
+...
+</cut-elt>]]></include>
+<p>
+If the element has hid <code>/foo</code>, this will create two more elements,
+<code>/foo-sec1</code> and <code>/foo-sec2</code>, of the same type of
+the element (here <code>foo</code>). Their titles will be respectively
+"Section 1" and "Section 2", i.e. the titles of the cut nodes.
+</p>
+<p>
+The hid of each created element is forged by appending "-" and the cut node id
+to the hid of the element.
+</p>
+<p>Each created element has the subnodes of the cut node as body. Each cut node
+is replaced by a link to the corresponding created element. In our example,
+after <ixml>&lt;cut-elt&gt;</ixml> has been applied, our element body becomes:
+</p>
+<hxml><![CDATA[...
+<div class="cutlink"><elt href="/foo/sec1"/></div>
+<div class="cutlink"><elt href="/foo/sec2"/></div>
+...
+]]></hxml>
+<p>If a node has no <code>id</code> or no <code>title</code> attribute, then
+it is not cut and a warning is issued.
+</p>
+<p>The following attributes can be added to <ixml>&lt;cut-elt&gt;</ixml> to change
+the behaviour:
+</p>
+<ul>
+<li><code>insert-link</code> can be set to <code>false</code> to prevent adding links
+to the new elements in the original element,
+</li>
+<li><code>type</code> can be set to a string to specify the type of the created
+elements, instead of inheriting the type of the original element,</li>
+<li><code>hid-sep</code> specifies the separator used to forge the new hids;
+by default it is <code>-</code> but it can be for example <code>/</code>,
+</li>
+</ul>
+<p>
+At last, various <ixml>&lt;cut-elt&gt;</ixml> can be nested, for example
+to cut according to <ixml>&lt;section&gt;</ixml> and <ixml>&lt;subsection&gt;</ixml>
+nodes:
+</p>
+<hxml><![CDATA[
+...
+<cut-elt tag="section">
+  <cut-elt tag="subsection">
+    <section id="..." title="...">
+      ...
+      <subsection id="..." title="...">
+        ...
+      </subsection>
+    </section>
+  </cut-elt>
+</cut-elt>
+]]></hxml>
+<p>Of course, nodes which are not under the <ixml>&lt;cut-elt&gt;</ixml> nodes
+remain untouched, allowing to cut only a part of the element.
+</p>
+</section>
+
+<section id="inc" title="inc">
+<p id="late-inc">
+This function applies the <ixml>&lt;late-inc&gt;</ixml> rule, which
+works like <elt href="#include"/> but, having a different name, it can
+be applied later, typically to include blocks which were not available
+earlier in the rewrite process.
+</p>
+</section>
+
+<section id="clean" title="clean">
+<p>
+This function closes the OCaml sessions previously opened with
+<elt href="#ocaml-eval"><ixml>&lt;ocaml-eval&gt;</ixml></elt>.
+</p>
+</section>
+
+</prepare-toc>
+</module>
