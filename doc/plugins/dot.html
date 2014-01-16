@@ -1,0 +1,26 @@
+<included-plugin
+title="Stog-dot"
+with-contents="true"
+>
+<hdot id=""><hcode defer_="1" lang="dot" id="&lt;id/&gt;"><contents/></hcode></hdot>
+<contents>
+<p>
+This plugin eases the inclusion of Graphs using the
+<ext-a href="http://graphviz.org">graphiz</ext-a> tools (dot, ...).
+</p>
+
+<p>Usage:</p>
+<command-line>$ stog --package stog.dot ...</command-line>
+
+<p>This plugin adds a new base rule <ixml>&lt;dot&gt;</ixml>.
+Here are the possible ways to use it:
+</p>
+<table class="table table-bordered">
+<tr><th>Code</th><th>Result</th></tr>
+<tr>
+<td><hdot id="code1">digraph g { rankdir = LR; a -> b; a -> c ; b -> c ;}</hdot></td>
+<td><dot defer_="1"><include subs-only="true" href="#code1"/></dot></td>
+</tr>
+</table>
+</contents>
+</included-plugin>

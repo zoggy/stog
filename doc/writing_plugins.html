@@ -6,11 +6,17 @@ Plugins are written in OCaml. The compiled OCaml code is then
 loaded in Stog with the <icode>--plugin</icode> or <icode>--package</icode>
 options of <icode>stog</icode> (see <page href="running"/>).
 </p>
+<p>
+A plugin can register new base rules and new modules.
+</p>
 <prepare-toc>
 <toc/>
-<section id="writing" title="Writing the code">
+<section id="baserules" title="Registering base rules">
 <p>
-A plugin just registers new functions associated to tags.
+A plugin can add rewrite rules to the rules of function
+<elt href="module_base#base"/> of module <elt href="module_base">Base</elt>.
+</p>
+<p>
 Here is an example:
 </p>
 <hcode lang="ocaml" defer_="1">
@@ -18,6 +24,18 @@ Here is an example:
 </hcode>
 <p>
 Have a look at the <elt href="/ref-doc/index"/>.
+</p>
+</section>
+
+<section id="modules" title="Registering modules">
+<p>
+A plugin can also register a complete module, with named functions
+associated to levels. These levels can also be specified in
+the <code>.stog/config</code> file as explained
+<elt href="funs#config_funs">here</elt>.
+</p>
+<p>An example of such a plugin is
+<ext-a href="https://github.com/zoggy/stog/blob/master/plugins/stog_multi_elt.ml">stog_multi_elt</ext-a>.
 </p>
 </section>
 
@@ -45,7 +63,7 @@ The plugin is used by specifying it on the <icode>stog</icode> command line:
 <command-line>stog --package plugin_example ...</command-line>
 </div>
 <p>
-With our plugin example, we can use the new "list":
+With our plugin example registering just a base rule, we can use the new "list":
 </p>
 <hcode lang="xml"><![CDATA[
 <list sep="&lt;b&gt; -- &lt;/b&gt;"><span>first thing</span>second thing<div>something else</div></list>]]>
