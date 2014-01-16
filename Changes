@@ -9,7 +9,7 @@ Next release:
 * new plugins: stog_asy, stog_dot
 * new show-without-ids attribute for <prepare-toc> to handle
   sections without id
-* add multi elements
+* add multi elements plugin
 * new base rule <elt-datetime>
 * new option --local
 * functions defined in elements now handles all arguments, using

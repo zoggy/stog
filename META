@@ -40,4 +40,13 @@ package "dot" (
   archive(plugin,native) = "stog_dot.cmxs"
 )
 
+package "multi-elt" (
+  version = "0.9.0"
+  description = "Stog multi-element plugin"
+  archive(byte) = "stog_multi_elt.cmo"
+  archive(native) = "stog_multi_elt.cmx"
+  archive(plugin,byte) = "stog_multi_elt.cmo"
+  archive(plugin,native) = "stog_multi_elt.cmxs"
+)
+
 
