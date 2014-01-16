@@ -1,36 +1,191 @@
 <module title="Module Blocks"
 navbar-doc="active"
 >
+<p>
+Here are the functions of the module, which can be associated to
+levels (see <elt href="funs"/>):
+</p>
+<prepare-toc depth="1">
+<toc/>
 
-<li><elt href="#block"/></li>
-<li><elt href="#counter"/></li>
-
+<section id="base" title="base">
+<p>
+This function applies the following rules:
+</p>
+<prepare-toc>
+<toc/>
+<also-base-rules/>
 
 <subsection id="block" title="block">
 <p>Not documented yet.</p>
 </subsection>
 
 <subsection id="counter" title="counter">
-<hcode lang="xml"><counter counter-name="..."/></hcode>
+<hxml><![CDATA[<counter counter-name="..."/>]]></hxml>
 <p>is reduced to the current value of the counter associated to the given name.</p>
 </subsection>
-
-
-<section id="base" title="base">
+</prepare-toc>
 
 </section>
 
 <section id="sectionning" title="sectionning">
-
+<p>
+This function uses the sectionning tags to rewrite the corresponding
+nodes.
+</p>
+<include file="syntax.tmpl"><![CDATA[<section id="..." title="...">
+  ...
+  <subsection id="..." title="...">...</subsection>
+  ...
+</section>
+ ]]></include>
+<p>
+This is used to insert sections and subsections, with a given title. The id,
+if given, will be associated to the section title node.
+</p>
+<p>
+Default sectionning tags are, in this order,
+<code>section</code>, <code>subsection</code>, <code>subsubsection</code>,
+<code>paragraph</code>.
+You can specify other nodes:
+</p>
+<ul>
+<li>for one element, using the "sectionning" attribute in the element, for example:
+  <hxml><page title="..." sectionning="section,subsection,paragraph">...</page></hxml>
+  will define "section", "subsection" and "paragraph" as sectionning nodes.
+</li>
+<li>for all the site elements, using the "stog:sectionning" attribute in the main element
+  (see <elt href="stog-main-element"/>):
+  <hxml><page title="..." stog:sectionning="section,subsection,paragraph">...</page></hxml>
+</li>
+</ul>
+<p>
+When a sectionning node is reduced, a <elt href="#block"/> node
+ is created, so that
+refering to the section (or subsection, or ...), will use the title of the section
+(or subsection, or ...) for the produced link default text.
+</p>
+<p>To prevent a sectionning node having a counter associated, you can use
+<ixml>section-counter="false"</ixml> in the element attribute, or
+<ixml>stog:section-counter="false"</ixml> in the main element. "section" can be replaced
+by "subsection" or any other node to prevent this node having a counter.
+</p>
+<p>
+The function also applies the <elt href="#block"/> and <elt href="#counter"/> rules.
+</p>
+<also-base-rules/>
 </section>
 
 <section id="gather-ids" title="gather-ids">
-
+<p>
+This function collect all ids (the values attached to <ixml>id="..."</ixml> attributes)
+in all element, so they can be referenced to in upper levels.
+</p>
+<p>
+Having twice the same id in an element results in an error.
+</p>
 </section>
 
 <section id="elt" title="elt">
-
+<p>
+This function applies the following rules:
+<ixml>&lt;elt&gt;</ixml>, <ixml>&lt;post&gt;</ixml>,
+<ixml>&lt;page&gt;</ixml> and <ixml>&lt;block&gt;</ixml>.
+</p>
+<include file="syntax.tmpl"><![CDATA[<elt href=hid[#id]>text</elt>]]></include>
+<p>
+This will return a link to the element specified by its hid and optional fragment id.
+The hid of an element is its absolute name from the root directoty of your project.
+You are not forced
+to give the full path, but can also give only one or more of the last parts
+of the path, as long as it uniquely identifies an existing element.
+</p>
+<p>
+For example, suppose you want to refer to the element defined in file
+<code>&lt;root dir&gt;/foo/bar/hello.html</code>. The hid of this element
+is "/foo/bar/hello". You can refer to it in various ways:
+</p>
+<ul>
+<li>with its absolute hid, providing the heading '/': <code>/foo/bar/hello</code>,</li>
+<li>with only the last part of its hid: <code>hello</code>,</li>
+<li>with an ending subpart of its hid: <code>bar/hello</code>.</li>
+</ul>
+<p>In the last two cases, an error will be raised if more than one elements
+match the incomplete hid. You can provide an additional attribute <code>type</code>
+to prevent ambiguities, for example:
+</p>
+<hxml><![CDATA[<elt href="bar/hello" type="post"/>]]></hxml>
+<p>
+Refering to an unknown element will raise an error. If no hid is given,
+<ixml>&lt;elt-hid/&gt;</ixml> is used instead, i.e. the string associated to
+<code>elt-hid</code> in the environment, to retrieve the current element hid.
+</p>
+<p>
+A node id can also be specified, like <code>thisblock</code> in
+<ixml>href="blabla#thisblock"</ixml>. Refering to an unknown block id
+will raise an error.
+</p>
+<p>
+If no text is given for the link, the title of the element
+will be used instead (or, if a node id is given, the title associated to
+the node id, if any). Specifying in attributes <ixml>quotes="true"</ixml>
+indicates to add quotes around the element title.
+</p>
+<p>
+<ixml>&lt;page ...&gt;</ixml> and <ixml>&lt;post ... &gt;</ixml>
+are equivalent respectively to
+<ixml>&lt;elt type="page" ...&gt;</ixml> and
+<ixml>&lt;elt type="post" ...&gt;</ixml>.
+</p>
+<p>The <ixml>&lt;block&gt;</ixml> rule in this function is not the
+same as <elt href="#block"/> base rule.
+In this function,
+</p>
+<hxml><block href="...">text</block></hxml>
+<p>is used to refer to a block using the given <code>href</code> attribute. Here the
+href only contains an id, it is not of the form "hid[#id]". This will
+be reduced to a link to the corresponding element, using the given text.
+</p>
+<p>If the node matching the <code>href</code> was defined with the
+<elt href="#block"/> base rule (i.e. without <code>href</code> attribute),
+then the title associated to this node is used as text for the procuded link, if no
+text was given (<ixml><block href="..."/></ixml>).
+</p>
+<p>So,</p>
+<hxml><block href="fig1"/></hxml>
+<p>is equivalent to</p>
+<hxml><elt href="#fig1"/></hxml>
+<p>or</p>
+<hxml><![CDATA[<elt id="&lt;elt-hid/&gt;#fig1"/>]]></hxml>
+<p>
+But the purpose of <code>&lt;block&gt;</code> rule is not to be used directly, but rather
+by defining other rules reducing to <code>&lt;block&gt;</code>, like environments in
+latex for figures, proofs, propositions, ...
+</p>
+<p>Here is an example of definition of a function in an element definition:</p>
+<hcode lang="xml"><![CDATA[
+<article title="..." with-contents="true">
+<theorem id="" title="" href=""><block
+  counter-name="theorem" class="theorem"
+  label="Theorem" href="&lt;href/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+>
+<div class="&lt;class/&gt;" id="&lt;id/&gt;">
+  <div class="title"><title/></div>
+  <div class="contents"><contents/></div>
+</div></block></theorem>
+<contents>...</contents>
+</article>]]></hcode>
+<p>This defines a new rule <ixml>&lt;theorem&gt;</ixml> used this way to define a new theorem:</p>
+<hxml><theorem id="thmain" title="Main result">...</theorem></hxml>
+<p>Elsewhere, this theorem can be referred to using</p>
+<hxml><theorem href="thmain"/></hxml>
+<p>which will be reduced to a link with "Theorem 1" as text, if this theorem was the
+first defined in the article.
+</p>
+<also-base-rules/>
 </section>
 
+</prepare-toc>
 
 </module>

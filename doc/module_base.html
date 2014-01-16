@@ -6,7 +6,7 @@ In the following descriptions, the current element refers to the element
 whose hid is retrieved by the <ixml>&lt;elt-hid/&gt;</ixml> function.
 </p>
 <p>
-We list here the functions of the module, which can be associated to
+Here are the functions of the module, which can be associated to
 levels (see <elt href="funs"/>):
 </p>
 <prepare-toc depth="1">
@@ -78,7 +78,7 @@ function, possibly redefining pre-defined rules with the same names.
 </ul>
 </col4>
 </n-columns>
-
+<also-base-rules/>
 <subsection id="archive-tree" title="archive-tree">
 <p>
 <ixml>&lt;archive-tree/&gt;</ixml> inserts the articles archive tree.
@@ -596,7 +596,10 @@ which includes all the sections and subsections. The <ixml>&lt;depth&gt;</ixml> 
 is used to specify the depth of the table of contents.
 </p>
 <p>The nodes used for sectionning can be changed, see the
-<elt href="module_blocks#sectionning"/> function of the <elt href="module_blocks"/>.</p>
+<elt href="module_blocks#sectionning"/> function of the <elt href="module_blocks"/>.
+</p>
+
+<also-base-rules/>
 </section>
 
 <section id="cut" title="cut">
@@ -682,6 +685,7 @@ works like <elt href="#include"/> but, having a different name, it can
 be applied later, typically to include blocks which were not available
 earlier in the rewrite process.
 </p>
+<also-base-rules/>
 </section>
 
 <section id="clean" title="clean">
