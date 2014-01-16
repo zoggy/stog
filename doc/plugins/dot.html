@@ -2,7 +2,6 @@
 title="Stog-dot"
 with-contents="true"
 >
-<hdot id=""><hcode defer_="1" lang="dot" id="&lt;id/&gt;"><contents/></hcode></hdot>
 <contents>
 <p>
 This plugin eases the inclusion of Graphs using the
@@ -18,9 +17,54 @@ Here are the possible ways to use it:
 <table class="table table-bordered">
 <tr><th>Code</th><th>Result</th></tr>
 <tr>
-<td><hdot id="code1">digraph g { rankdir = LR; a -> b; a -> c ; b -> c ;}</hdot></td>
-<td><dot defer_="1"><include subs-only="true" href="#code1"/></dot></td>
+<td><hcode lang="xml" id="code1"><![CDATA[
+<dot outfile="graph1.svg">digraph g {
+  rankdir = LR;
+  a -> b; a -> c ; b -> c ;
+}</dot>]]>
+</hcode></td>
+<td><as-xml defer_="1"><include subs-only="true" href="#code1"/></as-xml></td>
 </tr>
+
+<tr>
+<td><hcode lang="xml" id="code2"><![CDATA[
+<dot outfile="graph2.svg">digraph g {
+  rankdir = LR;
+  a [ shape="box" ] ;
+  a -> b ; a -> c ; b -> c ;
+}</dot>]]>
+</hcode></td>
+<td><as-xml defer_="1"><include subs-only="true" href="#code2"/></as-xml></td>
+</tr>
+
+<tr>
+<td><hcode lang="xml" id="code3"><![CDATA[
+<dot command="neato"
+   src="graph.dot" type="png" outfile="graph3.png"/>
+]]>
+</hcode>
+With <code>graph.dot</code>:
+<hcode defer_="1" lang="dot"><include file="./graph.dot"/></hcode></td>
+<td><as-xml defer_="1"><include subs-only="true" href="#code3"/></as-xml></td>
+</tr>
+
+<tr>
+<td><hcode lang="xml" id="code4"><![CDATA[
+<dot defer_="1">
+digraph g {
+  rankdir = LR;
+  plugins -> asy ;
+  plugins -> dot ;
+  plugins [ href="<elt-url elt-hid="plugins"/>" ]
+  asy [
+     href="<elt-url elt-hid="plugins/asy"/>",
+     label="<elt-title elt-hid="plugins/asy"/>" ] ;
+  dot [ href="<elt-url elt-hid="plugins/dot"/>" ] ;
+}</dot>]]>
+</hcode></td>
+<td><as-xml defer_="3"><include subs-only="true" href="#code4"/></as-xml></td>
+</tr>
+
 </table>
 </contents>
 </included-plugin>

@@ -75,19 +75,20 @@ let fun_dot stog env atts subs =
   let elt_dir = Filename.dirname elt.Stog_types.elt_src in
   let command = Xtmpl.opt_arg_cdata ~def: "dot" atts ("","command") in
   let typ = Xtmpl.opt_arg_cdata ~def: "svg" atts ("", "type") in
-  let (infile, finalize_src) =
+  let (stog, infile, finalize_src) =
     match Xtmpl.get_arg_cdata atts ("","src") with
       None ->
         let f = Filename.temp_file "stog" ".dot" in
         Stog_misc.file_of_string ~file: f code ;
-        (f, (fun () -> try Unix.unlink f with _ -> ()))
+        (stog, f, (fun () -> try Unix.unlink f with _ -> ()))
     | Some f ->
         let f =
           if Filename.is_relative f then
             Filename.concat elt_dir f
           else f
         in
-        (f, fun () -> ())
+        let stog = Stog_plug.add_dep stog elt (Stog_types.File f) in
+        (stog, f, fun () -> ())
   in
   try
     let (outfile, abs_outfile, inc, finalize_outfile) =
