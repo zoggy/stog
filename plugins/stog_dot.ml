@@ -75,6 +75,7 @@ let fun_dot stog env atts subs =
   let elt_dir = Filename.dirname elt.Stog_types.elt_src in
   let command = Xtmpl.opt_arg_cdata ~def: "dot" atts ("","command") in
   let typ = Xtmpl.opt_arg_cdata ~def: "svg" atts ("", "type") in
+  let id_prefix = Xtmpl.get_arg_cdata atts ("","prefix-svg-ids") in
   let (stog, infile, finalize_src) =
     match Xtmpl.get_arg_cdata atts ("","src") with
       None ->
@@ -118,6 +119,14 @@ let fun_dot stog env atts subs =
           if inc then
             begin
               let xml = Xtmpl.xml_of_file abs_outfile in
+              let xml =
+                match id_prefix with
+                  None -> xml
+                | Some prefix ->
+                    let xml = Stog_svg.prefix_svg_ids prefix xml in
+                    (*prerr_endline (Xtmpl.string_of_xml xml);*)
+                    xml
+              in
               [ xml ]
             end
           else

@@ -44,12 +44,14 @@ stog_gui_main.cmo : stog_types.cmi stog_misc.cmi stog_io.cmi \
     stog_gui_arts.cmo
 stog_gui_main.cmx : stog_types.cmx stog_misc.cmx stog_io.cmx \
     stog_gui_arts.cmx
-stog_html.cmo : stog_types.cmi stog_tmpl.cmi stog_tags.cmi stog_ocaml.cmi \
-    stog_msg.cmi stog_misc.cmi stog_latex.cmi stog_io.cmi stog_intl.cmi \
-    stog_info.cmi stog_filter.cmi stog_engine.cmi stog_deps.cmi stog_html.cmi
-stog_html.cmx : stog_types.cmx stog_tmpl.cmx stog_tags.cmx stog_ocaml.cmx \
-    stog_msg.cmx stog_misc.cmx stog_latex.cmx stog_io.cmx stog_intl.cmx \
-    stog_info.cmx stog_filter.cmx stog_engine.cmx stog_deps.cmx stog_html.cmi
+stog_html.cmo : stog_types.cmi stog_tmpl.cmi stog_tags.cmi stog_svg.cmo \
+    stog_ocaml.cmi stog_msg.cmi stog_misc.cmi stog_latex.cmi stog_io.cmi \
+    stog_intl.cmi stog_info.cmi stog_filter.cmi stog_engine.cmi stog_deps.cmi \
+    stog_html.cmi
+stog_html.cmx : stog_types.cmx stog_tmpl.cmx stog_tags.cmx stog_svg.cmx \
+    stog_ocaml.cmx stog_msg.cmx stog_misc.cmx stog_latex.cmx stog_io.cmx \
+    stog_intl.cmx stog_info.cmx stog_filter.cmx stog_engine.cmx stog_deps.cmx \
+    stog_html.cmi
 stog_html5.cmo : stog_types.cmi stog_html5.cmi
 stog_html5.cmx : stog_types.cmx stog_html5.cmi
 stog_info.cmo : stog_types.cmi stog_tmap.cmi stog_misc.cmi stog_info.cmi
@@ -60,10 +62,10 @@ stog_io.cmo : stog_types.cmi stog_msg.cmi stog_misc.cmi stog_find.cmi \
     stog_config.cmi stog_io.cmi
 stog_io.cmx : stog_types.cmx stog_msg.cmx stog_misc.cmx stog_find.cmx \
     stog_config.cmx stog_io.cmi
-stog_latex.cmo : stog_types.cmi stog_of_latex.cmo stog_misc.cmi \
-    stog_engine.cmi stog_latex.cmi
-stog_latex.cmx : stog_types.cmx stog_of_latex.cmx stog_misc.cmx \
-    stog_engine.cmx stog_latex.cmi
+stog_latex.cmo : stog_types.cmi stog_tags.cmi stog_of_latex.cmo \
+    stog_misc.cmi stog_engine.cmi stog_latex.cmi
+stog_latex.cmx : stog_types.cmx stog_tags.cmx stog_of_latex.cmx \
+    stog_misc.cmx stog_engine.cmx stog_latex.cmi
 stog_main.cmo : stog_types.cmi stog_ocaml.cmi stog_msg.cmi stog_misc.cmi \
     stog_io.cmi stog_intl.cmi stog_info.cmi stog_engine.cmi stog_dyn.cmi \
     stog_config.cmi
@@ -74,10 +76,6 @@ stog_misc.cmo : stog_misc.cmi
 stog_misc.cmx : stog_misc.cmi
 stog_msg.cmo : stog_msg.cmi
 stog_msg.cmx : stog_msg.cmi
-stog_multi_elt.cmo : stog_types.cmi stog_tags.cmi stog_msg.cmi stog_io.cmi \
-    stog_html.cmi stog_engine.cmi
-stog_multi_elt.cmx : stog_types.cmx stog_tags.cmx stog_msg.cmx stog_io.cmx \
-    stog_html.cmx stog_engine.cmx
 stog_ocaml.cmo : stog_types.cmi stog_ocaml_types.cmi stog_msg.cmi \
     stog_misc.cmi stog_ocaml.cmi
 stog_ocaml.cmx : stog_types.cmx stog_ocaml_types.cmx stog_msg.cmx \
@@ -94,6 +92,8 @@ stog_plug.cmo : stog_types.cmi stog_msg.cmi stog_intl.cmi stog_html.cmi \
     stog_deps.cmi stog_config.cmi stog_blocks.cmi stog_plug.cmi
 stog_plug.cmx : stog_types.cmx stog_msg.cmx stog_intl.cmx stog_html.cmx \
     stog_deps.cmx stog_config.cmx stog_blocks.cmx stog_plug.cmi
+stog_svg.cmo :
+stog_svg.cmx :
 stog_tags.cmo : stog_tags.cmi
 stog_tags.cmx : stog_tags.cmi
 stog_tmap.cmo : stog_tmap.cmi

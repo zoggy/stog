@@ -83,6 +83,7 @@ val ocaml_printf : string
 val page : string
 val paragraph : string
 val post : string
+val prefix_svg_ids : string
 val prepare_toc : string
 val previous : string
 val search_form : string

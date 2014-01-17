@@ -964,6 +964,7 @@ and build_base_rules stog elt_id =
       ("", Stog_tags.ocaml), fun_ocaml ~inline: false ;
       ("", Stog_tags.ocaml_eval), Stog_ocaml.fun_eval  ;
       ("", Stog_tags.ocaml_printf), Stog_ocaml.fun_printf  ;
+      ("", Stog_tags.prefix_svg_ids), Stog_svg.fun_prefix_svg_ids ;
       ("", Stog_tags.previous), previous;
       ("", Stog_tags.search_form), fun_search_form ;
       ("", Stog_tags.two_columns), fun_twocolumns ;

@@ -17,9 +17,13 @@ Here are the possible ways to use it:
 <table class="table table-bordered">
 <tr><th>Code</th><th>Result</th></tr>
 <tr>
-<td><hcode lang="xml" id="code1"><![CDATA[
+<td>
+Output to <code>graph1.svg</code>, using an <ixml>&lt;img&gt;</ixml>
+node to show the image:
+<hcode lang="xml" id="code1"><![CDATA[
 <dot outfile="graph1.svg">digraph g {
   rankdir = LR;
+  a [ shape="box" ] ;
   a -> b; a -> c ; b -> c ;
 }</dot>]]>
 </hcode></td>
@@ -27,29 +31,27 @@ Here are the possible ways to use it:
 </tr>
 
 <tr>
-<td><hcode lang="xml" id="code2"><![CDATA[
-<dot outfile="graph2.svg">digraph g {
-  rankdir = LR;
-  a [ shape="box" ] ;
-  a -> b ; a -> c ; b -> c ;
-}</dot>]]>
-</hcode></td>
-<td><as-xml defer_="1"><include subs-only="true" href="#code2"/></as-xml></td>
-</tr>
-
-<tr>
-<td><hcode lang="xml" id="code3"><![CDATA[
+<td>
+Output a <code>png</code> file to <code>graph2.png</code>,
+use <code>neato</code> instead of <code>dot</code> in
+the command and read source from <code>graph.dot</code>:
+<hcode lang="xml" id="code2"><![CDATA[
 <dot command="neato"
-   src="graph.dot" type="png" outfile="graph3.png"/>
+   src="graph.dot" type="png" outfile="graph2.png"/>
 ]]>
 </hcode>
 With <code>graph.dot</code>:
 <hcode defer_="1" lang="dot"><include file="./graph.dot"/></hcode></td>
-<td><as-xml defer_="1"><include subs-only="true" href="#code3"/></as-xml></td>
+<td><as-xml defer_="1"><include subs-only="true" href="#code2"/></as-xml></td>
 </tr>
 
 <tr>
-<td><hcode lang="xml" id="code4"><![CDATA[
+<td>
+With <ixml>&lt;elt-...&gt;</ixml> rules to get links and labels,
+using attribute <ixml>defer_="1"</ixml> in the <ixml>&lt;dot&gt;</ixml>
+so that rewriting is performed in its children before the
+code is being passed to dot:
+<hcode lang="xml" id="code3"><![CDATA[
 <dot defer_="1">
 digraph g {
   rankdir = LR;
@@ -61,9 +63,31 @@ digraph g {
      label="<elt-title elt-hid="plugins/asy"/>" ] ;
   dot [ href="<elt-url elt-hid="plugins/dot"/>" ] ;
 }</dot>]]>
-</hcode></td>
-<td><as-xml defer_="3"><include subs-only="true" href="#code4"/></as-xml></td>
+</hcode>
+Since no <code>outfile</code> attribute is given, the svg
+file produced is included (no use of <ixml>&lt;img&gt;</ixml>).
+</td>
+<td>The node labels are clickable and the links are generated
+(and so valid) by Stog:
+<as-xml defer_="3"><include subs-only="true" href="#code3"/></as-xml></td>
 </tr>
+
+<tr>
+<td>
+Including again the produced <code>svg</code> file. To avoid
+conflicts in ids, we use the <ixml>prefix-svg-ids="foo"</ixml>
+attribute:
+<hcode lang="xml" id="code4"><![CDATA[
+<dot prefix-svg-ids="foo">digraph g {
+  rankdir = LR;
+  a [ shape="box" ] ;
+  a -> b; a -> c ; b -> c ;
+}</dot>]]>
+</hcode></td>
+<td><as-xml defer_="1"><include subs-only="true" href="#code4"/></as-xml></td>
+</tr>
+
+
 
 </table>
 </contents>

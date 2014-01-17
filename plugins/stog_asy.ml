@@ -64,37 +64,13 @@ let concat_code =
     Buffer.contents b
 ;;
 
-let prefix_ids =
-  let rec iter p = function
-    (Xtmpl.D _) as t -> t
-  | Xtmpl.E (tag, atts, subs) ->
-      let atts =
-       match Xtmpl.get_arg_cdata atts ("","id") with
-         None -> atts
-       | Some s ->
-            Xtmpl.atts_replace ("","id") [ Xtmpl.D (p^s) ] atts
-      in
-      let atts =
-        match Xtmpl.get_arg_cdata atts ("http://www.w3.org/1999/xlink","href") with
-         None -> atts
-       | Some s ->
-            let len = String.length s in
-            let s = String.sub s 1 (len -1) (* remove beginning '#' *) in
-            Xtmpl.atts_replace ("http://www.w3.org/1999/xlink","href") [ Xtmpl.D ("#"^p^s) ] atts
-      in
-      Xtmpl.E (tag, atts, List.map (iter p) subs)
-
-  in
-  fun p t ->
-    iter p t
-;;
-
 let fun_asy stog env atts subs =
   let code = concat_code subs in
   let (stog, hid) = Stog_engine.get_hid stog env in
   let hid = Stog_types.human_id_of_string hid in
   let (_, elt) = Stog_types.elt_by_human_id stog hid in
   let elt_dir = Filename.dirname elt.Stog_types.elt_src in
+  let id_prefix = Xtmpl.get_arg_cdata atts ("","prefix-svg-ids") in
   let (infile, finalize_src) =
     match Xtmpl.get_arg_cdata atts ("","src") with
       None ->
@@ -131,8 +107,11 @@ let fun_asy stog env atts subs =
     match Sys.command com with
       0 ->
         let xml = Xtmpl.xml_of_file abs_outfile in
-        let md5 = Digest.to_hex (Digest.string outfile) in
-        let xml = prefix_ids md5 xml in
+        let xml =
+          match id_prefix with
+            None -> xml
+          | Some prefix -> Stog_svg.prefix_svg_ids prefix xml
+        in
         finalize_outfile () ;
         finalize_src ();
         if inc then
