@@ -15,11 +15,12 @@ Next release:
 * new option --local
 * functions defined in elements now handles all arguments, using
   default values for the ones specified in function definition
+
 * Replace main_ with dummy_
 * Change architecture of rewrite engine, with no references,
   using new version of Xtmpl
-* <include> and <late-inc> both handle 'file', 'href', 'id' and 'raw'
-  attributes
+* <include> and <late-inc> both handle 'file', 'href', 'id', 'raw'
+  'subs-only', and 'depend' attributes
 * <inc> rule is now deprecated, use <latex-inc> instead
 * Fix caching system
 * Add <cut-elt> rule to cut element into pieces (like hevea's hacha)

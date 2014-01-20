@@ -469,6 +469,15 @@ You can try to put some LaTeX code as contents and see...
 <hcode defer_="1" lang="xml"><list sep=", "><b>apple</b><b>banana</b><b>orange</b></list></hcode>
 </subsection>
 
+<subsection id="prefix-svg-ids" title="prefix-svg-ids">
+<include file="syntax.tmpl"><![CDATA[<prefix-svg-ids prefix="foo">...</prefix-svg-ids>]]></include>
+<p>
+This add the given prefix to all <code>id</code> and <code>href</code> attributes
+in the subnodes. This is useful when including generated SVG files to prevent
+conflicts in ids.
+</p>
+</subsection>
+
 <subsection id="previous" title="previous / next">
 <p>
 <ixml>&lt;previous/&gt;</ixml> and
@@ -597,6 +606,9 @@ is used to specify the depth of the table of contents.
 </p>
 <p>The nodes used for sectionning can be changed, see the
 <elt href="module_blocks#sectionning"/> function of the <elt href="module_blocks"/>.
+</p>
+<p>By default, sectionning nodes without <code>id</code> attribute are not kept.
+Set attribute <ixml>show-without-ids="true"</ixml> to keep all sectionning nodes.
 </p>
 
 <also-base-rules/>

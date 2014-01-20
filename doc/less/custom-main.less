@@ -264,7 +264,10 @@ div#archives ul {
 pre {
   font-size: 1em * @decreaseFontSizeFactor * @decreaseFontSizeFactor ;
   line-height: @baseLineHeight * @decreaseFontSizeFactor ;
+  margin-bottom: 1.5em;
 }
+
+p + pre { margin-top: -1.5em ; }
 
 .code-ocaml {
  font-weight: bold;
@@ -280,6 +283,10 @@ pre {
   border-width: 0 0 0 3px;
   border-color: lighten(@textColor, 40);
 */
+}
+pre div.ocaml-exc {
+  color: @errorText ;
+  font-weight: bold ;
 }
 
 .table-bench {

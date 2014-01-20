@@ -4,6 +4,97 @@ topics="stog"
 keywords="ocaml, evaluation, code, print"
 published="true">
 <p>
-
+Since <elt href="release-0.10.0"/>, the <rule>ocaml-printf</rule>
+can be used to access the content of computed OCaml values, as
+strings.
 </p>
+<sep_/>
+<prepare-toc>
+<toc/>
+<section id="first" title="First example">
+<p>
+Let's take a first example. Suppose we evaluated some OCaml code
+with the following rule:
+</p>
+<hcode lang="xml" id="code1"><![CDATA[
+<ocaml-eval show-code="false">let x = "Hello world!";;</ocaml-eval>
+]]></hcode>
+<as-xml defer_="1"><include subs-only="true" href="#code1"/></as-xml>
+<p>
+Now we can get the contents of <code>x</code> as a string
+to include in our document using the new rule:
+</p>
+<hcode lang="xml" id="code1p"><![CDATA[
+The value of <code>x</code> is: <ocaml-printf>x</ocaml-printf>
+]]></hcode>
+&#x21b3; <as-xml defer_="1"><include subs-only="true" href="#code1p"/></as-xml>
+</section>
+
+<section id="formats" title="Formatting">
+<p>
+The <rule>ocaml-printf</rule> rule builds some OCaml code of the form:
+</p>
+<ocaml>Printf.sprintf "&lt;format&gt;" &lt;code&gt;</ocaml>
+<p>The <code>&lt;code&gt;</code> is the contents of the <rule>ocaml-printf</rule>
+node, and <code>&lt;format&gt;</code> is <code>%s</code> by default.
+Another format can be used by setting the <code>format</code> attribute
+like in the following example:
+</p>
+<hcode lang="xml" id="code2p"><![CDATA[
+1 + 2 = <ocaml-printf format="%d">(1+2)</ocaml-printf>
+]]></hcode>
+&#x21b3; <as-xml defer_="1"><include subs-only="true" href="#code2p"/></as-xml>
+<p>Note that the parentheses around the expression in the <rule>ocaml-printf</rule>
+node is mandatory, otherwise the <icode lang="ocaml">Printf.sprintf "%d" 1+2</icode>
+would result in an error.
+</p>
+<p>
+Of course more compilated format and ocaml expressions can be used:
+</p>
+<ocaml-eval toplevel="true">let y = 1 and z = 21.;;</ocaml-eval>
+<hcode lang="xml" id="code3p"><![CDATA[
+<ocaml-printf format="The result of %d + %.2f is %.0f.">y z ((float y) +. z)</ocaml-printf>
+]]></hcode>
+&#x21b3; <as-xml defer_="1"><include subs-only="true" href="#code3p"/></as-xml>
+</section>
+
+<section id="xml" title="Using result as XML">
+<p>
+The result of <rule>ocaml-printf</rule> is considered as CDATA in the XML document:
+</p>
+<hcode lang="xml" id="code4p" defer_="1">
+<include file="./ocaml-printf-code.foo" raw="true"/>
+</hcode>
+<p>
+is rewritten <as-xml defer_="1"><include file="./ocaml-printf-code.foo" raw="true"/></as-xml>
+</p>
+<p>
+Let's define a list:
+</p>
+<ocaml-eval toplevel="true">let my_list = [ 101 ; 202 ; 303 ; 404 ];;</ocaml-eval>
+<p>The <elt href="module_base#as-xml"><rule>as-xml</rule></elt> rule can be used to
+parse the result of <rule>ocaml-printf</rule> as XML, using the <code>defer_</code>
+attribute to compute the contents of the node first:
+</p>
+<hcode lang="xml" id="code5p" defer_="1">
+<include file="./ocaml-printf-table.foo" raw="true"/>
+</hcode>
+<p>This gives the following table:</p>
+<as-xml defer_="1"><include file="./ocaml-printf-table.foo" raw="true"/></as-xml>
+<p>
+As shown above, the parsed XML is then rewritten during the rest of the
+evaluation process.
+The current value of <code>foo</code> is
+<ocaml-printf defer_="3" format="%d">foo</ocaml-printf>.
+</p>
+</section>
+
+<section id="sessions" title="Sessions">
+<p>
+The <code>session</code> attribute is honored:
+</p>
+<hxml><![CDATA[<ocaml-printf session="..." ...>...</ocaml-printf>]]></hxml>
+<p>See <elt href="ocaml-sessions">this post</elt> for details about OCaml sessions.</p>
+</section>
+</prepare-toc>
 </post>
