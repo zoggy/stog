@@ -1,8 +1,121 @@
 <included-plugin
 title="Stog-asy"
 >
-
+<p>
+This plugin eases the inclusion of images produced by
+the <ext-a href="http://asymptote.sourceforge.net/">Aysmptote</ext-a> tool.
+</p>
+<p class="alert alert-warning">
+The <code>asy</code> tool must be installed to use this plugin.
+Moreover, to produce SVG output, the
+<ext-a href="http://dvisvgm.sourceforge.net/"><code>dvisvgm</code></ext-a> tool must
+be installed too.
+</p>
 <p>Usage:</p>
 <command-line>$ stog --package stog.asy ...</command-line>
+
+<p>This plugin adds a new <elt href="module_base#base">base rule</elt>
+ <ixml>&lt;asy&gt;</ixml>.
+Here are the possible ways to use it:
+</p>
+
+<table class="table table-bordered">
+<tr><th>Code</th><th>Result</th></tr>
+<tr>
+<td>
+Output to <code>asy.svg</code>, using an <ixml>&lt;img&gt;</ixml>
+node to show the image:
+<hcode lang="xml" id="code1"><![CDATA[
+<asy outfile="asy1.svg">
+void testline(real y) {
+  draw((0,y)--(100,y),currentpen+solid);
+  draw((0,y-10)--(100,y-10),currentpen+dotted);
+  draw((0,y-20)--(100,y-20),currentpen+Dotted());
+  draw((0,y-30)--(100,y-30),currentpen+dashed);
+  draw((0,y-40)--(100,y-40),currentpen+longdashed);
+  draw((0,y-50)--(100,y-50),currentpen+dashdotted);
+  draw((0,y-60)--(100,y-60),currentpen+longdashdotted);
+}
+
+currentpen=linewidth(0.5);
+testline(100);
+currentpen=linewidth(4);
+testline(0);
+</asy>]]>
+</hcode></td>
+<td><as-xml defer_="1"><include subs-only="true" href="#code1"/></as-xml></td>
+</tr>
+
+<tr>
+<td>
+Output a <code>png</code> file to <code>asy2.png</code>
+and read source from <code>code2.asy</code>:
+<hcode lang="xml" id="code2"><![CDATA[
+<asy src="code2.asy"
+  type="png" outfile="asy2.png"
+  width="200px"/>
+]]>
+</hcode>
+With <a href="code2.asy"><code>code2.asy</code></a>.
+The additional attributes (here <code>width</code>) are
+passed to the <ixml>&lt;img&gt;</ixml> node.
+</td>
+<td><as-xml defer_="1"><include subs-only="true" href="#code2"/></as-xml></td>
+</tr>
+
+<tr>
+<td>
+With <ixml>&lt;elt-...&gt;</ixml> rules to get labels,
+using attribute <ixml>defer_="1"</ixml> in the <ixml>&lt;dot&gt;</ixml>
+so that rewriting is performed in its children before the
+code is being passed to dot:
+<hcode lang="xml" id="code3"><![CDATA[
+<asy defer_="1">
+real margin=1.5mm;
+object left=align(
+  object("<elt-title elt-hid="plugins/asy"/>",
+         ellipse,margin),W);
+add(left);
+object right=align(
+  object("<elt-title elt-hid="plugins"/>",
+         ellipse,margin),4E);
+add(right);
+add(new void(frame f, transform t) {
+    draw(f,point(left,NE,t)--point(right,W,t));
+  });
+</asy>]]>
+</hcode>
+Since no <code>outfile</code> attribute is given, the <code>svg</code>
+file produced is included (no use of <ixml>&lt;img&gt;</ixml>).
+</td>
+<td>
+<as-xml defer_="3"><include subs-only="true" href="#code3"/></as-xml></td>
+</tr>
+
+<tr>
+<td>
+Including again the produced <code>svg</code> file. To avoid
+conflicts in ids, we use the <ixml>prefix-svg-ids="foo"</ixml>
+attribute:
+<hcode lang="xml" id="code4"><![CDATA[
+<asy prefix-svg-ids="foo" src="code4.asy"/>]]>
+</hcode>With <a href="code4.asy"><code>code4.asy</code></a>.
+</td>
+<td><as-xml defer_="1"><include subs-only="true" href="#code4"/></as-xml></td>
+</tr>
+
+<tr>
+<td>The contents of the <code>args</code> attribute is used
+as additional argument to the command which is run:
+<hcode lang="xml" id="code5"><![CDATA[
+<asy prefix-svg-ids="bar"
+  args="-gray"
+  src="code4.asy"/>
+]]>
+</hcode>With <a href="code4.asy"><code>code4.asy</code></a>.
+</td>
+<td><as-xml defer_="1"><include subs-only="true" href="#code5"/></as-xml></td>
+</tr>
+</table>
 
 </included-plugin>

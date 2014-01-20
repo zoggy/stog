@@ -97,7 +97,7 @@ let fun_dot stog env atts subs =
         None ->
           if typ <> "svg" then
             failwith "<dot>: please specify outfile attribute if file type is not 'svg'";
-          let f = Filename.temp_file "stog" ".svg" in
+          let f = Filename.temp_file "stog_dot" ".svg" in
           (f, f, true, (fun () -> try Unix.unlink f with _ -> ()))
       | Some f ->
           let absf =
@@ -133,7 +133,11 @@ let fun_dot stog env atts subs =
             begin
               let atts = Xtmpl.atts_remove ("","args")
                 (Xtmpl.atts_remove ("","outfile")
-                 (Xtmpl.atts_remove ("","src") atts)
+                 (Xtmpl.atts_remove ("","type")
+                  (Xtmpl.atts_remove ("","prefix-svg-ids")
+                   (Xtmpl.atts_remove ("","src") atts)
+                  )
+                 )
                 )
               in
               let atts = Xtmpl.atts_one ~atts
