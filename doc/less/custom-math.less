@@ -1,0 +1,93 @@
+
+div.eqn {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  text-align: center;
+  }
+
+.myblock() {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  div.title {
+  font-weight: bold;
+  }
+  div.contents {
+    padding: 0.5em;
+  }
+
+}
+
+.myenumblock() {
+ .myblock ();
+ .rounded-box;
+ background-color: @bodyBackground;
+ border-width: 0 2px 0 2px;
+ div.contents {
+   margin-bottom: 0;
+   padding-bottom: 0;
+  }
+ p { margin-bottom: 0 }
+}
+
+div.figure {
+  .myblock ();
+  div.contents {
+    text-align: center ;
+    div.legend {
+      text-align: justified ;
+      margin-left: 2em;
+      margin-right: 2em;
+      }
+  }
+}
+
+div.theorem {
+  .myenumblock ();
+}
+div.lemma {
+  .myenumblock ();
+}
+div.prop {
+  .myenumblock ();
+}
+div.remark {
+  .myenumblock ();
+}
+div.proof {
+  .myenumblock ();
+  border-width: 0 ;
+  background-color: #eeeeee;
+}
+
+span.equation {
+  display: block;
+  .myblock();
+  text-align: center;
+  span.title {
+    display: inline;
+    font-weight: normal;
+    float:right;
+    padding-right: 2em;
+   }
+  .contents { display: inline; }
+}
+
+table.eqnarray {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  td { padding-left: 0.2em ; padding-right: 0.2em; }
+  tr { height: @baseLineHeight * 2; }
+  td.right { text-align: right ; }
+  td.left { text-align: left ; }
+  td.center { text-align: center ; }
+
+  .equation {
+    text-align: inherit ;
+    .title { padding-left: 3em; float: right;}
+    }
+}

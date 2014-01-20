@@ -1,0 +1,51 @@
+@gridColumnWidth: 45px;
+
+@navbarBackgroundHighlight:       #008800 ; /*#aa0000;*/
+@navbarText:                      @bodyBackground; /*#777;*/
+@navbarLinkColor:                 @bodyBackground; /*#777;*/
+@navbarLinkColorHover:            darken(@navbarLinkColor, 5%) ; /*@grayDark;*/
+@navbarLinkColorActive:           darken(@navbarLinkColor, 5%) ; /*@gray;*/
+
+
+
+@lineHeightFactor: 1.5 ;
+@baseFontFamily: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@baseFontSize : 13pt ;
+@baseLineHeight: @baseFontSize * @lineHeightFactor;
+@bodyBackground: #EEF;
+
+@sansFontFamily: @baseFontFamily;
+
+@linkColor : @navbarBackgroundHighlight;
+@linkColorHover : lighten(@linkColor, 15);
+@extLinkImage: url('extlink.png');
+
+@pageBackground: white ;
+
+/* Modular Scale from http://modularscale.com/scale/?px1=14&px2=&ra1=1.125&ra2=0
+	----------------------
+	14px @ 1:1.125
+	----------------------*/
+
+@pageTitleFontSize: 1.802em;
+@pageTitleLineHeight: @lineHeightFactor / @pageTitleFontSize ;
+@pageTitleMarginBottom: @pageTitleLineHeight ;
+
+
+@sectionTitleFontSize: 1.602em;
+@sectionTitleLineHeight: @lineHeightFactor / @sectionTitleFontSize;
+@sectionTitleMarginBottom: @sectionTitleLineHeight;
+
+@subsectionTitleFontSize: 1.266em;
+@subsectionTitleLineHeight: @lineHeightFactor / @sectionTitleFontSize;
+@subsectionTitleMarginBottom: @sectionTitleLineHeight;
+
+@subsubsectionTitleFontSize: 1.125em;
+@subsubsectionTitleLineHeight: @lineHeightFactor / @sectionTitleFontSize;
+@subsubsectionTitleMarginBottom: @sectionTitleLineHeight;
+
+@eltItemTitleFontSize: @subsubsectionTitleFontSize ;
+@eltItemTitleLineHeight: @lineHeightFactor / @eltItemTitleFontSize ;
+@eltItemTitleMarginBottom:  0;
+
+@decreaseFontSizeFactor: 0.889 ;
