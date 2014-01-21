@@ -43,6 +43,8 @@ For a given element, add a dependency on a file or another element.
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALarchive_tree">archive_tree</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_tags.html#VALas_xml">as_xml</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
 <tr><td align="left"><br/>B</td></tr>
 <tr><td><a href="Stog_tags.html#VALblock">block</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
@@ -102,11 +104,6 @@ Compute internals graphs between elements.
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALcounter">counter</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_date.html#VALcreate">create</a> [<a href="Stog_date.html">Stog_date</a>]</td>
-<td><div class="info">
-Convert the time (seconds since the epoch) to a date/time record
-</div>
-</td></tr>
 <tr><td><a href="Stog_graph.GMap.html#VALcreate">create</a> [<a href="Stog_graph.GMap.html">Stog_graph.GMap</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_graph.S.html#VALcreate">create</a> [<a href="Stog_graph.S.html">Stog_graph.S</a>]</td>
@@ -131,6 +128,8 @@ Same as <code class="code">create_log_fun</code> but also return a function to c
 <td></td></tr>
 <tr><td align="left"><br/>D</td></tr>
 <tr><td><a href="Stog_intl.html#VALdata_of_lang">data_of_lang</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_tags.html#VALdefault_sectionning">default_sectionning</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_info.html#VALdot_of_graph">dot_of_graph</a> [<a href="Stog_info.html">Stog_info</a>]</td>
 <td><div class="info">
@@ -177,6 +176,8 @@ Get graphviz code from the given stog structure, to create
 <tr><td><a href="Stog_types.html#VALelt_children">elt_children</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALelt_date">elt_date</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_tags.html#VALelt_datetime">elt_datetime</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_engine.html#VALelt_dst">elt_dst</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
 <td></td></tr>
@@ -239,6 +240,8 @@ Build the final url of the given element.
 <td></td></tr>
 <tr><td><a href="Stog_msg.html#VALerror">error</a> [<a href="Stog_msg.html">Stog_msg</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_tags.html#VALerror_">error_</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_msg.html#VALerrors">errors</a> [<a href="Stog_msg.html">Stog_msg</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_html.html#VALescape_html">escape_html</a> [<a href="Stog_html.html">Stog_html</a>]</td>
@@ -266,6 +269,10 @@ Return mdification time of the given file, or None if
 <td><div class="info">
 <code class="code">filename_extension filename</code> returns extension of <code class="code">filename</code>
   or <code class="code">""</code> if there is no extension.
+</div>
+</td></tr>
+<tr><td><a href="Stog_io.html#VALfill_elt_from_atts_and_subs">fill_elt_from_atts_and_subs</a> [<a href="Stog_io.html">Stog_io</a>]</td>
+<td><div class="info">
 </div>
 </td></tr>
 <tr><td><a href="Stog_filter_parser.html#VALfilter">filter</a> [<a href="Stog_filter_parser.html">Stog_filter_parser</a>]</td>
@@ -298,10 +305,6 @@ Find all data associated to the given path or below, or an empty list
 <td></td></tr>
 <tr><td><a href="Stog_graph.S.html#VALfold_succ">fold_succ</a> [<a href="Stog_graph.S.html">Stog_graph.S</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_date.html#VALformat">format</a> [<a href="Stog_date.html">Stog_date</a>]</td>
-<td></td></tr>
-<tr><td><a href="Stog_date.html#VALformat_to">format_to</a> [<a href="Stog_date.html">Stog_date</a>]</td>
-<td></td></tr>
 <tr><td><a href="Stog_intl.html#VALfrench">french</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_filter_lexer.L.html#VALfrom_channel">from_channel</a> [<a href="Stog_filter_lexer.L.html">Stog_filter_lexer.L</a>]</td>
@@ -319,6 +322,12 @@ Find all data associated to the given path or below, or an empty list
 <tr><td><a href="Stog_ocaml.html#VALfun_eval">fun_eval</a> [<a href="Stog_ocaml.html">Stog_ocaml</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_latex.html#VALfun_latex">fun_latex</a> [<a href="Stog_latex.html">Stog_latex</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_latex.html#VALfun_latex_body">fun_latex_body</a> [<a href="Stog_latex.html">Stog_latex</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_svg.html#VALfun_prefix_svg_ids">fun_prefix_svg_ids</a> [<a href="Stog_svg.html">Stog_svg</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_ocaml.html#VALfun_printf">fun_printf</a> [<a href="Stog_ocaml.html">Stog_ocaml</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALfunctions">functions</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
@@ -339,7 +348,12 @@ Generate the target files, with the following steps: create the output directory
 <code class="code">get_hid env</code> returns the value associated to <code class="code">"hid"</code> in <code class="code">env</code>.
 </div>
 </td></tr>
-<tr><td><a href="Stog_html.html#VALget_in_args_or_env">get_in_args_or_env</a> [<a href="Stog_html.html">Stog_html</a>]</td>
+<tr><td><a href="Stog_engine.html#VALget_hid">get_hid</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
+<td><div class="info">
+<code class="code">get_hid env</code> returns the value associated to <code class="code">"hid"</code> in <code class="code">env</code>.
+</div>
+</td></tr>
+<tr><td><a href="Stog_engine.html#VALget_in_args_or_env">get_in_args_or_env</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
 <td><div class="info">
 <code class="code">get_in_args_or_env env args s</code> returns the value associated to <code class="code">s</code>
  in <code class="code">args</code> of else return the result of <code class="code">get_in_env env s</code>.
@@ -378,6 +392,8 @@ Prevent tags to self-close (i.e.
 </div>
 </td></tr>
 <tr><td><a href="Stog_tags.html#VALhcode">hcode</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_tags.html#VALhid_sep">hid_sep</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_html.html#VALhighlight">highlight</a> [<a href="Stog_html.html">Stog_html</a>]</td>
 <td><div class="info">
@@ -447,6 +463,8 @@ Same as <a href="Stog_graph.S.html#VALiter_succ"><code class="code">Stog_graph.S
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALlatex">latex</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_tags.html#VALlatex_body">latex_body</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_filter_lexer.L.html#VALlexeme">lexeme</a> [<a href="Stog_filter_lexer.L.html">Stog_filter_lexer.L</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_filter_lexer.L.html#VALlexeme_char">lexeme_char</a> [<a href="Stog_filter_lexer.L.html">Stog_filter_lexer.L</a>]</td>
@@ -480,8 +498,6 @@ Same as <a href="Stog_graph.S.html#VALiter_succ"><code class="code">Stog_graph.S
 <tr><td><a href="Stog_dyn.html#VALload_files">load_files</a> [<a href="Stog_dyn.html">Stog_dyn</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_dyn.html#VALload_packages">load_packages</a> [<a href="Stog_dyn.html">Stog_dyn</a>]</td>
-<td></td></tr>
-<tr><td><a href="Stog_date.html#VALlocalzone">localzone</a> [<a href="Stog_date.html">Stog_date</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_misc.html#VALlowercase">lowercase</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td><div class="info">
@@ -531,10 +547,6 @@ Marshal the given graph.
   to create the level map from an optional list of pairs <code class="code">(funname, [level1 ; level2; ...])</code>.
 </div>
 </td></tr>
-<tr><td><a href="Stog_date.html#VALmk_mail_date">mk_mail_date</a> [<a href="Stog_date.html">Stog_date</a>]</td>
-<td></td></tr>
-<tr><td><a href="Stog_date.html#VALmk_usenet_date">mk_usenet_date</a> [<a href="Stog_date.html">Stog_date</a>]</td>
-<td></td></tr>
 <tr><td><a href="Stog_misc.html#VALmkdir">mkdir</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tmap.S.html#VALmodify">modify</a> [<a href="Stog_tmap.S.html">Stog_tmap.S</a>]</td>
@@ -573,6 +585,8 @@ Marshal the given graph.
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALocaml_eval">ocaml_eval</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_tags.html#VALocaml_printf">ocaml_printf</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_engine.html#VALopt_in_env">opt_in_env</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_misc.html#VALopt_of_string">opt_of_string</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
@@ -586,16 +600,10 @@ Marshal the given graph.
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALpage">page</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_date.html#VALparse">parse</a> [<a href="Stog_date.html">Stog_date</a>]</td>
-<td><div class="info">
-Parse a string and return a date/time record
-</div>
-</td></tr>
-<tr><td><a href="Stog_date.html#VALparse_epoch">parse_epoch</a> [<a href="Stog_date.html">Stog_date</a>]</td>
-<td><div class="info">
-Parse a string and return the time (seconds since the epoch
-</div>
-</td></tr>
+<tr><td><a href="Stog_tags.html#VALparagraph">paragraph</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_of_latex.html#VALparse">parse</a> [<a href="Stog_of_latex.html">Stog_of_latex</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_misc.html#VALpath_under">path_under</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td><div class="info">
 <code class="code">path_under ~parent file</code> returns the path to <code class="code">file</code> from <code class="code">parent</code>.
@@ -624,6 +632,10 @@ Get the previous element by date.
 <code class="code">pred_roots g</code> returns the list of vertices having no predecessor in the graph.
 </div>
 </td></tr>
+<tr><td><a href="Stog_svg.html#VALprefix_svg_ids">prefix_svg_ids</a> [<a href="Stog_svg.html">Stog_svg</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_tags.html#VALprefix_svg_ids">prefix_svg_ids</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_tags.html#VALprepare_toc">prepare_toc</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALprevious">previous</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
@@ -707,8 +719,6 @@ Remove from the stog structure the elements having
 <code class="code">reverse g</code> return a graph where all edges of <code class="code">g</code> are reversed, i.e.
 </div>
 </td></tr>
-<tr><td><a href="Stog_html.html#VALrss_date_of_date">rss_date_of_date</a> [<a href="Stog_html.html">Stog_html</a>]</td>
-<td></td></tr>
 <tr><td><a href="Stog_tags.html#VALrss_length">rss_length</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br/>S</td></tr>
@@ -758,11 +768,6 @@ Use the given language abbreviation (such as "fr") to set the default
          according to the <code class="code">cost</code> function.
 </div>
 </td></tr>
-<tr><td><a href="Stog_date.html#VALsince_epoch">since_epoch</a> [<a href="Stog_date.html">Stog_date</a>]</td>
-<td><div class="info">
-Convert a date/time record into the time (seconds since the epoch)
-</div>
-</td></tr>
 <tr><td><a href="Stog_tags.html#VALsite_desc">site_desc</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALsite_email">site_email</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
@@ -794,6 +799,10 @@ Separate the given string according to the given list of characters.
 <td></td></tr>
 <tr><td><a href="Stog_intl.html#VALstring_of_date_opt">string_of_date_opt</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_intl.html#VALstring_of_datetime">string_of_datetime</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_intl.html#VALstring_of_datetime_opt">string_of_datetime_opt</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_misc.html#VALstring_of_file">string_of_file</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td><div class="info">
 <code class="code">string_of_file filename</code> returns the content of <code class="code">filename</code>
@@ -808,6 +817,8 @@ Separate the given string according to the given list of characters.
    <code class="code">s_opt = None</code> or <code class="code">s</code> if <code class="code">s_opt = Some s</code>.
 </div>
 </td></tr>
+<tr><td><a href="Stog_of_latex.html#VALstring_of_stog_directives">string_of_stog_directives</a> [<a href="Stog_of_latex.html">Stog_of_latex</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_misc.html#VALstring_of_time">string_of_time</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_types.html#VALstring_of_url">string_of_url</a> [<a href="Stog_types.html">Stog_types</a>]</td>
@@ -833,6 +844,8 @@ Separate the given string according to the given list of characters.
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALsubsection">subsection</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_tags.html#VALsubsubsection">subsubsection</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_graph.S.html#VALsucc">succ</a> [<a href="Stog_graph.S.html">Stog_graph.S</a>]</td>
 <td><div class="info">
 <code class="code">succ g a</code> returns the successors of a vertice as a list of pairs
@@ -850,14 +863,14 @@ Same as <a href="Stog_graph.S.html#VALpred_roots"><code class="code">Stog_graph.
 </div>
 </td></tr>
 <tr><td align="left"><br/>T</td></tr>
-<tr><td><a href="Stog_intl.html#VALtm_of_date">tm_of_date</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
-<td></td></tr>
 <tr><td><a href="Stog_config.html#VALtmpl_dir">tmpl_dir</a> [<a href="Stog_config.html">Stog_config</a>]</td>
 <td><div class="info">
 <code class="code">tmpl_dir dir</code> returns the directory containing templates, from a
   stog project directory.
 </div>
 </td></tr>
+<tr><td><a href="Stog_of_latex.html#VALto_xml">to_xml</a> [<a href="Stog_of_latex.html">Stog_of_latex</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_tags.html#VALtoc">toc</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_types.html#VALtoday">today</a> [<a href="Stog_types.html">Stog_types</a>]</td>

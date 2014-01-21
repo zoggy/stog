@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <ocamldoc with-contents="true">
 <title>Stog library reference documentation : Stog_types</title><contents><div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_date.html" title="Stog_date">Previous</a>
+<div class="navbar"><a class="pre" href="Stog_graph.html" title="Stog_graph">Previous</a>
 &#160;<a class="up" href="index.html" title="Index">Up</a>
 &#160;<a class="post" href="Stog_intl.html" title="Stog_intl">Next</a>
 </div>
@@ -12,30 +12,7 @@ Types.<br/>
 </div>
 <hr width="100%"/>
 
-<pre><code><span id="TYPEdate"><span class="keyword">type</span> date</span> = {</code></pre><table class="typetable">
-<tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTdate.year">year</span>&#160;: <code class="type">int</code>;</code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTdate.month">month</span>&#160;: <code class="type">int</code>;</code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTdate.day">day</span>&#160;: <code class="type">int</code>;</code></td>
-
-</tr></table>
-}
-
+<pre><span id="TYPEdate"><span class="keyword">type</span> date</span> = <code class="type">Netdate.t</code> </pre>
 
 
 <pre><span id="TYPEbody"><span class="keyword">type</span> body</span> = <code class="type">Xtmpl.tree list</code> </pre>
@@ -62,10 +39,10 @@ Types.<br/>
 
 <pre><span id="VALstring_of_human_id"><span class="keyword">val</span> string_of_human_id</span> : <code class="type"><a href="Stog_types.html#TYPEhuman_id">human_id</a> -&gt; string</code></pre>
 <pre><span id="VALhuman_id_of_string"><span class="keyword">val</span> human_id_of_string</span> : <code class="type">string -&gt; <a href="Stog_types.html#TYPEhuman_id">human_id</a></code></pre>
-<pre><span id="TYPEdef"><span class="keyword">type</span> def</span> = <code class="type">Xtmpl.name * Xtmpl.attribute list * <a href="Stog_types.html#TYPEbody">body</a></code> </pre>
+<pre><span id="TYPEdef"><span class="keyword">type</span> def</span> = <code class="type">Xtmpl.name * Xtmpl.attributes * <a href="Stog_types.html#TYPEbody">body</a></code> </pre>
 
 
-<pre><span id="VALget_def"><span class="keyword">val</span> get_def</span> : <code class="type"><a href="Stog_types.html#TYPEdef">def</a> list -&gt;<br/>       Xmlm.name -&gt; (Xtmpl.attribute list * <a href="Stog_types.html#TYPEbody">body</a>) option</code></pre>
+<pre><span id="VALget_def"><span class="keyword">val</span> get_def</span> : <code class="type"><a href="Stog_types.html#TYPEdef">def</a> list -&gt;<br/>       Xmlm.name -&gt; (Xtmpl.attributes * <a href="Stog_types.html#TYPEbody">body</a>) option</code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Str_map.html">Str_map</a>: <code class="type">Map.S</code><code class="type">  with type key = string</code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Str_set.html">Str_set</a>: <code class="type">Set.S</code><code class="type">  with type elt = string</code></pre>
 <pre><code><span id="TYPEelt"><span class="keyword">type</span> elt</span> = {</code></pre><table class="typetable">

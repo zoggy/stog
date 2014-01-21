@@ -29,11 +29,6 @@ Html generation.
   then return <code class="code">""</code> else return the reduced value as a string.<br/>
 </div>
 
-<pre><span id="VALget_in_args_or_env"><span class="keyword">val</span> get_in_args_or_env</span> : <code class="type">'a -&gt;<br/>       'a Xtmpl.env -&gt; Xtmpl.attribute list -&gt; Xmlm.name -&gt; 'a * Xtmpl.tree list</code></pre><div class="info ">
-<code class="code">get_in_args_or_env env args s</code> returns the value associated to <code class="code">s</code>
- in <code class="code">args</code> of else return the result of <code class="code">get_in_env env s</code>.<br/>
-</div>
-
 <pre><span id="VALget_hid"><span class="keyword">val</span> get_hid</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * string</code></pre><div class="info ">
 <code class="code">get_hid env</code> returns the value associated to <code class="code">"hid"</code> in <code class="code">env</code>.<br/>
 <b>Raises</b> <code>Assert_failure</code> if <code class="code">"hid"</code> is not found in the environment.<br/>
@@ -55,7 +50,6 @@ Build an url from the given hid, using the given optional extension.
   This is used for elements created on the fly, like by-word or by-month index.<br/>
 </div>
 
-<pre><span id="VALrss_date_of_date"><span class="keyword">val</span> rss_date_of_date</span> : <code class="type"><a href="Stog_types.html#TYPEdate">Stog_types.date</a> -&gt; Rss.date</code></pre>
 <pre><span id="VALbuild_base_rules"><span class="keyword">val</span> build_base_rules</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -&gt; (Xmlm.name * <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.callback) list</code></pre><div class="info ">
 Build the base rules, using the default ones and the <code class="code">plugin_rules</code>.<br/>
 </div>

@@ -36,6 +36,13 @@ Inernationalization<br/>
 <td align="left" valign="top" >
 <code><span id="TYPEELTlang_data.string_of_date">string_of_date</span>&#160;: <code class="type"><a href="Stog_types.html#TYPEdate">Stog_types.date</a> -&gt; string</code>;</code></td>
 
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&#160;&#160;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTlang_data.string_of_datetime">string_of_datetime</span>&#160;: <code class="type"><a href="Stog_types.html#TYPEdate">Stog_types.date</a> -&gt; string</code>;</code></td>
+
 </tr></table>
 }
 
@@ -44,7 +51,6 @@ Such a structure must be defined for each language to support.<br/>
 </div>
 
 
-<pre><span id="VALtm_of_date"><span class="keyword">val</span> tm_of_date</span> : <code class="type"><a href="Stog_types.html#TYPEdate">Stog_types.date</a> -&gt; Unix.tm</code></pre>
 <pre><span id="VALfrench"><span class="keyword">val</span> french</span> : <code class="type"><a href="Stog_intl.html#TYPElang_data">lang_data</a></code></pre>
 <pre><span id="VALenglish"><span class="keyword">val</span> english</span> : <code class="type"><a href="Stog_intl.html#TYPElang_data">lang_data</a></code></pre>
 <pre><span id="VALregister_lang"><span class="keyword">val</span> register_lang</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">lang_abbrev</a> -&gt; <a href="Stog_intl.html#TYPElang_data">lang_data</a> -&gt; unit</code></pre>
@@ -59,4 +65,6 @@ Use the given language abbreviation (such as "fr") to set the default
 <pre><span id="VALget_month"><span class="keyword">val</span> get_month</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">lang_abbrev</a> option -&gt; int -&gt; string</code></pre>
 <pre><span id="VALstring_of_date"><span class="keyword">val</span> string_of_date</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">lang_abbrev</a> option -&gt; <a href="Stog_types.html#TYPEdate">Stog_types.date</a> -&gt; string</code></pre>
 <pre><span id="VALstring_of_date_opt"><span class="keyword">val</span> string_of_date_opt</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">lang_abbrev</a> option -&gt; <a href="Stog_types.html#TYPEdate">Stog_types.date</a> option -&gt; string</code></pre>
+<pre><span id="VALstring_of_datetime"><span class="keyword">val</span> string_of_datetime</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">lang_abbrev</a> option -&gt; <a href="Stog_types.html#TYPEdate">Stog_types.date</a> -&gt; string</code></pre>
+<pre><span id="VALstring_of_datetime_opt"><span class="keyword">val</span> string_of_datetime_opt</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">lang_abbrev</a> option -&gt; <a href="Stog_types.html#TYPEdate">Stog_types.date</a> option -&gt; string</code></pre>
 <pre><span id="VALshort_string_of_date"><span class="keyword">val</span> short_string_of_date</span> : <code class="type"><a href="Stog_types.html#TYPEdate">Stog_types.date</a> -&gt; string</code></pre></div></contents></ocamldoc>

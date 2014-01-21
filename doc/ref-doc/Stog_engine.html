@@ -126,6 +126,16 @@ Build the final url of the given element.<br/>
 
 <pre><span id="VALget_in_env"><span class="keyword">val</span> get_in_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; Xmlm.name -&gt; 'a * Xtmpl.tree list</code></pre>
 <pre><span id="VALopt_in_env"><span class="keyword">val</span> opt_in_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; Xmlm.name -&gt; 'a * Xtmpl.tree list option</code></pre>
+<pre><span id="VALget_in_args_or_env"><span class="keyword">val</span> get_in_args_or_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; Xtmpl.attributes -&gt; Xmlm.name -&gt; 'a * Xtmpl.tree list</code></pre><div class="info ">
+<code class="code">get_in_args_or_env env args s</code> returns the value associated to <code class="code">s</code>
+ in <code class="code">args</code> of else return the result of <code class="code">get_in_env env s</code>.<br/>
+</div>
+
+<pre><span id="VALget_hid"><span class="keyword">val</span> get_hid</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * string</code></pre><div class="info ">
+<code class="code">get_hid env</code> returns the value associated to <code class="code">"hid"</code> in <code class="code">env</code>.<br/>
+<b>Raises</b> <code>Assert_failure</code> if <code class="code">"hid"</code> is not found in the environment.<br/>
+</div>
+
 <pre><span id="VALelt_env"><span class="keyword">val</span> elt_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; 'a * 'a Xtmpl.env</code></pre>
 <pre><span id="VALapply_stog_env_elt"><span class="keyword">val</span> apply_stog_env_elt</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.env -&gt; <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre>
 <pre><span id="VALapply_stog_data_env_elt"><span class="keyword">val</span> apply_stog_data_env_elt</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a -&gt;<br/>       (<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a) Xtmpl.env -&gt; <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a</code></pre>

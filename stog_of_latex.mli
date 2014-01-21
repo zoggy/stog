@@ -26,41 +26,33 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** LaTeX to Stog translation. *)
 
-let prefix_ids =
-  let rec iter p = function
-    (Xtmpl.D _) as t -> t
-  | Xtmpl.E (tag, atts, subs) ->
-      let atts =
-       match Xtmpl.get_arg_cdata atts ("","id") with
-         None -> atts
-       | Some s ->
-            Xtmpl.atts_replace ("","id") [ Xtmpl.D (p^s) ] atts
-      in
-      let atts =
-        match Xtmpl.get_arg_cdata atts ("http://www.w3.org/1999/xlink","href") with
-         None -> atts
-       | Some s ->
-            let len = String.length s in
-            let s = String.sub s 1 (len -1) (* remove beginning '#' *) in
-            Xtmpl.atts_replace ("http://www.w3.org/1999/xlink","href") [ Xtmpl.D ("#"^p^s) ] atts
-      in
-      Xtmpl.E (tag, atts, List.map (iter p) subs)
+module SMap : Map.S with type key = string
 
-  in
-  iter
-;;
+type param = {
+  prefix : string option;
+  ext_file_prefix : string;
+  envs : string list;
+  sectionning : string list;
+  image_sizes : string SMap.t;
+}
 
-let rec prefix_svg_ids prefix = function
-  (Xtmpl.D _) as t -> t
-| Xtmpl.E ((_,"svg"), _, _) as t -> prefix_ids prefix t
-| Xtmpl.E (t,atts,subs) ->
-    Xtmpl.E (t, atts, List.map (prefix_svg_ids prefix) subs)
-;;
+type tree = Source of string | Block of block
+and block = {
+  tag : Xtmpl.name;
+  title : tree list;
+  id : string option;
+  subs : tree list;
+  atts : Xtmpl.attributes;
+}
 
-let fun_prefix_svg_ids stog env atts subs =
-  match Xtmpl.get_arg_cdata atts ("","prefix") with
-    None -> (stog, subs)
-  | Some prefix -> (stog, List.map (prefix_svg_ids prefix) subs)
-;;
+type preambule_section = string option * string
+type preambule = preambule_section list
+type tex_file = { preambule : preambule; body : tree list; }
+
+val to_xml : tree list -> Xtmpl.tree list
+val string_of_stog_directives :
+  ?tags:'a list -> ?notags:'a list -> ('a * string) list -> string
+
+val parse : param -> string -> string -> tex_file * param

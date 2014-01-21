@@ -26,41 +26,8 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Utilities for SVG documents. *)
 
-let prefix_ids =
-  let rec iter p = function
-    (Xtmpl.D _) as t -> t
-  | Xtmpl.E (tag, atts, subs) ->
-      let atts =
-       match Xtmpl.get_arg_cdata atts ("","id") with
-         None -> atts
-       | Some s ->
-            Xtmpl.atts_replace ("","id") [ Xtmpl.D (p^s) ] atts
-      in
-      let atts =
-        match Xtmpl.get_arg_cdata atts ("http://www.w3.org/1999/xlink","href") with
-         None -> atts
-       | Some s ->
-            let len = String.length s in
-            let s = String.sub s 1 (len -1) (* remove beginning '#' *) in
-            Xtmpl.atts_replace ("http://www.w3.org/1999/xlink","href") [ Xtmpl.D ("#"^p^s) ] atts
-      in
-      Xtmpl.E (tag, atts, List.map (iter p) subs)
-
-  in
-  iter
-;;
-
-let rec prefix_svg_ids prefix = function
-  (Xtmpl.D _) as t -> t
-| Xtmpl.E ((_,"svg"), _, _) as t -> prefix_ids prefix t
-| Xtmpl.E (t,atts,subs) ->
-    Xtmpl.E (t, atts, List.map (prefix_svg_ids prefix) subs)
-;;
-
-let fun_prefix_svg_ids stog env atts subs =
-  match Xtmpl.get_arg_cdata atts ("","prefix") with
-    None -> (stog, subs)
-  | Some prefix -> (stog, List.map (prefix_svg_ids prefix) subs)
-;;
+val prefix_svg_ids : string -> Xtmpl.tree -> Xtmpl.tree
+val fun_prefix_svg_ids :
+  'a -> 'a Xtmpl.env -> Xtmpl.attributes -> Xtmpl.tree list -> 'a * Xtmpl.tree list
