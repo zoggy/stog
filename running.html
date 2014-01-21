@@ -1,0 +1,237 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Running Stog</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  <div class="page-title">Running Stog</div>
+</div>
+
+
+
+
+<p>
+To compile your web site, use the following command:
+</p>
+<pre class="code-sh">stog <span class="hl opt">&lt;</span>root<span class="hl opt">-</span>directory<span class="hl opt">&gt;</span></pre>
+<p>Stog will generate the result in <span class="icode">./stog-output</span>,
+except if you use the <span class="icode">-d</span> option to specify another
+output directory.
+</p>
+<p>You can specify a template directory with the <span class="icode">--tmpl</span>
+option. By default, the templates are searched in the <span class="icode">.stog/templates</span> directory
+of the specified root directory.
+</p>
+<p>
+It is possible to give more than one directory to <span class="icode">stog</span>. In this case,
+all pages and articles are merged as if all were defined in the last directory
+given. It may be useful to gather blogs or page to generate one big site. Or not.
+</p>
+<p>The <span class="icode">--site-url</span> option is used to override the <span class="icode">stog:site-url</span>
+field of the main element. It it useful to generate a local site, for example
+</p>
+<pre class="code-sh">stog <span class="hl opt">--</span>site<span class="hl opt">-</span>url <span class="hl kwc">file</span><span class="hl opt">:///</span>tmp<span class="hl opt">/</span>website your<span class="hl opt">-</span>directory</pre>
+<p>
+to test your site locally with correct links.
+</p>
+<p id="optionlocal">
+As a shortcut, the <span class="icode">--local</span> option sets <span class="icode">stog:site-url</span> to
+<span class="icode">file://&lt;absolute path of output directory/&gt;</span>.
+</p>
+<p id="optiondef">
+The <span class="icode">--def</span> option can be used to define an additional global rule. For example
+</p>
+<pre class="code-sh">stog <span class="hl opt">--</span>def stogdir<span class="hl opt">:</span><span class="hl str">`pwd`</span></pre>
+<p>
+will make the current working directory accessible using <span class="icode"><span class="hl kwa">&lt;stogdir/&gt;</span></span>.
+</p>
+
+
+<p>The <span class="icode">--plugin</span> option makes <span class="icode">stog</span> dynamically
+load the given OCaml object file. The loaded plugin can define new functions
+to associate to some tags, or even override some pre-defined functions.
+See <a href="http://zoggy.github.io/stog/writing_plugins.html">Developing plugins</a>.
+</p>
+<p>
+If a plugin was installed with ocamlfind, the <span class="icode">--package</span> option can be used
+to specify a list of comma-separated packages to load. <span class="icode">ocamlfind</span> will
+then be used to get the location and required files to load these packages, in bytecode
+for <span class="icode">stog.byte</span> or native-code for <span class="icode">stog</span>.
+</p>
+<p>The <span class="icode">--lang</span> option is used to generate the website
+for one language. By default, the only known languages are &quot;en&quot; and &quot;fr&quot;.
+If you use the <span class="icode">--lang en</span> option, then pages will be generated
+in <span class="icode">.en.html</span> files and all <span class="icode"><span class="hl kwa">&lt;fr&gt;</span></span> nodes will be removed.
+Then you can run <span class="icode">stog</span> with the <span class="icode">--lang fr</span>
+to generate the &quot;fr&quot; part of your web site, removing all <span class="icode"><span class="hl kwa">&lt;en&gt;</span></span>.
+</p>
+
+<p>
+Stog will keep computed elements in directory <code>.stog/cache</code>.
+To prevent stog from using this cache, use the <code>--nocache</code>
+command line option. The cache won't be read, but it will nevertheless
+be updated by contents of computed elements.
+</p>
+<p>
+The caching strategy uses dependencies between elements: if an element
+refers to another one (see <a href="http://zoggy.github.io/stog/funs.html">Predefined modules and functions</a>), a dependency will be
+added and stored in the cache directory, so that this dependency will
+be used during the next run of stog. An element can also depend
+on files: the templates used, the files included, ... Dependencies are
+recursively computed.
+</p>
+<p>
+In some cases, using recursive dependencies may be too complete. For example,
+if you have a menubar appearing in all pages, all pages will depend on
+the elements referenced by the menubar, leading to all elements depending
+on all elements. A change in any element will then make every element recomputed
+at each run. To prevent this, the <code>--depcut</code> option specifies
+to use non-recursive dependencies in the caching strategy.
+</p>
+<p>
+A convenient way to use stog is to create a Makefile with different targets,
+to generate your site for a local test and for online publishing.
+Have a look at <span class="ext-a"><a href="https://github.com/zoggy/stog/tree/master/doc/Makefile">this
+Makefile</a></span> used to build stog documentation.
+</p>
+
+
+
+
+
+<p class="alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Running Stog&quot;</span>
+<span class="hl kwb">navbar-doc</span>=<span class="hl str">&quot;active&quot;</span>
+<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+To compile your web site, use the following command:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;command-line&gt;</span>&lt;![CDATA[stog <span class="hl kwa">&lt;root-directory&gt;</span>]]<span class="hl kwa">&gt;&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>Stog will generate the result in <span class="hl kwa">&lt;icode&gt;</span>./stog-output<span class="hl kwa">&lt;/icode&gt;</span>,
+except if you use the <span class="hl kwa">&lt;icode&gt;</span>-d<span class="hl kwa">&lt;/icode&gt;</span> option to specify another
+output directory.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>You can specify a template directory with the <span class="hl kwa">&lt;icode&gt;</span>--tmpl<span class="hl kwa">&lt;/icode&gt;</span>
+option. By default, the templates are searched in the <span class="hl kwa">&lt;icode&gt;</span>.stog/templates<span class="hl kwa">&lt;/icode&gt;</span> directory
+of the specified root directory.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+It is possible to give more than one directory to <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span>. In this case,
+all pages and articles are merged as if all were defined in the last directory
+given. It may be useful to gather blogs or page to generate one big site. Or not.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>The <span class="hl kwa">&lt;icode&gt;</span>--site-url<span class="hl kwa">&lt;/icode&gt;</span> option is used to override the <span class="hl kwa">&lt;icode&gt;</span>stog:site-url<span class="hl kwa">&lt;/icode&gt;</span>
+field of the main element. It it useful to generate a local site, for example
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;command-line&gt;</span>stog --site-url file:///tmp/website your-directory<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+to test your site locally with correct links.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;optionlocal&quot;</span><span class="hl kwa">&gt;</span>
+As a shortcut, the <span class="hl kwa">&lt;icode&gt;</span>--local<span class="hl kwa">&lt;/icode&gt;</span> option sets <span class="hl kwa">&lt;icode&gt;</span>stog:site-url<span class="hl kwa">&lt;/icode&gt;</span> to
+<span class="hl kwa">&lt;icode&gt;</span>file://<span class="hl kwd">&amp;lt;</span>absolute path of output directory/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;optiondef&quot;</span><span class="hl kwa">&gt;</span>
+The <span class="hl kwa">&lt;icode&gt;</span>--def<span class="hl kwa">&lt;/icode&gt;</span> option can be used to define an additional global rule. For example
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;command-line&gt;</span>stog --def stogdir:`pwd`<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+will make the current working directory accessible using <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>stogdir/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+
+
+<span class="hl kwa">&lt;p&gt;</span>The <span class="hl kwa">&lt;icode&gt;</span>--plugin<span class="hl kwa">&lt;/icode&gt;</span> option makes <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> dynamically
+load the given OCaml object file. The loaded plugin can define new functions
+to associate to some tags, or even override some pre-defined functions.
+See <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;writing_plugins&quot;</span><span class="hl kwa">/&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+If a plugin was installed with ocamlfind, the <span class="hl kwa">&lt;icode&gt;</span>--package<span class="hl kwa">&lt;/icode&gt;</span> option can be used
+to specify a list of comma-separated packages to load. <span class="hl kwa">&lt;icode&gt;</span>ocamlfind<span class="hl kwa">&lt;/icode&gt;</span> will
+then be used to get the location and required files to load these packages, in bytecode
+for <span class="hl kwa">&lt;icode&gt;</span>stog.byte<span class="hl kwa">&lt;/icode&gt;</span> or native-code for <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>The <span class="hl kwa">&lt;icode&gt;</span>--lang<span class="hl kwa">&lt;/icode&gt;</span> option is used to generate the website
+for one language. By default, the only known languages are <span class="hl str">&quot;en&quot;</span> and <span class="hl str">&quot;fr&quot;</span>.
+If you use the <span class="hl kwa">&lt;icode&gt;</span>--lang en<span class="hl kwa">&lt;/icode&gt;</span> option, then pages will be generated
+in <span class="hl kwa">&lt;icode&gt;</span>.en.html<span class="hl kwa">&lt;/icode&gt;</span> files and all <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>fr<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> nodes will be removed.
+Then you can run <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> with the <span class="hl kwa">&lt;icode&gt;</span>--lang fr<span class="hl kwa">&lt;/icode&gt;</span>
+to generate the <span class="hl str">&quot;fr&quot;</span> part of your web site, removing all <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>en<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl com">&lt;!--</span>
+<span class="hl com">&lt;p&gt;</span>
+<span class="hl com">If you need more languages, just define &quot;stog:languages&quot; in the main element</span>
+<span class="hl com">this way:</span>
+<span class="hl com">&lt;/p&gt;</span>
+<span class="hl com">&lt;hcode&gt;&lt;![CDATA[&lt;type main=&quot;true&quot; ... stog:languages=&quot;es,de,fr,en&quot;&gt;...&lt;/type&gt;]]&gt;&lt;/hcode&gt;</span>
+<span class="hl com">&lt;p&gt;This makes &amp;lt;languages/&amp;gt; returning the list of languages, and it is used by</span>
+<span class="hl com">the provided</span>
+<span class="hl com">--&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Stog will keep computed elements in directory <span class="hl kwa">&lt;code&gt;</span>.stog/cache<span class="hl kwa">&lt;/code&gt;</span>.
+To prevent stog from using this cache, use the <span class="hl kwa">&lt;code&gt;</span>--nocache<span class="hl kwa">&lt;/code&gt;</span>
+command line option. The cache won't be read, but it will nevertheless
+be updated by contents of computed elements.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The caching strategy uses dependencies between elements: if an element
+refers to another one (see <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;funs&quot;</span><span class="hl kwa">/&gt;</span>), a dependency will be
+added and stored in the cache directory, so that this dependency will
+be used during the next run of stog. An element can also depend
+on files: the templates used, the files included, ... Dependencies are
+recursively computed.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+In some cases, using recursive dependencies may be too complete. For example,
+if you have a menubar appearing in all pages, all pages will depend on
+the elements referenced by the menubar, leading to all elements depending
+on all elements. A change in any element will then make every element recomputed
+at each run. To prevent this, the <span class="hl kwa">&lt;code&gt;</span>--depcut<span class="hl kwa">&lt;/code&gt;</span> option specifies
+to use non-recursive dependencies in the caching strategy.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+A convenient way to use stog is to create a Makefile with different targets,
+to generate your site for a local test and for online publishing.
+Have a look at <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/stog/tree/master/doc/Makefile&quot;</span><span class="hl kwa">&gt;</span>this
+Makefile<span class="hl kwa">&lt;/ext-a&gt;</span> used to build stog documentation.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+</div>
+
+
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+
+</div> 
+</body>
+</html>

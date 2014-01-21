@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_graph</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -40,19 +39,24 @@
 <div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_tmap.html" title="Stog_tmap">Previous</a>
  <a class="up" href="index.html" title="Index">Up</a>
- <a class="post" href="Stog_date.html" title="Stog_date">Next</a>
+ <a class="post" href="Stog_types.html" title="Stog_types">Next</a>
 </div>
 <h1>Module <a href="type_Stog_graph.html">Stog_graph</a></h1>
-<pre><span class="keyword">module</span> Stog_graph: <code class="code">sig</code> <a href="Stog_graph.html">..</a> <code class="code">end</code></pre><div class="info">
+
+<pre><span class="keyword">module</span> Stog_graph: <code class="code">sig</code> <a href="Stog_graph.html">..</a> <code class="code">end</code></pre><div class="info module top">
 Annotated sparse graphs.<br/>
 </div>
 <hr width="100%"/>
-<pre><span class="keyword">module type</span> <a href="Stog_graph.GMap.html">GMap</a> = <code class="code">sig</code> <a href="Stog_graph.GMap.html">..</a> <code class="code">end</code></pre><pre><span class="keyword">module type</span> <a href="Stog_graph.S.html">S</a> = <code class="code">sig</code> <a href="Stog_graph.S.html">..</a> <code class="code">end</code></pre><div class="info">
+
+<pre><span class="keyword">module type</span> <a href="Stog_graph.GMap.html">GMap</a> = <code class="code">sig</code> <a href="Stog_graph.GMap.html">..</a> <code class="code">end</code></pre>
+<pre><span class="keyword">module type</span> <a href="Stog_graph.S.html">S</a> = <code class="code">sig</code> <a href="Stog_graph.S.html">..</a> <code class="code">end</code></pre><div class="info">
 This is the output signature of the functor creating a graph module.
 </div>
+
 <pre><span class="keyword">module</span> <a href="Stog_graph.Make.html">Make</a> <code class="code">(</code><code class="code">M</code><code class="code"> : </code><code class="type"><a href="Stog_graph.GMap.html">GMap</a></code><code class="code">) </code> <code class="code">(</code><code class="code">Edge</code><code class="code"> : </code><code class="type">Map.OrderedType</code><code class="code">) </code>: <code class="type"><a href="Stog_graph.S.html">S</a></code><code class="type">  with type key = M.key and type edge_data = Edge.t</code></pre><div class="info">
 Making a graph module.
 </div>
+
 <pre><span class="keyword">module</span> <a href="Stog_graph.Make_with_map.html">Make_with_map</a> <code class="code">(</code><code class="code">P</code><code class="code"> : </code><code class="type">Map.OrderedType</code><code class="code">) </code> <code class="code">(</code><code class="code">Edge</code><code class="code"> : </code><code class="type">Map.OrderedType</code><code class="code">) </code>: <code class="type"><a href="Stog_graph.S.html">S</a></code><code class="type">  with type key = P.t and type edge_data = Edge.t</code></pre><div class="info">
 This is a convenient functor using the <code class="code">Map</code> module of the standard library
   to build the <a href="Stog_graph.GMap.html"><code class="code">Stog_graph.GMap</code></a> module required by <a href="Stog_graph.Make.html"><code class="code">Stog_graph.Make</code></a> from the <code class="code">P</code> parameter.
@@ -63,6 +67,8 @@ This is a convenient functor using the <code class="code">Map</code> module of t
 
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

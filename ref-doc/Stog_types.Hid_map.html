@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_types.Hid_map</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -38,32 +37,21 @@
 
 
 <div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_types.Str_set.html" title="Stog_types.Str_set">Previous</a>
+<div class="navbar"><a class="pre" href="Stog_types.Int_set.html" title="Stog_types.Int_set">Previous</a>
  <a class="up" href="Stog_types.html" title="Stog_types">Up</a>
- <a class="post" href="Stog_types.Elt_set.html" title="Stog_types.Elt_set">Next</a>
+ <a class="post" href="Stog_types.Graph.html" title="Stog_types.Graph">Next</a>
 </div>
 <h1>Module <a href="type_Stog_types.Hid_map.html">Stog_types.Hid_map</a></h1>
-<pre><span class="keyword">module</span> Hid_map: <code class="type"><a href="Stog_trie.S.html">Stog_trie.S</a></code><code class="type">  with type symbol = string</code></pre><hr width="100%"/>
-<pre><span id="TYPEsymbol"><span class="keyword">type</span> symbol</span> </pre>
 
-<pre><span id="TYPEpath"><span class="keyword">type</span> path</span> = <code class="type"><a href="Stog_trie.S.html#TYPEsymbol">symbol</a> list</code> </pre>
-
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
-
-<pre><span id="EXCEPTIONAlready_present"><span class="keyword">exception</span> Already_present</span> <span class="keyword">of</span> <code class="type"><a href="Stog_trie.S.html#TYPEpath">path</a></code></pre>
-<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="Stog_trie.S.html#TYPEt">t</a></code></pre><pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="Stog_trie.S.html#TYPEpath">path</a> -&gt; 'a -&gt; 'a <a href="Stog_trie.S.html#TYPEt">t</a> -&gt; 'a <a href="Stog_trie.S.html#TYPEt">t</a></code></pre><div class="info">
-<b>Raises</b> <code>Already_present</code> if the added path already exist in the trie.<br/>
-</div>
-<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="Stog_trie.S.html#TYPEpath">path</a> -&gt; 'a <a href="Stog_trie.S.html#TYPEt">t</a> -&gt; 'a list</code></pre><div class="info">
-Find all data associated to the given path or below, or an empty list
-         if such a path does not exist.<br/>
-</div>
+<pre><span class="keyword">module</span> Hid_map: <code class="type">Map.S</code><code class="type">  with type key = human_id</code></pre><hr width="100%"/>
 </div>
 
 
 
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

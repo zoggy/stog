@@ -1,0 +1,276 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Evaluation and templating</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  <div class="page-title">Evaluation and templating</div>
+</div>
+
+
+
+
+
+<div class="section"><div class="section-title" id="howitworks">How it works</div>
+<div class="float-right">
+<a href="engine.svg">
+<div class="img"><img alt="engine's big picture" class="img" src="engine.png" title="Data flow in Stog's engine. Click on the image to open the .svg file, which includes some links to reference documentation." width="350"/><div class="legend">
+Data flow in Stog's engine.</div></div></a>
+</div>
+<p>
+The figure on the side shows the global architecture of the
+Stog engine and the flow of data.
+</p>
+<p><a href="http://zoggy.github.io/stog/stog-elements.html">Stog elements</a> are read from the source directory
+and a <a href="http://zoggy.github.io/stog/ref-doc/Stog_types.html#TYPEstog">stog</a> structure is created.
+Since some elements may be in the cache and do not need to be recomputed,
+the small yellow boxes represent the filtering of elements in the stog
+structure to create a list of elements to compute.
+</p>
+<p>
+Two modules are represented on the figure (Module 1 and Module 2). More modules
+can be present, for example when loading <a href="http://zoggy.github.io/stog/writing_plugins.html">plugins</a>.
+</p>
+<p>These modules define functions associated to <em>levels</em>: Here
+the Module 1 has functions for levels 0, 20 and 30, while Module 2 has
+functions for levels 1 and 20.
+</p>
+<p>For each level, in ascending order, the stog structure is passed
+to the function at this level, for each module where there is one.
+These functions take the stog structure and the list of elements
+to compute. They return a new stog structure (which may be unchanged, if
+no element was changed or created).
+</p>
+<p>These &quot;level functions&quot; also take in parameter a data structure which is
+specific for each module. This data structure is also returned by the functions,
+as in a regular &quot;fold&quot; function.
+</p>
+<p>
+When the functions of all levels have been applied, the elements in the
+final stog structure are outputted to files in the target directory, according
+to their path in the source directory. The cache is updated with information
+about dependencies and contents of elements. For each module, a specific
+function is called to cache the final data associated to the module.
+All cache information is stored in the <span class="icode">.stog/cache</span> directory.
+</p>
+<p>
+The cached elements and dependencies will be used next time Stog is run,
+to know which elements must be recomputed, and cached module data will
+be used to initialize the data structure specific to each module.
+</p>
+<p>
+Stog comes with two predefined modules, &quot;html&quot; and &quot;blocks&quot;, each defining
+function for various levels. The &quot;level functions&quot; often apply rewrite rules
+on the elements' contents (which are XML trees) but can also perform other
+actions like gathering information in the module-specific data structure
+to use it in a higher level.
+</p>
+<p>Various levels are required to ensure some treatments or rewrite rules
+will be applied after
+others, for example to verify cross-element links. Levels used by predefined
+modules are numbered like lines in BASIC programs: 0, 50, 100, 120, ... making
+plugins able to insert new levels.
+</p>
+<p>Modules can define functions for negative levels, for example to make
+sure they will be applied before level 0.
+</p>
+<p>The first application of a level function to an element uses the
+type of the element to load the corresponding template; for example,
+if the element has type &quot;page&quot;, then a template <span class="icode">page.tmpl</span> will
+be looked for (in the <span class="icode">.stog/templates</span> directory).
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="env">Environment</div>
+<p>An environment is built containing the
+<a href="http://zoggy.github.io/stog/stog-main-element.html">site-wide attributes</a>.
+This environment is a set of rewrite rules. It is passed to every &quot;level function&quot;.
+</p>
+<p>
+A &quot;level function&quot; can enrich this environment with the attributes of an element
+(using <a href="http://zoggy.github.io/stog/ref-doc/Stog_engine.html#VALelt_env">this function</a>). This is what
+most of the default level functions do, in addition to defining rewrite rules,
+to get the &quot;rewrite environment&quot; to apply on each element to compute.
+</p>
+<p>
+The environment is used in the following way to rewrite XML trees.
+For each encountered node with tag <span class="icode">t</span>, <span class="icode">t</span> is looked up
+in the environment for its associated <em>function</em> <span class="icode">f</span>.
+</p>
+<p>If no <span class="icode">f</span> is found, then the XML node is left untouched
+and the children of the node are then analysed.
+</p>
+<p>If <span class="icode">f</span> is found, then it is called, given the environment,
+the attributes and the children of the node. Then the function returns
+a list of XML trees which must then be analysed.
+</p>
+<p>When this analyze reaches a fixpoint, the final XML is returned.
+</p>
+<p>This work is performed by the <span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl</a></span>
+library.</p>
+<p>Besides, the contents of the attributes are also analysed to perform such substitutions,
+before looking up for the tag in the environment.
+</p>
+<p>Stog comes with <a href="http://zoggy.github.io/stog/funs.html">predefined functions</a> (in two default modules)
+associated to some tags, but more can be created in
+<a href="http://zoggy.github.io/stog/writing_plugins.html">plugins</a>.
+</p>
+</div>
+
+
+
+
+
+<p class="alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Evaluation and templating&quot;</span>
+<span class="hl kwb">navbar-doc</span>=<span class="hl str">&quot;active&quot;</span>
+<span class="hl kwa">&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;howitworks&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;How it works&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;float-right&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;engine.svg&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;image</span> <span class="hl kwb">width</span>=<span class="hl str">&quot;350&quot;</span> <span class="hl kwb">src</span>=<span class="hl str">&quot;engine.png&quot;</span> <span class="hl kwb">alt</span>=<span class="hl str">&quot;engine's big picture&quot;</span>
+<span class="hl kwb">title</span>=<span class="hl str">&quot;Data flow in Stog's engine.</span>
+<span class="hl str"> Click on the image to open the .svg file, which</span>
+<span class="hl str">includes some links to reference documentation.&quot;</span><span class="hl kwa">&gt;</span>
+Data flow in Stog's engine.<span class="hl kwa">&lt;/image&gt;&lt;/a&gt;</span>
+<span class="hl kwa">&lt;/div&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The figure on the side shows the global architecture of the
+Stog engine and the flow of data.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-elements&quot;</span><span class="hl kwa">/&gt;</span> are read from the source directory
+and a <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;Stog_types#TYPEstog&quot;</span><span class="hl kwa">&gt;</span>stog<span class="hl kwa">&lt;/elt&gt;</span> structure is created.
+Since some elements may be in the cache and do not need to be recomputed,
+the small yellow boxes represent the filtering of elements in the stog
+structure to create a list of elements to compute.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Two modules are represented on the figure (Module <span class="hl num">1</span> and Module <span class="hl num">2</span>). More modules
+can be present, for example when loading <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;writing_plugins&quot;</span><span class="hl kwa">&gt;</span>plugins<span class="hl kwa">&lt;/elt&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>These modules define functions associated to <span class="hl kwa">&lt;em&gt;</span>levels<span class="hl kwa">&lt;/em&gt;</span>: Here
+the Module <span class="hl num">1</span> has functions for levels <span class="hl num">0</span>, <span class="hl num">20</span> and <span class="hl num">30</span>, while Module <span class="hl num">2</span> has
+functions for levels <span class="hl num">1</span> and <span class="hl num">20</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>For each level, in ascending order, the stog structure is passed
+to the function at this level, for each module where there is one.
+These functions take the stog structure and the list of elements
+to compute. They return a new stog structure (which may be unchanged, if
+no element was changed or created).
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>These <span class="hl str">&quot;level functions&quot;</span> also take in parameter a data structure which is
+specific for each module. This data structure is also returned by the functions,
+as in a regular <span class="hl str">&quot;fold&quot;</span> function.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+When the functions of all levels have been applied, the elements in the
+final stog structure are outputted to files in the target directory, according
+to their path in the source directory. The cache is updated with information
+about dependencies and contents of elements. For each module, a specific
+function is called to cache the final data associated to the module.
+All cache information is stored in the <span class="hl kwa">&lt;icode&gt;</span>.stog/cache<span class="hl kwa">&lt;/icode&gt;</span> directory.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The cached elements and dependencies will be used next time Stog is run,
+to know which elements must be recomputed, and cached module data will
+be used to initialize the data structure specific to each module.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Stog comes with two predefined modules, <span class="hl str">&quot;html&quot;</span> and <span class="hl str">&quot;blocks&quot;</span>, each defining
+function for various levels. The <span class="hl str">&quot;level functions&quot;</span> often apply rewrite rules
+on the elements' contents (which are XML trees) but can also perform other
+actions like gathering information in the module-specific data structure
+to use it in a higher level.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>Various levels are required to ensure some treatments or rewrite rules
+will be applied after
+others, for example to verify cross-element links. Levels used by predefined
+modules are numbered like lines in BASIC programs: <span class="hl num">0</span>, <span class="hl num">50</span>, <span class="hl num">100</span>, <span class="hl num">120</span>, ... making
+plugins able to insert new levels.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>Modules can define functions for negative levels, for example to make
+sure they will be applied before level <span class="hl num">0</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>The first application of a level function to an element uses the
+type of the element to load the corresponding template; for example,
+if the element has type <span class="hl str">&quot;page&quot;</span>, then a template <span class="hl kwa">&lt;icode&gt;</span>page.tmpl<span class="hl kwa">&lt;/icode&gt;</span> will
+be looked for (in the <span class="hl kwa">&lt;icode&gt;</span>.stog/templates<span class="hl kwa">&lt;/icode&gt;</span> directory).
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;env&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Environment&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>An environment is built containing the
+<span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-main-element&quot;</span><span class="hl kwa">&gt;</span>site-wide attributes<span class="hl kwa">&lt;/elt&gt;</span>.
+This environment is a set of rewrite rules. It is passed to every <span class="hl str">&quot;level function&quot;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+A <span class="hl str">&quot;level function&quot;</span> can enrich this environment with the attributes of an element
+(using <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;Stog_engine#VALelt_env&quot;</span><span class="hl kwa">&gt;</span>this function<span class="hl kwa">&lt;/elt&gt;</span>). This is what
+most of the default level functions do, in addition to defining rewrite rules,
+to get the <span class="hl str">&quot;rewrite environment&quot;</span> to apply on each element to compute.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+The environment is used in the following way to rewrite XML trees.
+For each encountered node with tag <span class="hl kwa">&lt;icode&gt;</span>t<span class="hl kwa">&lt;/icode&gt;</span>, <span class="hl kwa">&lt;icode&gt;</span>t<span class="hl kwa">&lt;/icode&gt;</span> is looked up
+in the environment for its associated <span class="hl kwa">&lt;em&gt;</span>function<span class="hl kwa">&lt;/em&gt; &lt;icode&gt;</span>f<span class="hl kwa">&lt;/icode&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>If no <span class="hl kwa">&lt;icode&gt;</span>f<span class="hl kwa">&lt;/icode&gt;</span> is found, then the XML node is left untouched
+and the children of the node are then analysed.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>If <span class="hl kwa">&lt;icode&gt;</span>f<span class="hl kwa">&lt;/icode&gt;</span> is found, then it is called, given the environment,
+the attributes and the children of the node. Then the function returns
+a list of XML trees which must then be analysed.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>When this analyze reaches a fixpoint, the final XML is returned.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>This work is performed by the <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span>Xtmpl<span class="hl kwa">&lt;/ext-a&gt;</span>
+library.<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>Besides, the contents of the attributes are also analysed to perform such substitutions,
+before looking up for the tag in the environment.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>Stog comes with <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;funs&quot;</span><span class="hl kwa">&gt;</span>predefined functions<span class="hl kwa">&lt;/page&gt;</span> (in two default modules)
+associated to some tags, but more can be created in
+<span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;writing_plugins&quot;</span><span class="hl kwa">&gt;</span>plugins<span class="hl kwa">&lt;/elt&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+</div>
+
+
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+
+</div> 
+</body>
+</html>

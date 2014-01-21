@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog library reference documentation : Stog_of_latex</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
+<div class="navbar"><a class="pre" href="Stog_svg.html" title="Stog_svg">Previous</a>
+ <a class="up" href="index.html" title="Index">Up</a>
+ <a class="post" href="Stog_latex.html" title="Stog_latex">Next</a>
+</div>
+<h1>Module <a href="type_Stog_of_latex.html">Stog_of_latex</a></h1>
+
+<pre><span class="keyword">module</span> Stog_of_latex: <code class="code">sig</code> <a href="Stog_of_latex.html">..</a> <code class="code">end</code></pre><div class="info module top">
+LaTeX to Stog translation.<br/>
+</div>
+<hr width="100%"/>
+
+<pre><span class="keyword">module</span> <a href="Stog_of_latex.SMap.html">SMap</a>: <code class="type">Map.S</code><code class="type">  with type key = string</code></pre>
+<pre><code><span id="TYPEparam"><span class="keyword">type</span> param</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTparam.prefix">prefix</span> : <code class="type">string option</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTparam.ext_file_prefix">ext_file_prefix</span> : <code class="type">string</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTparam.envs">envs</span> : <code class="type">string list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTparam.sectionning">sectionning</span> : <code class="type">string list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTparam.image_sizes">image_sizes</span> : <code class="type">string SMap.t</code>;</code></td>
+
+</tr></table>
+}
+
+
+
+<pre><code><span id="TYPEtree"><span class="keyword">type</span> tree</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top">
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTtree.Source"><span class="constructor">Source</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTtree.Block"><span class="constructor">Block</span></span> <span class="keyword">of</span> <code class="type"><a href="Stog_of_latex.html#TYPEblock">block</a></code></code></td>
+
+</tr></table>
+
+
+
+<pre><code><span id="TYPEblock"><span class="keyword">type</span> block</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTblock.tag">tag</span> : <code class="type">Xtmpl.name</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTblock.title">title</span> : <code class="type"><a href="Stog_of_latex.html#TYPEtree">tree</a> list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTblock.id">id</span> : <code class="type">string option</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTblock.subs">subs</span> : <code class="type"><a href="Stog_of_latex.html#TYPEtree">tree</a> list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTblock.atts">atts</span> : <code class="type">Xtmpl.attributes</code>;</code></td>
+
+</tr></table>
+}
+
+
+
+<pre><span id="TYPEpreambule_section"><span class="keyword">type</span> preambule_section</span> = <code class="type">string option * string</code> </pre>
+
+
+<pre><span id="TYPEpreambule"><span class="keyword">type</span> preambule</span> = <code class="type"><a href="Stog_of_latex.html#TYPEpreambule_section">preambule_section</a> list</code> </pre>
+
+
+<pre><code><span id="TYPEtex_file"><span class="keyword">type</span> tex_file</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTtex_file.preambule">preambule</span> : <code class="type"><a href="Stog_of_latex.html#TYPEpreambule">preambule</a></code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTtex_file.body">body</span> : <code class="type"><a href="Stog_of_latex.html#TYPEtree">tree</a> list</code>;</code></td>
+
+</tr></table>
+}
+
+
+
+<pre><span id="VALto_xml"><span class="keyword">val</span> to_xml</span> : <code class="type"><a href="Stog_of_latex.html#TYPEtree">tree</a> list -&gt; Xtmpl.tree list</code></pre>
+<pre><span id="VALstring_of_stog_directives"><span class="keyword">val</span> string_of_stog_directives</span> : <code class="type">?tags:'a list -&gt; ?notags:'a list -&gt; ('a * string) list -&gt; string</code></pre>
+<pre><span id="VALparse"><span class="keyword">val</span> parse</span> : <code class="type"><a href="Stog_of_latex.html#TYPEparam">param</a> -&gt;<br/>       string -&gt; string -&gt; <a href="Stog_of_latex.html#TYPEtex_file">tex_file</a> * <a href="Stog_of_latex.html#TYPEparam">param</a></code></pre></div>
+
+
+
+
+
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+
+</div> 
+</body>
+</html>

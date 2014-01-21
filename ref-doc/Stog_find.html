@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_find</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -43,12 +42,14 @@
  <a class="post" href="Stog_tags.html" title="Stog_tags">Next</a>
 </div>
 <h1>Module <a href="type_Stog_find.html">Stog_find</a></h1>
-<pre><span class="keyword">module</span> Stog_find: <code class="code">sig</code> <a href="Stog_find.html">..</a> <code class="code">end</code></pre><div class="info">
+
+<pre><span class="keyword">module</span> Stog_find: <code class="code">sig</code> <a href="Stog_find.html">..</a> <code class="code">end</code></pre><div class="info module top">
 Finding files.<br/>
 <b>Author(s):</b> Didier Remy<br/>
 <b>Version:</b> 0.1<br/>
 </div>
 <hr width="100%"/>
+
 <pre><code><span id="TYPEfilter"><span class="keyword">type</span> filter</span> = </code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top">
@@ -94,6 +95,7 @@ Finding files.<br/>
 </tr></table>
 
 
+
 <pre><code><span id="TYPEinterval"><span class="keyword">type</span> interval</span> = </code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top">
@@ -116,6 +118,7 @@ Finding files.<br/>
 <code><span id="TYPEELTinterval.Ge"><span class="constructor">Ge</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
 
 </tr></table>
+
 
 
 <pre><code><span id="TYPEmode"><span class="keyword">type</span> mode</span> = </code></pre><table class="typetable">
@@ -149,12 +152,16 @@ Finding files.<br/>
 </tr></table>
 
 
-<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="Stog_find.html#TYPEmode">mode</a> -&gt;<br/>       string list -&gt; <a href="Stog_find.html#TYPEfilter">filter</a> list -&gt; (string -&gt; unit) -&gt; unit</code></pre><pre><span id="VALfind_list"><span class="keyword">val</span> find_list</span> : <code class="type"><a href="Stog_find.html#TYPEmode">mode</a> -&gt; string list -&gt; <a href="Stog_find.html#TYPEfilter">filter</a> list -&gt; string list</code></pre></div>
+
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="Stog_find.html#TYPEmode">mode</a> -&gt;<br/>       string list -&gt; <a href="Stog_find.html#TYPEfilter">filter</a> list -&gt; (string -&gt; unit) -&gt; unit</code></pre>
+<pre><span id="VALfind_list"><span class="keyword">val</span> find_list</span> : <code class="type"><a href="Stog_find.html#TYPEmode">mode</a> -&gt; string list -&gt; <a href="Stog_find.html#TYPEfilter">filter</a> list -&gt; string list</code></pre></div>
 
 
 
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

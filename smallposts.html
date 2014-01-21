@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : My small posts</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="&lt;navbar-doc/&gt;"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  <div class="page-title">My small posts</div>
+</div>
+
+
+
+
+      Hello dear reader !
+      This is the body of the element &quot;/smallposts&quot;.
+      We can list our small posts here:
+      <div class="elt-item" itemprop="blogPosts" itemscope="" itemtype="http://schema.org/BlogPosting">
+  <div class="elt-item-title">
+    <link href="http://zoggy.github.io/stog/smallposts/post2.html" itemprop="url"/>
+    <a href="http://zoggy.github.io/stog/smallposts/post2.html"><span itemprop="name">Second post</span></a>
+  </div>
+  <div class="date">January 22, 2014</div>
+  <div class="elt-intro" itemprop="headline">
+        The second post, with hid = &quot;/smallposts/post2&quot;.
+        Name: <strong>James Bond</strong>
+      </div>
+</div><div class="elt-item" itemprop="blogPosts" itemscope="" itemtype="http://schema.org/BlogPosting">
+  <div class="elt-item-title">
+    <link href="http://zoggy.github.io/stog/smallposts/post1.html" itemprop="url"/>
+    <a href="http://zoggy.github.io/stog/smallposts/post1.html"><span itemprop="name">First post</span></a>
+  </div>
+  <div class="date">January 21, 2014</div>
+  <div class="elt-intro" itemprop="headline">
+      The first post, with hid = &quot;/smallposts/post1&quot;.
+    </div>
+</div>
+    
+
+
+
+
+<p class="alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+  <pre class="code-xml"><span class="hl kwa">&lt;multi</span> <span class="hl kwb">sets</span>=<span class="hl str">&quot;smallposts&quot;</span>
+  <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>
+<span class="hl kwa">&gt;</span>
+  <span class="hl com">&lt;!-- definition of a rule, shared by all elements --&gt;</span>
+  <span class="hl kwa">&lt;st</span> <span class="hl kwb">foo</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;&lt;strong&gt;&lt;contents/&gt;&lt;/strong&gt;&lt;/st&gt;</span>
+  <span class="hl com">&lt;!-- body of the &quot;multi&quot; element --&gt;</span>
+  <span class="hl kwa">&lt;contents&gt;</span>
+    <span class="hl kwa">&lt;smallpost</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;post1&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;First post&quot;</span> <span class="hl kwb">date</span>=<span class="hl str">&quot;2014/01/21&quot;</span><span class="hl kwa">&gt;</span>
+      The first post, with hid = <span class="hl str">&quot;&lt;elt-hid/&gt;&quot;</span>.
+    <span class="hl kwa">&lt;/smallpost&gt;</span>
+
+    <span class="hl com">&lt;!-- this element defines a new rule &lt;name&gt;, using with-contents=&quot;true&quot;</span>
+<span class="hl com">      and a &lt;contents&gt; node. The new rule is available in this &quot;smallpost&quot;</span>
+<span class="hl com">      element only.</span>
+<span class="hl com">    --&gt;</span>
+    <span class="hl kwa">&lt;smallpost</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;post2&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Second post&quot;</span> <span class="hl kwb">date</span>=<span class="hl str">&quot;2014/01/22&quot;</span>
+      <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>
+      <span class="hl kwa">&lt;name</span> <span class="hl kwb">foo</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span>Name: <span class="hl kwa">&lt;st</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;contents/&gt;&lt;/st&gt;&lt;/name&gt;</span>
+      <span class="hl kwa">&lt;contents&gt;</span>
+        The second post, with hid = <span class="hl str">&quot;&lt;elt-hid/&gt;&quot;</span>.
+        <span class="hl kwa">&lt;name&gt;</span>James Bond<span class="hl kwa">&lt;/name&gt;</span>
+      <span class="hl kwa">&lt;/contents&gt;</span>
+    <span class="hl kwa">&lt;/smallpost&gt;</span>
+
+  <span class="hl com">&lt;!-- The body of the final element with hid &quot;smallposts&quot;.</span>
+<span class="hl com">    We use again with-contents=&quot;true&quot; do define a new rule</span>
+<span class="hl com">    &lt;hello&gt; for this element only.</span>
+<span class="hl com">  --&gt;</span>
+  <span class="hl kwa">&lt;contents</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;page&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;My small posts&quot;</span>
+    <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>
+    <span class="hl kwa">&lt;hello</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span>Hello <span class="hl kwa">&lt;if</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;&lt;dummy_&gt;</span>world<span class="hl kwa">&lt;/dummy_&gt;&lt;name/&gt;&lt;/if&gt;</span> !<span class="hl kwa">&lt;/hello&gt;</span>
+    <span class="hl kwa">&lt;contents&gt;</span>
+      <span class="hl kwa">&lt;hello</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;dear reader&quot;</span><span class="hl kwa">/&gt;</span>
+      This is the body of the element <span class="hl str">&quot;&lt;elt-hid/&gt;&quot;</span>.
+      We can list our small posts here:
+      <span class="hl kwa">&lt;elements</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;smallpost&quot;</span> <span class="hl kwb">set</span>=<span class="hl str">&quot;smallposts&quot;</span><span class="hl kwa">/&gt;</span>
+    <span class="hl kwa">&lt;/contents&gt;</span> <span class="hl com">&lt;!-- contents of the body of the &quot;main&quot; element&quot; --&gt;</span>
+  <span class="hl kwa">&lt;/contents&gt;</span> <span class="hl com">&lt;!-- contents of the &quot;main&quot; element --&gt;</span>
+ <span class="hl kwa">&lt;/contents&gt;</span> <span class="hl com">&lt;!-- contents of the multi element --&gt;</span>
+<span class="hl kwa">&lt;/multi&gt;</span></pre>
+</div>
+
+
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+
+</div> 
+</body>
+</html>

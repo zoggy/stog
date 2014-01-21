@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_html5</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -40,13 +39,15 @@
 <div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_filter.html" title="Stog_filter">Previous</a>
  <a class="up" href="index.html" title="Index">Up</a>
- <a class="post" href="Stog_html.html" title="Stog_html">Next</a>
+ <a class="post" href="Stog_engine.html" title="Stog_engine">Next</a>
 </div>
 <h1>Module <a href="type_Stog_html5.html">Stog_html5</a></h1>
-<pre><span class="keyword">module</span> Stog_html5: <code class="code">sig</code> <a href="Stog_html5.html">..</a> <code class="code">end</code></pre><div class="info">
+
+<pre><span class="keyword">module</span> Stog_html5: <code class="code">sig</code> <a href="Stog_html5.html">..</a> <code class="code">end</code></pre><div class="info module top">
 Handling HTML5.<br/>
 </div>
 <hr width="100%"/>
+
 <pre><span id="VALhack_self_closed"><span class="keyword">val</span> hack_self_closed</span> : <code class="type">Xtmpl.tree -&gt; Xtmpl.tree</code></pre><div class="info">
 Prevent tags to self-close (i.e. &lt;tag/&gt;), except
   for <a href="http://www.w3.org/TR/html5/syntax.html#void-elements">specifc HTML5 void tags</a>.<br/>
@@ -57,6 +58,8 @@ Prevent tags to self-close (i.e. &lt;tag/&gt;), except
 
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

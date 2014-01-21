@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog main element</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  <div class="page-title">Stog main element</div>
+</div>
+
+
+
+
+<p>
+One <a href="http://zoggy.github.io/stog/stog-elements.html">element</a> is called the main element. This element is a regular
+element with the <span class="icode">main</span> attribute set to &quot;true&quot;. There can be only
+one main element.
+</p>
+<p>
+Some attributes of this main element are used to specify site-wide information:
+</p>
+<ul>
+<li><b>title</b>: The title of the blog is the same as this element and can be accessed
+with &lt;site-title/&gt; in templates,</li>
+<li><b>stog:site-description</b>: A short description of the site; use &lt;site-description/&gt;
+to access it in templates;</li>
+<li><b>stog:site-url</b>: The base url of the site, used to forge urls when generating pages;
+use &lt;site-url/&gt; to insert it in templates,</li>
+<li><b>stog:site-email</b>: A contact email for the site, accessible with &lt;site-email/&gt;,</li>
+<li><b>stog:rss-length</b>: The default length of RSS feeds.</li>
+</ul>
+<p>
+In the main element, any attribute beginning with &quot;stog:&quot; will be used as global attribute
+and accessible in all templates by its name. Other attributes are associated to the element only.
+</p>
+
+
+
+
+
+<p class="alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Stog main element&quot;</span>
+<span class="hl kwb">navbar-doc</span>=<span class="hl str">&quot;active&quot;</span>
+<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+One <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-elements&quot;</span><span class="hl kwa">&gt;</span>element<span class="hl kwa">&lt;/elt&gt;</span> is called the main element. This element is a regular
+element with the <span class="hl kwa">&lt;icode&gt;</span>main<span class="hl kwa">&lt;/icode&gt;</span> attribute set to <span class="hl str">&quot;true&quot;</span>. There can be only
+one main element.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Some attributes of this main element are used to specify site-wide information:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>title<span class="hl kwa">&lt;/b&gt;</span>: The title of the blog is the same as this element and can be accessed
+with <span class="hl kwd">&amp;lt;</span>site-title/<span class="hl kwd">&amp;gt;</span> in templates,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog:site-description<span class="hl kwa">&lt;/b&gt;</span>: A short description of the site; use <span class="hl kwd">&amp;lt;</span>site-description/<span class="hl kwd">&amp;gt;</span>
+to access it in templates;<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog:site-url<span class="hl kwa">&lt;/b&gt;</span>: The base url of the site, used to forge urls when generating pages;
+use <span class="hl kwd">&amp;lt;</span>site-url/<span class="hl kwd">&amp;gt;</span> to insert it in templates,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog:site-email<span class="hl kwa">&lt;/b&gt;</span>: A contact email for the site, accessible with <span class="hl kwd">&amp;lt;</span>site-email/<span class="hl kwd">&amp;gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;b&gt;</span>stog:rss-length<span class="hl kwa">&lt;/b&gt;</span>: The default length of RSS feeds.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+In the main element, any attribute beginning with <span class="hl str">&quot;stog:&quot;</span> will be used as global attribute
+and accessible in all templates by its name. Other attributes are associated to the element only.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+</div>
+
+
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+
+</div> 
+</body>
+</html>

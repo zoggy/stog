@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Developing plugins</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -41,26 +40,28 @@
 <p>
 Plugins are written in OCaml. The compiled OCaml code is then
 loaded in Stog with the <span class="icode">--plugin</span> or <span class="icode">--package</span>
-options of <span class="icode">stog</span> (see <a href="http://zoggy.github.io/stog/getting_started.html#running">Running Stog</a>).
+options of <span class="icode">stog</span> (see <a href="http://zoggy.github.io/stog/running.html">Running Stog</a>).
+</p>
+<p>
+A plugin can register new base rules and new modules.
 </p>
 
-<ul class="toc"><li class="toc-section"><a href="#writing">Writing the code</a></li><li class="toc-section"><a href="#compiling">Compilation</a></li><li class="toc-section"><a href="#using">Using</a></li><li class="toc-section"><a href="#cache">Keeping the cache system in the loop</a></li></ul>
-<div class="section"><div class="section-title" id="writing">Writing the code</div>
+<ul class="toc"><li class="toc-section"><a href="http://zoggy.github.io/stog/writing_plugins.html#baserules">Registering base rules</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/writing_plugins.html#modules">Registering modules</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/writing_plugins.html#compiling">Compilation</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/writing_plugins.html#using">Using</a></li></ul>
+<div class="section"><div class="section-title" id="baserules">Registering base rules</div>
 <p>
-A plugin just registers new functions associated to tags.
+A plugin can add rewrite rules to the rules of function
+<a href="http://zoggy.github.io/stog/module_base.html#base">base</a> of module <a href="http://zoggy.github.io/stog/module_base.html">Base</a>.
+</p>
+<p>
 Here is an example:
 </p>
 <pre class="code-ocaml"><span class="hl com">(** Stog plugin example. *)</span>
 
-<span class="hl kwa">let</span> fun_list env args subs <span class="hl opt">=</span>
+<span class="hl kwa">let</span> fun_list stog env args subs <span class="hl opt">=</span>
   <span class="hl com">(* get the optional sep attribute ... *)</span>
   <span class="hl kwa">let</span> sep <span class="hl opt">=</span> <span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>opt_arg args <span class="hl opt">(</span><span class="hl str">&quot;&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;sep&quot;</span><span class="hl opt">)</span> <span class="hl kwa">in</span>
-  <span class="hl com">(* and parse it as xml *)</span>
-  <span class="hl kwa">let</span> xml <span class="hl opt">=</span> <span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>xml_of_string sep <span class="hl kwa">in</span>
-  <span class="hl com">(* We can access the stog structure with [Stog_plug.stog ()] .</span>
-<span class="hl com">     We don't use it here.</span>
-<span class="hl com">  *)</span>
-
+  <span class="hl com">(* reverse the separator, for final list will be reversed *)</span>
+  <span class="hl kwa">let</span> sep <span class="hl opt">=</span> <span class="hl kwc">List</span><span class="hl opt">.</span>rev sep <span class="hl kwa">in</span>
   <span class="hl com">(* then insert the separator between all children of the node *)</span>
   <span class="hl kwa">let rec</span> iter acc <span class="hl opt">=</span> <span class="hl kwa">function</span>
     <span class="hl opt">[] -&gt;</span> <span class="hl kwc">List</span><span class="hl opt">.</span>rev acc
@@ -68,19 +69,31 @@ Here is an example:
       <span class="hl kwa">let</span> acc <span class="hl opt">=</span>
         <span class="hl kwa">match</span> acc <span class="hl kwa">with</span>
           <span class="hl opt">[] -&gt; [</span>h<span class="hl opt">]</span>
-        | _ <span class="hl opt">-&gt;</span> h <span class="hl opt">::</span> xml <span class="hl opt">::</span> acc
+        | _ <span class="hl opt">-&gt;</span> h <span class="hl opt">::</span> sep @ acc
       <span class="hl kwa">in</span>
       iter acc q
   <span class="hl kwa">in</span>
   <span class="hl com">(* and finally return the list of xml trees *)</span>
-  iter <span class="hl opt">[]</span> subs
+  <span class="hl opt">(</span>stog<span class="hl opt">,</span> iter <span class="hl opt">[]</span> subs<span class="hl opt">)</span>
 <span class="hl opt">;;</span>
 
 <span class="hl com">(* register the new function, associated to tag &quot;list&quot;.</span>
 <span class="hl com">  Before stog 0.3, this function was called [Stog_plug.register_fun]. *)</span>
-<span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_rule <span class="hl opt">(</span><span class="hl str">&quot;&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;list&quot;</span><span class="hl opt">)</span> fun_list<span class="hl opt">;;</span></pre>
+<span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_html_base_rule <span class="hl opt">(</span><span class="hl str">&quot;&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;list&quot;</span><span class="hl opt">)</span> fun_list<span class="hl opt">;;</span></pre>
 <p>
 Have a look at the <a href="http://zoggy.github.io/stog/ref-doc">Stog library reference documentation</a>.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="modules">Registering modules</div>
+<p>
+A plugin can also register a complete module, with named functions
+associated to levels. These levels can also be specified in
+the <code>.stog/config</code> file as explained
+<a href="http://zoggy.github.io/stog/funs.html#config_funs">here</a>.
+</p>
+<p>An example of such a plugin is
+<span class="ext-a"><a href="https://github.com/zoggy/stog/blob/master/plugins/stog_multi_elt.ml">stog_multi_elt</a></span>.
 </p>
 </div>
 
@@ -108,7 +121,7 @@ The plugin is used by specifying it on the <span class="icode">stog</span> comma
 <pre class="code-sh">stog <span class="hl opt">--</span>package plugin_example ...</pre>
 </div>
 <p>
-With our plugin example, we can use the new &quot;list&quot;:
+With our plugin example registering just a base rule, we can use the new &quot;list&quot;:
 </p>
 <pre class="code-xml"><span class="hl kwa">&lt;list</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;&amp;lt;b&amp;gt; -- &amp;lt;/b&amp;gt;&quot;</span><span class="hl kwa">&gt;&lt;span&gt;</span>first thing<span class="hl kwa">&lt;/span&gt;</span>second thing<span class="hl kwa">&lt;div&gt;</span>something else<span class="hl kwa">&lt;/div&gt;&lt;/list&gt;</span></pre>
 <p>
@@ -117,28 +130,7 @@ This will be evaluated (reduced) to
 <pre class="code-xml"><span class="hl kwa">&lt;span&gt;</span>first thing<span class="hl kwa">&lt;/span&gt;&lt;b&gt;</span> -- <span class="hl kwa">&lt;/b&gt;</span>second thing<span class="hl kwa">&lt;b&gt;</span> -- <span class="hl kwa">&lt;/b&gt;&lt;div&gt;</span>something else<span class="hl kwa">&lt;/div&gt;</span></pre>
 </div>
 
-<div class="section"><div class="section-title" id="cache">Keeping the cache system in the loop</div>
-<p>
-The cache system (see <a href="http://zoggy.github.io/stog/getting_started.html#running">Running Stog</a>) must be aware
-of dependencies of each element on other elements and files.
-</p>
-<p>
-If a new rule defined by a plugin uses a file or implies a dependency
-from an element to another, this rule must declare this dependency
-using the <a href="http://zoggy.github.io/stog/ref-doc/Stog_plug.html#VALadd_dep"><code>Stog_plug.add_dep</code></a> function:
-</p>
-<pre class="code-ocaml"><span class="hl kwd">Stog_plug</span><span class="hl opt">.</span>add_dep <span class="hl opt">:</span> <span class="hl kwd">Stog_types</span><span class="hl opt">.</span>elt <span class="hl opt">-&gt;</span> dependency <span class="hl opt">-&gt;</span> <span class="hl kwc">unit</span></pre>
-<p>
-If a plugin computes information which could be cached, it can declare a
-new cache for this informations, using the
-<a href="http://zoggy.github.io/stog/ref-doc/Stog_plug.html#VALregister_cache"><code>Stog_plug.register_cache</code></a> function:
-</p>
-<pre class="code-ocaml"><span class="hl kwa">val</span> register_cache <span class="hl opt">: (</span><span class="hl kwa">module</span> <span class="hl kwd">Stog_cache</span><span class="hl opt">.</span><span class="hl kwd">Cache</span><span class="hl opt">) -&gt;</span> <span class="hl kwc">unit</span></pre>
-<p>
-The Cache module to provide is very simple; have a look at the
-<a href="http://zoggy.github.io/stog/ref-doc/Stog_cache.Cache.html"><code>Stog_cache.Cache</code></a>module type.
-</p>
-</div>
+
 
 
 
@@ -155,13 +147,19 @@ For information you can see the <a href="#pagesource"> source code of the page</
 <span class="hl kwa">&lt;p&gt;</span>
 Plugins are written in OCaml. The compiled OCaml code is then
 loaded in Stog with the <span class="hl kwa">&lt;icode&gt;</span>--plugin<span class="hl kwa">&lt;/icode&gt;</span> or <span class="hl kwa">&lt;icode&gt;</span>--package<span class="hl kwa">&lt;/icode&gt;</span>
-options of <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> (see <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;getting_started#running&quot;</span><span class="hl kwa">/&gt;</span>).
+options of <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> (see <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;running&quot;</span><span class="hl kwa">/&gt;</span>).
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+A plugin can register new base rules and new modules.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;prepare-toc&gt;</span>
 <span class="hl kwa">&lt;toc/&gt;</span>
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;writing&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Writing the code&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;baserules&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Registering base rules&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
-A plugin just registers new functions associated to tags.
+A plugin can add rewrite rules to the rules of function
+<span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base#base&quot;</span><span class="hl kwa">/&gt;</span> of module <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base&quot;</span><span class="hl kwa">&gt;</span>Base<span class="hl kwa">&lt;/elt&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
 Here is an example:
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span>
@@ -169,6 +167,18 @@ Here is an example:
 <span class="hl kwa">&lt;/hcode&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 Have a look at the <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;/ref-doc/index&quot;</span><span class="hl kwa">/&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/section&gt;</span>
+
+<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;modules&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Registering modules&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+A plugin can also register a complete module, with named functions
+associated to levels. These levels can also be specified in
+the <span class="hl kwa">&lt;code&gt;</span>.stog/config<span class="hl kwa">&lt;/code&gt;</span> file as explained
+<span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;funs#config_funs&quot;</span><span class="hl kwa">&gt;</span>here<span class="hl kwa">&lt;/elt&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>An example of such a plugin is
+<span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/stog/blob/master/plugins/stog_multi_elt.ml&quot;</span><span class="hl kwa">&gt;</span>stog_multi_elt<span class="hl kwa">&lt;/ext-a&gt;</span>.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>
 
@@ -196,7 +206,7 @@ The plugin is used by specifying it on the <span class="hl kwa">&lt;icode&gt;</s
 <span class="hl kwa">&lt;command-line&gt;</span>stog --package plugin_example ...<span class="hl kwa">&lt;/command-line&gt;</span>
 <span class="hl kwa">&lt;/div&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
-With our plugin example, we can use the new <span class="hl str">&quot;list&quot;</span>:
+With our plugin example registering just a base rule, we can use the new <span class="hl str">&quot;list&quot;</span>:
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[
 <span class="hl kwa">&lt;list</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;&amp;lt;b&amp;gt; -- &amp;lt;/b&amp;gt;&quot;</span><span class="hl kwa">&gt;&lt;span&gt;</span>first thing<span class="hl kwa">&lt;/span&gt;</span>second thing<span class="hl kwa">&lt;div&gt;</span>something else<span class="hl kwa">&lt;/div&gt;&lt;/list&gt;</span>]]<span class="hl kwa">&gt;</span>
@@ -209,33 +219,37 @@ This will be evaluated (reduced) to
 <span class="hl kwa">&lt;/hcode&gt;</span>
 <span class="hl kwa">&lt;/section&gt;</span>
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;cache&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Keeping the cache system in the loop&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The cache system (see <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;getting_started#running&quot;</span><span class="hl kwa">/&gt;</span>) must be aware
-of dependencies of each element on other elements and files.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-If a new rule defined by a plugin uses a file or implies a dependency
-from an element to another, this rule must declare this dependency
-using the <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;Stog_plug#VALadd_dep&quot;</span><span class="hl kwa">&gt;&lt;code&gt;</span>Stog_plug.add_dep<span class="hl kwa">&lt;/code&gt;&lt;/elt&gt;</span> function:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ocaml&gt;</span>Stog_plug.add_dep : Stog_types.elt -<span class="hl kwa">&gt;</span> dependency -<span class="hl kwa">&gt;</span> unit<span class="hl kwa">&lt;/ocaml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-If a plugin computes information which could be cached, it can declare a
-new cache for this informations, using the
-<span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;Stog_plug#VALregister_cache&quot;</span><span class="hl kwa">&gt;&lt;code&gt;</span>Stog_plug.register_cache<span class="hl kwa">&lt;/code&gt;&lt;/elt&gt;</span> function:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ocaml&gt;</span>val register_cache : (module Stog_cache.Cache) -<span class="hl kwa">&gt;</span> unit<span class="hl kwa">&lt;/ocaml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The Cache module to provide is very simple; have a look at the
-<span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;Stog_cache.Cache&quot;</span><span class="hl kwa">&gt;&lt;code&gt;</span>Stog_cache.Cache<span class="hl kwa">&lt;/code&gt;&lt;/elt&gt;</span>module type.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+<span class="hl com">&lt;!--</span>
+<span class="hl com">&lt;section id=&quot;cache&quot; title=&quot;Keeping the cache system in the loop&quot;&gt;</span>
+<span class="hl com">&lt;p&gt;</span>
+<span class="hl com">The cache system (see &lt;elt href=&quot;running&quot;/&gt;) must be aware</span>
+<span class="hl com">of dependencies of each element on other elements and files.</span>
+<span class="hl com">&lt;/p&gt;</span>
+<span class="hl com">&lt;p&gt;</span>
+<span class="hl com">If a new rule defined by a plugin uses a file or implies a dependency</span>
+<span class="hl com">from an element to another, this rule must declare this dependency</span>
+<span class="hl com">using the &lt;elt href=&quot;Stog_plug#VALadd_dep&quot;&gt;&lt;code&gt;Stog_plug.add_dep&lt;/code&gt;&lt;/elt&gt; function:</span>
+<span class="hl com">&lt;/p&gt;</span>
+<span class="hl com">&lt;ocaml&gt;Stog_plug.add_dep : Stog_types.elt -&gt; dependency -&gt; unit&lt;/ocaml&gt;</span>
+<span class="hl com">&lt;p&gt;</span>
+<span class="hl com">If a plugin computes information which could be cached, it can declare a</span>
+<span class="hl com">new cache for this informations, using the</span>
+<span class="hl com">&lt;elt href=&quot;Stog_plug#VALregister_cache&quot;&gt;&lt;code&gt;Stog_plug.register_cache&lt;/code&gt;&lt;/elt&gt; function:</span>
+<span class="hl com">&lt;/p&gt;</span>
+<span class="hl com">&lt;ocaml&gt;val register_cache : (module Stog_cache.Cache) -&gt; unit&lt;/ocaml&gt;</span>
+<span class="hl com">&lt;p&gt;</span>
+<span class="hl com">The Cache module to provide is very simple; have a look at the</span>
+<span class="hl com">&lt;elt href=&quot;Stog_cache.Cache&quot;&gt;&lt;code&gt;Stog_cache.Cache&lt;/code&gt;&lt;/elt&gt;module type.</span>
+<span class="hl com">&lt;/p&gt;</span>
+<span class="hl com">&lt;/section&gt;</span>
+<span class="hl com">--&gt;</span>
 <span class="hl kwa">&lt;/prepare-toc&gt;</span>
 <span class="hl kwa">&lt;/page&gt;</span></pre>
 </div>
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

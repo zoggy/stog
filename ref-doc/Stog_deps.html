@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_deps</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -38,37 +37,25 @@
 
 
 <div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_latex.html" title="Stog_latex">Previous</a>
+<div class="navbar"><a class="pre" href="Stog_ocaml_types.html" title="Stog_ocaml_types">Previous</a>
  <a class="up" href="index.html" title="Index">Up</a>
  <a class="post" href="Stog_tmpl.html" title="Stog_tmpl">Next</a>
 </div>
 <h1>Module <a href="type_Stog_deps.html">Stog_deps</a></h1>
-<pre><span class="keyword">module</span> Stog_deps: <code class="code">sig</code> <a href="Stog_deps.html">..</a> <code class="code">end</code></pre><div class="info">
+
+<pre><span class="keyword">module</span> Stog_deps: <code class="code">sig</code> <a href="Stog_deps.html">..</a> <code class="code">end</code></pre><div class="info module top">
 </div>
 <hr width="100%"/>
-<pre><code><span id="TYPEdependency"><span class="keyword">type</span> dependency</span> = </code></pre><table class="typetable">
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTdependency.File"><span class="constructor">File</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td>
 
-</tr>
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTdependency.Elt"><span class="constructor">Elt</span></span> <span class="keyword">of</span> <code class="type">string</code></code></td>
-
-</tr></table>
-
-
-<pre><span class="keyword">module</span> <a href="Stog_deps.Depset.html">Depset</a>: <code class="type">Set.S</code><code class="type">  with type elt = dependency</code></pre><pre><span id="VALdeps"><span class="keyword">val</span> deps</span> : <code class="type">Depset.t Stog_types.Str_map.t Pervasives.ref</code></pre><pre><span id="VALadd_dep"><span class="keyword">val</span> add_dep</span> : <code class="type"><a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; Depset.elt -&gt; unit</code></pre><pre><span id="VALmax_deps_date"><span class="keyword">val</span> max_deps_date</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; string -&gt; float</code></pre></div>
+<pre><span id="VALadd_dep"><span class="keyword">val</span> add_dep</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> <a href="Stog_types.html#TYPEdependency">Stog_types.dependency</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre>
+<pre><span id="VALmax_deps_date"><span class="keyword">val</span> max_deps_date</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; (string -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a>) -&gt; string -&gt; float</code></pre></div>
 
 
 
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

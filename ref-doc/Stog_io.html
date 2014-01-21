@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_io</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -43,23 +42,31 @@
  <a class="post" href="Stog_info.html" title="Stog_info">Next</a>
 </div>
 <h1>Module <a href="type_Stog_io.html">Stog_io</a></h1>
-<pre><span class="keyword">module</span> Stog_io: <code class="code">sig</code> <a href="Stog_io.html">..</a> <code class="code">end</code></pre><div class="info">
+
+<pre><span class="keyword">module</span> Stog_io: <code class="code">sig</code> <a href="Stog_io.html">..</a> <code class="code">end</code></pre><div class="info module top">
 Building a stog structure from a project tree.<br/>
 </div>
 <hr width="100%"/>
+
 <pre><span id="VALbool_of_string"><span class="keyword">val</span> bool_of_string</span> : <code class="type">string -&gt; bool</code></pre><div class="info">
 <code class="code">bool_of_string &quot;0&quot; = false</code> and <code class="code">bool_of_string &quot;false&quot; = false</code>.
   <code class="code">bool_of_string</code> returns <code class="code">true</code> for any other value.<br/>
 </div>
+
 <pre><span id="VALread_stog"><span class="keyword">val</span> read_stog</span> : <code class="type">string -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><div class="info">
 Build a <a href="Stog_types.html#TYPEstog"><code class="code">Stog_types.stog</code></a> structure from the given directory.<br/>
 </div>
+
+<pre><span id="VALfill_elt_from_atts_and_subs"><span class="keyword">val</span> fill_elt_from_atts_and_subs</span> : <code class="type"><a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; Xtmpl.attributes -&gt; <a href="Stog_types.html#TYPEbody">Stog_types.body</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a></code></pre><div class="info">
+</div>
 </div>
 
 
 
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

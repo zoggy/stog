@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"><channel><title>Stog: print</title><link>http://zoggy.github.io/stog/kw_print.html</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>16 Jan 2014 00:00:00 +0000</pubDate><lastBuildDate>16 Jan 2014 00:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.io/stog</url><title>Stog</title><link>http://zoggy.github.io/stog</link></image><item><title>ocaml-printf</title><link>http://zoggy.github.io/stog/posts/ocaml-printf.html</link><description>
+&lt;p&gt;
+Since &lt;elt href=&quot;release-0.10.0&quot;/&gt;, the &lt;rule&gt;ocaml-printf&lt;/rule&gt;
+can be used to access the content of computed OCaml values, as
+strings.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/ocaml-printf.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>16 Jan 2014 00:00:00 +0000</pubDate><category>stog</category><category>ocaml</category><category>evaluation</category><category>code</category><category>print</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/ocaml-printf.html</guid></item></channel></rss>

@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog library reference documentation : Stog_of_latex.SMap</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
+<code class="code"><span class="keyword">sig</span><br/>
+  <span class="keyword">type</span> key = string<br/>
+  <span class="keyword">type</span> +<span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> empty : <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> is_empty : <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> bool<br/>
+  <span class="keyword">val</span> mem : key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> bool<br/>
+  <span class="keyword">val</span> add : key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> singleton : key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> remove : key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> merge :<br/>
+    (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a option <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b option <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>c option) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>c t<br/>
+  <span class="keyword">val</span> compare : (<span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> int) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> int<br/>
+  <span class="keyword">val</span> equal : (<span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> bool<br/>
+  <span class="keyword">val</span> iter : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> unit<br/>
+  <span class="keyword">val</span> fold : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b<br/>
+  <span class="keyword">val</span> for_all : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> bool<br/>
+  <span class="keyword">val</span> exists : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> bool<br/>
+  <span class="keyword">val</span> filter : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> partition : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t * <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> cardinal : <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> int<br/>
+  <span class="keyword">val</span> bindings : <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> (key * <span class="keywordsign">'</span>a) list<br/>
+  <span class="keyword">val</span> min_binding : <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> key * <span class="keywordsign">'</span>a<br/>
+  <span class="keyword">val</span> max_binding : <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> key * <span class="keywordsign">'</span>a<br/>
+  <span class="keyword">val</span> choose : <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> key * <span class="keywordsign">'</span>a<br/>
+  <span class="keyword">val</span> split : key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t * <span class="keywordsign">'</span>a option * <span class="keywordsign">'</span>a t<br/>
+  <span class="keyword">val</span> find : key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
+  <span class="keyword">val</span> map : (<span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b t<br/>
+  <span class="keyword">val</span> mapi : (key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b t<br/>
+<span class="keyword">end</span></code></div>
+
+
+
+
+
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+
+</div> 
+</body>
+</html>

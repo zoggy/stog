@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_tags</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -49,6 +48,7 @@
   <span class="keyword">val</span> elt : string<br/>
   <span class="keyword">val</span> elt_body : string<br/>
   <span class="keyword">val</span> elt_date : string<br/>
+  <span class="keyword">val</span> elt_datetime : string<br/>
   <span class="keyword">val</span> elt_keywords : string<br/>
   <span class="keyword">val</span> elt_hid : string<br/>
   <span class="keyword">val</span> elt_intro : string<br/>
@@ -60,13 +60,17 @@
   <span class="keyword">val</span> elt_url : string<br/>
   <span class="keyword">val</span> sep : string<br/>
   <span class="keyword">val</span> archive_tree : string<br/>
+  <span class="keyword">val</span> as_xml : string<br/>
   <span class="keyword">val</span> block : string<br/>
   <span class="keyword">val</span> command_line : string<br/>
   <span class="keyword">val</span> counter : string<br/>
+  <span class="keyword">val</span> dummy_ : string<br/>
   <span class="keyword">val</span> elements : string<br/>
   <span class="keyword">val</span> ext_a : string<br/>
+  <span class="keyword">val</span> error_ : string<br/>
   <span class="keyword">val</span> graph : string<br/>
   <span class="keyword">val</span> hcode : string<br/>
+  <span class="keyword">val</span> hid_sep : string<br/>
   <span class="keyword">val</span> icode : string<br/>
   <span class="keyword">val</span> if_ : string<br/>
   <span class="keyword">val</span> image : string<br/>
@@ -74,28 +78,37 @@
   <span class="keyword">val</span> include_ : string<br/>
   <span class="keyword">val</span> keyword : string<br/>
   <span class="keyword">val</span> langswitch : string<br/>
+  <span class="keyword">val</span> late_inc : string<br/>
   <span class="keyword">val</span> latex : string<br/>
+  <span class="keyword">val</span> latex_body : string<br/>
   <span class="keyword">val</span> list : string<br/>
   <span class="keyword">val</span> n_columns : string<br/>
   <span class="keyword">val</span> next : string<br/>
   <span class="keyword">val</span> ocaml : string<br/>
   <span class="keyword">val</span> ocaml_eval : string<br/>
+  <span class="keyword">val</span> ocaml_printf : string<br/>
   <span class="keyword">val</span> page : string<br/>
+  <span class="keyword">val</span> paragraph : string<br/>
   <span class="keyword">val</span> post : string<br/>
+  <span class="keyword">val</span> prefix_svg_ids : string<br/>
   <span class="keyword">val</span> prepare_toc : string<br/>
   <span class="keyword">val</span> previous : string<br/>
   <span class="keyword">val</span> search_form : string<br/>
   <span class="keyword">val</span> section : string<br/>
   <span class="keyword">val</span> subsection : string<br/>
+  <span class="keyword">val</span> subsubsection : string<br/>
   <span class="keyword">val</span> toc : string<br/>
   <span class="keyword">val</span> topic : string<br/>
   <span class="keyword">val</span> two_columns : string<br/>
+  <span class="keyword">val</span> default_sectionning : string list<br/>
 <span class="keyword">end</span></code></div>
 
 
 
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

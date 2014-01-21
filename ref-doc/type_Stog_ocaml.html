@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_ocaml</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -41,13 +40,16 @@
 <code class="code"><span class="keyword">sig</span><br/>
   <span class="keyword">val</span> stog_ocaml_session : string <span class="constructor">Pervasives</span>.ref<br/>
   <span class="keyword">val</span> close_sessions : unit <span class="keywordsign">-&gt;</span> unit<br/>
-  <span class="keyword">val</span> fun_eval : <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Xtmpl</span>.callback<br/>
+  <span class="keyword">val</span> fun_eval : <span class="constructor">Stog_types</span>.stog <span class="constructor">Xtmpl</span>.callback<br/>
+  <span class="keyword">val</span> fun_printf : <span class="constructor">Stog_types</span>.stog <span class="constructor">Xtmpl</span>.callback<br/>
 <span class="keyword">end</span></code></div>
 
 
 
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

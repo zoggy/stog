@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog-writing</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="&lt;navbar-doc/&gt;"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -42,16 +41,33 @@
 This plugin adds new rewrite rules to use the following elements in your pages:
 </p>
 <ul>
-<li>footnotes,</li>
-<li>bibliography.</li>
+<li><a href="http://zoggy.github.io/stog/plugins/writing.html#footnotes">Footnotes</a>,</li>
+<li><a href="http://zoggy.github.io/stog/plugins/writing.html#biblio">Bibliography</a>.</li>
 </ul>
 
 <div class="section"><div class="section-title" id="download">Download</div>
+<div class="alert alert-info">
+Stog-writing is available in <span class="ext-a"><a href="http://opam.ocaml.org/">Opam</a></span>.
+With opam installed, just type the following command to install stog-writing:
+<pre class="code-sh">opam <span class="hl kwc">install</span> stog<span class="hl opt">-</span>writing</pre>
+</div>
 <p>
 Stog-writing is <span class="ext-a"><a href="https://github.com/zoggy/stog-writing">hosted on Github</a></span>.
 </p>
 <div class="subsection"><div class="subsection-title" id="releases">Releases</div>
 <ul>
+<li><a href="stog-writing-0.10.0.tar.gz">0.10.0</a> [2014/01/21]:
+  <ul>
+    <li>Upgrade to new Stog 0.10.0 architecture,</li>
+    <li>Add class for footnote links,</li>
+    <li>Handle multiple references in <span class="icode"><span class="hl kwa">&lt;cite&gt;</span></span>,</li>
+    <li>Apply base rules when bulding bib entries,</li>
+    <li>Use template <code>bib-entry.tmpl</code>
+        instead of <code>bib_entry.tmpl</code>,</li>
+    <li>Fix: generate paragraph link code even for paragraphs with predefined ids,</li>
+    <li>Simplify auto id generation.</li>
+  </ul>
+</li>
 <li><a href="stog-writing-0.8.0.tar.gz">0.8.0</a> [2013/03/19]: Upgrade to Stog 0.8.0.</li>
 <li><a href="stog-writing-0.7.0.tar.gz">0.7.0</a> [2013/02/13]: Minor fixes.</li>
 <li><a href="stog-writing-0.6.tar.gz">0.6</a>: First numbered release.</li>
@@ -168,7 +184,7 @@ The format of the reference can be set by various means, in order of priority:
   <pre class="code-xml"><span class="hl kwa">&lt;cite</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;&lt;bib-entry-author/&gt;</span>, <span class="hl kwa">&lt;i&gt;&lt;bib-entry-title/&gt;&lt;/i&gt;&lt;/cite&gt;</span></pre>
 </li>
 <li>using the <span class="icode">format</span> attribute, for example:
-  <pre class="code-xml"><span class="hl kwa">&lt;cite</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;entryid&quot;</span> <span class="hl kwb">format</span>=<span class="hl str">&quot;$(author): $(title)&quot;</span><span class="hl kwa">/&gt;</span></pre>
+  <pre class="code-xml"><span class="hl kwa">&lt;cite</span> <span class="hl kwb">format</span>=<span class="hl str">&quot;$(author): $(title)&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;entryid&quot;</span><span class="hl kwa">/&gt;</span></pre>
 </li>
 <li>setting <span class="icode">cite-format</span> in the environment, for example in the header
   of the page/article:
@@ -215,16 +231,33 @@ For information you can see the <a href="#pagesource"> source code of the page</
 This plugin adds new rewrite rules to use the following elements in your pages:
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>footnotes,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>bibliography.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#footnotes&quot;</span><span class="hl kwa">/&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#biblio&quot;</span><span class="hl kwa">/&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;/ul&gt;</span>
 
 <span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;download&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Download&quot;</span><span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;alert alert-info&quot;</span><span class="hl kwa">&gt;</span>
+Stog-writing is available in <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://opam.ocaml.org/&quot;</span><span class="hl kwa">&gt;</span>Opam<span class="hl kwa">&lt;/ext-a&gt;</span>.
+With opam installed, just type the following command to install stog-writing:
+<span class="hl kwa">&lt;command-line&gt;</span>opam install stog-writing<span class="hl kwa">&lt;/command-line&gt;</span>
+<span class="hl kwa">&lt;/div&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
 Stog-writing is <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/stog-writing&quot;</span><span class="hl kwa">&gt;</span>hosted on Github<span class="hl kwa">&lt;/ext-a&gt;</span>.
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;releases&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Releases&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-writing-0.10.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.10.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2014</span>/<span class="hl num">01</span>/<span class="hl num">21</span>]:
+  <span class="hl kwa">&lt;ul&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Upgrade to new Stog <span class="hl num">0.10.0</span> architecture,<span class="hl kwa">&lt;/li&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Add class for footnote links,<span class="hl kwa">&lt;/li&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Handle multiple references in <span class="hl kwa">&lt;rule&gt;</span>cite<span class="hl kwa">&lt;/rule&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Apply base rules when bulding bib entries,<span class="hl kwa">&lt;/li&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Use template <span class="hl kwa">&lt;code&gt;</span>bib-entry.tmpl<span class="hl kwa">&lt;/code&gt;</span>
+        instead of <span class="hl kwa">&lt;code&gt;</span>bib_entry.tmpl<span class="hl kwa">&lt;/code&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Fix: generate paragraph link code even for paragraphs with predefined ids,<span class="hl kwa">&lt;/li&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Simplify auto id generation.<span class="hl kwa">&lt;/li&gt;</span>
+  <span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-writing-0.8.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.8.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>/<span class="hl num">03</span>/<span class="hl num">19</span>]: Upgrade to Stog <span class="hl num">0.8.0</span>.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-writing-0.7.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.7.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>/<span class="hl num">02</span>/<span class="hl num">13</span>]: Minor fixes.<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-writing-0.6.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.6</span><span class="hl kwa">&lt;/a&gt;</span>: First numbered release.<span class="hl kwa">&lt;/li&gt;</span>
@@ -389,6 +422,8 @@ template directory.
 </div>
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

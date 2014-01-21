@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0"><channel><title>Stog: release</title><link>http://zoggy.github.io/stog/kw_release.html</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>27 Sep 2013 08:00:00 +0000</pubDate><lastBuildDate>27 Sep 2013 08:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.io/stog</url><title>Stog</title><link>http://zoggy.github.io/stog</link></image><item><title>Stog-rdf 0.9.0</title><link>http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html</link><description>
+<rss version="2.0"><channel><title>Stog: release</title><link>http://zoggy.github.io/stog/kw_release.html</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>20 Jun 2012 00:00:00 +0000</pubDate><lastBuildDate>20 Jun 2012 00:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.io/stog</url><title>Stog</title><link>http://zoggy.github.io/stog</link></image><item><title>Stog 0.10.0</title><link>http://zoggy.github.io/stog/posts/release-0.10.0.html</link><description>
+&lt;p&gt;
+Release 0.10.0 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.10.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>21 Jan 2014 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.10.0.html</guid></item><item><title>Stog-rdf 0.9.0</title><link>http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html</link><description>
 &lt;p&gt;
 Release 0.9.0 of stog-rdf is available from the &lt;page href=&quot;plugins/rdf&quot;/&gt; page.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.io/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>27 Sep 2013 08:00:00 +0000</pubDate><category>stog-rdf</category><category>release</category><category>rdf</category><category>sparql</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html</guid></item><item><title>Stog 0.9.0</title><link>http://zoggy.github.io/stog/posts/release-0.9.0.html</link><description>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>27 Sep 2013 00:00:00 +0000</pubDate><category>stog-rdf</category><category>release</category><category>rdf</category><category>sparql</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html</guid></item><item><title>Stog 0.9.0</title><link>http://zoggy.github.io/stog/posts/release-0.9.0.html</link><description>
 &lt;p&gt;
-Release 0.9.0 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
+Release 0.9.0 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.9.0.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.io/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>24 Sep 2013 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.9.0.html</guid></item><item><title>Stog 0.8.0</title><link>http://zoggy.github.io/stog/posts/release-0.8.0.html</link><description>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.9.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>24 Sep 2013 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.9.0.html</guid></item><item><title>Stog 0.8.0</title><link>http://zoggy.github.io/stog/posts/release-0.8.0.html</link><description>
 &lt;p&gt;
-Release 0.8.0 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
+Release 0.8.0 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.8.0.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.io/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>19 Mar 2013 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.8.0.html</guid></item><item><title>Stog 0.7.0</title><link>http://zoggy.github.io/stog/posts/release-0.7.0.html</link><description>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.8.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>19 Mar 2013 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.8.0.html</guid></item><item><title>Stog 0.7.0</title><link>http://zoggy.github.io/stog/posts/release-0.7.0.html</link><description>
 &lt;p&gt;
-Release 0.7.0 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
+Release 0.7.0 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.7.0.html&quot;&gt;&lt;img src=&quot;http://zoggy.github.io/stog/next.png&quot; alt=&quot;next&quot;/&gt;&lt;/a&gt;</description><pubDate>13 Feb 2013 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.7.0.html</guid></item><item><title>Stog 0.6</title><link>http://zoggy.github.io/stog/posts/release-0.6.html</link><description>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.7.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>13 Feb 2013 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.7.0.html</guid></item><item><title>Stog 0.6</title><link>http://zoggy.github.io/stog/posts/release-0.6.html</link><description>
 &lt;p&gt;
-Release 0.6 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
+Release 0.6 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
 &lt;/p&gt;
-</description><pubDate>16 Jan 2013 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.6.html</guid></item><item><title>Stog 0.5</title><link>http://zoggy.github.io/stog/posts/release-0.5.html</link><description>
+</description><pubDate>16 Jan 2013 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.6.html</guid></item><item><title>Stog 0.5</title><link>http://zoggy.github.io/stog/posts/release-0.5.html</link><description>
 &lt;p&gt;
-Release 0.5 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
+Release 0.5 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
 &lt;/p&gt;
-</description><pubDate>18 Dec 2012 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.5.html</guid></item><item><title>Stog 0.4</title><link>http://zoggy.github.io/stog/posts/release-0.4.html</link><description>
+</description><pubDate>18 Dec 2012 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.5.html</guid></item><item><title>Stog 0.4</title><link>http://zoggy.github.io/stog/posts/release-0.4.html</link><description>
 &lt;p&gt;
-Release 0.4 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
+Release 0.4 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
 &lt;/p&gt;
-</description><pubDate>22 Nov 2012 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.4.html</guid></item><item><title>Stog 0.3</title><link>http://zoggy.github.io/stog/posts/release-0.3.html</link><description>
+</description><pubDate>22 Nov 2012 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.4.html</guid></item><item><title>Stog 0.3</title><link>http://zoggy.github.io/stog/posts/release-0.3.html</link><description>
 &lt;p&gt;
-Release 0.3 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
+Release 0.3 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
 &lt;/p&gt;
-</description><pubDate>30 Aug 2012 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.3.html</guid></item><item><title>Stog 0.2</title><link>http://zoggy.github.io/stog/posts/release-0.2.html</link><description>
+</description><pubDate>30 Aug 2012 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.3.html</guid></item><item><title>Stog 0.2</title><link>http://zoggy.github.io/stog/posts/release-0.2.html</link><description>
 &lt;p&gt;
-Release 0.2 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
+Release 0.2 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
 &lt;/p&gt;
-</description><pubDate>28 Aug 2012 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.2.html</guid></item><item><title>Stog 0.1</title><link>http://zoggy.github.io/stog/posts/release-0.1.html</link><description>
-&lt;p&gt;
-Release 0.1 of stog is available from the &lt;page href=&quot;install&quot;/&gt; page.
-&lt;/p&gt;
-</description><pubDate>20 Jun 2012 08:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.1.html</guid></item></channel></rss>
+</description><pubDate>28 Aug 2012 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.2.html</guid></item></channel></rss>

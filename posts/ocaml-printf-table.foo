@@ -1,0 +1,14 @@
+<table class="table table-bordered table-striped">
+<tr><th>N</th><th>N^2</th><th>Toplevel</th></tr>
+<as-xml defer_="1"><ocaml-printf><![CDATA[
+  (String.concat ""
+    (List.map
+      (fun n ->
+        "<tr><td>"^(string_of_int n)^"</td>"^
+        "<td>"^(string_of_int (n*n))^"</td>"^
+        "<td><ocaml-eval toplevel=\"true\">
+            let foo = "^(string_of_int n)^"</ocaml-eval>
+         </td></tr>")
+      my_list))
+]]></ocaml-printf></as-xml>
+</table>

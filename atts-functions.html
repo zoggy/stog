@@ -1,0 +1,233 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Attributes and functions</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  <div class="page-title">Attributes and functions</div>
+</div>
+
+
+
+
+<p>
+When defining elements, you can add attributes, which will be added
+to the base environment when applying level functions to this element.
+For example:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;....&quot;</span>
+...
+<span class="hl kwb">author</span>=<span class="hl str">&quot;Santa Claus&quot;</span>
+<span class="hl kwa">&gt;</span>
+.... <span class="hl kwa">&lt;author/&gt;</span> ....
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+<p>
+Here the node <span class="icode"><span class="hl kwa">&lt;author/&gt;</span></span> will we rewritten to
+&quot;Santa Claus&quot; (without quotes).
+</p>
+<p>The same can be achieved for more complex nodes, using the
+<span class="icode"><span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span></span>
+attribute:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;....&quot;</span>
+  <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>
+  ...
+<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;author&gt;&lt;b&gt;</span>Santa Claus<span class="hl kwa">&lt;/b&gt;&lt;/author&gt;</span>
+<span class="hl kwa">&lt;contents&gt;</span>
+.... <span class="hl kwa">&lt;author/&gt;</span> ....
+<span class="hl kwa">&lt;/contents&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+<p>here <span class="icode"><span class="hl kwa">&lt;author/&gt;</span></span> will we rewritten to
+<span class="icode"><span class="hl kwa">&lt;b&gt;</span>Santa Claus<span class="hl kwa">&lt;/b&gt;</span></span>.
+</p>
+<p>
+You can also define functions. A function is defined like an attribute
+when having <span class="icode"><span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span></span>, except the
+node defining the name of the function has XML attributes:
+</p>
+<pre class="code-xml" id="function-def"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;....&quot;</span>
+  <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>
+  ...
+<span class="hl kwa">&gt;</span>
+...
+<span class="hl kwa">&lt;command</span> <span class="hl kwb">prompt</span>=<span class="hl str">&quot;#&quot;</span><span class="hl kwa">&gt;&lt;pre&gt;&lt;prompt/&gt; &lt;contents/&gt;&lt;more/&gt;&lt;/pre&gt;&lt;/command&gt;</span>
+...
+<span class="hl kwa">&lt;contents&gt;</span>
+.... <span class="hl kwa">&lt;command&gt;</span>ls -l<span class="hl kwa">&lt;/command&gt;</span>
+<span class="hl kwa">&lt;/contents&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+<p>
+Here we define a function <span class="icode"><span class="hl kwa">&lt;command&gt;</span></span> which allows to put some
+XML into a <span class="icode"><span class="hl kwa">&lt;pre/&gt;</span></span> node, with a prompt before.
+<span class="icode"><span class="hl kwa">&lt;contents/&gt;</span></span> is used to insert the &quot;contents&quot; parameter of the function,
+that is the subnodes of the <span class="icode"><span class="hl kwa">&lt;command&gt;</span></span> node.
+</p>
+<p>So <span class="icode"><span class="hl kwa">&lt;command&gt;</span>ls -l<span class="hl kwa">&lt;/command&gt;</span></span> will be rewritten to
+<span class="icode"><span class="hl kwa">&lt;pre&gt;</span># ls -l<span class="hl kwa">&lt;/pre&gt;</span></span>.
+</p>
+<p>
+<span class="icode">prompt</span> is an argument for <span class="icode"><span class="hl kwa">&lt;command/&gt;</span></span>, with a default
+value set to &quot;# &quot;. This argument can be changed when &quot;calling&quot; the function:
+</p>
+<pre class="code-xml" id="function-app">... <span class="hl kwa">&lt;command</span> <span class="hl kwb">prompt</span>=<span class="hl str">&quot;mysql&amp;amp;gt;&quot;</span><span class="hl kwa">&gt;</span>select * from table<span class="hl kwa">&lt;/command&gt;</span> ...</pre>
+<p>will be rewritten to</p>
+<pre class="code-xml" id="function-app-result">... <span class="hl kwa">&lt;pre&gt;</span>mysql<span class="hl kwd">&amp;gt;</span> select * from table<span class="hl kwa">&lt;/pre&gt;</span> ...</pre>
+<p>
+Even attributes of the <span class="icode"><span class="hl kwa">&lt;command/&gt;</span></span> nodes which are
+not &quot;declared&quot; in the rule attribute list are added to the environment used
+when applying the <span class="icode"><span class="hl kwa">&lt;command&gt;</span></span> rule.
+</p>
+<p>It is not unusual to declare only one dummy parameter to create a function
+so that <span class="icode"><span class="hl kwa">&lt;contents/&gt;</span></span> can be used in the rule body, this way:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;....&quot;</span> <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>  ... <span class="hl kwa">&gt;</span>
+...
+<span class="hl kwa">&lt;emph</span> <span class="hl kwb">foo</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;&lt;b&gt;&lt;i&gt;&lt;contents/&gt;&lt;/i&gt;&lt;/b&gt;</span>
+...
+<span class="hl kwa">&lt;contents&gt;</span>
+  ... <span class="hl kwa">&lt;emph&gt;</span>bla bla<span class="hl kwa">&lt;/emph&gt;</span> ...
+<span class="hl kwa">&lt;/contents&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+
+<p>
+To define functions available for all elements, you have to define them in
+the main element and prefix their name with &quot;stog:&quot;, like &quot;stog:command&quot;. Then,
+the <span class="icode"><span class="hl kwa">&lt;command&gt;</span></span> rule will be available in all elements; besides
+it can be redefined in an element to change this rule for this element only.
+</p>
+
+
+
+
+
+<p class="alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Attributes and functions&quot;</span>
+<span class="hl kwb">navbar-doc</span>=<span class="hl str">&quot;active&quot;</span>
+<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+When defining elements, you can add attributes, which will be added
+to the base environment when applying level functions to this element.
+For example:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;....&quot;</span>
+...
+<span class="hl kwb">author</span>=<span class="hl str">&quot;Santa Claus&quot;</span>
+<span class="hl kwa">&gt;</span>
+.... <span class="hl kwa">&lt;author/&gt;</span> ....
+<span class="hl kwa">&lt;/page&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Here the node <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>author/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> will we rewritten to
+<span class="hl str">&quot;Santa Claus&quot;</span> (without quotes).
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>The same can be achieved for more complex nodes, using the
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&lt;/icode&gt;</span>
+attribute:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;....&quot;</span>
+  <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>
+  ...
+<span class="hl kwa">&gt;</span>
+<span class="hl kwa">&lt;author&gt;&lt;b&gt;</span>Santa Claus<span class="hl kwa">&lt;/b&gt;&lt;/author&gt;</span>
+<span class="hl kwa">&lt;contents&gt;</span>
+.... <span class="hl kwa">&lt;author/&gt;</span> ....
+<span class="hl kwa">&lt;/contents&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>here <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>author/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> will we rewritten to
+<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>b<span class="hl kwd">&amp;gt;</span>Santa Claus<span class="hl kwd">&amp;lt;</span>/b<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+You can also define functions. A function is defined like an attribute
+when having <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&lt;/icode&gt;</span>, except the
+node defining the name of the function has XML attributes:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;function-def&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;....&quot;</span>
+  <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>
+  ...
+<span class="hl kwa">&gt;</span>
+...
+<span class="hl kwa">&lt;command</span> <span class="hl kwb">prompt</span>=<span class="hl str">&quot;#&quot;</span><span class="hl kwa">&gt;&lt;pre&gt;&lt;prompt/&gt; &lt;contents/&gt;&lt;more/&gt;&lt;/pre&gt;&lt;/command&gt;</span>
+...
+<span class="hl kwa">&lt;contents&gt;</span>
+.... <span class="hl kwa">&lt;command&gt;</span>ls -l<span class="hl kwa">&lt;/command&gt;</span>
+<span class="hl kwa">&lt;/contents&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Here we define a function <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>command<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> which allows to put some
+XML into a <span class="hl kwa">&lt;ixml&gt;&lt;pre/&gt;&lt;/ixml&gt;</span> node, with a prompt before.
+<span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>contents/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> is used to insert the <span class="hl str">&quot;contents&quot;</span> parameter of the function,
+that is the subnodes of the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>command<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>So <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;&lt;command&gt;</span>ls -l<span class="hl kwa">&lt;/command&gt;&lt;/icode&gt;</span> will be rewritten to
+<span class="hl kwa">&lt;ixml&gt;&lt;command&gt;</span>ls -l<span class="hl kwa">&lt;/command&gt;&lt;/ixml&gt;</span>.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+<span class="hl kwa">&lt;icode&gt;</span>prompt<span class="hl kwa">&lt;/icode&gt;</span> is an argument for <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;&lt;command/&gt;&lt;/icode&gt;</span>, with a default
+value set to <span class="hl str">&quot;# &quot;</span>. This argument can be changed when <span class="hl str">&quot;calling&quot;</span> the function:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;function-app&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>... <span class="hl kwa">&lt;command</span> <span class="hl kwb">prompt</span>=<span class="hl str">&quot;mysql&amp;gt; &quot;</span><span class="hl kwa">&gt;</span>select * from table<span class="hl kwa">&lt;/command&gt;</span> ...<span class="hl kwa">&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>will be rewritten to<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;function-app-result&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>... <span class="hl kwa">&lt;command</span> <span class="hl kwb">prompt</span>=<span class="hl str">&quot;mysql&amp;gt; &quot;</span><span class="hl kwa">&gt;</span>select * from table<span class="hl kwa">&lt;/command&gt;</span> ...<span class="hl kwa">&lt;/hcode&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>
+Even attributes of the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>command/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> nodes which are
+not <span class="hl str">&quot;declared&quot;</span> in the rule attribute list are added to the environment used
+when applying the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>command<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> rule.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;p&gt;</span>It is not unusual to declare only one dummy parameter to create a function
+so that <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>contents/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> can be used in the rule body, this way:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;....&quot;</span> <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>  ... <span class="hl kwa">&gt;</span>
+...
+<span class="hl kwa">&lt;emph</span> <span class="hl kwb">foo</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;&lt;b&gt;&lt;i&gt;&lt;contents/&gt;&lt;/i&gt;&lt;/b&gt;</span>
+...
+<span class="hl kwa">&lt;contents&gt;</span>
+  ... <span class="hl kwa">&lt;emph&gt;</span>bla bla<span class="hl kwa">&lt;/emph&gt;</span> ...
+<span class="hl kwa">&lt;/contents&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+
+<span class="hl kwa">&lt;p&gt;</span>
+To define functions available for all elements, you have to define them in
+the main element and prefix their name with <span class="hl str">&quot;stog:&quot;</span>, like <span class="hl str">&quot;stog:command&quot;</span>. Then,
+the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>command<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> rule will be available in all elements; besides
+it can be redefined in an element to change this rule for this element only.
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;/page&gt;</span></pre>
+</div>
+
+
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+
+</div> 
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog library reference documentation : Stog_engine</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
+<div class="navbar"><a class="pre" href="Stog_html5.html" title="Stog_html5">Previous</a>
+ <a class="up" href="index.html" title="Index">Up</a>
+ <a class="post" href="Stog_ocaml.html" title="Stog_ocaml">Next</a>
+</div>
+<h1>Module <a href="type_Stog_engine.html">Stog_engine</a></h1>
+
+<pre><span class="keyword">module</span> Stog_engine: <code class="code">sig</code> <a href="Stog_engine.html">..</a> <code class="code">end</code></pre><div class="info module top">
+Rewrite engine.<br/>
+</div>
+<hr width="100%"/>
+
+<pre><code><span id="TYPElevel_fun"><span class="keyword">type</span> <code class="type">'a</code> level_fun</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top">
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlevel_fun.Fun_stog"><span class="constructor">Fun_stog</span></span> <span class="keyword">of</span> <code class="type">(<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.env -&gt;<br/>      <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> list -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a>)</code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlevel_fun.Fun_data"><span class="constructor">Fun_data</span></span> <span class="keyword">of</span> <code class="type">('a Xtmpl.env -&gt;<br/>      <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a -&gt; <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> list -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a)</code></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTlevel_fun.Fun_stog_data"><span class="constructor">Fun_stog_data</span></span> <span class="keyword">of</span> <code class="type">((<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a) Xtmpl.env -&gt;<br/>      <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a -&gt; <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> list -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a)</code></code></td>
+
+</tr></table>
+
+<div class="info">
+A function associated to a level. All functions take in parameter
+  the environment, the stog and structure and the list of elements
+  to rewrite. They return the new stog structure. Some
+  function (<code class="code">Fun_data</code>, <code class="code">Fun_stog_data</code>) also handle an additional data
+  structure: the callbacks in the environment also handle it, and the
+  function returns it with the stog structure.<br/>
+</div>
+
+
+<pre><code><span id="TYPEmodul"><span class="keyword">type</span> <code class="type">'a</code> modul</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTmodul.mod_data">mod_data</span> : <code class="type">'a</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTmodul.mod_levels">mod_levels</span> : <code class="type">'a <a href="Stog_engine.html#TYPElevel_fun">level_fun</a> Stog_types.Int_map.t</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTmodul.mod_name">mod_name</span> : <code class="type">string</code>;</code></td>
+
+</tr></table>
+}
+
+<div class="info">
+A structure containing data and functions associated to levels.
+  Contains also the module name.<br/>
+</div>
+
+
+<pre><span class="keyword">module type</span> <a href="Stog_engine.Module.html">Module</a> = <code class="code">sig</code> <a href="Stog_engine.Module.html">..</a> <code class="code">end</code></pre><div class="info">
+A module.
+</div>
+
+<pre><code><span id="TYPEstog_state"><span class="keyword">type</span> stog_state</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTstog_state.st_stog">st_stog</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTstog_state.st_modules">st_modules</span> : <code class="type">(module Stog_engine.Module) list</code>;</code></td>
+
+</tr></table>
+}
+
+
+
+<pre><span id="VALgenerate"><span class="keyword">val</span> generate</span> : <code class="type">?use_cache:bool -&gt;<br/>       ?only_elt:string -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; (module Stog_engine.Module) list -&gt; unit</code></pre><div class="info">
+Generate the target files, with the following steps:<ul>
+<li>create the output directory,</li>
+<li>build the base environment from the site global attributes,</li>
+<li>compute by-topic, by-keyword and by-month elements,</li>
+<li>compute elements,</li>
+<li>for each level, for each element, apply level functions on the element</li>
+<li>output <a href="Stog_types.html#TYPEELTelt.elt_out"><code class="code">Stog_types.elt.elt_out</code></a> field in the destination file.</li>
+</ul>
+<br/>
+</div>
+
+<pre><span id="VALelt_dst"><span class="keyword">val</span> elt_dst</span> : <code class="type">(string -&gt; string -&gt; string) -&gt;<br/>       ?encode:bool -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; string -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; string</code></pre>
+<pre><span id="VALelt_dst_file"><span class="keyword">val</span> elt_dst_file</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; string</code></pre><div class="info">
+Build the final file where the given element will be generated.<br/>
+</div>
+
+<pre><span id="VALelt_url"><span class="keyword">val</span> elt_url</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; Neturl.url</code></pre><div class="info">
+Build the final url of the given element.<br/>
+</div>
+
+<pre><span id="VALenv_of_defs"><span class="keyword">val</span> env_of_defs</span> : <code class="type">?env:'a Xtmpl.env -&gt; <a href="Stog_types.html#TYPEdef">Stog_types.def</a> list -&gt; 'a Xtmpl.env</code></pre>
+<pre><span id="VALenv_of_used_mods"><span class="keyword">val</span> env_of_used_mods</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; ?env:'a Xtmpl.env -&gt; Stog_types.Str_set.t -&gt; 'a Xtmpl.env</code></pre>
+<pre><span id="TYPEstog_elt_rules"><span class="keyword">type</span> <code class="type">'a</code> stog_elt_rules</span> = <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -&gt; (Xtmpl.name * 'a Xtmpl.callback) list</code> </pre>
+
+
+<pre><span id="VALget_in_env"><span class="keyword">val</span> get_in_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; Xmlm.name -&gt; 'a * Xtmpl.tree list</code></pre>
+<pre><span id="VALopt_in_env"><span class="keyword">val</span> opt_in_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; Xmlm.name -&gt; 'a * Xtmpl.tree list option</code></pre>
+<pre><span id="VALget_in_args_or_env"><span class="keyword">val</span> get_in_args_or_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; Xtmpl.attributes -&gt; Xmlm.name -&gt; 'a * Xtmpl.tree list</code></pre><div class="info">
+<code class="code">get_in_args_or_env env args s</code> returns the value associated to <code class="code">s</code>
+ in <code class="code">args</code> of else return the result of <code class="code">get_in_env env s</code>.<br/>
+</div>
+
+<pre><span id="VALget_hid"><span class="keyword">val</span> get_hid</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * string</code></pre><div class="info">
+<code class="code">get_hid env</code> returns the value associated to <code class="code">&quot;hid&quot;</code> in <code class="code">env</code>.<br/>
+<b>Raises</b> <code>Assert_failure</code> if <code class="code">&quot;hid&quot;</code> is not found in the environment.<br/>
+</div>
+
+<pre><span id="VALelt_env"><span class="keyword">val</span> elt_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; 'a * 'a Xtmpl.env</code></pre>
+<pre><span id="VALapply_stog_env_elt"><span class="keyword">val</span> apply_stog_env_elt</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.env -&gt; <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre>
+<pre><span id="VALapply_stog_data_env_elt"><span class="keyword">val</span> apply_stog_data_env_elt</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a -&gt;<br/>       (<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a) Xtmpl.env -&gt; <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a</code></pre>
+<pre><span id="VALapply_data_env_elt"><span class="keyword">val</span> apply_data_env_elt</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a -&gt;<br/>       'a Xtmpl.env -&gt; <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a</code></pre>
+<pre><span id="VALfun_apply_stog_elt_rules"><span class="keyword">val</span> fun_apply_stog_elt_rules</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> <a href="Stog_engine.html#TYPEstog_elt_rules">stog_elt_rules</a> -&gt; 'a <a href="Stog_engine.html#TYPElevel_fun">level_fun</a></code></pre>
+<pre><span id="VALfun_apply_stog_data_elt_rules"><span class="keyword">val</span> fun_apply_stog_data_elt_rules</span> : <code class="type">(<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a) <a href="Stog_engine.html#TYPEstog_elt_rules">stog_elt_rules</a> -&gt; 'a <a href="Stog_engine.html#TYPElevel_fun">level_fun</a></code></pre>
+<pre><span id="VALfun_apply_data_elt_rules"><span class="keyword">val</span> fun_apply_data_elt_rules</span> : <code class="type">'a <a href="Stog_engine.html#TYPEstog_elt_rules">stog_elt_rules</a> -&gt; 'a <a href="Stog_engine.html#TYPElevel_fun">level_fun</a></code></pre>
+<pre><span id="VALget_languages"><span class="keyword">val</span> get_languages</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * string list</code></pre><br/>
+<div class="section-title" id="2_Registeringmodules">Registering modules</div><br/>
+
+<pre><span id="TYPEmodule_fun"><span class="keyword">type</span> module_fun</span> = <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; (module Stog_engine.Module)</code> </pre>
+
+
+<pre><span id="VALmodules"><span class="keyword">val</span> modules</span> : <code class="type">unit -&gt; (string * <a href="Stog_engine.html#TYPEmodule_fun">module_fun</a>) list</code></pre>
+<pre><span id="VALregister_module"><span class="keyword">val</span> register_module</span> : <code class="type">string -&gt; <a href="Stog_engine.html#TYPEmodule_fun">module_fun</a> -&gt; unit</code></pre>
+<pre><span id="VALmodule_by_name"><span class="keyword">val</span> module_by_name</span> : <code class="type">string -&gt; <a href="Stog_engine.html#TYPEmodule_fun">module_fun</a> option</code></pre></div>
+
+
+
+
+
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+
+</div> 
+</body>
+</html>

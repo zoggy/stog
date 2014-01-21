@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Plugins</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="&lt;navbar-doc/&gt;"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -39,7 +38,16 @@
 
 
 <p>
-The following plugins exist for Stog:
+Some plugins are included in Stog distribution:
+</p>
+<ul>
+<li><a href="http://zoggy.github.io/stog/plugins/asy.html">Stog-asy</a>,</li>
+<li><a href="http://zoggy.github.io/stog/plugins/dot.html">Stog-dot</a>,</li>
+<li><a href="http://zoggy.github.io/stog/plugins/markdown.html">Stog-markdown</a>,</li>
+<li><a href="http://zoggy.github.io/stog/plugins/multi-elt.html">Stog-multi-elt</a>.</li>
+</ul>
+
+<p>Some other plugins are developped separately:
 </p>
 <ul>
 <li><a href="http://zoggy.github.io/stog/plugins/rdf.html">Stog-rdf</a>,</li>
@@ -61,7 +69,16 @@ For information you can see the <a href="#pagesource"> source code of the page</
 <span class="hl kwb">navbar-plugins</span>=<span class="hl str">&quot;active&quot;</span>
 <span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;p&gt;</span>
-The following plugins exist for Stog:
+Some plugins are included in Stog distribution:
+<span class="hl kwa">&lt;/p&gt;</span>
+<span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins/asy&quot;</span><span class="hl kwa">/&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins/dot&quot;</span><span class="hl kwa">/&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins/markdown&quot;</span><span class="hl kwa">/&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins/multi-elt&quot;</span><span class="hl kwa">/&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
+<span class="hl kwa">&lt;/ul&gt;</span>
+
+<span class="hl kwa">&lt;p&gt;</span>Some other plugins are developped separately:
 <span class="hl kwa">&lt;/p&gt;</span>
 <span class="hl kwa">&lt;ul&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins/rdf&quot;</span><span class="hl kwa">/&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
@@ -74,6 +91,8 @@ The following plugins exist for Stog:
 </div>
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

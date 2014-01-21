@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_tags</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -43,16 +42,82 @@
  <a class="post" href="Stog_io.html" title="Stog_io">Next</a>
 </div>
 <h1>Module <a href="type_Stog_tags.html">Stog_tags</a></h1>
-<pre><span class="keyword">module</span> Stog_tags: <code class="code">sig</code> <a href="Stog_tags.html">..</a> <code class="code">end</code></pre><div class="info">
+
+<pre><span class="keyword">module</span> Stog_tags: <code class="code">sig</code> <a href="Stog_tags.html">..</a> <code class="code">end</code></pre><div class="info module top">
 Predefined tags.<br/>
 </div>
 <hr width="100%"/>
-<pre><span id="VALsite_title"><span class="keyword">val</span> site_title</span> : <code class="type">string</code></pre><pre><span id="VALsite_desc"><span class="keyword">val</span> site_desc</span> : <code class="type">string</code></pre><pre><span id="VALsite_url"><span class="keyword">val</span> site_url</span> : <code class="type">string</code></pre><pre><span id="VALsite_email"><span class="keyword">val</span> site_email</span> : <code class="type">string</code></pre><pre><span id="VALrss_length"><span class="keyword">val</span> rss_length</span> : <code class="type">string</code></pre><pre><span id="VALlanguages"><span class="keyword">val</span> languages</span> : <code class="type">string</code></pre><pre><span id="VALfunctions"><span class="keyword">val</span> functions</span> : <code class="type">string</code></pre><pre><span id="VALelt"><span class="keyword">val</span> elt</span> : <code class="type">string</code></pre><pre><span id="VALelt_body"><span class="keyword">val</span> elt_body</span> : <code class="type">string</code></pre><pre><span id="VALelt_date"><span class="keyword">val</span> elt_date</span> : <code class="type">string</code></pre><pre><span id="VALelt_keywords"><span class="keyword">val</span> elt_keywords</span> : <code class="type">string</code></pre><pre><span id="VALelt_hid"><span class="keyword">val</span> elt_hid</span> : <code class="type">string</code></pre><pre><span id="VALelt_intro"><span class="keyword">val</span> elt_intro</span> : <code class="type">string</code></pre><pre><span id="VALelt_path"><span class="keyword">val</span> elt_path</span> : <code class="type">string</code></pre><pre><span id="VALelt_src"><span class="keyword">val</span> elt_src</span> : <code class="type">string</code></pre><pre><span id="VALelt_title"><span class="keyword">val</span> elt_title</span> : <code class="type">string</code></pre><pre><span id="VALelt_topics"><span class="keyword">val</span> elt_topics</span> : <code class="type">string</code></pre><pre><span id="VALelt_type"><span class="keyword">val</span> elt_type</span> : <code class="type">string</code></pre><pre><span id="VALelt_url"><span class="keyword">val</span> elt_url</span> : <code class="type">string</code></pre><pre><span id="VALsep"><span class="keyword">val</span> sep</span> : <code class="type">string</code></pre><pre><span id="VALarchive_tree"><span class="keyword">val</span> archive_tree</span> : <code class="type">string</code></pre><pre><span id="VALblock"><span class="keyword">val</span> block</span> : <code class="type">string</code></pre><pre><span id="VALcommand_line"><span class="keyword">val</span> command_line</span> : <code class="type">string</code></pre><pre><span id="VALcounter"><span class="keyword">val</span> counter</span> : <code class="type">string</code></pre><pre><span id="VALelements"><span class="keyword">val</span> elements</span> : <code class="type">string</code></pre><pre><span id="VALext_a"><span class="keyword">val</span> ext_a</span> : <code class="type">string</code></pre><pre><span id="VALgraph"><span class="keyword">val</span> graph</span> : <code class="type">string</code></pre><pre><span id="VALhcode"><span class="keyword">val</span> hcode</span> : <code class="type">string</code></pre><pre><span id="VALicode"><span class="keyword">val</span> icode</span> : <code class="type">string</code></pre><pre><span id="VALif_"><span class="keyword">val</span> if_</span> : <code class="type">string</code></pre><pre><span id="VALimage"><span class="keyword">val</span> image</span> : <code class="type">string</code></pre><pre><span id="VALinc"><span class="keyword">val</span> inc</span> : <code class="type">string</code></pre><pre><span id="VALinclude_"><span class="keyword">val</span> include_</span> : <code class="type">string</code></pre><pre><span id="VALkeyword"><span class="keyword">val</span> keyword</span> : <code class="type">string</code></pre><pre><span id="VALlangswitch"><span class="keyword">val</span> langswitch</span> : <code class="type">string</code></pre><pre><span id="VALlatex"><span class="keyword">val</span> latex</span> : <code class="type">string</code></pre><pre><span id="VALlist"><span class="keyword">val</span> list</span> : <code class="type">string</code></pre><pre><span id="VALn_columns"><span class="keyword">val</span> n_columns</span> : <code class="type">string</code></pre><pre><span id="VALnext"><span class="keyword">val</span> next</span> : <code class="type">string</code></pre><pre><span id="VALocaml"><span class="keyword">val</span> ocaml</span> : <code class="type">string</code></pre><pre><span id="VALocaml_eval"><span class="keyword">val</span> ocaml_eval</span> : <code class="type">string</code></pre><pre><span id="VALpage"><span class="keyword">val</span> page</span> : <code class="type">string</code></pre><pre><span id="VALpost"><span class="keyword">val</span> post</span> : <code class="type">string</code></pre><pre><span id="VALprepare_toc"><span class="keyword">val</span> prepare_toc</span> : <code class="type">string</code></pre><pre><span id="VALprevious"><span class="keyword">val</span> previous</span> : <code class="type">string</code></pre><pre><span id="VALsearch_form"><span class="keyword">val</span> search_form</span> : <code class="type">string</code></pre><pre><span id="VALsection"><span class="keyword">val</span> section</span> : <code class="type">string</code></pre><pre><span id="VALsubsection"><span class="keyword">val</span> subsection</span> : <code class="type">string</code></pre><pre><span id="VALtoc"><span class="keyword">val</span> toc</span> : <code class="type">string</code></pre><pre><span id="VALtopic"><span class="keyword">val</span> topic</span> : <code class="type">string</code></pre><pre><span id="VALtwo_columns"><span class="keyword">val</span> two_columns</span> : <code class="type">string</code></pre></div>
+
+<pre><span id="VALsite_title"><span class="keyword">val</span> site_title</span> : <code class="type">string</code></pre>
+<pre><span id="VALsite_desc"><span class="keyword">val</span> site_desc</span> : <code class="type">string</code></pre>
+<pre><span id="VALsite_url"><span class="keyword">val</span> site_url</span> : <code class="type">string</code></pre>
+<pre><span id="VALsite_email"><span class="keyword">val</span> site_email</span> : <code class="type">string</code></pre>
+<pre><span id="VALrss_length"><span class="keyword">val</span> rss_length</span> : <code class="type">string</code></pre>
+<pre><span id="VALlanguages"><span class="keyword">val</span> languages</span> : <code class="type">string</code></pre>
+<pre><span id="VALfunctions"><span class="keyword">val</span> functions</span> : <code class="type">string</code></pre>
+<pre><span id="VALelt"><span class="keyword">val</span> elt</span> : <code class="type">string</code></pre>
+<pre><span id="VALelt_body"><span class="keyword">val</span> elt_body</span> : <code class="type">string</code></pre>
+<pre><span id="VALelt_date"><span class="keyword">val</span> elt_date</span> : <code class="type">string</code></pre>
+<pre><span id="VALelt_datetime"><span class="keyword">val</span> elt_datetime</span> : <code class="type">string</code></pre>
+<pre><span id="VALelt_keywords"><span class="keyword">val</span> elt_keywords</span> : <code class="type">string</code></pre>
+<pre><span id="VALelt_hid"><span class="keyword">val</span> elt_hid</span> : <code class="type">string</code></pre>
+<pre><span id="VALelt_intro"><span class="keyword">val</span> elt_intro</span> : <code class="type">string</code></pre>
+<pre><span id="VALelt_path"><span class="keyword">val</span> elt_path</span> : <code class="type">string</code></pre>
+<pre><span id="VALelt_src"><span class="keyword">val</span> elt_src</span> : <code class="type">string</code></pre>
+<pre><span id="VALelt_title"><span class="keyword">val</span> elt_title</span> : <code class="type">string</code></pre>
+<pre><span id="VALelt_topics"><span class="keyword">val</span> elt_topics</span> : <code class="type">string</code></pre>
+<pre><span id="VALelt_type"><span class="keyword">val</span> elt_type</span> : <code class="type">string</code></pre>
+<pre><span id="VALelt_url"><span class="keyword">val</span> elt_url</span> : <code class="type">string</code></pre>
+<pre><span id="VALsep"><span class="keyword">val</span> sep</span> : <code class="type">string</code></pre>
+<pre><span id="VALarchive_tree"><span class="keyword">val</span> archive_tree</span> : <code class="type">string</code></pre>
+<pre><span id="VALas_xml"><span class="keyword">val</span> as_xml</span> : <code class="type">string</code></pre>
+<pre><span id="VALblock"><span class="keyword">val</span> block</span> : <code class="type">string</code></pre>
+<pre><span id="VALcommand_line"><span class="keyword">val</span> command_line</span> : <code class="type">string</code></pre>
+<pre><span id="VALcounter"><span class="keyword">val</span> counter</span> : <code class="type">string</code></pre>
+<pre><span id="VALdummy_"><span class="keyword">val</span> dummy_</span> : <code class="type">string</code></pre>
+<pre><span id="VALelements"><span class="keyword">val</span> elements</span> : <code class="type">string</code></pre>
+<pre><span id="VALext_a"><span class="keyword">val</span> ext_a</span> : <code class="type">string</code></pre>
+<pre><span id="VALerror_"><span class="keyword">val</span> error_</span> : <code class="type">string</code></pre>
+<pre><span id="VALgraph"><span class="keyword">val</span> graph</span> : <code class="type">string</code></pre>
+<pre><span id="VALhcode"><span class="keyword">val</span> hcode</span> : <code class="type">string</code></pre>
+<pre><span id="VALhid_sep"><span class="keyword">val</span> hid_sep</span> : <code class="type">string</code></pre>
+<pre><span id="VALicode"><span class="keyword">val</span> icode</span> : <code class="type">string</code></pre>
+<pre><span id="VALif_"><span class="keyword">val</span> if_</span> : <code class="type">string</code></pre>
+<pre><span id="VALimage"><span class="keyword">val</span> image</span> : <code class="type">string</code></pre>
+<pre><span id="VALinc"><span class="keyword">val</span> inc</span> : <code class="type">string</code></pre>
+<pre><span id="VALinclude_"><span class="keyword">val</span> include_</span> : <code class="type">string</code></pre>
+<pre><span id="VALkeyword"><span class="keyword">val</span> keyword</span> : <code class="type">string</code></pre>
+<pre><span id="VALlangswitch"><span class="keyword">val</span> langswitch</span> : <code class="type">string</code></pre>
+<pre><span id="VALlate_inc"><span class="keyword">val</span> late_inc</span> : <code class="type">string</code></pre>
+<pre><span id="VALlatex"><span class="keyword">val</span> latex</span> : <code class="type">string</code></pre>
+<pre><span id="VALlatex_body"><span class="keyword">val</span> latex_body</span> : <code class="type">string</code></pre>
+<pre><span id="VALlist"><span class="keyword">val</span> list</span> : <code class="type">string</code></pre>
+<pre><span id="VALn_columns"><span class="keyword">val</span> n_columns</span> : <code class="type">string</code></pre>
+<pre><span id="VALnext"><span class="keyword">val</span> next</span> : <code class="type">string</code></pre>
+<pre><span id="VALocaml"><span class="keyword">val</span> ocaml</span> : <code class="type">string</code></pre>
+<pre><span id="VALocaml_eval"><span class="keyword">val</span> ocaml_eval</span> : <code class="type">string</code></pre>
+<pre><span id="VALocaml_printf"><span class="keyword">val</span> ocaml_printf</span> : <code class="type">string</code></pre>
+<pre><span id="VALpage"><span class="keyword">val</span> page</span> : <code class="type">string</code></pre>
+<pre><span id="VALparagraph"><span class="keyword">val</span> paragraph</span> : <code class="type">string</code></pre>
+<pre><span id="VALpost"><span class="keyword">val</span> post</span> : <code class="type">string</code></pre>
+<pre><span id="VALprefix_svg_ids"><span class="keyword">val</span> prefix_svg_ids</span> : <code class="type">string</code></pre>
+<pre><span id="VALprepare_toc"><span class="keyword">val</span> prepare_toc</span> : <code class="type">string</code></pre>
+<pre><span id="VALprevious"><span class="keyword">val</span> previous</span> : <code class="type">string</code></pre>
+<pre><span id="VALsearch_form"><span class="keyword">val</span> search_form</span> : <code class="type">string</code></pre>
+<pre><span id="VALsection"><span class="keyword">val</span> section</span> : <code class="type">string</code></pre>
+<pre><span id="VALsubsection"><span class="keyword">val</span> subsection</span> : <code class="type">string</code></pre>
+<pre><span id="VALsubsubsection"><span class="keyword">val</span> subsubsection</span> : <code class="type">string</code></pre>
+<pre><span id="VALtoc"><span class="keyword">val</span> toc</span> : <code class="type">string</code></pre>
+<pre><span id="VALtopic"><span class="keyword">val</span> topic</span> : <code class="type">string</code></pre>
+<pre><span id="VALtwo_columns"><span class="keyword">val</span> two_columns</span> : <code class="type">string</code></pre>
+<pre><span id="VALdefault_sectionning"><span class="keyword">val</span> default_sectionning</span> : <code class="type">string list</code></pre></div>
 
 
 
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

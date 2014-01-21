@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog-markdown</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="&lt;navbar-doc/&gt;"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  <div class="page-title">Stog-markdown</div>
+</div>
+
+
+
+
+<p>
+This plugin allows using
+<span class="ext-a"><a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a></span> syntax
+in Stog elements, by calling an external tool to convert this syntax
+to XHTML.
+</p>
+<p class="alert alert-warning">
+By default, the <span class="icode"><span class="hl kwa">&lt;markdown&gt;</span></span> calls the
+<code>markdown</code> command, so make sure that
+<span class="ext-a"><a href="http://daringfireball.net/projects/markdown/">markdown</a></span>
+is installed.
+</p>
+
+<p>Usage:</p>
+<pre class="code-sh">$ stog <span class="hl opt">--</span>package stog.markdown ...</pre>
+<p>
+This plugin was contributed by
+<span class="ext-a"><a href="http://gallium.inria.fr/~scherer/">Gabriel Scherer</a></span>.
+</p>
+
+<div class="section"><div class="section-title" id="example">Example</div>
+<p>
+This plugin adds a new <a href="http://zoggy.github.io/stog/module_base.html#base">base rule</a>
+<span class="icode"><span class="hl kwa">&lt;markdown&gt;</span></span>.
+</p>
+<pre class="code-xml" id="code1"><span class="hl kwa">&lt;markdown&gt;</span>
+## A typical markdown example
+
+[Markdown](http://daringfireball.net/projects/markdown/) is
+a markup language meant to be written simply in a text editor,
+with a markup that is both easy to read and write. It is later
+translated into HTML by one of the numerous `markdown`
+implementations.
+ <span class="hl kwa">&lt;/markdown&gt;</span></pre>
+<p>
+The <span class="icode"><span class="hl kwa">&lt;markdown&gt;</span></span> rule calls the <code>markdown</code> command
+line tool to convert Markdown syntax to (X)HTML.
+Here is the result, embedded in a box:
+</p>
+<div class="alert alert-info">
+
+<h2>A typical markdown example</h2>
+
+<p><a href="http://daringfireball.net/projects/markdown/">Markdown</a> is
+a markup language meant to be written simply in a text editor,
+with a markup that is both easy to read and write. It is later
+translated into HTML by one of the numerous <code>markdown</code>
+implementations.</p>
+
+
+</div>
+</div>
+
+<div class="section"><div class="section-title" id="command">Command and arguments</div>
+<p>The <span class="icode"><span class="hl kwa">&lt;markdown&gt;</span></span> rule handles attributes <code>command</code>
+and <code>args</code>.
+</p>
+<p>The <code>command</code> attribute is used to specify another command
+than <code>markdown</code>. The value of <code>args</code> attribute
+is added on the command line.
+</p>
+<p>Here is an example of using <code>pandoc</code> command, using
+<code>args</code> attribute to make it translate our markdown code
+into XHTML:
+</p>
+<pre class="code-xml" id="code2"><span class="hl kwa">&lt;markdown</span> <span class="hl kwb">command</span>=<span class="hl str">&quot;pandoc&quot;</span> <span class="hl kwb">args</span>=<span class="hl str">&quot;-f markdown -t html&quot;</span><span class="hl kwa">&gt;</span>
+## A typical markdown example
+
+[Markdown](http://daringfireball.net/projects/markdown/) is
+a markup language meant to be written simply in a text editor,
+with a markup that is both easy to read and write. It is later
+translated into HTML by one of the numerous `markdown`
+implementations.
+ <span class="hl kwa">&lt;/markdown&gt;</span></pre>
+<p>
+Here is the result, embedded in a box:
+</p>
+<div class="alert alert-info">
+
+<h2 id="a-typical-markdown-example">A typical markdown example</h2>
+<p><a href="http://daringfireball.net/projects/markdown/">Markdown</a> is a markup language meant to be written simply in a text editor, with a markup that is both easy to read and write. It is later translated into HTML by one of the numerous <code>markdown</code> implementations.</p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+
+</div> 
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog-dot</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="&lt;navbar-doc/&gt;"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  <div class="page-title">Stog-dot</div>
+</div>
+
+
+
+
+<p>
+This plugin eases the inclusion of Graphs using the
+<span class="ext-a"><a href="http://graphviz.org">Graphiz</a></span> tools (dot, ...).
+</p>
+<p class="alert alert-warning">
+The Graphviz tools must be installed to use this plugin.
+</p>
+
+<p>Usage:</p>
+<pre class="code-sh">$ stog <span class="hl opt">--</span>package stog.dot ...</pre>
+
+<p>This plugin adds a new <a href="http://zoggy.github.io/stog/module_base.html#base">base rule</a>
+ <span class="icode"><span class="hl kwa">&lt;dot&gt;</span></span>.
+Here are the possible ways to use it:
+</p>
+<table class="table table-bordered">
+<tr><th>Code</th><th>Result</th></tr>
+<tr>
+<td>
+Output to <code>graph1.svg</code>, using an <span class="icode"><span class="hl kwa">&lt;img&gt;</span></span>
+node to show the image:
+<pre class="code-xml" id="code1"><span class="hl kwa">&lt;dot</span> <span class="hl kwb">outfile</span>=<span class="hl str">&quot;graph1.svg&quot;</span><span class="hl kwa">&gt;</span>digraph g {
+  rankdir = LR;
+  a [ <span class="hl kwb">shape</span>=<span class="hl str">&quot;box&quot;</span> ] ;
+  a -<span class="hl kwa">&gt;</span> b; a -<span class="hl kwa">&gt;</span> c ; b -<span class="hl kwa">&gt;</span> c ;
+}<span class="hl kwa">&lt;/dot&gt;</span></pre></td>
+<td>
+<img src="graph1.svg"/>
+</td>
+</tr>
+
+<tr>
+<td>
+Output a <code>png</code> file to <code>graph2.png</code>,
+use <code>neato</code> instead of <code>dot</code> in
+the command and read source from <code>graph.dot</code>:
+<pre class="code-xml" id="code2"><span class="hl kwa">&lt;dot</span> <span class="hl kwb">command</span>=<span class="hl str">&quot;neato&quot;</span>
+   <span class="hl kwb">src</span>=<span class="hl str">&quot;graph.dot&quot;</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;png&quot;</span> <span class="hl kwb">outfile</span>=<span class="hl str">&quot;graph2.png&quot;</span><span class="hl kwa">/&gt;</span></pre>
+With <code>graph.dot</code>:
+<pre class="code-dot"><span class="hl kwa">graph</span> g {
+  a <span class="hl opt">--</span> b <span class="hl opt">;</span>
+  a <span class="hl opt">--</span> c <span class="hl opt">;</span>
+  a <span class="hl opt">--</span> d <span class="hl opt">;</span>
+}</pre></td>
+<td>
+<img command="neato" src="graph2.png"/>
+
+</td>
+</tr>
+
+<tr>
+<td>
+With <span class="icode"><span class="hl kwa">&lt;elt-</span>...<span class="hl kwa">&gt;</span></span> rules to get links and labels,
+using attribute <span class="icode"><span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span></span> in the <span class="icode"><span class="hl kwa">&lt;dot&gt;</span></span>
+so that rewriting is performed in its children before the
+code is being passed to dot:
+<pre class="code-xml" id="code3"><span class="hl kwa">&lt;dot</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span>
+digraph g {
+  rankdir = LR;
+  plugins -<span class="hl kwa">&gt;</span> asy ;
+  plugins -<span class="hl kwa">&gt;</span> dot ;
+  plugins [ <span class="hl kwb">href</span>=<span class="hl str">&quot;&lt;elt-url elt-hid=&quot;</span>plugins<span class="hl str">&quot;/&gt;&quot;</span> ]
+  asy [
+     <span class="hl kwb">href</span>=<span class="hl str">&quot;&lt;elt-url elt-hid=&quot;</span>plugins/asy<span class="hl str">&quot;/&gt;&quot;</span>,
+     <span class="hl kwb">label</span>=<span class="hl str">&quot;&lt;elt-title elt-hid=&quot;</span>plugins/asy<span class="hl str">&quot;/&gt;&quot;</span> ] ;
+  dot [ <span class="hl kwb">href</span>=<span class="hl str">&quot;&lt;elt-url elt-hid=&quot;</span>plugins/dot<span class="hl str">&quot;/&gt;&quot;</span> ] ;
+}<span class="hl kwa">&lt;/dot&gt;</span></pre>
+Since no <code>outfile</code> attribute is given, the <code>svg</code>
+file produced is included (no use of <span class="icode"><span class="hl kwa">&lt;img&gt;</span></span>).
+</td>
+<td>The node labels are clickable and the links are generated
+(and so valid) by Stog:
+
+<svg height="98pt" viewBox="0.00 0.00 242.00 98.00" width="242pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+<g class="graph" id="graph1" transform="scale(1 1) rotate(0) translate(4 94)">
+<title>g</title>
+<polygon fill="white" points="-4,5 -4,-94 239,-94 239,5 -4,5" stroke="white"/>
+
+<g class="node" id="node1"><title>plugins</title>
+<a xlink:href="http://zoggy.github.io/stog/plugins.html" xlink:title="plugins">
+<ellipse cx="45" cy="-45" fill="none" rx="45.1673" ry="18" stroke="black"/>
+<text font-family="Times Roman,serif" font-size="14.00" text-anchor="middle" x="45" y="-40.9">plugins</text>
+</a>
+</g>
+
+<g class="node" id="node3"><title>asy</title>
+<a xlink:href="http://zoggy.github.io/stog/plugins/asy.html" xlink:title="Stog-asy">
+<ellipse cx="180" cy="-72" fill="none" rx="53.0059" ry="18" stroke="black"/>
+<text font-family="Times Roman,serif" font-size="14.00" text-anchor="middle" x="180" y="-67.9">Stog-asy</text>
+</a>
+</g>
+
+<g class="edge" id="edge2"><title>plugins-&gt;asy</title>
+<path d="M85.5045,-53.1009C97.516,-55.5032 110.893,-58.1786 123.715,-60.7429" fill="none" stroke="black"/>
+<polygon fill="black" points="123.349,-64.2391 133.842,-62.7683 124.722,-57.375 123.349,-64.2391" stroke="black"/>
+</g>
+
+<g class="node" id="node5"><title>dot</title>
+<a xlink:href="http://zoggy.github.io/stog/plugins/dot.html" xlink:title="dot">
+<ellipse cx="180" cy="-18" fill="none" rx="27.1004" ry="18" stroke="black"/>
+<text font-family="Times Roman,serif" font-size="14.00" text-anchor="middle" x="180" y="-13.9">dot</text>
+</a>
+</g>
+
+<g class="edge" id="edge4"><title>plugins-&gt;dot</title>
+<path d="M85.5045,-36.8991C104.16,-33.1681 126.108,-28.7784 144.155,-25.1691" fill="none" stroke="black"/>
+<polygon fill="black" points="144.884,-28.5927 154.003,-23.1994 143.511,-21.7286 144.884,-28.5927" stroke="black"/>
+</g>
+</g>
+</svg>
+</td>
+</tr>
+
+<tr>
+<td>
+Including again the produced <code>svg</code> file. To avoid
+conflicts in ids, we use the <span class="icode"><span class="hl kwb">prefix-svg-ids</span>=<span class="hl str">&quot;foo&quot;</span></span>
+attribute:
+<pre class="code-xml" id="code4"><span class="hl kwa">&lt;dot</span> <span class="hl kwb">prefix-svg-ids</span>=<span class="hl str">&quot;foo&quot;</span><span class="hl kwa">&gt;</span>digraph g {
+  rankdir = LR;
+  a [ <span class="hl kwb">shape</span>=<span class="hl str">&quot;box&quot;</span> ] ;
+  a -<span class="hl kwa">&gt;</span> b; a -<span class="hl kwa">&gt;</span> c ; b -<span class="hl kwa">&gt;</span> c ;
+}<span class="hl kwa">&lt;/dot&gt;</span></pre></td>
+<td>
+<svg height="67pt" viewBox="0.00 0.00 242.00 67.00" width="242pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+<g class="graph" id="foograph1" transform="scale(1 1) rotate(0) translate(4 63)">
+<title>g</title>
+<polygon fill="white" points="-4,5 -4,-63 239,-63 239,5 -4,5" stroke="white"/>
+
+<g class="node" id="foonode1"><title>a</title>
+<polygon fill="none" points="54,-36 2.13163e-14,-36 0,-1.77636e-14 54,-3.55271e-15 54,-36" stroke="black"/>
+<text font-family="Times Roman,serif" font-size="14.00" text-anchor="middle" x="27" y="-13.9">a</text>
+</g>
+
+<g class="node" id="foonode3"><title>b</title>
+<ellipse cx="117" cy="-41" fill="none" rx="27" ry="18" stroke="black"/>
+<text font-family="Times Roman,serif" font-size="14.00" text-anchor="middle" x="117" y="-36.9">b</text>
+</g>
+
+<g class="edge" id="fooedge2"><title>a-&gt;b</title>
+<path d="M54.003,-24.9008C62.7485,-27.1357 72.5798,-29.6482 81.8288,-32.0118" fill="none" stroke="black"/>
+<polygon fill="black" points="81.0021,-35.413 91.5574,-34.498 82.7353,-28.6309 81.0021,-35.413" stroke="black"/>
+</g>
+
+<g class="node" id="foonode5"><title>c</title>
+<ellipse cx="207" cy="-18" fill="none" rx="27" ry="18" stroke="black"/>
+<text font-family="Times Roman,serif" font-size="14.00" text-anchor="middle" x="207" y="-13.9">c</text>
+</g>
+
+<g class="edge" id="fooedge4"><title>a-&gt;c</title>
+<path d="M54.2708,-15.89C65.3503,-15.1315 78.2792,-14.3717 90,-14 113.988,-13.2392 120.012,-13.2392 144,-14 152.411,-14.2667 161.443,-14.7333 169.968,-15.2558" fill="none" stroke="black"/>
+<polygon fill="black" points="169.833,-18.7543 180.039,-15.9113 170.288,-11.7691 169.833,-18.7543" stroke="black"/>
+</g>
+
+<g class="edge" id="fooedge6"><title>b-&gt;c</title>
+<path d="M142.55,-34.4706C151.652,-32.1444 162.07,-29.4822 171.837,-26.9861" fill="none" stroke="black"/>
+<polygon fill="black" points="172.876,-30.3332 181.698,-24.4661 171.143,-23.5511 172.876,-30.3332" stroke="black"/>
+</g>
+</g>
+</svg>
+</td>
+</tr>
+
+<tr>
+<td>The contents of the <code>args</code> attribute is used
+as additional argument to the command which is run:
+<pre class="code-xml" id="code5"><span class="hl kwa">&lt;dot</span> <span class="hl kwb">prefix-svg-ids</span>=<span class="hl str">&quot;bar&quot;</span> <span class="hl kwb">args</span>=<span class="hl str">&quot;-Nshape=box&quot;</span><span class="hl kwa">&gt;</span>
+digraph g {
+  rankdir = LR;
+  a -<span class="hl kwa">&gt;</span> b; a -<span class="hl kwa">&gt;</span> c ; b -<span class="hl kwa">&gt;</span> c ;
+}<span class="hl kwa">&lt;/dot&gt;</span></pre></td>
+<td>
+<svg height="67pt" viewBox="0.00 0.00 242.00 67.00" width="242pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+<g class="graph" id="bargraph1" transform="scale(1 1) rotate(0) translate(4 63)">
+<title>g</title>
+<polygon fill="white" points="-4,5 -4,-63 239,-63 239,5 -4,5" stroke="white"/>
+
+<g class="node" id="barnode1"><title>a</title>
+<polygon fill="none" points="54,-36 2.13163e-14,-36 0,-1.77636e-14 54,-3.55271e-15 54,-36" stroke="black"/>
+<text font-family="Times Roman,serif" font-size="14.00" text-anchor="middle" x="27" y="-13.9">a</text>
+</g>
+
+<g class="node" id="barnode3"><title>b</title>
+<polygon fill="none" points="144,-59 90,-59 90,-23 144,-23 144,-59" stroke="black"/>
+<text font-family="Times Roman,serif" font-size="14.00" text-anchor="middle" x="117" y="-36.9">b</text>
+</g>
+
+<g class="edge" id="baredge2"><title>a-&gt;b</title>
+<path d="M54.003,-24.9008C62.1158,-26.9741 71.1631,-29.2861 79.8131,-31.4967" fill="none" stroke="black"/>
+<polygon fill="black" points="79.1498,-34.9396 89.705,-34.0246 80.883,-28.1575 79.1498,-34.9396" stroke="black"/>
+</g>
+
+<g class="node" id="barnode5"><title>c</title>
+<polygon fill="none" points="234,-36 180,-36 180,-1.77636e-14 234,-3.55271e-15 234,-36" stroke="black"/>
+<text font-family="Times Roman,serif" font-size="14.00" text-anchor="middle" x="207" y="-13.9">c</text>
+</g>
+
+<g class="edge" id="baredge4"><title>a-&gt;c</title>
+<path d="M54.2708,-15.89C65.3503,-15.1315 78.2792,-14.3717 90,-14 113.988,-13.2392 120.012,-13.2392 144,-14 152.333,-14.2643 161.276,-14.7247 169.731,-15.2413" fill="none" stroke="black"/>
+<polygon fill="black" points="169.524,-18.7351 179.729,-15.89 169.977,-11.7498 169.524,-18.7351" stroke="black"/>
+</g>
+
+<g class="edge" id="baredge6"><title>b-&gt;c</title>
+<path d="M144.003,-34.0992C152.116,-32.0259 161.163,-29.7139 169.813,-27.5033" fill="none" stroke="black"/>
+<polygon fill="black" points="170.883,-30.8425 179.705,-24.9754 169.15,-24.0604 170.883,-30.8425" stroke="black"/>
+</g>
+</g>
+</svg>
+</td>
+</tr>
+
+</table>
+
+
+
+
+
+
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+
+</div> 
+</body>
+</html>

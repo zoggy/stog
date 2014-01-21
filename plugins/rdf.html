@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog-rdf</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="&lt;navbar-doc/&gt;"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -39,7 +38,7 @@
 
 
 
-<div class="left-toc"><ul class="toc"><li class="toc-section"><a href="#download">Download</a></li><li class="toc-section"><a href="#install">Installation and usage</a></li><li class="toc-section"><a href="#definetriples">Defining RDF triples</a></li><li class="toc-section"><a href="#namespaces">Namespaces</a></li><li class="toc-section"><a href="#sources">Using external graphs</a></li><li class="toc-section"><a href="#querying">Querying graphs</a></li><li class="toc-section"><a href="#tips">Tips</a></li></ul></div>
+<div class="left-toc"><ul class="toc"><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#download">Download</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#install">Installation and usage</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#definetriples">Defining RDF triples</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#namespaces">Namespaces</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#sources">Using external graphs</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#querying">Querying graphs</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#tips">Tips</a></li></ul></div>
 <p>
 This plugin allows to easily specify RDF triples within elements,
 to produce a RDF graph for the whole generated site. It also permits
@@ -62,7 +61,7 @@ Additional rewrite levels are defined:
 </ul>
 <div class="section"><div class="section-title" id="download">Download</div>
 <div class="alert alert-info">
-Stog-rdf is available in <span class="ext-a"><a href="http://opam.ocamlpro.com/">Opam</a></span>.
+Stog-rdf is available in <span class="ext-a"><a href="http://opam.ocaml.org/">Opam</a></span>.
 With opam installed, just type the following command to install stog-rdf:
 <pre class="code-sh">opam <span class="hl kwc">install</span> stog<span class="hl opt">-</span>rdf</pre>
 </div>
@@ -74,6 +73,18 @@ You can clone the git repository:
 <pre class="code-sh">git clone git@github.com<span class="hl opt">:</span>zoggy<span class="hl opt">/</span>stog<span class="hl opt">-</span>rdf.git</pre>
 <div class="subsection"><div class="subsection-title" id="releases">Releases</div>
 <ul>
+<li><a href="stog-rdf-0.10.0.tar.gz">0.10.0</a> [2014/01/21]:
+  <ul id="changes0.10.0">
+    <li>Upgrade to new Stog 0.10.0 architecture,</li>
+    <li>Base rules are not applied, they must be
+     explictely run after level 220 to apply on result
+    of <span class="icode"><span class="hl kwa">&lt;rdf-select&gt;</span></span> (using the
+    <a href="http://zoggy.github.io/stog/funs.html#config_funs">&quot;levels&quot; field in
+    stog config file</a>),
+    </li>
+    <li>Bug fixes.</li>
+  </ul>
+</li>
 <li><a href="stog-rdf-0.9.0.tar.gz">0.9.0</a> [2013/09/27]:
   <ul id="changes0.9.0">
     <li>Upgrade to OCaml-RDF 0.7.0,</li>
@@ -281,7 +292,7 @@ file (see <a href="http://zoggy.github.io/stog/plugins/rdf.html#startupgraphs">L
 from a Turtle file <span class="icode">foo_net.ttl</span> in the same directory
 as the source file of the current element:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;http://foo.net/&quot;</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./foo_net.ttl&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./foo_net.ttl&quot;</span> <span class="hl kwb">name</span>=<span class="hl str">&quot;http://foo.net/&quot;</span><span class="hl kwa">/&gt;</span></pre>
 <p>
 If the filename is not explicitely relative to the current directory
 (i.e. if it does not start with &quot;.&quot; or &quot;..&quot;) then is it used as is.
@@ -431,7 +442,7 @@ Additional rewrite levels are defined:
 <span class="hl kwa">&lt;/ul&gt;</span>
 <span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;download&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Download&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;alert alert-info&quot;</span><span class="hl kwa">&gt;</span>
-Stog-rdf is available in <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://opam.ocamlpro.com/&quot;</span><span class="hl kwa">&gt;</span>Opam<span class="hl kwa">&lt;/ext-a&gt;</span>.
+Stog-rdf is available in <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://opam.ocaml.org/&quot;</span><span class="hl kwa">&gt;</span>Opam<span class="hl kwa">&lt;/ext-a&gt;</span>.
 With opam installed, just type the following command to install stog-rdf:
 <span class="hl kwa">&lt;command-line&gt;</span>opam install stog-rdf<span class="hl kwa">&lt;/command-line&gt;</span>
 <span class="hl kwa">&lt;/div&gt;</span>
@@ -445,6 +456,18 @@ git clone git@github.com:zoggy/stog-rdf.git
 <span class="hl kwa">&lt;/command-line&gt;</span>
 <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;releases&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Releases&quot;</span><span class="hl kwa">&gt;</span>
 <span class="hl kwa">&lt;ul&gt;</span>
+<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-rdf-0.10.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.10.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2014</span>/<span class="hl num">01</span>/<span class="hl num">21</span>]:
+  <span class="hl kwa">&lt;ul</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;changes0.10.0&quot;</span><span class="hl kwa">&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Upgrade to new Stog <span class="hl num">0.10.0</span> architecture,<span class="hl kwa">&lt;/li&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Base rules are not applied, they must be
+     explictely run after level <span class="hl num">220</span> to apply on result
+    of <span class="hl kwa">&lt;rule&gt;</span>rdf-select<span class="hl kwa">&lt;/rule&gt;</span> (using the
+    <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;funs#config_funs&quot;</span><span class="hl kwa">&gt;</span><span class="hl str">&quot;levels&quot;</span> field in
+    stog config file<span class="hl kwa">&lt;/elt&gt;</span>),
+    <span class="hl kwa">&lt;/li&gt;</span>
+    <span class="hl kwa">&lt;li&gt;</span>Bug fixes.<span class="hl kwa">&lt;/li&gt;</span>
+  <span class="hl kwa">&lt;/ul&gt;</span>
+<span class="hl kwa">&lt;/li&gt;</span>
 <span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-rdf-0.9.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.9.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>/<span class="hl num">09</span>/<span class="hl num">27</span>]:
   <span class="hl kwa">&lt;ul</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;changes0.9.0&quot;</span><span class="hl kwa">&gt;</span>
     <span class="hl kwa">&lt;li&gt;</span>Upgrade to OCaml-RDF <span class="hl num">0.7.0</span>,<span class="hl kwa">&lt;/li&gt;</span>
@@ -777,6 +800,8 @@ This will add a triple
 </div>
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

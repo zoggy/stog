@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_ocaml_types</title>
-<link rel="stylesheet" type="text/css" href="http://zoggy.github.io/stog/style.css"/>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -12,7 +12,8 @@
 <div class="container">
 
 
-  <ul class="nav">
+  <div class="nav-collapse">
+    <ul class="nav">
     <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
     <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
     <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
@@ -20,9 +21,7 @@
     <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
-  <div class="nav pull-right">
-
-
+  <div class="nav pull-right">  </div>
   </div>
 
 </div>
@@ -40,22 +39,25 @@
 <div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_info.html" title="Stog_info">Previous</a>
  <a class="up" href="index.html" title="Index">Up</a>
- <a class="post" href="Stog_ocaml.html" title="Stog_ocaml">Next</a>
+ <a class="post" href="Stog_deps.html" title="Stog_deps">Next</a>
 </div>
 <h1>Module <a href="type_Stog_ocaml_types.html">Stog_ocaml_types</a></h1>
-<pre><span class="keyword">module</span> Stog_ocaml_types: <code class="code">sig</code> <a href="Stog_ocaml_types.html">..</a> <code class="code">end</code></pre><div class="info">
+
+<pre><span class="keyword">module</span> Stog_ocaml_types: <code class="code">sig</code> <a href="Stog_ocaml_types.html">..</a> <code class="code">end</code></pre><div class="info module top">
 Types for interfacing stog and ocaml-session.<br/>
 </div>
 <hr width="100%"/>
+
 <pre><code><span id="TYPEinput"><span class="keyword">type</span> input</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top">
 <code>  </code></td>
 <td align="left" valign="top">
-<code><span id="TYPEELTinput.in_phrase">in_phrase</span> :<code class="type">string</code>;</code></td>
+<code><span id="TYPEELTinput.in_phrase">in_phrase</span> : <code class="type">string</code>;</code></td>
 
 </tr></table>
 }
+
 
 
 <pre><code><span id="TYPEresult"><span class="keyword">type</span> result</span> = </code></pre><table class="typetable">
@@ -82,12 +84,18 @@ Types for interfacing stog and ocaml-session.<br/>
 </tr></table>
 
 
-<pre><span id="VALread_input"><span class="keyword">val</span> read_input</span> : <code class="type">Pervasives.in_channel -&gt; <a href="Stog_ocaml_types.html#TYPEinput">input</a></code></pre><pre><span id="VALwrite_input"><span class="keyword">val</span> write_input</span> : <code class="type">Pervasives.out_channel -&gt; <a href="Stog_ocaml_types.html#TYPEinput">input</a> -&gt; unit</code></pre><pre><span id="VALread_result"><span class="keyword">val</span> read_result</span> : <code class="type">Pervasives.in_channel -&gt; <a href="Stog_ocaml_types.html#TYPEresult">result</a></code></pre><pre><span id="VALwrite_result"><span class="keyword">val</span> write_result</span> : <code class="type">Pervasives.out_channel -&gt; <a href="Stog_ocaml_types.html#TYPEresult">result</a> -&gt; unit</code></pre></div>
+
+<pre><span id="VALread_input"><span class="keyword">val</span> read_input</span> : <code class="type">Pervasives.in_channel -&gt; <a href="Stog_ocaml_types.html#TYPEinput">input</a></code></pre>
+<pre><span id="VALwrite_input"><span class="keyword">val</span> write_input</span> : <code class="type">Pervasives.out_channel -&gt; <a href="Stog_ocaml_types.html#TYPEinput">input</a> -&gt; unit</code></pre>
+<pre><span id="VALread_result"><span class="keyword">val</span> read_result</span> : <code class="type">Pervasives.in_channel -&gt; <a href="Stog_ocaml_types.html#TYPEresult">result</a></code></pre>
+<pre><span id="VALwrite_result"><span class="keyword">val</span> write_result</span> : <code class="type">Pervasives.out_channel -&gt; <a href="Stog_ocaml_types.html#TYPEresult">result</a> -&gt; unit</code></pre></div>
 
 
 
 
 
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

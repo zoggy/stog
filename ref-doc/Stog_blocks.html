@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog library reference documentation : Stog_blocks</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
+<div class="navbar"><a class="pre" href="Stog_html.html" title="Stog_html">Previous</a>
+ <a class="up" href="index.html" title="Index">Up</a>
+ <a class="post" href="Stog_plug.html" title="Stog_plug">Next</a>
+</div>
+<h1>Module <a href="type_Stog_blocks.html">Stog_blocks</a></h1>
+
+<pre><span class="keyword">module</span> Stog_blocks: <code class="code">sig</code> <a href="Stog_blocks.html">..</a> <code class="code">end</code></pre><div class="info module top">
+The &quot;blocks&quot; predefined module.<br/>
+</div>
+<hr width="100%"/>
+
+<pre><span class="keyword">module</span> <a href="Stog_blocks.Smap.html">Smap</a>: <code class="type">Map.S</code><code class="type">  with type key = string</code></pre>
+<pre><span id="TYPEblock"><span class="keyword">type</span> block</span> </pre>
+
+
+<pre><span id="VALmk_block"><span class="keyword">val</span> mk_block</span> : <code class="type">id:string -&gt;<br/>       ?label:Xtmpl.tree list -&gt;<br/>       ?clas:string -&gt;<br/>       title:Xtmpl.tree list -&gt;<br/>       ?counter:string -&gt;<br/>       short_fmt:Xtmpl.tree list -&gt;<br/>       long_fmt:Xtmpl.tree list -&gt; Xtmpl.tree list -&gt; <a href="Stog_blocks.html#TYPEblock">block</a></code></pre>
+<pre><span id="VALnode_of_block"><span class="keyword">val</span> node_of_block</span> : <code class="type"><a href="Stog_blocks.html#TYPEblock">block</a> -&gt; Xtmpl.tree</code></pre>
+<pre><span id="VALmodule_name"><span class="keyword">val</span> module_name</span> : <code class="type">string</code></pre>
+<pre><span id="VALmake_module"><span class="keyword">val</span> make_module</span> : <code class="type">?levels:(string * int list) list -&gt; unit -&gt; (module Stog_engine.Module)</code></pre></div>
+
+
+
+
+
+<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
+<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+
+</div> 
+</body>
+</html>
