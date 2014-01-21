@@ -26,7 +26,7 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** LaTeX plugin.
+(** LaTeX rules.
 
    Some values are made available so they can be reused by other plugins. *)
 
