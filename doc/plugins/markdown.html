@@ -1,0 +1,83 @@
+<included-plugin
+title="Stog-markdown"
+with-contents="true"
+>
+<contents>
+<p>
+This plugin allows using
+<ext-a href="https://en.wikipedia.org/wiki/Markdown">Markdown</ext-a> syntax
+in Stog elements, by calling an external tool to convert this syntax
+to XHTML.
+</p>
+<p class="alert alert-warning">
+By default, the <rule>markdown</rule> calls the
+<code>markdown</code> command, so make sure that
+<ext-a href="http://daringfireball.net/projects/markdown/">markdown</ext-a>
+is installed.
+</p>
+
+<p>Usage:</p>
+<command-line>$ stog --package stog.markdown ...</command-line>
+<p>
+This plugin was contributed by
+<ext-a href="http://gallium.inria.fr/~scherer/">Gabriel Scherer</ext-a>.
+</p>
+
+<section id="example" title="Example">
+<p>
+This plugin adds a new <elt href="module_base#base">base rule</elt>
+<rule>markdown</rule>.
+</p>
+<hcode lang="xml" id="code1"><![CDATA[
+<markdown>
+## A typical markdown example
+
+[Markdown](http://daringfireball.net/projects/markdown/) is
+a markup language meant to be written simply in a text editor,
+with a markup that is both easy to read and write. It is later
+translated into HTML by one of the numerous `markdown`
+implementations.
+ </markdown>
+]]></hcode>
+<p>
+The <rule>markdown</rule> rule calls the <code>markdown</code> command
+line tool to convert Markdown syntax to (X)HTML.
+Here is the result, embedded in a box:
+</p>
+<div class="alert alert-info">
+<as-xml defer_="1"><include subs-only="true" href="#code1"/></as-xml>
+</div>
+</section>
+
+<section id="command" title="Command and arguments">
+<p>The <rule>markdown</rule> rule handles attributes <code>command</code>
+and <code>args</code>.
+</p>
+<p>The <code>command</code> attribute is used to specify another command
+than <code>markdown</code>. The value of <code>args</code> attribute
+is added on the command line.
+</p>
+<p>Here is an example of using <code>pandoc</code> command, using
+<code>args</code> attribute to make it translate our markdown code
+into XHTML:
+</p>
+<hcode lang="xml" id="code2"><![CDATA[
+<markdown command="pandoc" args="-f markdown -t html">
+## A typical markdown example
+
+[Markdown](http://daringfireball.net/projects/markdown/) is
+a markup language meant to be written simply in a text editor,
+with a markup that is both easy to read and write. It is later
+translated into HTML by one of the numerous `markdown`
+implementations.
+ </markdown>
+]]></hcode>
+<p>
+Here is the result, embedded in a box:
+</p>
+<div class="alert alert-info">
+<as-xml defer_="1"><include subs-only="true" href="#code2"/></as-xml>
+</div>
+</section>
+</contents>
+</included-plugin>

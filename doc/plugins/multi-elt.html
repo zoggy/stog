@@ -19,16 +19,16 @@ file <code>smallposts.html</code> at the root of a Stog directory:
 </p>
 <hxml><![CDATA[
 <multi sets="smallposts">
-  <post id="post1" title="First post" date="2014/01/21">
+  <smallpost id="post1" title="First post" date="2014/01/21">
     The first post ...
-  </post>
-  <post id="post2" title="Second post" date="2014/01/22">
+  </smallpost>
+  <smallpost id="post2" title="Second post" date="2014/01/22">
     The second post ...
-  </post>
+  </smallpost>
   <contents type="page" title="My small posts">
     This is the body of the element "/smallpost".
     We can list our small posts here:
-    <elements type="post" set="smallposts"/>
+    <elements type="smallpost" set="smallposts"/>
   </contents>
 </multi>]]>
 </hxml>
@@ -40,7 +40,7 @@ node, and the body is the contents under this node.
 </p>
 <p>The multi-elt plugin adds a level -10 to cut the elements of type
 "multi". To do so, each root node of the body is read as if it was
-in its own file. Here we declare two elements of type "post",
+in its own file. Here we declare two elements of type "smallpost",
 with titles, dates and body. The <rule>contents</rule> node contains
 the body of the element "/smallposts". The two other elements are named
 "/smallposts/post1" and "/smallposts/post2", from the hid of the
@@ -61,12 +61,12 @@ with the <code>hid-sep</code> attribute:
 </p>
 <hxml><![CDATA[
 <multi hid-sep="-" ...>
-  <post id="post1" ...>...</post>
-  <post id="post2" ...>...</post>
+  <smallpost id="post1" ...>...</smallpost>
+  <smallpost id="post2" ...>...</smallpost>
   <contents type="...">...</contents>
 </multi>
 ]]></hxml>
-<p>With the code above, the two "post" elements will have hids
+<p>With the code above, the two "smallpost" elements will have hids
 "/smallposts-post1" and "/smallposts-post2". They can be refered to
 for example with <rule>elt</rule> rule:
 </p>
@@ -79,7 +79,7 @@ for example with <rule>elt</rule> rule:
 As any other element, one can use the <ixml>with-contents="true"</ixml> attribute
 to indicate that the body of the element is included in a <rule>contents</rule> node.
 Here is an example using <ixml>with-contnts="true"</ixml> for the multi element,
-for the rest of the definition of this elements and for one of the "post" elements:
+for the rest of the definition of this elements and for one of the "smallpost" elements:
 </p>
 <hxml defer_="1"><include file="../smallposts.html" raw="true"/></hxml>
 <p>

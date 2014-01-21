@@ -34,6 +34,7 @@ BASE_URL_OPTION=
 STOG_OPTIONS=\
   --plugin ../plugins/stog_dot.cmxs \
 	--plugin ../plugins/stog_asy.cmxs \
+	--plugin ../plugins/stog_markdown.cmxs \
 	--plugin ../plugins/stog_multi_elt.cmxs \
 	-d $(DEST_DIR) --depcut $(BASE_URL_OPTION) --def stogdir:`pwd` $(MORE_OPTS) #-v -v -v -v -v
 LESSC=lessc

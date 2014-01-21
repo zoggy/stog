@@ -5,22 +5,22 @@
   <st foo=""><strong><contents/></strong></st>
   <!-- body of the "multi" element -->
   <contents>
-    <post id="post1" title="First post" date="2014/01/21">
+    <smallpost id="post1" title="First post" date="2014/01/21">
       The first post, with hid = "<elt-hid/>".
-    </post>
+    </smallpost>
 
     <!-- this element defines a new rule <name>, using with-contents="true"
-      and a <contents> node. The new rule is available in this "post"
+      and a <contents> node. The new rule is available in this "smallpost"
       element only.
     -->
-    <post id="post2" title="Second post" date="2014/01/22"
+    <smallpost id="post2" title="Second post" date="2014/01/22"
       with-contents="true">
       <name foo="">Name: <st defer_="1"><contents/></st></name>
       <contents>
         The second post, with hid = "<elt-hid/>".
         <name>James Bond</name>
       </contents>
-    </post>
+    </smallpost>
 
   <!-- The body of the final element with hid "smallposts".
     We use again with-contents="true" do define a new rule
@@ -33,7 +33,7 @@
       <hello name="dear reader"/>
       This is the body of the element "<elt-hid/>".
       We can list our small posts here:
-      <elements type="post" set="smallposts"/>
+      <elements type="smallpost" set="smallposts"/>
     </contents> <!-- contents of the body of the "main" element" -->
   </contents> <!-- contents of the "main" element -->
  </contents> <!-- contents of the multi element -->
