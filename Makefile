@@ -27,7 +27,7 @@
 #################################################################################
 
 #
-VERSION=0.9.0
+VERSION=0.10.0
 
 OCAMLC=ocamlc
 OCAMLDOC=ocamldoc.opt
@@ -256,6 +256,7 @@ install-lib:
 install-bin:
 	$(CP) $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
 	  $(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
+	  $(LATEX2STOG) $(LATEX2STOG_BYTE) \
 		`dirname \`which $(OCAMLC)\``/
 	$(CP) $(ODOC) $(ODOC_BYTE) `$(OCAMLFIND) ocamldoc -customdir`/
 
@@ -266,13 +267,15 @@ uninstall-lib:
 
 uninstall-bin:
 	for i in $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
-		$(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML); \
+		$(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
+		$(LATEX2STOG) $(LATEX2STOG_BYTE) ; \
 		do $(RM) `dirname \`which $(OCAMLC)\``/$$i; done
 
 #####
 clean:
 	$(RM) $(MAIN) $(MAIN_BYTE) $(GUI_MAIN) $(GUI_MAIN_BYTE) *.cm* *.o *.a *.x *.annot
 	$(RM) $(MK_STOG) $(ML_STOG_BYTE) $(MK_STOG_OCAML)
+	$(RM) $(LATEX2STOG) $(LATEX2STOG_BYTE)
 	(cd plugins && $(RM) *.cm* *.o *.a *.x *.annot)
 
 # archive :

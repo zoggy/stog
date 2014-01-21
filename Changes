@@ -1,4 +1,4 @@
-Next release:
+Release 0.10.0:
 * new command: <prefix-svg-ids prefix="p">...</prefix-svg-ids>
 * new command: <latex-body>, using latex2stog translator
 * <latex> rules use "latex-packages" environment variable if no
