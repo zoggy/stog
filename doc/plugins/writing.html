@@ -12,11 +12,28 @@ This plugin adds new rewrite rules to use the following elements in your pages:
 </ul>
 
 <section id="download" title="Download">
+<div class="alert alert-info">
+Stog-writing is available in <ext-a href="http://opam.ocaml.org/">Opam</ext-a>.
+With opam installed, just type the following command to install stog-writing:
+<command-line>opam install stog-writing</command-line>
+</div>
 <p>
 Stog-writing is <ext-a href="https://github.com/zoggy/stog-writing">hosted on Github</ext-a>.
 </p>
 <subsection id="releases" title="Releases">
 <ul>
+<li><a href="stog-writing-0.10.0.tar.gz">0.10.0</a> [2014/01/21]:
+  <ul>
+    <li>Upgrade to new Stog 0.10.0 architecture,</li>
+    <li>Add class for footnote links,</li>
+    <li>Handle multiple references in <rule>cite</rule>,</li>
+    <li>Apply base rules when bulding bib entries,</li>
+    <li>Use template <code>bib-entry.tmpl</code>
+        instead of <code>bib_entry.tmpl</code>,</li>
+    <li>Fix: generate paragraph link code even for paragraphs with predefined ids,</li>
+    <li>Simplify auto id generation.</li>
+  </ul>
+</li>
 <li><a href="stog-writing-0.8.0.tar.gz">0.8.0</a> [2013/03/19]: Upgrade to Stog 0.8.0.</li>
 <li><a href="stog-writing-0.7.0.tar.gz">0.7.0</a> [2013/02/13]: Minor fixes.</li>
 <li><a href="stog-writing-0.6.tar.gz">0.6</a>: First numbered release.</li>
