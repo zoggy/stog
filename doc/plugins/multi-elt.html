@@ -10,7 +10,83 @@ into one XML file.
 
 <p>Usage:</p>
 <command-line>$ stog --package stog.multi-elt ...</command-line>
+<prepare-toc>
+<toc/>
+<section id="example" title="Example">
+<p>
+Suppose we have the following XML document in the
+file <code>smallposts.html</code> at the root of a Stog directory:
+</p>
+<hxml><![CDATA[
+<multi sets="smallposts">
+  <post id="post1" title="First post" date="2014/01/21">
+    The first post ...
+  </post>
+  <post id="post2" title="Second post" date="2014/01/22">
+    The second post ...
+  </post>
+  <contents type="page" title="My small posts">
+    This is the body of the element "/smallpost".
+    We can list our small posts here:
+    <elements type="post" set="smallposts"/>
+  </contents>
+</multi>]]>
+</hxml>
+<p>
+The <code>muti</code> node at the root of the document indicates that
+several elements are defined. The whole element is first read as any
+other element: it can have attributes specified for the <code>multi</code>
+node, and the body is the contents under this node.
+</p>
+<p>The multi-elt plugin adds a level -10 to cut the elements of type
+"multi". To do so, each root node of the body is read as if it was
+in its own file. Here we declare two elements of type "post",
+with titles, dates and body. The <rule>contents</rule> node contains
+the body of the element "/smallposts". The two other elements are named
+"/smallposts/post1" and "/smallposts/post2", from the hid of the
+element and their respective ids, using a default separator "/".
+The <rule>contents</rule> node must have a <code>type</code> attribute.
+</p>
+<p>
+All elements share the definitions appearing in the original "multi" element,
+here <ixml>sets="smallposts"</ixml>.
+</p>
+</section>
 
+<section id="naming" section="Naming created elements">
+<p>The hids of the created elements are forged from the hid of the
+"multi" element, the <code>id</code> attribute of each "sub" element
+and a separator. The default separator is "/" but it can specified
+with the <code>hid-sep</code> attribute:
+</p>
+<hxml><![CDATA[
+<multi hid-sep="-" ...>
+  <post id="post1" ...>...</post>
+  <post id="post2" ...>...</post>
+  <contents type="...">...</contents>
+</multi>
+]]></hxml>
+<p>With the code above, the two "post" elements will have hids
+"/smallposts-post1" and "/smallposts-post2". They can be refered to
+for example with <rule>elt</rule> rule:
+</p>
+<hxml><![CDATA[<elt href="/smallposts-post1"/>]]></hxml>
 
+</section>
+
+<section id="with-contents" title="Using &amp;lt;with-contents/&amp;gt;">
+<p>
+As any other element, one can use the <ixml>with-contents="true"</ixml> attribute
+to indicate that the body of the element is included in a <rule>contents</rule> node.
+Here is an example using <ixml>with-contnts="true"</ixml> for the multi element,
+for the rest of the definition of this elements and for one of the "post" elements:
+</p>
+<hxml defer_="1"><include file="../smallposts.html" raw="true"/></hxml>
+<p>
+The result is visible <elt href="/smallposts">here</elt>.
+</p>
+</section>
+
+</prepare-toc>
 </contents>
 </included-plugin>
