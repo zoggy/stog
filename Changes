@@ -1,3 +1,7 @@
+Next release:
+* fix default elt-in-list.tmpl template to handle dependencies on
+  listed elements
+
 Release 0.10.0:
 * new command: <prefix-svg-ids prefix="p">...</prefix-svg-ids>
 * new command: <latex-body>, using latex2stog translator
