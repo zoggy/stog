@@ -26,7 +26,7 @@
 #                                                                               #
 #################################################################################
 
-#
+# DO NOT FORGET TO CHANGE ALSO IN META AND stog_config.ml
 VERSION=0.10.0
 
 OCAMLC=ocamlc
