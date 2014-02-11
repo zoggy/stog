@@ -32,6 +32,7 @@ val site_title : string
 val site_desc : string
 val site_url : string
 val site_email : string
+val stog_dir : string
 val rss_length : string
 val languages : string
 val functions : string

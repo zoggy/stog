@@ -458,11 +458,18 @@ let fun_site_url stog data _env _ _ =
 
 let run ?(use_cache=true) ?only_elt state =
   let stog = state.st_stog in
+  let dir =
+    if Filename.is_relative stog.stog_dir then
+      Filename.concat (Sys.getcwd ()) stog.stog_dir
+    else
+      stog.stog_dir
+  in
   let env = Xtmpl.env_of_list
     [
       ("", Stog_tags.site_desc), (fun data _ _ _ -> (data, stog.stog_desc)) ;
       ("", Stog_tags.site_email), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_email ])) ;
       ("", Stog_tags.site_title), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_title ])) ;
+      ("", Stog_tags.stog_dir), (fun data _ _ _ -> (data, [ Xtmpl.D dir ])) ;
       ("", Stog_tags.site_url), fun_site_url stog ;
     ]
   in

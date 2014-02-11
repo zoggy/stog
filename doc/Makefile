@@ -37,7 +37,7 @@ STOG_OPTIONS=\
 	--plugin ../plugins/stog_markdown.cmxs \
 	--plugin ../plugins/stog_multi_elt.cmxs \
 	--plugin ../plugins/stog_disqus.cmxs \
-	-d $(DEST_DIR) --depcut $(BASE_URL_OPTION) --def stogdir:`pwd` $(MORE_OPTS) #-v -v -v -v -v
+	-d $(DEST_DIR) --depcut $(BASE_URL_OPTION) $(MORE_OPTS) #-v -v -v -v -v
 LESSC=lessc
 
 .PHONY: build site test style
