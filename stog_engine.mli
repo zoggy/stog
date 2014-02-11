@@ -65,6 +65,8 @@ type stog_state =
     st_modules : (module Module) list ;
   };;
 
+val run : ?use_cache:bool -> ?only_elt:Stog_types.elt_id -> stog_state -> stog_state
+
 (** Generate the target files, with the following steps:
   - create the output directory,
   - build the base environment from the site global attributes,

@@ -548,6 +548,9 @@ let fun_bf com = mk_one_arg_fun com ("","strong");;
 let fun_texttt com = mk_one_arg_fun com ("","code");;
 let fun_superscript com = mk_one_arg_fun com ("","sup");;
 let fun_arobas = mk_const_fun 0 [Source " "];;
+let fun_hrule =
+  let atts = Xtmpl.atts_one ("","width") [Xtmpl.D "100%"] in
+  mk_const_fun 0 [Block (block ~atts ("", "hr") []) ];;
 let fun_hfill = mk_const_fun 0 [Source nbsp];;
 let fun_caption = mk_ignore_opt mk_one_arg_fun ("","legend");;
 let fun_item =
@@ -805,6 +808,7 @@ let funs params =
       "hfill", fun_hfill ;
       "includegraphics", fun_includegraphics params ;
       "footnote", fun_footnote ;
+      "hrule", fun_hrule ;
       ]
   in
   List.fold_left
@@ -1049,7 +1053,7 @@ let rec resolve_includes com dir s =
         filename
     in
     let s = Stog_misc.string_of_file filename in
-    resolve_includes com filename s
+    resolve_includes com (Filename.dirname filename) s
   in
   Str.global_substitute re_include f s
 ;;

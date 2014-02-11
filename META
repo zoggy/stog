@@ -3,6 +3,8 @@ description = "Stog"
 requires = "str,unix,config-file,dynlink,xtmpl,rss,xmlm"
 archive(byte) = "stog.cma"
 archive(native) = "stog.cmxa"
+archive(plugin,byte) = "stog.cma"
+archive(plugin,native) = "stog.cmxs"
 
 package "disqus" (
   version = "0.10.0"

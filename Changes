@@ -1,6 +1,8 @@
 Next release:
 * fix default elt-in-list.tmpl template to handle dependencies on
   listed elements
+* compile and install .cmxs files
+* depend on next release of config_file for .cmxs files
 
 Release 0.10.0:
 * new command: <prefix-svg-ids prefix="p">...</prefix-svg-ids>

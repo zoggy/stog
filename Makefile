@@ -97,6 +97,7 @@ LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)
 LIB_CMIFILES=$(LIB_CMXFILES:.cmx=.cmi)
 
 LIB=stog.cmxa
+LIB_CMXS=$(LIB:.cmxa=.cmxs)
 LIB_BYTE=$(LIB:.cmxa=.cma)
 
 MAIN=stog
@@ -131,7 +132,7 @@ GUI_MAIN_BYTE=$(GUI_MAIN).byte
 all: opt byte
 gui: guiopt guibyte
 
-opt: $(LIB) $(MAIN) $(LATEX2STOG) \
+opt: $(LIB) $(LIB_CMXS) $(MAIN) $(LATEX2STOG) \
 	plugins/plugin_example.cmxs $(PLUGINS_OPT) $(MK_STOG) $(ODOC)
 
 guiopt: $(GUI_MAIN)
@@ -151,6 +152,9 @@ $(MAIN_BYTE): $(LIB_BYTE) stog_main.cmo
 
 $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 	$(OCAMLFIND) ocamlopt$(P) -a -o $@ $(LIB_CMXFILES)
+
+$(LIB_CMXS): $(LIB_CMIFILES) $(LIB_CMXFILES)
+	$(OCAMLFIND) ocamlopt$(P) -shared -o $@ $(LIB_CMXFILES)
 
 $(LIB_BYTE): $(LIB_CMIFILES) $(LIB_CMOFILES)
 	$(OCAMLFIND) ocamlc$(PBYTE) -a -o $@ $(LIB_CMOFILES)
@@ -250,7 +254,7 @@ install-lib:
 	@$(OCAMLFIND) install stog META \
 		$(PLUGINS_BYTE) $(PLUGINS_OPT) $(PLUGINS_OPT:.cmxs=.cmx) $(PLUGINS_OPT:.cmxs=.o) \
 		$(LIB_CMIFILES) $(LIB_CMXFILES) $(LIB_CMXFILES:.cmx=.o) \
-		$(LIB_BYTE) $(LIB) $(LIB:.cmxa=.a) stog_main.cm* stog_main.o \
+		$(LIB_BYTE) $(LIB) $(LIB:.cmxa=.a) $(LIB_CMXS) stog_main.cm* stog_main.o \
 		$(OCAML_SESSION_CMOFILES)
 
 install-bin:
