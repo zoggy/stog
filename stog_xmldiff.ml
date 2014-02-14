@@ -115,6 +115,14 @@ let xml_of_file file =
       raise e
 ;;
 
+let size =
+  let rec iter acc = function
+    E (_,_,subs) -> List.fold_left iter (acc+1) subs
+  | _ -> acc+1
+  in
+  iter 0
+;;
+
 let string_of_name = function
   ("",s) -> s
 | (ns,s) -> ns^":"^s
@@ -183,21 +191,24 @@ let t_of_xml =
     (n+1, acc, acc_children @ [node])
   in
   fun xml ->
-    let (_, l, root) = iter (0, [], []) xml in
+    let (_, l, root) = iter (1, [], []) xml in
     let t = Array.of_list (l @ root) in
     Array.sort (fun n1 n2 -> n1.number - n2.number) t;
+    let t = Array.append
+      [| { number = -1 ; leftmost = -1 ; keyroot = false ;
+           child = [| |] ; parent = None ; xml = D ""; label = Text "dummy" } |]
+        t
+    in
     (* set root node as keyroot *)
-    (*let len = Array.length t in
-    t.(len-1) <- { t.(len-1) with keyroot = true };*)
-
-    Stog_misc.file_of_string ~file: "/tmp/t.dot" (dot_of_t t);
+    let len = Array.length t in
+    t.(len-1) <- { t.(len-1) with keyroot = true };
 
     Array.iteri (fun i node ->
        prerr_endline (Printf.sprintf "i=%d, keyroot=%b, node.number=%d, parent=%s, xml=%s" i node.keyroot node.number
          (match node.parent with None -> "" | Some n -> string_of_int n)
          (short_label node.xml)
        );
-       assert (i = node.number)
+       if i > 0 then assert (i = node.number)
     ) t;
     t
 ;;
@@ -208,17 +219,17 @@ let compute fc t1 t2 =
   (* tree distance *)
   let d = Array.init (Array.length t1) (fun i -> Array.create (Array.length t2) (0,[])) in
 
-  for x = 0 to Array.length t1 - 1 do
+  for x = 1 to Array.length t1 - 1 do
     match t1.(x).keyroot with
       false -> ()
     | true ->
         let lx = t1.(x).leftmost in
-        for y = 0 to Array.length t2 - 1 do
+        for y = 1 to Array.length t2 - 1 do
           match t2.(y).keyroot with
             false -> ()
           | true ->
               let ly = t2.(y).leftmost in
-              prerr_endline  (Printf.sprintf "lx=%d, ly=%d" lx ly);
+              (*prerr_endline  (Printf.sprintf "lx=%d, ly=%d" lx ly);*)
               fd.(lx - 1).(ly - 1) <- (0, []);
               for i = lx to x do
                 let op = DeleteTree t1.(i) in
@@ -260,10 +271,11 @@ let compute fc t1 t2 =
                   in
                   if li = lx && lj = ly then
                     (
-                     let op_edit = Edit (t1.(i), t2.(i)) in
+                     let op_edit = Edit (t1.(i), t2.(j)) in
                      let cost_edit = add_action
                        fd.(i-1).(j-1) (fc op_edit) op_edit
                      in
+                     let cost_edit = if fst cost_edit = 0 then (0,[]) else cost_edit in
                      d.(i).(j) <- min_action part cost_edit;
                      fd.(i).(j) <- d.(i).(j)
                     )
@@ -280,11 +292,27 @@ let compute fc t1 t2 =
   fd.(Array.length t1 - 1).(Array.length t2 - 1)
 ;;
 
+let string_of_action = function
+| InsertTree (n2, i) -> Printf.sprintf "InsertTree (%d, %d)" n2.number i
+| DeleteTree n1 -> Printf.sprintf "DeleteTree(%d)" n1.number
+| InsertNode (n2, i) -> Printf.sprintf "InsertNode (%d, %d)" n2.number i
+| DeleteNode n1 -> Printf.sprintf "DeleteNode(%d)" n1.number
+| Edit (n1, n2) -> Printf.sprintf "Edit(%d,%d)" n1.number n2.number
+;;
+
 let diff xml1 xml2 =
   let t1 = t_of_xml xml1 in
   let t2 = t_of_xml xml2 in
+  Stog_misc.file_of_string ~file: "/tmp/t1.dot" (dot_of_t t1);
+  Stog_misc.file_of_string ~file: "/tmp/t2.dot" (dot_of_t t2);
+
+
+
   let fc = function
     InsertTree _ -> 2
+  | DeleteTree i -> size (i.xml)
+  | Edit (n1, n2) ->
+      if n1.label = n2.label then 0 else 1
   | _ -> 1
   in
   compute fc t1 t2
