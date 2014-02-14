@@ -149,7 +149,9 @@ let dot_of_t t =
   p b "digraph g {\nrankdir=TB;\nordering=out;\n";
   Array.iter
     (fun node ->
-       p b "N%d [ label=\"%d: %s [%d]\" ];\n" node.number node.number (short_label node.xml) node.leftmost;
+       p b "N%d [ label=\"%d: %s [%d]\", fontcolor=%s ];\n"
+         node.number node.number (short_label node.xml) node.leftmost
+         (if node.keyroot then "red" else "black");
        Array.iter (fun i -> p b "N%d -> N%d;\n" node.number i) node.child ;
     )
     t;
@@ -185,11 +187,11 @@ let t_of_xml =
     let t = Array.of_list (l @ root) in
     Array.sort (fun n1 n2 -> n1.number - n2.number) t;
     (* set root node as keyroot *)
-    let len = Array.length t in
-    t.(len-1) <- { t.(len-1) with keyroot = true };
-    (*
+    (*let len = Array.length t in
+    t.(len-1) <- { t.(len-1) with keyroot = true };*)
+
     Stog_misc.file_of_string ~file: "/tmp/t.dot" (dot_of_t t);
-    *)
+
     Array.iteri (fun i node ->
        prerr_endline (Printf.sprintf "i=%d, keyroot=%b, node.number=%d, parent=%s, xml=%s" i node.keyroot node.number
          (match node.parent with None -> "" | Some n -> string_of_int n)
@@ -216,6 +218,7 @@ let compute fc t1 t2 =
             false -> ()
           | true ->
               let ly = t2.(y).leftmost in
+              prerr_endline  (Printf.sprintf "lx=%d, ly=%d" lx ly);
               fd.(lx - 1).(ly - 1) <- (0, []);
               for i = lx to x do
                 let op = DeleteTree t1.(i) in
