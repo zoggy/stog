@@ -309,8 +309,8 @@ let diff xml1 xml2 =
 
 
   let fc = function
-    InsertTree _ -> 2
-  | DeleteTree i -> size (i.xml)
+    InsertTree (j,_) -> size (j.xml)
+  | DeleteTree i -> 1
   | Edit (n1, n2) ->
       if n1.label = n2.label then 0 else 1
   | _ -> 1
