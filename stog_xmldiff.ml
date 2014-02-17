@@ -71,7 +71,11 @@ type actions = cost * operation list
 let min_action (c1, l1) (c2, l2) =
   if c1 <= c2 then (c1, l1) else (c2, l2)
 
-let add_action (c,l) cost action = (c+cost, action :: l)
+let add_action (c,l) fc action =
+  let ca = fc action in
+  if ca = 0 then (c, l) else (c+ca, action :: l)
+;;
+
 let add_actions (c1,l1) (c2,l2) = (c1+c2, l1@l2)
 
 let rec xml_of_source s_source source =
@@ -235,13 +239,13 @@ let compute fc t1 t2 =
                 let op = DeleteTree t1.(i) in
                 fd.(i).(ly - 1) <- add_action
                   fd.(t1.(i).leftmost - 1).(ly - 1)
-                  (fc op) op
+                  fc op
               done;
               for j = ly to y do
                 let op = InsertTree (t2.(y), lx - 1) in
                 fd.(lx - 1).(j) <- add_action
                   fd.(lx - 1).(t2.(j).leftmost - 1)
-                  (fc op) op
+                  fc op
               done;
               for i = lx to x do
                 for j = ly to y do
@@ -249,21 +253,21 @@ let compute fc t1 t2 =
                   let lj = t2.(j).leftmost in
                   let op_insertnode = InsertNode(t2.(j), i) in
                   let cost_insertnode = add_action
-                    fd.(i).(j-1) (fc op_insertnode) op_insertnode
+                    fd.(i).(j-1) fc op_insertnode
                   in
                   let op_deletenode = DeleteNode(t1.(i)) in
                   let cost_deletenode = add_action
-                    fd.(i-1).(j) (fc op_deletenode) op_deletenode
+                    fd.(i-1).(j) fc op_deletenode
                   in
                   let op_inserttree = InsertTree(t2.(j), i) in
                   let cost_inserttree = add_action
                     fd.(i).(lj-1)
-                    (fc op_inserttree) op_inserttree
+                    fc op_inserttree
                   in
                   let op_deletetree = DeleteTree(t1.(i)) in
                   let cost_deletetree = add_action
                     fd.(li-1).(j)
-                    (fc op_deletetree) op_deletetree
+                    fc op_deletetree
                   in
                   let part = min_action
                     (min_action cost_insertnode cost_deletenode)
@@ -273,9 +277,8 @@ let compute fc t1 t2 =
                     (
                      let op_edit = Edit (t1.(i), t2.(j)) in
                      let cost_edit = add_action
-                       fd.(i-1).(j-1) (fc op_edit) op_edit
+                       fd.(i-1).(j-1) fc op_edit
                      in
-                     let cost_edit = if fst cost_edit = 0 then (0,[]) else cost_edit in
                      d.(i).(j) <- min_action part cost_edit;
                      fd.(i).(j) <- d.(i).(j)
                     )
@@ -305,8 +308,6 @@ let diff xml1 xml2 =
   let t2 = t_of_xml xml2 in
   Stog_misc.file_of_string ~file: "/tmp/t1.dot" (dot_of_t t1);
   Stog_misc.file_of_string ~file: "/tmp/t2.dot" (dot_of_t t2);
-
-
 
   let fc = function
     InsertTree (j,_) -> size (j.xml)
