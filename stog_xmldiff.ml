@@ -28,11 +28,16 @@
 
 (** Computing diffs on XML trees.
 
-  Algorithm from
+  Algorithm adapted from
   "Tree to tree correction for document trees"
   by Barnart, Clarke and Duncan. Technical report.
 
-  We implement the first extension of Zhang and Shasha.
+  We implement the first extension of Zhang and Shasha and remove the
+  InsertNode and DeleteNode: they can be replaced by InsertTree and
+  DeleteTree (even if not exactly the same) and the semantic of InsertNode
+  is not clear: where do we insert ? Besides, it is easier to write
+  the cost function if there is only one operation to insert and
+  one to delete.
 *)
 
 module Nmap = Xtmpl.Name_map
@@ -76,8 +81,6 @@ type operation =
   | Replace of node * int
   | InsertTree of node * int (* insert tree from t2 as a right sibling of [int] in t1 *)
   | DeleteTree of node (* delete tree from t1 *)
-  | InsertNode of node * int (* insert node from t2 as a right sibling of [int] in t1 *)
-  | DeleteNode of node
   | Edit of node * node (* change label of node from t1 to label of node from t2 *)
 
 type cost_fun = operation -> cost
@@ -90,15 +93,12 @@ type patch_path =
 
 type patch_operation =
   PInsertTree of xmltree
-| PInsertNode of xmltree
 | PDeleteTree
-| PDeleteNode
 | PUpdateCData of string
 | PUpdateNode of Xmlm.name * string Nmap.t * xmltree list
 | PReplace of xmltree
 
 type patch = (patch_path * patch_operation) list
-
 
 let min_action (c1, l1) (c2, l2) =
   if c1 <= c2 then (c1, l1) else (c2, l2)
@@ -150,7 +150,7 @@ let xml_of_file file =
       close_in ic;
       raise e
 ;;
-
+(*
 let size =
   let rec iter acc = function
     E (_,_,subs) -> List.fold_left iter (acc+1) subs
@@ -158,7 +158,7 @@ let size =
   in
   iter 0
 ;;
-
+*)
 
 let atts_of_xml_atts map =
   List.rev
@@ -245,8 +245,6 @@ let t_of_xml =
         [] -> n
       | node :: _ -> node.leftmost
     in
-    prerr_endline (Printf.sprintf "n-n0 = %d-%d = %d, size(xml) = %d"
-      n n0 (n-n0) (size xml));
     let node =
       { number = n ; leftmost ; keyroot = acc_children <> [] ;
         child = Array.of_list (List.map (fun node -> node.number) children) ;
@@ -275,10 +273,11 @@ let t_of_xml =
     t.(len-1) <- { t.(len-1) with keyroot = true };
 
     Array.iteri (fun i node ->
+       (*
        prerr_endline (Printf.sprintf "i=%d, keyroot=%b, node.number=%d, parent=%s, xml=%s" i node.keyroot node.number
          (match node.parent with None -> "" | Some n -> string_of_int n)
          (short_label node.xml)
-       );
+       );*)
        if i > 0 then assert (i = node.number)
     ) t;
     t
@@ -318,14 +317,6 @@ let compute fc t1 t2 =
                 for j = ly to y do
                   let li = t1.(i).leftmost in
                   let lj = t2.(j).leftmost in
-                  let op_deletenode = DeleteNode(t1.(i)) in
-                  let cost_deletenode = add_action
-                    fd.(i-1).(j) fc op_deletenode
-                  in
-                  let op_insertnode = InsertNode(t2.(j), i) in
-                  let cost_insertnode = add_action
-                    fd.(i).(j-1) fc op_insertnode
-                  in
                   let op_deletetree = DeleteTree(t1.(i)) in
                   let cost_deletetree = add_action
                     fd.(li-1).(j)
@@ -336,10 +327,7 @@ let compute fc t1 t2 =
                     fd.(i).(lj-1)
                     fc op_inserttree
                   in
-                  let part = min_action
-                    (min_action cost_insertnode cost_deletenode)
-                    (min_action cost_inserttree cost_deletetree)
-                  in
+                  let part = min_action cost_inserttree cost_deletetree in
                   if li = lx && lj = ly then
                     (
                      let op_edit = Edit (t1.(i), t2.(j)) in
@@ -366,8 +354,6 @@ let string_of_action = function
 | Replace (n2, i) -> Printf.sprintf "Replace (%d, %d): %s" n2.number i (string_of_xml ~cut:true n2.xml)
 | InsertTree (n2, i) -> Printf.sprintf "InsertTree (%d, %d): %s" n2.number i (string_of_xml ~cut:true n2.xml)
 | DeleteTree n1 -> Printf.sprintf "DeleteTree(%d): %s" n1.number (string_of_xml ~cut: true n1.xml)
-| InsertNode (n2, i) -> Printf.sprintf "InsertNode (%d, %d): %s" n2.number i (string_of_xml ~cut: true n2.xml)
-| DeleteNode n1 -> Printf.sprintf "DeleteNode(%d): %s" n1.number (string_of_xml ~cut: true n1.xml)
 | Edit (n1, n2) -> Printf.sprintf "Edit(%d,%d): %s -> %s" n1.number n2.number
   (string_of_xml ~cut: true n1.xml) (string_of_xml ~cut: true n2.xml)
 ;;
@@ -447,21 +433,7 @@ let patch_xmlnode t path op =
     match xml, op with
     | _, PReplace tree -> [xmlnode_of_xmltree tree]
     | _, PInsertTree tree -> [xml] @ [xmlnode_of_xmltree tree]
-    | (x, E(name,atts,subs)), PInsertNode n -> [x, E(name,atts, subs @ [xmlnode_of_xmltree n])]
-    | _, PInsertNode t -> [(xmlnode_of_xmltree t)] @ [xml]
-
-(*    | _, PInsertNode (D s) -> [xml] @ [(None, D s)]
-    | _, PInsertNode (E (name, atts, _)) -> [None, E (name, atts, [xml])]
-*)
-
-(*    | _, PInsertNode tree -> [xml] @ [xmlnode_of_xmltree tree]*)
     | _, PDeleteTree -> []
-    | _, PDeleteNode ->
-        begin
-          match xml with
-            _, D _ -> []
-          | _, E (_,_,subs) -> subs
-        end
     | (x, _), PUpdateCData s -> [(x, D s)]
     | (x, D _), PUpdateNode (name, atts, _) -> [x, E (name,atts,[])]
     | (x, E(_,_,subs)), PUpdateNode (name, atts, _) -> [x, E(name,atts,subs)]
@@ -501,23 +473,9 @@ let patch_of_action (t1, patch) = function
     let op = PInsertTree xmltree2 in
     let t1 = patch_xmlnode t1 path op in
     (t1, (path, op) :: patch)
-| InsertNode (n2, i) ->
-    let xmltree2 = match n2.xml with
-      D _ -> n2.xml
-    | E (name, atts, _) -> E (name, atts, [])
-    in
-    let path = path_of_id t1 i in
-    let op = PInsertNode xmltree2 in
-    let t1 = patch_xmlnode t1 path op in
-    (t1, (path, op) :: patch)
 | DeleteTree i ->
     let path = path_of_id t1 i.number in
     let op = PDeleteTree in
-    let t1 = patch_xmlnode t1 path op in
-    (t1, (path, op) :: patch)
-| DeleteNode i ->
-    let path = path_of_id t1 i.number in
-    let op = PDeleteNode in
     let t1 = patch_xmlnode t1 path op in
     (t1, (path, op) :: patch)
 | Edit (n1, n2) ->
@@ -574,12 +532,8 @@ let string_of_patch_operation (path, op) =
       "REPLACE("^(string_of_path path)^", "^(string_of_xml xmltree)^")"
   | PInsertTree xmltree ->
       "INSERT_TREE("^(string_of_path path)^", "^(string_of_xml xmltree)^")"
-  | PInsertNode xmltree ->
-      "INSERT_NODE("^(string_of_path path)^", "^(string_of_xml xmltree)^")"
   | PDeleteTree ->
       "DELETE_TREE("^(string_of_path path)^")"
-  | PDeleteNode ->
-      "DELETE_NODE("^(string_of_path path)^")"
   | PUpdateCData s ->
       Printf.sprintf "UPDATE_CDATA(%s, %S)" (string_of_path path) s
   | PUpdateNode (name, atts, subs) ->
@@ -598,12 +552,10 @@ let diff xml1 xml2 =
 
   let fc = function
     InsertTree (j,_) -> j.size
-  | DeleteTree i -> max (i.size / 7) 1
+  | DeleteTree i -> max (i.size / 4) 1
   | Edit (n1, n2) ->
       if n1.label = n2.label then 0 else 1
-  | InsertNode _ -> max_int / 2
-  | DeleteNode _ -> max_int / 2
-  | _ -> 1
+  | Replace _ -> 1
   in
   let cost, actions = compute fc t1 t2 in
   prerr_endline ("actions="^(String.concat "\n" (List.map string_of_action actions)));
