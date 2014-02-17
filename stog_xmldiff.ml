@@ -150,15 +150,6 @@ let xml_of_file file =
       close_in ic;
       raise e
 ;;
-(*
-let size =
-  let rec iter acc = function
-    E (_,_,subs) -> List.fold_left iter (acc+1) subs
-  | _ -> acc+1
-  in
-  iter 0
-;;
-*)
 
 let atts_of_xml_atts map =
   List.rev
@@ -319,13 +310,11 @@ let compute fc t1 t2 =
                   let lj = t2.(j).leftmost in
                   let op_deletetree = DeleteTree(t1.(i)) in
                   let cost_deletetree = add_action
-                    fd.(li-1).(j)
-                    fc op_deletetree
+                    fd.(li-1).(j) fc op_deletetree
                   in
                   let op_inserttree = InsertTree(t2.(j), i) in
                   let cost_inserttree = add_action
-                    fd.(i).(lj-1)
-                    fc op_inserttree
+                    fd.(i).(lj-1) fc op_inserttree
                   in
                   let part = min_action cost_inserttree cost_deletetree in
                   if li = lx && lj = ly then
