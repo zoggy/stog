@@ -75,6 +75,7 @@ module Elt_set : Set.S with type elt = elt_id
 module Int_map : Map.S with type key = int
 module Int_set : Set.S with type elt = int
 module Hid_map : Map.S with type key = human_id
+module Hid_set : Set.S with type elt = human_id
 
 type edge_type = Date | Topic of string | Keyword of string | Ref
 

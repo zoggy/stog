@@ -175,8 +175,12 @@ let main () =
           )
             modules
         in
-        Stog_engine.generate ~use_cache: !use_cache ?only_elt: !only_elt
-          stog modules
+        let only_elts =
+          match !only_elt with
+            None -> None
+          | Some s -> Some [s]
+        in
+        Stog_engine.generate ~use_cache: !use_cache ?only_elts stog modules
   end;
   let err = Stog_msg.errors () in
   let warn = Stog_msg.warnings () in

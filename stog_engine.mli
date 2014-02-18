@@ -65,7 +65,7 @@ type stog_state =
     st_modules : (module Module) list ;
   };;
 
-val run : ?use_cache:bool -> ?only_elt:Stog_types.elt_id -> stog_state -> stog_state
+val run : ?use_cache:bool -> ?elts:Stog_types.elt_id list -> stog_state -> stog_state
 
 (** Generate the target files, with the following steps:
   - create the output directory,
@@ -76,7 +76,7 @@ val run : ?use_cache:bool -> ?only_elt:Stog_types.elt_id -> stog_state -> stog_s
   - output {!Stog_types.elt.elt_out} field in the destination file.
 *)
 val generate :
-  ?use_cache: bool -> ?only_elt:string -> Stog_types.stog ->
+  ?use_cache: bool -> ?only_elts:string list -> Stog_types.stog ->
     (module Module) list -> unit
 
 val elt_dst : (string -> string -> string) ->
