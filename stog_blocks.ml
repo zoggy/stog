@@ -122,6 +122,7 @@ let fun_counter (stog, data) env atts subs =
 
 
 let fun_elt_href ?typ src_elt href (stog, data) env args subs =
+  let src_hid_s = Stog_types.string_of_human_id src_elt.elt_human_id in
   let report_error msg = Stog_msg.error ~info: "Stog_html.fun_elt_href" msg in
   let quotes =
     match Xtmpl.get_arg_cdata args ("", "quotes") with
@@ -129,7 +130,9 @@ let fun_elt_href ?typ src_elt href (stog, data) env args subs =
     | Some s -> Stog_io.bool_of_string s
   in
   let (stog, data, elt, text) =
-    let ((stog,data), info) = Stog_html.elt_by_href ?typ stog (stog,data) env href in
+    let ((stog,data), info) =
+      Stog_html.elt_by_href ?typ ~src_elt stog (stog,data) env href
+    in
     let (stog, text) =
       match info with
         None -> (stog, [Xtmpl.D "??"])
@@ -152,11 +155,11 @@ let fun_elt_href ?typ src_elt href (stog, data) env args subs =
                       Some "true" -> long
                     | _ -> short
                   with Not_found ->
-                      let msg = Printf.sprintf "Unknown block hid=%S, id=%S" hid id in
+                      let msg = Printf.sprintf "In %s: Unknown block hid=%S, id=%S" src_hid_s hid id in
                       report_error msg;
                       Xtmpl.D "??"
                 with Not_found ->
-                    let msg = Printf.sprintf "Unknown element %S in block map" hid in
+                    let msg = Printf.sprintf "In %s: Unknown element %S in block map" src_hid_s hid in
                     report_error msg;
                     Xtmpl.D "??"
               in

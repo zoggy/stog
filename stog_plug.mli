@@ -43,12 +43,15 @@ val register_lang : Stog_intl.lang_abbrev -> Stog_intl.lang_data -> unit
      to [name] in the set of base rules of the "html" predefined module. *)
 val register_html_base_rule : Xmlm.name -> Stog_types.stog Xtmpl.callback -> unit
 
-(** [elt_by_href ?typ stog env href] returns the element, hid and
+(** [elt_by_href ?typ ?src_elt stog env href] returns the element, hid and
   optional if matching the given href string, of the form [hid[#id]].
   Return None if the element could not be found, of the id could not be found,
-  and an error is issued. *)
-val elt_by_href : ?typ: string -> Stog_types.stog -> 'a -> 'a Xtmpl.env -> string ->
-  'a * (Stog_types.elt * string * string option) option
+  and an error is issued.
+  @param src_elt can be used to specify the source element, to improve
+  the error message. *)
+val elt_by_href : ?typ: string -> ?src_elt: Stog_types.elt ->
+  Stog_types.stog -> 'a -> 'a Xtmpl.env -> string ->
+    'a * (Stog_types.elt * string * string option) option
 
 (** [mk_block_node ...] creates a [<block ...] with the given information.*)
 val mk_block_node :

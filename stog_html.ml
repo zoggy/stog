@@ -213,7 +213,7 @@ let fun_list acc env args subs =
   (acc, iter [] subs)
 ;;
 
-let elt_by_href ?typ stog acc env href =
+let elt_by_href ?typ ?src_elt stog acc env href =
   let (hid, id) =
     try
       let p = String.index href '#' in
@@ -238,7 +238,13 @@ let elt_by_href ?typ stog acc env href =
       (acc, Some (elt, hid, id))
     with
       Failure s ->
-        Stog_msg.error ~info: "Stog_html.elt_by_href" s;
+        let msg =
+          match src_elt with
+            None -> s
+          | Some elt ->
+            "In "^(Stog_types.string_of_human_id elt.elt_human_id)^": "^s
+        in
+        Stog_msg.error ~info: "Stog_html.elt_by_href" msg;
         (acc, None)
   in
   match info with

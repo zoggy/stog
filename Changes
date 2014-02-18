@@ -1,4 +1,5 @@
 Next release:
+* mod: url of .../index.html elements now include a final "/"
 * fix:when creating by-topic, by-keyword and by-month elements,
   update existing elements if they exist
 * Stog_engine.run and Stog_engine.generate now handle a list of elements

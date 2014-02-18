@@ -529,7 +529,7 @@ let elt_url stog elt =
   let len_s = String.length s in
   let url =
     if len >= len_s && String.sub url (len - len_s) len_s = s then
-      String.sub url 0 (len-len_s)
+      (String.sub url 0 (len-len_s))^"/"
     else
       url
   in
