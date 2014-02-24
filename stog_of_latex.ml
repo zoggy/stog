@@ -262,6 +262,8 @@ let tokenize =
           iter source len Normal (Tex_dbs :: acc) bchar (i+1)
        | Escaping, '@' ->
           iter source len Normal ((Tex_command "@") :: acc) bchar (i+1)
+       | Escaping, ' ' ->
+          iter source len Normal ((Tex_command " ") :: acc) bchar (i+1)
        | Escaping, '%' ->
           iter source len Normal ((Tex '%') :: acc) bchar (i+1)
        | Escaping, c ->
@@ -548,6 +550,7 @@ let fun_bf com = mk_one_arg_fun com ("","strong");;
 let fun_texttt com = mk_one_arg_fun com ("","code");;
 let fun_superscript com = mk_one_arg_fun com ("","sup");;
 let fun_arobas = mk_const_fun 0 [Source " "];;
+let fun_space = mk_const_fun 0 [Source " "];;
 let fun_hrule =
   let atts = Xtmpl.atts_one ("","width") [Xtmpl.D "100%"] in
   mk_const_fun 0 [Block (block ~atts ("", "hr") []) ];;
@@ -641,7 +644,7 @@ let fun_section com eval tokens =
       [ Tex_block ('[',_) ] -> get_args com eval 1 rest
     | _ -> ([eval opt], rest)
   in
-  let tag = remove_end_star com in
+  let tag = (*remove_end_star*) com in
   (* add a blank after the section beginning, but before
      a label if there is one attached to the section *)
   let rest =
@@ -788,6 +791,7 @@ let funs params =
       "texttt", fun_texttt ;
       "textsuperscript", fun_superscript ;
       "@", fun_arobas ;
+      " ", fun_space ;
       "ref", fun_ref ;
       "eqref", fun_ref ;
       "begin", fun_begin params ;
@@ -904,7 +908,17 @@ let mk_sections =
           | Some (l,rest) -> (l, rest)
         in
         let l = iter stop command [] subs in
-        let b = { b with tag = ("",command) ; subs = l } in
+        let b = 
+          let b = { b with tag = ("",command) ; subs = l } in
+          let len = String.length command in
+          if len > 0 && command.[len-1] = '*' then
+            { b with
+              tag = ("", remove_end_star command) ;
+              atts = Xtmpl.atts_one ~atts: b.atts ("","counter") [Xtmpl.D "false"] ;
+            }
+          else
+            b
+        in
         let acc = match b.subs with [] -> acc | _ -> (Block b) :: acc in
         iter stop command acc q
     | (Block b) :: q ->
@@ -914,10 +928,14 @@ let mk_sections =
     | x :: q -> iter stop command (x :: acc) q
   in
   fun ?(stop=fun _ -> false) commands body ->
+    let commands = List.fold_left
+      (fun acc s -> s :: (s^"*") :: acc)
+      [] commands
+    in
     List.fold_left
       (fun acc com -> iter stop com [] acc)
       body
-      commands
+      (List.rev commands)
 ;;
 
 let mk_pars params body =
