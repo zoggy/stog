@@ -247,21 +247,27 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
     in
     ((stog, data), xml :: acc)
   in
-  let ((stog,data), counters) =
-    let ((stog,data), cpts) = List.fold_left f ((stog,data), []) (cls::sect_up) in
-    let xmls = Stog_misc.list_concat ~sep: [Xtmpl.D "."] (List.filter ((<>) []) cpts) in
-    let xmls = List.flatten xmls in
-    ((stog,data), xmls)
-  in
   let ((stog,data), counter_name) =
     let (pref, name) = cls in
     let ((stog,data), xmls) =
-      Stog_html.get_in_env (stog,data) env (pref, (Stog_html.concat_name cls)^"-counter")
+      match Xtmpl.get_arg args ("","counter") with
+      | Some x -> ((stog, data), x)
+      | None ->
+          Stog_html.get_in_env (stog,data) env (pref, (Stog_html.concat_name cls)^"-counter")
     in
     match xmls with
       [ Xtmpl.D "false" ]
     | [ Xtmpl.D "0" ] -> ((stog, data), "")
     | _ -> ((stog,data), Stog_html.concat_name cls)
+  in
+  let ((stog,data), counters) =
+    match counter_name with
+      "" -> ((stog,data), [])
+    | _ ->
+        let ((stog,data), cpts) = List.fold_left f ((stog,data), []) (cls::sect_up) in
+        let xmls = Stog_misc.list_concat ~sep: [Xtmpl.D "."] (List.filter ((<>) []) cpts) in
+        let xmls = List.flatten xmls in
+        ((stog,data), xmls)
   in
   let label = String.capitalize (snd cls) in
   let xmls =
