@@ -533,21 +533,23 @@ let string_of_patch l =
   String.concat "\n" (List.map string_of_patch_operation l)
 ;;
 
-let diff xml1 xml2 =
-  let t1 = t_of_xml xml1 in
-  let t2 = t_of_xml xml2 in
-  Stog_misc.file_of_string ~file: "/tmp/t1.dot" (dot_of_t t1);
-  Stog_misc.file_of_string ~file: "/tmp/t2.dot" (dot_of_t t2);
-
-  let fc = function
+let default_costs = function
     InsertTree (j,_) -> j.size
   | DeleteTree i -> max (i.size / 4) 1
   | Edit (n1, n2) ->
       if n1.label = n2.label then 0 else 1
   | Replace _ -> 1
-  in
-  let cost, actions = compute fc t1 t2 in
-  prerr_endline ("actions="^(String.concat "\n" (List.map string_of_action actions)));
+;;
+
+let diff ?(fcost=default_costs) xml1 xml2 =
+  let t1 = t_of_xml xml1 in
+  let t2 = t_of_xml xml2 in
+  (*
+  Stog_misc.file_of_string ~file: "/tmp/t1.dot" (dot_of_t t1);
+  Stog_misc.file_of_string ~file: "/tmp/t2.dot" (dot_of_t t2);
+  *)
+  let cost, actions = compute fcost t1 t2 in
+  (*prerr_endline ("actions="^(String.concat "\n" (List.map string_of_action actions)));*)
   let patch = patch_of_actions t1 t2 actions in
   (cost, patch)
 ;;
