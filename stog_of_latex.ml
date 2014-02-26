@@ -459,8 +459,8 @@ let gen_equation_contents ?id tokens =
   [ Block (block ?id ("math","equation") [ math ])]
 ;;
 
-let gen_eqnarray_contents tokens =
-  let rec cut_by_newline acc cur = function
+let cut_by_newline =
+  let rec iter acc cur = function
     [] ->
       (match cur with
         [] -> List.rev acc
@@ -468,14 +468,18 @@ let gen_eqnarray_contents tokens =
       )
   | Tex_dbs :: q ->
       (match cur with
-         [] -> cut_by_newline acc cur q
+         [] -> iter acc cur q
        | _ ->
          let acc = (List.rev cur) :: acc in
-         cut_by_newline acc [] q
+         iter acc [] q
        )
-  | x :: q -> cut_by_newline acc (x::cur) q
+  | x :: q -> iter acc (x::cur) q
   in
-  let lines = cut_by_newline [] [] tokens in
+  iter [] []
+;;
+
+let gen_eqnarray_contents tokens =
+  let lines = cut_by_newline tokens in
   let cut_line line =
     let s = string_of_token_list line in
     let l = Stog_misc.split_string s ['&'] in
@@ -518,6 +522,38 @@ let gen_eqnarray_contents tokens =
   List.map f_line lines
 ;;
 
+let gen_tabular eval tokens =
+  (* ignore optional pos argument and first block defining columns *)
+  let tokens =
+    let (arg, rest) = get_token_args "tabular" 1 tokens in
+    let tokens = match arg with
+      [ Tex_block ('[',_) ] -> rest
+    | _ -> tokens
+    in
+    let (arg, rest) = get_token_args "tabular" 1 tokens in
+    match arg with
+      [ Tex_block ('{', _) ] -> rest
+    | _ -> tokens
+  in
+  let lines = cut_by_newline tokens in
+  let cut_line line =
+    let s = string_of_token_list line in
+    let l = Stog_misc.split_string s ['&'] in
+    List.map tokenize l
+  in
+  let f_col tokens =
+    let b = block ("","td") (eval tokens) in
+    Block b
+  in
+  let f_line line =
+    let cols = cut_line line in
+    let b = block ("","tr") (List.map f_col cols) in
+    [ Block b ; Source "\n" ]
+  in
+  let rows = List.map f_line lines in
+  let b = block ("","table") (List.flatten rows) in
+  [Block b]
+;;
 
 let mk_one_arg_fun name tag =
   fun eval tokens ->
@@ -718,6 +754,14 @@ let fun_begin params com eval tokens =
            in
            (contents, rest)
       end
+  | "tabular" ->
+      begin
+        match search_end_ env eval rest with
+          None -> failwith ("Could not find \\end{"^env^"}")
+        | Some (subs, rest) ->
+            let contents = gen_tabular eval subs in
+            (contents, rest)
+      end
   | "picture" | "tikzpicture" ->
       begin
         match search_end_ env eval rest with
@@ -908,7 +952,7 @@ let mk_sections =
           | Some (l,rest) -> (l, rest)
         in
         let l = iter stop command [] subs in
-        let b = 
+        let b =
           let b = { b with tag = ("",command) ; subs = l } in
           let len = String.length command in
           if len > 0 && command.[len-1] = '*' then
@@ -919,7 +963,7 @@ let mk_sections =
           else
             b
         in
-        let acc = match b.subs with [] -> acc | _ -> (Block b) :: acc in
+        let acc = match b.subs with [] -> acc | _ -> (Source "\n") ::(Block b) :: acc in
         iter stop command acc q
     | (Block b) :: q ->
         let subs = iter stop command [] b.subs in
