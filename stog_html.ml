@@ -213,7 +213,7 @@ let fun_list acc env args subs =
   (acc, iter [] subs)
 ;;
 
-let elt_by_href ?typ stog acc env href =
+let elt_by_href ?typ ?src_elt stog acc env href =
   let (hid, id) =
     try
       let p = String.index href '#' in
@@ -238,7 +238,13 @@ let elt_by_href ?typ stog acc env href =
       (acc, Some (elt, hid, id))
     with
       Failure s ->
-        Stog_msg.error ~info: "Stog_html.elt_by_href" s;
+        let msg =
+          match src_elt with
+            None -> s
+          | Some elt ->
+            "In "^(Stog_types.string_of_human_id elt.elt_human_id)^": "^s
+        in
+        Stog_msg.error ~info: "Stog_html.elt_by_href" msg;
         (acc, None)
   in
   match info with
@@ -1119,24 +1125,31 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
     in
     let (stog, body) = elt_list elt ~set ~rss: rss_url stog env Xtmpl.atts_empty [] in
     let elt = { elt with Stog_types.elt_body = body } in
-    Stog_types.add_elt stog elt
+    try
+      let (elt_id, _) = Stog_types.elt_by_human_id stog hid in
+      Stog_types.set_elt stog elt_id elt
+    with
+      Failure _ -> Stog_types.add_elt stog elt
   in
   Stog_types.Str_map.fold f map stog
 ;;
 
 
 let make_topic_indexes stog env =
+  Stog_msg.verbose ~level: 2 "creating by-topic index elements";
   make_by_word_indexes stog env topic_index_hid
   "by-topic" stog.stog_elts_by_topic
 
 ;;
 
 let make_keyword_indexes stog env =
+  Stog_msg.verbose ~level: 2 "creating by-keyword index elements";
   make_by_word_indexes stog env keyword_index_hid
   "by-keyword" stog.stog_elts_by_kw
 ;;
 
 let make_archive_index stog env =
+  Stog_msg.verbose ~level: 2 "creating archive elements";
   let f_month year month set stog =
     let hid = month_index_hid ~year ~month in
     let title =
@@ -1165,7 +1178,11 @@ let make_archive_index stog env =
     in
     let (stog, body) = elt_list elt ~set stog env Xtmpl.atts_empty [] in
     let elt = { elt with elt_body = body } in
-    Stog_types.add_elt stog elt
+    try
+      let (elt_id, _) = Stog_types.elt_by_human_id stog hid in
+      Stog_types.set_elt stog elt_id elt
+    with
+      Failure _ -> Stog_types.add_elt stog elt
   in
   let f_year year mmap stog =
     Stog_types.Int_map.fold (f_month year) mmap stog

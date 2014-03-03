@@ -124,6 +124,8 @@ module Int_map = Map.Make (struct type t = int let compare = compare end);;
 module Int_set = Set.Make (struct type t = int let compare = compare end);;
 module Hid_map = Map.Make
   (struct type t = human_id let compare = Pervasives.compare end);;
+module Hid_set = Set.Make
+  (struct type t = human_id let compare = Pervasives.compare end);;
 
 
 type edge_type =

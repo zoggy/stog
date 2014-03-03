@@ -2,8 +2,6 @@ foo.cmo :
 foo.cmx :
 latex2stog.cmo : stog_of_latex.cmi stog_misc.cmi
 latex2stog.cmx : stog_of_latex.cmx stog_misc.cmx
-latex2stog_tmp.cmo :
-latex2stog_tmp.cmx :
 odoc_stog.cmo :
 odoc_stog.cmx :
 stog_blocks.cmo : stog_types.cmi stog_tags.cmi stog_msg.cmi stog_misc.cmi \
@@ -110,6 +108,10 @@ stog_types.cmo : stog_trie.cmi stog_tmap.cmi stog_misc.cmi stog_graph.cmi \
     stog_config.cmi stog_types.cmi
 stog_types.cmx : stog_trie.cmx stog_tmap.cmx stog_misc.cmx stog_graph.cmx \
     stog_config.cmx stog_types.cmi
+stog_xmldiff.cmo :
+stog_xmldiff.cmx :
+test_xmldiff.cmo : stog_xmldiff.cmo stog_misc.cmi
+test_xmldiff.cmx : stog_xmldiff.cmx stog_misc.cmx
 test_xtmpl.cmo :
 test_xtmpl.cmx :
 errors.cmi :

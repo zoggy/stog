@@ -32,12 +32,15 @@
   some values are made available for the {!Stog_plug} module.
 *)
 
-(** [elt_by_href ?typ stog env href] returns the element, hid and
+(** [elt_by_href ?typ ?src_elt stog env href] returns the element, hid and
   optional id matching the given href string, of the form [hid[#id]].
   Return None if the element could not be found, of the id could not be found,
-  and an error is issued. *)
-val elt_by_href : ?typ: string -> Stog_types.stog -> 'a -> 'a Xtmpl.env -> string ->
-  'a * (Stog_types.elt * string * string option) option
+  and an error is issued.
+  @param src_elt can be used to specify the source element, to improve
+  the error message. *)
+val elt_by_href : ?typ: string -> ?src_elt: Stog_types.elt ->
+  Stog_types.stog -> 'a -> 'a Xtmpl.env -> string ->
+    'a * (Stog_types.elt * string * string option) option
 
 (*
 (** Adding a known block id for a given hid. A short and a long title

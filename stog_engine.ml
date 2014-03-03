@@ -456,7 +456,7 @@ let fun_site_url stog data _env _ _ =
   (data, [ Xtmpl.D (Stog_types.string_of_url stog.stog_base_url) ])
 ;;
 
-let run ?(use_cache=true) ?only_elt state =
+let run ?(use_cache=true) ?elts state =
   let stog = state.st_stog in
   let dir =
     if Filename.is_relative stog.stog_dir then
@@ -475,10 +475,7 @@ let run ?(use_cache=true) ?only_elt state =
   in
   let env = env_of_used_mods ~env stog stog.stog_used_mods in
   let env = env_of_defs ~env stog.stog_defs in
-  match only_elt with
-    None -> compute_levels ~use_cache env state
-  | Some elt_id ->
-      compute_levels ~use_cache ~elts: [elt_id] env state
+  compute_levels ~use_cache ?elts env state
 ;;
 
 let encode_for_url s =
@@ -532,7 +529,7 @@ let elt_url stog elt =
   let len_s = String.length s in
   let url =
     if len >= len_s && String.sub url (len - len_s) len_s = s then
-      String.sub url 0 (len-len_s)
+      (String.sub url 0 (len-len_s))^"/"
     else
       url
   in
@@ -610,30 +607,33 @@ let copy_other_files stog =
   iter stog.stog_outdir stog.stog_dir stog.stog_files
 ;;
 
-let generate ?(use_cache=true) ?only_elt stog modules =
+let generate ?(use_cache=true) ?only_elts stog modules =
   begin
     match stog.stog_lang with
       None -> ()
     | Some lang -> Stog_msg.verbose (Printf.sprintf "Generating pages for language %s" lang);
   end;
   Stog_misc.safe_mkdir stog.stog_outdir;
-  let only_elt =
-    match only_elt with
+  let only_elts =
+    match only_elts with
       None -> None
-    | Some s ->
-        let hid = Stog_types.human_id_of_string s in
-        let (elt_id, _) = Stog_types.elt_by_human_id stog hid in
-        Some elt_id
+    | Some l ->
+        let f s =
+          let hid = Stog_types.human_id_of_string s in
+          let (elt_id, _) = Stog_types.elt_by_human_id stog hid in
+          elt_id
+        in
+        Some (List.map f l)
   in
   let state = { st_stog = stog ; st_modules = modules } in
-  let state = run ~use_cache ?only_elt state in
-  match only_elt with
+  let state = run ~use_cache ?elts: only_elts state in
+  match only_elts with
     None ->
       output_elts state ;
       copy_other_files state.st_stog
-  | Some elt_id ->
-      let elt = Stog_types.elt state.st_stog elt_id in
-      output_elts ~elts: [elt] state
+  | Some l ->
+      let elts = List.map (Stog_types.elt state.st_stog) l in
+      output_elts ~elts state
 ;;
 
 

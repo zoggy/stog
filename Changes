@@ -1,5 +1,11 @@
 Next release:
 * fix: compile and install odoc_stog.cmo
+* mod: url of .../index.html elements now include a final "/"
+* fix:when creating by-topic, by-keyword and by-month elements,
+  update existing elements if they exist
+* Stog_engine.run and Stog_engine.generate now handle a list of elements
+  to compute instead of computing all elements (before only one
+  element could be specified)
 * add: <stog-dir> rule is pre-defined to return the absolute stog directory
 * fix default elt-in-list.tmpl template to handle dependencies on
   listed elements
