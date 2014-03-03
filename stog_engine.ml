@@ -370,33 +370,52 @@ let output_cache_info stog elt_envs =
   close_out oc
 ;;
 
-
+let state_merge_cdata ?elts state =
+ let elts =
+    match elts with
+      None -> Stog_types.elt_list state.st_stog
+    | Some l -> List.map (fun id -> (id, Stog_types.elt state.st_stog id)) l
+  in
+  let f stog (elt_id, elt) =
+    let elt =
+      match elt.elt_out with
+        None -> elt
+      | Some xmls ->
+          { elt with elt_out = Some (List.map Xtmpl.merge_cdata xmls) }
+    in
+    Stog_types.set_elt stog elt_id elt
+  in
+  { state with st_stog = List.fold_left f state.st_stog elts }
+;;
 
 let compute_levels ?(use_cache=true) ?elts env state =
   let levels = levels state in
-  if use_cache then
-    begin
-      let (state, cached) = get_cached_elements state env in
-      Stog_msg.verbose (Printf.sprintf "%d elements kept from cache" (List.length cached));
-      let f_elt (stog, cached) cached_elt =
-        try
-          let (elt_id, _) = Stog_types.elt_by_human_id stog cached_elt.elt_human_id in
-          (* replace element by cached one *)
-          let stog = Stog_types.set_elt stog elt_id cached_elt in
-          (stog, elt_id :: cached)
-        with _ ->
-            (* element not loaded but cached; keep it as it may be an
-              element from a cut-elt rule *)
-            let stog = Stog_types.add_elt stog cached_elt in
+  let state =
+    if use_cache then
+      begin
+        let (state, cached) = get_cached_elements state env in
+        Stog_msg.verbose (Printf.sprintf "%d elements kept from cache" (List.length cached));
+        let f_elt (stog, cached) cached_elt =
+          try
             let (elt_id, _) = Stog_types.elt_by_human_id stog cached_elt.elt_human_id in
+            (* replace element by cached one *)
+            let stog = Stog_types.set_elt stog elt_id cached_elt in
             (stog, elt_id :: cached)
-      in
-      let (stog, cached) = List.fold_left f_elt (state.st_stog, []) cached in
-      let state = { state with st_stog = stog } in
-      Stog_types.Int_set.fold (compute_level ~cached env) levels state
-    end
-  else
-    Stog_types.Int_set.fold (compute_level ?elts env) levels state
+          with _ ->
+              (* element not loaded but cached; keep it as it may be an
+                 element from a cut-elt rule *)
+              let stog = Stog_types.add_elt stog cached_elt in
+              let (elt_id, _) = Stog_types.elt_by_human_id stog cached_elt.elt_human_id in
+              (stog, elt_id :: cached)
+        in
+        let (stog, cached) = List.fold_left f_elt (state.st_stog, []) cached in
+        let state = { state with st_stog = stog } in
+        Stog_types.Int_set.fold (compute_level ~cached env) levels state
+      end
+    else
+      Stog_types.Int_set.fold (compute_level ?elts env) levels state
+  in
+  state_merge_cdata state
 ;;
 
 

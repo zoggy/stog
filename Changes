@@ -1,4 +1,5 @@
 Next release:
+* mod: merge CData in resulting XML trees when computing elements
 * fix: compile and install odoc_stog.cmo
 * mod: url of .../index.html elements now include a final "/"
 * fix:when creating by-topic, by-keyword and by-month elements,
