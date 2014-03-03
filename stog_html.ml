@@ -1092,44 +1092,44 @@ module Sset = Stog_types.Str_set;;
 let make_by_word_indexes stog env f_elt_id elt_type map =
   let f word set stog =
     let hid = f_elt_id word in
-    let elt =
-      { Stog_types.elt_human_id = hid ;
-        elt_parent = None ;
-        elt_children = [] ;
-        elt_type = elt_type ;
-        elt_body = [] ;
-        elt_date = None ;
-        elt_title = word ;
-        elt_keywords = [] ;
-        elt_topics = [] ;
-        elt_published = true ;
-        elt_defs = [] ;
-        elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_human_id hid) ;
-        elt_sets = [] ;
-        elt_lang_dep = true ;
-        elt_xml_doctype = None ;
-        elt_out = None ;
-        elt_used_mods = Stog_types.Str_set.empty ;
-      }
-    in
-    let out_file = Stog_engine.elt_dst_file stog elt in
-    let rss_file = (Filename.chop_extension out_file)^".rss" in
-    let url = Stog_engine.elt_url stog elt in
-    let rss_url =
-      let url_s = Stog_types.string_of_url url in
-      Stog_types.url_of_string ((Filename.chop_extension url_s)^".rss")
-    in
-    let stog = generate_rss_feed_file stog ~title: word url
-      (List.map (fun id -> (id, Stog_types.elt stog id)) (Stog_types.Elt_set.elements set))
-      rss_file
-    in
-    let (stog, body) = elt_list elt ~set ~rss: rss_url stog env Xtmpl.atts_empty [] in
-    let elt = { elt with Stog_types.elt_body = body } in
     try
-      let (elt_id, _) = Stog_types.elt_by_human_id stog hid in
-      Stog_types.set_elt stog elt_id elt
-    with
-      Failure _ -> Stog_types.add_elt stog elt
+      ignore(Stog_types.elt_by_human_id stog hid);
+      stog
+    with Failure _ ->
+        let elt =
+          { Stog_types.elt_human_id = hid ;
+            elt_parent = None ;
+            elt_children = [] ;
+            elt_type = elt_type ;
+            elt_body = [] ;
+            elt_date = None ;
+            elt_title = word ;
+            elt_keywords = [] ;
+            elt_topics = [] ;
+            elt_published = true ;
+            elt_defs = [] ;
+            elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_human_id hid) ;
+            elt_sets = [] ;
+            elt_lang_dep = true ;
+            elt_xml_doctype = None ;
+            elt_out = None ;
+            elt_used_mods = Stog_types.Str_set.empty ;
+          }
+        in
+        let out_file = Stog_engine.elt_dst_file stog elt in
+        let rss_file = (Filename.chop_extension out_file)^".rss" in
+        let url = Stog_engine.elt_url stog elt in
+        let rss_url =
+          let url_s = Stog_types.string_of_url url in
+          Stog_types.url_of_string ((Filename.chop_extension url_s)^".rss")
+        in
+        let stog = generate_rss_feed_file stog ~title: word url
+          (List.map (fun id -> (id, Stog_types.elt stog id)) (Stog_types.Elt_set.elements set))
+            rss_file
+        in
+        let (stog, body) = elt_list elt ~set ~rss: rss_url stog env Xtmpl.atts_empty [] in
+        let elt = { elt with Stog_types.elt_body = body } in
+        Stog_types.add_elt stog elt
   in
   Stog_types.Str_map.fold f map stog
 ;;
@@ -1152,37 +1152,37 @@ let make_archive_index stog env =
   Stog_msg.verbose ~level: 2 "creating archive elements";
   let f_month year month set stog =
     let hid = month_index_hid ~year ~month in
-    let title =
-      let month_str = Stog_intl.get_month stog.stog_lang month in
-      Printf.sprintf "%s %d" month_str year
-    in
-    let elt =
-      { Stog_types.elt_human_id = hid ;
-        elt_parent = None ;
-        elt_children = [] ;
-        elt_type = "by-month";
-        elt_body = [] ;
-        elt_date = None ;
-        elt_title = title ;
-        elt_keywords = [] ;
-        elt_topics = [] ;
-        elt_published = true ;
-        elt_defs = [] ;
-        elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_human_id hid) ;
-        elt_sets = [] ;
-        elt_lang_dep = true ;
-        elt_xml_doctype = None ;
-        elt_out = None ;
-        elt_used_mods = Stog_types.Str_set.empty ;
-      }
-    in
-    let (stog, body) = elt_list elt ~set stog env Xtmpl.atts_empty [] in
-    let elt = { elt with elt_body = body } in
     try
-      let (elt_id, _) = Stog_types.elt_by_human_id stog hid in
-      Stog_types.set_elt stog elt_id elt
-    with
-      Failure _ -> Stog_types.add_elt stog elt
+      ignore(Stog_types.elt_by_human_id stog hid);
+      stog
+    with Failure _ ->
+        let title =
+          let month_str = Stog_intl.get_month stog.stog_lang month in
+          Printf.sprintf "%s %d" month_str year
+        in
+        let elt =
+          { Stog_types.elt_human_id = hid ;
+            elt_parent = None ;
+            elt_children = [] ;
+            elt_type = "by-month";
+            elt_body = [] ;
+            elt_date = None ;
+            elt_title = title ;
+            elt_keywords = [] ;
+            elt_topics = [] ;
+            elt_published = true ;
+            elt_defs = [] ;
+            elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_human_id hid) ;
+            elt_sets = [] ;
+            elt_lang_dep = true ;
+            elt_xml_doctype = None ;
+            elt_out = None ;
+            elt_used_mods = Stog_types.Str_set.empty ;
+          }
+        in
+        let (stog, body) = elt_list elt ~set stog env Xtmpl.atts_empty [] in
+        let elt = { elt with elt_body = body } in
+        Stog_types.add_elt stog elt
   in
   let f_year year mmap stog =
     Stog_types.Int_map.fold (f_month year) mmap stog
