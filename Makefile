@@ -91,8 +91,7 @@ LIB_CMXFILES= \
 	stog_html.cmx \
 	stog_blocks.cmx \
 	stog_plug.cmx \
-	stog_dyn.cmx \
-	stog_xmldiff.cmx
+	stog_dyn.cmx
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)
 LIB_CMIFILES=$(LIB_CMXFILES:.cmx=.cmi)
@@ -171,9 +170,6 @@ $(LATEX2STOG): $(LIB) latex2stog.cmx
 
 $(LATEX2STOG_BYTE): $(LIB_BYTE) latex2stog.cmo
 	$(OCAMLFIND) ocamlc$(P) -o $@ -package $(PACKAGES) -linkall -linkpkg $^
-
-test-xmldiff: $(LIB) test_xmldiff.cmx
-	$(OCAMLFIND) ocamlopt -o $@ -package $(PACKAGES) -linkpkg $^
 
 # mk scripts
 $(MK_STOG): $(LIB)
