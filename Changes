@@ -1,4 +1,5 @@
 Next release:
+* fix: compile and install odoc_stog.cmo
 * add: <stog-dir> rule is pre-defined to return the absolute stog directory
 * fix default elt-in-list.tmpl template to handle dependencies on
   listed elements

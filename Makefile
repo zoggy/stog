@@ -56,7 +56,7 @@ PLUGINS_BYTE= \
 PLUGINS_OPT=$(PLUGINS_BYTE:.cmo=.cmxs)
 
 ODOC=odoc_stog.cmxs
-ODOC_BYTE=$(ODOC_STOG:.cmxs=.cmo)
+ODOC_BYTE=$(ODOC:.cmxs=.cmo)
 
 RM=rm -f
 CP=cp -f
