@@ -10,6 +10,10 @@ stog_blocks.cmx : stog_types.cmx stog_tags.cmx stog_msg.cmx stog_misc.cmx \
     stog_io.cmx stog_html.cmx stog_engine.cmx stog_deps.cmx stog_blocks.cmi
 stog_config.cmo : stog_msg.cmi stog_misc.cmi stog_config.cmi
 stog_config.cmx : stog_msg.cmx stog_misc.cmx stog_config.cmi
+stog_cut.cmo : stog_types.cmi stog_tags.cmi stog_msg.cmi stog_misc.cmi \
+    stog_cut.cmi
+stog_cut.cmx : stog_types.cmx stog_tags.cmx stog_msg.cmx stog_misc.cmx \
+    stog_cut.cmi
 stog_deps.cmo : stog_types.cmi stog_msg.cmi stog_misc.cmi stog_deps.cmi
 stog_deps.cmx : stog_types.cmx stog_msg.cmx stog_misc.cmx stog_deps.cmi
 stog_dyn.cmo : stog_msg.cmi stog_misc.cmi stog_dyn.cmi
@@ -45,11 +49,11 @@ stog_gui_main.cmx : stog_types.cmx stog_misc.cmx stog_io.cmx \
 stog_html.cmo : stog_types.cmi stog_tmpl.cmi stog_tags.cmi stog_svg.cmi \
     stog_ocaml.cmi stog_msg.cmi stog_misc.cmi stog_latex.cmi stog_io.cmi \
     stog_intl.cmi stog_info.cmi stog_filter.cmi stog_engine.cmi stog_deps.cmi \
-    stog_html.cmi
+    stog_cut.cmi stog_html.cmi
 stog_html.cmx : stog_types.cmx stog_tmpl.cmx stog_tags.cmx stog_svg.cmx \
     stog_ocaml.cmx stog_msg.cmx stog_misc.cmx stog_latex.cmx stog_io.cmx \
     stog_intl.cmx stog_info.cmx stog_filter.cmx stog_engine.cmx stog_deps.cmx \
-    stog_html.cmi
+    stog_cut.cmx stog_html.cmi
 stog_html5.cmo : stog_types.cmi stog_html5.cmi
 stog_html5.cmx : stog_types.cmx stog_html5.cmi
 stog_info.cmo : stog_types.cmi stog_tmap.cmi stog_misc.cmi stog_info.cmi
@@ -108,15 +112,12 @@ stog_types.cmo : stog_trie.cmi stog_tmap.cmi stog_misc.cmi stog_graph.cmi \
     stog_config.cmi stog_types.cmi
 stog_types.cmx : stog_trie.cmx stog_tmap.cmx stog_misc.cmx stog_graph.cmx \
     stog_config.cmx stog_types.cmi
-stog_xmldiff.cmo :
-stog_xmldiff.cmx :
-test_xmldiff.cmo : stog_xmldiff.cmo stog_misc.cmi
-test_xmldiff.cmx : stog_xmldiff.cmx stog_misc.cmx
 test_xtmpl.cmo :
 test_xtmpl.cmx :
 errors.cmi :
 stog_blocks.cmi : stog_engine.cmi
 stog_config.cmi :
+stog_cut.cmi : stog_types.cmi stog_tmap.cmi
 stog_deps.cmi : stog_types.cmi
 stog_dyn.cmi :
 stog_engine.cmi : stog_types.cmi

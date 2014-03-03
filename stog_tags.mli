@@ -78,6 +78,7 @@ val latex_body : string
 val list : string
 val n_columns : string
 val next : string
+val next_hid : string
 val ocaml : string
 val ocaml_eval : string
 val ocaml_printf : string
@@ -87,6 +88,7 @@ val post : string
 val prefix_svg_ids : string
 val prepare_toc : string
 val previous : string
+val previous_hid : string
 val search_form : string
 val section : string
 val subsection : string

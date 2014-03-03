@@ -1,4 +1,6 @@
 Next release:
+* <cut-elt>: add previous-hid and nex-hid in definitions of cut
+  elements, to create navigation links
 * mod: merge CData in resulting XML trees when computing elements
 * fix: compile and install odoc_stog.cmo
 * mod: url of .../index.html elements now include a final "/"

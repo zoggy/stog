@@ -26,80 +26,9 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Cutting elements into pieces. This function is associated to
+  a level in the [Base] module. *)
 
-let site_title = "site-title"
-let site_desc = "site-description"
-let site_url = "site-url"
-let site_email = "site-email"
-let stog_dir = "stog-dir"
-let rss_length = "rss-length"
-let languages = "languages"
-let functions = "functions_"
-
-let elt = "elt"
-let elt_body = "elt-body"
-let elt_date = "elt-date"
-let elt_datetime = "elt-datetime"
-let elt_hid = "elt-hid"
-let elt_intro = "elt-intro"
-let elt_keywords = "elt-keywords"
-let elt_path = "elt-path"
-let elt_src = "elt-src"
-let elt_title = "elt-title"
-let elt_topics = "elt-topics"
-let elt_type = "elt-type"
-let elt_url = "elt-url"
-
-let sep = "sep_"
-
-let archive_tree = "archive-tree"
-let as_xml = "as-xml"
-let block = "block"
-let command_line = "command-line"
-let counter = "counter"
-let dummy_ = "dummy_"
-let elements = "elements"
-let ext_a = "ext-a"
-let error_ = "error_"
-let graph = "graph"
-let hcode = "hcode"
-let hid_sep = "hid-sep"
-let icode = "icode"
-let if_ = "if"
-let image = "image"
-let inc = "inc"
-let include_ = "include"
-let keyword = "keyword"
-let langswitch = "langswitch"
-let late_inc = "late-inc"
-let latex = "latex"
-let latex_body = "latex-body"
-let list = "list"
-let n_columns = "n-columns"
-let next = "next"
-let next_hid = "next-hid"
-let ocaml = "ocaml"
-let ocaml_eval = "ocaml-eval"
-let ocaml_printf = "ocaml-printf"
-let page = "page"
-let paragraph = "paragraph"
-let post = "post"
-let prefix_svg_ids = "prefix-svg-ids"
-let prepare_toc = "prepare-toc"
-let previous = "previous"
-let previous_hid = "previous-hid"
-let search_form = "search-form"
-let section = "section"
-let subsection = "subsection"
-let subsubsection = "subsubsection"
-let toc = "toc"
-let topic = "topic"
-let two_columns = "two-columns"
-
-let default_sectionning =
-  [ section ;
-    subsection ;
-    subsubsection ;
-    paragraph ;
-  ]
+val cut_elts :
+  Stog_types.stog Xtmpl.env ->
+    Stog_types.stog -> Stog_types.elt Stog_tmap.key list -> Stog_types.stog
