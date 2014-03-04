@@ -85,7 +85,7 @@ let highlight ?lang ?opts code =
       with
         Higlo.Unknown_lang s ->
           Stog_msg.warning
-            (Printf.sprintf "Higlo: unknown language "^lang^". Falling back to external highligh");
+            (Printf.sprintf "Higlo: unknown language "^lang^". Falling back to external highlight");
           let opts = " --syntax="^lang in
           external_highlight ~opts code
 ;;
