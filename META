@@ -1,6 +1,6 @@
 version = "0.10.0"
 description = "Stog"
-requires = "str,unix,config-file,dynlink,xtmpl,rss,xmlm"
+requires = "str,unix,config-file,dynlink,xtmpl,rss,xmlm,higlo.lexers"
 archive(byte) = "stog.cma"
 archive(native) = "stog.cmxa"
 archive(plugin,byte) = "stog.cma"

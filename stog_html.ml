@@ -294,10 +294,8 @@ let fun_archive_tree stog _env _atts _subs =
   (stog, [ Xtmpl.E (("", "ul"), Xtmpl.atts_empty, List.map f_year years) ])
 ;;
 
-let highlight = Stog_misc.highlight;;
-
 let fun_hcode ?(inline=false) ?lang stog _env args code =
-  let language, language_options =
+  let language, opts =
     match lang with
       None ->
         (
@@ -317,13 +315,13 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
     | Some "ocaml" ->
         let lang_file = Filename.concat stog.stog_dir "ocaml.lang" in
         let opts = if Sys.file_exists lang_file then
-            Printf.sprintf "--config-file=%s" lang_file
+            Some (Printf.sprintf "--config-file=%s" lang_file)
           else
-            "--syntax=ocaml"
+            None
         in
-        ("ocaml", Some opts)
+        ("ocaml", opts)
     | Some lang ->
-        (lang, Some (Printf.sprintf "--syntax=%s" lang))
+        (lang, None)
   in
   let code =
     let l = List.map
@@ -336,13 +334,7 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
     String.concat "" l
   in
   let code = Stog_misc.strip_blank_lines code in
-  let xml_code =
-    match language_options with
-      None -> Xtmpl.D code
-    | Some opts ->
-        let code = highlight ~opts code in
-        Xtmpl.xml_of_string code
-  in
+  let xmls = Stog_highlight.highlight ?lang ?opts code in
   let atts =
     match Xtmpl.get_arg_cdata args ("","id") with
       None -> Xtmpl.atts_empty
@@ -350,11 +342,11 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
   in
   let xmls =
     if inline then
-      [ Xtmpl.E (("", "span"), Xtmpl.atts_one ~atts ("", "class") [Xtmpl.D "icode"], [xml_code]) ]
+      [ Xtmpl.E (("", "span"), Xtmpl.atts_one ~atts ("", "class") [Xtmpl.D "icode"], xmls) ]
     else
       [ Xtmpl.E (("", "pre"),
          Xtmpl.atts_one ~atts ("", "class") [Xtmpl.D (Printf.sprintf "code-%s" language)],
-         [xml_code])
+         xmls)
       ]
   in
   (stog, xmls)

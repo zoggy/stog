@@ -40,7 +40,7 @@ OCAMLFIND=ocamlfind
 P=#p -p
 PBYTE=#p -p a
 
-PACKAGES=xmlm,rss,xtmpl,config-file,dynlink,unix,str
+PACKAGES=xmlm,rss,xtmpl,config-file,dynlink,unix,str,higlo.lexers
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
 
 COMPFLAGS=-I +ocamldoc -annot -rectypes -g #-w +K
@@ -65,6 +65,7 @@ MKDIR=mkdir -p
 LIB_CMXFILES= \
 	stog_msg.cmx \
 	stog_misc.cmx \
+	stog_highlight.cmx \
 	stog_config.cmx \
 	stog_trie.cmx \
 	stog_tmap.cmx \

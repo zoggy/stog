@@ -148,17 +148,16 @@ let fun_eval stog env args code =
           Filename.concat d "ocaml.lang"
         in
         let opts = if Sys.file_exists lang_file then
-            Printf.sprintf "--config-file=%s" lang_file
+            Some (Printf.sprintf "--config-file=%s" lang_file)
           else
-            "--syntax=ocaml"
+            None
         in
         let code =
           if show_code then
             begin
-              let code = Stog_misc.highlight ~opts phrase in
-              let code = if toplevel then Printf.sprintf "# %s" code else code in
-              let xml_code = Xtmpl.xml_of_string code in
-              Xtmpl.E (("","div"), Xtmpl.atts_empty, [xml_code])
+              let xmls = Stog_highlight.highlight ~lang: "ocaml" ?opts phrase in
+              let xmls = if toplevel then (Xtmpl.D "# ") :: xmls else xmls in
+              Xtmpl.E (("","div"), Xtmpl.atts_empty, xmls)
             end
            else
             Xtmpl.D ""

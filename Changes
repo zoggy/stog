@@ -1,4 +1,5 @@
 Next release:
+* Use Higlo syntax highlighter when possible
 * <cut-elt>: add previous-hid and nex-hid in definitions of cut
   elements, to create navigation links
 * mod: merge CData in resulting XML trees when computing elements

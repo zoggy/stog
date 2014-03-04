@@ -332,23 +332,6 @@ let path_under ~parent file =
     failwith (Printf.sprintf "%s is not under %s" file parent)
 ;;
 
-let highlight ~opts code =
-  let code_file = Filename.temp_file "stog" "code" in
-  file_of_string ~file: code_file code;
-  let temp_file = Filename.temp_file "stog" "highlight" in
-  let com = Printf.sprintf
-    "highlight -O xhtml %s -f %s > %s"
-    opts (Filename.quote code_file)(Filename.quote temp_file)
-  in
-  match Sys.command com with
-    0 ->
-      let code = string_of_file temp_file in
-      Sys.remove code_file;
-      Sys.remove temp_file;
-      strip_string code
-  | _ ->
-      failwith (Printf.sprintf "command failed: %s" com)
-;;
 
 let string_of_time t =
   let d = Unix.gmtime t in
