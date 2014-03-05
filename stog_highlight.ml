@@ -78,6 +78,8 @@ let highlight ?lang ?opts code =
   | Some lang, Some opts ->
       let opts = opts^" --syntax="^lang in
       external_highlight ~opts code
+  | Some "txt", None ->
+      [ Higlo.token_to_xtmpl ~classes: higlo_classes (Higlo.Text code) ]
   | Some lang, None ->
       try
         let _lexer = Higlo.get_lexer lang in
