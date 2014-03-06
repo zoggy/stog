@@ -69,9 +69,9 @@ let concat_code =
 
 let fun_dot stog env atts subs =
   let code = concat_code subs in
-  let (stog, hid) = Stog_engine.get_hid stog env in
-  let hid = Stog_types.human_id_of_string hid in
-  let (_, elt) = Stog_types.elt_by_human_id stog hid in
+  let (stog, path) = Stog_engine.get_path stog env in
+  let path = Stog_types.path_of_string path in
+  let (_, elt) = Stog_types.elt_by_path stog path in
   let elt_dir = Filename.dirname elt.Stog_types.elt_src in
   let command = Xtmpl.opt_arg_cdata ~def: "dot" atts ("","command") in
   let typ = Xtmpl.opt_arg_cdata ~def: "svg" atts ("", "type") in

@@ -30,22 +30,22 @@
 
 open Stog_types;;
 
-let get_hid_sep elt =
-  match Stog_types.get_def elt.elt_defs ("",Stog_tags.hid_sep) with
+let get_path_sep elt =
+  match Stog_types.get_def elt.elt_defs ("",Stog_tags.path_sep) with
     None -> "/"
   | Some (_, [ Xtmpl.D s ]) -> s
   | Some (_, xmls) ->
-      failwith ("Invalid "^(Stog_tags.hid_sep^": "^(Xtmpl.string_of_xmls xmls)))
+      failwith ("Invalid "^(Stog_tags.path_sep^": "^(Xtmpl.string_of_xmls xmls)))
 ;;
 
-let mk_elt hid_sep elt_id (stog,elt) = function
+let mk_elt path_sep elt_id (stog,elt) = function
   Xtmpl.D _ -> (stog,elt)
 | Xtmpl.E (("","contents"), atts, subs) ->
     begin
       match Xtmpl.get_arg_cdata atts ("","type") with
         None ->
           let msg = "Missing type attribute in <contents> in "^
-            (Stog_types.string_of_human_id elt.elt_human_id)
+            (Stog_types.string_of_path elt.elt_path)
             in
             Stog_msg.error msg;
             (stog, elt)
@@ -56,7 +56,7 @@ let mk_elt hid_sep elt_id (stog,elt) = function
            | _ ->
                Stog_msg.warning
                  (Printf.sprintf "Element %s: more than one <contents> node"
-                  (Stog_types.string_of_human_id elt.elt_human_id)
+                  (Stog_types.string_of_path elt.elt_path)
                  )
           );
           let elt = { elt with elt_body = subs ; elt_type = typ } in
@@ -64,21 +64,21 @@ let mk_elt hid_sep elt_id (stog,elt) = function
           (stog, elt)
     end
 | Xtmpl.E ((_,typ),atts,subs) ->
-    let hid =
-      match Xtmpl.get_arg_cdata atts ("","hid") with
-        Some hid -> Stog_types.human_id_of_string hid
+    let path =
+      match Xtmpl.get_arg_cdata atts ("","path") with
+        Some path -> Stog_types.path_of_string path
       | None ->
           match Xtmpl.get_arg_cdata atts ("","id") with
             None ->
-              let msg = "No id and no hid attributes for an element in "^
-                (Stog_types.string_of_human_id elt.elt_human_id)
+              let msg = "No id and no path attributes for an element in "^
+                (Stog_types.string_of_path elt.elt_path)
               in
               failwith msg
           | Some id ->
-              let hid = (Stog_types.string_of_human_id elt.elt_human_id) ^ hid_sep ^ id in
-              Stog_types.human_id_of_string hid
+              let path = (Stog_types.string_of_path elt.elt_path) ^ path_sep ^ id in
+              Stog_types.path_of_string path
     in
-    let new_elt = { elt with elt_out = None ; elt_type = typ ; elt_human_id = hid } in
+    let new_elt = { elt with elt_out = None ; elt_type = typ ; elt_path = path } in
     let new_elt = Stog_io.fill_elt_from_atts_and_subs new_elt atts subs in
     (Stog_types.add_elt stog new_elt, elt)
 ;;
@@ -91,8 +91,8 @@ let f_multi_elt stog elt_id =
     | Some xmls -> xmls
   in
   let elt = { elt with elt_body = [] ; elt_out = None } in
-  let hid_sep = get_hid_sep elt in
-  let (stog, elt) = List.fold_left (mk_elt hid_sep elt_id) (stog, elt) xmls in
+  let path_sep = get_path_sep elt in
+  let (stog, elt) = List.fold_left (mk_elt path_sep elt_id) (stog, elt) xmls in
   Stog_types.set_elt stog elt_id elt
   (* remove original elt ? *)
 ;;
