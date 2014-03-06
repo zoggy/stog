@@ -152,7 +152,7 @@ let cut_elts =
         None -> stog
       | Some id ->
           let new_id = if with_id then Some id else None in
-          id_map_add stog hid id new_hid new_id
+          Stog_types.id_map_add stog hid id new_hid new_id
     else
       stog
   in
@@ -260,7 +260,7 @@ let cut_elts =
   in
   let add_id_mappings stog src_hid dst_hid set =
     Sset.fold
-      (fun id stog -> id_map_add stog src_hid id dst_hid (Some id))
+      (fun id stog -> Stog_types.id_map_add stog src_hid id dst_hid (Some id))
       set stog
   in
   let set_elt_id_mappings orig_hid all_ids stog elt =
