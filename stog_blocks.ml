@@ -583,6 +583,18 @@ let gather_existing_ids =
         (stog, data)
 ;;
 
+let fun_init _ (stog,data) elt_ids =
+  let f (stog, data) elt_id =
+    let elt = Stog_types.elt stog elt_id in
+    let path = Stog_types.string_of_path elt.elt_path in
+    let counters = Smap.add path Smap.empty data.counters in
+    let blocks =  Smap.add path Smap.empty data.blocks in
+    let data = { blocks ; counters } in
+    (stog, data)
+  in
+  List.fold_left f (stog,data) elt_ids
+;;
+
 let fun_level_base =
   let f _ _ = [
       ("", Stog_tags.block), fun_block1 ;
@@ -644,6 +656,7 @@ let dump_data env (stog,data) _ =
 ;;
 let level_funs =
   [
+    "init", Stog_engine.Fun_stog_data fun_init ;
     "base", fun_level_base ;
     "sectionning", fun_level_sectionning ;
     "gather-ids", fun_level_gather_ids ;
@@ -656,7 +669,9 @@ let default_levels =
   List.fold_left
     (fun map (name, levels) -> Stog_types.Str_map.add name levels map)
     Stog_types.Str_map.empty
-    [ "base", [ 61 ] ;
+    [
+      "init", [ 0 ] ;
+      "base", [ 61 ] ;
       "sectionning", [ 100 ] ;
       "gather-ids", [ 120 ] ;
       "elt", [ 150 ] ;
