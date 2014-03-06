@@ -253,8 +253,7 @@ let fill_elt_from_atts_and_subs elt atts subs =
 let elt_of_file stog file =
   let rel_file = Stog_misc.path_under ~parent: stog.stog_dir file in
   let path =
-    let s = try Filename.chop_extension rel_file with _ -> rel_file in
-    let s = "/"^s in
+    let s = "/" ^ rel_file in
     Stog_types.path_of_string s
   in
   Stog_msg.verbose ~level: 3 (Printf.sprintf "reading element file %S" file);

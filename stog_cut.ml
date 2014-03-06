@@ -121,6 +121,17 @@ let add_elt links stog elt =
   Stog_types.add_elt stog elt
 ;;
 
+let mk_path path sep id =
+  let path_s = Stog_types.string_of_path path in
+  match Stog_misc.filename_extension path_s with
+    "" ->
+      let msg =  "To be cut, " ^path_s ^ " should have an extension (e.g. \".html\")" in
+      failwith msg
+  | ext ->
+      let p = (Filename.chop_extension path_s) ^ sep ^ id ^ "." ^ ext in
+      Stog_types.path_of_string p
+;;
+
 let cut_elts =
   let id_set =
     let rec iter set = function
@@ -195,8 +206,7 @@ let cut_elts =
                     raise Not_found
                 | Some s -> s
               in
-              let new_path_s = (Stog_types.string_of_path new_path) ^ cp.cut_path_sep ^ id in
-              let new_path = Stog_types.path_of_string new_path_s in
+              let new_path = mk_path new_path cp.cut_path_sep id in
               let stog = set_id_map stog elt.elt_path atts new_path false in
               let (stog, xmls, new_elts, links2) =
                 List.fold_right (fold elt new_path cutpoints)
@@ -218,7 +228,10 @@ let cut_elts =
                 if cp.cut_insert_link then
                   [ Xtmpl.E (("","div"),
                      Xtmpl.atts_one ("","class") [Xtmpl.D ("cutlink "^(snd tag))],
-                     [Xtmpl.E (("","elt"), Xtmpl.atts_one ("","href") [Xtmpl.D new_path_s],[])]
+                     [Xtmpl.E (("","elt"),
+                        Xtmpl.atts_one ("","href")
+                          [Xtmpl.D (Stog_types.string_of_path new_path)],
+                        [])]
                     )
                   ]
                 else

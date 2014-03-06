@@ -41,12 +41,14 @@ module type S =
     exception Already_present of path
     val empty : 'a t
 
-    (** @raise Already_present if the added path already exist in the trie. *)
-    val add : path -> 'a -> 'a t -> 'a t
+    (** @raise Already_present if the added path already exist in the trie
+      and [fail] is [true] (it is [false] by default. *)
+    val add : ?fail: bool -> path -> 'a -> 'a t -> 'a t
 
     (** Find all data associated to the given path or below, or an empty list
          if such a path does not exist. *)
     val find : path -> 'a t -> 'a list
 
+    val to_string : (symbol -> string) -> 'a t -> string
   end
 module Make : functor (P : Map.OrderedType) -> S with type symbol = P.t

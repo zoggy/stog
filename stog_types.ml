@@ -40,6 +40,17 @@ type path = {
     path_absolute : bool ;
   }
 
+let path_chop_extension path =
+  match List.rev path.path with
+    [] -> None
+  | s :: q ->
+      try
+        let s = Filename.chop_extension s in
+        Some { path with path = List.rev (s :: q) }
+      with
+        Invalid_argument _ -> (* no extension *) None
+;;
+
 let string_of_path path =
   Printf.sprintf "%s%s"
   (if path.path_absolute then "/" else "")
@@ -267,12 +278,18 @@ let elts_by_path ?typ stog h =
   (*prerr_endline (Printf.sprintf "lookup rev_path=%s" (String.concat "/" rev_path));*)
   let ids = Path_trie.find rev_path stog.stog_elts_by_path in
   let l = List.map (fun id -> (id, elt stog id)) ids in
+  let path_pred (_, elt) =
+    elt.elt_path = h ||
+      (match path_chop_extension elt.elt_path with
+         None -> true
+       | Some p -> p = h)
+  in
   let pred =
     match h.path_absolute, typ with
       false, None -> None
     | false, Some typ -> Some (fun (_, elt) -> elt.elt_type = typ)
-    | true, None -> Some (fun (_, elt) -> elt.elt_path = h)
-    | true, Some typ -> Some (fun (_, elt) -> elt.elt_path = h && elt.elt_type = typ)
+    | true, None -> Some path_pred
+    | true, Some typ -> Some (fun (id, elt) -> path_pred (id,elt) && elt.elt_type = typ)
   in
   match pred with None -> l | Some pred -> List.filter pred l
 ;;
@@ -280,6 +297,7 @@ let elts_by_path ?typ stog h =
 let elt_by_path ?typ stog h =
   match elts_by_path ?typ stog h with
     [] ->
+      (*prerr_endline (Path_trie.to_string (fun x -> x) stog.stog_elts_by_path);*)
       failwith (Printf.sprintf "Unknown element %S" (string_of_path h))
   | [x] -> x
   | l ->
@@ -302,22 +320,29 @@ let set_elt stog id elt =
     stog_elts = Stog_tmap.modify stog.stog_elts id elt }
 ;;
 
-let add_path stog path id =
-  let rev_path = List.rev path.path in
-  let map = Path_trie.add
-    rev_path id
-    stog.stog_elts_by_path
+let add_path =
+  let add ~fail stog path id =
+    let rev_path = List.rev path.path in
+    let map = Path_trie.add ~fail
+      rev_path id stog.stog_elts_by_path
+    in
+    let map =
+      (*prerr_endline (Printf.sprintf "rev_path=%s" (String.concat "/" rev_path));*)
+      match rev_path with
+      | "index.html" :: q
+      | "index" :: q ->
+          (*prerr_endline (Printf.sprintf "add again %s" (String.concat "/" q));*)
+          (* also make this element accessible without "index" *)
+          Path_trie.add ~fail q id map
+      | _ -> map
+    in
+    { stog with stog_elts_by_path = map }
   in
-  let map =
-    (*prerr_endline (Printf.sprintf "rev_path=%s" (String.concat "/" rev_path));*)
-    match rev_path with
-    | "index" :: q ->
-        (*prerr_endline (Printf.sprintf "add again %s" (String.concat "/" q));*)
-        (* also make this element accessible without "index" *)
-        Path_trie.add q id map
-    | _ -> map
-  in
-  { stog with stog_elts_by_path = map }
+  fun stog path id ->
+    let stog = add ~fail: true stog path id in
+    match path_chop_extension path with
+      None -> stog
+    | Some path -> add ~fail: false stog path id
 ;;
 
 let add_elt stog elt =

@@ -332,6 +332,9 @@ stog_filter_lexer.mli: stog_filter_lexer.ml
 %.mli %.ml:%.mly
 	$(OCAMLYACC) -v $<
 
+$(PLUGINS_BYTE): $(LIB_BYTE)
+$(PLUGINS_OPT): $(LIB)
+
 .PHONY: clean depend
 
 .depend depend:

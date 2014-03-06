@@ -75,8 +75,7 @@ let mk_elt path_sep elt_id (stog,elt) = function
               in
               failwith msg
           | Some id ->
-              let path = (Stog_types.string_of_path elt.elt_path) ^ path_sep ^ id in
-              Stog_types.path_of_string path
+              Stog_cut.mk_path elt.elt_path path_sep id
     in
     let new_elt = { elt with elt_out = None ; elt_type = typ ; elt_path = path } in
     let new_elt = Stog_io.fill_elt_from_atts_and_subs new_elt atts subs in

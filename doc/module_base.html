@@ -203,7 +203,7 @@ referenced by the <code>elt-path</code> attribute).
 <p>
 Suppose we're handling the element whose source file is
 <code>STOGDIR/foo/bar/gee.html</code>. Its <icode>elt-path</icode> is
-<code>/foo/bar/gee</code>. The path will contain two parts, one for
+<code>/foo/bar/gee.html</code>. The path will contain two parts, one for
 <code>foo</code> and one for <code>bar</code>.
 If an element <code>/foo</code> exists, then a link to this element is
 added. Else, if an element /foo/index exists, then a link to this
@@ -224,9 +224,9 @@ The separator of path parts is the code given under the
 The <ixml>with-root="..."</ixml> attribute can be used to specify the
 path of an element used as root. For example:
 </p>
-<hxml>&lt;elt-navpath elt-path="/foo/bar/gee" with-root="/index"&gt; / &lt;/elt-navpath&gt;</hxml>
+<hxml>&lt;elt-navpath elt-path="/foo/bar/gee.html" with-root="/index"&gt; / &lt;/elt-navpath&gt;</hxml>
 <p>will produce the following path:</p>
-<elt-navpath elt-path="/foo/bar/gee" with-root="/index"> / </elt-navpath>
+<elt-navpath elt-path="/foo/bar/gee.html" with-root="/index"> / </elt-navpath>
 </subsection>
 
 <subsection id="elt-src" title="elt-src">

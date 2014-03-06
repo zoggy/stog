@@ -516,7 +516,6 @@ let elt_dst f_concat ?(encode=true) stog base elt =
       [] -> failwith "Invalid path: []"
     | h :: q -> List.fold_left f_concat h q
   in
-  let ext = Stog_misc.filename_extension elt.elt_src in
   let path =
     if elt.elt_lang_dep then
       begin
@@ -530,8 +529,7 @@ let elt_dst f_concat ?(encode=true) stog base elt =
     else
       path
   in
-  let dst = match ext with "" -> path | _ -> path^"."^ext in
-  let dst = if encode then encode_for_url dst else dst in
+  let dst = if encode then encode_for_url path else path in
   f_concat base dst
 ;;
 

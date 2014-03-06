@@ -60,11 +60,11 @@ let url_of_path stog ?ext path =
 ;;
 
 let topic_index_path topic =
-  Stog_types.path_of_string ("/topic_" ^ topic);;
+  Stog_types.path_of_string ("/topic_" ^ topic ^".html");;
 let keyword_index_path kw =
-  Stog_types.path_of_string ("/kw_"^ kw);;
+  Stog_types.path_of_string ("/kw_"^ kw ^ ".html");;
 let month_index_path ~year ~month =
-  Stog_types.path_of_string (Printf.sprintf "/%04d_%02d" year month);;
+  Stog_types.path_of_string (Printf.sprintf "/%04d_%02d.html" year month);;
 
 let plugin_base_rules = ref [];;
 
@@ -1075,9 +1075,9 @@ and elt_list elt ?rss ?set stog env args _ =
   (stog, xml)
 ;;
 
-let make_by_word_indexes stog env f_elt_id elt_type map =
+let make_by_word_indexes stog env f_elt_path elt_type map =
   let f word set stog =
-    let path = f_elt_id word in
+    let path = f_elt_path word in
     try
       ignore(Stog_types.elt_by_path stog path);
       stog
@@ -1094,7 +1094,7 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
             elt_topics = [] ;
             elt_published = true ;
             elt_defs = [] ;
-            elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_path path) ;
+            elt_src = Stog_types.string_of_path path ;
             elt_sets = [] ;
             elt_lang_dep = true ;
             elt_xml_doctype = None ;
@@ -1103,11 +1103,12 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
           }
         in
         let out_file = Stog_engine.elt_dst_file stog elt in
-        let rss_file = (Filename.chop_extension out_file)^".rss" in
+        let rss_file = (try Filename.chop_extension out_file with _ -> out_file)^".rss" in
         let url = Stog_engine.elt_url stog elt in
         let rss_url =
           let url_s = Stog_types.string_of_url url in
-          Stog_types.url_of_string ((Filename.chop_extension url_s)^".rss")
+          Stog_types.url_of_string
+            ((try Filename.chop_extension url_s with _ -> url_s)^".rss")
         in
         let stog = generate_rss_feed_file stog ~title: word url
           (List.map (fun id -> (id, Stog_types.elt stog id)) (Stog_types.Elt_set.elements set))
@@ -1158,7 +1159,7 @@ let make_archive_index stog env =
             elt_topics = [] ;
             elt_published = true ;
             elt_defs = [] ;
-            elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_path path) ;
+            elt_src = Stog_types.string_of_path path ;
             elt_sets = [] ;
             elt_lang_dep = true ;
             elt_xml_doctype = None ;

@@ -29,6 +29,12 @@
 (** Cutting elements into pieces. This function is associated to
   a level in the [Base] module. *)
 
+(** [mk_path path sep id] forges a new path using the given one,
+  the given separator and the given id.
+  @raise Failure if the given [path] has no extension.
+*)
+val mk_path : Stog_types.path -> string -> string -> Stog_types.path
+
 val cut_elts :
   Stog_types.stog Xtmpl.env ->
     Stog_types.stog -> Stog_types.elt Stog_tmap.key list -> Stog_types.stog

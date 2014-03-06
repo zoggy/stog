@@ -158,29 +158,30 @@ let main () =
     match List.rev !remain with
       [] -> failwith usage
     | dirs ->
-        let stogs = List.map Stog_io.read_stog dirs in
-        (*prerr_endline "directories read";*)
-        let stog = Stog_types.merge_stogs stogs in
-        (*prerr_endline "directories merged";*)
-        let stog = Stog_info.remove_not_published stog in
-        (*prerr_endline "removed not published articles";*)
-        let stog = Stog_info.compute stog in
-        (*prerr_endline "graph computed";*)
-        let stog = set_stog_options stog in
-        let modules = Stog_engine.modules () in
-        let modules = List.map
-          (fun (name, f) ->
-             Stog_msg.verbose ~level: 2 ("Initializing module "^name);
-             f stog
-          )
-            modules
-        in
-        let only_elts =
-          match !only_elt with
+        try
+          let stogs = List.map Stog_io.read_stog dirs in
+          (*prerr_endline "directories read";*)
+          let stog = Stog_types.merge_stogs stogs in
+          (*prerr_endline "directories merged";*)
+          let stog = Stog_info.remove_not_published stog in
+          (*prerr_endline "removed not published articles";*)
+          let stog = Stog_info.compute stog in
+          (*prerr_endline "graph computed";*)
+          let stog = set_stog_options stog in
+          let modules = Stog_engine.modules () in
+          let modules = List.map
+            (fun (name, f) ->
+               Stog_msg.verbose ~level: 2 ("Initializing module "^name);
+               f stog
+            )
+              modules
+          in
+          let only_elts =
+            match !only_elt with
             None -> None
-          | Some s -> Some [s]
-        in
-        try Stog_engine.generate ~use_cache: !use_cache ?only_elts stog modules
+            | Some s -> Some [s]
+          in
+          Stog_engine.generate ~use_cache: !use_cache ?only_elts stog modules
         with Stog_types.Path_trie.Already_present l ->
           let msg = "Path already present: "^(String.concat "/" l) in
           failwith msg
