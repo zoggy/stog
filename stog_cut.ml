@@ -37,7 +37,7 @@ type cutpoint =
   {
     cut_tag : string * string ;
     cut_elt_type : string ;
-    cut_hid_sep : string ;
+    cut_path_sep : string ;
     cut_insert_link : bool ;
   }
 ;;
@@ -45,8 +45,8 @@ type cutpoint =
 (* since we iter in elements with List.fold_right to keep elements in
   order, we encounter next element of a cutpoint A before cutpoint A. *)
 type links = {
-  by_elt : (Stog_types.human_id option * Stog_types.human_id option) Hid_map.t ;
-  next_by_cp : Stog_types.human_id Nmap.t ;
+  by_elt : (Stog_types.path option * Stog_types.path option) Hid_map.t ;
+  next_by_cp : Stog_types.path Nmap.t ;
 }
 
 let cutpoint_of_atts elt atts =
@@ -59,62 +59,62 @@ let cutpoint_of_atts elt atts =
           [] | [_] -> ("", s)
         | h :: q -> (h, String.concat ":" q)
   in
-  let sep = Xtmpl.opt_arg_cdata atts ~def: "-" ("", Stog_tags.hid_sep) in
+  let sep = Xtmpl.opt_arg_cdata atts ~def: "-" ("", Stog_tags.path_sep) in
   let insert_link = not (Xtmpl.opt_arg_cdata atts ~def: "true" ("","insert-link") = "false") in
   { cut_tag = tag ; cut_elt_type = typ ;
-    cut_hid_sep = sep ; cut_insert_link = insert_link ;
+    cut_path_sep = sep ; cut_insert_link = insert_link ;
   }
 ;;
 
 let new_elt_in_cutpoint cut_tag links elt =
-  let next_hid =
+  let next_path =
     try Some (Nmap.find cut_tag links.next_by_cp)
     with Not_found -> None
   in
   let links =
-    match next_hid with
+    match next_path with
       None -> links
-    | Some next_hid ->
+    | Some next_path ->
         let next =
-          try snd (Hid_map.find next_hid links.by_elt)
+          try snd (Hid_map.find next_path links.by_elt)
           with Not_found -> None
         in
-        let by_elt = Hid_map.add next_hid
-          (Some elt.elt_human_id, next) links.by_elt
+        let by_elt = Hid_map.add next_path
+          (Some elt.elt_path, next) links.by_elt
         in
         let prev =
-          try fst (Hid_map.find elt.elt_human_id links.by_elt)
+          try fst (Hid_map.find elt.elt_path links.by_elt)
           with Not_found -> None
         in
-        let by_elt = Hid_map.add elt.elt_human_id
-          (prev, Some next_hid) by_elt
+        let by_elt = Hid_map.add elt.elt_path
+          (prev, Some next_path) by_elt
         in
         { links with by_elt }
   in
-  let next_by_cp = Nmap.add cut_tag elt.elt_human_id links.next_by_cp in
+  let next_by_cp = Nmap.add cut_tag elt.elt_path links.next_by_cp in
   { links with next_by_cp }
 ;;
 
 let add_elt links stog elt =
   let (prev, next) =
-    try Hid_map.find elt.elt_human_id links.by_elt
+    try Hid_map.find elt.elt_path links.by_elt
     with Not_found -> None, None
   in
   let elt =
     match prev with
       None -> elt
-    | Some prev_hid ->
-        let def = (("", Stog_tags.previous_hid), Xtmpl.atts_empty,
-           [Xtmpl.D (Stog_types.string_of_human_id prev_hid)])
+    | Some prev_path ->
+        let def = (("", Stog_tags.previous_path), Xtmpl.atts_empty,
+           [Xtmpl.D (Stog_types.string_of_path prev_path)])
         in
         { elt with elt_defs = def :: elt.elt_defs }
     in
   let elt =
     match next with
       None -> elt
-    | Some next_hid ->
-        let def = (("", Stog_tags.next_hid), Xtmpl.atts_empty,
-           [Xtmpl.D (Stog_types.string_of_human_id next_hid)])
+    | Some next_path ->
+        let def = (("", Stog_tags.next_path), Xtmpl.atts_empty,
+           [Xtmpl.D (Stog_types.string_of_path next_path)])
         in
         { elt with elt_defs = def :: elt.elt_defs }
   in
@@ -146,23 +146,23 @@ let cut_elts =
     ("",t) -> "<"^t^">"
   | (n, t) -> "<"^n^":"^t^">"
   in
-  let set_id_map stog hid atts new_hid with_id =
-    if hid <> new_hid then
+  let set_id_map stog path atts new_path with_id =
+    if path <> new_path then
       match Xtmpl.get_arg_cdata atts ("","id") with
         None -> stog
       | Some id ->
           let new_id = if with_id then Some id else None in
-          Stog_types.id_map_add stog hid id new_hid new_id
+          Stog_types.id_map_add stog path id new_path new_id
     else
       stog
   in
-  let rec iter elt new_hid cutpoints links stog new_elts xml =
+  let rec iter elt new_path cutpoints links stog new_elts xml =
     match xml with
       Xtmpl.D _ -> (stog, [xml], new_elts, links)
     | Xtmpl.E (("","cut-elt"), atts, xmls) ->
         let cutpoints = (cutpoint_of_atts elt atts) :: cutpoints in
         let (stog, xmls, new_elts, links2) = List.fold_right
-          (fold elt new_hid cutpoints) xmls (stog, [], new_elts, links)
+          (fold elt new_path cutpoints) xmls (stog, [], new_elts, links)
         in
         let links = { links2 with next_by_cp = links.next_by_cp } in
         (stog, xmls, new_elts, links)
@@ -176,7 +176,7 @@ let cut_elts =
           None ->
             (* not a cut point *)
             let (stog, xmls, new_elts, links) = List.fold_right
-              (fold elt new_hid cutpoints) xmls (stog, [], new_elts, links)
+              (fold elt new_path cutpoints) xmls (stog, [], new_elts, links)
             in
             (stog, [Xtmpl.E (tag, atts, xmls)], new_elts, links)
         | Some cp ->
@@ -195,18 +195,18 @@ let cut_elts =
                     raise Not_found
                 | Some s -> s
               in
-              let new_hid_s = (Stog_types.string_of_human_id new_hid) ^ cp.cut_hid_sep ^ id in
-              let new_hid = Stog_types.human_id_of_string new_hid_s in
-              let stog = set_id_map stog elt.elt_human_id atts new_hid false in
+              let new_path_s = (Stog_types.string_of_path new_path) ^ cp.cut_path_sep ^ id in
+              let new_path = Stog_types.path_of_string new_path_s in
+              let stog = set_id_map stog elt.elt_path atts new_path false in
               let (stog, xmls, new_elts, links2) =
-                List.fold_right (fold elt new_hid cutpoints)
+                List.fold_right (fold elt new_path cutpoints)
                   xmls (stog, [], new_elts, links)
               in
               let links = { links2 with next_by_cp = links.next_by_cp } in
               let elt =
                 { elt with
-                  elt_human_id = new_hid ;
-                  elt_parent = Some elt.elt_human_id ;
+                  elt_path = new_path ;
+                  elt_parent = Some elt.elt_path ;
                   elt_type = cp.cut_elt_type ;
                   elt_title = title ;
                   elt_body = xmls ;
@@ -218,7 +218,7 @@ let cut_elts =
                 if cp.cut_insert_link then
                   [ Xtmpl.E (("","div"),
                      Xtmpl.atts_one ("","class") [Xtmpl.D ("cutlink "^(snd tag))],
-                     [Xtmpl.E (("","elt"), Xtmpl.atts_one ("","href") [Xtmpl.D new_hid_s],[])]
+                     [Xtmpl.E (("","elt"), Xtmpl.atts_one ("","href") [Xtmpl.D new_path_s],[])]
                     )
                   ]
                 else
@@ -229,14 +229,14 @@ let cut_elts =
               Not_found ->
                 (* not enough information to cut *)
                 let (stog, xmls, new_elts, links) =
-                  List.fold_right (fold elt new_hid cutpoints)
+                  List.fold_right (fold elt new_path cutpoints)
                     xmls (stog, [], new_elts, links)
                 in
                 (stog, xmls, new_elts, links)
 
-  and fold elt new_hid cutpoints xml (stog, xmls, new_elts, links) =
+  and fold elt new_path cutpoints xml (stog, xmls, new_elts, links) =
     let (stog, xmls2, new_elts, links) =
-      iter elt new_hid cutpoints links stog new_elts xml
+      iter elt new_path cutpoints links stog new_elts xml
     in
     (stog, xmls2 @ xmls, new_elts, links)
   in
@@ -246,27 +246,27 @@ let cut_elts =
       None -> (stog, elt, [], links)
     | Some body ->
         let (stog, body, new_elts, links) =
-          List.fold_right (fold elt elt.elt_human_id [])
+          List.fold_right (fold elt elt.elt_path [])
             body (stog, [], [], links)
         in
         let children =
           match new_elts with
             [] -> elt.elt_children
-          | _ -> elt.elt_children @ (List.map (fun elt -> elt.elt_human_id) new_elts)
+          | _ -> elt.elt_children @ (List.map (fun elt -> elt.elt_path) new_elts)
         in
         (stog,
          { elt with elt_out = Some body ; elt_children = children },
          new_elts, links)
   in
-  let add_id_mappings stog src_hid dst_hid set =
+  let add_id_mappings stog src_path dst_path set =
     Sset.fold
-      (fun id stog -> Stog_types.id_map_add stog src_hid id dst_hid (Some id))
+      (fun id stog -> Stog_types.id_map_add stog src_path id dst_path (Some id))
       set stog
   in
-  let set_elt_id_mappings orig_hid all_ids stog elt =
+  let set_elt_id_mappings orig_path all_ids stog elt =
     let ids = id_set elt in
-    let stog = add_id_mappings stog orig_hid elt.elt_human_id ids in
-    add_id_mappings stog elt.elt_human_id orig_hid (Sset.diff all_ids ids)
+    let stog = add_id_mappings stog orig_path elt.elt_path ids in
+    add_id_mappings stog elt.elt_path orig_path (Sset.diff all_ids ids)
   in
   let f_elt env stog elt_id =
     let elt = Stog_types.elt stog elt_id in
@@ -278,7 +278,7 @@ let cut_elts =
     | _ ->
         let all_ids = id_set elt in
         let stog =
-          List.fold_left (set_elt_id_mappings elt.elt_human_id all_ids)
+          List.fold_left (set_elt_id_mappings elt.elt_path all_ids)
           stog new_elts
         in
         let stog = Stog_types.set_elt stog elt_id elt2 in

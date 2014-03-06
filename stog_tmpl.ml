@@ -133,7 +133,7 @@ let elt_in_list stog =
   "<div itemprop=\"blogPosts\" itemscope=\"\" itemtype=\"http://schema.org/BlogPosting\" class=\"elt-item\">
      <div class=\"elt-item-title\">
        <link itemprop=\"url\" href=\"&lt;elt-url/&gt;\"/>
-       <elt href=\"&lt;elt-hid/&gt;\"/>
+       <elt href=\"&lt;elt-path/&gt;\"/>
      </div>
      <div class=\"date\"><elt-date/></div>
      <div itemprop=\"headline\" class=\"elt-intro\"><elt-intro/></div>

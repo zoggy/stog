@@ -33,7 +33,7 @@ module Smap = Stog_types.Str_map;;
 
 let get_in_env = Stog_engine.get_in_env;;
 
-let get_hid = Stog_engine.get_hid;;
+let get_path = Stog_engine.get_path;;
 
 let escape_html s =
   let b = Buffer.create 256 in
@@ -50,21 +50,21 @@ let escape_html s =
   Buffer.contents b
 ;;
 
-let url_of_hid stog ?ext hid =
-  let elt = Stog_types.make_elt ~hid () in
+let url_of_path stog ?ext path =
+  let elt = Stog_types.make_elt ~path () in
   let src =
-    Printf.sprintf "%s%s" (Stog_types.string_of_human_id hid)
+    Printf.sprintf "%s%s" (Stog_types.string_of_path path)
       (match ext with None -> "" | Some s -> "."^s)
   in
   Stog_engine.elt_url stog { elt with Stog_types.elt_src = src }
 ;;
 
-let topic_index_hid topic =
-  Stog_types.human_id_of_string ("/topic_" ^ topic);;
-let keyword_index_hid kw =
-  Stog_types.human_id_of_string ("/kw_"^ kw);;
-let month_index_hid ~year ~month =
-  Stog_types.human_id_of_string (Printf.sprintf "/%04d_%02d" year month);;
+let topic_index_path topic =
+  Stog_types.path_of_string ("/topic_" ^ topic);;
+let keyword_index_path kw =
+  Stog_types.path_of_string ("/kw_"^ kw);;
+let month_index_path ~year ~month =
+  Stog_types.path_of_string (Printf.sprintf "/%04d_%02d" year month);;
 
 let plugin_base_rules = ref [];;
 
@@ -73,24 +73,24 @@ let register_base_rule name f =
 
 let include_href name stog elt ?id ~raw ~subsonly ~depend href env =
   let new_id = id in
-  let (hid, id) =
+  let (path, id) =
     try
       let p = String.index href '#' in
       let len = String.length href in
-      let hid = String.sub href 0 p in
-      (hid, String.sub href (p+1) (len - (p+1)))
+      let path = String.sub href 0 p in
+      (path, String.sub href (p+1) (len - (p+1)))
     with
       Not_found ->
         failwith ("Missing #id part of href in <"^name^"> rule")
   in
   try
-    let (stog, s_hid) =
-      match hid with
-        "" -> get_hid stog env
+    let (stog, s_path) =
+      match path with
+        "" -> get_path stog env
       | s ->  (stog, s)
     in
-    let hid = Stog_types.human_id_of_string s_hid in
-    let (_, elt) = Stog_types.elt_by_human_id stog hid in
+    let path = Stog_types.path_of_string s_path in
+    let (_, elt) = Stog_types.elt_by_path stog path in
     let stog =
       if depend then Stog_deps.add_dep stog elt (Stog_types.Elt elt) else stog
     in
@@ -99,7 +99,7 @@ let include_href name stog elt ?id ~raw ~subsonly ~depend href env =
     | None ->
         failwith
           (Printf.sprintf "No id %S in element %S"
-           id (Stog_types.string_of_human_id hid))
+           id (Stog_types.string_of_path path))
     | Some (Xtmpl.D _) -> assert false
     | Some ((Xtmpl.E (tag, atts, subs)) as xml)->
         let xmls =
@@ -214,43 +214,43 @@ let fun_list acc env args subs =
 ;;
 
 let elt_by_href ?typ ?src_elt stog acc env href =
-  let (hid, id) =
+  let (path, id) =
     try
       let p = String.index href '#' in
       let len = String.length href in
-      let hid = String.sub href 0 p in
+      let path = String.sub href 0 p in
       let id = String.sub href (p+1) (len - (p+1)) in
-      (hid, id)
+      (path, id)
     with
       Not_found -> (href, "")
   in
   let (acc, info) =
     try
-      let (acc, hid) =
-        match hid with
-          "" -> get_hid acc env
+      let (acc, path) =
+        match path with
+          "" -> get_path acc env
         | s ->  (acc, s)
       in
-      let hid = Stog_types.human_id_of_string hid in
-      let (_, elt) = Stog_types.elt_by_human_id ?typ stog hid in
+      let path = Stog_types.path_of_string path in
+      let (_, elt) = Stog_types.elt_by_path ?typ stog path in
       let (elt, id) = Stog_types.map_elt_ref stog elt id in
-      let hid = Stog_types.string_of_human_id elt.elt_human_id in
-      (acc, Some (elt, hid, id))
+      let path = Stog_types.string_of_path elt.elt_path in
+      (acc, Some (elt, path, id))
     with
       Failure s ->
         let msg =
           match src_elt with
             None -> s
           | Some elt ->
-            "In "^(Stog_types.string_of_human_id elt.elt_human_id)^": "^s
+            "In "^(Stog_types.string_of_path elt.elt_path)^": "^s
         in
         Stog_msg.error ~info: "Stog_html.elt_by_href" msg;
         (acc, None)
   in
   match info with
     None -> (acc, None)
-  | Some (elt, hid, "") -> (acc, Some (elt, hid, None))
-  | Some (elt, hid, id) -> (acc, Some (elt, hid, Some id))
+  | Some (elt, path, "") -> (acc, Some (elt, path, None))
+  | Some (elt, path, id) -> (acc, Some (elt, path, Some id))
 ;;
 
 (* FIXME: add adependency ? *)
@@ -272,8 +272,8 @@ let fun_archive_tree stog _env _atts _subs =
   let years = List.sort (fun (y1,_) (y2,_) -> compare y2 y1) years in
 
   let f_mon year (month, set) =
-    let hid = month_index_hid ~year ~month in
-    let href = url_of_hid stog ~ext: "html" hid in
+    let path = month_index_path ~year ~month in
+    let href = url_of_path stog ~ext: "html" path in
     let month_str = Stog_intl.get_month stog.stog_lang month in
     Xtmpl.E (("", "li"), Xtmpl.atts_empty, [
        Xtmpl.E (("", "a"),
@@ -628,14 +628,14 @@ let fun_error_ stog env args subs =
   (stog, [])
 ;;
 
-let fun_elt_path elt stog env args subs =
+let fun_elt_navpath elt stog env args subs =
   let root =
     match Xtmpl.get_arg_cdata args ("", "with-root") with
       None -> None
-    | Some root_hid ->
-        let root_hid = Stog_types.human_id_of_string root_hid in
-        ignore(Stog_types.elt_by_human_id stog root_hid);
-        Some root_hid
+    | Some root_path ->
+        let root_path = Stog_types.path_of_string root_path in
+        ignore(Stog_types.elt_by_path stog root_path);
+        Some root_path
   in
   let rec f acc path =
     (*prerr_endline (Printf.sprintf "path = [%s]" (String.concat "/" path));*)
@@ -644,45 +644,45 @@ let fun_elt_path elt stog env args subs =
         begin
           match root with
             None -> acc
-          | Some hid -> hid :: acc
+          | Some path -> path :: acc
         end
     | _ :: q ->
-        let hid = { Stog_types.hid_path = path ; hid_absolute = true } in
-        f (hid :: acc) (List.rev q)
+        let path = { Stog_types.path = path ; path_absolute = true } in
+        f (path :: acc) (List.rev q)
   in
-  let hid = elt.Stog_types.elt_human_id in
-  let hids =
+  let path = elt.Stog_types.elt_path in
+  let paths =
     (* remove last component of path to keep only "parent path" *)
-    match List.rev hid.Stog_types.hid_path with
-      [] | [_] -> (match root with None -> [] | Some hid -> [hid])
+    match List.rev path.Stog_types.path with
+      [] | [_] -> (match root with None -> [] | Some path -> [path])
     | _ :: q -> f [] (List.rev q)
   in
-  let map hid =
+  let map path =
     try
-      let hid =
+      let path =
         (* try to link to /the/path/index *)
         try
-          let hid = { hid with hid_path = hid.hid_path @ ["index"] } in
-          ignore(Stog_types.elt_by_human_id stog hid);
-          hid
+          let path = { path with path = path.path @ ["index"] } in
+          ignore(Stog_types.elt_by_path stog path);
+          path
         with
           Failure _ ->
             (* if no such element exist, try /the/path *)
-            ignore(Stog_types.elt_by_human_id stog hid);
-            hid
+            ignore(Stog_types.elt_by_path stog path);
+            path
       in
       let xml = Xtmpl.E
         (("", Stog_tags.elt),
-         Xtmpl.atts_one ("","href") [Xtmpl.D (Stog_types.string_of_human_id hid)],
+         Xtmpl.atts_one ("","href") [Xtmpl.D (Stog_types.string_of_path path)],
          [])
       in
       [ xml ]
     with Failure _ ->
-        match List.rev hid.hid_path with
+        match List.rev path.path with
           [] -> [Xtmpl.D "?"]
         | h :: _ -> [ Xtmpl.D h ]
   in
-  let xmls = concat_xmls ~sep: subs (List.map map hids) in
+  let xmls = concat_xmls ~sep: subs (List.map map paths) in
   (stog, xmls)
 ;;
 
@@ -728,7 +728,7 @@ let html_of_topics elt stog env args _ =
     List.fold_left
       (fun (stog, acc) w ->
          let (stog, xmls) = f stog w in
-         let href = url_of_hid stog ~ext: "html" (topic_index_hid w) in
+         let href = url_of_path stog ~ext: "html" (topic_index_path w) in
          let xml = Xtmpl.E (("", "a"),
             Xtmpl.atts_one ("", "href") [ Xtmpl.D (Stog_types.string_of_url href) ],
             xmls)
@@ -754,7 +754,7 @@ let html_of_keywords elt stog env args _ =
     List.fold_left
       (fun (stog, acc) w ->
          let (stog, xmls) = f stog w in
-         let href = url_of_hid stog ~ext: "html" (keyword_index_hid w) in
+         let href = url_of_path stog ~ext: "html" (keyword_index_path w) in
          let xml = Xtmpl.E (("", "a"),
             Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_types.string_of_url href)],
             xmls)
@@ -883,11 +883,11 @@ and build_base_rules stog elt_id =
   in
   let mk f stog env atts subs =
     let elt =
-      match Xtmpl.get_arg_cdata atts ("", Stog_tags.elt_hid) with
+      match Xtmpl.get_arg_cdata atts ("", Stog_tags.elt_path) with
         None -> Stog_types.elt stog elt_id
-      | Some hid ->
-          let (_, elt) = Stog_types.elt_by_human_id
-            stog (Stog_types.human_id_of_string hid)
+      | Some path ->
+          let (_, elt) = Stog_types.elt_by_path
+            stog (Stog_types.path_of_string path)
           in
           elt
     in
@@ -910,9 +910,9 @@ and build_base_rules stog elt_id =
         match Stog_types.get_def elt.elt_defs key with
           None -> fallback ()
         | Some (_,body) ->
-            let hid = Stog_types.human_id_of_string (Xtmpl.string_of_xmls body) in
+            let path = Stog_types.path_of_string (Xtmpl.string_of_xmls body) in
             try
-              let (_, elt) = Stog_types.elt_by_human_id stog hid in
+              let (_, elt) = Stog_types.elt_by_path stog path in
               html_link stog elt
             with Failure s ->
                 Stog_msg.warning s;
@@ -936,7 +936,7 @@ and build_base_rules stog elt_id =
       ("", Stog_tags.elt_datetime), mk f_datetime ;
       ("", Stog_tags.elt_intro), mk f_intro ;
       ("", Stog_tags.elt_keywords), mk html_of_keywords ;
-      ("", Stog_tags.elt_path), mk fun_elt_path ;
+      ("", Stog_tags.elt_navpath), mk fun_elt_navpath ;
       ("", Stog_tags.elt_src), mk f_src ;
       ("", Stog_tags.elt_title), mk f_title ;
       ("", Stog_tags.elt_topics), mk html_of_topics ;
@@ -1025,7 +1025,7 @@ and elt_list elt ?rss ?set stog env args _ =
     Stog_tmpl.get_template stog ~elt Stog_tmpl.elt_in_list file
   in
   let f_elt (stog, acc) (elt_id, elt) =
-    let name = Stog_types.string_of_human_id elt.elt_human_id in
+    let name = Stog_types.string_of_path elt.elt_path in
     let (stog, env) = Stog_engine.elt_env stog env stog elt in
     let rules = build_base_rules stog elt_id in
     let env = Xtmpl.env_of_list ~env rules in
@@ -1077,13 +1077,13 @@ and elt_list elt ?rss ?set stog env args _ =
 
 let make_by_word_indexes stog env f_elt_id elt_type map =
   let f word set stog =
-    let hid = f_elt_id word in
+    let path = f_elt_id word in
     try
-      ignore(Stog_types.elt_by_human_id stog hid);
+      ignore(Stog_types.elt_by_path stog path);
       stog
     with Failure _ ->
         let elt =
-          { Stog_types.elt_human_id = hid ;
+          { Stog_types.elt_path = path ;
             elt_parent = None ;
             elt_children = [] ;
             elt_type = elt_type ;
@@ -1094,7 +1094,7 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
             elt_topics = [] ;
             elt_published = true ;
             elt_defs = [] ;
-            elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_human_id hid) ;
+            elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_path path) ;
             elt_sets = [] ;
             elt_lang_dep = true ;
             elt_xml_doctype = None ;
@@ -1123,23 +1123,23 @@ let make_by_word_indexes stog env f_elt_id elt_type map =
 
 let make_topic_indexes stog env =
   Stog_msg.verbose ~level: 2 "creating by-topic index elements";
-  make_by_word_indexes stog env topic_index_hid
+  make_by_word_indexes stog env topic_index_path
   "by-topic" stog.stog_elts_by_topic
 
 ;;
 
 let make_keyword_indexes stog env =
   Stog_msg.verbose ~level: 2 "creating by-keyword index elements";
-  make_by_word_indexes stog env keyword_index_hid
+  make_by_word_indexes stog env keyword_index_path
   "by-keyword" stog.stog_elts_by_kw
 ;;
 
 let make_archive_index stog env =
   Stog_msg.verbose ~level: 2 "creating archive elements";
   let f_month year month set stog =
-    let hid = month_index_hid ~year ~month in
+    let path = month_index_path ~year ~month in
     try
-      ignore(Stog_types.elt_by_human_id stog hid);
+      ignore(Stog_types.elt_by_path stog path);
       stog
     with Failure _ ->
         let title =
@@ -1147,7 +1147,7 @@ let make_archive_index stog env =
           Printf.sprintf "%s %d" month_str year
         in
         let elt =
-          { Stog_types.elt_human_id = hid ;
+          { Stog_types.elt_path = path ;
             elt_parent = None ;
             elt_children = [] ;
             elt_type = "by-month";
@@ -1158,7 +1158,7 @@ let make_archive_index stog env =
             elt_topics = [] ;
             elt_published = true ;
             elt_defs = [] ;
-            elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_human_id hid) ;
+            elt_src = Printf.sprintf "%s.html" (Stog_types.string_of_path path) ;
             elt_sets = [] ;
             elt_lang_dep = true ;
             elt_xml_doctype = None ;

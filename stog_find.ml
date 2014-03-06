@@ -61,8 +61,8 @@
 	}
 
     exception Hide of exn
-    (* Used to hide user-level errors, so that they are no trap by the library *)
-    let hide_exn f x = try f x with exn -> raise (Hide exn)
+    (* Used to pathe user-level errors, so that they are no trap by the library *)
+    let pathe_exn f x = try f x with exn -> raise (Hide exn)
     let reveal_exn f x = try f x with Hide exn -> raise exn
 
     let stderr_handler (e, b, c) =
@@ -73,7 +73,7 @@
 	Stderr -> stderr_handler
       | Ignore -> ignore_handler
       | Failure -> failure_handler
-      | Custom h -> hide_exn h
+      | Custom h -> pathe_exn h
 
     (* handlers of errors during the call. *)
     let treat_unix_error h f x =
@@ -170,7 +170,7 @@
       let status =
 	{ (parse_options options) with
 	  handler = handler mode;
-	  action = hide_exn action }
+	  action = pathe_exn action }
       in
       reveal_exn (List.iter (find_entry status)) filenames
 

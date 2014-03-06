@@ -144,14 +144,14 @@ class articles_box ?packing () =
       model.store#set ~row ~column:model.col_date art.art_date;
       if select then view#selection#select_path path
 
-    method set_articles ?hid l =
+    method set_articles ?path l =
       model.store#clear () ;
-      match hid with
+      match path with
         None -> List.iter self#insert_article l;
-      | Some hid ->
+      | Some path ->
           List.iter
           (fun (id, a) ->
-             let select = a.art_human_id = hid in
+             let select = a.art_path = path in
              self#insert_article ~select (id, a)
           )
           l

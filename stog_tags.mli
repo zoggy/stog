@@ -42,8 +42,8 @@ val elt_body : string
 val elt_date : string
 val elt_datetime : string
 val elt_keywords : string
-val elt_hid : string
 val elt_intro : string
+val elt_navpath : string
 val elt_path : string
 val elt_src : string
 val elt_title : string
@@ -64,7 +64,7 @@ val ext_a : string
 val error_ : string
 val graph : string
 val hcode : string
-val hid_sep : string
+val path_sep : string
 val icode : string
 val if_ : string
 val image : string
@@ -78,7 +78,7 @@ val latex_body : string
 val list : string
 val n_columns : string
 val next : string
-val next_hid : string
+val next_path : string
 val ocaml : string
 val ocaml_eval : string
 val ocaml_printf : string
@@ -88,7 +88,7 @@ val post : string
 val prefix_svg_ids : string
 val prepare_toc : string
 val previous : string
-val previous_hid : string
+val previous_path : string
 val search_form : string
 val section : string
 val subsection : string

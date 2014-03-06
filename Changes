@@ -1,6 +1,9 @@
 Next release:
+* The term "human id" is replaced by "path". In all rules and
+  attributes, "hid" is replaced by "path". <elt-path> rule
+  is replace by <elt-navpath>.
 * Use Higlo syntax highlighter when possible
-* <cut-elt>: add previous-hid and nex-hid in definitions of cut
+* <cut-elt>: add previous-path and next-path in definitions of cut
   elements, to create navigation links
 * mod: merge CData in resulting XML trees when computing elements
 * fix: compile and install odoc_stog.cmo

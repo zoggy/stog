@@ -235,9 +235,9 @@ let fill_elt_from_nodes =
 
 let fill_elt_from_atts_and_subs elt atts subs =
   let elt =
-    match Xtmpl.get_arg_cdata atts ("","hid") with
+    match Xtmpl.get_arg_cdata atts ("","path") with
       None -> elt
-    | Some s -> { elt with elt_human_id = Stog_types.human_id_of_string s }
+    | Some s -> { elt with elt_path = Stog_types.path_of_string s }
   in
   let elt = fill_elt_from_atts atts elt in
   match Xtmpl.get_arg_cdata atts ("", "with-contents") with
@@ -252,10 +252,10 @@ let fill_elt_from_atts_and_subs elt atts subs =
 
 let elt_of_file stog file =
   let rel_file = Stog_misc.path_under ~parent: stog.stog_dir file in
-  let hid =
+  let path =
     let s = try Filename.chop_extension rel_file with _ -> rel_file in
     let s = "/"^s in
-    Stog_types.human_id_of_string s
+    Stog_types.path_of_string s
   in
   Stog_msg.verbose ~level: 3 (Printf.sprintf "reading element file %S" file);
   let xml = Xtmpl.xml_of_file file in
@@ -264,7 +264,7 @@ let elt_of_file stog file =
       Xtmpl.D _ -> failwith (Printf.sprintf "File %S does not content an XML tree" file)
     | Xtmpl.E ((_,tag), atts, subs) -> (tag, atts, subs)
   in
-  let elt = Stog_types.make_elt ~hid ~typ () in
+  let elt = Stog_types.make_elt ~path ~typ () in
   let elt = { elt with elt_src = rel_file } in
   fill_elt_from_atts_and_subs elt atts subs
 ;;

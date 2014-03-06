@@ -163,11 +163,11 @@ let add_refs_in_graph stog = stog
       match Xtmpl.get_arg args ("", "id") with
       None ->
         []
-    | Some hid ->
-        (*prerr_endline (Printf.sprintf "f_ref hid=%s" hid);*)
+    | Some path ->
+        (*prerr_endline (Printf.sprintf "f_ref path=%s" path);*)
         (
-         let (id2, _) = Stog_types.elt_by_human_id stog
-           (Stog_types.human_id_of_string hid)
+         let (id2, _) = Stog_types.elt_by_path stog
+           (Stog_types.path_of_string path)
          in
          g := Stog_types.Graph.add !g (id, id2, Stog_types.Ref)
         );
@@ -300,21 +300,21 @@ let remove_not_published stog =
        if elt.elt_published then
          (acc, removed)
        else
-         (Stog_tmap.remove acc id, elt.elt_human_id :: removed)
+         (Stog_tmap.remove acc id, elt.elt_path :: removed)
     )
    stog.stog_elts
    (stog.stog_elts, [])
   in
 (*
-  let by_hid = List.fold_left
-    (fun acc k -> Stog_types.Hid_map.remove (List.rev k.hid_path) acc)
-    stog.stog_elts_by_human_id removed
+  let by_path = List.fold_left
+    (fun acc k -> Stog_types.Hid_map.remove (List.rev k.path_path) acc)
+    stog.stog_elts_by_path removed
   in
      *)
   let stog = Stog_tmap.fold
     (fun elt_id elt stog ->
-       Stog_types.add_hid stog elt.elt_human_id elt_id)
-    elts { stog with stog_elts_by_human_id = Stog_types.Hid_trie.empty }
+       Stog_types.add_path stog elt.elt_path elt_id)
+    elts { stog with stog_elts_by_path = Stog_types.Hid_trie.empty }
   in
   { stog with
     stog_elts = elts ;

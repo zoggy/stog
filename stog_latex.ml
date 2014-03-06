@@ -67,8 +67,8 @@ let get_latex_defs stog env =
         match files with
           [] -> (stog, files)
         | _ ->
-            let (stog, hid) = Stog_engine.get_hid stog env in
-            let (_, elt) = Stog_types.elt_by_human_id stog (Stog_types.human_id_of_string hid) in
+            let (stog, path) = Stog_engine.get_path stog env in
+            let (_, elt) = Stog_types.elt_by_path stog (Stog_types.path_of_string path) in
             let dir = Filename.dirname elt.Stog_types.elt_src in
             let f filename =
               if Filename.is_relative filename
@@ -207,9 +207,9 @@ let fun_latex_body stog env args subs =
       "\n\\begin{document}"^code^"\\end{document}"
   in
 
-  let (stog, hid) = Stog_engine.get_hid stog env in
-  let hid = Stog_types.human_id_of_string hid in
-  let (_, elt) = Stog_types.elt_by_human_id stog hid in
+  let (stog, path) = Stog_engine.get_path stog env in
+  let path = Stog_types.path_of_string path in
+  let (_, elt) = Stog_types.elt_by_path stog path in
   let elt_dir = Filename.dirname elt.Stog_types.elt_src in
 
   let (stog, xmls) = Stog_engine.get_in_env stog env ("","sectionning") in

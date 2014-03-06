@@ -143,8 +143,8 @@ let load_cached_elt file =
   let ic = open_in_bin file in
   let (t : Stog_types.cached_elt) = input_value ic in
   close_in ic;
-  let hid = Stog_types.string_of_human_id t.cache_elt.elt_human_id in
-  blocks := Smap.add hid t.cache_blocks !blocks;
+  let path = Stog_types.string_of_path t.cache_elt.elt_path in
+  blocks := Smap.add path t.cache_blocks !blocks;
   t.cache_elt
 ;;
 *)
@@ -168,7 +168,7 @@ let stog_cache_name = "_stog";;
 let cache_file name stog elt =
   let cache_dir = Filename.concat stog.stog_cache_dir name in
   Filename.concat cache_dir
-    ((String.concat "/" elt.elt_human_id.hid_path)^"._elt")
+    ((String.concat "/" elt.elt_path.path)^"._elt")
 ;;
 
 let get_cached_elts stog =
@@ -195,7 +195,7 @@ let get_cached_elts stog =
 
 let set_elt_env elt stog elt_envs =
   let digest = Stog_types.stog_md5 stog in
-  Stog_types.Hid_map.add elt.elt_human_id digest elt_envs
+  Stog_types.Hid_map.add elt.elt_path digest elt_envs
 ;;
 
 let apply_loaders state elt =
@@ -244,7 +244,7 @@ let get_cached_elements state env =
         let ic = open_in_bin info_file in
         let ((elt_envs, deps, id_map) :
            (string Stog_types.Hid_map.t * Stog_types.Depset.t Smap.t *
-            (human_id * string option) Smap.t Stog_types.Hid_map.t)) =
+            (path * string option) Smap.t Stog_types.Hid_map.t)) =
           input_value ic
         in
         close_in ic;
@@ -263,25 +263,25 @@ let get_cached_elements state env =
   Stog_msg.verbose ~info:"cache" ~level: 5 ("digest(stog)="^digest);
 
   let elts = get_cached_elts state.st_stog in
-  let elt_by_hid =
+  let elt_by_path =
     let map = List.fold_left
       (fun map elt -> Stog_types.Str_map.add
-         (Stog_types.string_of_human_id elt.elt_human_id) elt map)
+         (Stog_types.string_of_path elt.elt_path) elt map)
         Stog_types.Str_map.empty elts
     in
-    fun hid -> Stog_types.Str_map.find hid map
+    fun path -> Stog_types.Str_map.find path map
   in
   let f (state, cached, kept_deps, kept_id_map) elt =
-    let hid = elt.elt_human_id in
+    let path = elt.elt_path in
     let same_elt_env =
       try
-        let d = Stog_types.Hid_map.find hid elt_envs in
+        let d = Stog_types.Hid_map.find path elt_envs in
         Stog_msg.verbose ~info: "cache" ~level: 5
-          ("digest(hid="^(Stog_types.string_of_human_id hid)^",stog)="^d);
+          ("digest(path="^(Stog_types.string_of_path path)^",stog)="^d);
         d = digest
       with Not_found ->
           Stog_msg.verbose ~info: "cache" ~level: 5
-            ("cached elt "^(Stog_types.string_of_human_id hid)^" not found in stog");
+            ("cached elt "^(Stog_types.string_of_path path)^" not found in stog");
           false
     in
     let use_cache =
@@ -289,8 +289,8 @@ let get_cached_elements state env =
         begin
           let src_cache_file = cache_file stog_cache_name state.st_stog elt in
           let src_cache_time = Stog_misc.file_mtime src_cache_file in
-          let deps_time = Stog_deps.max_deps_date state.st_stog elt_by_hid
-            (Stog_types.string_of_human_id elt.elt_human_id)
+          let deps_time = Stog_deps.max_deps_date state.st_stog elt_by_path
+            (Stog_types.string_of_path elt.elt_path)
           in
           Stog_msg.verbose ~info: "cache" ~level: 5
            (Printf.sprintf "deps_time for %S = %s, last generated on %s" src_cache_file
@@ -304,7 +304,7 @@ let get_cached_elements state env =
       else
         (
          Stog_msg.verbose ~info: "cache" ~level: 5
-           ("hid="^(Stog_types.string_of_human_id hid)^": not same env");
+           ("path="^(Stog_types.string_of_path path)^": not same env");
          false
         )
     in
@@ -313,13 +313,13 @@ let get_cached_elements state env =
         let state = apply_loaders state elt in
         (* keep deps of this element, as it did not change *)
         let kept_deps =
-          let shid = Stog_types.string_of_human_id hid in
-          try Smap.add shid (Smap.find shid state.st_stog.stog_deps) kept_deps
+          let spath = Stog_types.string_of_path path in
+          try Smap.add spath (Smap.find spath state.st_stog.stog_deps) kept_deps
           with Not_found -> kept_deps
         in
         let kept_id_map =
-          try Stog_types.Hid_map.add hid
-            (Stog_types.Hid_map.find hid state.st_stog.stog_id_map) kept_id_map
+          try Stog_types.Hid_map.add path
+            (Stog_types.Hid_map.find path state.st_stog.stog_id_map) kept_id_map
           with
             Not_found -> kept_id_map
         in
@@ -359,8 +359,8 @@ let output_cache_info stog elt_envs =
   (*Stog_tmap.iter
     (fun elt_id elt ->
        ignore(Stog_deps.max_deps_date stog
-        (fun hid -> snd (Stog_types.elt_by_human_id stog (Stog_types.human_id_of_string hid)))
-          (Stog_types.string_of_human_id elt.Stog_types.elt_human_id))
+        (fun path -> snd (Stog_types.elt_by_path stog (Stog_types.path_of_string path)))
+          (Stog_types.string_of_path elt.Stog_types.elt_path))
     )
        stog.Stog_types.stog_elts;
   *)
@@ -397,7 +397,7 @@ let compute_levels ?(use_cache=true) ?elts env state =
         Stog_msg.verbose (Printf.sprintf "%d elements kept from cache" (List.length cached));
         let f_elt (stog, cached) cached_elt =
           try
-            let (elt_id, _) = Stog_types.elt_by_human_id stog cached_elt.elt_human_id in
+            let (elt_id, _) = Stog_types.elt_by_path stog cached_elt.elt_path in
             (* replace element by cached one *)
             let stog = Stog_types.set_elt stog elt_id cached_elt in
             (stog, elt_id :: cached)
@@ -405,7 +405,7 @@ let compute_levels ?(use_cache=true) ?elts env state =
               (* element not loaded but cached; keep it as it may be an
                  element from a cut-elt rule *)
               let stog = Stog_types.add_elt stog cached_elt in
-              let (elt_id, _) = Stog_types.elt_by_human_id stog cached_elt.elt_human_id in
+              let (elt_id, _) = Stog_types.elt_by_path stog cached_elt.elt_path in
               (stog, elt_id :: cached)
         in
         let (stog, cached) = List.fold_left f_elt (state.st_stog, []) cached in
@@ -512,8 +512,8 @@ let encode_for_url s =
 
 let elt_dst f_concat ?(encode=true) stog base elt =
   let path =
-    match elt.elt_human_id.hid_path with
-      [] -> failwith "Invalid human id: []"
+    match elt.elt_path.path with
+      [] -> failwith "Invalid path: []"
     | h :: q -> List.fold_left f_concat h q
   in
   let ext = Stog_misc.filename_extension elt.elt_src in
@@ -562,7 +562,7 @@ let output_elt state elt =
     None ->
       failwith
         (Printf.sprintf "Element %S not computed!"
-         (Stog_types.string_of_human_id elt.elt_human_id)
+         (Stog_types.string_of_path elt.elt_path)
         )
   | Some xmls ->
       let oc = open_out file in
@@ -638,8 +638,8 @@ let generate ?(use_cache=true) ?only_elts stog modules =
       None -> None
     | Some l ->
         let f s =
-          let hid = Stog_types.human_id_of_string s in
-          let (elt_id, _) = Stog_types.elt_by_human_id stog hid in
+          let path = Stog_types.path_of_string s in
+          let (elt_id, _) = Stog_types.elt_by_path stog path in
           elt_id
         in
         Some (List.map f l)
@@ -677,8 +677,8 @@ let get_in_args_or_env data env args s =
   | Some s -> (data, s)
 ;;
 
-let get_hid data env =
-  let (data, xmls) = get_in_env data env ("", Stog_tags.elt_hid) in
+let get_path data env =
+  let (data, xmls) = get_in_env data env ("", Stog_tags.elt_path) in
   let s = Xtmpl.string_of_xmls xmls in
   assert (s <> "");
   (data, s)
@@ -751,7 +751,7 @@ let elt_env data env stog elt =
   let env = env_of_defs ~env elt.elt_defs in
 (*  prerr_endline
     (Printf.sprintf "elt=%s\ndefs=%s"
-      (Stog_types.string_of_human_id elt.elt_human_id)
+      (Stog_types.string_of_path elt.elt_path)
       (String.concat "\n"
         (List.map (fun ((p,name),_,subs) -> Printf.sprintf "%s:%s=>%s" p name (Xtmpl.string_of_xmls subs))
           elt.elt_defs)
@@ -760,9 +760,9 @@ let elt_env data env stog elt =
   prerr_endline ("env_of_defs => "^(Xtmpl.string_of_env env));
 *)
   let rules = [
-      ("", Stog_tags.elt_hid),
+      ("", Stog_tags.elt_path),
       (fun  acc _ _ _ ->
-         (acc, [Xtmpl.D (Stog_types.string_of_human_id elt.elt_human_id)]))]
+         (acc, [Xtmpl.D (Stog_types.string_of_path elt.elt_path)]))]
   in
   let env = Xtmpl.env_of_list ~env rules in
   let (data, env) = env_add_lang_rules data env stog elt in
@@ -776,7 +776,7 @@ let apply_stog_env_elt stog env elt_id =
   let (stog, env) = elt_env stog env stog elt in
   let (stog, xmls) = get_elt_out stog elt in
   (*prerr_endline (Printf.sprintf "%s = %s"
-     (Stog_types.string_of_human_id elt.elt_human_id)
+     (Stog_types.string_of_path elt.elt_path)
      (Xtmpl.string_of_xsmls xmls));*)
   let (stog, xmls) = Xtmpl.apply_to_xmls stog env xmls in
   let elt = { elt with elt_out = Some xmls } in

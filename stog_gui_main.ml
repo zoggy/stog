@@ -106,14 +106,14 @@ class stog_box menubar stog =
 
     method set_stog st =
       stog <- st ;
-      let hid =
+      let path =
         match selected_art with
           None -> None
         | Some id ->
             let a = Stog_types.article stog id in
-            Some a.art_human_id
+            Some a.art_path
       in
-      art_box#set_articles ?hid (Stog_types.article_list stog)
+      art_box#set_articles ?path (Stog_types.article_list stog)
 
     method insert_into_body = edit_box#insert_into_body
 
@@ -151,11 +151,11 @@ class main_window stogs =
       | Some title ->
           let title = Stog_misc.strip_string title in
           let stog = stog_box#stog in
-          let human_id = Stog_types.make_human_id stog title in
+          let path = Stog_types.make_path stog title in
           let art = Stog_types.dummy_article () in
-          let art = { art with art_title = title ; art_human_id = human_id } in
+          let art = { art with art_title = title ; art_path = path } in
           let art = { art with art_location =
-            Filename.concat (Filename.concat stog_box#stog.stog_dir human_id) "index.html" }
+            Filename.concat (Filename.concat stog_box#stog.stog_dir path) "index.html" }
           in
           let stog = Stog_types.add_article stog art in
           stog_box#set_stog stog

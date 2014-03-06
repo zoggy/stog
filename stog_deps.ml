@@ -48,8 +48,8 @@ let add_dep stog elt dep =
       let parent =
         match elt.elt_parent with
           None -> elt
-        | Some hid ->
-            let (_, elt) = Stog_types.elt_by_human_id stog hid in
+        | Some path ->
+            let (_, elt) = Stog_types.elt_by_path stog path in
             elt
       in
       let srcs = parent :: (Stog_types.elt_children stog parent) in
@@ -59,37 +59,37 @@ let add_dep stog elt dep =
           File f -> File f
         | Elt elt ->
             (* need the stog to get parent element eventually *)
-            let dst_hid =
+            let dst_path =
               match elt.elt_parent with
-                None -> elt.elt_human_id
-              | Some hid -> hid
+                None -> elt.elt_path
+              | Some path -> path
             in
-            let dst_hid = Stog_types.string_of_human_id dst_hid in
-            Elt dst_hid
+            let dst_path = Stog_types.string_of_path dst_path in
+            Elt dst_path
         in
 
-      let src_hids = List.map
-        (fun elt -> Stog_types.string_of_human_id elt.elt_human_id) srcs
+      let src_paths = List.map
+        (fun elt -> Stog_types.string_of_path elt.elt_path) srcs
       in
       let f_elt stog elt =
-        let src_hid = Stog_types.string_of_human_id elt.elt_human_id in
+        let src_path = Stog_types.string_of_path elt.elt_path in
         let set =
-          try Smap.find src_hid stog.stog_deps
+          try Smap.find src_path stog.stog_deps
           with Not_found -> Depset.empty
         in
         let set =
           match dep with
             File f ->
-              (*prerr_endline ("add dep "^src_hid^" -> "^f);*)
+              (*prerr_endline ("add dep "^src_path^" -> "^f);*)
               Depset.add dep set
-          | Elt dst_hid ->
+          | Elt dst_path ->
               (* do not add deps from an element to its parent, child or brothers *)
-              if List.mem dst_hid src_hids then
+              if List.mem dst_path src_paths then
                 set
               else
                 Depset.add dep set
         in
-        { stog with stog_deps = Smap.add src_hid set stog.stog_deps }
+        { stog with stog_deps = Smap.add src_path set stog.stog_deps }
       in
       List.fold_left f_elt stog srcs
 ;;
@@ -100,9 +100,9 @@ let string_of_file_time f =
   | Some t -> Stog_misc.string_of_time t
 ;;
 
-let string_of_elt_time stog elt_by_hid hid =
+let string_of_elt_time stog elt_by_path path =
   try
-    let elt = elt_by_hid hid in
+    let elt = elt_by_path path in
     let src_file = Filename.concat stog.stog_dir elt.elt_src in
     match Stog_misc.file_mtime src_file with
       None -> "<notime>"
@@ -111,15 +111,15 @@ let string_of_elt_time stog elt_by_hid hid =
     e -> Printexc.to_string e
 ;;
 
-let print_dep b elt_by_hid stog = function
+let print_dep b elt_by_path stog = function
   File file ->
     Printf.bprintf b "  File %S modified at %s\n" file (string_of_file_time file)
-| Elt hid ->
-    Printf.bprintf b "  Elt %S modified at %s\n" hid
-      (string_of_elt_time stog elt_by_hid hid)
+| Elt path ->
+    Printf.bprintf b "  Elt %S modified at %s\n" path
+      (string_of_elt_time stog elt_by_path path)
 ;;
 
-let max_deps_date stog elt_by_hid hid =
+let max_deps_date stog elt_by_path path =
   let rec f dep (acc, depth) =
     if Depset.mem dep acc then
       (acc, depth)
@@ -127,32 +127,32 @@ let max_deps_date stog elt_by_hid hid =
       let acc = Depset.add dep acc in
       match dep with
         File file -> (acc, depth)
-      | Elt hid ->
+      | Elt path ->
           try
             if stog.stog_depcut && depth >= 1 then
               (acc, depth)
             else
               (
-               let elt_deps = Smap.find hid stog.stog_deps in
+               let elt_deps = Smap.find path stog.stog_deps in
                Depset.fold f elt_deps (acc, depth+1)
               )
           with Not_found ->
               (acc, depth)
   in
-  let (deps,_) = f (Elt hid) (Depset.empty,0) in
+  let (deps,_) = f (Elt path) (Depset.empty,0) in
   Stog_msg.verbose ~level: 5
     (let b = Buffer.create 256 in
-     Printf.bprintf b "%S depends on\n" hid;
-     Depset.iter (print_dep b elt_by_hid stog) deps;
+     Printf.bprintf b "%S depends on\n" path;
+     Depset.iter (print_dep b elt_by_path stog) deps;
      Buffer.contents b
     );
   let max_date dep acc =
     let date_opt =
       match dep with
         File file -> Stog_misc.file_mtime file
-      | Elt hid ->
+      | Elt path ->
           try
-            let elt = elt_by_hid hid in
+            let elt = elt_by_path path in
             let src = Filename.concat stog.stog_dir elt.elt_src in
             Stog_misc.file_mtime src
           with Not_found ->

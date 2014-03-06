@@ -49,9 +49,9 @@ let random_id () =
 ;;
 
 
-let bump_counter data s_hid name =
+let bump_counter data s_path name =
   let map =
-    try Smap.find s_hid data.counters
+    try Smap.find s_path data.counters
     with Not_found -> Smap.empty
   in
   let cpt =
@@ -59,34 +59,34 @@ let bump_counter data s_hid name =
     with Not_found -> 1
   in
   let map = Smap.add name cpt map in
-  let data = { data with counters = Smap.add s_hid map data.counters } in
+  let data = { data with counters = Smap.add s_path map data.counters } in
   (data, cpt)
 ;;
 
-let get_counter data s_hid name =
-  try Smap.find name (Smap.find s_hid data.counters)
+let get_counter data s_path name =
+  try Smap.find name (Smap.find s_path data.counters)
   with Not_found -> 0
 ;;
 
-let set_counter data s_hid name v =
+let set_counter data s_path name v =
   let map =
-   try Smap.find s_hid data.counters
+   try Smap.find s_path data.counters
    with Not_found -> Smap.empty
   in
   let map = Smap.add name v map in
-  { data with counters = Smap.add s_hid map data.counters }
+  { data with counters = Smap.add s_path map data.counters }
 ;;
 
-let add_block ?(on_dup=`Warn) ~hid ~id ~short ~long data =
+let add_block ?(on_dup=`Warn) ~path ~id ~short ~long data =
   let map =
-    try Smap.find hid data.blocks
+    try Smap.find path data.blocks
     with Not_found -> Smap.empty
     in
   let map =
     try
       ignore (Smap.find id map);
       begin
-        let msg = Printf.sprintf "Multiple blocks with id %S for hid=%S" id hid in
+        let msg = Printf.sprintf "Multiple blocks with id %S for path=%S" id path in
         match on_dup with
           `Warn -> Stog_msg.warning msg
         | `Fail -> failwith msg
@@ -96,14 +96,14 @@ let add_block ?(on_dup=`Warn) ~hid ~id ~short ~long data =
     with Not_found ->
         Smap.add id (short, long) map
   in
-  { data with blocks = Smap.add hid map data.blocks }
+  { data with blocks = Smap.add path map data.blocks }
 ;;
 
 let add_block_for_elt data elt =
-  let hid = Stog_types.string_of_human_id elt.elt_human_id in
-  try ignore(Smap.find hid data.blocks); data
+  let path = Stog_types.string_of_path elt.elt_path in
+  try ignore(Smap.find path data.blocks); data
   with Not_found ->
-      let blocks = Smap.add hid Smap.empty data.blocks in
+      let blocks = Smap.add path Smap.empty data.blocks in
       { data with blocks }
 ;;
 
@@ -115,14 +115,14 @@ let fun_counter (stog, data) env atts subs =
   match Xtmpl.get_arg_cdata atts ("", "counter-name") with
     None -> ((stog, data), subs)
   | Some name ->
-      let ((stog, data), hid) = Stog_html.get_hid (stog, data) env in
-      let cpt = get_counter data hid name in
+      let ((stog, data), path) = Stog_html.get_path (stog, data) env in
+      let cpt = get_counter data path name in
       ((stog, data), [Xtmpl.D (string_of_int cpt)])
 ;;
 
 
 let fun_elt_href ?typ src_elt href (stog, data) env args subs =
-  let src_hid_s = Stog_types.string_of_human_id src_elt.elt_human_id in
+  let src_path_s = Stog_types.string_of_path src_elt.elt_path in
   let report_error msg = Stog_msg.error ~info: "Stog_html.fun_elt_href" msg in
   let quotes =
     match Xtmpl.get_arg_cdata args ("", "quotes") with
@@ -136,7 +136,7 @@ let fun_elt_href ?typ src_elt href (stog, data) env args subs =
     let (stog, text) =
       match info with
         None -> (stog, [Xtmpl.D "??"])
-      | Some (elt, hid, id) ->
+      | Some (elt, path, id) ->
           let stog = Stog_deps.add_dep stog src_elt (Stog_types.Elt elt) in
           match subs, id with
           | [], None ->
@@ -145,21 +145,21 @@ let fun_elt_href ?typ src_elt href (stog, data) env args subs =
               (stog, [Xtmpl.xml_of_string s])
           | text, None -> (stog, text)
           | _, Some id ->
-              let hid = Stog_types.string_of_human_id elt.elt_human_id in
+              let path = Stog_types.string_of_path elt.elt_path in
               let title =
                 try
-                  let id_map = Smap.find hid data.blocks in
+                  let id_map = Smap.find path data.blocks in
                   try
                     let (short, long) = Smap.find id id_map in
                     match Xtmpl.get_arg_cdata args ("", "long") with
                       Some "true" -> long
                     | _ -> short
                   with Not_found ->
-                      let msg = Printf.sprintf "In %s: Unknown block hid=%S, id=%S" src_hid_s hid id in
+                      let msg = Printf.sprintf "In %s: Unknown block path=%S, id=%S" src_path_s path id in
                       report_error msg;
                       Xtmpl.D "??"
                 with Not_found ->
-                    let msg = Printf.sprintf "In %s: Unknown element %S in block map" src_hid_s hid in
+                    let msg = Printf.sprintf "In %s: Unknown element %S in block map" src_path_s path in
                     report_error msg;
                     Xtmpl.D "??"
               in
@@ -212,10 +212,10 @@ let fun_page = fun_elt ~typ: "page";;
 
 
 let make_fun_section sect_up cls sect_down (stog, data) env args subs =
-  let ((stog, data), hid) = Stog_html.get_hid (stog, data) env in
+  let ((stog, data), path) = Stog_html.get_path (stog, data) env in
   let data = List.fold_left
     (fun data cls_down ->
-       set_counter data hid (Stog_html.concat_name ~sep: ":" cls_down) 0
+       set_counter data path (Stog_html.concat_name ~sep: ":" cls_down) 0
      )
     data sect_down
   in
@@ -467,25 +467,25 @@ let fun_block1 (stog, data) env args subs =
   match Xtmpl.get_arg_cdata args ("", "href") with
     Some s when s <> "" ->
       begin
-        match Xtmpl.get_arg_cdata args ("", Stog_tags.elt_hid) with
+        match Xtmpl.get_arg_cdata args ("", Stog_tags.elt_path) with
           Some _ -> raise Xtmpl.No_change
         | None ->
-            let ((stog, data), hid) = Stog_html.get_hid (stog, data) env in
+            let ((stog, data), path) = Stog_html.get_path (stog, data) env in
             let xmls =
               [ Xtmpl.E (("", Stog_tags.block),
-                 Xtmpl.atts_of_list [("", Stog_tags.elt_hid), [Xtmpl.D hid] ; ("", "href"), [Xtmpl.D s]],
+                 Xtmpl.atts_of_list [("", Stog_tags.elt_path), [Xtmpl.D path] ; ("", "href"), [Xtmpl.D s]],
                  subs)
               ]
             in
             ((stog, data), xmls)
       end
   | _ ->
-      let ((stog, data), hid) = Stog_html.get_hid (stog, data) env in
+      let ((stog, data), path) = Stog_html.get_path (stog, data) env in
       let block = read_block stog args subs in
       let data =
         match block.blk_cpt_name with
           None -> data
-        | Some name -> fst (bump_counter data hid name)
+        | Some name -> fst (bump_counter data path name)
       in
       let env = Xtmpl.env_add_att "id" [Xtmpl.D block.blk_id] env in
       let env = Xtmpl.env_add "title" (fun acc _ _ _ -> (acc, block.blk_title)) env in
@@ -510,7 +510,7 @@ let fun_block1 (stog, data) env args subs =
         let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env block.blk_short_f in
          ((stog, data), Xtmpl.E (("", Xtmpl.tag_main), Xtmpl.atts_empty, xmls))
       in
-      let data = add_block ~hid ~id: block.blk_id ~short ~long data in
+      let data = add_block ~path ~id: block.blk_id ~short ~long data in
       let env = Xtmpl.env_add "title" (fun acc _ _ _ -> (acc, [long])) env in
       Xtmpl.apply_to_xmls (stog, data) env block.blk_body
 ;;
@@ -519,11 +519,11 @@ let fun_block2 (stog, data) env atts subs =
   match Xtmpl.get_arg_cdata atts ("", "href") with
     None -> ((stog, data), subs)
   | Some href ->
-      let hid = match Xtmpl.get_arg_cdata atts ("", Stog_tags.elt_hid) with
+      let path = match Xtmpl.get_arg_cdata atts ("", Stog_tags.elt_path) with
           None -> assert false
-        | Some hid -> hid
+        | Some path -> path
       in
-      let url = Printf.sprintf "%s#%s" hid href in
+      let url = Printf.sprintf "%s#%s" path href in
       let quotes =
         match Xtmpl.get_arg_cdata atts ("", "quotes") with
           None -> "false"
@@ -541,7 +541,7 @@ let fun_block2 (stog, data) env atts subs =
 
 
 let gather_existing_ids =
-  let rec f hid set = function
+  let rec f path set = function
     Xtmpl.D _ -> set
   | Xtmpl.E (tag, atts, subs) ->
       let set =
@@ -552,11 +552,11 @@ let gather_existing_ids =
             if Sset.mem id set then
               failwith (Printf.sprintf
                "id %S defined twice in the same element %S (here for tag %S)" id
-               (Stog_types.string_of_human_id hid) (Stog_html.concat_name tag))
+               (Stog_types.string_of_path path) (Stog_html.concat_name tag))
             else
                Sset.add id set
       in
-      List.fold_left (f hid) set subs
+      List.fold_left (f path) set subs
   in
   fun env (stog, data) elt_id ->
     let elt = Stog_types.elt stog elt_id in
@@ -566,7 +566,7 @@ let gather_existing_ids =
         let data = add_block_for_elt data elt in
         let set =
           let g set xml =
-            try f elt.elt_human_id set xml
+            try f elt.elt_path set xml
             with e ->
                 prerr_endline (Xtmpl.string_of_xml xml);
                 raise e
@@ -574,10 +574,10 @@ let gather_existing_ids =
           List.fold_left g Sset.empty body
         in
         let title = Xtmpl.xml_of_string elt.elt_title in
-        let hid = Stog_types.string_of_human_id elt.elt_human_id in
+        let path = Stog_types.string_of_path elt.elt_path in
         let data = Sset.fold
           (fun id data ->
-             add_block ~on_dup: `Ignore ~hid ~id ~short: title ~long: title data)
+             add_block ~on_dup: `Ignore ~path ~id ~short: title ~long: title data)
             set data
         in
         (stog, data)
@@ -635,8 +635,8 @@ let dump_data env (stog,data) _ =
     prerr_endline
       ("id="^id^", short="^(Xtmpl.string_of_xml short)^", long="^(Xtmpl.string_of_xml long))
   in
-  let f s_hid map =
-    prerr_endline ("Blocks for hid="^s_hid^" :");
+  let f s_path map =
+    prerr_endline ("Blocks for path="^s_path^" :");
     Smap.iter f_block map
   in
   Smap.iter f data.blocks ;
@@ -681,14 +681,14 @@ let make_module ?levels () =
       }
 
     let cache_load _stog data elt t =
-      let hid = Stog_types.string_of_human_id elt.elt_human_id in
-      let blocks = Smap.add hid t.cache_blocks data.blocks in
+      let path = Stog_types.string_of_path elt.elt_path in
+      let blocks = Smap.add path t.cache_blocks data.blocks in
       { data with blocks }
 
     let cache_store _stog data elt =
-      let hid = Stog_types.string_of_human_id elt.elt_human_id in
+      let path = Stog_types.string_of_path elt.elt_path in
       {
-        cache_blocks = (try Smap.find hid data.blocks with Not_found -> Smap.empty) ;
+        cache_blocks = (try Smap.find path data.blocks with Not_found -> Smap.empty) ;
       }
   end
   in

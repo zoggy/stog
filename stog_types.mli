@@ -32,10 +32,10 @@ type date = Netdate.t
 
 type body = Xtmpl.tree list
 
-type human_id = { hid_path : string list; hid_absolute : bool; }
+type path = { path : string list; path_absolute : bool; }
 
-val string_of_human_id : human_id -> string
-val human_id_of_string : string -> human_id
+val string_of_path : path -> string
+val path_of_string : string -> path
 
 type def = Xtmpl.name * Xtmpl.attributes * body
 
@@ -45,9 +45,9 @@ module Str_map : Map.S with type key = string
 module Str_set : Set.S with type elt = string
 
 type elt = {
-  elt_human_id : human_id ;
-  elt_parent : human_id option ;
-  elt_children : human_id list ;
+  elt_path : path ;
+  elt_parent : path option ;
+  elt_children : path list ;
   elt_type : string ;
   elt_body : body ;
   elt_date : date option ;
@@ -65,7 +65,7 @@ type elt = {
 }
 type elt_id = elt Stog_tmap.key
 
-val make_elt : ?typ:string -> ?hid:human_id -> unit -> elt
+val make_elt : ?typ:string -> ?path:path -> unit -> elt
 
 
 val today : unit -> date
@@ -74,8 +74,8 @@ module Hid_trie : Stog_trie.S with type symbol = string
 module Elt_set : Set.S with type elt = elt_id
 module Int_map : Map.S with type key = int
 module Int_set : Set.S with type elt = int
-module Hid_map : Map.S with type key = human_id
-module Hid_set : Set.S with type elt = human_id
+module Hid_map : Map.S with type key = path
+module Hid_set : Set.S with type elt = path
 
 type edge_type = Date | Topic of string | Keyword of string | Ref
 
@@ -94,7 +94,7 @@ type stog_dependencies = Depset.t Str_map.t;;
 type stog = {
   stog_dir : string;
   stog_elts : (elt, elt) Stog_tmap.t;
-  stog_elts_by_human_id : elt_id Hid_trie.t;
+  stog_elts_by_path : elt_id Hid_trie.t;
   stog_defs : def list;
   stog_tmpl_dir : string;
   stog_cache_dir : string;
@@ -115,7 +115,7 @@ type stog = {
   stog_used_mods : Str_set.t ;
   stog_depcut : bool ;
   stog_deps : stog_dependencies ;
-  stog_id_map : (human_id * string option) Str_map.t Hid_map.t ;
+  stog_id_map : (path * string option) Str_map.t Hid_map.t ;
   stog_levels : (string * int list) list Str_map.t ;
   }
 
@@ -128,12 +128,12 @@ val stog_md5 : stog -> string
 
 val elt : stog -> elt Stog_tmap.key -> elt
 
-val elts_by_human_id : ?typ:string -> stog -> human_id -> (elt_id * elt) list
-val elt_by_human_id : ?typ:string -> stog -> human_id -> elt_id * elt
+val elts_by_path : ?typ:string -> stog -> path -> (elt_id * elt) list
+val elt_by_path : ?typ:string -> stog -> path -> elt_id * elt
 val elt_children : stog -> elt -> elt list
 
 val set_elt : stog -> elt Stog_tmap.key -> elt -> stog
-val add_hid : stog -> human_id -> elt_id -> stog
+val add_path : stog -> path -> elt_id -> stog
 val add_elt : stog -> elt -> stog
 
 val sort_elts_by_date : elt list -> elt list
@@ -145,10 +145,10 @@ val elt_list :
   ?by_date:bool -> ?set:string -> stog -> (elt Stog_tmap.key * elt) list
 
 val merge_stogs : stog list -> stog
-val make_human_id : stog -> string -> string list
+val make_path : stog -> string -> string list
 
 val find_block_by_id : elt -> string -> Xtmpl.tree option
 
-val id_map_add : stog -> Hid_map.key -> Str_map.key -> human_id -> string option -> stog
+val id_map_add : stog -> Hid_map.key -> Str_map.key -> path -> string option -> stog
 val map_href : stog -> Hid_map.key -> Str_map.key -> Hid_map.key * Str_map.key
 val map_elt_ref : stog -> elt -> Str_map.key -> elt * Str_map.key

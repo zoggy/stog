@@ -32,8 +32,8 @@
   some values are made available for the {!Stog_plug} module.
 *)
 
-(** [elt_by_href ?typ ?src_elt stog env href] returns the element, hid and
-  optional id matching the given href string, of the form [hid[#id]].
+(** [elt_by_href ?typ ?src_elt stog env href] returns the element, path and
+  optional id matching the given href string, of the form [path[#id]].
   Return None if the element could not be found, of the id could not be found,
   and an error is issued.
   @param src_elt can be used to specify the source element, to improve
@@ -43,14 +43,14 @@ val elt_by_href : ?typ: string -> ?src_elt: Stog_types.elt ->
     'a * (Stog_types.elt * string * string option) option
 
 (*
-(** Adding a known block id for a given hid. A short and a long title
+(** Adding a known block id for a given path. A short and a long title
   are specified. These registered blocks are used by <elt href="..#id"/> nodes.
   @on_dup specifies what to do when the id to add is already present.
   Default is to issue a warning. [`Fail] will raise a [Failure] exception.
 *)
 val add_block :
   ?on_dup: [`Ignore | `Fail | `Warn] ->
-  hid: string -> id: string -> short: Xtmpl.tree -> long: Xtmpl.tree -> unit -> unit
+  path: string -> id: string -> short: Xtmpl.tree -> long: Xtmpl.tree -> unit -> unit
 *)
 
 (** [get_in_env env tag] will look for the given string in the environment,
@@ -58,9 +58,9 @@ val add_block :
   then return [""] else return the reduced value as a string.*)
 val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * Xtmpl.tree list
 
-(** [get_hid env] returns the value associated to ["hid"] in [env].
-  @raise Assert_failure if ["hid"] is not found in the environment.*)
-val get_hid : 'a -> 'a Xtmpl.env -> 'a * string
+(** [get_path env] returns the value associated to ["path"] in [env].
+  @raise Assert_failure if ["path"] is not found in the environment.*)
+val get_path : 'a -> 'a Xtmpl.env -> 'a * string
 
 (** Escape html code in the given string: change [&] to [&amp;],
   [<] to [&lt;] and [>] to [&gt;].*)
@@ -68,10 +68,10 @@ val escape_html : string -> string
 
 val concat_name : ?sep: string -> (string * string) -> string
 
-(** Build an url from the given hid, using the given optional extension.
+(** Build an url from the given path, using the given optional extension.
   This is used for elements created on the fly, like by-word or by-month index. *)
-val url_of_hid :
-  Stog_types.stog -> ?ext:string -> Stog_types.human_id -> Neturl.url
+val url_of_path :
+  Stog_types.stog -> ?ext:string -> Stog_types.path -> Neturl.url
 
 (*
 (** Generate a RSS file from the given list of elements. The final RSS
