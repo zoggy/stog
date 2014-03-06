@@ -195,7 +195,7 @@ let get_cached_elts stog =
 
 let set_elt_env elt stog elt_envs =
   let digest = Stog_types.stog_md5 stog in
-  Stog_types.Hid_map.add elt.elt_path digest elt_envs
+  Stog_types.Path_map.add elt.elt_path digest elt_envs
 ;;
 
 let apply_loaders state elt =
@@ -243,8 +243,8 @@ let get_cached_elements state env =
       begin
         let ic = open_in_bin info_file in
         let ((elt_envs, deps, id_map) :
-           (string Stog_types.Hid_map.t * Stog_types.Depset.t Smap.t *
-            (path * string option) Smap.t Stog_types.Hid_map.t)) =
+           (string Stog_types.Path_map.t * Stog_types.Depset.t Smap.t *
+            (path * string option) Smap.t Stog_types.Path_map.t)) =
           input_value ic
         in
         close_in ic;
@@ -256,7 +256,7 @@ let get_cached_elements state env =
         (elt_envs, stog)
       end
     else
-      (Stog_types.Hid_map.empty, state.st_stog)
+      (Stog_types.Path_map.empty, state.st_stog)
   in
   let state = { state with st_stog = stog } in
   let digest = Stog_types.stog_md5 state.st_stog in
@@ -275,7 +275,7 @@ let get_cached_elements state env =
     let path = elt.elt_path in
     let same_elt_env =
       try
-        let d = Stog_types.Hid_map.find path elt_envs in
+        let d = Stog_types.Path_map.find path elt_envs in
         Stog_msg.verbose ~info: "cache" ~level: 5
           ("digest(path="^(Stog_types.string_of_path path)^",stog)="^d);
         d = digest
@@ -318,8 +318,8 @@ let get_cached_elements state env =
           with Not_found -> kept_deps
         in
         let kept_id_map =
-          try Stog_types.Hid_map.add path
-            (Stog_types.Hid_map.find path state.st_stog.stog_id_map) kept_id_map
+          try Stog_types.Path_map.add path
+            (Stog_types.Path_map.find path state.st_stog.stog_id_map) kept_id_map
           with
             Not_found -> kept_id_map
         in
@@ -333,7 +333,7 @@ let get_cached_elements state env =
   in
   let (state, cached, kept_deps, kept_id_map) =
     List.fold_left f
-      (state, [], Smap.empty, Stog_types.Hid_map.empty) elts
+      (state, [], Smap.empty, Stog_types.Path_map.empty) elts
   in
   let stog = {
       state.st_stog with
@@ -594,7 +594,7 @@ let output_elts ?elts state =
   in
   let elt_envs = List.fold_left
     (fun elt_envs elt -> set_elt_env elt stog elt_envs)
-      Stog_types.Hid_map.empty elts
+      Stog_types.Path_map.empty elts
   in
   output_cache_info stog elt_envs
 ;;

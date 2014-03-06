@@ -92,7 +92,7 @@
 &#160;&#160;<span class="keyword">val</span>&#160;make_elt&#160;:<br/>
 &#160;&#160;&#160;&#160;?typ:string&#160;<span class="keywordsign">-&gt;</span>&#160;?path:<span class="constructor">Stog_types</span>.path&#160;<span class="keywordsign">-&gt;</span>&#160;unit&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.elt<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;today&#160;:&#160;unit&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.date<br/>
-&#160;&#160;<span class="keyword">module</span>&#160;<span class="constructor">Hid_trie</span>&#160;:<br/>
+&#160;&#160;<span class="keyword">module</span>&#160;<span class="constructor">Path_trie</span>&#160;:<br/>
 &#160;&#160;&#160;&#160;<span class="keyword">sig</span><br/>
 &#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">type</span>&#160;symbol&#160;=&#160;string<br/>
 &#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">type</span>&#160;path&#160;=&#160;symbol&#160;list<br/>
@@ -192,7 +192,7 @@
 &#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;split&#160;:&#160;elt&#160;<span class="keywordsign">-&gt;</span>&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;t&#160;*&#160;bool&#160;*&#160;t<br/>
 &#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;find&#160;:&#160;elt&#160;<span class="keywordsign">-&gt;</span>&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;elt<br/>
 &#160;&#160;&#160;&#160;<span class="keyword">end</span><br/>
-&#160;&#160;<span class="keyword">module</span>&#160;<span class="constructor">Hid_map</span>&#160;:<br/>
+&#160;&#160;<span class="keyword">module</span>&#160;<span class="constructor">Path_map</span>&#160;:<br/>
 &#160;&#160;&#160;&#160;<span class="keyword">sig</span><br/>
 &#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">type</span>&#160;key&#160;=&#160;path<br/>
 &#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">type</span>&#160;+<span class="keywordsign">'</span>a&#160;t<br/>
@@ -222,7 +222,7 @@
 &#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;map&#160;:&#160;(<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;t<br/>
 &#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">val</span>&#160;mapi&#160;:&#160;(key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>b&#160;t<br/>
 &#160;&#160;&#160;&#160;<span class="keyword">end</span><br/>
-&#160;&#160;<span class="keyword">module</span>&#160;<span class="constructor">Hid_set</span>&#160;:<br/>
+&#160;&#160;<span class="keyword">module</span>&#160;<span class="constructor">Path_set</span>&#160;:<br/>
 &#160;&#160;&#160;&#160;<span class="keyword">sig</span><br/>
 &#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">type</span>&#160;elt&#160;=&#160;path<br/>
 &#160;&#160;&#160;&#160;&#160;&#160;<span class="keyword">type</span>&#160;t<br/>
@@ -332,7 +332,7 @@
 &#160;&#160;<span class="keyword">type</span>&#160;stog&#160;=&#160;{<br/>
 &#160;&#160;&#160;&#160;stog_dir&#160;:&#160;string;<br/>
 &#160;&#160;&#160;&#160;stog_elts&#160;:&#160;(<span class="constructor">Stog_types</span>.elt,&#160;<span class="constructor">Stog_types</span>.elt)&#160;<span class="constructor">Stog_tmap</span>.t;<br/>
-&#160;&#160;&#160;&#160;stog_elts_by_path&#160;:&#160;<span class="constructor">Stog_types</span>.elt_id&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Hid_trie</span>.t;<br/>
+&#160;&#160;&#160;&#160;stog_elts_by_path&#160;:&#160;<span class="constructor">Stog_types</span>.elt_id&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Path_trie</span>.t;<br/>
 &#160;&#160;&#160;&#160;stog_defs&#160;:&#160;<span class="constructor">Stog_types</span>.def&#160;list;<br/>
 &#160;&#160;&#160;&#160;stog_tmpl_dir&#160;:&#160;string;<br/>
 &#160;&#160;&#160;&#160;stog_cache_dir&#160;:&#160;string;<br/>
@@ -356,7 +356,7 @@
 &#160;&#160;&#160;&#160;stog_deps&#160;:&#160;<span class="constructor">Stog_types</span>.stog_dependencies;<br/>
 &#160;&#160;&#160;&#160;stog_id_map&#160;:<br/>
 &#160;&#160;&#160;&#160;&#160;&#160;(<span class="constructor">Stog_types</span>.path&#160;*&#160;string&#160;option)&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Hid_map</span>.t;<br/>
+&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Path_map</span>.t;<br/>
 &#160;&#160;&#160;&#160;stog_levels&#160;:&#160;(string&#160;*&#160;int&#160;list)&#160;list&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t;<br/>
 &#160;&#160;}<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;url_of_string&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Neturl</span>.url<br/>
@@ -397,13 +397,14 @@
 &#160;&#160;<span class="keyword">val</span>&#160;find_block_by_id&#160;:&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Xtmpl</span>.tree&#160;option<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;id_map_add&#160;:<br/>
 &#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Hid_map</span>.key&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Path_map</span>.key&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.key&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.path&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;option&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;map_href&#160;:<br/>
 &#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Hid_map</span>.key&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.key&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Hid_map</span>.key&#160;*&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.key<br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Path_map</span>.key&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.key&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Path_map</span>.key&#160;*&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.key<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;map_elt_ref&#160;:<br/>
 &#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span><br/>

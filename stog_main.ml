@@ -181,7 +181,7 @@ let main () =
           | Some s -> Some [s]
         in
         try Stog_engine.generate ~use_cache: !use_cache ?only_elts stog modules
-        with Stog_types.Hid_trie.Already_present l ->
+        with Stog_types.Path_trie.Already_present l ->
           let msg = "Path already present: "^(String.concat "/" l) in
           failwith msg
   end;

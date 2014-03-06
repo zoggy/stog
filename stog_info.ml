@@ -307,14 +307,14 @@ let remove_not_published stog =
   in
 (*
   let by_path = List.fold_left
-    (fun acc k -> Stog_types.Hid_map.remove (List.rev k.path_path) acc)
+    (fun acc k -> Stog_types.Path_map.remove (List.rev k.path_path) acc)
     stog.stog_elts_by_path removed
   in
      *)
   let stog = Stog_tmap.fold
     (fun elt_id elt stog ->
        Stog_types.add_path stog elt.elt_path elt_id)
-    elts { stog with stog_elts_by_path = Stog_types.Hid_trie.empty }
+    elts { stog with stog_elts_by_path = Stog_types.Path_trie.empty }
   in
   { stog with
     stog_elts = elts ;

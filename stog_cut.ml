@@ -45,7 +45,7 @@ type cutpoint =
 (* since we iter in elements with List.fold_right to keep elements in
   order, we encounter next element of a cutpoint A before cutpoint A. *)
 type links = {
-  by_elt : (Stog_types.path option * Stog_types.path option) Hid_map.t ;
+  by_elt : (Stog_types.path option * Stog_types.path option) Path_map.t ;
   next_by_cp : Stog_types.path Nmap.t ;
 }
 
@@ -76,17 +76,17 @@ let new_elt_in_cutpoint cut_tag links elt =
       None -> links
     | Some next_path ->
         let next =
-          try snd (Hid_map.find next_path links.by_elt)
+          try snd (Path_map.find next_path links.by_elt)
           with Not_found -> None
         in
-        let by_elt = Hid_map.add next_path
+        let by_elt = Path_map.add next_path
           (Some elt.elt_path, next) links.by_elt
         in
         let prev =
-          try fst (Hid_map.find elt.elt_path links.by_elt)
+          try fst (Path_map.find elt.elt_path links.by_elt)
           with Not_found -> None
         in
-        let by_elt = Hid_map.add elt.elt_path
+        let by_elt = Path_map.add elt.elt_path
           (prev, Some next_path) by_elt
         in
         { links with by_elt }
@@ -97,7 +97,7 @@ let new_elt_in_cutpoint cut_tag links elt =
 
 let add_elt links stog elt =
   let (prev, next) =
-    try Hid_map.find elt.elt_path links.by_elt
+    try Path_map.find elt.elt_path links.by_elt
     with Not_found -> None, None
   in
   let elt =
@@ -241,7 +241,7 @@ let cut_elts =
     (stog, xmls2 @ xmls, new_elts, links)
   in
   let cut_elt stog elt =
-    let links = { by_elt = Hid_map.empty ; next_by_cp = Nmap.empty } in
+    let links = { by_elt = Path_map.empty ; next_by_cp = Nmap.empty } in
     match elt.elt_out with
       None -> (stog, elt, [], links)
     | Some body ->

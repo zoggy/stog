@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<ocamldoc with-contents="true">
+<title>Stog library reference documentation : Stog_highlight</title><contents><div class="ocamldoc-page">
+<div class="navbar"><a class="pre" href="Stog_misc.html" title="Stog_misc">Previous</a>
+&#160;<a class="up" href="index.html" title="Index">Up</a>
+&#160;<a class="post" href="Stog_config.html" title="Stog_config">Next</a>
+</div>
+<h1>Module <a href="type_Stog_highlight.html">Stog_highlight</a></h1>
+
+<pre><span class="keyword">module</span> Stog_highlight: <code class="code">sig</code> <a href="Stog_highlight.html">..</a> <code class="code">end</code></pre><div class="info module top">
+Highlighting code.<br/>
+</div>
+<hr width="100%"/>
+
+<pre><span id="VALexternal_highlight"><span class="keyword">val</span> external_highlight</span> : <code class="type">opts:string -&gt; string -&gt; Xtmpl.tree list</code></pre><div class="info ">
+Call the highlight command on the given string and make it produce xhtml code.
+  Options are passed to the highlight command.<br/>
+</div>
+
+<pre><span id="VALhighlight"><span class="keyword">val</span> highlight</span> : <code class="type">?lang:string -&gt; ?opts:string -&gt; string -&gt; Xtmpl.tree list</code></pre><div class="info ">
+Highlight the given code.
+  If a lang and no option are given, then Higlo is tried first.
+  If the language is unknown, we fallback to using external highlight command.<br/>
+</div>
+<div class="param_info"><code class="code">lang</code> : is used to indicate the language.</div>
+</div></contents></ocamldoc>
