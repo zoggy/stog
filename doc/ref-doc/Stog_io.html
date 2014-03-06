@@ -17,6 +17,11 @@ Building a stog structure from a project tree.<br/>
   <code class="code">bool_of_string</code> returns <code class="code">true</code> for any other value.<br/>
 </div>
 
+<pre><span id="VALelt_of_file"><span class="keyword">val</span> elt_of_file</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; string -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a></code></pre><div class="info ">
+Read an element from the given absolute filename. The file
+must be "under" the directory in <code class="code">stog_dir</code> of the <code class="code">stog</code> parameter.<br/>
+</div>
+
 <pre><span id="VALread_stog"><span class="keyword">val</span> read_stog</span> : <code class="type">string -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><div class="info ">
 Build a <a href="Stog_types.html#TYPEstog"><code class="code">Stog_types.stog</code></a> structure from the given directory.<br/>
 </div>

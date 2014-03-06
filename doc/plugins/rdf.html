@@ -1,5 +1,4 @@
-<page title="Stog-rdf"
-navbar-plugins="active"
+<plugin title="Stog-rdf"
 >
 <prepare-toc depth="1">
 <div class="left-toc"><toc/></div>
@@ -134,7 +133,7 @@ the object.
 ]]></hxml>
 <p>
 Subject and predicate are as in the first example. <ixml>href</ixml> is of
-the form <icode>hid[#id]</icode> to indicate an element of the site, and eventually
+the form <icode>path[#id]</icode> to indicate an element of the site, and eventually
 a node id in this element. This is reduced to the complete IRI
 of the element or block referenced by <icode>element#id</icode>.
 </p>
@@ -149,7 +148,7 @@ of the element or block referenced by <icode>element#id</icode>.
 <p>
 Here the subject is the IRI formed by the element url and the id of the
 <ixml>&lt;p&gt;</ixml> node, for example <icode>http://my.example.com/foo/page1.html#id1</icode>
-if my element has hid <icode>foo/page1</icode> and base url of the site is
+if my element has path <icode>foo/page1</icode> and base url of the site is
 <icode>http://my.example.com</icode>.
 </p>
 <p>
@@ -379,4 +378,4 @@ This will add a triple
 <hxml><![CDATA[<element-url>#proof1 rdf:hasType science:proof]]></hxml>
 </section>
 </prepare-toc>
-</page>
+</plugin>

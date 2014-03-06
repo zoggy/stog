@@ -6,7 +6,7 @@
   <!-- body of the "multi" element -->
   <contents>
     <smallpost id="post1" title="First post" date="2014/01/21">
-      The first post, with hid = "<elt-hid/>".
+      The first post, with path = "<elt-path elt-path="/index"/>".
     </smallpost>
 
     <!-- this element defines a new rule <name>, using with-contents="true"
@@ -17,12 +17,12 @@
       with-contents="true">
       <name foo="">Name: <st defer_="1"><contents/></st></name>
       <contents>
-        The second post, with hid = "<elt-hid/>".
+        The second post, with path = "<elt-path/>".
         <name>James Bond</name>
       </contents>
     </smallpost>
 
-  <!-- The body of the final element with hid "smallposts".
+  <!-- The body of the final element with path "smallposts".
     We use again with-contents="true" do define a new rule
     <hello> for this element only.
   -->
@@ -31,7 +31,7 @@
     <hello name="">Hello <if name=""><dummy_>world</dummy_><name/></if> !</hello>
     <contents>
       <hello name="dear reader"/>
-      This is the body of the element "<elt-hid/>".
+      This is the body of the element "<elt-path/>".
       We can list our small posts here:
       <elements type="smallpost" set="smallposts"/>
     </contents> <!-- contents of the body of the "main" element" -->

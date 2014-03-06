@@ -8,7 +8,8 @@
 <div id="page">
 <include file="menubar.tmpl"/>
 <div id="header">
-  <if elt-type="page"><elt-path> / </elt-path></if>
+  <if elt-type="page"><elt-navpath> / </elt-navpath></if>
+  <if elt-type="plugin"><elt-navpath> / </elt-navpath></if>
   <if elt-type="post">
     <div class="elt-navbar">
       <if previous=""><main_/><div class="navleft"><previous/></div></if>

@@ -1,4 +1,4 @@
-<included-plugin
+<plugin
 title="Stog-dot"
 with-contents="true"
 >
@@ -61,11 +61,11 @@ digraph g {
   rankdir = LR;
   plugins -> asy ;
   plugins -> dot ;
-  plugins [ href="<elt-url elt-hid="plugins"/>" ]
+  plugins [ href="<elt-url elt-path="plugins"/>" ]
   asy [
-     href="<elt-url elt-hid="plugins/asy"/>",
-     label="<elt-title elt-hid="plugins/asy"/>" ] ;
-  dot [ href="<elt-url elt-hid="plugins/dot"/>" ] ;
+     href="<elt-url elt-path="plugins/asy"/>",
+     label="<elt-title elt-path="plugins/asy"/>" ] ;
+  dot [ href="<elt-url elt-path="plugins/dot"/>" ] ;
 }</dot>]]>
 </hcode>
 Since no <code>outfile</code> attribute is given, the <code>svg</code>
@@ -106,4 +106,4 @@ digraph g {
 
 </table>
 </contents>
-</included-plugin>
+</plugin>

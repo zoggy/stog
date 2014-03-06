@@ -33,7 +33,7 @@ For a given element, add a dependency on a file or another element.
 <td></td></tr>
 <tr><td><a href="Stog_types.html#VALadd_elt">add_elt</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_types.html#VALadd_hid">add_hid</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<tr><td><a href="Stog_types.html#VALadd_path">add_path</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_engine.html#VALapply_data_env_elt">apply_data_env_elt</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
 <td></td></tr>
@@ -126,6 +126,8 @@ Same as <code class="code">create_log_fun</code> but also return a function to c
 </td></tr>
 <tr><td><a href="Stog_types.html#VALcreate_stog">create_stog</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_cut.html#VALcut_elts">cut_elts</a> [<a href="Stog_cut.html">Stog_cut</a>]</td>
+<td></td></tr>
 <tr><td align="left"><br/>D</td></tr>
 <tr><td><a href="Stog_intl.html#VALdata_of_lang">data_of_lang</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
 <td></td></tr>
@@ -161,17 +163,17 @@ Get graphviz code from the given stog structure, to create
 <td></td></tr>
 <tr><td><a href="Stog_plug.html#VALelt_by_href">elt_by_href</a> [<a href="Stog_plug.html">Stog_plug</a>]</td>
 <td><div class="info">
-<code class="code">elt_by_href ?typ stog env href</code> returns the element, hid and
-  optional if matching the given href string, of the form <code class="code">hid[#id]</code>.
+<code class="code">elt_by_href ?typ ?src_elt stog env href</code> returns the element, path and
+  optional if matching the given href string, of the form <code class="code">path[#id]</code>.
 </div>
 </td></tr>
 <tr><td><a href="Stog_html.html#VALelt_by_href">elt_by_href</a> [<a href="Stog_html.html">Stog_html</a>]</td>
 <td><div class="info">
-<code class="code">elt_by_href ?typ stog env href</code> returns the element, hid and
-  optional id matching the given href string, of the form <code class="code">hid[#id]</code>.
+<code class="code">elt_by_href ?typ ?src_elt stog env href</code> returns the element, path and
+  optional id matching the given href string, of the form <code class="code">path[#id]</code>.
 </div>
 </td></tr>
-<tr><td><a href="Stog_types.html#VALelt_by_human_id">elt_by_human_id</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<tr><td><a href="Stog_types.html#VALelt_by_path">elt_by_path</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_types.html#VALelt_children">elt_children</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
@@ -188,8 +190,6 @@ Build the final file where the given element will be generated.
 </td></tr>
 <tr><td><a href="Stog_engine.html#VALelt_env">elt_env</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_tags.html#VALelt_hid">elt_hid</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
-<td></td></tr>
 <tr><td><a href="Stog_tmpl.html#VALelt_in_list">elt_in_list</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALelt_intro">elt_intro</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
@@ -203,6 +203,13 @@ The calllback to insert a list of elements.
 </td></tr>
 <tr><td><a href="Stog_types.html#VALelt_list">elt_list</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_tags.html#VALelt_navpath">elt_navpath</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_io.html#VALelt_of_file">elt_of_file</a> [<a href="Stog_io.html">Stog_io</a>]</td>
+<td><div class="info">
+Read an element from the given absolute filename.
+</div>
+</td></tr>
 <tr><td><a href="Stog_tags.html#VALelt_path">elt_path</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALelt_src">elt_src</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
@@ -220,7 +227,7 @@ Build the final url of the given element.
 </td></tr>
 <tr><td><a href="Stog_tags.html#VALelt_url">elt_url</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_types.html#VALelts_by_human_id">elts_by_human_id</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<tr><td><a href="Stog_types.html#VALelts_by_path">elts_by_path</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_trie.S.html#VALempty">empty</a> [<a href="Stog_trie.S.html">Stog_trie.S</a>]</td>
 <td></td></tr>
@@ -252,6 +259,11 @@ Escape html code in the given string: change <code class="code">&amp;</code> to 
 </td></tr>
 <tr><td><a href="Stog_tags.html#VALext_a">ext_a</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_highlight.html#VALexternal_highlight">external_highlight</a> [<a href="Stog_highlight.html">Stog_highlight</a>]</td>
+<td><div class="info">
+Call the highlight command on the given string and make it produce xhtml code.
+</div>
+</td></tr>
 <tr><td align="left"><br/>F</td></tr>
 <tr><td><a href="Stog_misc.html#VALfile_mtime">file_mtime</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td><div class="info">
@@ -343,16 +355,6 @@ Generate the target files, with the following steps: create the output directory
 <td></td></tr>
 <tr><td><a href="Stog_types.html#VALget_def">get_def</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_html.html#VALget_hid">get_hid</a> [<a href="Stog_html.html">Stog_html</a>]</td>
-<td><div class="info">
-<code class="code">get_hid env</code> returns the value associated to <code class="code">"hid"</code> in <code class="code">env</code>.
-</div>
-</td></tr>
-<tr><td><a href="Stog_engine.html#VALget_hid">get_hid</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
-<td><div class="info">
-<code class="code">get_hid env</code> returns the value associated to <code class="code">"hid"</code> in <code class="code">env</code>.
-</div>
-</td></tr>
 <tr><td><a href="Stog_engine.html#VALget_in_args_or_env">get_in_args_or_env</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
 <td><div class="info">
 <code class="code">get_in_args_or_env env args s</code> returns the value associated to <code class="code">s</code>
@@ -371,6 +373,16 @@ Generate the target files, with the following steps: create the output directory
 <td></td></tr>
 <tr><td><a href="Stog_intl.html#VALget_month">get_month</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_html.html#VALget_path">get_path</a> [<a href="Stog_html.html">Stog_html</a>]</td>
+<td><div class="info">
+<code class="code">get_path env</code> returns the value associated to <code class="code">"path"</code> in <code class="code">env</code>.
+</div>
+</td></tr>
+<tr><td><a href="Stog_engine.html#VALget_path">get_path</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
+<td><div class="info">
+<code class="code">get_path env</code> returns the value associated to <code class="code">"path"</code> in <code class="code">env</code>.
+</div>
+</td></tr>
 <tr><td><a href="Stog_html.html#VALget_sectionning_tags">get_sectionning_tags</a> [<a href="Stog_html.html">Stog_html</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tmpl.html#VALget_template">get_template</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
@@ -393,20 +405,11 @@ Prevent tags to self-close (i.e.
 </td></tr>
 <tr><td><a href="Stog_tags.html#VALhcode">hcode</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_tags.html#VALhid_sep">hid_sep</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
-<td></td></tr>
-<tr><td><a href="Stog_html.html#VALhighlight">highlight</a> [<a href="Stog_html.html">Stog_html</a>]</td>
+<tr><td><a href="Stog_highlight.html#VALhighlight">highlight</a> [<a href="Stog_highlight.html">Stog_highlight</a>]</td>
 <td><div class="info">
-Call the highlight command on the given string and make it produce xhtml code.
+Highlight the given code.
 </div>
 </td></tr>
-<tr><td><a href="Stog_misc.html#VALhighlight">highlight</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
-<td><div class="info">
-Call the highlight command on the given string and make it produce xhtml code.
-</div>
-</td></tr>
-<tr><td><a href="Stog_types.html#VALhuman_id_of_string">human_id_of_string</a> [<a href="Stog_types.html">Stog_types</a>]</td>
-<td></td></tr>
 <tr><td align="left"><br/>I</td></tr>
 <tr><td><a href="Stog_tags.html#VALicode">icode</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
@@ -509,11 +512,11 @@ Same as <a href="Stog_graph.S.html#VALiter_succ"><code class="code">Stog_graph.S
 <td></td></tr>
 <tr><td><a href="Stog_types.html#VALmake_elt">make_elt</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_types.html#VALmake_human_id">make_human_id</a> [<a href="Stog_types.html">Stog_types</a>]</td>
-<td></td></tr>
 <tr><td><a href="Stog_blocks.html#VALmake_module">make_module</a> [<a href="Stog_blocks.html">Stog_blocks</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_html.html#VALmake_module">make_module</a> [<a href="Stog_html.html">Stog_html</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_types.html#VALmake_path">make_path</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_latex.html#VALmake_svg">make_svg</a> [<a href="Stog_latex.html">Stog_latex</a>]</td>
 <td></td></tr>
@@ -573,6 +576,8 @@ Marshal the given graph.
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALnext">next</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_tags.html#VALnext_path">next_path</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_blocks.html#VALnode_of_block">node_of_block</a> [<a href="Stog_blocks.html">Stog_blocks</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_graph.S.html#VALnodes_by_pred_order">nodes_by_pred_order</a> [<a href="Stog_graph.S.html">Stog_graph.S</a>]</td>
@@ -603,6 +608,10 @@ Marshal the given graph.
 <tr><td><a href="Stog_tags.html#VALparagraph">paragraph</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_of_latex.html#VALparse">parse</a> [<a href="Stog_of_latex.html">Stog_of_latex</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_types.html#VALpath_of_string">path_of_string</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_tags.html#VALpath_sep">path_sep</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_misc.html#VALpath_under">path_under</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td><div class="info">
@@ -639,6 +648,8 @@ Get the previous element by date.
 <tr><td><a href="Stog_tags.html#VALprepare_toc">prepare_toc</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALprevious">previous</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_tags.html#VALprevious_path">previous_path</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br/>R</td></tr>
 <tr><td><a href="Stog_config.html#VALread_config">read_config</a> [<a href="Stog_config.html">Stog_config</a>]</td>
@@ -721,6 +732,8 @@ Remove from the stog structure the elements having
 </td></tr>
 <tr><td><a href="Stog_tags.html#VALrss_length">rss_length</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_engine.html#VALrun">run</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
+<td></td></tr>
 <tr><td align="left"><br/>S</td></tr>
 <tr><td><a href="Stog_misc.html#VALsafe_main">safe_main</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td><div class="info">
@@ -787,6 +800,8 @@ Use the given language abbreviation (such as "fr") to set the default
 Separate the given string according to the given list of characters.
 </div>
 </td></tr>
+<tr><td><a href="Stog_tags.html#VALstog_dir">stog_dir</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_types.html#VALstog_md5">stog_md5</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_ocaml.html#VALstog_ocaml_session">stog_ocaml_session</a> [<a href="Stog_ocaml.html">Stog_ocaml</a>]</td>
@@ -809,14 +824,14 @@ Separate the given string according to the given list of characters.
    in the form of one string.
 </div>
 </td></tr>
-<tr><td><a href="Stog_types.html#VALstring_of_human_id">string_of_human_id</a> [<a href="Stog_types.html">Stog_types</a>]</td>
-<td></td></tr>
 <tr><td><a href="Stog_misc.html#VALstring_of_opt">string_of_opt</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td><div class="info">
 <code class="code">string_of_opt s_opt</code> returns the empty string if
    <code class="code">s_opt = None</code> or <code class="code">s</code> if <code class="code">s_opt = Some s</code>.
 </div>
 </td></tr>
+<tr><td><a href="Stog_types.html#VALstring_of_path">string_of_path</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_of_latex.html#VALstring_of_stog_directives">string_of_stog_directives</a> [<a href="Stog_of_latex.html">Stog_of_latex</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_misc.html#VALstring_of_time">string_of_time</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
@@ -889,9 +904,9 @@ Unmarshal.
 </td></tr>
 <tr><td><a href="Stog_types.html#VALurl_concat">url_concat</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_html.html#VALurl_of_hid">url_of_hid</a> [<a href="Stog_html.html">Stog_html</a>]</td>
+<tr><td><a href="Stog_html.html#VALurl_of_path">url_of_path</a> [<a href="Stog_html.html">Stog_html</a>]</td>
 <td><div class="info">
-Build an url from the given hid, using the given optional extension.
+Build an url from the given path, using the given optional extension.
 </div>
 </td></tr>
 <tr><td><a href="Stog_types.html#VALurl_of_string">url_of_string</a> [<a href="Stog_types.html">Stog_types</a>]</td>

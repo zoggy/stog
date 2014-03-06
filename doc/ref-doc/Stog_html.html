@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <ocamldoc with-contents="true">
 <title>Stog library reference documentation : Stog_html</title><contents><div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_latex.html" title="Stog_latex">Previous</a>
+<div class="navbar"><a class="pre" href="Stog_cut.html" title="Stog_cut">Previous</a>
 &#160;<a class="up" href="index.html" title="Index">Up</a>
 &#160;<a class="post" href="Stog_blocks.html" title="Stog_blocks">Next</a>
 </div>
@@ -16,12 +16,14 @@ Html generation.
 </div>
 <hr width="100%"/>
 
-<pre><span id="VALelt_by_href"><span class="keyword">val</span> elt_by_href</span> : <code class="type">?typ:string -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       'a -&gt;<br/>       'a Xtmpl.env -&gt;<br/>       string -&gt; 'a * (<a href="Stog_types.html#TYPEelt">Stog_types.elt</a> * string * string option) option</code></pre><div class="info ">
-<code class="code">elt_by_href ?typ stog env href</code> returns the element, hid and
-  optional id matching the given href string, of the form <code class="code">hid[#id]</code>.
+<pre><span id="VALelt_by_href"><span class="keyword">val</span> elt_by_href</span> : <code class="type">?typ:string -&gt;<br/>       ?src_elt:<a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       'a -&gt;<br/>       'a Xtmpl.env -&gt;<br/>       string -&gt; 'a * (<a href="Stog_types.html#TYPEelt">Stog_types.elt</a> * string * string option) option</code></pre><div class="info ">
+<code class="code">elt_by_href ?typ ?src_elt stog env href</code> returns the element, path and
+  optional id matching the given href string, of the form <code class="code">path[#id]</code>.
   Return None if the element could not be found, of the id could not be found,
   and an error is issued.<br/>
 </div>
+<div class="param_info"><code class="code">src_elt</code> : can be used to specify the source element, to improve
+  the error message.</div>
 
 <pre><span id="VALget_in_env"><span class="keyword">val</span> get_in_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; Xmlm.name -&gt; 'a * Xtmpl.tree list</code></pre><div class="info ">
 <code class="code">get_in_env env tag</code> will look for the given string in the environment,
@@ -29,9 +31,9 @@ Html generation.
   then return <code class="code">""</code> else return the reduced value as a string.<br/>
 </div>
 
-<pre><span id="VALget_hid"><span class="keyword">val</span> get_hid</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * string</code></pre><div class="info ">
-<code class="code">get_hid env</code> returns the value associated to <code class="code">"hid"</code> in <code class="code">env</code>.<br/>
-<b>Raises</b> <code>Assert_failure</code> if <code class="code">"hid"</code> is not found in the environment.<br/>
+<pre><span id="VALget_path"><span class="keyword">val</span> get_path</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * string</code></pre><div class="info ">
+<code class="code">get_path env</code> returns the value associated to <code class="code">"path"</code> in <code class="code">env</code>.<br/>
+<b>Raises</b> <code>Assert_failure</code> if <code class="code">"path"</code> is not found in the environment.<br/>
 </div>
 
 <pre><span id="VALescape_html"><span class="keyword">val</span> escape_html</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
@@ -40,13 +42,8 @@ Escape html code in the given string: change <code class="code">&amp;</code> to 
 </div>
 
 <pre><span id="VALconcat_name"><span class="keyword">val</span> concat_name</span> : <code class="type">?sep:string -&gt; string * string -&gt; string</code></pre>
-<pre><span id="VALhighlight"><span class="keyword">val</span> highlight</span> : <code class="type">opts:string -&gt; string -&gt; string</code></pre><div class="info ">
-Call the highlight command on the given string and make it produce xhtml code.
-  Options are passed to the highlight command.<br/>
-</div>
-
-<pre><span id="VALurl_of_hid"><span class="keyword">val</span> url_of_hid</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; ?ext:string -&gt; <a href="Stog_types.html#TYPEhuman_id">Stog_types.human_id</a> -&gt; Neturl.url</code></pre><div class="info ">
-Build an url from the given hid, using the given optional extension.
+<pre><span id="VALurl_of_path"><span class="keyword">val</span> url_of_path</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; ?ext:string -&gt; <a href="Stog_types.html#TYPEpath">Stog_types.path</a> -&gt; Neturl.url</code></pre><div class="info ">
+Build an url from the given path, using the given optional extension.
   This is used for elements created on the fly, like by-word or by-month index.<br/>
 </div>
 

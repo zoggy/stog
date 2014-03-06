@@ -3,7 +3,7 @@ navbar-doc="active"
 >
 <p>
 In the following descriptions, the current element refers to the element
-whose hid is retrieved by the <ixml>&lt;elt-hid/&gt;</ixml> function.
+whose path is retrieved by the <ixml>&lt;elt-path/&gt;</ixml> function.
 </p>
 <p>
 Here are the functions of the module, which can be associated to
@@ -33,14 +33,14 @@ function, possibly redefining pre-defined rules with the same names.
 <li><elt href="#elt-bodyx"/></li>
 <li><elt href="#elt-date"/></li>
 <li><elt href="#elt-datetime"/></li>
-<li><elt href="#elt-hid"/></li>
+<li><elt href="#elt-path"/></li>
 <li><elt href="#elt-intro"/></li>
 </ul>
 </left>
 <middle>
 <ul>
 <li><elt href="#elt-keywordsx"/></li>
-<li><elt href="#elt-path"/></li>
+<li><elt href="#elt-navpath"/></li>
 <li><elt href="#elt-src"/></li>
 <li><elt href="#elt-title"/></li>
 <li><elt href="#elt-type"/></li>
@@ -159,14 +159,14 @@ attribute ::= id
 <subsection id="elt-bodyx" title="elt-body">
 <p>
 <ixml>&lt;elt-body/&gt;</ixml> returns the body of the current element,
-or of the element referenced by the <code>elt-hid</code> attribute.
+or of the element referenced by the <code>elt-path</code> attribute.
 </p>
 </subsection>
 
 <subsection id="elt-date" title="elt-date">
 <p>
 <ixml>&lt;elt-date/&gt;</ixml> returns the date of the current element,
-or of the element referenced by the <code>elt-hid</code> attribute,
+or of the element referenced by the <code>elt-path</code> attribute,
 or an empty string if no date were specified.
 </p>
 </subsection>
@@ -174,35 +174,35 @@ or an empty string if no date were specified.
 <subsection id="elt-datetime" title="elt-datetime">
 <p>
 <ixml>&lt;elt-datetime/&gt;</ixml> returns the date and time of the current element,
-or of the element referenced by the <code>elt-hid</code> attribute,
+or of the element referenced by the <code>elt-path</code> attribute,
 or an empty string if no date were specified.
 </p>
 </subsection>
 
-<subsection id="elt-hid" title="elt-hid">
+<subsection id="elt-path" title="elt-path">
 <p>
-<ixml>&lt;elt-hid/&gt;</ixml> returns the hid of the current element
-or of the element referenced by the <code>elt-hid</code> attribute.
+<ixml>&lt;elt-path/&gt;</ixml> returns the path of the current element.
+<!--or of the element referenced by the <code>elt-path</code> attribute.-->
 </p>
 </subsection>
 
 <subsection id="elt-intro" title="elt-intro">
 <p>
 <ixml>&lt;elt-intro/&gt;</ixml> returns the introduction of the current
-element (or of the element referenced by the <code>elt-hid</code> attribute),
+element (or of the element referenced by the <code>elt-path</code> attribute),
 that is the body code before the <ixml>&lt;sep_/&gt;</ixml> marker.
 </p>
 </subsection>
 
-<subsection id="elt-path" title="elt-path">
+<subsection id="elt-navpath" title="elt-navpath">
 <p>
-<ixml>&lt;elt-path/&gt;</ixml> builds a navigation bar in the form
+<ixml>&lt;elt-navpath/&gt;</ixml> builds a navigation bar in the form
 of a list of links showing the hierarchy to the current element (or the element
-referenced by the <code>elt-hid</code> attribute).
+referenced by the <code>elt-path</code> attribute).
 </p>
 <p>
 Suppose we're handling the element whose source file is
-<code>STOGDIR/foo/bar/gee.html</code>. Its <icode>elt-hid</icode> is
+<code>STOGDIR/foo/bar/gee.html</code>. Its <icode>elt-path</icode> is
 <code>/foo/bar/gee</code>. The path will contain two parts, one for
 <code>foo</code> and one for <code>bar</code>.
 If an element <code>/foo</code> exists, then a link to this element is
@@ -212,51 +212,51 @@ with no link. The same is done for the <code>/foo/bar</code> element.
 </p>
 <p>
 The separator of path parts is the code given under the
-<ixml>&lt;elt-path&gt;</ixml> node.
+<ixml>&lt;elt-navpath&gt;</ixml> node.
 </p>
 <p>To illustrate, the code</p>
-<hxml>&lt;elt-path elt-hid="/foo/bar/gee"&gt; / &lt;/elt-path&gt;</hxml>
+<hxml>&lt;elt-navpath elt-path="/foo/bar/gee"&gt; / &lt;/elt-navpath&gt;</hxml>
 <p>will produce the following code:</p>
-<hxml defer_="1"><elt-path elt-hid="/foo/bar/gee"> / </elt-path></hxml>
+<hxml defer_="1"><elt-navpath elt-path="/foo/bar/gee"> / </elt-navpath></hxml>
 <p>which results in:</p>
-<elt-path elt-hid="/foo/bar/gee"> / </elt-path>
+<elt-navpath elt-path="/foo/bar/gee"> / </elt-navpath>
 <p>
 The <ixml>with-root="..."</ixml> attribute can be used to specify the
-hid of an element used as root. For example:
+path of an element used as root. For example:
 </p>
-<hxml>&lt;elt-path elt-hid="/foo/bar/gee" with-root="/index"&gt; / &lt;/elt-path&gt;</hxml>
+<hxml>&lt;elt-navpath elt-path="/foo/bar/gee" with-root="/index"&gt; / &lt;/elt-navpath&gt;</hxml>
 <p>will produce the following path:</p>
-<elt-path elt-hid="/foo/bar/gee" with-root="/index"> / </elt-path>
+<elt-navpath elt-path="/foo/bar/gee" with-root="/index"> / </elt-navpath>
 </subsection>
 
 <subsection id="elt-src" title="elt-src">
 <p>
 <ixml>&lt;elt-src/&gt;</ixml> returns the source filename
-of the element or of the element referenced by the <code>elt-hid</code> attribute.
+of the element or of the element referenced by the <code>elt-path</code> attribute.
 </p>
 </subsection>
 
 <subsection id="elt-title" title="elt-title">
 <p>
 <ixml>&lt;elt-title/&gt;</ixml> returns the title of the current element
-or of the element referenced by the <code>elt-hid</code> attribute.
+or of the element referenced by the <code>elt-path</code> attribute.
 </p>
 </subsection>
 
 <subsection id="elt-type" title="elt-type">
 <p>
 <ixml>&lt;elt-type/&gt;</ixml> returns the type of the current element
-or of the element referenced by the <code>elt-hid</code> attribute.
+or of the element referenced by the <code>elt-path</code> attribute.
 </p>
 </subsection>
 
 <subsection id="elt-url" title="elt-url">
 <p>
 <ixml>&lt;elt-url/&gt;</ixml> returns the final url of the current element
-or of the element referenced by the <code>elt-hid</code> attribute:
+or of the element referenced by the <code>elt-path</code> attribute:
 </p>
-<hxml><![CDATA[<elt-url elt-hid="/engine"/>]]></hxml>
-<p> is reduced to <elt-url elt-hid="/engine"/></p>
+<hxml><![CDATA[<elt-url elt-path="/engine"/>]]></hxml>
+<p> is reduced to <elt-url elt-path="/engine"/></p>
 </subsection>
 
 <subsection id="error_" title="error_">
@@ -400,7 +400,7 @@ file, by setting the attribute <ixml>subs-only="true"</ixml>.
 </p>
 <p>
 Instead of including a file, it is possible to include a block
-of an element, by referring to its hid and id in the
+of an element, by referring to its path and id in the
 <code>href</code> attribute:
 </p>
 <hxml><![CDATA[<include href="foo#id/>]]></hxml>
@@ -633,14 +633,14 @@ an element in pieces according to some specified nodes.
 ...
 </cut-elt>]]></include>
 <p>
-If the element has hid <code>/foo</code>, this will create two more elements,
+If the element has path <code>/foo</code>, this will create two more elements,
 <code>/foo-sec1</code> and <code>/foo-sec2</code>, of the same type of
 the element (here <code>foo</code>). Their titles will be respectively
 "Section 1" and "Section 2", i.e. the titles of the cut nodes.
 </p>
 <p>
-The hid of each created element is forged by appending "-" and the cut node id
-to the hid of the element.
+The path of each created element is forged by appending "-" and the cut node id
+to the path of the element.
 </p>
 <p>Each created element has the subnodes of the cut node as body. Each cut node
 is replaced by a link to the corresponding created element. In our example,
@@ -663,7 +663,7 @@ to the new elements in the original element,
 </li>
 <li><code>type</code> can be set to a string to specify the type of the created
 elements, instead of inheriting the type of the original element,</li>
-<li><code>hid-sep</code> specifies the separator used to forge the new hids;
+<li><code>path-sep</code> specifies the separator used to forge the new paths;
 by default it is <code>-</code> but it can be for example <code>/</code>,
 </li>
 </ul>

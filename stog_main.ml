@@ -180,7 +180,10 @@ let main () =
             None -> None
           | Some s -> Some [s]
         in
-        Stog_engine.generate ~use_cache: !use_cache ?only_elts stog modules
+        try Stog_engine.generate ~use_cache: !use_cache ?only_elts stog modules
+        with Stog_types.Hid_trie.Already_present l ->
+          let msg = "Path already present: "^(String.concat "/" l) in
+          failwith msg
   end;
   let err = Stog_msg.errors () in
   let warn = Stog_msg.warnings () in

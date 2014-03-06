@@ -1,4 +1,4 @@
-<included-plugin
+<plugin
 title="Stog-multi-elt"
 with-contents="true"
 >
@@ -43,7 +43,7 @@ node, and the body is the contents under this node.
 in its own file. Here we declare two elements of type "smallpost",
 with titles, dates and body. The <rule>contents</rule> node contains
 the body of the element "/smallposts". The two other elements are named
-"/smallposts/post1" and "/smallposts/post2", from the hid of the
+"/smallposts/post1" and "/smallposts/post2", from the path of the
 element and their respective ids, using a default separator "/".
 The <rule>contents</rule> node must have a <code>type</code> attribute.
 </p>
@@ -54,19 +54,19 @@ here <ixml>sets="smallposts"</ixml>.
 </section>
 
 <section id="naming" section="Naming created elements">
-<p>The hids of the created elements are forged from the hid of the
+<p>The paths of the created elements are forged from the path of the
 "multi" element, the <code>id</code> attribute of each "sub" element
 and a separator. The default separator is "/" but it can specified
-with the <code>hid-sep</code> attribute:
+with the <code>path-sep</code> attribute:
 </p>
 <hxml><![CDATA[
-<multi hid-sep="-" ...>
+<multi path-sep="-" ...>
   <smallpost id="post1" ...>...</smallpost>
   <smallpost id="post2" ...>...</smallpost>
   <contents type="...">...</contents>
 </multi>
 ]]></hxml>
-<p>With the code above, the two "smallpost" elements will have hids
+<p>With the code above, the two "smallpost" elements will have paths
 "/smallposts-post1" and "/smallposts-post2". They can be refered to
 for example with <rule>elt</rule> rule:
 </p>
@@ -89,4 +89,4 @@ The result is visible <elt href="/smallposts">here</elt>.
 
 </prepare-toc>
 </contents>
-</included-plugin>
+</plugin>

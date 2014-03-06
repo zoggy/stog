@@ -3,7 +3,7 @@
 <title>Stog library reference documentation : Stog_misc</title><contents><div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_msg.html" title="Stog_msg">Previous</a>
 &#160;<a class="up" href="index.html" title="Index">Up</a>
-&#160;<a class="post" href="Stog_config.html" title="Stog_config">Next</a>
+&#160;<a class="post" href="Stog_highlight.html" title="Stog_highlight">Next</a>
 </div>
 <h1>Module <a href="type_Stog_misc.html">Stog_misc</a></h1>
 
@@ -136,11 +136,6 @@ Return mdification time of the given file, or None if
 <pre><span id="VALpath_under"><span class="keyword">val</span> path_under</span> : <code class="type">parent:string -&gt; string -&gt; string</code></pre><div class="info ">
 <code class="code">path_under ~parent file</code> returns the path to <code class="code">file</code> from <code class="code">parent</code>.<br/>
 <b>Raises</b> <code>Failure</code> if <code class="code">parent</code> is not a prefix of <code class="code">file</code>.<br/>
-</div>
-
-<pre><span id="VALhighlight"><span class="keyword">val</span> highlight</span> : <code class="type">opts:string -&gt; string -&gt; string</code></pre><div class="info ">
-Call the highlight command on the given string and make it produce xhtml code.
-  Options are passed to the highlight command.<br/>
 </div>
 
 <pre><span id="VALstring_of_time"><span class="keyword">val</span> string_of_time</span> : <code class="type">float -&gt; string</code></pre></div></contents></ocamldoc>

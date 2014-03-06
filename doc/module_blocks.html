@@ -92,33 +92,33 @@ This function applies the following rules:
 <ixml>&lt;elt&gt;</ixml>, <ixml>&lt;post&gt;</ixml>,
 <ixml>&lt;page&gt;</ixml> and <ixml>&lt;block&gt;</ixml>.
 </p>
-<include file="syntax.tmpl"><![CDATA[<elt href=hid[#id]>text</elt>]]></include>
+<include file="syntax.tmpl"><![CDATA[<elt href=path[#id]>text</elt>]]></include>
 <p>
-This will return a link to the element specified by its hid and optional fragment id.
-The hid of an element is its absolute name from the root directoty of your project.
+This will return a link to the element specified by its path and optional fragment id.
+The path of an element is its absolute name from the root directoty of your project.
 You are not forced
 to give the full path, but can also give only one or more of the last parts
 of the path, as long as it uniquely identifies an existing element.
 </p>
 <p>
 For example, suppose you want to refer to the element defined in file
-<code>&lt;root dir&gt;/foo/bar/hello.html</code>. The hid of this element
+<code>&lt;root dir&gt;/foo/bar/hello.html</code>. The path of this element
 is "/foo/bar/hello". You can refer to it in various ways:
 </p>
 <ul>
-<li>with its absolute hid, providing the heading '/': <code>/foo/bar/hello</code>,</li>
-<li>with only the last part of its hid: <code>hello</code>,</li>
-<li>with an ending subpart of its hid: <code>bar/hello</code>.</li>
+<li>with its absolute path, providing the heading '/': <code>/foo/bar/hello</code>,</li>
+<li>with only the last part of its path: <code>hello</code>,</li>
+<li>with an ending subpart of its path: <code>bar/hello</code>.</li>
 </ul>
 <p>In the last two cases, an error will be raised if more than one elements
-match the incomplete hid. You can provide an additional attribute <code>type</code>
+match the incomplete path. You can provide an additional attribute <code>type</code>
 to prevent ambiguities, for example:
 </p>
 <hxml><![CDATA[<elt href="bar/hello" type="post"/>]]></hxml>
 <p>
-Refering to an unknown element will raise an error. If no hid is given,
-<ixml>&lt;elt-hid/&gt;</ixml> is used instead, i.e. the string associated to
-<code>elt-hid</code> in the environment, to retrieve the current element hid.
+Refering to an unknown element will raise an error. If no path is given,
+<ixml>&lt;elt-path/&gt;</ixml> is used instead, i.e. the string associated to
+<code>elt-path</code> in the environment, to retrieve the current element path.
 </p>
 <p>
 A node id can also be specified, like <code>thisblock</code> in
@@ -143,7 +143,7 @@ In this function,
 </p>
 <hxml><block href="...">text</block></hxml>
 <p>is used to refer to a block using the given <code>href</code> attribute. Here the
-href only contains an id, it is not of the form "hid[#id]". This will
+href only contains an id, it is not of the form "path[#id]". This will
 be reduced to a link to the corresponding element, using the given text.
 </p>
 <p>If the node matching the <code>href</code> was defined with the
@@ -156,7 +156,7 @@ text was given (<ixml><block href="..."/></ixml>).
 <p>is equivalent to</p>
 <hxml><elt href="#fig1"/></hxml>
 <p>or</p>
-<hxml><![CDATA[<elt id="&lt;elt-hid/&gt;#fig1"/>]]></hxml>
+<hxml><![CDATA[<elt id="&lt;elt-path/&gt;#fig1"/>]]></hxml>
 <p>
 But the purpose of <code>&lt;block&gt;</code> rule is not to be used directly, but rather
 by defining other rules reducing to <code>&lt;block&gt;</code>, like environments in

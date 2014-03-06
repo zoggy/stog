@@ -1,4 +1,4 @@
-<included-plugin
+<plugin
 title="Stog-asy"
 >
 <p>
@@ -73,11 +73,11 @@ code is being passed to dot:
 <asy defer_="1">
 real margin=1.5mm;
 object left=align(
-  object("<elt-title elt-hid="plugins/asy"/>",
+  object("<elt-title elt-path="plugins/asy"/>",
          ellipse,margin),W);
 add(left);
 object right=align(
-  object("<elt-title elt-hid="plugins"/>",
+  object("<elt-title elt-path="plugins"/>",
          ellipse,margin),4E);
 add(right);
 add(new void(frame f, transform t) {
@@ -118,4 +118,4 @@ as additional argument to the command which is run:
 </tr>
 </table>
 
-</included-plugin>
+</plugin>
