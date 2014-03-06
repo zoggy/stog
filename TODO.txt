@@ -1,7 +1,5 @@
 Change terms: Element => Document, in code and documentation
-Change terms: hid -> path (beware of elt-path rule conflicting with elt-hid)
-In doument path, keep extension, but allow refering to a document without
-extension when there is no ambiguity
+Add initialization of counters
 
 Stog_info.compute should be a level fun in Base module
 

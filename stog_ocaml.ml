@@ -43,8 +43,12 @@ let close_sessions () =
   let f name t =
     close_out t.session_out;
     close_in t.session_in;
-    Stog_msg.verbose ~level:1 (Printf.sprintf "closing ocaml session %S" name);
-    ignore(Unix.close_process (t.session_in, t.session_out))
+    Stog_msg.verbose ~level:1 (Printf.sprintf "Closing OCaml session %S" name);
+    try ignore(Unix.close_process (t.session_in, t.session_out))
+    with Unix.Unix_error (e, s1, s2) ->
+      Stog_msg.warning
+        (Printf.sprintf "Closing OCaml session %S: %s %s %s" name
+          (Unix.error_message e) s1 s2)
   in
   Smap.iter f !sessions;
   sessions := Smap.empty
@@ -62,7 +66,7 @@ let create_session () =
 let get_session name =
   try Smap.find name !sessions
   with Not_found ->
-      Stog_msg.verbose ~level:1 (Printf.sprintf "opening ocaml session %S"  name);
+      Stog_msg.verbose ~level:1 (Printf.sprintf "Opening OCaml session %S"  name);
       let t = create_session () in
       sessions := Smap.add name t !sessions;
       t
