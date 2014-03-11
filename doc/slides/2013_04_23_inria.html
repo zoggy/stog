@@ -150,9 +150,9 @@ The template file <icode>.stog/templates/page.tmpl</icode>:
 
 <slide title="Templates (3): Example (2)">
 <p>
-The template file <icode>.stog/templates/elt-in-list.tmpl</icode>:
+The template file <icode>.stog/templates/doc-in-list.tmpl</icode>:
 </p>
-<hxml><include file="elt-in-list.tmpl" raw="true"/></hxml>
+<hxml><include file="doc-in-list.tmpl" raw="true"/></hxml>
 </slide>
 
 <slide title="Rewrite rules">
@@ -200,9 +200,9 @@ This is the body of my page
 Here we defined an environment <lx>\Gamma</lx> with the following rules:
 </p>
 <ul>
-<li><lx>\Gamma("elt-title") = f_1</lx> with <lx>f_1(\_,\_,\_) =</lx> [ "Example page" ]</li>
+<li><lx>\Gamma("doc-title") = f_1</lx> with <lx>f_1(\_,\_,\_) =</lx> [ "Example page" ]</li>
 <li><lx>\Gamma("author") = f_2</lx> with <lx>f_2(\_,\_,\_) =</lx> [ "Maxence Guesdon" ]</li>
-<li><lx>\Gamma("elt-body") = f_3</lx> with <lx>f_3(\_,\_,\_) =</lx> [ "This is the body of the page" ]</li>
+<li><lx>\Gamma("doc-body") = f_3</lx> with <lx>f_3(\_,\_,\_) =</lx> [ "This is the body of the page" ]</li>
 </ul>
 <p>
 To <strong>compute</strong> the element's final XML, we apply this environment to the template
