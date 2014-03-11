@@ -2,7 +2,7 @@
 navbar-doc="active"
 >
 <p>
-An document is an XML tree, defined in a file matched by the regular expressions
+A document is an XML tree, defined in a file matched by the regular expressions
 given in the <doc href="overview#config-file">configuration file</doc>.
 It has one of the following forms. First form:
 </p>
@@ -37,7 +37,7 @@ indicates that more attributes are given in subnodes, and the body is in the
 of the document. This allows different treatments according to the document type.
 </p>
 <p>
-You can specify any attribute for an document. Some attributes are used
+You can specify any attribute for a document. Some attributes are used
 internally:
 </p>
 <ul>
@@ -55,7 +55,7 @@ in templates to insert it.
 The function
 <ext-a href="http://projects.camlcity.org/projects/dl/ocamlnet-3.7.3/doc/html-main/Netdate.html#VALparse">Netdate.parse</ext-a> from OCamlnet is used to parse dates,</li>
 <li><b>published</b>: can be set to <i>false</i> to prevent the document from being generated;
-useful when an document is not ready yet for publication,</li>
+useful when a document is not ready yet for publication,</li>
 <li><b>sets</b>: a comma-separated list of set names; sets can be used to list documents
 belonging to a set,</li>
 <li><b>language-dep</b>: can be set to <i>false</i> to indicate that this page is not
@@ -72,7 +72,7 @@ associated to the document type. The document type can be accessed with <ixml>&l
 More details in <doc href="atts-functions"></doc>.
 </p>
 <p>
-To generate the file corresponding to an document, <icode>stog</icode> will use the type of
+To generate the file corresponding to a document, <icode>stog</icode> will use the type of
 the document (for example "post") to load the associated template (for example "post.tmpl" in
 the templates directory).
 </p>

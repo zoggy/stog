@@ -205,8 +205,8 @@ Suppose we're handling the document whose source file is
 <code>STOGDIR/foo/bar/gee.html</code>. Its <icode>doc-path</icode> is
 <code>/foo/bar/gee.html</code>. The path will contain two parts, one for
 <code>foo</code> and one for <code>bar</code>.
-If an document <code>/foo</code> exists, then a link to this document is
-added. Else, if an document /foo/index exists, then a link to this
+If a document <code>/foo</code> exists, then a link to this document is
+added. Else, if a document /foo/index exists, then a link to this
 document is added. Else no link is added and the directory name is used,
 with no link. The same is done for the <code>/foo/bar</code> document.
 </p>
@@ -222,7 +222,7 @@ The separator of path parts is the code given under the
 <doc-navpath doc-path="/foo/bar/gee"> / </doc-navpath>
 <p>
 The <ixml>with-root="..."</ixml> attribute can be used to specify the
-path of an document used as root. For example:
+path of a document used as root. For example:
 </p>
 <hxml>&lt;doc-navpath doc-path="/foo/bar/gee.html" with-root="/index"&gt; / &lt;/doc-navpath&gt;</hxml>
 <p>will produce the following path:</p>
@@ -279,7 +279,7 @@ This can be used to add specific style for links to external sites.
 <subsection id="graphx" title="graph">
 <p>
 <ixml>&lt;graph/&gt;</ixml> computes the graph of documents in SVG format, and returns
-a link to this graph displayed as a small graph. One can click on an document in the generated SVG
+a link to this graph displayed as a small graph. One can click on a document in the generated SVG
 graph to jump to the document.
 </p>
 </subsection>
@@ -400,7 +400,7 @@ file, by setting the attribute <ixml>subs-only="true"</ixml>.
 </p>
 <p>
 Instead of including a file, it is possible to include a block
-of an document, by referring to its path and id in the
+of a document, by referring to its path and id in the
 <code>href</code> attribute:
 </p>
 <hxml><![CDATA[<include href="foo#id/>]]></hxml>
@@ -510,7 +510,7 @@ See the following blog post: <post href="ocaml-printf"/>.
 <subsection id="sep_" title="sep_">
 <p>
 <ixml>&lt;sep_/&gt;</ixml> is the tag used to indicate the end of the introduction
-of an document. It is reduced to an empty string.
+of a document. It is reduced to an empty string.
 </p>
 </subsection>
 
@@ -617,7 +617,7 @@ Set attribute <ixml>show-without-ids="true"</ixml> to keep all sectionning nodes
 <section id="cut" title="cut">
 <p>
 This function applies the <ixml>&lt;cut-doc&gt;</ixml> rule to cut
-an document in pieces according to some specified nodes.
+a document in pieces according to some specified nodes.
 </p>
 <include file="syntax.tmpl"><![CDATA[<foo title="My document">
 ...

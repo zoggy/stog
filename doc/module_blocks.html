@@ -82,7 +82,7 @@ This function collect all ids (the values attached to <ixml>id="..."</ixml> attr
 in all document, so they can be referenced to in upper levels.
 </p>
 <p>
-Having twice the same id in an document results in an error.
+Having twice the same id in a document results in an error.
 </p>
 </section>
 
@@ -95,7 +95,7 @@ This function applies the following rules:
 <include file="syntax.tmpl"><![CDATA[<doc href=path[#id]>text</doc>]]></include>
 <p>
 This will return a link to the document specified by its path and optional fragment id.
-The path of an document is its absolute name from the root directoty of your project.
+The path of a document is its absolute name from the root directoty of your project.
 You are not forced
 to give the full path, but can also give only one or more of the last parts
 of the path, as long as it uniquely identifies an existing document.
@@ -162,7 +162,7 @@ But the purpose of <code>&lt;block&gt;</code> rule is not to be used directly, b
 by defining other rules reducing to <code>&lt;block&gt;</code>, like environments in
 latex for figures, proofs, propositions, ...
 </p>
-<p>Here is an example of definition of a function in an document definition:</p>
+<p>Here is an example of definition of a function in a document definition:</p>
 <hcode lang="xml"><![CDATA[
 <article title="..." with-contents="true">
 <theorem id="" title="" href=""><block

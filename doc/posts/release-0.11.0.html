@@ -1,0 +1,46 @@
+<post title="Stog 0.11.0"
+date="2014/03/12"
+topics="stog"
+keywords="release"
+published="true"
+>
+<p>
+Release 0.11.0 of stog is available from the <page href="/install"/> page.
+</p>
+<sep_/>
+<p>Changes include:</p>
+<ul id="changes">
+
+</ul>
+<p>
+To migrate a site made with Stog &lt;= 0.10.0, you have to perform
+the following steps to handle the change in the terminology
+(paths instead of hids, documents instead of elements)
+and the corresponding renaming of rules:
+</p>
+<ul>
+<li>In <code>.stog/config</code>: replace the fields <code>elements</code>
+and <code>not-elements</code> with <code>documents</code>
+and <code>not-documents</code>,
+</li>
+<li>In all your documents, templates (in <code>.stog/templates/</code>)
+and modules (in <code>.stog/modules</code>):
+<ul>
+<li>replace <code>elt-path</code> with <code>elt-navpath</code>,</li>
+<li>replace <code>hid</code> with <code>path</code>,</li>
+<li>replace <code>elt</code> with <code>doc</code>.</li>
+</ul>
+Of course, if <code>elt-path</code>, <code>hid</code> or <code>elt</code>
+appeared in another context than Stog rules, beware not to replace them.
+</li>
+<li>Rename the templates whose name contains <code>elt</code>, typically
+  <code>elt-in-list.tmpl</code> must be renamed to <code>doc-in-list.tmpl</code>,</li>
+<li>In your commands (for example in your Makefile),
+the <code>stog.multi-elt</code> plugin must be renamed to <code>stog.multi-doc</code>.
+</li>
+</ul>
+<p>
+You can (adapt and) apply the following script:
+</p>
+<hcode lang="sh" defer_="1"><include file="./0-10-to-0-11.sh"/></hcode>
+</post>

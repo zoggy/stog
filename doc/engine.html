@@ -68,7 +68,7 @@ plugins able to insert new levels.
 <p>Modules can define functions for negative levels, for example to make
 sure they will be applied before level 0.
 </p>
-<p>The first application of a level function to an document uses the
+<p>The first application of a level function to a document uses the
 type of the document to load the corresponding template; for example,
 if the document has type "page", then a template <icode>page.tmpl</icode> will
 be looked for (in the <icode>.stog/templates</icode> directory).
@@ -81,7 +81,7 @@ be looked for (in the <icode>.stog/templates</icode> directory).
 This environment is a set of rewrite rules. It is passed to every "level function".
 </p>
 <p>
-A "level function" can enrich this environment with the attributes of an document
+A "level function" can enrich this environment with the attributes of a document
 (using <doc href="Stog_engine#VALdoc_env">this function</doc>). This is what
 most of the default level functions do, in addition to defining rewrite rules,
 to get the "rewrite environment" to apply on each document to compute.
