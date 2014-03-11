@@ -34,45 +34,45 @@ module Smap = Stog_types.Str_map;;
 
 module Depset = Stog_types.Depset
 
-let add_dep stog elt dep =
-  match elt.elt_type with
+let add_dep stog doc dep =
+  match doc.doc_type with
     "by-keyword" | "by-month" | "by-topic" -> stog
   | _ ->
-      (* we make both the elt and its parent and brothers depend on dep;
-         this is to force recomputing of parent element when
+      (* we make both the doc and its parent and brothers depend on dep;
+         this is to force recomputing of parent document when
          one of its children depends on something which changed,
-         and in this case the children element must be invalidated too.
+         and in this case the children document must be invalidated too.
          By adding the same dependency for all (parent and childre),
          we ensure that none or all are invalidated and will not be loaded
          from cache.*)
       let parent =
-        match elt.elt_parent with
-          None -> elt
+        match doc.doc_parent with
+          None -> doc
         | Some path ->
-            let (_, elt) = Stog_types.elt_by_path stog path in
-            elt
+            let (_, doc) = Stog_types.doc_by_path stog path in
+            doc
       in
-      let srcs = parent :: (Stog_types.elt_children stog parent) in
+      let srcs = parent :: (Stog_types.doc_children stog parent) in
 
       let dep =
         match dep with
           File f -> File f
-        | Elt elt ->
-            (* need the stog to get parent element eventually *)
+        | Doc doc ->
+            (* need the stog to get parent document eventually *)
             let dst_path =
-              match elt.elt_parent with
-                None -> elt.elt_path
+              match doc.doc_parent with
+                None -> doc.doc_path
               | Some path -> path
             in
             let dst_path = Stog_types.string_of_path dst_path in
-            Elt dst_path
+            Doc dst_path
         in
 
       let src_paths = List.map
-        (fun elt -> Stog_types.string_of_path elt.elt_path) srcs
+        (fun doc -> Stog_types.string_of_path doc.doc_path) srcs
       in
-      let f_elt stog elt =
-        let src_path = Stog_types.string_of_path elt.elt_path in
+      let f_doc stog doc =
+        let src_path = Stog_types.string_of_path doc.doc_path in
         let set =
           try Smap.find src_path stog.stog_deps
           with Not_found -> Depset.empty
@@ -82,8 +82,8 @@ let add_dep stog elt dep =
             File f ->
               (*prerr_endline ("add dep "^src_path^" -> "^f);*)
               Depset.add dep set
-          | Elt dst_path ->
-              (* do not add deps from an element to its parent, child or brothers *)
+          | Doc dst_path ->
+              (* do not add deps from an document to its parent, child or brothers *)
               if List.mem dst_path src_paths then
                 set
               else
@@ -91,7 +91,7 @@ let add_dep stog elt dep =
         in
         { stog with stog_deps = Smap.add src_path set stog.stog_deps }
       in
-      List.fold_left f_elt stog srcs
+      List.fold_left f_doc stog srcs
 ;;
 
 let string_of_file_time f =
@@ -100,10 +100,10 @@ let string_of_file_time f =
   | Some t -> Stog_misc.string_of_time t
 ;;
 
-let string_of_elt_time stog elt_by_path path =
+let string_of_doc_time stog doc_by_path path =
   try
-    let elt = elt_by_path path in
-    let src_file = Filename.concat stog.stog_dir elt.elt_src in
+    let doc = doc_by_path path in
+    let src_file = Filename.concat stog.stog_dir doc.doc_src in
     match Stog_misc.file_mtime src_file with
       None -> "<notime>"
     | Some t -> Stog_misc.string_of_time t
@@ -111,15 +111,15 @@ let string_of_elt_time stog elt_by_path path =
     e -> Printexc.to_string e
 ;;
 
-let print_dep b elt_by_path stog = function
+let print_dep b doc_by_path stog = function
   File file ->
     Printf.bprintf b "  File %S modified at %s\n" file (string_of_file_time file)
-| Elt path ->
-    Printf.bprintf b "  Elt %S modified at %s\n" path
-      (string_of_elt_time stog elt_by_path path)
+| Doc path ->
+    Printf.bprintf b "  Doc %S modified at %s\n" path
+      (string_of_doc_time stog doc_by_path path)
 ;;
 
-let max_deps_date stog elt_by_path path =
+let max_deps_date stog doc_by_path path =
   let rec f dep (acc, depth) =
     if Depset.mem dep acc then
       (acc, depth)
@@ -127,40 +127,40 @@ let max_deps_date stog elt_by_path path =
       let acc = Depset.add dep acc in
       match dep with
         File file -> (acc, depth)
-      | Elt path ->
+      | Doc path ->
           try
             if stog.stog_depcut && depth >= 1 then
               (acc, depth)
             else
               (
-               let elt_deps = Smap.find path stog.stog_deps in
-               Depset.fold f elt_deps (acc, depth+1)
+               let doc_deps = Smap.find path stog.stog_deps in
+               Depset.fold f doc_deps (acc, depth+1)
               )
           with Not_found ->
               (acc, depth)
   in
-  let (deps,_) = f (Elt path) (Depset.empty,0) in
+  let (deps,_) = f (Doc path) (Depset.empty,0) in
   Stog_msg.verbose ~level: 5
     (let b = Buffer.create 256 in
      Printf.bprintf b "%S depends on\n" path;
-     Depset.iter (print_dep b elt_by_path stog) deps;
+     Depset.iter (print_dep b doc_by_path stog) deps;
      Buffer.contents b
     );
   let max_date dep acc =
     let date_opt =
       match dep with
         File file -> Stog_misc.file_mtime file
-      | Elt path ->
+      | Doc path ->
           try
-            let elt = elt_by_path path in
-            let src = Filename.concat stog.stog_dir elt.elt_src in
+            let doc = doc_by_path path in
+            let src = Filename.concat stog.stog_dir doc.doc_src in
             Stog_misc.file_mtime src
           with Not_found ->
               None
     in
     match date_opt with
       None ->
-        (* the element which we previously depended on does not exist;
+        (* the document which we previously depended on does not exist;
            use current date to force recomputing *)
         Unix.time ()
     | Some date ->

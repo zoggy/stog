@@ -45,8 +45,8 @@ module Make (P : Map.OrderedType) =
     module Map = Map.Make (P)
     type symbol = P.t
     type path = symbol list
-    type 'a elt = path * 'a list
-    type 'a t = Node of 'a t Map.t * 'a list | Leaf of 'a elt
+    type 'a doc = path * 'a list
+    type 'a t = Node of 'a t Map.t * 'a list | Leaf of 'a doc
     exception Already_present of path
 
     let empty = Node (Map.empty, [])
@@ -133,7 +133,7 @@ module Make (P : Map.OrderedType) =
             0 -> is_path_prefix q1 q2
           | _ -> false
 
-    let rec elts ?(acc=[]) path = function
+    let rec docs ?(acc=[]) path = function
       Leaf (p, data) ->
         let path =  path @ p in
         List.fold_left (fun acc d -> (path, d) :: acc) acc data
@@ -143,11 +143,11 @@ module Make (P : Map.OrderedType) =
             [] -> acc
           | data -> List.fold_left (fun acc d -> (path, d) :: acc) acc data
         in
-        Map.fold (fun sym t acc -> elts ~acc (path @ [sym]) t) map acc
+        Map.fold (fun sym t acc -> docs ~acc (path @ [sym]) t) map acc
 
     let rec find ?(backpath=[]) path t =
       match path with
-        [] -> List.map snd (elts (List.rev backpath) t)
+        [] -> List.map snd (docs (List.rev backpath) t)
       | sym :: q ->
           match t with
             Leaf (p, data) ->

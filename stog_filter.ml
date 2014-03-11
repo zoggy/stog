@@ -39,30 +39,30 @@ let filter_of_string str =
 module Set =
   Set.Make
     (struct
-       type t = (elt_id * elt)
+       type t = (doc_id * doc)
        let compare (id1,_) (id2, _) = Stog_tmap.compare_key id1 id2
      end)
 
-let filter_pred env att s data (elt_id, elt) =
+let filter_pred env att s data (doc_id, doc) =
   let (data, v) =
     let xml = Xtmpl.xml_of_string s in
     let (data, xmls) = Xtmpl.apply_to_xmls data env [xml] in
     (data, Xtmpl.string_of_xmls xmls)
   in
-  let (data, v_elt) =
-    match Stog_types.get_def elt.elt_defs att  with
+  let (data, v_doc) =
+    match Stog_types.get_def doc.doc_defs att  with
       None -> (data, "")
     | Some (_, body) ->
         let (data, xmls) = Xtmpl.apply_to_xmls data env body in
         (data, Xtmpl.string_of_xmls xmls)
   in
-  (data, v = v_elt)
+  (data, v = v_doc)
 ;;
 
 let set_filter =
-  let f pred elt (data, set) =
-    let (data,b) = pred data elt in
-    let set = if b then Set.add elt set else set in
+  let f pred doc (data, set) =
+    let (data,b) = pred data doc in
+    let set = if b then Set.add doc set else set in
     (data, set)
   in
   fun data pred set ->
@@ -83,8 +83,8 @@ let rec filter data env set = function
     (data, Set.diff set s)
 
 
-let filter_elts data env t elts =
-  let set = List.fold_right Set.add elts Set.empty in
+let filter_docs data env t docs =
+  let set = List.fold_right Set.add docs Set.empty in
   let (data, set) = filter data env set t in
   (data, Set.elements set)
 ;;

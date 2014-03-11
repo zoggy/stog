@@ -26,7 +26,7 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Cutting elements into pieces. This function is associated to
+(** Cutting documents into pieces. This function is associated to
   a level in the [Base] module. *)
 
 (** [mk_path path sep id] forges a new path using the given one,
@@ -35,6 +35,6 @@
 *)
 val mk_path : Stog_types.path -> string -> string -> Stog_types.path
 
-val cut_elts :
+val cut_docs :
   Stog_types.stog Xtmpl.env ->
-    Stog_types.stog -> Stog_types.elt Stog_tmap.key list -> Stog_types.stog
+    Stog_types.stog -> Stog_types.doc Stog_tmap.key list -> Stog_types.stog

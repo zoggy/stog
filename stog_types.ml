@@ -84,53 +84,53 @@ let get_def =
 module Str_map = Map.Make (struct type t = string let compare = String.compare end);;
 module Str_set = Set.Make (struct type t = string let compare = String.compare end);;
 
-type elt =
-  { elt_path : path ;
-    elt_parent : path option ;
-    elt_children : path list ;
-    elt_type : string ;
-    elt_body : body ;
-    elt_date : date option ;
-    elt_title : string ;
-    elt_keywords : string list ;
-    elt_topics : string list ;
-    elt_published : bool ;
-    elt_defs : def list ;
-    elt_src : string ;
-    elt_sets : string list ;
-    elt_lang_dep : bool ;
-    elt_xml_doctype : string option ;
-    elt_out : body option;
-    elt_used_mods : Str_set.t ;
+type doc =
+  { doc_path : path ;
+    doc_parent : path option ;
+    doc_children : path list ;
+    doc_type : string ;
+    doc_body : body ;
+    doc_date : date option ;
+    doc_title : string ;
+    doc_keywords : string list ;
+    doc_topics : string list ;
+    doc_published : bool ;
+    doc_defs : def list ;
+    doc_src : string ;
+    doc_sets : string list ;
+    doc_lang_dep : bool ;
+    doc_xml_doctype : string option ;
+    doc_out : body option;
+    doc_used_mods : Str_set.t ;
   }
-and elt_id = elt Stog_tmap.key
+and doc_id = doc Stog_tmap.key
 
 let today () = Netdate.create (Unix.time()) ;;
 
-let make_elt ?(typ="dummy") ?(path={ path = [] ; path_absolute = false }) () =
-  { elt_path = path ;
-    elt_parent = None ;
-    elt_children = [] ;
-    elt_type = typ ;
-    elt_body = [] ;
-    elt_date = None ;
-    elt_title = "";
-    elt_keywords = [] ;
-    elt_topics = [] ;
-    elt_published = true ;
-    elt_defs = [] ;
-    elt_src = "/tmp" ;
-    elt_sets = [] ;
-    elt_lang_dep = true ;
-    elt_xml_doctype = None ;
-    elt_out = None ;
-    elt_used_mods = Str_set.empty ;
+let make_doc ?(typ="dummy") ?(path={ path = [] ; path_absolute = false }) () =
+  { doc_path = path ;
+    doc_parent = None ;
+    doc_children = [] ;
+    doc_type = typ ;
+    doc_body = [] ;
+    doc_date = None ;
+    doc_title = "";
+    doc_keywords = [] ;
+    doc_topics = [] ;
+    doc_published = true ;
+    doc_defs = [] ;
+    doc_src = "/tmp" ;
+    doc_sets = [] ;
+    doc_lang_dep = true ;
+    doc_xml_doctype = None ;
+    doc_out = None ;
+    doc_used_mods = Str_set.empty ;
   }
 ;;
 
 module Path_trie = Stog_trie.Make (struct type t = string let compare = compare end);;
-module Elt_set = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
-module Elt_map = Set.Make (struct type t = elt_id let compare = Stog_tmap.compare_key end);;
+module Doc_set = Set.Make (struct type t = doc_id let compare = Stog_tmap.compare_key end);;
+module Doc_map = Set.Make (struct type t = doc_id let compare = Stog_tmap.compare_key end);;
 module Int_map = Map.Make (struct type t = int let compare = compare end);;
 module Int_set = Set.Make (struct type t = int let compare = compare end);;
 module Path_map = Map.Make
@@ -148,7 +148,7 @@ type edge_type =
 
 module Graph = Stog_graph.Make_with_map
   (struct
-     type t = elt_id
+     type t = doc_id
      let compare = Stog_tmap.compare_key
    end
   )
@@ -164,7 +164,7 @@ type stog_mod = {
   mod_defs : def list ;
 }
 
-type 'a dependency = File of string | Elt of 'a;;
+type 'a dependency = File of string | Doc of 'a;;
 
 module Depset =
   Set.Make (struct type t = string dependency let compare = Pervasives.compare end)
@@ -173,23 +173,23 @@ type stog_dependencies = Depset.t Str_map.t;;
 
 type stog = {
   stog_dir : string ;
-  stog_elts : (elt, elt) Stog_tmap.t ;
-  stog_elts_by_path : elt_id Path_trie.t ;
+  stog_docs : (doc, doc) Stog_tmap.t ;
+  stog_docs_by_path : doc_id Path_trie.t ;
   stog_defs : def list ;
   stog_tmpl_dir : string ;
   stog_cache_dir : string ;
   stog_title : string ;
   stog_desc : body ;
   stog_graph : Graph.t ;
-  stog_elts_by_kw : Elt_set.t Str_map.t ;
-  stog_elts_by_topic : Elt_set.t Str_map.t ;
-  stog_archives : Elt_set.t Int_map.t Int_map.t ; (* year -> month -> article set *)
+  stog_docs_by_kw : Doc_set.t Str_map.t ;
+  stog_docs_by_topic : Doc_set.t Str_map.t ;
+  stog_archives : Doc_set.t Int_map.t Int_map.t ; (* year -> month -> article set *)
   stog_base_url : Neturl.url ;
   stog_email : string ;
   stog_rss_length : int ;
   stog_lang : string option ;
   stog_outdir : string ;
-  stog_main_elt : elt_id option ;
+  stog_main_doc : doc_id option ;
   stog_files : file_tree ;
   stog_modules : stog_mod Str_map.t ;
   stog_used_mods : Str_set.t ;
@@ -228,15 +228,15 @@ let url_concat uri s =
 
 let create_stog dir = {
   stog_dir = dir ;
-  stog_elts = Stog_tmap.create (make_elt ());
-  stog_elts_by_path = Path_trie.empty ;
+  stog_docs = Stog_tmap.create (make_doc ());
+  stog_docs_by_path = Path_trie.empty ;
   stog_tmpl_dir = Stog_config.tmpl_dir dir ;
   stog_cache_dir = Stog_config.cache_dir dir ;
   stog_title = "Site title" ;
   stog_desc = [] ;
   stog_graph = Graph.create () ;
-  stog_elts_by_kw = Str_map.empty ;
-  stog_elts_by_topic = Str_map.empty ;
+  stog_docs_by_kw = Str_map.empty ;
+  stog_docs_by_topic = Str_map.empty ;
   stog_archives = Int_map.empty ;
   stog_base_url = url_of_string "http://yoursite.net" ;
   stog_email = "foo@bar.com" ;
@@ -244,7 +244,7 @@ let create_stog dir = {
   stog_defs = [] ;
   stog_lang = None ;
   stog_outdir = "." ;
-  stog_main_elt = None ;
+  stog_main_doc = None ;
   stog_files = { files = Str_set.empty ; dirs = Str_map.empty } ;
   stog_modules = Str_map.empty ;
   stog_used_mods = Str_set.empty ;
@@ -258,11 +258,11 @@ let create_stog dir = {
 let stog_md5 stog =
   let stog =
     { stog with
-      stog_elts = Stog_tmap.create (make_elt ());
-      stog_elts_by_path = Path_trie.empty ;
+      stog_docs = Stog_tmap.create (make_doc ());
+      stog_docs_by_path = Path_trie.empty ;
       stog_graph = Graph.create ();
-      stog_elts_by_kw = Str_map.empty ;
-      stog_elts_by_topic = Str_map.empty ;
+      stog_docs_by_kw = Str_map.empty ;
+      stog_docs_by_topic = Str_map.empty ;
       stog_archives = Int_map.empty ;
       stog_files = { files = Str_set.empty ; dirs = Str_map.empty } ;
       stog_depcut = false;
@@ -272,59 +272,59 @@ let stog_md5 stog =
   Digest.to_hex s
 ;;
 
-let elt stog id = Stog_tmap.get stog.stog_elts id;;
-let elts_by_path ?typ stog h =
+let doc stog id = Stog_tmap.get stog.stog_docs id;;
+let docs_by_path ?typ stog h =
   let rev_path = List.rev h.path in
   (*prerr_endline (Printf.sprintf "lookup rev_path=%s" (String.concat "/" rev_path));*)
-  let ids = Path_trie.find rev_path stog.stog_elts_by_path in
-  let l = List.map (fun id -> (id, elt stog id)) ids in
-  let path_pred (_, elt) =
-    elt.elt_path = h ||
-      (match path_chop_extension elt.elt_path with
+  let ids = Path_trie.find rev_path stog.stog_docs_by_path in
+  let l = List.map (fun id -> (id, doc stog id)) ids in
+  let path_pred (_, doc) =
+    doc.doc_path = h ||
+      (match path_chop_extension doc.doc_path with
          None -> true
        | Some p -> p = h)
   in
   let pred =
     match h.path_absolute, typ with
       false, None -> None
-    | false, Some typ -> Some (fun (_, elt) -> elt.elt_type = typ)
+    | false, Some typ -> Some (fun (_, doc) -> doc.doc_type = typ)
     | true, None -> Some path_pred
-    | true, Some typ -> Some (fun (id, elt) -> path_pred (id,elt) && elt.elt_type = typ)
+    | true, Some typ -> Some (fun (id, doc) -> path_pred (id,doc) && doc.doc_type = typ)
   in
   match pred with None -> l | Some pred -> List.filter pred l
 ;;
 
-let elt_by_path ?typ stog h =
-  match elts_by_path ?typ stog h with
+let doc_by_path ?typ stog h =
+  match docs_by_path ?typ stog h with
     [] ->
-      (*prerr_endline (Path_trie.to_string (fun x -> x) stog.stog_elts_by_path);*)
-      failwith (Printf.sprintf "Unknown element %S" (string_of_path h))
+      (*prerr_endline (Path_trie.to_string (fun x -> x) stog.stog_docs_by_path);*)
+      failwith (Printf.sprintf "Unknown document %S" (string_of_path h))
   | [x] -> x
   | l ->
-      let msg = Printf.sprintf "More than one element matches %S%s: %s"
+      let msg = Printf.sprintf "More than one document matches %S%s: %s"
         (string_of_path h)
         (match typ with None -> "" | Some t -> Printf.sprintf " of type %S" t)
         (String.concat ", "
-          (List.map (fun (id, elt) -> string_of_path elt.elt_path) l))
+          (List.map (fun (id, doc) -> string_of_path doc.doc_path) l))
       in
       failwith msg
 ;;
 
-let elt_children stog =
-  let f path = snd (elt_by_path stog path) in
-  fun elt -> List.map f elt.elt_children
+let doc_children stog =
+  let f path = snd (doc_by_path stog path) in
+  fun doc -> List.map f doc.doc_children
 ;;
 
-let set_elt stog id elt =
+let set_doc stog id doc =
   { stog with
-    stog_elts = Stog_tmap.modify stog.stog_elts id elt }
+    stog_docs = Stog_tmap.modify stog.stog_docs id doc }
 ;;
 
 let add_path =
   let add ~fail stog path id =
     let rev_path = List.rev path.path in
     let map = Path_trie.add ~fail
-      rev_path id stog.stog_elts_by_path
+      rev_path id stog.stog_docs_by_path
     in
     let map =
       (*prerr_endline (Printf.sprintf "rev_path=%s" (String.concat "/" rev_path));*)
@@ -332,11 +332,11 @@ let add_path =
       | "index.html" :: q
       | "index" :: q ->
           (*prerr_endline (Printf.sprintf "add again %s" (String.concat "/" q));*)
-          (* also make this element accessible without "index" *)
+          (* also make this document accessible without "index" *)
           Path_trie.add ~fail q id map
       | _ -> map
     in
-    { stog with stog_elts_by_path = map }
+    { stog with stog_docs_by_path = map }
   in
   fun stog path id ->
     let stog = add ~fail: true stog path id in
@@ -345,30 +345,30 @@ let add_path =
     | Some path -> add ~fail: false stog path id
 ;;
 
-let add_elt stog elt =
-  let (id, elts) = Stog_tmap.add stog.stog_elts elt in
-  let stog = add_path stog elt.elt_path id in
+let add_doc stog doc =
+  let (id, docs) = Stog_tmap.add stog.stog_docs doc in
+  let stog = add_path stog doc.doc_path id in
   { stog with
-    stog_elts = elts ;
+    stog_docs = docs ;
   }
 ;;
 
-let sort_elts_by_date elts =
+let sort_docs_by_date docs =
   List.sort
   (fun e1 e2 ->
-     Pervasives.compare e1.elt_date e2.elt_date)
-  elts
+     Pervasives.compare e1.doc_date e2.doc_date)
+  docs
 ;;
 
-let sort_ids_elts_by_date elts =
+let sort_ids_docs_by_date docs =
   List.sort
   (fun (_,e1) (_,e2) ->
-     Pervasives.compare e1.elt_date e2.elt_date)
-  elts
+     Pervasives.compare e1.doc_date e2.doc_date)
+  docs
 ;;
 
 
-let sort_ids_elts_by_rules =
+let sort_ids_docs_by_rules =
   let apply_field env (data, acc) field =
     let xml = [Xtmpl.E (("",field), Xtmpl.atts_empty,[])] in
     let (data, xmls) = Xtmpl.apply_to_xmls data env xml in
@@ -382,25 +382,25 @@ let sort_ids_elts_by_rules =
   let compare (_, e1, v1) (_, e2, v2) =
     Pervasives.compare v1 v2
   in
-  fun data fields elts ->
-    let (data, elts) = List.fold_left (apply_fields fields) (data,[]) elts in
-    let elts = List.sort compare elts in
-    (data, List.map (fun (id,e,_) -> (id, e)) elts)
+  fun data fields docs ->
+    let (data, docs) = List.fold_left (apply_fields fields) (data,[]) docs in
+    let docs = List.sort compare docs in
+    (data, List.map (fun (id,e,_) -> (id, e)) docs)
 ;;
 
-let elt_list ?(by_date=false) ?set stog =
+let doc_list ?(by_date=false) ?set stog =
   let pred =
     match set with
       None -> (fun _ -> true)
-    | Some set -> (fun elt -> List.mem set elt.elt_sets)
+    | Some set -> (fun doc -> List.mem set doc.doc_sets)
   in
   let l =
     Stog_tmap.fold
-    (fun id elt acc -> if pred elt then (id, elt) :: acc else acc)
-    stog.stog_elts
+    (fun id doc acc -> if pred doc then (id, doc) :: acc else acc)
+    stog.stog_docs
     []
   in
-  if by_date then sort_ids_elts_by_date l else l
+  if by_date then sort_ids_docs_by_date l else l
 ;;
 
 let merge_stogs stogs =
@@ -408,8 +408,8 @@ let merge_stogs stogs =
     [] -> assert false
   | stog :: q ->
       let f acc stog =
-        Stog_tmap.fold (fun _ elt acc -> add_elt acc elt)
-        stog.stog_elts
+        Stog_tmap.fold (fun _ doc acc -> add_doc acc doc)
+        stog.stog_docs
         acc
       in
       List.fold_left f stog q
@@ -440,7 +440,7 @@ let make_path stog str =
       path0 (if n = 1 then "" else string_of_int n)
     in
     let path = [ path ] in
-    match Path_trie.find path stog.stog_elts_by_path with
+    match Path_trie.find path stog.stog_docs_by_path with
       [] -> path
     | _ -> iter (n+1)
   in
@@ -463,10 +463,10 @@ let find_block_by_id =
           Some s when s = id -> raise (Block_found xml)
         | _ -> find_in_list id subs
   in
-  fun elt id ->
+  fun doc id ->
     try
-      match elt.elt_out with
-        None -> find_in_list id elt.elt_body
+      match doc.doc_out with
+        None -> find_in_list id doc.doc_body
       | Some body -> find_in_list id body
     with
       Not_found -> None
@@ -493,9 +493,9 @@ let rec map_href stog path id =
   with Not_found -> (path, id)
 ;;
 
-let map_elt_ref stog elt id =
-  let path = elt.elt_path in
+let map_doc_ref stog doc id =
+  let path = doc.doc_path in
   let (path, id) = map_href stog path id in
-  let (_, elt) = elt_by_path stog path in
-  (elt, id)
+  let (_, doc) = doc_by_path stog path in
+  (doc, id)
 ;;

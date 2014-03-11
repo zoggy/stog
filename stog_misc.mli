@@ -120,7 +120,7 @@ val lowercase : string -> string
 (*/i==v=[String.lowercase]=1.0====*)
 
 (*i==v=[List.list_chop]=1.0====*)
-(** [list_chop n l] returns the [n] first elements of list [l] or the whole
+(** [list_chop n l] returns the [n] first documents of list [l] or the whole
    list if [n >= List.length l].
 @author Maxence Guesdon
 @version 1.0

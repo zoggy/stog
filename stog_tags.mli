@@ -37,19 +37,19 @@ val rss_length : string
 val languages : string
 val functions : string
 
-val elt : string
-val elt_body : string
-val elt_date : string
-val elt_datetime : string
-val elt_keywords : string
-val elt_intro : string
-val elt_navpath : string
-val elt_path : string
-val elt_src : string
-val elt_title : string
-val elt_topics : string
-val elt_type : string
-val elt_url : string
+val doc : string
+val doc_body : string
+val doc_date : string
+val doc_datetime : string
+val doc_keywords : string
+val doc_intro : string
+val doc_navpath : string
+val doc_path : string
+val doc_src : string
+val doc_title : string
+val doc_topics : string
+val doc_type : string
+val doc_url : string
 
 val sep : string
 
@@ -59,7 +59,7 @@ val block : string
 val command_line : string
 val counter : string
 val dummy_ : string
-val elements : string
+val documents : string
 val ext_a : string
 val error_ : string
 val graph : string

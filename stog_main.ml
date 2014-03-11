@@ -43,7 +43,7 @@ let default_lang_to_set = ref None;;
 
 let plugins = ref [];;
 let packages = ref [];;
-let only_elt = ref None;;
+let only_doc = ref None;;
 
 let add_stog_def s =
   match Stog_misc.split_string s [':'] with
@@ -119,14 +119,14 @@ let options = [
     "--package", Arg.String (fun s -> packages := !packages @ [s]),
     "<pkg[,pkg2[,...]]> load package (a plugin loaded with ocamlfind)";
 
-    "--only", Arg.String (fun s -> use_cache := false ; only_elt := Some s),
-    "<elt-id> generate only the page for the given element; imply --nocache" ;
+    "--only", Arg.String (fun s -> use_cache := false ; only_doc := Some s),
+    "<doc-id> generate only the page for the given document; imply --nocache" ;
 
     "--nocache", Arg.Clear use_cache,
-    " do not use cache to prevent computing unmodified elements" ;
+    " do not use cache to prevent computing unmodified documents" ;
 
     "--depcut", Arg.Set depcut,
-    " use only 1 level of dependency when getting cached elements";
+    " use only 1 level of dependency when getting cached documents";
 
     "--stog-ocaml-session", Arg.Set_string Stog_ocaml.stog_ocaml_session,
     "<command> use <command> as stog-ocaml-session program";
@@ -176,12 +176,12 @@ let main () =
             )
               modules
           in
-          let only_elts =
-            match !only_elt with
+          let only_docs =
+            match !only_doc with
             None -> None
             | Some s -> Some [s]
           in
-          Stog_engine.generate ~use_cache: !use_cache ?only_elts stog modules
+          Stog_engine.generate ~use_cache: !use_cache ?only_docs stog modules
         with Stog_types.Path_trie.Already_present l ->
           let msg = "Path already present: "^(String.concat "/" l) in
           failwith msg

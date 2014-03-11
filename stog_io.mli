@@ -32,13 +32,13 @@
   [bool_of_string] returns [true] for any other value. *)
 val bool_of_string : string -> bool
 
-(** Read an element from the given absolute filename. The file
+(** Read an document from the given absolute filename. The file
 must be "under" the directory in [stog_dir] of the [stog] parameter. *)
-val elt_of_file : Stog_types.stog -> string -> Stog_types.elt
+val doc_of_file : Stog_types.stog -> string -> Stog_types.doc
 
 (** Build a {!Stog_types.stog} structure from the given directory. *)
 val read_stog : string -> Stog_types.stog
 
 (** *)
-val fill_elt_from_atts_and_subs : Stog_types.elt ->
-  Xtmpl.attributes -> Stog_types.body -> Stog_types.elt
+val fill_doc_from_atts_and_subs : Stog_types.doc ->
+  Xtmpl.attributes -> Stog_types.body -> Stog_types.doc

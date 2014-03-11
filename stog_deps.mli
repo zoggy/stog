@@ -28,6 +28,6 @@
 
 (** *)
 
-val add_dep : Stog_types.stog -> Stog_types.elt ->
-  Stog_types.elt Stog_types.dependency -> Stog_types.stog
-val max_deps_date : Stog_types.stog -> (string -> Stog_types.elt) -> string -> float
+val add_dep : Stog_types.stog -> Stog_types.doc ->
+  Stog_types.doc Stog_types.dependency -> Stog_types.stog
+val max_deps_date : Stog_types.stog -> (string -> Stog_types.doc) -> string -> float

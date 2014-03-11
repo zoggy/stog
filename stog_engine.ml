@@ -32,9 +32,9 @@ open Stog_types;;
 module Smap = Stog_types.Str_map;;
 
 type 'a level_fun =
-  | Fun_stog of (stog Xtmpl.env -> stog -> elt_id list -> stog)
-  | Fun_data of ('a Xtmpl.env -> stog * 'a -> elt_id list -> stog * 'a)
-  | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> elt_id list -> stog * 'a)
+  | Fun_stog of (stog Xtmpl.env -> stog -> doc_id list -> stog)
+  | Fun_data of ('a Xtmpl.env -> stog * 'a -> doc_id list -> stog * 'a)
+  | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> doc_id list -> stog * 'a)
 
 type 'a modul = {
       mod_data : 'a ;
@@ -47,8 +47,8 @@ module type Module = sig
     val modul : data modul
 
     type cache_data
-    val cache_load : stog -> data -> elt -> cache_data -> data
-    val cache_store : stog -> data -> elt -> cache_data
+    val cache_load : stog -> data -> doc -> cache_data -> data
+    val cache_store : stog -> data -> doc -> cache_data
   end
 
 type stog_state =
@@ -56,7 +56,7 @@ type stog_state =
     st_modules : (module Module) list ;
   };;
 
-let apply_module level env elts state modul =
+let apply_module level env docs state modul =
   let module E = (val modul : Module) in
   match
     try Some (Int_map.find level E.modul.mod_levels)
@@ -69,12 +69,12 @@ let apply_module level env elts state modul =
         try
           match f with
             Fun_stog f ->
-              let stog = f env stog elts in
+              let stog = f env stog docs in
               (stog, E.modul.mod_data)
           | Fun_data f ->
-              f (Obj.magic env) (stog, E.modul.mod_data) elts
+              f (Obj.magic env) (stog, E.modul.mod_data) docs
           | Fun_stog_data f ->
-              f (Obj.magic env) (stog, E.modul.mod_data) elts
+              f (Obj.magic env) (stog, E.modul.mod_data) docs
         with
           Xtmpl.Loop stack ->
             let msg = "Possible loop when applying module "^
@@ -97,55 +97,55 @@ let apply_module level env elts state modul =
       { st_stog = stog ; st_modules = modul :: state.st_modules }
 ;;
 
-let (compute_level : ?elts: elt_id list -> ?cached: elt_id list -> 'a Xtmpl.env -> int -> stog_state -> stog_state) =
-  fun ?elts ?cached env level state ->
+let (compute_level : ?docs: doc_id list -> ?cached: doc_id list -> 'a Xtmpl.env -> int -> stog_state -> stog_state) =
+  fun ?docs ?cached env level state ->
   Stog_msg.verbose (Printf.sprintf "Computing level %d" level);
-  let elts =
-    match elts, cached with
+  let docs =
+    match docs, cached with
       None, None ->
-        Stog_tmap.fold (fun elt_id _ acc -> elt_id :: acc) state.st_stog.stog_elts []
+        Stog_tmap.fold (fun doc_id _ acc -> doc_id :: acc) state.st_stog.stog_docs []
     | None, Some l ->
         let pred id1 id2 = Stog_tmap.compare_key id1 id2 = 0 in
         Stog_tmap.fold
-          (fun elt_id _ acc ->
-             if List.exists (pred elt_id) l then acc else elt_id :: acc)
-             state.st_stog.stog_elts []
+          (fun doc_id _ acc ->
+             if List.exists (pred doc_id) l then acc else doc_id :: acc)
+             state.st_stog.stog_docs []
     | Some l, _ -> l
   in
   (*
-  let f_elt f (stog, data) (elt_id, elt) =
-    let elt = f env (stog, data) elt_id elt in
-    Stog_types.set_elt stog elt_id elt
+  let f_doc f (stog, data) (doc_id, doc) =
+    let doc = f env (stog, data) doc_id doc in
+    Stog_types.set_doc stog doc_id doc
   in
   *)
-  let state = List.fold_left (apply_module level env elts)
+  let state = List.fold_left (apply_module level env docs)
     { state with st_modules = [] } state.st_modules
   in
   state
 (*
   let f_fun stog f =
     match f with
-      On_elt f -> List.fold_left (f_elt f) stog elts
-    | On_elt_list f ->
-        let (modified, added) = f env stog elts in
+      On_doc f -> List.fold_left (f_doc f) stog docs
+    | On_doc_list f ->
+        let (modified, added) = f env stog docs in
         let stog = List.fold_left
-          (fun stog (elt_id, elt) -> Stog_types.set_elt stog elt_id elt)
+          (fun stog (doc_id, doc) -> Stog_types.set_doc stog doc_id doc)
           stog modified
         in
-        List.fold_left Stog_types.add_elt stog added
+        List.fold_left Stog_types.add_doc stog added
   in
   List.fold_left f_fun stog funs
 *)
 ;;
 
 (*
-let load_cached_elt file =
+let load_cached_doc file =
   let ic = open_in_bin file in
-  let (t : Stog_types.cached_elt) = input_value ic in
+  let (t : Stog_types.cached_doc) = input_value ic in
   close_in ic;
-  let path = Stog_types.string_of_path t.cache_elt.elt_path in
+  let path = Stog_types.string_of_path t.cache_doc.doc_path in
   blocks := Smap.add path t.cache_blocks !blocks;
-  t.cache_elt
+  t.cache_doc
 ;;
 *)
 
@@ -165,47 +165,47 @@ let levels =
 let cache_info_file stog = Filename.concat stog.stog_cache_dir "info";;
 let stog_cache_name = "_stog";;
 
-let cache_file name stog elt =
+let cache_file name stog doc =
   let cache_dir = Filename.concat stog.stog_cache_dir name in
   Filename.concat cache_dir
-    ((String.concat "/" elt.elt_path.path)^"._elt")
+    ((String.concat "/" doc.doc_path.path)^"._doc")
 ;;
 
-let get_cached_elts stog =
-  let elt_dir = Filename.concat stog.stog_cache_dir stog_cache_name in
-  let files = Stog_find.find_list Stog_find.Ignore [elt_dir]
+let get_cached_docs stog =
+  let doc_dir = Filename.concat stog.stog_cache_dir stog_cache_name in
+  let files = Stog_find.find_list Stog_find.Ignore [doc_dir]
     [Stog_find.Type Unix.S_REG]
   in
   let load acc file =
     try
       let ic = open_in_bin file in
-      let (elt : Stog_types.elt) = input_value ic in
+      let (doc : Stog_types.doc) = input_value ic in
       close_in ic;
-      elt :: acc
+      doc :: acc
     with
       Failure s | Sys_error s ->
         Stog_msg.warning s;
         acc
   in
-  let elts = List.fold_left load [] files in
+  let docs = List.fold_left load [] files in
   Stog_msg.verbose ~info: "cache" ~level: 5
-    ((string_of_int (List.length elts))^" elements found in cache");
-  elts
+    ((string_of_int (List.length docs))^" documents found in cache");
+  docs
 ;;
 
-let set_elt_env elt stog elt_envs =
+let set_doc_env doc stog doc_envs =
   let digest = Stog_types.stog_md5 stog in
-  Stog_types.Path_map.add elt.elt_path digest elt_envs
+  Stog_types.Path_map.add doc.doc_path digest doc_envs
 ;;
 
-let apply_loaders state elt =
+let apply_loaders state doc =
   let f_modul e =
     let module E = (val e : Module) in
-    let cache_file = cache_file E.modul.mod_name state.st_stog elt in
+    let cache_file = cache_file E.modul.mod_name state.st_stog doc in
     let ic = open_in_bin cache_file in
     let t = input_value ic in
     close_in ic;
-    let data = E.cache_load state.st_stog E.modul.mod_data elt t in
+    let data = E.cache_load state.st_stog E.modul.mod_data doc t in
     let module E2 = struct
       type data = E.data
       let modul = { E.modul with mod_data = data }
@@ -221,28 +221,28 @@ let apply_loaders state elt =
   state
 ;;
 
-let apply_storers state elt =
+let apply_storers state doc =
   let f_modul e =
     let module E = (val e : Module) in
-    let cache_file = cache_file E.modul.mod_name state.st_stog elt in
+    let cache_file = cache_file E.modul.mod_name state.st_stog doc in
     let cache_dir = Filename.dirname cache_file in
     Stog_misc.safe_mkdir cache_dir ;
     let oc = open_out_bin cache_file in
-    let t = E.cache_store state.st_stog E.modul.mod_data elt in
+    let t = E.cache_store state.st_stog E.modul.mod_data doc in
     Marshal.to_channel oc t [Marshal.Closures];
     close_out oc
   in
   List.iter f_modul state.st_modules
 ;;
 
-let get_cached_elements state env =
+let get_cached_documents state env =
   Stog_misc.safe_mkdir state.st_stog.stog_cache_dir;
   let info_file = cache_info_file state.st_stog in
-  let (elt_envs, stog) =
+  let (doc_envs, stog) =
     if Sys.file_exists info_file then
       begin
         let ic = open_in_bin info_file in
-        let ((elt_envs, deps, id_map) :
+        let ((doc_envs, deps, id_map) :
            (string Stog_types.Path_map.t * Stog_types.Depset.t Smap.t *
             (path * string option) Smap.t Stog_types.Path_map.t)) =
           input_value ic
@@ -253,7 +253,7 @@ let get_cached_elements state env =
             stog_id_map = id_map ;
           }
         in
-        (elt_envs, stog)
+        (doc_envs, stog)
       end
     else
       (Stog_types.Path_map.empty, state.st_stog)
@@ -262,35 +262,35 @@ let get_cached_elements state env =
   let digest = Stog_types.stog_md5 state.st_stog in
   Stog_msg.verbose ~info:"cache" ~level: 5 ("digest(stog)="^digest);
 
-  let elts = get_cached_elts state.st_stog in
-  let elt_by_path =
+  let docs = get_cached_docs state.st_stog in
+  let doc_by_path =
     let map = List.fold_left
-      (fun map elt -> Stog_types.Str_map.add
-         (Stog_types.string_of_path elt.elt_path) elt map)
-        Stog_types.Str_map.empty elts
+      (fun map doc -> Stog_types.Str_map.add
+         (Stog_types.string_of_path doc.doc_path) doc map)
+        Stog_types.Str_map.empty docs
     in
     fun path -> Stog_types.Str_map.find path map
   in
-  let f (state, cached, kept_deps, kept_id_map) elt =
-    let path = elt.elt_path in
-    let same_elt_env =
+  let f (state, cached, kept_deps, kept_id_map) doc =
+    let path = doc.doc_path in
+    let same_doc_env =
       try
-        let d = Stog_types.Path_map.find path elt_envs in
+        let d = Stog_types.Path_map.find path doc_envs in
         Stog_msg.verbose ~info: "cache" ~level: 5
           ("digest(path="^(Stog_types.string_of_path path)^",stog)="^d);
         d = digest
       with Not_found ->
           Stog_msg.verbose ~info: "cache" ~level: 5
-            ("cached elt "^(Stog_types.string_of_path path)^" not found in stog");
+            ("cached doc "^(Stog_types.string_of_path path)^" not found in stog");
           false
     in
     let use_cache =
-      if same_elt_env then
+      if same_doc_env then
         begin
-          let src_cache_file = cache_file stog_cache_name state.st_stog elt in
+          let src_cache_file = cache_file stog_cache_name state.st_stog doc in
           let src_cache_time = Stog_misc.file_mtime src_cache_file in
-          let deps_time = Stog_deps.max_deps_date state.st_stog elt_by_path
-            (Stog_types.string_of_path elt.elt_path)
+          let deps_time = Stog_deps.max_deps_date state.st_stog doc_by_path
+            (Stog_types.string_of_path doc.doc_path)
           in
           Stog_msg.verbose ~info: "cache" ~level: 5
            (Printf.sprintf "deps_time for %S = %s, last generated on %s" src_cache_file
@@ -299,7 +299,7 @@ let get_cached_elements state env =
             );
           match src_cache_time with
             None -> false
-          | Some t_elt -> deps_time < t_elt
+          | Some t_doc -> deps_time < t_doc
         end
       else
         (
@@ -310,8 +310,8 @@ let get_cached_elements state env =
     in
     if use_cache then
       begin
-        let state = apply_loaders state elt in
-        (* keep deps of this element, as it did not change *)
+        let state = apply_loaders state doc in
+        (* keep deps of this document, as it did not change *)
         let kept_deps =
           let spath = Stog_types.string_of_path path in
           try Smap.add spath (Smap.find spath state.st_stog.stog_deps) kept_deps
@@ -323,17 +323,17 @@ let get_cached_elements state env =
           with
             Not_found -> kept_id_map
         in
-        (state, elt :: cached, kept_deps, kept_id_map)
+        (state, doc :: cached, kept_deps, kept_id_map)
       end
     else
       begin
-        (* do not keep deps of this element, as it will be recomputed *)
+        (* do not keep deps of this document, as it will be recomputed *)
         (state, cached, kept_deps, kept_id_map)
       end
   in
   let (state, cached, kept_deps, kept_id_map) =
     List.fold_left f
-      (state, [], Smap.empty, Stog_types.Path_map.empty) elts
+      (state, [], Smap.empty, Stog_types.Path_map.empty) docs
   in
   let stog = {
       state.st_stog with
@@ -345,75 +345,75 @@ let get_cached_elements state env =
   (state, cached)
 ;;
 
-let cache_elt state elt =
-  let cache_file = cache_file stog_cache_name state.st_stog elt in
+let cache_doc state doc =
+  let cache_file = cache_file stog_cache_name state.st_stog doc in
   Stog_misc.safe_mkdir (Filename.dirname cache_file);
   let oc = open_out_bin cache_file in
-  output_value oc elt ;
+  output_value oc doc ;
   close_out oc ;
-  apply_storers state elt
+  apply_storers state doc
 ;;
 
-let output_cache_info stog elt_envs =
+let output_cache_info stog doc_envs =
   let info_file = cache_info_file stog in
   (*Stog_tmap.iter
-    (fun elt_id elt ->
+    (fun doc_id doc ->
        ignore(Stog_deps.max_deps_date stog
-        (fun path -> snd (Stog_types.elt_by_path stog (Stog_types.path_of_string path)))
-          (Stog_types.string_of_path elt.Stog_types.elt_path))
+        (fun path -> snd (Stog_types.doc_by_path stog (Stog_types.path_of_string path)))
+          (Stog_types.string_of_path doc.Stog_types.doc_path))
     )
-       stog.Stog_types.stog_elts;
+       stog.Stog_types.stog_docs;
   *)
-  let v = (elt_envs, stog.stog_deps, stog.stog_id_map) in
+  let v = (doc_envs, stog.stog_deps, stog.stog_id_map) in
   let oc = open_out_bin info_file in
   output_value oc v;
   close_out oc
 ;;
 
-let state_merge_cdata ?elts state =
- let elts =
-    match elts with
-      None -> Stog_types.elt_list state.st_stog
-    | Some l -> List.map (fun id -> (id, Stog_types.elt state.st_stog id)) l
+let state_merge_cdata ?docs state =
+ let docs =
+    match docs with
+      None -> Stog_types.doc_list state.st_stog
+    | Some l -> List.map (fun id -> (id, Stog_types.doc state.st_stog id)) l
   in
-  let f stog (elt_id, elt) =
-    let elt =
-      match elt.elt_out with
-        None -> elt
+  let f stog (doc_id, doc) =
+    let doc =
+      match doc.doc_out with
+        None -> doc
       | Some xmls ->
-          { elt with elt_out = Some (List.map Xtmpl.merge_cdata xmls) }
+          { doc with doc_out = Some (List.map Xtmpl.merge_cdata xmls) }
     in
-    Stog_types.set_elt stog elt_id elt
+    Stog_types.set_doc stog doc_id doc
   in
-  { state with st_stog = List.fold_left f state.st_stog elts }
+  { state with st_stog = List.fold_left f state.st_stog docs }
 ;;
 
-let compute_levels ?(use_cache=true) ?elts env state =
+let compute_levels ?(use_cache=true) ?docs env state =
   let levels = levels state in
   let state =
     if use_cache then
       begin
-        let (state, cached) = get_cached_elements state env in
-        Stog_msg.verbose (Printf.sprintf "%d elements kept from cache" (List.length cached));
-        let f_elt (stog, cached) cached_elt =
+        let (state, cached) = get_cached_documents state env in
+        Stog_msg.verbose (Printf.sprintf "%d documents kept from cache" (List.length cached));
+        let f_doc (stog, cached) cached_doc =
           try
-            let (elt_id, _) = Stog_types.elt_by_path stog cached_elt.elt_path in
-            (* replace element by cached one *)
-            let stog = Stog_types.set_elt stog elt_id cached_elt in
-            (stog, elt_id :: cached)
+            let (doc_id, _) = Stog_types.doc_by_path stog cached_doc.doc_path in
+            (* replace document by cached one *)
+            let stog = Stog_types.set_doc stog doc_id cached_doc in
+            (stog, doc_id :: cached)
           with _ ->
-              (* element not loaded but cached; keep it as it may be an
-                 element from a cut-elt rule *)
-              let stog = Stog_types.add_elt stog cached_elt in
-              let (elt_id, _) = Stog_types.elt_by_path stog cached_elt.elt_path in
-              (stog, elt_id :: cached)
+              (* document not loaded but cached; keep it as it may be an
+                 document from a cut-doc rule *)
+              let stog = Stog_types.add_doc stog cached_doc in
+              let (doc_id, _) = Stog_types.doc_by_path stog cached_doc.doc_path in
+              (stog, doc_id :: cached)
         in
-        let (stog, cached) = List.fold_left f_elt (state.st_stog, []) cached in
+        let (stog, cached) = List.fold_left f_doc (state.st_stog, []) cached in
         let state = { state with st_stog = stog } in
         Stog_types.Int_set.fold (compute_level ~cached env) levels state
       end
     else
-      Stog_types.Int_set.fold (compute_level ?elts env) levels state
+      Stog_types.Int_set.fold (compute_level ?docs env) levels state
   in
   state_merge_cdata state
 ;;
@@ -475,7 +475,7 @@ let fun_site_url stog data _env _ _ =
   (data, [ Xtmpl.D (Stog_types.string_of_url stog.stog_base_url) ])
 ;;
 
-let run ?(use_cache=true) ?elts state =
+let run ?(use_cache=true) ?docs state =
   let stog = state.st_stog in
   let dir =
     if Filename.is_relative stog.stog_dir then
@@ -494,7 +494,7 @@ let run ?(use_cache=true) ?elts state =
   in
   let env = env_of_used_mods ~env stog stog.stog_used_mods in
   let env = env_of_defs ~env stog.stog_defs in
-  compute_levels ~use_cache ?elts env state
+  compute_levels ~use_cache ?docs env state
 ;;
 
 let encode_for_url s =
@@ -510,14 +510,14 @@ let encode_for_url s =
   Buffer.contents b
 ;;
 
-let elt_dst f_concat ?(encode=true) stog base elt =
+let doc_dst f_concat ?(encode=true) stog base doc =
   let path =
-    match elt.elt_path.path with
+    match doc.doc_path.path with
       [] -> failwith "Invalid path: []"
     | h :: q -> List.fold_left f_concat h q
   in
   let path =
-    if elt.elt_lang_dep then
+    if doc.doc_lang_dep then
       begin
         let ext_pref =
           match stog.stog_lang with
@@ -533,13 +533,13 @@ let elt_dst f_concat ?(encode=true) stog base elt =
   f_concat base dst
 ;;
 
-let elt_dst_file stog elt =
-  elt_dst ~encode: false Filename.concat stog stog.stog_outdir elt;;
+let doc_dst_file stog doc =
+  doc_dst ~encode: false Filename.concat stog stog.stog_outdir doc;;
 
 
-let elt_url stog elt =
-  let url = elt_dst (fun a b -> a^"/"^b) stog
-    (Stog_types.string_of_url stog.stog_base_url) elt
+let doc_url stog doc =
+  let url = doc_dst (fun a b -> a^"/"^b) stog
+    (Stog_types.string_of_url stog.stog_base_url) doc
   in
   let len = String.length url in
   let s = "/index.html" in
@@ -553,19 +553,19 @@ let elt_url stog elt =
   url_of_string url
 ;;
 
-let output_elt state elt =
-  let file = elt_dst_file state.st_stog elt in
+let output_doc state doc =
+  let file = doc_dst_file state.st_stog doc in
   Stog_misc.safe_mkdir (Filename.dirname file);
-  match elt.elt_out with
+  match doc.doc_out with
     None ->
       failwith
         (Printf.sprintf "Element %S not computed!"
-         (Stog_types.string_of_path elt.elt_path)
+         (Stog_types.string_of_path doc.doc_path)
         )
   | Some xmls ->
       let oc = open_out file in
       let doctype =
-        match elt.elt_xml_doctype with
+        match doc.doc_xml_doctype with
           None -> "HTML"
         | Some s -> s
       in
@@ -577,24 +577,24 @@ let output_elt state elt =
       in
       List.iter (fun xml -> output_string oc (Xtmpl.string_of_xml xml)) xmls;
       close_out oc;
-      cache_elt state elt
+      cache_doc state doc
 ;;
 
-let output_elts ?elts state =
+let output_docs ?docs state =
   let stog = state.st_stog in
-  let elts =
-    match elts with
+  let docs =
+    match docs with
       None ->
         Stog_tmap.fold
-          (fun _ elt acc -> output_elt state elt ; elt :: acc)
-          stog.stog_elts []
-    | Some l -> List.iter (output_elt state) l; l
+          (fun _ doc acc -> output_doc state doc ; doc :: acc)
+          stog.stog_docs []
+    | Some l -> List.iter (output_doc state) l; l
   in
-  let elt_envs = List.fold_left
-    (fun elt_envs elt -> set_elt_env elt stog elt_envs)
-      Stog_types.Path_map.empty elts
+  let doc_envs = List.fold_left
+    (fun doc_envs doc -> set_doc_env doc stog doc_envs)
+      Stog_types.Path_map.empty docs
   in
-  output_cache_info stog elt_envs
+  output_cache_info stog doc_envs
 ;;
 
 let copy_other_files stog =
@@ -624,33 +624,33 @@ let copy_other_files stog =
   iter stog.stog_outdir stog.stog_dir stog.stog_files
 ;;
 
-let generate ?(use_cache=true) ?only_elts stog modules =
+let generate ?(use_cache=true) ?only_docs stog modules =
   begin
     match stog.stog_lang with
       None -> ()
     | Some lang -> Stog_msg.verbose (Printf.sprintf "Generating pages for language %s" lang);
   end;
   Stog_misc.safe_mkdir stog.stog_outdir;
-  let only_elts =
-    match only_elts with
+  let only_docs =
+    match only_docs with
       None -> None
     | Some l ->
         let f s =
           let path = Stog_types.path_of_string s in
-          let (elt_id, _) = Stog_types.elt_by_path stog path in
-          elt_id
+          let (doc_id, _) = Stog_types.doc_by_path stog path in
+          doc_id
         in
         Some (List.map f l)
   in
   let state = { st_stog = stog ; st_modules = modules } in
-  let state = run ~use_cache ?elts: only_elts state in
-  match only_elts with
+  let state = run ~use_cache ?docs: only_docs state in
+  match only_docs with
     None ->
-      output_elts state ;
+      output_docs state ;
       copy_other_files state.st_stog
   | Some l ->
-      let elts = List.map (Stog_types.elt state.st_stog) l in
-      output_elts ~elts state
+      let docs = List.map (Stog_types.doc state.st_stog) l in
+      output_docs ~docs state
 ;;
 
 
@@ -676,24 +676,24 @@ let get_in_args_or_env data env args s =
 ;;
 
 let get_path data env =
-  let (data, xmls) = get_in_env data env ("", Stog_tags.elt_path) in
+  let (data, xmls) = get_in_env data env ("", Stog_tags.doc_path) in
   let s = Xtmpl.string_of_xmls xmls in
   assert (s <> "");
   (data, s)
 ;;
 
-let get_elt_out stog elt =
-  match elt.elt_out with
+let get_doc_out stog doc =
+  match doc.doc_out with
     None ->
       let (stog, tmpl) =
         let default =
-          match elt.elt_type with
+          match doc.doc_type with
             "by-topic" -> Stog_tmpl.by_topic
           | "by-keyword" -> Stog_tmpl.by_keyword
           | "by-month" -> Stog_tmpl.by_month
           | _ -> Stog_tmpl.page
         in
-        Stog_tmpl.get_template stog ~elt default (elt.elt_type^".tmpl")
+        Stog_tmpl.get_template stog ~doc default (doc.doc_type^".tmpl")
       in
       (stog, [tmpl])
   | Some xmls ->
@@ -708,14 +708,14 @@ let get_languages data env =
   | (data, None) -> (data, ["fr" ; "en"])
 ;;
 
-let env_add_lang_rules data env stog elt =
+let env_add_lang_rules data env stog doc =
   match stog.stog_lang with
     None ->
       (data, Xtmpl.env_add Stog_tags.langswitch (fun data _ _ _ -> (data, [])) env)
   | Some lang ->
       let (data, languages) = get_languages data env in
       let map_lang lang =
-        let url = elt_url { stog with stog_lang = Some lang } elt in
+        let url = doc_url { stog with stog_lang = Some lang } doc in
         let img_url = Stog_types.url_concat stog.stog_base_url (lang^".png") in
         Xtmpl.E (("", "a"),
          Xtmpl.atts_of_list [("", "href"), [ Xtmpl.D (Stog_types.string_of_url url) ]],
@@ -744,88 +744,88 @@ let env_add_lang_rules data env stog elt =
       (data, Xtmpl.env_of_list ~env rules)
 ;;
 
-let elt_env data env stog elt =
-  let env = env_of_used_mods stog ~env elt.elt_used_mods in
-  let env = env_of_defs ~env elt.elt_defs in
+let doc_env data env stog doc =
+  let env = env_of_used_mods stog ~env doc.doc_used_mods in
+  let env = env_of_defs ~env doc.doc_defs in
 (*  prerr_endline
-    (Printf.sprintf "elt=%s\ndefs=%s"
-      (Stog_types.string_of_path elt.elt_path)
+    (Printf.sprintf "doc=%s\ndefs=%s"
+      (Stog_types.string_of_path doc.doc_path)
       (String.concat "\n"
         (List.map (fun ((p,name),_,subs) -> Printf.sprintf "%s:%s=>%s" p name (Xtmpl.string_of_xmls subs))
-          elt.elt_defs)
+          doc.doc_defs)
       )
     );
   prerr_endline ("env_of_defs => "^(Xtmpl.string_of_env env));
 *)
   let rules = [
-      ("", Stog_tags.elt_path),
+      ("", Stog_tags.doc_path),
       (fun  acc _ _ _ ->
-         (acc, [Xtmpl.D (Stog_types.string_of_path elt.elt_path)]))]
+         (acc, [Xtmpl.D (Stog_types.string_of_path doc.doc_path)]))]
   in
   let env = Xtmpl.env_of_list ~env rules in
-  let (data, env) = env_add_lang_rules data env stog elt in
+  let (data, env) = env_add_lang_rules data env stog doc in
   (data, env)
 
-type 'a stog_elt_rules =
-  Stog_types.stog -> Stog_types.elt_id -> (Xtmpl.name * 'a Xtmpl.callback) list
+type 'a stog_doc_rules =
+  Stog_types.stog -> Stog_types.doc_id -> (Xtmpl.name * 'a Xtmpl.callback) list
 
-let apply_stog_env_elt stog env elt_id =
-  let elt = Stog_types.elt stog elt_id in
-  let (stog, env) = elt_env stog env stog elt in
-  let (stog, xmls) = get_elt_out stog elt in
+let apply_stog_env_doc stog env doc_id =
+  let doc = Stog_types.doc stog doc_id in
+  let (stog, env) = doc_env stog env stog doc in
+  let (stog, xmls) = get_doc_out stog doc in
   (*prerr_endline (Printf.sprintf "%s = %s"
-     (Stog_types.string_of_path elt.elt_path)
+     (Stog_types.string_of_path doc.doc_path)
      (Xtmpl.string_of_xsmls xmls));*)
   let (stog, xmls) = Xtmpl.apply_to_xmls stog env xmls in
-  let elt = { elt with elt_out = Some xmls } in
-  Stog_types.set_elt stog elt_id elt
+  let doc = { doc with doc_out = Some xmls } in
+  Stog_types.set_doc stog doc_id doc
 ;;
 
-let apply_stog_data_env_elt (stog,data) env elt_id =
-  let elt = Stog_types.elt stog elt_id in
-  let ((stog, data), env) = elt_env (stog, data) env stog elt in
-  let (stog, xmls) = get_elt_out stog elt in
+let apply_stog_data_env_doc (stog,data) env doc_id =
+  let doc = Stog_types.doc stog doc_id in
+  let ((stog, data), env) = doc_env (stog, data) env stog doc in
+  let (stog, xmls) = get_doc_out stog doc in
   (*prerr_endline (Printf.sprintf "env=%s" (Xtmpl.string_of_env env));*)
   let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env xmls in
-  let elt = { elt with elt_out = Some xmls } in
-  (Stog_types.set_elt stog elt_id elt, data)
+  let doc = { doc with doc_out = Some xmls } in
+  (Stog_types.set_doc stog doc_id doc, data)
 
-let apply_data_env_elt (stog,data) env elt_id =
-  let elt = Stog_types.elt stog elt_id in
-  let (data, env) = elt_env data env stog elt in
-  let (stog, xmls) = get_elt_out stog elt in
+let apply_data_env_doc (stog,data) env doc_id =
+  let doc = Stog_types.doc stog doc_id in
+  let (data, env) = doc_env data env stog doc in
+  let (stog, xmls) = get_doc_out stog doc in
   let (data, xmls) = Xtmpl.apply_to_xmls data env xmls in
-  let elt = { elt with elt_out = Some xmls } in
-  (Stog_types.set_elt stog elt_id elt, data)
+  let doc = { doc with doc_out = Some xmls } in
+  (Stog_types.set_doc stog doc_id doc, data)
 ;;
 
-let fun_apply_stog_elt_rules f_rules =
-  let f_elt env stog elt_id =
-    let rules = f_rules stog elt_id in
+let fun_apply_stog_doc_rules f_rules =
+  let f_doc env stog doc_id =
+    let rules = f_rules stog doc_id in
     let env = Xtmpl.env_of_list ~env rules in
-    apply_stog_env_elt stog env elt_id
+    apply_stog_env_doc stog env doc_id
   in
-  let f env stog elts = List.fold_left (f_elt env) stog elts in
+  let f env stog docs = List.fold_left (f_doc env) stog docs in
   Fun_stog f
 ;;
 
-let fun_apply_stog_data_elt_rules f_rules =
-  let f_elt env (stog, data) elt_id =
-    let rules = f_rules stog elt_id in
+let fun_apply_stog_data_doc_rules f_rules =
+  let f_doc env (stog, data) doc_id =
+    let rules = f_rules stog doc_id in
     let env = Xtmpl.env_of_list ~env rules in
-    apply_stog_data_env_elt (stog,data) env elt_id
+    apply_stog_data_env_doc (stog,data) env doc_id
   in
-  let f env (stog, data) elts = List.fold_left (f_elt env) (stog, data) elts in
+  let f env (stog, data) docs = List.fold_left (f_doc env) (stog, data) docs in
   Fun_stog_data f
 ;;
 
-let fun_apply_data_elt_rules f_rules =
-  let f_elt env (stog, data) elt_id =
-    let rules = f_rules stog elt_id in
+let fun_apply_data_doc_rules f_rules =
+  let f_doc env (stog, data) doc_id =
+    let rules = f_rules stog doc_id in
     let env = Xtmpl.env_of_list ~env rules in
-    apply_data_env_elt (stog,data) env elt_id
+    apply_data_env_doc (stog,data) env doc_id
   in
-  let f env (stog, data) elts = List.fold_left (f_elt env) (stog, data) elts in
+  let f env (stog, data) docs = List.fold_left (f_doc env) (stog, data) docs in
   Fun_data f
 ;;
 

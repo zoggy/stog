@@ -32,9 +32,9 @@ let version = "0.10.0";;
 
 type t =
   { ignored : string list ; (** list of regexps of filenames to ignore *)
-    elements : string list ; (** list of regexps for element files *)
-    not_elements : string list ;
-    (** list of regexps for file matching elements rules but not being  elements *)
+    documents : string list ; (** list of regexps for document files *)
+    not_documents : string list ;
+    (** list of regexps for file matching documents rules but not being  documents *)
     follow_symlinks : bool ;
     levels : (string * (string * int list) list) list ;
   }
@@ -54,12 +54,12 @@ let read_config dir =
   let o_ignored = new CF.list_cp CF.string_wrappers ~group
     ["ignored"] [ ".*\\.git" ; ".*Makefile" ; ".*tmpl$" ] "Regexps of files to ignore"
   in
-  let o_elts = new CF.list_cp CF.string_wrappers ~group
-    ["elements"] [ ".*\\.xml$" ; ".*\\.html$" ] "Regexps of files containing elements"
+  let o_docs = new CF.list_cp CF.string_wrappers ~group
+    ["documents"] [ ".*\\.xml$" ; ".*\\.html$" ] "Regexps of files containing documents"
   in
-  let o_not_elts = new CF.list_cp CF.string_wrappers ~group
-    ["not-elements"] [ ]
-    "Regexps of files matching 'elements' regexps but not containing elements"
+  let o_not_docs = new CF.list_cp CF.string_wrappers ~group
+    ["not-documents"] [ ]
+    "Regexps of files matching 'documents' regexps but not containing documents"
   in
   let follow_symlinks = new CF.bool_cp ~group ["follow-symlinks"] false
     "follow symlinks when bulding source file and directory tree"
@@ -80,8 +80,8 @@ let read_config dir =
     end;
   group#read rc_file;
   { ignored = o_ignored#get ;
-    elements = o_elts#get ;
-    not_elements = o_not_elts#get ;
+    documents = o_docs#get ;
+    not_documents = o_not_docs#get ;
     follow_symlinks = follow_symlinks#get ;
     levels = levels#get ;
   }

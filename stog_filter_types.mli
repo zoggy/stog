@@ -26,7 +26,7 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Representation of element filters. *)
+(** Representation of document filters. *)
 
 type t =
   | Pred of Xtmpl.name * string

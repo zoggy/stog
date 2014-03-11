@@ -32,19 +32,19 @@
   some values are made available for the {!Stog_plug} module.
 *)
 
-(** [elt_by_href ?typ ?src_elt stog env href] returns the element, path and
+(** [doc_by_href ?typ ?src_doc stog env href] returns the document, path and
   optional id matching the given href string, of the form [path[#id]].
-  Return None if the element could not be found, of the id could not be found,
+  Return None if the document could not be found, of the id could not be found,
   and an error is issued.
-  @param src_elt can be used to specify the source element, to improve
+  @param src_doc can be used to specify the source document, to improve
   the error message. *)
-val elt_by_href : ?typ: string -> ?src_elt: Stog_types.elt ->
+val doc_by_href : ?typ: string -> ?src_doc: Stog_types.doc ->
   Stog_types.stog -> 'a -> 'a Xtmpl.env -> string ->
-    'a * (Stog_types.elt * string * string option) option
+    'a * (Stog_types.doc * string * string option) option
 
 (*
 (** Adding a known block id for a given path. A short and a long title
-  are specified. These registered blocks are used by <elt href="..#id"/> nodes.
+  are specified. These registered blocks are used by <doc href="..#id"/> nodes.
   @on_dup specifies what to do when the id to add is already present.
   Default is to issue a warning. [`Fail] will raise a [Failure] exception.
 *)
@@ -69,30 +69,30 @@ val escape_html : string -> string
 val concat_name : ?sep: string -> (string * string) -> string
 
 (** Build an url from the given path, using the given optional extension.
-  This is used for elements created on the fly, like by-word or by-month index. *)
+  This is used for documents created on the fly, like by-word or by-month index. *)
 val url_of_path :
   Stog_types.stog -> ?ext:string -> Stog_types.path -> Neturl.url
 
 (*
-(** Generate a RSS file from the given list of elements. The final RSS
+(** Generate a RSS file from the given list of documents. The final RSS
   url must be given as it is embedded in the RSS file. *)
 val generate_rss_feed_file :
   Stog_types.stog ->
-  ?title:string -> Rss.url -> (Stog_types.elt_id * Stog_types.elt) list -> string -> unit
+  ?title:string -> Rss.url -> (Stog_types.doc_id * Stog_types.doc) list -> string -> unit
 *)
 
 (** Build the base rules, using the default ones and the {!plugin_rules}. *)
 val build_base_rules : Stog_types.stog ->
-  Stog_types.elt_id -> (Xmlm.name * Stog_types.stog Xtmpl.callback) list
+  Stog_types.doc_id -> (Xmlm.name * Stog_types.stog Xtmpl.callback) list
 
-(** The calllback to insert a list of elements. Can be called directly
+(** The calllback to insert a list of documents. Can be called directly
   if provided an additional environment, argument and children nodes. *)
-val elt_list :
-  Stog_types.elt ->
+val doc_list :
+  Stog_types.doc ->
   ?rss:Neturl.url ->
-  ?set:Stog_types.Elt_set.t -> Stog_types.stog Xtmpl.callback
+  ?set:Stog_types.Doc_set.t -> Stog_types.stog Xtmpl.callback
 
-val get_sectionning_tags : Stog_types.stog -> Stog_types.elt -> Xtmpl.name list
+val get_sectionning_tags : Stog_types.stog -> Stog_types.doc -> Xtmpl.name list
 
 (** [mk_levels modname funs default_levels] returns a function
   to create the level map from an optional list of pairs [(funname, [level1 ; level2; ...])].

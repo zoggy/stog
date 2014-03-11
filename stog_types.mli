@@ -44,34 +44,34 @@ val get_def : def list -> Xmlm.name -> (Xtmpl.attributes * body) option
 module Str_map : Map.S with type key = string
 module Str_set : Set.S with type elt = string
 
-type elt = {
-  elt_path : path ;
-  elt_parent : path option ;
-  elt_children : path list ;
-  elt_type : string ;
-  elt_body : body ;
-  elt_date : date option ;
-  elt_title : string ;
-  elt_keywords : string list ;
-  elt_topics : string list ;
-  elt_published : bool ;
-  elt_defs : def list ;
-  elt_src : string ;
-  elt_sets : string list ; (** list of sets ("blog", "foo", etc.) this element belongs to *)
-  elt_lang_dep : bool ; (** whether a file must be generated for each language *)
-  elt_xml_doctype : string option ;
-  elt_out : body option ;
-  elt_used_mods : Str_set.t ;
+type doc = {
+  doc_path : path ;
+  doc_parent : path option ;
+  doc_children : path list ;
+  doc_type : string ;
+  doc_body : body ;
+  doc_date : date option ;
+  doc_title : string ;
+  doc_keywords : string list ;
+  doc_topics : string list ;
+  doc_published : bool ;
+  doc_defs : def list ;
+  doc_src : string ;
+  doc_sets : string list ; (** list of sets ("blog", "foo", etc.) this document belongs to *)
+  doc_lang_dep : bool ; (** whether a file must be generated for each language *)
+  doc_xml_doctype : string option ;
+  doc_out : body option ;
+  doc_used_mods : Str_set.t ;
 }
-type elt_id = elt Stog_tmap.key
+type doc_id = doc Stog_tmap.key
 
-val make_elt : ?typ:string -> ?path:path -> unit -> elt
+val make_doc : ?typ:string -> ?path:path -> unit -> doc
 
 
 val today : unit -> date
 
 module Path_trie : Stog_trie.S with type symbol = string
-module Elt_set : Set.S with type elt = elt_id
+module Doc_set : Set.S with type elt = doc_id
 module Int_map : Map.S with type key = int
 module Int_set : Set.S with type elt = int
 module Path_map : Map.S with type key = path
@@ -79,7 +79,7 @@ module Path_set : Set.S with type elt = path
 
 type edge_type = Date | Topic of string | Keyword of string | Ref
 
-module Graph : Stog_graph.S with type key = elt_id and type edge_data = edge_type
+module Graph : Stog_graph.S with type key = doc_id and type edge_data = edge_type
 
 type file_tree = { files : Str_set.t; dirs : file_tree Str_map.t; }
 
@@ -87,29 +87,29 @@ type stog_mod = {
   mod_requires : Str_set.t ;
   mod_defs : def list ;
 }
-type 'a dependency = File of string | Elt of 'a;;
+type 'a dependency = File of string | Doc of 'a;;
 module Depset : Set.S with type elt = string dependency;;
 type stog_dependencies = Depset.t Str_map.t;;
 
 type stog = {
   stog_dir : string;
-  stog_elts : (elt, elt) Stog_tmap.t;
-  stog_elts_by_path : elt_id Path_trie.t;
+  stog_docs : (doc, doc) Stog_tmap.t;
+  stog_docs_by_path : doc_id Path_trie.t;
   stog_defs : def list;
   stog_tmpl_dir : string;
   stog_cache_dir : string;
   stog_title : string;
   stog_desc : body;
   stog_graph : Graph.t;
-  stog_elts_by_kw : Elt_set.t Str_map.t;
-  stog_elts_by_topic : Elt_set.t Str_map.t;
-  stog_archives : Elt_set.t Int_map.t Int_map.t;
+  stog_docs_by_kw : Doc_set.t Str_map.t;
+  stog_docs_by_topic : Doc_set.t Str_map.t;
+  stog_archives : Doc_set.t Int_map.t Int_map.t;
   stog_base_url : Neturl.url ;
   stog_email : string;
   stog_rss_length : int;
   stog_lang : string option;
   stog_outdir : string;
-  stog_main_elt : elt_id option;
+  stog_main_doc : doc_id option;
   stog_files : file_tree;
   stog_modules : stog_mod Str_map.t ;
   stog_used_mods : Str_set.t ;
@@ -126,29 +126,29 @@ val url_concat : Neturl.url -> string -> Neturl.url
 val create_stog : string -> stog
 val stog_md5 : stog -> string
 
-val elt : stog -> elt Stog_tmap.key -> elt
+val doc : stog -> doc Stog_tmap.key -> doc
 
-val elts_by_path : ?typ:string -> stog -> path -> (elt_id * elt) list
-val elt_by_path : ?typ:string -> stog -> path -> elt_id * elt
-val elt_children : stog -> elt -> elt list
+val docs_by_path : ?typ:string -> stog -> path -> (doc_id * doc) list
+val doc_by_path : ?typ:string -> stog -> path -> doc_id * doc
+val doc_children : stog -> doc -> doc list
 
-val set_elt : stog -> elt Stog_tmap.key -> elt -> stog
-val add_path : stog -> path -> elt_id -> stog
-val add_elt : stog -> elt -> stog
+val set_doc : stog -> doc Stog_tmap.key -> doc -> stog
+val add_path : stog -> path -> doc_id -> stog
+val add_doc : stog -> doc -> stog
 
-val sort_elts_by_date : elt list -> elt list
-val sort_ids_elts_by_date : ('a * elt) list -> ('a * elt) list
-val sort_ids_elts_by_rules :
-  'b -> string list -> (elt_id * elt * 'b Xtmpl.env) list -> 'b * (elt_id * elt) list
+val sort_docs_by_date : doc list -> doc list
+val sort_ids_docs_by_date : ('a * doc) list -> ('a * doc) list
+val sort_ids_docs_by_rules :
+  'b -> string list -> (doc_id * doc * 'b Xtmpl.env) list -> 'b * (doc_id * doc) list
 
-val elt_list :
-  ?by_date:bool -> ?set:string -> stog -> (elt Stog_tmap.key * elt) list
+val doc_list :
+  ?by_date:bool -> ?set:string -> stog -> (doc Stog_tmap.key * doc) list
 
 val merge_stogs : stog list -> stog
 val make_path : stog -> string -> string list
 
-val find_block_by_id : elt -> string -> Xtmpl.tree option
+val find_block_by_id : doc -> string -> Xtmpl.tree option
 
 val id_map_add : stog -> Path_map.key -> Str_map.key -> path -> string option -> stog
 val map_href : stog -> Path_map.key -> Str_map.key -> Path_map.key * Str_map.key
-val map_elt_ref : stog -> elt -> Str_map.key -> elt * Str_map.key
+val map_doc_ref : stog -> doc -> Str_map.key -> doc * Str_map.key

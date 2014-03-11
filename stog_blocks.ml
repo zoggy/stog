@@ -99,8 +99,8 @@ let add_block ?(on_dup=`Warn) ~path ~id ~short ~long data =
   { data with blocks = Smap.add path map data.blocks }
 ;;
 
-let add_block_for_elt data elt =
-  let path = Stog_types.string_of_path elt.elt_path in
+let add_block_for_doc data doc =
+  let path = Stog_types.string_of_path doc.doc_path in
   try ignore(Smap.find path data.blocks); data
   with Not_found ->
       let blocks = Smap.add path Smap.empty data.blocks in
@@ -121,31 +121,31 @@ let fun_counter (stog, data) env atts subs =
 ;;
 
 
-let fun_elt_href ?typ src_elt href (stog, data) env args subs =
-  let src_path_s = Stog_types.string_of_path src_elt.elt_path in
-  let report_error msg = Stog_msg.error ~info: "Stog_html.fun_elt_href" msg in
+let fun_doc_href ?typ src_doc href (stog, data) env args subs =
+  let src_path_s = Stog_types.string_of_path src_doc.doc_path in
+  let report_error msg = Stog_msg.error ~info: "Stog_html.fun_doc_href" msg in
   let quotes =
     match Xtmpl.get_arg_cdata args ("", "quotes") with
       None -> false
     | Some s -> Stog_io.bool_of_string s
   in
-  let (stog, data, elt, text) =
+  let (stog, data, doc, text) =
     let ((stog,data), info) =
-      Stog_html.elt_by_href ?typ ~src_elt stog (stog,data) env href
+      Stog_html.doc_by_href ?typ ~src_doc stog (stog,data) env href
     in
     let (stog, text) =
       match info with
         None -> (stog, [Xtmpl.D "??"])
-      | Some (elt, path, id) ->
-          let stog = Stog_deps.add_dep stog src_elt (Stog_types.Elt elt) in
+      | Some (doc, path, id) ->
+          let stog = Stog_deps.add_dep stog src_doc (Stog_types.Doc doc) in
           match subs, id with
           | [], None ->
               let quote = if quotes then "\"" else "" in
-              let s = Printf.sprintf "%s%s%s" quote elt.elt_title quote in
+              let s = Printf.sprintf "%s%s%s" quote doc.doc_title quote in
               (stog, [Xtmpl.xml_of_string s])
           | text, None -> (stog, text)
           | _, Some id ->
-              let path = Stog_types.string_of_path elt.elt_path in
+              let path = Stog_types.string_of_path doc.doc_path in
               let title =
                 try
                   let id_map = Smap.find path data.blocks in
@@ -159,7 +159,7 @@ let fun_elt_href ?typ src_elt href (stog, data) env args subs =
                       report_error msg;
                       Xtmpl.D "??"
                 with Not_found ->
-                    let msg = Printf.sprintf "In %s: Unknown element %S in block map" src_path_s path in
+                    let msg = Printf.sprintf "In %s: Unknown document %S in block map" src_path_s path in
                     report_error msg;
                     Xtmpl.D "??"
               in
@@ -173,16 +173,16 @@ let fun_elt_href ?typ src_elt href (stog, data) env args subs =
     in
     (stog, data, info, text)
   in
-  match elt with
+  match doc with
     None ->
       ((stog, data),
        [Xtmpl.E (("", "span"),
           Xtmpl.atts_one ("", "class") [Xtmpl.D "unknown-ref"],
           text)
        ])
-  | Some (elt, _, id) ->
+  | Some (doc, _, id) ->
       let href =
-        let url = Stog_engine.elt_url stog elt in
+        let url = Stog_engine.doc_url stog doc in
         match id with
           None -> url
         | Some id -> Neturl.modify_url ~fragment: id url
@@ -194,21 +194,21 @@ let fun_elt_href ?typ src_elt href (stog, data) env args subs =
       ((stog, data), [ xml ])
 ;;
 
-let fun_elt ?typ src_elt (stog, data) env args subs =
+let fun_doc ?typ src_doc (stog, data) env args subs =
   let href =
     match Xtmpl.get_arg_cdata args ("", "href") with
       None ->
         let msg = Printf.sprintf "Missing href for <%s>"
-          (match typ with None -> "elt" | Some s -> s)
+          (match typ with None -> "doc" | Some s -> s)
         in
         failwith msg
     | Some s -> s
   in
-  fun_elt_href ?typ src_elt href (stog, data) env args subs
+  fun_doc_href ?typ src_doc href (stog, data) env args subs
 ;;
 
-let fun_post = fun_elt ~typ: "post";;
-let fun_page = fun_elt ~typ: "page";;
+let fun_post = fun_doc ~typ: "post";;
+let fun_page = fun_doc ~typ: "page";;
 
 
 let make_fun_section sect_up cls sect_down (stog, data) env args subs =
@@ -467,13 +467,13 @@ let fun_block1 (stog, data) env args subs =
   match Xtmpl.get_arg_cdata args ("", "href") with
     Some s when s <> "" ->
       begin
-        match Xtmpl.get_arg_cdata args ("", Stog_tags.elt_path) with
+        match Xtmpl.get_arg_cdata args ("", Stog_tags.doc_path) with
           Some _ -> raise Xtmpl.No_change
         | None ->
             let ((stog, data), path) = Stog_html.get_path (stog, data) env in
             let xmls =
               [ Xtmpl.E (("", Stog_tags.block),
-                 Xtmpl.atts_of_list [("", Stog_tags.elt_path), [Xtmpl.D path] ; ("", "href"), [Xtmpl.D s]],
+                 Xtmpl.atts_of_list [("", Stog_tags.doc_path), [Xtmpl.D path] ; ("", "href"), [Xtmpl.D s]],
                  subs)
               ]
             in
@@ -519,7 +519,7 @@ let fun_block2 (stog, data) env atts subs =
   match Xtmpl.get_arg_cdata atts ("", "href") with
     None -> ((stog, data), subs)
   | Some href ->
-      let path = match Xtmpl.get_arg_cdata atts ("", Stog_tags.elt_path) with
+      let path = match Xtmpl.get_arg_cdata atts ("", Stog_tags.doc_path) with
           None -> assert false
         | Some path -> path
       in
@@ -530,7 +530,7 @@ let fun_block2 (stog, data) env atts subs =
         | Some s -> s
       in
       let xmls =
-        [ Xtmpl.E (("", Stog_tags.elt),
+        [ Xtmpl.E (("", Stog_tags.doc),
            Xtmpl.atts_of_list
              [("", "href"), [Xtmpl.D url] ; ("", "quotes"), [Xtmpl.D quotes]],
            [])
@@ -551,30 +551,30 @@ let gather_existing_ids =
         | Some id ->
             if Sset.mem id set then
               failwith (Printf.sprintf
-               "id %S defined twice in the same element %S (here for tag %S)" id
+               "id %S defined twice in the same document %S (here for tag %S)" id
                (Stog_types.string_of_path path) (Stog_html.concat_name tag))
             else
                Sset.add id set
       in
       List.fold_left (f path) set subs
   in
-  fun env (stog, data) elt_id ->
-    let elt = Stog_types.elt stog elt_id in
-    match elt.elt_out with
+  fun env (stog, data) doc_id ->
+    let doc = Stog_types.doc stog doc_id in
+    match doc.doc_out with
       None -> (stog, data)
     | Some body ->
-        let data = add_block_for_elt data elt in
+        let data = add_block_for_doc data doc in
         let set =
           let g set xml =
-            try f elt.elt_path set xml
+            try f doc.doc_path set xml
             with e ->
                 prerr_endline (Xtmpl.string_of_xml xml);
                 raise e
           in
           List.fold_left g Sset.empty body
         in
-        let title = Xtmpl.xml_of_string elt.elt_title in
-        let path = Stog_types.string_of_path elt.elt_path in
+        let title = Xtmpl.xml_of_string doc.doc_title in
+        let path = Stog_types.string_of_path doc.doc_path in
         let data = Sset.fold
           (fun id data ->
              add_block ~on_dup: `Ignore ~path ~id ~short: title ~long: title data)
@@ -583,16 +583,16 @@ let gather_existing_ids =
         (stog, data)
 ;;
 
-let fun_init _ (stog,data) elt_ids =
-  let f (stog, data) elt_id =
-    let elt = Stog_types.elt stog elt_id in
-    let path = Stog_types.string_of_path elt.elt_path in
+let fun_init _ (stog,data) doc_ids =
+  let f (stog, data) doc_id =
+    let doc = Stog_types.doc stog doc_id in
+    let path = Stog_types.string_of_path doc.doc_path in
     let counters = Smap.add path Smap.empty data.counters in
     let blocks =  Smap.add path Smap.empty data.blocks in
     let data = { blocks ; counters } in
     (stog, data)
   in
-  List.fold_left f (stog,data) elt_ids
+  List.fold_left f (stog,data) doc_ids
 ;;
 
 let fun_level_base =
@@ -601,20 +601,20 @@ let fun_level_base =
       ("", Stog_tags.counter), fun_counter ;
     ]
   in
-  Stog_engine.fun_apply_stog_data_elt_rules f
+  Stog_engine.fun_apply_stog_data_doc_rules f
 ;;
 
 let fun_level_gather_ids =
-  let f env (stog, data) elts =
-    List.fold_left (gather_existing_ids env) (stog, data) elts
+  let f env (stog, data) docs =
+    List.fold_left (gather_existing_ids env) (stog, data) docs
   in
   Stog_engine.Fun_stog_data f
 ;;
 
 
-let rules_sectionning stog elt_id =
-  let elt = Stog_types.elt stog elt_id in
-  let tags = Stog_html.get_sectionning_tags stog elt in
+let rules_sectionning stog doc_id =
+  let doc = Stog_types.doc stog doc_id in
+  let tags = Stog_html.get_sectionning_tags stog doc in
   let rec f acc up = function
     [] -> acc
   | tag :: rest ->
@@ -627,19 +627,19 @@ let rules_sectionning stog elt_id =
 ;;
 
 let fun_level_sectionning =
-  Stog_engine.fun_apply_stog_data_elt_rules rules_sectionning ;;
+  Stog_engine.fun_apply_stog_data_doc_rules rules_sectionning ;;
 
 
-let rules_fun_elt stog elt_id  =
-  let elt = Stog_types.elt stog elt_id in
-  [ ("", Stog_tags.elt), fun_elt elt  ;
-    ("", Stog_tags.post), fun_post elt  ;
-    ("", Stog_tags.page), fun_page elt  ;
+let rules_fun_doc stog doc_id  =
+  let doc = Stog_types.doc stog doc_id in
+  [ ("", Stog_tags.doc), fun_doc doc  ;
+    ("", Stog_tags.post), fun_post doc  ;
+    ("", Stog_tags.page), fun_page doc  ;
     ("", Stog_tags.block), fun_block2 ;
   ]
 ;;
-let fun_level_fun_elt =
-  Stog_engine.fun_apply_stog_data_elt_rules rules_fun_elt ;;
+let fun_level_fun_doc =
+  Stog_engine.fun_apply_stog_data_doc_rules rules_fun_doc ;;
 
 
 let dump_data env (stog,data) _ =
@@ -660,7 +660,7 @@ let level_funs =
     "base", fun_level_base ;
     "sectionning", fun_level_sectionning ;
     "gather-ids", fun_level_gather_ids ;
-    "elt", fun_level_fun_elt ;
+    "doc", fun_level_fun_doc ;
     "dump", Stog_engine.Fun_stog_data dump_data ;
   ]
 ;;
@@ -674,7 +674,7 @@ let default_levels =
       "base", [ 61 ] ;
       "sectionning", [ 100 ] ;
       "gather-ids", [ 120 ] ;
-      "elt", [ 150 ] ;
+      "doc", [ 150 ] ;
 (*      "dump", [ 101 ; 151 ];*)
     ]
 
@@ -695,13 +695,13 @@ let make_module ?levels () =
         cache_blocks : (Xtmpl.tree * Xtmpl.tree) Str_map.t ;
       }
 
-    let cache_load _stog data elt t =
-      let path = Stog_types.string_of_path elt.elt_path in
+    let cache_load _stog data doc t =
+      let path = Stog_types.string_of_path doc.doc_path in
       let blocks = Smap.add path t.cache_blocks data.blocks in
       { data with blocks }
 
-    let cache_store _stog data elt =
-      let path = Stog_types.string_of_path elt.elt_path in
+    let cache_store _stog data doc =
+      let path = Stog_types.string_of_path doc.doc_path in
       {
         cache_blocks = (try Smap.find path data.blocks with Not_found -> Smap.empty) ;
       }

@@ -34,8 +34,8 @@ val version : string
 (** Contents of [.stog/config] file. *)
 type t = {
     ignored : string list;
-    elements : string list;
-    not_elements : string list;
+    documents : string list;
+    not_documents : string list;
     follow_symlinks : bool ;
     levels : (string * (string * int list) list) list ;
   }

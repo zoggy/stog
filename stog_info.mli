@@ -28,22 +28,22 @@
 
 (** Computing information from stog structure (graphs, ...). *)
 
-(** Compute internals graphs between elements. *)
+(** Compute internals graphs between documents. *)
 val compute : Stog_types.stog -> Stog_types.stog
 
-(** Get the next element by date. *)
+(** Get the next document by date. *)
 val succ_by_date :
   Stog_types.stog -> Stog_types.Graph.key -> Stog_types.Graph.key option
 
-(** Get the previous element by date. *)
+(** Get the previous document by date. *)
 val pred_by_date :
   Stog_types.stog -> Stog_types.Graph.key -> Stog_types.Graph.key option
 
 (** Get graphviz code from the given stog structure, to create
-  a graph showing edges between (clickable) elements; the edges are
+  a graph showing edges between (clickable) documents; the edges are
   annotated by the topic and keywords. *)
-val dot_of_graph : (Stog_types.elt -> Neturl.url) -> Stog_types.stog -> string
+val dot_of_graph : (Stog_types.doc -> Neturl.url) -> Stog_types.stog -> string
 
-(** Remove from the stog structure the elements having
-  {!Stog_types.elt.elt_published}[=false]. *)
+(** Remove from the stog structure the documents having
+  {!Stog_types.doc.doc_published}[=false]. *)
 val remove_not_published : Stog_types.stog -> Stog_types.stog

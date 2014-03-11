@@ -36,24 +36,24 @@ module Nmap = Xtmpl.Name_map;;
 type cutpoint =
   {
     cut_tag : string * string ;
-    cut_elt_type : string ;
+    cut_doc_type : string ;
     cut_path_sep : string ;
     cut_insert_link : bool ;
   }
 ;;
 
-(* since we iter in elements with List.fold_right to keep elements in
-  order, we encounter next element of a cutpoint A before cutpoint A. *)
+(* since we iter in documents with List.fold_right to keep documents in
+  order, we encounter next document of a cutpoint A before cutpoint A. *)
 type links = {
-  by_elt : (Stog_types.path option * Stog_types.path option) Path_map.t ;
+  by_doc : (Stog_types.path option * Stog_types.path option) Path_map.t ;
   next_by_cp : Stog_types.path Nmap.t ;
 }
 
-let cutpoint_of_atts elt atts =
-  let typ = Xtmpl.opt_arg_cdata atts ~def: elt.elt_type ("","type") in
+let cutpoint_of_atts doc atts =
+  let typ = Xtmpl.opt_arg_cdata atts ~def: doc.doc_type ("","type") in
   let tag =
     match Xtmpl.get_arg_cdata atts ("","tag") with
-      None -> failwith "Missing 'tag' attribute for <cut-elt> node"
+      None -> failwith "Missing 'tag' attribute for <cut-doc> node"
     | Some s ->
         match Stog_misc.split_string s [':'] with
           [] | [_] -> ("", s)
@@ -61,12 +61,12 @@ let cutpoint_of_atts elt atts =
   in
   let sep = Xtmpl.opt_arg_cdata atts ~def: "-" ("", Stog_tags.path_sep) in
   let insert_link = not (Xtmpl.opt_arg_cdata atts ~def: "true" ("","insert-link") = "false") in
-  { cut_tag = tag ; cut_elt_type = typ ;
+  { cut_tag = tag ; cut_doc_type = typ ;
     cut_path_sep = sep ; cut_insert_link = insert_link ;
   }
 ;;
 
-let new_elt_in_cutpoint cut_tag links elt =
+let new_doc_in_cutpoint cut_tag links doc =
   let next_path =
     try Some (Nmap.find cut_tag links.next_by_cp)
     with Not_found -> None
@@ -76,49 +76,49 @@ let new_elt_in_cutpoint cut_tag links elt =
       None -> links
     | Some next_path ->
         let next =
-          try snd (Path_map.find next_path links.by_elt)
+          try snd (Path_map.find next_path links.by_doc)
           with Not_found -> None
         in
-        let by_elt = Path_map.add next_path
-          (Some elt.elt_path, next) links.by_elt
+        let by_doc = Path_map.add next_path
+          (Some doc.doc_path, next) links.by_doc
         in
         let prev =
-          try fst (Path_map.find elt.elt_path links.by_elt)
+          try fst (Path_map.find doc.doc_path links.by_doc)
           with Not_found -> None
         in
-        let by_elt = Path_map.add elt.elt_path
-          (prev, Some next_path) by_elt
+        let by_doc = Path_map.add doc.doc_path
+          (prev, Some next_path) by_doc
         in
-        { links with by_elt }
+        { links with by_doc }
   in
-  let next_by_cp = Nmap.add cut_tag elt.elt_path links.next_by_cp in
+  let next_by_cp = Nmap.add cut_tag doc.doc_path links.next_by_cp in
   { links with next_by_cp }
 ;;
 
-let add_elt links stog elt =
+let add_doc links stog doc =
   let (prev, next) =
-    try Path_map.find elt.elt_path links.by_elt
+    try Path_map.find doc.doc_path links.by_doc
     with Not_found -> None, None
   in
-  let elt =
+  let doc =
     match prev with
-      None -> elt
+      None -> doc
     | Some prev_path ->
         let def = (("", Stog_tags.previous_path), Xtmpl.atts_empty,
            [Xtmpl.D (Stog_types.string_of_path prev_path)])
         in
-        { elt with elt_defs = def :: elt.elt_defs }
+        { doc with doc_defs = def :: doc.doc_defs }
     in
-  let elt =
+  let doc =
     match next with
-      None -> elt
+      None -> doc
     | Some next_path ->
         let def = (("", Stog_tags.next_path), Xtmpl.atts_empty,
            [Xtmpl.D (Stog_types.string_of_path next_path)])
         in
-        { elt with elt_defs = def :: elt.elt_defs }
+        { doc with doc_defs = def :: doc.doc_defs }
   in
-  Stog_types.add_elt stog elt
+  Stog_types.add_doc stog doc
 ;;
 
 let mk_path path sep id =
@@ -132,7 +132,7 @@ let mk_path path sep id =
       Stog_types.path_of_string p
 ;;
 
-let cut_elts =
+let cut_docs =
   let id_set =
     let rec iter set = function
       Xtmpl.D _ -> set
@@ -145,10 +145,10 @@ let cut_elts =
         in
         List.fold_left iter set subs
     in
-    fun elt ->
+    fun doc ->
       let xmls =
-        match elt.elt_out with
-          None -> elt.elt_body
+        match doc.doc_out with
+          None -> doc.doc_body
         | Some xmls -> xmls
       in
       List.fold_left iter Sset.empty xmls
@@ -167,16 +167,16 @@ let cut_elts =
     else
       stog
   in
-  let rec iter elt new_path cutpoints links stog new_elts xml =
+  let rec iter doc new_path cutpoints links stog new_docs xml =
     match xml with
-      Xtmpl.D _ -> (stog, [xml], new_elts, links)
-    | Xtmpl.E (("","cut-elt"), atts, xmls) ->
-        let cutpoints = (cutpoint_of_atts elt atts) :: cutpoints in
-        let (stog, xmls, new_elts, links2) = List.fold_right
-          (fold elt new_path cutpoints) xmls (stog, [], new_elts, links)
+      Xtmpl.D _ -> (stog, [xml], new_docs, links)
+    | Xtmpl.E (("","cut-doc"), atts, xmls) ->
+        let cutpoints = (cutpoint_of_atts doc atts) :: cutpoints in
+        let (stog, xmls, new_docs, links2) = List.fold_right
+          (fold doc new_path cutpoints) xmls (stog, [], new_docs, links)
         in
         let links = { links2 with next_by_cp = links.next_by_cp } in
-        (stog, xmls, new_elts, links)
+        (stog, xmls, new_docs, links)
 
     | Xtmpl.E (tag, atts, xmls) ->
         let cp_opt =
@@ -186,10 +186,10 @@ let cut_elts =
         match cp_opt with
           None ->
             (* not a cut point *)
-            let (stog, xmls, new_elts, links) = List.fold_right
-              (fold elt new_path cutpoints) xmls (stog, [], new_elts, links)
+            let (stog, xmls, new_docs, links) = List.fold_right
+              (fold doc new_path cutpoints) xmls (stog, [], new_docs, links)
             in
-            (stog, [Xtmpl.E (tag, atts, xmls)], new_elts, links)
+            (stog, [Xtmpl.E (tag, atts, xmls)], new_docs, links)
         | Some cp ->
             try
               let title =
@@ -207,28 +207,28 @@ let cut_elts =
                 | Some s -> s
               in
               let new_path = mk_path new_path cp.cut_path_sep id in
-              let stog = set_id_map stog elt.elt_path atts new_path false in
-              let (stog, xmls, new_elts, links2) =
-                List.fold_right (fold elt new_path cutpoints)
-                  xmls (stog, [], new_elts, links)
+              let stog = set_id_map stog doc.doc_path atts new_path false in
+              let (stog, xmls, new_docs, links2) =
+                List.fold_right (fold doc new_path cutpoints)
+                  xmls (stog, [], new_docs, links)
               in
               let links = { links2 with next_by_cp = links.next_by_cp } in
-              let elt =
-                { elt with
-                  elt_path = new_path ;
-                  elt_parent = Some elt.elt_path ;
-                  elt_type = cp.cut_elt_type ;
-                  elt_title = title ;
-                  elt_body = xmls ;
-                  elt_out = None ;
+              let doc =
+                { doc with
+                  doc_path = new_path ;
+                  doc_parent = Some doc.doc_path ;
+                  doc_type = cp.cut_doc_type ;
+                  doc_title = title ;
+                  doc_body = xmls ;
+                  doc_out = None ;
                 }
               in
-              let links = new_elt_in_cutpoint cp.cut_tag links elt in
+              let links = new_doc_in_cutpoint cp.cut_tag links doc in
               let xml =
                 if cp.cut_insert_link then
                   [ Xtmpl.E (("","div"),
                      Xtmpl.atts_one ("","class") [Xtmpl.D ("cutlink "^(snd tag))],
-                     [Xtmpl.E (("","elt"),
+                     [Xtmpl.E (("","doc"),
                         Xtmpl.atts_one ("","href")
                           [Xtmpl.D (Stog_types.string_of_path new_path)],
                         [])]
@@ -237,67 +237,67 @@ let cut_elts =
                 else
                   []
               in
-              (stog, xml, elt :: new_elts, links)
+              (stog, xml, doc :: new_docs, links)
             with
               Not_found ->
                 (* not enough information to cut *)
-                let (stog, xmls, new_elts, links) =
-                  List.fold_right (fold elt new_path cutpoints)
-                    xmls (stog, [], new_elts, links)
+                let (stog, xmls, new_docs, links) =
+                  List.fold_right (fold doc new_path cutpoints)
+                    xmls (stog, [], new_docs, links)
                 in
-                (stog, xmls, new_elts, links)
+                (stog, xmls, new_docs, links)
 
-  and fold elt new_path cutpoints xml (stog, xmls, new_elts, links) =
-    let (stog, xmls2, new_elts, links) =
-      iter elt new_path cutpoints links stog new_elts xml
+  and fold doc new_path cutpoints xml (stog, xmls, new_docs, links) =
+    let (stog, xmls2, new_docs, links) =
+      iter doc new_path cutpoints links stog new_docs xml
     in
-    (stog, xmls2 @ xmls, new_elts, links)
+    (stog, xmls2 @ xmls, new_docs, links)
   in
-  let cut_elt stog elt =
-    let links = { by_elt = Path_map.empty ; next_by_cp = Nmap.empty } in
-    match elt.elt_out with
-      None -> (stog, elt, [], links)
+  let cut_doc stog doc =
+    let links = { by_doc = Path_map.empty ; next_by_cp = Nmap.empty } in
+    match doc.doc_out with
+      None -> (stog, doc, [], links)
     | Some body ->
-        let (stog, body, new_elts, links) =
-          List.fold_right (fold elt elt.elt_path [])
+        let (stog, body, new_docs, links) =
+          List.fold_right (fold doc doc.doc_path [])
             body (stog, [], [], links)
         in
         let children =
-          match new_elts with
-            [] -> elt.elt_children
-          | _ -> elt.elt_children @ (List.map (fun elt -> elt.elt_path) new_elts)
+          match new_docs with
+            [] -> doc.doc_children
+          | _ -> doc.doc_children @ (List.map (fun doc -> doc.doc_path) new_docs)
         in
         (stog,
-         { elt with elt_out = Some body ; elt_children = children },
-         new_elts, links)
+         { doc with doc_out = Some body ; doc_children = children },
+         new_docs, links)
   in
   let add_id_mappings stog src_path dst_path set =
     Sset.fold
       (fun id stog -> Stog_types.id_map_add stog src_path id dst_path (Some id))
       set stog
   in
-  let set_elt_id_mappings orig_path all_ids stog elt =
-    let ids = id_set elt in
-    let stog = add_id_mappings stog orig_path elt.elt_path ids in
-    add_id_mappings stog elt.elt_path orig_path (Sset.diff all_ids ids)
+  let set_doc_id_mappings orig_path all_ids stog doc =
+    let ids = id_set doc in
+    let stog = add_id_mappings stog orig_path doc.doc_path ids in
+    add_id_mappings stog doc.doc_path orig_path (Sset.diff all_ids ids)
   in
-  let f_elt env stog elt_id =
-    let elt = Stog_types.elt stog elt_id in
-    let (stog, elt2, new_elts, links) = cut_elt stog elt in
-    match new_elts with
+  let f_doc env stog doc_id =
+    let doc = Stog_types.doc stog doc_id in
+    let (stog, doc2, new_docs, links) = cut_doc stog doc in
+    match new_docs with
       [] ->
-        (* no new elements means the original element was not modified either *)
+        (* no new documents means the original document was not modified either *)
         stog
     | _ ->
-        let all_ids = id_set elt in
+        let all_ids = id_set doc in
         let stog =
-          List.fold_left (set_elt_id_mappings elt.elt_path all_ids)
-          stog new_elts
+          List.fold_left (set_doc_id_mappings doc.doc_path all_ids)
+          stog new_docs
         in
-        let stog = Stog_types.set_elt stog elt_id elt2 in
-        let stog = List.fold_left (add_elt links) stog new_elts in
+        let stog = Stog_types.set_doc stog doc_id doc2 in
+        let stog = List.fold_left (add_doc links) stog new_docs in
         stog
   in
-  fun env stog elts ->
-    List.fold_left (f_elt env) stog elts
+  fun env stog docs ->
+    List.fold_left (f_doc env) stog docs
 ;;

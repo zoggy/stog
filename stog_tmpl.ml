@@ -34,22 +34,22 @@ type contents = Stog_types.stog -> Stog_types.stog * Xtmpl.tree
 
 let parse = Xtmpl.xml_of_string ~add_main: false ;;
 
-let get_template_file stog elt file =
+let get_template_file stog doc file =
   if Filename.is_relative file then
     begin
       if Filename.is_implicit file then
         Filename.concat stog.stog_tmpl_dir file
       else
-        Filename.concat (Filename.dirname elt.elt_src) file
+        Filename.concat (Filename.dirname doc.doc_src) file
     end
   else
     file
 ;;
 
-let read_template_file stog elt ?(depend=true) ?(raw=false) file =
-  let file = get_template_file stog elt file in
+let read_template_file stog doc ?(depend=true) ?(raw=false) file =
+  let file = get_template_file stog doc file in
   let stog =
-    if depend then Stog_deps.add_dep stog elt (Stog_types.File file) else stog
+    if depend then Stog_deps.add_dep stog doc (Stog_types.File file) else stog
   in
   let xml =
     if raw then
@@ -61,13 +61,13 @@ let read_template_file stog elt ?(depend=true) ?(raw=false) file =
 ;;
 
 
-let get_template stog ?elt contents name =
+let get_template stog ?doc contents name =
   let file = Filename.concat stog.stog_tmpl_dir name in
   let (stog, contents) = contents stog in
   let stog =
-    match elt with
+    match doc with
       None -> stog
-    | Some elt -> Stog_deps.add_dep stog elt (Stog_types.File file)
+    | Some doc -> Stog_deps.add_dep stog doc (Stog_types.File file)
   in
   if not (Sys.file_exists file) then
     (
@@ -87,17 +87,17 @@ let page stog =
     parse
       "<html>
     <head>
-      <title><site-title/> : <elt-title/></title>
+      <title><site-title/> : <doc-title/></title>
       <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
       <link href=\"&lt;site-url/&gt;/style.css\" rel=\"stylesheet\" type=\"text/css\"/>
     </head>
     <body>
       <div id=\"page\">
         <div id=\"header\">
-          <div class=\"page-title\"><elt-title/></div>
+          <div class=\"page-title\"><doc-title/></div>
         </div>
-        <if elt-type=\"post\"><div class=\"date\"><elt-date/></div></if>
-        <elt-body/>
+        <if doc-type=\"post\"><div class=\"date\"><doc-date/></div></if>
+        <doc-body/>
       </div>
     </body>
   </html>"
@@ -106,7 +106,7 @@ let page stog =
 
 let by_keyword stog =
   let t = parse
-    "<include file=\"page.tmpl\" elt-title=\"Posts for keyword '&lt;elt-title/&gt;'\"/>"
+    "<include file=\"page.tmpl\" doc-title=\"Posts for keyword '&lt;doc-title/&gt;'\"/>"
   in
   let (stog,_) = get_template stog page "page.tmpl" in
   (stog, t)
@@ -114,7 +114,7 @@ let by_keyword stog =
 
 let by_topic stog =
   let t = parse
-    "<include file=\"page.tmpl\" elt-title=\"Posts for topic '&lt;elt-title/&gt;'\"/>"
+    "<include file=\"page.tmpl\" doc-title=\"Posts for topic '&lt;doc-title/&gt;'\"/>"
   in
   let (stog,_) = get_template stog page "page.tmpl" in
   (stog, t)
@@ -122,21 +122,21 @@ let by_topic stog =
 
 let by_month stog =
   let t = parse
-    "<include file=\"page.tmpl\" elt-title=\"Posts of &lt;elt-title/&gt;\"/>"
+    "<include file=\"page.tmpl\" doc-title=\"Posts of &lt;doc-title/&gt;\"/>"
   in
   let (stog,_) = get_template stog page "page.tmpl" in
   (stog, t)
 ;;
 
-let elt_in_list stog =
+let doc_in_list stog =
   let xml = parse
-  "<div itemprop=\"blogPosts\" itemscope=\"\" itemtype=\"http://schema.org/BlogPosting\" class=\"elt-item\">
-     <div class=\"elt-item-title\">
-       <link itemprop=\"url\" href=\"&lt;elt-url/&gt;\"/>
-       <elt href=\"&lt;elt-path/&gt;\"/>
+  "<div itemprop=\"blogPosts\" itemscope=\"\" itemtype=\"http://schema.org/BlogPosting\" class=\"doc-item\">
+     <div class=\"doc-item-title\">
+       <link itemprop=\"url\" href=\"&lt;doc-url/&gt;\"/>
+       <doc href=\"&lt;doc-path/&gt;\"/>
      </div>
-     <div class=\"date\"><elt-date/></div>
-     <div itemprop=\"headline\" class=\"elt-intro\"><elt-intro/></div>
+     <div class=\"date\"><doc-date/></div>
+     <div itemprop=\"headline\" class=\"doc-intro\"><doc-intro/></div>
   </div>"
   in
   (stog, xml)

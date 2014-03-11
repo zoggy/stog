@@ -644,7 +644,7 @@ let fun_ref com eval tokens =
   let (arg, rest) = get_args com eval 1 tokens in
   let label = "#"^(string_tree (List.hd arg)) in
   let atts = Xtmpl.atts_one ("", "href") [Xtmpl.D label] in
-  ([Block (block ~atts ("", Stog_tags.elt) [])], rest)
+  ([Block (block ~atts ("", Stog_tags.doc) [])], rest)
 ;;
 
 let fun_cite com (eval : token list -> tree list) tokens =

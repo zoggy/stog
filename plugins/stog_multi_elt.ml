@@ -30,38 +30,38 @@
 
 open Stog_types;;
 
-let get_path_sep elt =
-  match Stog_types.get_def elt.elt_defs ("",Stog_tags.path_sep) with
+let get_path_sep doc =
+  match Stog_types.get_def doc.doc_defs ("",Stog_tags.path_sep) with
     None -> "/"
   | Some (_, [ Xtmpl.D s ]) -> s
   | Some (_, xmls) ->
       failwith ("Invalid "^(Stog_tags.path_sep^": "^(Xtmpl.string_of_xmls xmls)))
 ;;
 
-let mk_elt path_sep elt_id (stog,elt) = function
-  Xtmpl.D _ -> (stog,elt)
+let mk_doc path_sep doc_id (stog,doc) = function
+  Xtmpl.D _ -> (stog,doc)
 | Xtmpl.E (("","contents"), atts, subs) ->
     begin
       match Xtmpl.get_arg_cdata atts ("","type") with
         None ->
           let msg = "Missing type attribute in <contents> in "^
-            (Stog_types.string_of_path elt.elt_path)
+            (Stog_types.string_of_path doc.doc_path)
             in
             Stog_msg.error msg;
-            (stog, elt)
+            (stog, doc)
       | Some typ ->
           let atts = Xtmpl.atts_remove ("","type") atts in
-          (match elt.elt_body with
+          (match doc.doc_body with
             [] -> ()
            | _ ->
                Stog_msg.warning
                  (Printf.sprintf "Element %s: more than one <contents> node"
-                  (Stog_types.string_of_path elt.elt_path)
+                  (Stog_types.string_of_path doc.doc_path)
                  )
           );
-          let elt = { elt with elt_body = subs ; elt_type = typ } in
-          let elt = Stog_io.fill_elt_from_atts_and_subs elt atts subs in
-          (stog, elt)
+          let doc = { doc with doc_body = subs ; doc_type = typ } in
+          let doc = Stog_io.fill_doc_from_atts_and_subs doc atts subs in
+          (stog, doc)
     end
 | Xtmpl.E ((_,typ),atts,subs) ->
     let path =
@@ -71,39 +71,39 @@ let mk_elt path_sep elt_id (stog,elt) = function
           match Xtmpl.get_arg_cdata atts ("","id") with
             None ->
               let msg = "No id and no path attributes for an element in "^
-                (Stog_types.string_of_path elt.elt_path)
+                (Stog_types.string_of_path doc.doc_path)
               in
               failwith msg
           | Some id ->
-              Stog_cut.mk_path elt.elt_path path_sep id
+              Stog_cut.mk_path doc.doc_path path_sep id
     in
-    let new_elt = { elt with elt_out = None ; elt_type = typ ; elt_path = path } in
-    let new_elt = Stog_io.fill_elt_from_atts_and_subs new_elt atts subs in
-    (Stog_types.add_elt stog new_elt, elt)
+    let new_doc = { doc with doc_out = None ; doc_type = typ ; doc_path = path } in
+    let new_doc = Stog_io.fill_doc_from_atts_and_subs new_doc atts subs in
+    (Stog_types.add_doc stog new_doc, doc)
 ;;
 
-let f_multi_elt stog elt_id =
-  let elt = Stog_types.elt stog elt_id in
+let f_multi_doc stog doc_id =
+  let doc = Stog_types.doc stog doc_id in
   let xmls =
-    match elt.elt_out with
-      None -> elt.elt_body
+    match doc.doc_out with
+      None -> doc.doc_body
     | Some xmls -> xmls
   in
-  let elt = { elt with elt_body = [] ; elt_out = None } in
-  let path_sep = get_path_sep elt in
-  let (stog, elt) = List.fold_left (mk_elt path_sep elt_id) (stog, elt) xmls in
-  Stog_types.set_elt stog elt_id elt
-  (* remove original elt ? *)
+  let doc = { doc with doc_body = [] ; doc_out = None } in
+  let path_sep = get_path_sep doc in
+  let (stog, doc) = List.fold_left (mk_doc path_sep doc_id) (stog, doc) xmls in
+  Stog_types.set_doc stog doc_id doc
+  (* remove original doc ? *)
 ;;
 
 let fun_level_init =
-  let f_elt stog elt_id =
-    let elt = Stog_types.elt stog elt_id in
-    match elt.elt_type with
-      "multi" -> f_multi_elt stog elt_id
+  let f_doc stog doc_id =
+    let doc = Stog_types.doc stog doc_id in
+    match doc.doc_type with
+      "multi" -> f_multi_doc stog doc_id
     | _ -> stog
   in
-  let f env stog elts = List.fold_left f_elt stog elts in
+  let f env stog docs = List.fold_left f_doc stog docs in
   Stog_engine.Fun_stog f
 ;;
 
@@ -121,7 +121,7 @@ let default_levels =
     [
       "init", [ -10 ] ;
     ]
-let module_name = "multi-elt";;
+let module_name = "multi-doc";;
 
 let make_module ?levels () =
   let levels = Stog_html.mk_levels module_name level_funs default_levels ?levels () in
@@ -135,8 +135,8 @@ let make_module ?levels () =
        }
 
     type cache_data = unit
-    let cache_load _stog data elt t = data
-    let cache_store _stog data elt = ()
+    let cache_load _stog data doc t = data
+    let cache_store _stog data doc = ()
   end
   in
   (module M : Stog_engine.Module)

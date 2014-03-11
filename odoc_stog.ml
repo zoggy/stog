@@ -26,7 +26,7 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** OCamldoc custom generator, to create stog elements. *)
+(** OCamldoc custom generator, to create stog documents. *)
 
 open Odoc_info
 module Naming = Odoc_html.Naming

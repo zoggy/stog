@@ -68,8 +68,8 @@ let get_latex_defs stog env =
           [] -> (stog, files)
         | _ ->
             let (stog, path) = Stog_engine.get_path stog env in
-            let (_, elt) = Stog_types.elt_by_path stog (Stog_types.path_of_string path) in
-            let dir = Filename.dirname elt.Stog_types.elt_src in
+            let (_, doc) = Stog_types.doc_by_path stog (Stog_types.path_of_string path) in
+            let dir = Filename.dirname doc.Stog_types.doc_src in
             let f filename =
               if Filename.is_relative filename
               then Filename.concat dir filename
@@ -209,8 +209,8 @@ let fun_latex_body stog env args subs =
 
   let (stog, path) = Stog_engine.get_path stog env in
   let path = Stog_types.path_of_string path in
-  let (_, elt) = Stog_types.elt_by_path stog path in
-  let elt_dir = Filename.dirname elt.Stog_types.elt_src in
+  let (_, doc) = Stog_types.doc_by_path stog path in
+  let doc_dir = Filename.dirname doc.Stog_types.doc_src in
 
   let (stog, xmls) = Stog_engine.get_in_env stog env ("","sectionning") in
   let sectionning =
@@ -228,6 +228,6 @@ let fun_latex_body stog env args subs =
       image_sizes = Stog_of_latex.SMap.empty ;
     }
   in
-  let (tex,_) = Stog_of_latex.parse params code elt_dir in
+  let (tex,_) = Stog_of_latex.parse params code doc_dir in
   (stog, Stog_of_latex.to_xml tex.Stog_of_latex.body)
 ;;

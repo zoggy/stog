@@ -71,8 +71,8 @@ let fun_dot stog env atts subs =
   let code = concat_code subs in
   let (stog, path) = Stog_engine.get_path stog env in
   let path = Stog_types.path_of_string path in
-  let (_, elt) = Stog_types.elt_by_path stog path in
-  let elt_dir = Filename.dirname elt.Stog_types.elt_src in
+  let (_, doc) = Stog_types.doc_by_path stog path in
+  let doc_dir = Filename.dirname doc.Stog_types.doc_src in
   let command = Xtmpl.opt_arg_cdata ~def: "dot" atts ("","command") in
   let typ = Xtmpl.opt_arg_cdata ~def: "svg" atts ("", "type") in
   let id_prefix = Xtmpl.get_arg_cdata atts ("","prefix-svg-ids") in
@@ -85,10 +85,10 @@ let fun_dot stog env atts subs =
     | Some f ->
         let f =
           if Filename.is_relative f then
-            Filename.concat elt_dir f
+            Filename.concat doc_dir f
           else f
         in
-        let stog = Stog_plug.add_dep stog elt (Stog_types.File f) in
+        let stog = Stog_plug.add_dep stog doc (Stog_types.File f) in
         (stog, f, fun () -> ())
   in
   try
@@ -102,7 +102,7 @@ let fun_dot stog env atts subs =
       | Some f ->
           let absf =
             if Filename.is_relative f then
-              Filename.concat stog.Stog_types.stog_outdir (Filename.concat elt_dir f)
+              Filename.concat stog.Stog_types.stog_outdir (Filename.concat doc_dir f)
             else f
           in
           (f, absf, false, fun () -> ())

@@ -128,8 +128,8 @@ let used_mods_of_string set s =
      l
 ;;
 
-let extract_stog_info_from_elt stog elt =
-  let stog = { stog with stog_title = elt.elt_title } in
+let extract_stog_info_from_doc stog doc =
+  let stog = { stog with stog_title = doc.doc_title } in
   let rec iter (stog, defs) = function
     [] -> (stog, defs)
   | h:: q ->
@@ -156,116 +156,116 @@ let extract_stog_info_from_elt stog elt =
       let defs = match opt with None -> defs | Some x -> h :: defs in
       iter (stog, defs) q
   in
-  let (stog, defs) = iter (stog, []) elt.elt_defs in
-  (stog, { elt with elt_defs = defs })
+  let (stog, defs) = iter (stog, []) doc.doc_defs in
+  (stog, { doc with doc_defs = defs })
 ;;
 
-let add_elt stog elt =
-  let (stog, elt) =
+let add_doc stog doc =
+  let (stog, doc) =
     let is_main =
-      try match List.find (fun (s,_,_) -> s = ("","main")) elt.elt_defs with
+      try match List.find (fun (s,_,_) -> s = ("","main")) doc.doc_defs with
           (_,_,[Xtmpl.D s]) -> bool_of_string s
         | (_,_,xmls) ->
-          prerr_endline (Printf.sprintf "elt %S: not main:\n%S" elt.elt_title (Xtmpl.string_of_xmls xmls));
+          prerr_endline (Printf.sprintf "doc %S: not main:\n%S" doc.doc_title (Xtmpl.string_of_xmls xmls));
           false
       with Not_found -> false
     in
     if is_main then
       begin
-      match stog.stog_main_elt with
+      match stog.stog_main_doc with
           Some id ->
-            let elt2 = Stog_types.elt stog id in
+            let doc2 = Stog_types.doc stog id in
             failwith
-            (Printf.sprintf "%S: %S is already defined as main stog element"
-             elt.elt_src elt2.elt_src)
+            (Printf.sprintf "%S: %S is already defined as main stog document"
+             doc.doc_src doc2.doc_src)
         | None ->
-            extract_stog_info_from_elt stog elt
+            extract_stog_info_from_doc stog doc
       end
     else
-      (stog, elt)
+      (stog, doc)
   in
-  Stog_types.add_elt stog elt
+  Stog_types.add_doc stog doc
 ;;
 
 
 
-let fill_elt_from_atts =
+let fill_doc_from_atts =
   let to_s = function [Xtmpl.D s] -> s | _ -> "" in
-  let f name v elt =
+  let f name v doc =
     match name with
-    | ("","with-contents")-> elt
-    | ("","title") -> { elt with elt_title = (to_s v) }
-    | ("","keywords") -> { elt with elt_keywords = keywords_of_string (to_s v) }
-    | ("","topics") -> { elt with elt_topics = topics_of_string (to_s v) }
-    | ("","date") -> { elt with elt_date = Some (date_of_string (to_s v)) }
-    | ("","published") -> { elt with elt_published = bool_of_string (to_s v) }
-    | ("","sets") -> { elt with elt_sets = sets_of_string (to_s v) }
-    | ("","language-dep") -> { elt with elt_lang_dep = bool_of_string (to_s v) }
-    | ("","doctype") -> { elt with elt_xml_doctype = Some (to_s v) }
+    | ("","with-contents")-> doc
+    | ("","title") -> { doc with doc_title = (to_s v) }
+    | ("","keywords") -> { doc with doc_keywords = keywords_of_string (to_s v) }
+    | ("","topics") -> { doc with doc_topics = topics_of_string (to_s v) }
+    | ("","date") -> { doc with doc_date = Some (date_of_string (to_s v)) }
+    | ("","published") -> { doc with doc_published = bool_of_string (to_s v) }
+    | ("","sets") -> { doc with doc_sets = sets_of_string (to_s v) }
+    | ("","language-dep") -> { doc with doc_lang_dep = bool_of_string (to_s v) }
+    | ("","doctype") -> { doc with doc_xml_doctype = Some (to_s v) }
     | ("", "use") ->
-        { elt with elt_used_mods = used_mods_of_string elt.elt_used_mods (to_s v) }
+        { doc with doc_used_mods = used_mods_of_string doc.doc_used_mods (to_s v) }
     | _ ->
-        let defs = (name, Xtmpl.atts_empty, v) :: elt.elt_defs in
-        { elt with elt_defs = defs  }
+        let defs = (name, Xtmpl.atts_empty, v) :: doc.doc_defs in
+        { doc with doc_defs = defs  }
   in
   Xtmpl.Name_map.fold f
 ;;
 
-let fill_elt_from_nodes =
-  let f elt xml =
+let fill_doc_from_nodes =
+  let f doc xml =
     match xml with
-      Xtmpl.D _ -> elt
+      Xtmpl.D _ -> doc
     | Xtmpl.E (tag, atts, subs) ->
         let v = Xtmpl.string_of_xmls subs in
         match tag with
-        | ("", "contents") -> { elt with elt_body = subs }
-        | ("", "title") -> { elt with elt_title = v }
-        | ("", "keywords") -> { elt with elt_keywords = keywords_of_string v }
-        | ("", "topics") -> { elt with elt_topics = topics_of_string v }
-        | ("", "date") -> { elt with elt_date = Some (date_of_string v) }
-        | ("", "published") -> { elt with elt_published = bool_of_string v }
-        | ("", "sets") -> { elt with elt_sets = sets_of_string v }
-        | ("", "language-dep") -> { elt with elt_lang_dep = bool_of_string v }
-        | ("", "doctype") -> { elt with elt_xml_doctype = Some v }
-        | ("", "use") -> { elt with elt_used_mods = used_mods_of_string elt.elt_used_mods v }
-        | s -> { elt with elt_defs = (s, atts, subs) :: elt.elt_defs }
+        | ("", "contents") -> { doc with doc_body = subs }
+        | ("", "title") -> { doc with doc_title = v }
+        | ("", "keywords") -> { doc with doc_keywords = keywords_of_string v }
+        | ("", "topics") -> { doc with doc_topics = topics_of_string v }
+        | ("", "date") -> { doc with doc_date = Some (date_of_string v) }
+        | ("", "published") -> { doc with doc_published = bool_of_string v }
+        | ("", "sets") -> { doc with doc_sets = sets_of_string v }
+        | ("", "language-dep") -> { doc with doc_lang_dep = bool_of_string v }
+        | ("", "doctype") -> { doc with doc_xml_doctype = Some v }
+        | ("", "use") -> { doc with doc_used_mods = used_mods_of_string doc.doc_used_mods v }
+        | s -> { doc with doc_defs = (s, atts, subs) :: doc.doc_defs }
   in
   List.fold_left f
 ;;
 
-let fill_elt_from_atts_and_subs elt atts subs =
-  let elt =
+let fill_doc_from_atts_and_subs doc atts subs =
+  let doc =
     match Xtmpl.get_arg_cdata atts ("","path") with
-      None -> elt
-    | Some s -> { elt with elt_path = Stog_types.path_of_string s }
+      None -> doc
+    | Some s -> { doc with doc_path = Stog_types.path_of_string s }
   in
-  let elt = fill_elt_from_atts atts elt in
+  let doc = fill_doc_from_atts atts doc in
   match Xtmpl.get_arg_cdata atts ("", "with-contents") with
     Some s when bool_of_string s ->
       (* arguments are also passed in sub nodes, and contents is in
          subnode "contents" *)
-      fill_elt_from_nodes elt subs
+      fill_doc_from_nodes doc subs
   | _ ->
       (* all arguments are passed in attributes, subnodes are the contents *)
-      { elt with elt_body = subs }
+      { doc with doc_body = subs }
 ;;
 
-let elt_of_file stog file =
+let doc_of_file stog file =
   let rel_file = Stog_misc.path_under ~parent: stog.stog_dir file in
   let path =
     let s = "/" ^ rel_file in
     Stog_types.path_of_string s
   in
-  Stog_msg.verbose ~level: 3 (Printf.sprintf "reading element file %S" file);
+  Stog_msg.verbose ~level: 3 (Printf.sprintf "reading document file %S" file);
   let xml = Xtmpl.xml_of_file file in
   let (typ, atts, subs) =
     match xml with
       Xtmpl.D _ -> failwith (Printf.sprintf "File %S does not content an XML tree" file)
     | Xtmpl.E ((_,tag), atts, subs) -> (tag, atts, subs)
   in
-  let elt = Stog_types.make_elt ~path ~typ () in
-  let elt = { elt with elt_src = rel_file } in
-  fill_elt_from_atts_and_subs elt atts subs
+  let doc = Stog_types.make_doc ~path ~typ () in
+  let doc = { doc with doc_src = rel_file } in
+  fill_doc_from_atts_and_subs doc atts subs
 ;;
 
 let read_files cfg stog dir =
@@ -290,13 +290,13 @@ let read_files cfg stog dir =
        | _ -> false
       )
   in
-  let pred_elt =
+  let pred_doc =
     let make_pred s_re =
       let re = Str.regexp s_re in
       fun s -> Str.string_match re s 0
     in
-    let preds_ok = List.map make_pred cfg.Stog_config.elements in
-    let preds_ko = List.map make_pred cfg.Stog_config.not_elements in
+    let preds_ok = List.map make_pred cfg.Stog_config.documents in
+    let preds_ko = List.map make_pred cfg.Stog_config.not_documents in
     fun entry ->
       let result =
         (List.exists (fun f -> f entry) preds_ok) &&
@@ -322,11 +322,11 @@ let read_files cfg stog dir =
     let entries = List.filter ((<>) dir) entries in
     let (dirs, files) = List.partition is_dir entries in
     (*prerr_endline ("dirs=" ^ String.concat ", " dirs);*)
-    let (elt_files, files) = List.partition pred_elt files in
+    let (doc_files, files) = List.partition pred_doc files in
     let files = List.map Filename.basename files in
     let files = List.fold_right Str_set.add files Str_set.empty in
-    let elts = List.map (elt_of_file stog) elt_files in
-    let stog = List.fold_left add_elt stog elts in
+    let docs = List.map (doc_of_file stog) doc_files in
+    let stog = List.fold_left add_doc stog docs in
     let (stog, dirs) = List.fold_left
       (fun (stog, map) dir ->
         let base = Filename.basename dir in

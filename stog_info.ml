@@ -30,59 +30,59 @@
 
 open Stog_types;;
 
-let is_archived_elt stog =
-  match Stog_types.get_def stog.stog_defs ("","archived-elts") with
+let is_archived_doc stog =
+  match Stog_types.get_def stog.stog_defs ("","archived-docs") with
   | Some (_,[Xtmpl.D s]) ->
       let types = Stog_misc.split_string s [',' ; ';'] in
       let types = List.map Stog_misc.strip_string types in
-      (fun elt_id -> let elt = Stog_types.elt stog elt_id in List.mem elt.elt_type types)
+      (fun doc_id -> let doc = Stog_types.doc stog doc_id in List.mem doc.doc_type types)
   | _ ->
       (fun _ -> true)
 ;;
 
 let compute_map f_words f_update stog =
-  let f elt_id elt map =
+  let f doc_id doc map =
     let on_word map w =
       let set =
         try Stog_types.Str_map.find w map
-        with Not_found -> Stog_types.Elt_set.empty
+        with Not_found -> Stog_types.Doc_set.empty
       in
-      let set = Stog_types.Elt_set.add elt_id set in
+      let set = Stog_types.Doc_set.add doc_id set in
       Stog_types.Str_map.add w set map
     in
-    List.fold_left on_word map (f_words elt)
+    List.fold_left on_word map (f_words doc)
   in
   f_update stog
-  (Stog_tmap.fold f stog.stog_elts Stog_types.Str_map.empty)
+  (Stog_tmap.fold f stog.stog_docs Stog_types.Str_map.empty)
 ;;
 
 let compute_topic_map stog =
   compute_map
-  (fun a -> a.elt_topics)
-  (fun stog map -> { stog with stog_elts_by_topic = map })
+  (fun a -> a.doc_topics)
+  (fun stog map -> { stog with stog_docs_by_topic = map })
   stog
 ;;
 
 let compute_keyword_map stog =
   compute_map
-  (fun a -> a.elt_keywords)
-  (fun stog map -> { stog with stog_elts_by_kw = map })
+  (fun a -> a.doc_keywords)
+  (fun stog map -> { stog with stog_docs_by_kw = map })
   stog
 ;;
 
 let compute_graph_with_dates stog =
-  let is_archived = is_archived_elt stog in
-  let pred (elt_id, _) = is_archived elt_id in
-  let elts = Stog_types.elt_list ~by_date:true stog in
-  let elts = List.filter pred elts in
+  let is_archived = is_archived_doc stog in
+  let pred (doc_id, _) = is_archived doc_id in
+  let docs = Stog_types.doc_list ~by_date:true stog in
+  let docs = List.filter pred docs in
   let g = Stog_types.Graph.create () in
   let rec iter g = function
     [] | [_] -> g
-  | (elt_id, _) :: (next_id, next) :: q ->
-      let g = Stog_types.Graph.add g (elt_id, next_id, Stog_types.Date) in
+  | (doc_id, _) :: (next_id, next) :: q ->
+      let g = Stog_types.Graph.add g (doc_id, next_id, Stog_types.Date) in
       iter g ((next_id, next) :: q)
   in
-  { stog with stog_graph = iter g elts }
+  { stog with stog_graph = iter g docs }
 ;;
 
 let next_by_date f_next stog art_id =
@@ -143,16 +143,16 @@ let add_words_in_graph stog f edge_data =
 let add_topics_in_graph stog =
   add_words_in_graph stog
   (fun id ->
-     let elt = Stog_types.elt stog id in
-     elt.elt_topics
+     let doc = Stog_types.doc stog id in
+     doc.doc_topics
   )
 ;;
 
 let add_keywords_in_graph stog =
   add_words_in_graph stog
   (fun id ->
-     let elt = Stog_types.elt stog id in
-     elt.elt_keywords
+     let doc = Stog_types.doc stog id in
+     doc.doc_keywords
   )
 ;;
 
@@ -166,7 +166,7 @@ let add_refs_in_graph stog = stog
     | Some path ->
         (*prerr_endline (Printf.sprintf "f_ref path=%s" path);*)
         (
-         let (id2, _) = Stog_types.elt_by_path stog
+         let (id2, _) = Stog_types.doc_by_path stog
            (Stog_types.path_of_string path)
          in
          g := Stog_types.Graph.add !g (id, id2, Stog_types.Ref)
@@ -175,41 +175,41 @@ let add_refs_in_graph stog = stog
   in
   let f_art id art =
     let funs = [ "ref", f_ref id ] in
-    let elt = Stog_types.elt stog id in
+    let doc = Stog_types.doc stog id in
     let env = Xtmpl.env_of_list funs in
-    ignore(Xtmpl.apply_to_xmls env elt.elt_body)
+    ignore(Xtmpl.apply_to_xmls env doc.doc_body)
   in
-  Stog_tmap.iter f_art stog.stog_elts;
+  Stog_tmap.iter f_art stog.stog_docs;
   { stog with stog_graph = !g }
 *)
 ;;
 
 let compute_archives stog =
-  let pred = is_archived_elt stog in
-  let f_mon elt_id m mmap =
+  let pred = is_archived_doc stog in
+  let f_mon doc_id m mmap =
     let set =
       try Stog_types.Int_map.find m mmap
-      with Not_found -> Stog_types.Elt_set.empty
+      with Not_found -> Stog_types.Doc_set.empty
     in
-    let set = Stog_types.Elt_set.add elt_id set in
-    let set = Stog_types.Elt_set.filter pred set in
-    match Stog_types.Elt_set.is_empty set with
+    let set = Stog_types.Doc_set.add doc_id set in
+    let set = Stog_types.Doc_set.filter pred set in
+    match Stog_types.Doc_set.is_empty set with
       true -> mmap
     | false -> Stog_types.Int_map.add m set mmap
   in
-  let f_art elt_id elt ymap =
-    match elt.elt_date with
+  let f_art doc_id doc ymap =
+    match doc.doc_date with
       None -> ymap
     | Some  {Netdate.year = year; Netdate.month = month } ->
         let mmap =
           try Stog_types.Int_map.find year ymap
           with Not_found -> Stog_types.Int_map.empty
         in
-        let mmap = f_mon elt_id month mmap in
+        let mmap = f_mon doc_id month mmap in
         Stog_types.Int_map.add year mmap ymap
   in
   let arch = Stog_tmap.fold f_art
-    stog.stog_elts Stog_types.Int_map.empty
+    stog.stog_docs Stog_types.Int_map.empty
   in
   { stog with stog_archives = arch }
 ;;
@@ -266,17 +266,17 @@ let dot_of_graph f_href stog =
       ("", ["style", "dashed"])
   in
   let f_node id =
-    let elt = Stog_types.elt stog id in
+    let doc = Stog_types.doc stog id in
     let col =
-      match elt.elt_topics with
+      match doc.doc_topics with
         [] -> "black"
       | w :: _ ->
           let (r,g,b) = color_of_text w in
           Printf.sprintf "#%02x%02x%02x" r g b
     in
-    let href = f_href elt in
+    let href = f_href doc in
     (Printf.sprintf "id%d" (Stog_tmap.int id),
-     elt.elt_title,
+     doc.doc_title,
      ["shape", "rect"; "color", col; "fontcolor", col;
        "href", Stog_types.string_of_url href])
   in
@@ -295,29 +295,29 @@ let compute stog =
 ;;
 
 let remove_not_published stog =
-  let (elts, removed) = Stog_tmap.fold
-    (fun id elt (acc, removed) ->
-       if elt.elt_published then
+  let (docs, removed) = Stog_tmap.fold
+    (fun id doc (acc, removed) ->
+       if doc.doc_published then
          (acc, removed)
        else
-         (Stog_tmap.remove acc id, elt.elt_path :: removed)
+         (Stog_tmap.remove acc id, doc.doc_path :: removed)
     )
-   stog.stog_elts
-   (stog.stog_elts, [])
+   stog.stog_docs
+   (stog.stog_docs, [])
   in
 (*
   let by_path = List.fold_left
     (fun acc k -> Stog_types.Path_map.remove (List.rev k.path_path) acc)
-    stog.stog_elts_by_path removed
+    stog.stog_docs_by_path removed
   in
      *)
   let stog = Stog_tmap.fold
-    (fun elt_id elt stog ->
-       Stog_types.add_path stog elt.elt_path elt_id)
-    elts { stog with stog_elts_by_path = Stog_types.Path_trie.empty }
+    (fun doc_id doc stog ->
+       Stog_types.add_path stog doc.doc_path doc_id)
+    docs { stog with stog_docs_by_path = Stog_types.Path_trie.empty }
   in
   { stog with
-    stog_elts = elts ;
+    stog_docs = docs ;
   }
 ;;
 

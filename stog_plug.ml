@@ -38,7 +38,7 @@ let register_lang = Stog_intl.register_lang;;
 
 let register_html_base_rule = Stog_html.register_base_rule;;
 
-let elt_by_href = Stog_html.elt_by_href
+let doc_by_href = Stog_html.doc_by_href
 
 let mk_block_node ~id ?label ?clas ~title ?counter ~short_fmt ~long_fmt body =
   let b = Stog_blocks.mk_block
@@ -56,7 +56,7 @@ let warning = Stog_msg.warning;;
 let set_print_error = Stog_msg.set_print_error;;
 let error = Stog_msg.error;;
 
-type dependency = Stog_types.elt Stog_types.dependency
+type dependency = Stog_types.doc Stog_types.dependency
 
 let add_dep = Stog_deps.add_dep
 

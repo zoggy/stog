@@ -43,15 +43,15 @@ val register_lang : Stog_intl.lang_abbrev -> Stog_intl.lang_data -> unit
      to [name] in the set of base rules of the "html" predefined module. *)
 val register_html_base_rule : Xmlm.name -> Stog_types.stog Xtmpl.callback -> unit
 
-(** [elt_by_href ?typ ?src_elt stog env href] returns the element, path and
+(** [doc_by_href ?typ ?src_doc stog env href] returns the document, path and
   optional if matching the given href string, of the form [path[#id]].
-  Return None if the element could not be found, of the id could not be found,
+  Return None if the document could not be found, of the id could not be found,
   and an error is issued.
-  @param src_elt can be used to specify the source element, to improve
+  @param src_doc can be used to specify the source document, to improve
   the error message. *)
-val elt_by_href : ?typ: string -> ?src_elt: Stog_types.elt ->
+val doc_by_href : ?typ: string -> ?src_doc: Stog_types.doc ->
   Stog_types.stog -> 'a -> 'a Xtmpl.env -> string ->
-    'a * (Stog_types.elt * string * string option) option
+    'a * (Stog_types.doc * string * string option) option
 
 (** [mk_block_node ...] creates a [<block ...] with the given information.*)
 val mk_block_node :
@@ -72,7 +72,7 @@ val set_print_error : (string -> unit) -> unit
 
 (** {2 Dependencies} *)
 
-type dependency = Stog_types.elt Stog_types.dependency
+type dependency = Stog_types.doc Stog_types.dependency
 
-(** For a given element, add a dependency on a file or another element. *)
-val add_dep : Stog_types.stog -> Stog_types.elt -> dependency -> Stog_types.stog
+(** For a given document, add a dependency on a file or another document. *)
+val add_dep : Stog_types.stog -> Stog_types.doc -> dependency -> Stog_types.stog

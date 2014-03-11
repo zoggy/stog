@@ -30,34 +30,34 @@
 
 type contents = Stog_types.stog -> Stog_types.stog * Xtmpl.tree
 
-(** [get_template_file stog elt file] returns absolute filename of the given
+(** [get_template_file stog doc file] returns absolute filename of the given
   template filename.
   If [file] is relative and implicit then it is concatenated to
   the stog template directory.
   If [file] is relative and not implicit (i.e. it starts with . or ..), it
-  is concatenated to the element source file directory.
+  is concatenated to the document source file directory.
   Else (the filename is absolute), it is returned as is.
 *)
-val get_template_file : Stog_types.stog -> Stog_types.elt -> string -> string
+val get_template_file : Stog_types.stog -> Stog_types.doc -> string -> string
 
-(** [read_template_file stog elt file] returns the content of the given
+(** [read_template_file stog doc file] returns the content of the given
   template filename, after calling {!get_template_file} to get the final
   filename.
   @param raw indicate whether to read the template as XML ([false]) or
   as CData ([true]). Default is [false].
-  @param depend indicate whether to add a dependency from the element
+  @param depend indicate whether to add a dependency from the document
   on the file. Default is [true].
   *)
-val read_template_file : Stog_types.stog -> Stog_types.elt ->
+val read_template_file : Stog_types.stog -> Stog_types.doc ->
   ?depend: bool -> ?raw: bool -> string -> Stog_types.stog * Xtmpl.tree
 
-val get_template : Stog_types.stog -> ?elt: Stog_types.elt ->
+val get_template : Stog_types.stog -> ?doc: Stog_types.doc ->
   contents -> string -> Stog_types.stog * Xtmpl.tree
 
 val page : contents
 val by_keyword : contents
 val by_topic : contents
 val by_month : contents
-val elt_in_list : contents
+val doc_in_list : contents
 val keyword : contents
 val topic : contents

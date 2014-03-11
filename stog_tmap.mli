@@ -30,7 +30,7 @@
 (** Storing data referenced by a unique id.
 Uses maps to store the information,
 
-   Map of elements with automatic id creation and phantom type
+   Map of documents with automatic id creation and phantom type
    for keys.
 @author Maxence Guesdon
 @version 0.1
@@ -38,7 +38,7 @@ Uses maps to store the information,
 (** Storing data referenced by a unique id.
 Uses maps to store the information,
 
-   Map of elements with automatic id creation and phantom type
+   Map of documents with automatic id creation and phantom type
    for keys.
    @cgname TMap
    @version 0.1
