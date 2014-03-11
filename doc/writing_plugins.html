@@ -14,7 +14,7 @@ A plugin can register new base rules and new modules.
 <section id="baserules" title="Registering base rules">
 <p>
 A plugin can add rewrite rules to the rules of function
-<elt href="module_base#base"/> of module <elt href="module_base">Base</elt>.
+<doc href="module_base#base"/> of module <doc href="module_base">Base</doc>.
 </p>
 <p>
 Here is an example:
@@ -23,7 +23,7 @@ Here is an example:
 <include file="../plugins/plugin_example.ml" raw="true"/>
 </hcode>
 <p>
-Have a look at the <elt href="/ref-doc/index"/>.
+Have a look at the <doc href="/ref-doc/index"/>.
 </p>
 </section>
 
@@ -32,10 +32,10 @@ Have a look at the <elt href="/ref-doc/index"/>.
 A plugin can also register a complete module, with named functions
 associated to levels. These levels can also be specified in
 the <code>.stog/config</code> file as explained
-<elt href="funs#config_funs">here</elt>.
+<doc href="funs#config_funs">here</doc>.
 </p>
 <p>An example of such a plugin is
-<ext-a href="https://github.com/zoggy/stog/blob/master/plugins/stog_multi_elt.ml">stog_multi_elt</ext-a>.
+<ext-a href="https://github.com/zoggy/stog/blob/master/plugins/stog_multi_doc.ml">stog_multi_doc</ext-a>.
 </p>
 </section>
 
@@ -79,24 +79,24 @@ This will be evaluated (reduced) to
 <!--
 <section id="cache" title="Keeping the cache system in the loop">
 <p>
-The cache system (see <elt href="running"/>) must be aware
-of dependencies of each element on other elements and files.
+The cache system (see <doc href="running"/>) must be aware
+of dependencies of each document on other documents and files.
 </p>
 <p>
 If a new rule defined by a plugin uses a file or implies a dependency
-from an element to another, this rule must declare this dependency
-using the <elt href="Stog_plug#VALadd_dep"><code>Stog_plug.add_dep</code></elt> function:
+from an document to another, this rule must declare this dependency
+using the <doc href="Stog_plug#VALadd_dep"><code>Stog_plug.add_dep</code></doc> function:
 </p>
-<ocaml>Stog_plug.add_dep : Stog_types.elt -> dependency -> unit</ocaml>
+<ocaml>Stog_plug.add_dep : Stog_types.doc -> dependency -> unit</ocaml>
 <p>
 If a plugin computes information which could be cached, it can declare a
 new cache for this informations, using the
-<elt href="Stog_plug#VALregister_cache"><code>Stog_plug.register_cache</code></elt> function:
+<doc href="Stog_plug#VALregister_cache"><code>Stog_plug.register_cache</code></doc> function:
 </p>
 <ocaml>val register_cache : (module Stog_cache.Cache) -> unit</ocaml>
 <p>
 The Cache module to provide is very simple; have a look at the
-<elt href="Stog_cache.Cache"><code>Stog_cache.Cache</code></elt>module type.
+<doc href="Stog_cache.Cache"><code>Stog_cache.Cache</code></doc>module type.
 </p>
 </section>
 -->

@@ -1,40 +1,40 @@
 <multi sets="smallposts"
   with-contents="true"
 >
-  <!-- definition of a rule, shared by all elements -->
+  <!-- definition of a rule, shared by all documents -->
   <st foo=""><strong><contents/></strong></st>
-  <!-- body of the "multi" element -->
+  <!-- body of the "multi" document -->
   <contents>
     <smallpost id="post1" title="First post" date="2014/01/21">
-      The first post, with path = "<elt-path elt-path="/index"/>".
+      The first post, with path = "<doc-path doc-path="/index"/>".
     </smallpost>
 
-    <!-- this element defines a new rule <name>, using with-contents="true"
+    <!-- this document defines a new rule <name>, using with-contents="true"
       and a <contents> node. The new rule is available in this "smallpost"
-      element only.
+      document only.
     -->
     <smallpost id="post2" title="Second post" date="2014/01/22"
       with-contents="true">
       <name foo="">Name: <st defer_="1"><contents/></st></name>
       <contents>
-        The second post, with path = "<elt-path/>".
+        The second post, with path = "<doc-path/>".
         <name>James Bond</name>
       </contents>
     </smallpost>
 
-  <!-- The body of the final element with path "smallposts".
+  <!-- The body of the final document with path "smallposts".
     We use again with-contents="true" do define a new rule
-    <hello> for this element only.
+    <hello> for this document only.
   -->
   <contents type="page" title="My small posts"
     with-contents="true">
     <hello name="">Hello <if name=""><dummy_>world</dummy_><name/></if> !</hello>
     <contents>
       <hello name="dear reader"/>
-      This is the body of the element "<elt-path/>".
+      This is the body of the document "<doc-path/>".
       We can list our small posts here:
-      <elements type="smallpost" set="smallposts"/>
-    </contents> <!-- contents of the body of the "main" element" -->
-  </contents> <!-- contents of the "main" element -->
- </contents> <!-- contents of the multi element -->
+      <documents type="smallpost" set="smallposts"/>
+    </contents> <!-- contents of the body of the "main" document" -->
+  </contents> <!-- contents of the "main" document -->
+ </contents> <!-- contents of the multi document -->
 </multi>

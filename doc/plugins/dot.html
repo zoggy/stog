@@ -14,7 +14,7 @@ The Graphviz tools must be installed to use this plugin.
 <p>Usage:</p>
 <command-line>$ stog --package stog.dot ...</command-line>
 
-<p>This plugin adds a new <elt href="module_base#base">base rule</elt>
+<p>This plugin adds a new <doc href="module_base#base">base rule</doc>
  <rule>dot</rule>.
 Here are the possible ways to use it:
 </p>
@@ -51,7 +51,7 @@ With <code>graph.dot</code>:
 
 <tr>
 <td>
-With <ixml>&lt;elt-...&gt;</ixml> rules to get links and labels,
+With <ixml>&lt;doc-...&gt;</ixml> rules to get links and labels,
 using attribute <ixml>defer_="1"</ixml> in the <ixml>&lt;dot&gt;</ixml>
 so that rewriting is performed in its children before the
 code is being passed to dot:
@@ -61,11 +61,11 @@ digraph g {
   rankdir = LR;
   plugins -> asy ;
   plugins -> dot ;
-  plugins [ href="<elt-url elt-path="plugins"/>" ]
+  plugins [ href="<doc-url doc-path="plugins"/>" ]
   asy [
-     href="<elt-url elt-path="plugins/asy"/>",
-     label="<elt-title elt-path="plugins/asy"/>" ] ;
-  dot [ href="<elt-url elt-path="plugins/dot"/>" ] ;
+     href="<doc-url doc-path="plugins/asy"/>",
+     label="<doc-title doc-path="plugins/asy"/>" ] ;
+  dot [ href="<doc-url doc-path="plugins/dot"/>" ] ;
 }</dot>]]>
 </hcode>
 Since no <code>outfile</code> attribute is given, the <code>svg</code>

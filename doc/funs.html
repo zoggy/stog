@@ -5,29 +5,29 @@ with-contents="true"
 <contents>
 <section id="default_scheme" title="Default scheme">
 <p>
-As explained in <elt href="engine"/>, modules provide named functions associated
-to levels, and the elements are succesively modified by these functions.
+As explained in <doc href="engine"/>, modules provide named functions associated
+to levels, and the documents are succesively modified by these functions.
 Additionaly, a function of a module can be associated to various levels.
 </p>
 <p>
 The following modules are available by default:
-<elt href="module_base">Base</elt>, <elt href="module_blocks">Blocks</elt>.
+<doc href="module_base">Base</doc>, <doc href="module_blocks">Blocks</doc>.
 </p>
 <p>Here is the list of default levels and their associated functions
 defined by these modules:
 </p>
 <table class="table table-bordered table-condensed">
 <tr><th>Level</th><th>Function(s)</th></tr>
-<tr><td>  0</td><td><elt href="module_base#base"/> (Base)</td></tr>
-<tr><td> 30</td><td><elt href="module_base#add-elts"/> (Base)</td></tr>
-<tr><td> 50</td><td><elt href="module_base#toc"/> (Base)</td></tr>
-<tr><td> 60</td><td><elt href="module_base#cut"/> (Base)</td></tr>
-<tr><td> 61</td><td><elt href="module_base#base"/> (Base), <elt href="module_blocks#base"/> (Blocks)</td></tr>
-<tr><td>100</td><td><elt href="module_blocks#sectionning"/> (Blocks)</td></tr>
-<tr><td>120</td><td><elt href="module_blocks#gather-ids"/> (Blocks)</td></tr>
-<tr><td>150</td><td><elt href="module_blocks#elt"/> (Blocks)</td></tr>
-<tr><td>160</td><td><elt href="module_base#inc"/> (Base)</td></tr>
-<tr><td>500</td><td><elt href="module_base#clean"/> (Base)</td></tr>
+<tr><td>  0</td><td><doc href="module_base#base"/> (Base)</td></tr>
+<tr><td> 30</td><td><doc href="module_base#add-docs"/> (Base)</td></tr>
+<tr><td> 50</td><td><doc href="module_base#toc"/> (Base)</td></tr>
+<tr><td> 60</td><td><doc href="module_base#cut"/> (Base)</td></tr>
+<tr><td> 61</td><td><doc href="module_base#base"/> (Base), <doc href="module_blocks#base"/> (Blocks)</td></tr>
+<tr><td>100</td><td><doc href="module_blocks#sectionning"/> (Blocks)</td></tr>
+<tr><td>120</td><td><doc href="module_blocks#gather-ids"/> (Blocks)</td></tr>
+<tr><td>150</td><td><doc href="module_blocks#doc"/> (Blocks)</td></tr>
+<tr><td>160</td><td><doc href="module_base#inc"/> (Base)</td></tr>
+<tr><td>500</td><td><doc href="module_base#clean"/> (Base)</td></tr>
 </table>
 <p>For most of the rules applied by module functions, you should look
 at the generated XML to modify
@@ -55,7 +55,7 @@ given module. The default scheme could be expressed with:
 <ocaml>levels = [
   ("html",
     [ ("base", [ 0 ; 61 ]) ;
-      ("add-elts", [ 30 ]) ;
+      ("add-docs", [ 30 ]) ;
       ("toc", [ 50 ]) ;
       ("cut", [ 60 ]) ;
       ("inc", [ 160 ]) ;
@@ -65,15 +65,15 @@ given module. The default scheme could be expressed with:
     [ ("base", [ 61 ]) ;
       ("sectionning", [ 100 ]) ;
       ("gather-ids", [ 120 ]) ;
-      ("elt", [ 150 ]) ;
+      ("doc", [ 150 ]) ;
     ]) ;
  ]
 </ocaml>
 <p>It is possible to change only the levels of some functions.
-In the example below, the <elt href="module_base#inc"/> function
-of module <elt href="module_base">Base</elt> will not be called,
+In the example below, the <doc href="module_base#inc"/> function
+of module <doc href="module_base">Base</doc> will not be called,
 (as it is associated to an empty list of levels)
-and the <elt href="module_base#base"/> function of the same module
+and the <doc href="module_base#base"/> function of the same module
 will be associated to levels 2 and 230, while the rest of the scheme
 remains unchanged:
 </p>
@@ -112,7 +112,7 @@ on the context.
 before analysing children. For example, here we add an association
 between "login" and "zoggy". This will add to the environment
 an association between the key "login" and
-the function returning the one-element list ["zoggy"], which is used
+the function returning the one-document list ["zoggy"], which is used
 later in the "login" attribute:
 </p>
 <hcode lang="xml"><![CDATA[<env_ login="zoggy">

@@ -2,12 +2,12 @@
 navbar-doc="active"
 >
 <p>
-In the following descriptions, the current element refers to the element
-whose path is retrieved by the <ixml>&lt;elt-path/&gt;</ixml> function.
+In the following descriptions, the current document refers to the document
+whose path is retrieved by the <ixml>&lt;doc-path/&gt;</ixml> function.
 </p>
 <p>
 Here are the functions of the module, which can be associated to
-levels (see <elt href="funs"/>):
+levels (see <doc href="funs"/>):
 </p>
 <prepare-toc depth="1">
 <toc/>
@@ -15,66 +15,66 @@ levels (see <elt href="funs"/>):
 <section id="base" title="base">
 <p>
 This function applies the following rules, mainly for simple formatting
-and referencing to the site or the current element information.
+and referencing to the site or the current document information.
 </p>
 <p>
 Plugins can add rules to this list, using the
-<elt href="Stog_html#VALregister_base_rule"><icode lang="ocaml">Stog_html.register_base_rule</icode></elt>
+<doc href="Stog_html#VALregister_base_rule"><icode lang="ocaml">Stog_html.register_base_rule</icode></doc>
 function, possibly redefining pre-defined rules with the same names.
 </p>
 <n-columns>
 <left>
 <ul>
-<li><elt href="#archive-tree"/></li>
-<li><elt href="#as-xml"/></li>
-<li><elt href="#command-line"/></li>
-<li><elt href="#dummy_"/></li>
-<li><elt href="#elements"/></li>
-<li><elt href="#elt-bodyx"/></li>
-<li><elt href="#elt-date"/></li>
-<li><elt href="#elt-datetime"/></li>
-<li><elt href="#elt-path"/></li>
-<li><elt href="#elt-intro"/></li>
+<li><doc href="#archive-tree"/></li>
+<li><doc href="#as-xml"/></li>
+<li><doc href="#command-line"/></li>
+<li><doc href="#dummy_"/></li>
+<li><doc href="#documents"/></li>
+<li><doc href="#doc-bodyx"/></li>
+<li><doc href="#doc-date"/></li>
+<li><doc href="#doc-datetime"/></li>
+<li><doc href="#doc-path"/></li>
+<li><doc href="#doc-intro"/></li>
 </ul>
 </left>
 <middle>
 <ul>
-<li><elt href="#elt-keywordsx"/></li>
-<li><elt href="#elt-navpath"/></li>
-<li><elt href="#elt-src"/></li>
-<li><elt href="#elt-title"/></li>
-<li><elt href="#elt-type"/></li>
-<li><elt href="#elt-url"/></li>
-<li><elt href="#error_"/></li>
-<li><elt href="#ext-a"/></li>
-<li><elt href="#graphx"/></li>
-<li><elt href="#hcode"/></li>
+<li><doc href="#doc-keywordsx"/></li>
+<li><doc href="#doc-navpath"/></li>
+<li><doc href="#doc-src"/></li>
+<li><doc href="#doc-title"/></li>
+<li><doc href="#doc-type"/></li>
+<li><doc href="#doc-url"/></li>
+<li><doc href="#error_"/></li>
+<li><doc href="#ext-a"/></li>
+<li><doc href="#graphx"/></li>
+<li><doc href="#hcode"/></li>
 </ul>
 </middle>
 <right>
 <ul>
-<li><elt href="#icode"/></li>
-<li><elt href="#if"/></li>
-<li><elt href="#image"/></li>
-<li><elt href="#keyword"/></li>
-<li><elt href="#include"/></li>
-<li><elt href="#latex"/></li>
-<li><elt href="#latex-body"/></li>
-<li><elt href="#list"/></li>
-<li><elt href="#ocaml"/></li>
-<li><elt href="#ocaml-eval"/></li>
+<li><doc href="#icode"/></li>
+<li><doc href="#if"/></li>
+<li><doc href="#image"/></li>
+<li><doc href="#keyword"/></li>
+<li><doc href="#include"/></li>
+<li><doc href="#latex"/></li>
+<li><doc href="#latex-body"/></li>
+<li><doc href="#list"/></li>
+<li><doc href="#ocaml"/></li>
+<li><doc href="#ocaml-eval"/></li>
 </ul>
 </right>
 <col4>
 <ul>
-<li><elt href="#ocaml-printf"/></li>
-<li><elt href="#previous"/></li>
-<li><elt href="#sep_"/></li>
-<li><elt href="#site-descriptionx"/></li>
-<li><elt href="#site-email"/></li>
-<li><elt href="#site-titlex"/></li>
-<li><elt href="#site-url"/></li>
-<li><elt href="#two-columns"/></li>
+<li><doc href="#ocaml-printf"/></li>
+<li><doc href="#previous"/></li>
+<li><doc href="#sep_"/></li>
+<li><doc href="#site-descriptionx"/></li>
+<li><doc href="#site-email"/></li>
+<li><doc href="#site-titlex"/></li>
+<li><doc href="#site-url"/></li>
+<li><doc href="#two-columns"/></li>
 </ul>
 </col4>
 </n-columns>
@@ -107,40 +107,40 @@ attribute already set to "sh".
 <p>
 <ixml>&lt;dummy_/&gt;</ixml> is replaced by the contents of the node.
 It is useful to insert an empty tree where a tree is required, for example
-in a <elt href="#if"/>.
+in a <doc href="#if"/>.
 </p>
 </subsection>
 
-<subsection id="elements" title="elements">
+<subsection id="documents" title="documents">
 <p>
-<ixml>&lt;elements .../&gt;</ixml> inserts the list of
-published elements.
+<ixml>&lt;documents .../&gt;</ixml> inserts the list of
+published documents.
 </p>
 <p>The following optional attributes can be specified:</p>
 <ul>
 <li><ixml>max="n"</ixml> can be used to list only the <code>n</code> most recent
-elements.</li>
+documents.</li>
 <li><ixml>rss="filename"</ixml> triggers the creation of a RSS file corresponding
-to the selected elements. The given filename is appended to the stog output directory.
+to the selected documents. The given filename is appended to the stog output directory.
 A link to the RSS file is also added before the list.</li>
-<li><ixml>set="name"</ixml> can be used to select only the elements belonging to
+<li><ixml>set="name"</ixml> can be used to select only the documents belonging to
 the given set.</li>
-<li><ixml>type="type1,type2,..."</ixml> filters the elements to keep only the ones with one
+<li><ixml>type="type1,type2,..."</ixml> filters the documents to keep only the ones with one
 of the given types.</li>
 <li><ixml>title="title"</ixml> specifies the title of the RSS channel, if a RSS
 file is created. If no title is given, the site title is used.</li>
-<li>By default, items are sorted according to the date of each element. Specifying
-<ixml>sort="rule1,rule2,..."</ixml> make elements sorted according to the given rules,
-expanded for each element.</li>
+<li>By default, items are sorted according to the date of each document. Specifying
+<ixml>sort="rule1,rule2,..."</ixml> make documents sorted according to the given rules,
+expanded for each document.</li>
 <li>By default, items are listed in descending order; <ixml>reverse="false"</ixml>
-make the elements listed in ascending order.</li>
-<li><ixml>tmpl="..."</ixml> specifies a template file to use for each element of
-the list. Default is <code>.stog/templates/elt-in-list.tmpl</code>.</li>
-<li><ixml>filter="p"</ixml> specifies to keep only elements verifying
+make the documents listed in ascending order.</li>
+<li><ixml>tmpl="..."</ixml> specifies a template file to use for each document of
+the list. Default is <code>.stog/templates/doc-in-list.tmpl</code>.</li>
+<li><ixml>filter="p"</ixml> specifies to keep only documents verifying
 the given predicate <code>p</code>. The predicate can be an expression such as
   <ixml>attribute='value'</ixml>
-  The attribute refers to a field defined in the element header, or defined in the main
-  element for the whole site if it has the form "id:id".
+  The attribute refers to a field defined in the document header, or defined in the main
+  document for the whole site if it has the form "id:id".
   The expressions accepted as filters follow this grammar:
   <hcode lang="ocaml"><![CDATA[
 attribute ::= id
@@ -153,116 +153,116 @@ attribute ::= id
             | "!" expr            # negation]]></hcode>
 </li>
 </ul>
-<p>Example: <ixml>&lt;elements type="post" max="10" rss="index.rss"/&gt;</ixml></p>
+<p>Example: <ixml>&lt;documents type="post" max="10" rss="index.rss"/&gt;</ixml></p>
 </subsection>
 
-<subsection id="elt-bodyx" title="elt-body">
+<subsection id="doc-bodyx" title="doc-body">
 <p>
-<ixml>&lt;elt-body/&gt;</ixml> returns the body of the current element,
-or of the element referenced by the <code>elt-path</code> attribute.
+<ixml>&lt;doc-body/&gt;</ixml> returns the body of the current document,
+or of the document referenced by the <code>doc-path</code> attribute.
 </p>
 </subsection>
 
-<subsection id="elt-date" title="elt-date">
+<subsection id="doc-date" title="doc-date">
 <p>
-<ixml>&lt;elt-date/&gt;</ixml> returns the date of the current element,
-or of the element referenced by the <code>elt-path</code> attribute,
+<ixml>&lt;doc-date/&gt;</ixml> returns the date of the current document,
+or of the document referenced by the <code>doc-path</code> attribute,
 or an empty string if no date were specified.
 </p>
 </subsection>
 
-<subsection id="elt-datetime" title="elt-datetime">
+<subsection id="doc-datetime" title="doc-datetime">
 <p>
-<ixml>&lt;elt-datetime/&gt;</ixml> returns the date and time of the current element,
-or of the element referenced by the <code>elt-path</code> attribute,
+<ixml>&lt;doc-datetime/&gt;</ixml> returns the date and time of the current document,
+or of the document referenced by the <code>doc-path</code> attribute,
 or an empty string if no date were specified.
 </p>
 </subsection>
 
-<subsection id="elt-path" title="elt-path">
+<subsection id="doc-path" title="doc-path">
 <p>
-<ixml>&lt;elt-path/&gt;</ixml> returns the path of the current element.
-<!--or of the element referenced by the <code>elt-path</code> attribute.-->
+<ixml>&lt;doc-path/&gt;</ixml> returns the path of the current document.
+<!--or of the document referenced by the <code>doc-path</code> attribute.-->
 </p>
 </subsection>
 
-<subsection id="elt-intro" title="elt-intro">
+<subsection id="doc-intro" title="doc-intro">
 <p>
-<ixml>&lt;elt-intro/&gt;</ixml> returns the introduction of the current
-element (or of the element referenced by the <code>elt-path</code> attribute),
+<ixml>&lt;doc-intro/&gt;</ixml> returns the introduction of the current
+document (or of the document referenced by the <code>doc-path</code> attribute),
 that is the body code before the <ixml>&lt;sep_/&gt;</ixml> marker.
 </p>
 </subsection>
 
-<subsection id="elt-navpath" title="elt-navpath">
+<subsection id="doc-navpath" title="doc-navpath">
 <p>
-<ixml>&lt;elt-navpath/&gt;</ixml> builds a navigation bar in the form
-of a list of links showing the hierarchy to the current element (or the element
-referenced by the <code>elt-path</code> attribute).
+<ixml>&lt;doc-navpath/&gt;</ixml> builds a navigation bar in the form
+of a list of links showing the hierarchy to the current document (or the document
+referenced by the <code>doc-path</code> attribute).
 </p>
 <p>
-Suppose we're handling the element whose source file is
-<code>STOGDIR/foo/bar/gee.html</code>. Its <icode>elt-path</icode> is
+Suppose we're handling the document whose source file is
+<code>STOGDIR/foo/bar/gee.html</code>. Its <icode>doc-path</icode> is
 <code>/foo/bar/gee.html</code>. The path will contain two parts, one for
 <code>foo</code> and one for <code>bar</code>.
-If an element <code>/foo</code> exists, then a link to this element is
-added. Else, if an element /foo/index exists, then a link to this
-element is added. Else no link is added and the directory name is used,
-with no link. The same is done for the <code>/foo/bar</code> element.
+If an document <code>/foo</code> exists, then a link to this document is
+added. Else, if an document /foo/index exists, then a link to this
+document is added. Else no link is added and the directory name is used,
+with no link. The same is done for the <code>/foo/bar</code> document.
 </p>
 <p>
 The separator of path parts is the code given under the
-<ixml>&lt;elt-navpath&gt;</ixml> node.
+<ixml>&lt;doc-navpath&gt;</ixml> node.
 </p>
 <p>To illustrate, the code</p>
-<hxml>&lt;elt-navpath elt-path="/foo/bar/gee"&gt; / &lt;/elt-navpath&gt;</hxml>
+<hxml>&lt;doc-navpath doc-path="/foo/bar/gee"&gt; / &lt;/doc-navpath&gt;</hxml>
 <p>will produce the following code:</p>
-<hxml defer_="1"><elt-navpath elt-path="/foo/bar/gee"> / </elt-navpath></hxml>
+<hxml defer_="1"><doc-navpath doc-path="/foo/bar/gee"> / </doc-navpath></hxml>
 <p>which results in:</p>
-<elt-navpath elt-path="/foo/bar/gee"> / </elt-navpath>
+<doc-navpath doc-path="/foo/bar/gee"> / </doc-navpath>
 <p>
 The <ixml>with-root="..."</ixml> attribute can be used to specify the
-path of an element used as root. For example:
+path of an document used as root. For example:
 </p>
-<hxml>&lt;elt-navpath elt-path="/foo/bar/gee.html" with-root="/index"&gt; / &lt;/elt-navpath&gt;</hxml>
+<hxml>&lt;doc-navpath doc-path="/foo/bar/gee.html" with-root="/index"&gt; / &lt;/doc-navpath&gt;</hxml>
 <p>will produce the following path:</p>
-<elt-navpath elt-path="/foo/bar/gee.html" with-root="/index"> / </elt-navpath>
+<doc-navpath doc-path="/foo/bar/gee.html" with-root="/index"> / </doc-navpath>
 </subsection>
 
-<subsection id="elt-src" title="elt-src">
+<subsection id="doc-src" title="doc-src">
 <p>
-<ixml>&lt;elt-src/&gt;</ixml> returns the source filename
-of the element or of the element referenced by the <code>elt-path</code> attribute.
+<ixml>&lt;doc-src/&gt;</ixml> returns the source filename
+of the document or of the document referenced by the <code>doc-path</code> attribute.
 </p>
 </subsection>
 
-<subsection id="elt-title" title="elt-title">
+<subsection id="doc-title" title="doc-title">
 <p>
-<ixml>&lt;elt-title/&gt;</ixml> returns the title of the current element
-or of the element referenced by the <code>elt-path</code> attribute.
+<ixml>&lt;doc-title/&gt;</ixml> returns the title of the current document
+or of the document referenced by the <code>doc-path</code> attribute.
 </p>
 </subsection>
 
-<subsection id="elt-type" title="elt-type">
+<subsection id="doc-type" title="doc-type">
 <p>
-<ixml>&lt;elt-type/&gt;</ixml> returns the type of the current element
-or of the element referenced by the <code>elt-path</code> attribute.
+<ixml>&lt;doc-type/&gt;</ixml> returns the type of the current document
+or of the document referenced by the <code>doc-path</code> attribute.
 </p>
 </subsection>
 
-<subsection id="elt-url" title="elt-url">
+<subsection id="doc-url" title="doc-url">
 <p>
-<ixml>&lt;elt-url/&gt;</ixml> returns the final url of the current element
-or of the element referenced by the <code>elt-path</code> attribute:
+<ixml>&lt;doc-url/&gt;</ixml> returns the final url of the current document
+or of the document referenced by the <code>doc-path</code> attribute:
 </p>
-<hxml><![CDATA[<elt-url elt-path="/engine"/>]]></hxml>
-<p> is reduced to <elt-url elt-path="/engine"/></p>
+<hxml><![CDATA[<doc-url doc-path="/engine"/>]]></hxml>
+<p> is reduced to <doc-url doc-path="/engine"/></p>
 </subsection>
 
 <subsection id="error_" title="error_">
 <p>
 When encountered, <ixml>&lt;error_/&gt;</ixml> will produce an error
-message from the contents of the node. It is useful with <elt href="#if"/> to
+message from the contents of the node. It is useful with <doc href="#if"/> to
 ensure some condition is verified, for example to make sure a variable is
 not empty in the environment.
 </p>
@@ -278,9 +278,9 @@ This can be used to add specific style for links to external sites.
 
 <subsection id="graphx" title="graph">
 <p>
-<ixml>&lt;graph/&gt;</ixml> computes the graph of elements in SVG format, and returns
-a link to this graph displayed as a small graph. One can click on an element in the generated SVG
-graph to jump to the element.
+<ixml>&lt;graph/&gt;</ixml> computes the graph of documents in SVG format, and returns
+a link to this graph displayed as a small graph. One can click on an document in the generated SVG
+graph to jump to the document.
 </p>
 </subsection>
 
@@ -325,7 +325,7 @@ will be verified if <code>foo</code> is not in the environment.
 The <code>"value"</code> part of the condition must be valid XML, and can contain
 calls to functions, as in:
 </p>
-<hcode lang="xml"><![CDATA[<if elt-title="&lt;site-title&gt;">....</if>]]></hcode>
+<hcode lang="xml"><![CDATA[<if doc-title="&lt;site-title&gt;">....</if>]]></hcode>
 <p>Other example: Testing whether a variable is empty to known whether to output
 a block or not:
 </p>
@@ -373,14 +373,14 @@ is considered as PCData. This is useful for example to insert code.
 </p>
 <p>
 If the file attribute begins with "." or "..", that is the filename is explicitely relative,
-the file path is concatenated to the current element source file path.
+the file path is concatenated to the current document source file path.
 </p>
 <p>
 If the file attribute is an absolute filename, then this absolute filename is used.
 </p>
 <p>
 By default, using <ixml>&lt;include&gt;</ixml> adds a dependency of the current
-element on the given file. Use <ixml>depend="false"</ixml> to prevent adding this
+document on the given file. Use <ixml>depend="false"</ixml> to prevent adding this
 dependency.
 </p>
 <p>All additional attributes to <ixml>&lt;include ...&gt;</ixml> will
@@ -400,26 +400,26 @@ file, by setting the attribute <ixml>subs-only="true"</ixml>.
 </p>
 <p>
 Instead of including a file, it is possible to include a block
-of an element, by referring to its path and id in the
+of an document, by referring to its path and id in the
 <code>href</code> attribute:
 </p>
 <hxml><![CDATA[<include href="foo#id/>]]></hxml>
 <p>
 This code includes the XML node referenced by the <code>href</code>
-attribute. An error is raised if the element does not exist, if
+attribute. An error is raised if the document does not exist, if
 no fragment id is provided, or if the fragment id does not exist
-in the referenced element.
+in the referenced document.
 If an <code>id</code> attribute is provided, the included node has this new
 id, else the original node id is kept; this is useful to avoid conflicts
 with other ids.
 </p>
 <p>
 This rule is useful to avoid code duplication. It is used in this
-site to show changes of a release both in the <elt href="/install"/>
-page and in blog post such as <elt href="release-0.9.0"/>.
+site to show changes of a release both in the <doc href="/install"/>
+page and in blog post such as <doc href="release-0.9.0"/>.
 </p>
 <p>For example, the following code will include the paragraph with
-id "optiondef" of element "running":
+id "optiondef" of document "running":
 </p>
 <hxml><late-inc href="running#optiondef"/></hxml>
 <p>This is the result:</p>
@@ -427,12 +427,12 @@ id "optiondef" of element "running":
 </subsection>
 
 
-<subsection id="elt-keywordsx" title="elt-keywords / elt-topics">
+<subsection id="doc-keywordsx" title="doc-keywords / doc-topics">
 <p>
-<ixml>&lt;elt-keywords sep="..."/&gt;</ixml> and
-<ixml>&lt;elt-topics sep="..."/&gt;</ixml> respectively return
+<ixml>&lt;doc-keywords sep="..."/&gt;</ixml> and
+<ixml>&lt;doc-topics sep="..."/&gt;</ixml> respectively return
 the keyword and topic list of
-the current element, as defined in the element. The optional <code>sep</code> attribute
+the current document, as defined in the document. The optional <code>sep</code> attribute
 can be used to specify a separator between each keyword or topic.
 </p>
 <p>Each keyword will be displayed using a <code>keyword.tmpl</code> template file.
@@ -482,7 +482,7 @@ conflicts in ids.
 <p>
 <ixml>&lt;previous/&gt;</ixml> and
 <ixml>&lt;next/&gt;</ixml> respectively return a link to the previous and next
-element according to the chronological order of element dates.
+document according to the chronological order of document dates.
 </p>
 </subsection>
 
@@ -510,35 +510,35 @@ See the following blog post: <post href="ocaml-printf"/>.
 <subsection id="sep_" title="sep_">
 <p>
 <ixml>&lt;sep_/&gt;</ixml> is the tag used to indicate the end of the introduction
-of an element. It is reduced to an empty string.
+of an document. It is reduced to an empty string.
 </p>
 </subsection>
 
 <subsection id="site-descriptionx" title="site-description">
 <p>
 <ixml>&lt;site-description/&gt;</ixml> returns the site description
-as specified in the main element.
+as specified in the main document.
 </p>
 </subsection>
 
 <subsection id="site-email" title="site-email">
 <p>
 <ixml>&lt;site-email/&gt;</ixml> returns the site contact email
-as specified in the main element.
+as specified in the main document.
 </p>
 </subsection>
 
 <subsection id="site-titlex" title="site-title">
 <p>
 <ixml>&lt;site-title/&gt;</ixml> returns the site title as specified in the
-main element.
+main document.
 </p>
 </subsection>
 
 <subsection id="site-url" title="site-url">
 <p>
 <ixml>&lt;site-url/&gt;</ixml> returns the site url as specified in the
-main element.
+main document.
 </p>
 </subsection>
 
@@ -562,16 +562,16 @@ children in the node.
 
 </section>
 
-<section id="add-elts" title="add-elts">
+<section id="add-docs" title="add-docs">
 <p>
-This function creates new elements:
+This function creates new documents:
 </p>
 <ul>
 <li>The archive pages, one for each month when there is at least
-one element in this month (see also <elt href="#archive-tree"/>),
+one document in this month (see also <doc href="#archive-tree"/>),
 </li>
-<li>The keyword pages, one for each keyword appearing in elements,</li>
-<li>The topic pages, one for each topic appearing in elements.</li>
+<li>The keyword pages, one for each keyword appearing in documents,</li>
+<li>The topic pages, one for each topic appearing in documents.</li>
 </ul>
 </section>
 
@@ -605,7 +605,7 @@ which includes all the sections and subsections. The <ixml>&lt;depth&gt;</ixml> 
 is used to specify the depth of the table of contents.
 </p>
 <p>The nodes used for sectionning can be changed, see the
-<elt href="module_blocks#sectionning"/> function of the <elt href="module_blocks"/>.
+<doc href="module_blocks#sectionning"/> function of the <doc href="module_blocks"/>.
 </p>
 <p>By default, sectionning nodes without <code>id</code> attribute are not kept.
 Set attribute <ixml>show-without-ids="true"</ixml> to keep all sectionning nodes.
@@ -616,12 +616,12 @@ Set attribute <ixml>show-without-ids="true"</ixml> to keep all sectionning nodes
 
 <section id="cut" title="cut">
 <p>
-This function applies the <ixml>&lt;cut-elt&gt;</ixml> rule to cut
-an element in pieces according to some specified nodes.
+This function applies the <ixml>&lt;cut-doc&gt;</ixml> rule to cut
+an document in pieces according to some specified nodes.
 </p>
 <include file="syntax.tmpl"><![CDATA[<foo title="My document">
 ...
-<cut-elt tag="section">
+<cut-doc tag="section">
 ...
 <section id="sec1" title="Section 1">
   ...
@@ -631,69 +631,69 @@ an element in pieces according to some specified nodes.
   ...
 </section>
 ...
-</cut-elt>]]></include>
+</cut-doc>]]></include>
 <p>
-If the element has path <code>/foo</code>, this will create two more elements,
+If the document has path <code>/foo</code>, this will create two more documents,
 <code>/foo-sec1</code> and <code>/foo-sec2</code>, of the same type of
-the element (here <code>foo</code>). Their titles will be respectively
+the document (here <code>foo</code>). Their titles will be respectively
 "Section 1" and "Section 2", i.e. the titles of the cut nodes.
 </p>
 <p>
-The path of each created element is forged by appending "-" and the cut node id
-to the path of the element.
+The path of each created document is forged by appending "-" and the cut node id
+to the path of the document.
 </p>
-<p>Each created element has the subnodes of the cut node as body. Each cut node
-is replaced by a link to the corresponding created element. In our example,
-after <ixml>&lt;cut-elt&gt;</ixml> has been applied, our element body becomes:
+<p>Each created document has the subnodes of the cut node as body. Each cut node
+is replaced by a link to the corresponding created document. In our example,
+after <ixml>&lt;cut-doc&gt;</ixml> has been applied, our document body becomes:
 </p>
 <hxml><![CDATA[...
-<div class="cutlink"><elt href="/foo/sec1"/></div>
-<div class="cutlink"><elt href="/foo/sec2"/></div>
+<div class="cutlink"><doc href="/foo/sec1"/></div>
+<div class="cutlink"><doc href="/foo/sec2"/></div>
 ...
 ]]></hxml>
 <p>If a node has no <code>id</code> or no <code>title</code> attribute, then
 it is not cut and a warning is issued.
 </p>
-<p>The following attributes can be added to <ixml>&lt;cut-elt&gt;</ixml> to change
+<p>The following attributes can be added to <ixml>&lt;cut-doc&gt;</ixml> to change
 the behaviour:
 </p>
 <ul>
 <li><code>insert-link</code> can be set to <code>false</code> to prevent adding links
-to the new elements in the original element,
+to the new documents in the original document,
 </li>
 <li><code>type</code> can be set to a string to specify the type of the created
-elements, instead of inheriting the type of the original element,</li>
+documents, instead of inheriting the type of the original document,</li>
 <li><code>path-sep</code> specifies the separator used to forge the new paths;
 by default it is <code>-</code> but it can be for example <code>/</code>,
 </li>
 </ul>
 <p>
-At last, various <ixml>&lt;cut-elt&gt;</ixml> can be nested, for example
+At last, various <ixml>&lt;cut-doc&gt;</ixml> can be nested, for example
 to cut according to <ixml>&lt;section&gt;</ixml> and <ixml>&lt;subsection&gt;</ixml>
 nodes:
 </p>
 <hxml><![CDATA[
 ...
-<cut-elt tag="section">
-  <cut-elt tag="subsection">
+<cut-doc tag="section">
+  <cut-doc tag="subsection">
     <section id="..." title="...">
       ...
       <subsection id="..." title="...">
         ...
       </subsection>
     </section>
-  </cut-elt>
-</cut-elt>
+  </cut-doc>
+</cut-doc>
 ]]></hxml>
-<p>Of course, nodes which are not under the <ixml>&lt;cut-elt&gt;</ixml> nodes
-remain untouched, allowing to cut only a part of the element.
+<p>Of course, nodes which are not under the <ixml>&lt;cut-doc&gt;</ixml> nodes
+remain untouched, allowing to cut only a part of the document.
 </p>
 </section>
 
 <section id="inc" title="inc">
 <p id="late-inc">
 This function applies the <ixml>&lt;late-inc&gt;</ixml> rule, which
-works like <elt href="#include"/> but, having a different name, it can
+works like <doc href="#include"/> but, having a different name, it can
 be applied later, typically to include blocks which were not available
 earlier in the rewrite process.
 </p>
@@ -703,7 +703,7 @@ earlier in the rewrite process.
 <section id="clean" title="clean">
 <p>
 This function closes the OCaml sessions previously opened with
-<elt href="#ocaml-eval"><ixml>&lt;ocaml-eval&gt;</ixml></elt>.
+<doc href="#ocaml-eval"><ixml>&lt;ocaml-eval&gt;</ixml></doc>.
 </p>
 </section>
 

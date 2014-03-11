@@ -35,7 +35,7 @@ STOG_OPTIONS=\
   --plugin ../plugins/stog_dot.cmxs \
 	--plugin ../plugins/stog_asy.cmxs \
 	--plugin ../plugins/stog_markdown.cmxs \
-	--plugin ../plugins/stog_multi_elt.cmxs \
+	--plugin ../plugins/stog_multi_doc.cmxs \
 	--plugin ../plugins/stog_disqus.cmxs \
 	-d $(DEST_DIR) --depcut $(BASE_URL_OPTION) $(MORE_OPTS) #-v -v -v -v -v
 LESSC=lessc

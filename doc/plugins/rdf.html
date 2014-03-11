@@ -3,7 +3,7 @@
 <prepare-toc depth="1">
 <div class="left-toc"><toc/></div>
 <p>
-This plugin allows to easily specify RDF triples within elements,
+This plugin allows to easily specify RDF triples within documents,
 to produce a RDF graph for the whole generated site. It also permits
 executing Sparql queries to include data in the generated pages.
 </p>
@@ -15,12 +15,12 @@ The following figure summarizes the way it works:
 Additional rewrite levels are defined:
 </p>
 <ul>
-<li>level 200: contain rules to <elt href="#definetriples">define triples</elt>
-     in the graph of each stog element,</li>
+<li>level 200: contain rules to <doc href="#definetriples">define triples</doc>
+     in the graph of each stog document,</li>
 <li>level 201: gather all graphs into one graph and output it in the destination directory,</li>
-<li>level 202: contain rules to <elt href="#sources">load external graphs</elt>,</li>
-<li>level 220: contain rules to <elt href="#querying">query the graphs</elt>,
-  either graphs built during element rewriting or external graphs.</li>
+<li>level 202: contain rules to <doc href="#sources">load external graphs</doc>,</li>
+<li>level 220: contain rules to <doc href="#querying">query the graphs</doc>,
+  either graphs built during document rewriting or external graphs.</li>
 </ul>
 <section id="download" title="Download">
 <div class="alert alert-info">
@@ -44,8 +44,8 @@ git clone git@github.com:zoggy/stog-rdf.git
     <li>Base rules are not applied, they must be
      explictely run after level 220 to apply on result
     of <rule>rdf-select</rule> (using the
-    <elt href="funs#config_funs">"levels" field in
-    stog config file</elt>),
+    <doc href="funs#config_funs">"levels" field in
+    stog config file</doc>),
     </li>
     <li>Bug fixes.</li>
   </ul>
@@ -55,10 +55,10 @@ git clone git@github.com:zoggy/stog-rdf.git
     <li>Upgrade to OCaml-RDF 0.7.0,</li>
     <li>Upgrade to Stog 0.9.0,</li>
     <li>New <ixml>&lt;rdf-select&gt;</ixml> rule to
-      <elt href="#querying">query graphs</elt> using Sparql,</li>
+      <doc href="#querying">query graphs</doc> using Sparql,</li>
     <li>New <ixml>&lt;rdf-load&gt;</ixml> rule to
-      <elt href="#rdfload">load external graphs</elt>,</li>
-    <li>Ability to define external graphs to <elt href="#startupgraphs">load at startup</elt>,</li>
+      <doc href="#rdfload">load external graphs</doc>,</li>
+    <li>Ability to define external graphs to <doc href="#startupgraphs">load at startup</doc>,</li>
     <li>Bug fixes.</li>
   </ul>
 </li>
@@ -100,10 +100,10 @@ the required packages, for example for mysql:
 <p>
 Stog-rdf defines a new rewrite rule <ixml>rdf</ixml> associated to level 200.
 Each <ixml>&lt;rdf&gt;</ixml> node corresponds to a new triple whose subject
-is the current element url, or the current block id of the current
-element if the <ixml>&lt;rdf&gt;</ixml> node is contained in a XML node with an
+is the current document url, or the current block id of the current
+document if the <ixml>&lt;rdf&gt;</ixml> node is contained in a XML node with an
 <ixml>id</ixml> attribute. This triple is added to the graph associated to
-the current element.
+the current document.
 </p>
 <p>
 Another function, associated to level 201, merges all RDF
@@ -120,7 +120,7 @@ The name of this file is set in the <icode>.stog/config-rdf</icode> file
 </page>
 ]]></hxml>
 <p>
-Subject is the element url, <ixml>pred</ixml> is the IRI of the predicate
+Subject is the document url, <ixml>pred</ixml> is the IRI of the predicate
 (possibly of the form <ixml>prefix:term</ixml>). <ixml>obj</ixml> is the IRI of
 the object.
 </p>
@@ -133,9 +133,9 @@ the object.
 ]]></hxml>
 <p>
 Subject and predicate are as in the first example. <ixml>href</ixml> is of
-the form <icode>path[#id]</icode> to indicate an element of the site, and eventually
-a node id in this element. This is reduced to the complete IRI
-of the element or block referenced by <icode>element#id</icode>.
+the form <icode>path[#id]</icode> to indicate an document of the site, and eventually
+a node id in this document. This is reduced to the complete IRI
+of the document or block referenced by <icode>document#id</icode>.
 </p>
 <hxml><![CDATA[
 <page title="...">
@@ -146,9 +146,9 @@ of the element or block referenced by <icode>element#id</icode>.
 </page>
 ]]></hxml>
 <p>
-Here the subject is the IRI formed by the element url and the id of the
+Here the subject is the IRI formed by the document url and the id of the
 <ixml>&lt;p&gt;</ixml> node, for example <icode>http://my.example.com/foo/page1.html#id1</icode>
-if my element has path <icode>foo/page1</icode> and base url of the site is
+if my document has path <icode>foo/page1</icode> and base url of the site is
 <icode>http://my.example.com</icode>.
 </p>
 <p>
@@ -156,7 +156,7 @@ To add the triples, the
 <ixml><![CDATA[<rdf pred="pref:term" ...>...</rdf>]]></ixml> node is rewritten to
 </p>
 <hxml><![CDATA[
-<rdf:Description rdf:about="<element-url>[#id]">
+<rdf:Description rdf:about="<document-url>[#id]">
   <pref:term ...>
     ...
   </pref:term>
@@ -165,11 +165,11 @@ To add the triples, the
 <p>
 and this XML tree is parsed using OCaml-RDF
 <ext-a href="http://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</ext-a> parser to add the triples
-to the element graph. If a <ixml>href</ixml> or <ixml>obj</ixml> attribute was used,
+to the document graph. If a <ixml>href</ixml> or <ixml>obj</ixml> attribute was used,
 the corresponding IRI is associated to the `rdf:resource` attribute in the rewritten node:
 </p>
 <hxml><![CDATA[
-<rdf:Description rdf:about="<element-url>[#id]">
+<rdf:Description rdf:about="<document-url>[#id]">
   <pref:term rdf:resource="..." ...>
     ...
   </pref:term>
@@ -179,16 +179,16 @@ the corresponding IRI is associated to the `rdf:resource` attribute in the rewri
 and the whole <ixml>&lt;rdf:Description&gt;</ixml> node is parsed by the RDF/XML parser.
 </p>
 <p>
-It is possible to insert triple with a subject not being the current element
-or a block of the current element, using the <icode>subject</icode> attribute:
+It is possible to insert triple with a subject not being the current document
+or a block of the current document, using the <icode>subject</icode> attribute:
 </p>
 <hxml>&lt;rdf subject="http://foo.bar" pred="..." .../&gt;</hxml>
 <p>
-It is sometimes useful to force the subject to be the current element url even if the
+It is sometimes useful to force the subject to be the current document url even if the
 <ixml>&lt;rdf&gt;</ixml> node is under a XML node with an id:
 </p>
 <hxml>&lt;p id="..."&gt;
-  &lt;rdf subject="&amp;lt;elt-url/&amp;gt;" pred="..." .../&gt;
+  &lt;rdf subject="&amp;lt;doc-url/&amp;gt;" pred="..." .../&gt;
 &lt;/p&gt;
 </hxml>
 </subsection>
@@ -207,7 +207,7 @@ rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#
 site:<site base url>
 ]]></hxml>
 <p>
-(the site base url is the one specified with <icode>stog:site-url</icode> in the main stog element).
+(the site base url is the one specified with <icode>stog:site-url</icode> in the main stog document).
 </p>
 </section>
 
@@ -251,11 +251,11 @@ is encountered. This rule is registered in level 202.
 <hxml><rdf-load att1="..." att2="..."/></hxml>
 <p>Each attribute defines a pair (name, value) used as an option. The complete
 option list is used as the option lists specified in the <icode>.stog/config-rdf</icode>
-file (see <elt href="#startupgraphs"/>).
+file (see <doc href="#startupgraphs"/>).
 </p>
 <p>The following code loads a graph named <icode>http://foo.net/</icode>
 from a Turtle file <icode>foo_net.ttl</icode> in the same directory
-as the source file of the current element:
+as the source file of the current document:
 </p>
 <hxml><rdf-load name="http://foo.net/" file="./foo_net.ttl"/></hxml>
 <p>
@@ -286,9 +286,9 @@ describing the triples to load in the graph. For example:
 <p>
 The <ixml>&lt;rdf-select&gt;</ixml> rule, registered in level 220, allows to
 execute <ext-a href="http://www.w3.org/TR/sparql11-query">Sparql 1.1</ext-a> queries,
-either on the graph built during rewriting of elements
-(see <elt href="#definetriples"/>) or on loaded graphs
-(see <elt href="#sources"/>).
+either on the graph built during rewriting of documents
+(see <doc href="#definetriples"/>) or on loaded graphs
+(see <doc href="#sources"/>).
 </p>
 <p>
 The <ixml>&lt;rdf-select&gt;</ixml> rule takes the following parameters:
@@ -357,7 +357,7 @@ using <ixml><url_rdf/></ixml> and <ixml><name_rdf/></ixml>.
 <section id="tips" title="Tips">
 <p>
 To make definition of triples even easier, one can define rules in the
-element header, for example:
+document header, for example:
 </p>
 <hxml><![CDATA[
 <page title="..." with-contents="true">
@@ -375,7 +375,7 @@ element header, for example:
 <p>
 This will add a triple
 </p>
-<hxml><![CDATA[<element-url>#proof1 rdf:hasType science:proof]]></hxml>
+<hxml><![CDATA[<document-url>#proof1 rdf:hasType science:proof]]></hxml>
 </section>
 </prepare-toc>
 </plugin>

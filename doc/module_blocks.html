@@ -3,7 +3,7 @@ navbar-doc="active"
 >
 <p>
 Here are the functions of the module, which can be associated to
-levels (see <elt href="funs"/>):
+levels (see <doc href="funs"/>):
 </p>
 <prepare-toc depth="1">
 <toc/>
@@ -50,28 +50,28 @@ Default sectionning tags are, in this order,
 You can specify other nodes:
 </p>
 <ul>
-<li>for one element, using the "sectionning" attribute in the element, for example:
+<li>for one document, using the "sectionning" attribute in the document, for example:
   <hxml><page title="..." sectionning="section,subsection,paragraph">...</page></hxml>
   will define "section", "subsection" and "paragraph" as sectionning nodes.
 </li>
-<li>for all the site elements, using the "stog:sectionning" attribute in the main element
-  (see <elt href="stog-main-element"/>):
+<li>for all the site documents, using the "stog:sectionning" attribute in the main document
+  (see <doc href="stog-main-document"/>):
   <hxml><page title="..." stog:sectionning="section,subsection,paragraph">...</page></hxml>
 </li>
 </ul>
 <p>
-When a sectionning node is reduced, a <elt href="#block"/> node
+When a sectionning node is reduced, a <doc href="#block"/> node
  is created, so that
 refering to the section (or subsection, or ...), will use the title of the section
 (or subsection, or ...) for the produced link default text.
 </p>
 <p>To prevent a sectionning node having a counter associated, you can use
-<ixml>section-counter="false"</ixml> in the element attribute, or
-<ixml>stog:section-counter="false"</ixml> in the main element. "section" can be replaced
+<ixml>section-counter="false"</ixml> in the document attribute, or
+<ixml>stog:section-counter="false"</ixml> in the main document. "section" can be replaced
 by "subsection" or any other node to prevent this node having a counter.
 </p>
 <p>
-The function also applies the <elt href="#block"/> and <elt href="#counter"/> rules.
+The function also applies the <doc href="#block"/> and <doc href="#counter"/> rules.
 </p>
 <also-base-rules/>
 </section>
@@ -79,30 +79,30 @@ The function also applies the <elt href="#block"/> and <elt href="#counter"/> ru
 <section id="gather-ids" title="gather-ids">
 <p>
 This function collect all ids (the values attached to <ixml>id="..."</ixml> attributes)
-in all element, so they can be referenced to in upper levels.
+in all document, so they can be referenced to in upper levels.
 </p>
 <p>
-Having twice the same id in an element results in an error.
+Having twice the same id in an document results in an error.
 </p>
 </section>
 
-<section id="elt" title="elt">
+<section id="doc" title="doc">
 <p>
 This function applies the following rules:
-<ixml>&lt;elt&gt;</ixml>, <ixml>&lt;post&gt;</ixml>,
+<ixml>&lt;doc&gt;</ixml>, <ixml>&lt;post&gt;</ixml>,
 <ixml>&lt;page&gt;</ixml> and <ixml>&lt;block&gt;</ixml>.
 </p>
-<include file="syntax.tmpl"><![CDATA[<elt href=path[#id]>text</elt>]]></include>
+<include file="syntax.tmpl"><![CDATA[<doc href=path[#id]>text</doc>]]></include>
 <p>
-This will return a link to the element specified by its path and optional fragment id.
-The path of an element is its absolute name from the root directoty of your project.
+This will return a link to the document specified by its path and optional fragment id.
+The path of an document is its absolute name from the root directoty of your project.
 You are not forced
 to give the full path, but can also give only one or more of the last parts
-of the path, as long as it uniquely identifies an existing element.
+of the path, as long as it uniquely identifies an existing document.
 </p>
 <p>
-For example, suppose you want to refer to the element defined in file
-<code>&lt;root dir&gt;/foo/bar/hello.html</code>. The path of this element
+For example, suppose you want to refer to the document defined in file
+<code>&lt;root dir&gt;/foo/bar/hello.html</code>. The path of this document
 is "/foo/bar/hello". You can refer to it in various ways:
 </p>
 <ul>
@@ -110,15 +110,15 @@ is "/foo/bar/hello". You can refer to it in various ways:
 <li>with only the last part of its path: <code>hello</code>,</li>
 <li>with an ending subpart of its path: <code>bar/hello</code>.</li>
 </ul>
-<p>In the last two cases, an error will be raised if more than one elements
+<p>In the last two cases, an error will be raised if more than one documents
 match the incomplete path. You can provide an additional attribute <code>type</code>
 to prevent ambiguities, for example:
 </p>
-<hxml><![CDATA[<elt href="bar/hello" type="post"/>]]></hxml>
+<hxml><![CDATA[<doc href="bar/hello" type="post"/>]]></hxml>
 <p>
-Refering to an unknown element will raise an error. If no path is given,
-<ixml>&lt;elt-path/&gt;</ixml> is used instead, i.e. the string associated to
-<code>elt-path</code> in the environment, to retrieve the current element path.
+Refering to an unknown document will raise an error. If no path is given,
+<ixml>&lt;doc-path/&gt;</ixml> is used instead, i.e. the string associated to
+<code>doc-path</code> in the environment, to retrieve the current document path.
 </p>
 <p>
 A node id can also be specified, like <code>thisblock</code> in
@@ -126,43 +126,43 @@ A node id can also be specified, like <code>thisblock</code> in
 will raise an error.
 </p>
 <p>
-If no text is given for the link, the title of the element
+If no text is given for the link, the title of the document
 will be used instead (or, if a node id is given, the title associated to
 the node id, if any). Specifying in attributes <ixml>quotes="true"</ixml>
-indicates to add quotes around the element title.
+indicates to add quotes around the document title.
 </p>
 <p>
 <ixml>&lt;page ...&gt;</ixml> and <ixml>&lt;post ... &gt;</ixml>
 are equivalent respectively to
-<ixml>&lt;elt type="page" ...&gt;</ixml> and
-<ixml>&lt;elt type="post" ...&gt;</ixml>.
+<ixml>&lt;doc type="page" ...&gt;</ixml> and
+<ixml>&lt;doc type="post" ...&gt;</ixml>.
 </p>
 <p>The <ixml>&lt;block&gt;</ixml> rule in this function is not the
-same as <elt href="#block"/> base rule.
+same as <doc href="#block"/> base rule.
 In this function,
 </p>
 <hxml><block href="...">text</block></hxml>
 <p>is used to refer to a block using the given <code>href</code> attribute. Here the
 href only contains an id, it is not of the form "path[#id]". This will
-be reduced to a link to the corresponding element, using the given text.
+be reduced to a link to the corresponding document, using the given text.
 </p>
 <p>If the node matching the <code>href</code> was defined with the
-<elt href="#block"/> base rule (i.e. without <code>href</code> attribute),
+<doc href="#block"/> base rule (i.e. without <code>href</code> attribute),
 then the title associated to this node is used as text for the procuded link, if no
 text was given (<ixml><block href="..."/></ixml>).
 </p>
 <p>So,</p>
 <hxml><block href="fig1"/></hxml>
 <p>is equivalent to</p>
-<hxml><elt href="#fig1"/></hxml>
+<hxml><doc href="#fig1"/></hxml>
 <p>or</p>
-<hxml><![CDATA[<elt id="&lt;elt-path/&gt;#fig1"/>]]></hxml>
+<hxml><![CDATA[<doc id="&lt;doc-path/&gt;#fig1"/>]]></hxml>
 <p>
 But the purpose of <code>&lt;block&gt;</code> rule is not to be used directly, but rather
 by defining other rules reducing to <code>&lt;block&gt;</code>, like environments in
 latex for figures, proofs, propositions, ...
 </p>
-<p>Here is an example of definition of a function in an element definition:</p>
+<p>Here is an example of definition of a function in an document definition:</p>
 <hcode lang="xml"><![CDATA[
 <article title="..." with-contents="true">
 <theorem id="" title="" href=""><block

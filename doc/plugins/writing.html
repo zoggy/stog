@@ -3,11 +3,11 @@ with-contents="true"
 >
 <contents>
 <p>
-This plugin adds new rewrite rules to use the following elements in your pages:
+This plugin adds new rewrite rules to use the following documents in your pages:
 </p>
 <ul>
-<li><elt href="#footnotes"/>,</li>
-<li><elt href="#biblio"/>.</li>
+<li><doc href="#footnotes"/>,</li>
+<li><doc href="#biblio"/>.</li>
 </ul>
 
 <section id="download" title="Download">
@@ -102,7 +102,7 @@ Example:
 <section id="biblio" title="Bibliography">
 <subsection id="definebib" title="Defining bibliographies">
 <p>
-Bibliographies can be defined in any element header, with the following syntax:
+Bibliographies can be defined in any document header, with the following syntax:
 </p>
 <hxml><![CDATA[
 <bibliographies ...>
@@ -132,13 +132,13 @@ Each <ixml>&lt;bibliography&gt;</ixml> node can have the following attributes:
               each bibliography must have a site-wide unique name,</li>
 <li><ixml>files="..."</ixml>:
    a comma-separated list of filenames, in bibtex format;
-   filenames are relative to the element source file,</li>
+   filenames are relative to the document source file,</li>
 <li><ixml>sort</ixml>, <ixml>reverse</ixml> and <ixml>prefix</ixml>:
   can be used to override the same attributes of the <ixml>&lt;bibliographies&gt;</ixml> node.
 </li>
 </ul>
 <p>
-Using attribute <ixml>bib-files="file1.bib,file2.bib,..."</ixml> in an element
+Using attribute <ixml>bib-files="file1.bib,file2.bib,..."</ixml> in an document
 header is a shortcut for
 </p>
 <hxml>

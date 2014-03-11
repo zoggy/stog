@@ -12,39 +12,39 @@ Release 0.10.0 of stog is available from the <page href="/install"/> page.
 <ul id="changes">
 <li>Fix caching system,</li>
 <li>Use <icode lang="ocaml">||</icode> instead of deprecated <icode lang="ocaml">or</icode>.</li>
-<li>Change architecture of <elt href="engine">engine</elt>, introducing modules and fold-like
+<li>Change architecture of <doc href="engine">engine</doc>, introducing modules and fold-like
   rewrite rules (following Xtmpl library),
 </li>
 <li>Do not use the <ixml>main_</ixml> tag, but rather <ixml>dummy_</ixml>,</li>
 <li><rule>inc</rule> is now deprecated and replaced by
-  <elt href="module_base#late-inc"><rule>late-inc</rule></elt>,
+  <doc href="module_base#late-inc"><rule>late-inc</rule></doc>,
 </li>
-<li><elt href="module_base#include"><rule>include</rule></elt> and
-  <elt href="module_base#late-inc"><rule>late-inc</rule></elt> both
+<li><doc href="module_base#include"><rule>include</rule></doc> and
+  <doc href="module_base#late-inc"><rule>late-inc</rule></doc> both
   handle <code>depend</code>, <code>file</code>, <code>href</code>,
   <code>id</code>, <code>raw</code> and <code>subs-only</code> attributes,
 </li>
-<li>New rule <elt href="module_base#cut"><rule>cut-elt</rule></elt>
+<li>New rule <doc href="module_base#cut"><rule>cut-doc</rule></doc>
   to split a document into pieces according to some nodes (equivalent
   of Hevea's <ext-a href="http://para.inria.fr/~maranget/hevea/doc/cutname.html#hacha">Hacha</ext-a>),
 </li>
-<li>Rules defined in elements now can use all attributes (parameters), with
+<li>Rules defined in documents now can use all attributes (parameters), with
   default values for the ones specified in rule definition,
 </li>
-<li>New option <elt href="running#optionlocal"><code>--local</code></elt>,</li>
-<li>New base rule <elt href="module_base#elt-datetime"><rule>elt-datetime</rule></elt>,</li>
-<li>New plugins: <elt href="asy"/>, <elt href="dot"/> and <elt href="multi-elt"/>,</li>
+<li>New option <doc href="running#optionlocal"><code>--local</code></doc>,</li>
+<li>New base rule <doc href="module_base#doc-datetime"><rule>doc-datetime</rule></doc>,</li>
+<li>New plugins: <doc href="asy"/>, <doc href="dot"/> and <doc href="multi-doc"/>,</li>
 <li>New <code>show-without-ids</code> attribute for
-   <elt href="module_base#toc"><rule>prepare-toc</rule></elt>
+   <doc href="module_base#toc"><rule>prepare-toc</rule></doc>
    to handle sections without id,</li>
-<li>New rules <elt href="posts/ocaml-printf"><rule>ocaml-printf</rule></elt>,
-    <elt href="module_base#as-xml"><rule>as-xml</rule></elt>, and
-    <elt href="module_base#prefix-svg-ids"><rule>prefix-svg-ids</rule></elt>,
+<li>New rules <doc href="posts/ocaml-printf"><rule>ocaml-printf</rule></doc>,
+    <doc href="module_base#as-xml"><rule>as-xml</rule></doc>, and
+    <doc href="module_base#prefix-svg-ids"><rule>prefix-svg-ids</rule></doc>,
 </li>
-<li><elt href="module_base#latex"><rule>latex</rule></elt> rule now uses
+<li><doc href="module_base#latex"><rule>latex</rule></doc> rule now uses
   <code>latex-packages</code> Stog environment variable
   if no <code>package</code> attribute is given,
 </li>
-<li>New <elt href="latex2stog">LaTeX to Stog</elt> translator, not finished yet.</li>
+<li>New <doc href="latex2stog">LaTeX to Stog</doc> translator, not finished yet.</li>
 </ul>
 </post>

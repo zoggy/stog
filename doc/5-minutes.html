@@ -60,7 +60,7 @@ in <icode>stog-output/posts/first-post.html</icode>:
 </p>
 <cl>$ stog --local mystog
 Warning: Creating default template file "mystog/.stog/templates/post.tmpl"
-Warning: Creating default template file "mystog/.stog/templates/elt-in-list.tmpl"
+Warning: Creating default template file "mystog/.stog/templates/doc-in-list.tmpl"
 Warning: Creating default template file "mystog/.stog/templates/by-month.tmpl"
 0 error, 3 warnings
 $ tree stog-output
@@ -77,18 +77,18 @@ stog-output
 We see that the original file hierarchy (in <icode>mystog</icode>)
 is mapped to the destination directoy (in <icode>stog-output</icode>).
 An additional file is present, <icode>2013_11.html</icode>, which is automatically
-created to list elements of november 2013, since at least one element has
+created to list documents of november 2013, since at least one document has
 this date (out first blog post).
 </p>
 <p>
 Let's add another page, here a <icode>mystog/blog.html</icode> file, containing
-the list of elements of type "post", with 4 elements maximum, and generating
+the list of documents of type "post", with 4 documents maximum, and generating
 a <icode>index.rss</icode> file on the fly:
 </p>
 <cl><![CDATA[$ cat > mystog/blog.html
 <page title="My blog">
   <p>Most recent posts:</p>
-  <elements type="post" rss="index.rss" max="4"/>
+  <documents type="post" rss="index.rss" max="4"/>
 </page>
 ^D
 $ stog --local mystog]]></cl>
@@ -101,8 +101,8 @@ $ stog --local mystog
 ]]></cl>
 </section>
 
-<section id="ref" title="Referencing elements">
-<p>References from an element (a page, a post, ...) to another are checked by stog.
+<section id="ref" title="Referencing documents">
+<p>References from an document (a page, a post, ...) to another are checked by stog.
 Let's add a reference to our first post from the main page. We show the contents
 of <icode>mystog/index.html</icode> after the modification:
 </p>
@@ -112,7 +112,7 @@ main="true"
 >
 Hello world !
 <p>
-This is reference to <elt href="first-post"/>.
+This is reference to <doc href="first-post"/>.
 </p>
 </page>
 ]]></hxml>
@@ -120,8 +120,8 @@ This is reference to <elt href="first-post"/>.
 <p>Now browse the <icode>stog-output/index.html</icode> file to see the result.</p>
 </section>
 <section id="further" title="Going further">
-<p>Now you can read <elt href="overview">how Stog works</elt> and
-the <elt href="funs">predefined rewrite rules</elt>.
+<p>Now you can read <doc href="overview">how Stog works</doc> and
+the <doc href="funs">predefined rewrite rules</doc>.
 </p>
 <p>The source of each page is available at the bottom of the page.
 Feel free to have a look to see how something is achieved.

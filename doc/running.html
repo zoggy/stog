@@ -19,7 +19,7 @@ all pages and articles are merged as if all were defined in the last directory
 given. It may be useful to gather blogs or page to generate one big site. Or not.
 </p>
 <p>The <icode>--site-url</icode> option is used to override the <icode>stog:site-url</icode>
-field of the main element. It it useful to generate a local site, for example
+field of the main document. It it useful to generate a local site, for example
 </p>
 <command-line>stog --site-url file:///tmp/website your-directory</command-line>
 <p>
@@ -58,7 +58,7 @@ to generate the "fr" part of your web site, removing all <ixml>&lt;en&gt;</ixml>
 </p>
 <!--
 <p>
-If you need more languages, just define "stog:languages" in the main element
+If you need more languages, just define "stog:languages" in the main document
 this way:
 </p>
 <hcode><![CDATA[<type main="true" ... stog:languages="es,de,fr,en">...</type>]]></hcode>
@@ -66,24 +66,24 @@ this way:
 the provided
 -->
 <p>
-Stog will keep computed elements in directory <code>.stog/cache</code>.
+Stog will keep computed documents in directory <code>.stog/cache</code>.
 To prevent stog from using this cache, use the <code>--nocache</code>
 command line option. The cache won't be read, but it will nevertheless
-be updated by contents of computed elements.
+be updated by contents of computed documents.
 </p>
 <p>
-The caching strategy uses dependencies between elements: if an element
-refers to another one (see <elt href="funs"/>), a dependency will be
+The caching strategy uses dependencies between documents: if an document
+refers to another one (see <doc href="funs"/>), a dependency will be
 added and stored in the cache directory, so that this dependency will
-be used during the next run of stog. An element can also depend
+be used during the next run of stog. An document can also depend
 on files: the templates used, the files included, ... Dependencies are
 recursively computed.
 </p>
 <p>
 In some cases, using recursive dependencies may be too complete. For example,
 if you have a menubar appearing in all pages, all pages will depend on
-the elements referenced by the menubar, leading to all elements depending
-on all elements. A change in any element will then make every element recomputed
+the documents referenced by the menubar, leading to all documents depending
+on all documents. A change in any document will then make every document recomputed
 at each run. To prevent this, the <code>--depcut</code> option specifies
 to use non-recursive dependencies in the caching strategy.
 </p>

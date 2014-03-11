@@ -9,13 +9,13 @@ and directories
 from this starting point and generate the same hierarchy in the output directory.
 </p>
 <p>
-Some of the files will be read as <elt href="stog-elements"/>,
+Some of the files will be read as <doc href="stog-documents"/>,
 i.e. XML files which will
 be processed through a templating engine to produce the final files.
 </p>
 <div class="alert alert-warning">
 <p>
-Since the element files arex handled as XML documents, the boolean attributes,
+Since the document files arex handled as XML documents, the boolean attributes,
 like in HTML5, are not allowed. So, when using Stog to generate HTML5 pages,
 instead of writing
 </p>
@@ -36,7 +36,7 @@ templates (in directory <icode>templates</icode>) and the
 </p>
 <p id="config-file">In this file,
 using regular expressions, one can indicate which files must be ignored,
-and which files are elements. Files not being ignored nor being elements
+and which files are documents. Files not being ignored nor being documents
 will be copied by <icode>stog</icode> to the target directory.
 The "follow-symlinks" option indicates whether to follow symlinks or not.
 Default is to ignore symlinks.
@@ -54,8 +54,8 @@ When launched, <icode>stog</icode> performs the following actions:
 <ol>
 <li>Read the given directory hierarchy;</li>
 <li>Create the target directory if it does not exist;</li>
-<li>Apply the engine on elements;</li>
-<li>Generate resulting element files in the target directory;</li>
+<li>Apply the engine on documents;</li>
+<li>Generate resulting document files in the target directory;</li>
 <li>Copy all other files in the target directory, of course
   keeping the source directory structure.</li>
 </ol>

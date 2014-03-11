@@ -4,7 +4,7 @@ topics="stog"
 keywords="ocaml, evaluation, code, print"
 published="true">
 <p>
-Since <elt href="release-0.10.0"/>, the <rule>ocaml-printf</rule>
+Since <doc href="release-0.10.0"/>, the <rule>ocaml-printf</rule>
 can be used to access the content of computed OCaml values, as
 strings.
 </p>
@@ -72,7 +72,7 @@ is rewritten <as-xml defer_="1"><include file="./ocaml-printf-code.foo" raw="tru
 Let's define a list:
 </p>
 <ocaml-eval toplevel="true">let my_list = [ 101 ; 202 ; 303 ; 404 ];;</ocaml-eval>
-<p>The <elt href="module_base#as-xml"><rule>as-xml</rule></elt> rule can be used to
+<p>The <doc href="module_base#as-xml"><rule>as-xml</rule></doc> rule can be used to
 parse the result of <rule>ocaml-printf</rule> as XML, using the <code>defer_</code>
 attribute to compute the contents of the node first:
 </p>
@@ -94,7 +94,7 @@ The current value of <code>foo</code> is
 The <code>session</code> attribute is honored:
 </p>
 <hxml><![CDATA[<ocaml-printf session="..." ...>...</ocaml-printf>]]></hxml>
-<p>See <elt href="ocaml-sessions">this post</elt> for details about OCaml sessions.</p>
+<p>See <doc href="ocaml-sessions">this post</doc> for details about OCaml sessions.</p>
 </section>
 </prepare-toc>
 </post>

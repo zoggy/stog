@@ -42,13 +42,13 @@ package "dot" (
   archive(plugin,native) = "stog_dot.cmxs"
 )
 
-package "multi-elt" (
+package "multi-doc" (
   version = "0.10.0"
-  description = "Stog multi-element plugin"
-  archive(byte) = "stog_multi_elt.cmo"
-  archive(native) = "stog_multi_elt.cmx"
-  archive(plugin,byte) = "stog_multi_elt.cmo"
-  archive(plugin,native) = "stog_multi_elt.cmxs"
+  description = "Stog multi-document plugin"
+  archive(byte) = "stog_multi_doc.cmo"
+  archive(native) = "stog_multi_doc.cmx"
+  archive(plugin,byte) = "stog_multi_doc.cmo"
+  archive(plugin,native) = "stog_multi_doc.cmxs"
 )
 
 

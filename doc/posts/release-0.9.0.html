@@ -11,24 +11,24 @@ Release 0.9.0 of stog is available from the <page href="/install"/> page.
 <ul id="changes">
 <li>New option follow-symlinks in <icode>.stog/config</icode> to follow symlinks
   or not when building the file and directory source tree,</li>
-<li>For elements with doctype=html, prevent self-closing of tags, except
-    <ext-a href="http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements">HTML5 void elements</ext-a>,</li>
-<li>New <elt href="odoc">ocamldoc generator</elt> (<icode>odoc_stog.cm{o,xs}</icode>)
+<li>For documents with doctype=html, prevent self-closing of tags, except
+    <ext-a href="http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-documents">HTML5 void documents</ext-a>,</li>
+<li>New <doc href="odoc">ocamldoc generator</doc> (<icode>odoc_stog.cm{o,xs}</icode>)
     to embed ocamldoc-generated documentation into sites generated with stog,</li>
-<li><icode>&lt;elt-*&gt;</icode> predefined functions handle a
-    <ixml>elt-hid="hid of element"</ixml> attribute, to access information about
-    another element rather than the current one,</li>
-<li>Fix <elt href="module_base#ocaml-eval"/>: use return of <icode>Toploop.execute_phrase</icode>
+<li><icode>&lt;doc-*&gt;</icode> predefined functions handle a
+    <ixml>doc-hid="hid of document"</ixml> attribute, to access information about
+    another document rather than the current one,</li>
+<li>Fix <doc href="module_base#ocaml-eval"/>: use return of <icode>Toploop.execute_phrase</icode>
     to consider catched exceptions as errors if <ixml>error-exc="true"</ixml>,</li>
 <li>Fix: allow list of CDATA in ocaml code,</li>
-<li>New <elt href="running#optiondef"><icode>--def</icode> command-line option</elt>
+<li>New <doc href="running#optiondef"><icode>--def</icode> command-line option</doc>
     to define a global rule on command line,</li>
-<li>New <elt href="module_base#elt-navpath"/> rule, to create a navigation bar,</li>
+<li>New <doc href="module_base#doc-navpath"/> rule, to create a navigation bar,</li>
 <li>Fix Malformed_URL bug when generating with a site-url having an empty path,</li>
-<li><elt href="module_base#hcode"/> and <elt href="module_base#icode"/> now keep id attribute
-    in <ixml>&lt;pre&gt;</ixml> or <ixml>&lt;span&gt;</ixml> resulting element,</li>
-<li><elt href="module_base#late-inc"/> handles id attribute to redefine the id of the included node,</li>
-<li>New <icode>filter</icode> attribute for the <elt href="module_base#elements"/> rule,</li>
-<li><elt href="module_base#elements"/> handles ','- or ';'-separated list of element types.</li>
+<li><doc href="module_base#hcode"/> and <doc href="module_base#icode"/> now keep id attribute
+    in <ixml>&lt;pre&gt;</ixml> or <ixml>&lt;span&gt;</ixml> resulting document,</li>
+<li><doc href="module_base#late-inc"/> handles id attribute to redefine the id of the included node,</li>
+<li>New <icode>filter</icode> attribute for the <doc href="module_base#documents"/> rule,</li>
+<li><doc href="module_base#documents"/> handles ','- or ';'-separated list of document types.</li>
 </ul>
 </post>

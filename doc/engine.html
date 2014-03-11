@@ -15,15 +15,15 @@ Data flow in Stog's engine.</image></a>
 The figure on the side shows the global architecture of the
 Stog engine and the flow of data.
 </p>
-<p><elt href="stog-elements"/> are read from the source directory
-and a <elt href="Stog_types#TYPEstog">stog</elt> structure is created.
-Since some elements may be in the cache and do not need to be recomputed,
-the small yellow boxes represent the filtering of elements in the stog
-structure to create a list of elements to compute.
+<p><doc href="stog-documents"/> are read from the source directory
+and a <doc href="Stog_types#TYPEstog">stog</doc> structure is created.
+Since some documents may be in the cache and do not need to be recomputed,
+the small yellow boxes represent the filtering of documents in the stog
+structure to create a list of documents to compute.
 </p>
 <p>
 Two modules are represented on the figure (Module 1 and Module 2). More modules
-can be present, for example when loading <elt href="writing_plugins">plugins</elt>.
+can be present, for example when loading <doc href="writing_plugins">plugins</doc>.
 </p>
 <p>These modules define functions associated to <em>levels</em>: Here
 the Module 1 has functions for levels 0, 20 and 30, while Module 2 has
@@ -31,60 +31,60 @@ functions for levels 1 and 20.
 </p>
 <p>For each level, in ascending order, the stog structure is passed
 to the function at this level, for each module where there is one.
-These functions take the stog structure and the list of elements
+These functions take the stog structure and the list of documents
 to compute. They return a new stog structure (which may be unchanged, if
-no element was changed or created).
+no document was changed or created).
 </p>
 <p>These "level functions" also take in parameter a data structure which is
 specific for each module. This data structure is also returned by the functions,
 as in a regular "fold" function.
 </p>
 <p>
-When the functions of all levels have been applied, the elements in the
+When the functions of all levels have been applied, the documents in the
 final stog structure are outputted to files in the target directory, according
 to their path in the source directory. The cache is updated with information
-about dependencies and contents of elements. For each module, a specific
+about dependencies and contents of documents. For each module, a specific
 function is called to cache the final data associated to the module.
 All cache information is stored in the <icode>.stog/cache</icode> directory.
 </p>
 <p>
-The cached elements and dependencies will be used next time Stog is run,
-to know which elements must be recomputed, and cached module data will
+The cached documents and dependencies will be used next time Stog is run,
+to know which documents must be recomputed, and cached module data will
 be used to initialize the data structure specific to each module.
 </p>
 <p>
 Stog comes with two predefined modules, "html" and "blocks", each defining
 function for various levels. The "level functions" often apply rewrite rules
-on the elements' contents (which are XML trees) but can also perform other
+on the documents' contents (which are XML trees) but can also perform other
 actions like gathering information in the module-specific data structure
 to use it in a higher level.
 </p>
 <p>Various levels are required to ensure some treatments or rewrite rules
 will be applied after
-others, for example to verify cross-element links. Levels used by predefined
+others, for example to verify cross-document links. Levels used by predefined
 modules are numbered like lines in BASIC programs: 0, 50, 100, 120, ... making
 plugins able to insert new levels.
 </p>
 <p>Modules can define functions for negative levels, for example to make
 sure they will be applied before level 0.
 </p>
-<p>The first application of a level function to an element uses the
-type of the element to load the corresponding template; for example,
-if the element has type "page", then a template <icode>page.tmpl</icode> will
+<p>The first application of a level function to an document uses the
+type of the document to load the corresponding template; for example,
+if the document has type "page", then a template <icode>page.tmpl</icode> will
 be looked for (in the <icode>.stog/templates</icode> directory).
 </p>
 </section>
 
 <section id="env" title="Environment">
 <p>An environment is built containing the
-<elt href="stog-main-element">site-wide attributes</elt>.
+<doc href="stog-main-document">site-wide attributes</doc>.
 This environment is a set of rewrite rules. It is passed to every "level function".
 </p>
 <p>
-A "level function" can enrich this environment with the attributes of an element
-(using <elt href="Stog_engine#VALelt_env">this function</elt>). This is what
+A "level function" can enrich this environment with the attributes of an document
+(using <doc href="Stog_engine#VALdoc_env">this function</doc>). This is what
 most of the default level functions do, in addition to defining rewrite rules,
-to get the "rewrite environment" to apply on each element to compute.
+to get the "rewrite environment" to apply on each document to compute.
 </p>
 <p>
 The environment is used in the following way to rewrite XML trees.
@@ -107,7 +107,7 @@ before looking up for the tag in the environment.
 </p>
 <p>Stog comes with <page href="funs">predefined functions</page> (in two default modules)
 associated to some tags, but more can be created in
-<elt href="writing_plugins">plugins</elt>.
+<doc href="writing_plugins">plugins</doc>.
 </p>
 </section>
 </page>

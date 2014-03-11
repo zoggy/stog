@@ -1,12 +1,12 @@
 <ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_html</title><contents><div class="ocamldoc-page">
 <code class="code"><span class="keyword">sig</span><br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_by_href&#160;:<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;doc_by_href&#160;:<br/>
 &#160;&#160;&#160;&#160;?typ:string&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;?src_elt:<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;?src_doc:<span class="constructor">Stog_types</span>.doc&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;<span class="keywordsign">'</span>a&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;*&#160;(<span class="constructor">Stog_types</span>.elt&#160;*&#160;string&#160;*&#160;string&#160;option)&#160;option<br/>
+&#160;&#160;&#160;&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;*&#160;(<span class="constructor">Stog_types</span>.doc&#160;*&#160;string&#160;*&#160;string&#160;option)&#160;option<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;get_in_env&#160;:&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Xmlm</span>.name&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;*&#160;<span class="constructor">Xtmpl</span>.tree&#160;list<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;get_path&#160;:&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;*&#160;string<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;escape_html&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
@@ -15,13 +15,13 @@
 &#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;?ext:string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.path&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Neturl</span>.url<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;build_base_rules&#160;:<br/>
 &#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.elt_id&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="constructor">Xmlm</span>.name&#160;*&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="constructor">Xtmpl</span>.callback)&#160;list<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_list&#160;:<br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.doc_id&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="constructor">Xmlm</span>.name&#160;*&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="constructor">Xtmpl</span>.callback)&#160;list<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;doc_list&#160;:<br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.doc&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;?rss:<span class="constructor">Neturl</span>.url&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;?set:<span class="constructor">Stog_types</span>.<span class="constructor">Elt_set</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="constructor">Xtmpl</span>.callback<br/>
+&#160;&#160;&#160;&#160;?set:<span class="constructor">Stog_types</span>.<span class="constructor">Doc_set</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="constructor">Xtmpl</span>.callback<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;get_sectionning_tags&#160;:<br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Xtmpl</span>.name&#160;list<br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.doc&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Xtmpl</span>.name&#160;list<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;mk_levels&#160;:<br/>
 &#160;&#160;&#160;&#160;string&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;(string&#160;*&#160;<span class="keywordsign">'</span>a&#160;<span class="constructor">Stog_engine</span>.level_fun)&#160;list&#160;<span class="keywordsign">-&gt;</span><br/>

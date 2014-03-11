@@ -14,7 +14,7 @@ be installed too.
 <p>Usage:</p>
 <command-line>$ stog --package stog.asy ...</command-line>
 
-<p>This plugin adds a new <elt href="module_base#base">base rule</elt>
+<p>This plugin adds a new <doc href="module_base#base">base rule</doc>
  <ixml>&lt;asy&gt;</ixml>.
 Here are the possible ways to use it:
 </p>
@@ -65,7 +65,7 @@ passed to the <ixml>&lt;img&gt;</ixml> node.
 
 <tr>
 <td>
-With <ixml>&lt;elt-...&gt;</ixml> rules to get labels,
+With <ixml>&lt;doc-...&gt;</ixml> rules to get labels,
 using attribute <ixml>defer_="1"</ixml> in the <ixml>&lt;dot&gt;</ixml>
 so that rewriting is performed in its children before the
 code is being passed to dot:
@@ -73,11 +73,11 @@ code is being passed to dot:
 <asy defer_="1">
 real margin=1.5mm;
 object left=align(
-  object("<elt-title elt-path="plugins/asy"/>",
+  object("<doc-title doc-path="plugins/asy"/>",
          ellipse,margin),W);
 add(left);
 object right=align(
-  object("<elt-title elt-path="plugins"/>",
+  object("<doc-title doc-path="plugins"/>",
          ellipse,margin),4E);
 add(right);
 add(new void(frame f, transform t) {

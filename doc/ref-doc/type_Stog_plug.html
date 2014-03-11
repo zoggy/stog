@@ -4,13 +4,13 @@
 &#160;&#160;<span class="keyword">val</span>&#160;register_lang&#160;:&#160;<span class="constructor">Stog_intl</span>.lang_abbrev&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_intl</span>.lang_data&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;register_html_base_rule&#160;:<br/>
 &#160;&#160;&#160;&#160;<span class="constructor">Xmlm</span>.name&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="constructor">Xtmpl</span>.callback&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;elt_by_href&#160;:<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;doc_by_href&#160;:<br/>
 &#160;&#160;&#160;&#160;?typ:string&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;?src_elt:<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;?src_doc:<span class="constructor">Stog_types</span>.doc&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;<span class="keywordsign">'</span>a&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;*&#160;(<span class="constructor">Stog_types</span>.elt&#160;*&#160;string&#160;*&#160;string&#160;option)&#160;option<br/>
+&#160;&#160;&#160;&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="keywordsign">'</span>a&#160;*&#160;(<span class="constructor">Stog_types</span>.doc&#160;*&#160;string&#160;*&#160;string&#160;option)&#160;option<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;mk_block_node&#160;:<br/>
 &#160;&#160;&#160;&#160;id:string&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;?label:<span class="constructor">Xtmpl</span>.tree&#160;list&#160;<span class="keywordsign">-&gt;</span><br/>
@@ -25,8 +25,8 @@
 &#160;&#160;<span class="keyword">val</span>&#160;set_print_warning&#160;:&#160;(string&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;error&#160;:&#160;?info:string&#160;<span class="keywordsign">-&gt;</span>&#160;?fatal:int&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;set_print_error&#160;:&#160;(string&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;<span class="keyword">type</span>&#160;dependency&#160;=&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="constructor">Stog_types</span>.dependency<br/>
+&#160;&#160;<span class="keyword">type</span>&#160;dependency&#160;=&#160;<span class="constructor">Stog_types</span>.doc&#160;<span class="constructor">Stog_types</span>.dependency<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;add_dep&#160;:<br/>
 &#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.elt&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_plug</span>.dependency&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog<br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.doc&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_plug</span>.dependency&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog<br/>
 <span class="keyword">end</span></code></div></contents></ocamldoc>
