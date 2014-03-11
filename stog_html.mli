@@ -58,9 +58,9 @@ val add_block :
   then return [""] else return the reduced value as a string.*)
 val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * Xtmpl.tree list
 
-(** [get_path env] returns the value associated to ["path"] in [env].
+(** [get_path env] returns the path associated to ["path"] in [env].
   @raise Assert_failure if ["path"] is not found in the environment.*)
-val get_path : 'a -> 'a Xtmpl.env -> 'a * string
+val get_path : 'a -> 'a Xtmpl.env -> 'a * Stog_types.path
 
 (** Escape html code in the given string: change [&] to [&amp;],
   [<] to [&lt;] and [>] to [&gt;].*)

@@ -1,4 +1,6 @@
-Change terms: Element => Document, in code and documentation
+<date-now format="...">
+<doc-date[time] format="...">
+
 Add initialization of counters
 
 Stog_info.compute should be a level fun in Base module

@@ -144,3 +144,42 @@ let doc_in_list stog =
 
 let keyword stog = (stog, parse "<span itemprop=\"keywords\"><keyword/></span>");;
 let topic stog = (stog, parse "<span itemprop=\"keywords\"><topic/></span>");;
+
+let default_date =
+  Netdate.format ~fmt: "%d %b %Y %T %z"
+    (Netdate.create (Unix.time()));;
+
+let rss stog =
+  let xml = parse
+    ("<rss version=\"2.0\">
+       <channel>
+         <title><site-title/> : <doc-title/></title>
+         <link><site-url/></link>
+         <description><site-description/></description>
+         <managingEditor><site-email/></managingEditor>
+         <pubDate>"^default_date^"</pubDate>"^
+         "<lastBuildDate><date-now format=\"%d %b %Y %T %z\"/></lastBuildDate>
+         <generator>Stog</generator>
+         <image><url><site-url/>/logo.png</url>
+           <title><site-title/></title><link><site-url/></link>
+         </image>
+         <doc-body/>
+       </channel>
+     </rss>")
+  in
+  (stog, xml)
+;;
+
+(* TODO: add a way to map topics and keywords to <category> nodes *)
+let rss_item stog =
+  let xml = parse
+    "<item>
+      <title><doc-title/></title>
+      <link><doc-url/></link>
+      <description><doc-intro/></description>
+      <pubDate><doc-date format=\"%d %b %Y %T %z\"/></pubDate>
+      <guid isPermaLink=\"true\"><doc-url/></guid>
+    </item>"
+  in
+  (stog, xml)
+;;

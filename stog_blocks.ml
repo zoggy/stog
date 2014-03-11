@@ -116,7 +116,7 @@ let fun_counter (stog, data) env atts subs =
     None -> ((stog, data), subs)
   | Some name ->
       let ((stog, data), path) = Stog_html.get_path (stog, data) env in
-      let cpt = get_counter data path name in
+      let cpt = get_counter data (Stog_types.string_of_path path) name in
       ((stog, data), [Xtmpl.D (string_of_int cpt)])
 ;;
 
@@ -215,7 +215,9 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
   let ((stog, data), path) = Stog_html.get_path (stog, data) env in
   let data = List.fold_left
     (fun data cls_down ->
-       set_counter data path (Stog_html.concat_name ~sep: ":" cls_down) 0
+       set_counter data 
+         (Stog_types.string_of_path path)
+         (Stog_html.concat_name ~sep: ":" cls_down) 0
      )
     data sect_down
   in
@@ -471,6 +473,7 @@ let fun_block1 (stog, data) env args subs =
           Some _ -> raise Xtmpl.No_change
         | None ->
             let ((stog, data), path) = Stog_html.get_path (stog, data) env in
+            let path = Stog_types.string_of_path path in
             let xmls =
               [ Xtmpl.E (("", Stog_tags.block),
                  Xtmpl.atts_of_list [("", Stog_tags.doc_path), [Xtmpl.D path] ; ("", "href"), [Xtmpl.D s]],
@@ -481,6 +484,7 @@ let fun_block1 (stog, data) env args subs =
       end
   | _ ->
       let ((stog, data), path) = Stog_html.get_path (stog, data) env in
+      let path = Stog_types.string_of_path path in
       let block = read_block stog args subs in
       let data =
         match block.blk_cpt_name with

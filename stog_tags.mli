@@ -58,6 +58,8 @@ val as_xml : string
 val block : string
 val command_line : string
 val counter : string
+val date_now : string
+val date_today : string
 val dummy_ : string
 val documents : string
 val ext_a : string

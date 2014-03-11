@@ -69,6 +69,13 @@ let path_of_string s =
   }
 ;;
 
+let parent_path p =
+  assert p.path_absolute ;
+  match List.rev p.path with
+    [] -> p
+  | _ :: q -> { p with path = List.rev q }
+;;
+
 type def = Xtmpl.name * Xtmpl.attributes * body
 
 let get_def =

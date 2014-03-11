@@ -70,7 +70,6 @@ let concat_code =
 let fun_dot stog env atts subs =
   let code = concat_code subs in
   let (stog, path) = Stog_engine.get_path stog env in
-  let path = Stog_types.path_of_string path in
   let (_, doc) = Stog_types.doc_by_path stog path in
   let doc_dir = Filename.dirname doc.Stog_types.doc_src in
   let command = Xtmpl.opt_arg_cdata ~def: "dot" atts ("","command") in

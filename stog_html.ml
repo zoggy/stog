@@ -84,12 +84,11 @@ let include_href name stog doc ?id ~raw ~subsonly ~depend href env =
         failwith ("Missing #id part of href in <"^name^"> rule")
   in
   try
-    let (stog, s_path) =
+    let (stog, path) =
       match path with
         "" -> get_path stog env
-      | s ->  (stog, s)
+      | s ->  (stog, Stog_types.path_of_string s)
     in
-    let path = Stog_types.path_of_string s_path in
     let (_, doc) = Stog_types.doc_by_path stog path in
     let stog =
       if depend then Stog_deps.add_dep stog doc (Stog_types.Doc doc) else stog
@@ -229,9 +228,8 @@ let doc_by_href ?typ ?src_doc stog acc env href =
       let (acc, path) =
         match path with
           "" -> get_path acc env
-        | s ->  (acc, s)
+        | s ->  (acc, Stog_types.path_of_string s)
       in
-      let path = Stog_types.path_of_string path in
       let (_, doc) = Stog_types.doc_by_path ?typ stog path in
       let (doc, id) = Stog_types.map_doc_ref stog doc id in
       let path = Stog_types.string_of_path doc.doc_path in
@@ -767,6 +765,7 @@ let html_of_keywords doc stog env args _ =
   (stog, List.flatten xmls)
 ;;
 
+(*
 (* FIXME: handle RSS files as any other document ? *)
 let rec doc_to_rss_item stog doc_id doc =
   let link = Stog_engine.doc_url stog doc in
@@ -860,8 +859,39 @@ and generate_rss_feed_file stog ?title link docs file =
   let channel = Rss.keep_n_items stog.stog_rss_length channel in
   Rss.print_file ~encoding: "UTF-8" file channel;
   stog
+*)
 
-and build_base_rules stog doc_id =
+
+let format_date d f stog args =
+  let s =
+    match Xtmpl.get_arg_cdata args ("","format") with
+      None -> f stog.stog_lang d
+    | Some fmt -> Netdate.format ~fmt d
+  in
+  (stog, [ Xtmpl.D s ])
+;;
+
+let fun_date_gen f stog env args _ =
+  let (stog, path) = Stog_engine.get_path stog env in
+  let (_, doc) = Stog_types.doc_by_path stog path in
+  match doc.doc_date with
+    None -> (stog, [])
+  | Some d -> format_date d f stog args
+;;
+
+let fun_date = fun_date_gen Stog_intl.string_of_date ;;
+let fun_datetime = fun_date_gen Stog_intl.string_of_datetime ;;
+
+let fun_date_today stog env args _ =
+  let d = Netdate.create (Unix.time()) in
+  format_date d Stog_intl.string_of_date stog args;;
+
+let fun_date_now stog env args _ =
+  let d = Netdate.create (Unix.time()) in
+  format_date d Stog_intl.string_of_datetime stog args;;
+
+
+let rec build_base_rules stog doc_id =
   let doc = Stog_types.doc stog doc_id in
   let f_title doc acc _ _ _ =
     (acc, [ Xtmpl.xml_of_string doc.doc_title ])
@@ -872,15 +902,7 @@ and build_base_rules stog doc_id =
   let f_body doc acc _ _ _ = (acc, doc.doc_body) in
   let f_type doc acc _ _ _ = (acc, [Xtmpl.D doc.doc_type]) in
   let f_src doc acc _ _ _ = (acc, [Xtmpl.D doc.doc_src]) in
-  let f_date doc stog _ _ _ =
-    (stog,[ Xtmpl.D (Stog_intl.string_of_date_opt stog.stog_lang doc.doc_date) ])
-  in
-  let f_datetime doc stog _ _ _ =
-    (stog,[ Xtmpl.D (Stog_intl.string_of_datetime_opt stog.stog_lang doc.doc_date) ])
-  in
-  let f_intro doc stog _ _ _ =
-    (stog, intro_of_doc stog doc)
-  in
+  let f_intro doc stog _ _ _ = (stog, intro_of_doc stog doc) in
   let mk f stog env atts subs =
     let doc =
       match Xtmpl.get_arg_cdata atts ("", Stog_tags.doc_path) with
@@ -929,11 +951,13 @@ and build_base_rules stog doc_id =
       ("", Stog_tags.archive_tree), fun_archive_tree ;
       ("", Stog_tags.as_xml), fun_as_xml ;
       ("", Stog_tags.command_line), fun_command_line ~inline: false ;
+      ("", Stog_tags.date_now), fun_date_now ;
+      ("", Stog_tags.date_today), fun_date_today ;
       ("", Stog_tags.dummy_), fun_dummy_ ;
       ("", Stog_tags.documents), (fun acc -> doc_list doc acc) ;
       ("", Stog_tags.doc_body), mk f_body ;
-      ("", Stog_tags.doc_date), mk f_date ;
-      ("", Stog_tags.doc_datetime), mk f_datetime ;
+      ("", Stog_tags.doc_date), fun_date ;
+      ("", Stog_tags.doc_datetime), fun_datetime ;
       ("", Stog_tags.doc_intro), mk f_intro ;
       ("", Stog_tags.doc_keywords), mk html_of_keywords ;
       ("", Stog_tags.doc_navpath), mk fun_doc_navpath ;
@@ -1043,17 +1067,55 @@ and doc_list doc ?rss ?set stog env args _ =
     (fun xml -> prerr_endline (Printf.sprintf "ITEM: %s" (Xtmpl.string_of_xml xml)))
     xml;
      *)
-  let (stog, rss) =
+  let (stog, alt_link) =
     match rss with
       Some link -> (stog, Some link)
     | None ->
-        match Xtmpl.get_arg_cdata args ("", "rss") with
+        let alt_doc_path =
+          match Xtmpl.get_arg_cdata args ("", "rss") with
+            Some path -> Some path
+          | None ->
+              match Xtmpl.get_arg_cdata args ("", "alt-doc-path") with
+                Some path -> Some path
+              | None -> None
+        in
+        match alt_doc_path with
           None -> (stog, None)
-        | Some file ->
-            let url = Stog_types.url_concat stog.stog_base_url file in
-            let file = Filename.concat stog.stog_outdir file in
-            let title =Xtmpl.get_arg_cdata args ("", "title") in
-            let stog = generate_rss_feed_file stog ?title url docs file in
+        | Some path ->
+            let alt_doc_type = Xtmpl.opt_arg_cdata ~def: "rss" args ("","alt-doc-type") in
+            let _alt_doc_in_list_tmpl =
+              Xtmpl.opt_arg_cdata ~def: "rss-item" args ("","alt-doc-in-list-tmpl")
+            in
+            let doc_path =
+              let s =
+                if Filename.is_relative path then
+                  (Stog_types.string_of_path (parent_path doc.doc_path))^"/"^path
+                else
+                  path
+              in
+              Stog_types.path_of_string s
+            in
+            let doc_title =
+              match Xtmpl.get_arg_cdata args ("", "alt-doc-title") with
+                None -> doc.doc_title
+              | Some t -> t
+            in
+            let doc_body = [] in
+            let doc = { doc with
+                doc_path ; doc_parent = Some doc.doc_path ;
+                doc_children = [] ; doc_type = alt_doc_type ;
+                doc_body ; doc_title ; doc_sets = [] ;
+                doc_out = None ;
+              }
+            in
+            let stog =
+              try
+                let (doc_id, _) = Stog_types.doc_by_path stog doc_path in
+                Stog_types.set_doc stog doc_id doc
+              with _ ->
+                  Stog_types.add_doc stog doc
+            in
+            let url = Stog_engine.doc_url stog doc in
             (stog, Some url)
   in
   let xml =
@@ -1102,9 +1164,12 @@ let make_by_word_indexes stog env f_doc_path doc_type map =
             doc_used_mods = Stog_types.Str_set.empty ;
           }
         in
-        let out_file = Stog_engine.doc_dst_file stog doc in
-        let rss_file = (try Filename.chop_extension out_file with _ -> out_file)^".rss" in
-        let url = Stog_engine.doc_url stog doc in
+        let rss_path =
+          let s = Stog_types.string_of_path doc.doc_path in
+          (try Filename.chop_extension s with _ -> s)^".rss"
+        in
+        let atts = Xtmpl.atts_one ("","rss") [Xtmpl.D rss_path] in
+        (*let url = Stog_engine.doc_url stog doc in
         let rss_url =
           let url_s = Stog_types.string_of_url url in
           Stog_types.url_of_string
@@ -1114,7 +1179,8 @@ let make_by_word_indexes stog env f_doc_path doc_type map =
           (List.map (fun id -> (id, Stog_types.doc stog id)) (Stog_types.Doc_set.elements set))
             rss_file
         in
-        let (stog, body) = doc_list doc ~set ~rss: rss_url stog env Xtmpl.atts_empty [] in
+        *)
+        let (stog, body) = doc_list doc ~set (*~rss: rss_url*) stog env atts [] in
         let doc = { doc with Stog_types.doc_body = body } in
         Stog_types.add_doc stog doc
   in

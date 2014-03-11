@@ -68,7 +68,7 @@ let get_latex_defs stog env =
           [] -> (stog, files)
         | _ ->
             let (stog, path) = Stog_engine.get_path stog env in
-            let (_, doc) = Stog_types.doc_by_path stog (Stog_types.path_of_string path) in
+            let (_, doc) = Stog_types.doc_by_path stog path in
             let dir = Filename.dirname doc.Stog_types.doc_src in
             let f filename =
               if Filename.is_relative filename
@@ -208,7 +208,6 @@ let fun_latex_body stog env args subs =
   in
 
   let (stog, path) = Stog_engine.get_path stog env in
-  let path = Stog_types.path_of_string path in
   let (_, doc) = Stog_types.doc_by_path stog path in
   let doc_dir = Filename.dirname doc.Stog_types.doc_src in
 

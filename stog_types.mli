@@ -36,6 +36,7 @@ type path = { path : string list; path_absolute : bool; }
 
 val string_of_path : path -> string
 val path_of_string : string -> path
+val parent_path : path -> path
 
 type def = Xtmpl.name * Xtmpl.attributes * body
 

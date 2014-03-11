@@ -61,3 +61,5 @@ val by_month : contents
 val doc_in_list : contents
 val keyword : contents
 val topic : contents
+val rss : contents
+val rss_item : contents

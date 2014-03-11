@@ -679,7 +679,7 @@ let get_path data env =
   let (data, xmls) = get_in_env data env ("", Stog_tags.doc_path) in
   let s = Xtmpl.string_of_xmls xmls in
   assert (s <> "");
-  (data, s)
+  (data, path_of_string s)
 ;;
 
 let get_doc_out stog doc =
@@ -691,6 +691,7 @@ let get_doc_out stog doc =
             "by-topic" -> Stog_tmpl.by_topic
           | "by-keyword" -> Stog_tmpl.by_keyword
           | "by-month" -> Stog_tmpl.by_month
+          | "rss" -> Stog_tmpl.rss
           | _ -> Stog_tmpl.page
         in
         Stog_tmpl.get_template stog ~doc default (doc.doc_type^".tmpl")
