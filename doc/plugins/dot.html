@@ -24,13 +24,14 @@ Here are the possible ways to use it:
 <td>
 Output to <code>graph1.svg</code>, using an <ixml>&lt;img&gt;</ixml>
 node to show the image:
-<hcode lang="xml" id="code1"><![CDATA[
+<div class="hide" id="code1"><![CDATA[
 <dot outfile="graph1.svg">digraph g {
   rankdir = LR;
   a [ shape="box" ] ;
   a -> b; a -> c ; b -> c ;
 }</dot>]]>
-</hcode></td>
+</div>
+<hcode lang="xml" defer_="1"><include subs-only="true"  href="#code1"/></hcode></td>
 <td><as-xml defer_="1"><include subs-only="true" href="#code1"/></as-xml></td>
 </tr>
 
@@ -39,11 +40,11 @@ node to show the image:
 Output a <code>png</code> file to <code>graph2.png</code>,
 use <code>neato</code> instead of <code>dot</code> in
 the command and read source from <code>graph.dot</code>:
-<hcode lang="xml" id="code2"><![CDATA[
+<div class="hide" id="code2"><![CDATA[
 <dot command="neato"
    src="graph.dot" type="png" outfile="graph2.png"/>
-]]>
-</hcode>
+]]></div>
+<hcode lang="xml" defer_="1"><include subs-only="true"  href="#code2"/></hcode>
 With <code>graph.dot</code>:
 <hcode defer_="1" lang="dot"><include file="./graph.dot"/></hcode></td>
 <td><as-xml defer_="1"><include subs-only="true" href="#code2"/></as-xml></td>
@@ -55,7 +56,7 @@ With <ixml>&lt;doc-...&gt;</ixml> rules to get links and labels,
 using attribute <ixml>defer_="1"</ixml> in the <ixml>&lt;dot&gt;</ixml>
 so that rewriting is performed in its children before the
 code is being passed to dot:
-<hcode lang="xml" id="code3"><![CDATA[
+<div class="hide" id="code3"><![CDATA[
 <dot defer_="1">
 digraph g {
   rankdir = LR;
@@ -67,7 +68,8 @@ digraph g {
      label="<doc-title doc-path="plugins/asy"/>" ] ;
   dot [ href="<doc-url doc-path="plugins/dot"/>" ] ;
 }</dot>]]>
-</hcode>
+</div>
+<hcode lang="xml" defer_="1"><include subs-only="true" href="#code3"/></hcode>
 Since no <code>outfile</code> attribute is given, the <code>svg</code>
 file produced is included (no use of <ixml>&lt;img&gt;</ixml>).
 </td>
@@ -81,26 +83,28 @@ file produced is included (no use of <ixml>&lt;img&gt;</ixml>).
 Including again the produced <code>svg</code> file. To avoid
 conflicts in ids, we use the <ixml>prefix-svg-ids="foo"</ixml>
 attribute:
-<hcode lang="xml" id="code4"><![CDATA[
+<div class="hide" id="code4"><![CDATA[
 <dot prefix-svg-ids="foo">digraph g {
   rankdir = LR;
   a [ shape="box" ] ;
   a -> b; a -> c ; b -> c ;
-}</dot>]]>
-</hcode></td>
+}</dot>]]></div>
+<hcode lang="xml" defer_="1"><include href="#code4" subs-only="true"/></hcode></td>
 <td><as-xml defer_="1"><include subs-only="true" href="#code4"/></as-xml></td>
 </tr>
 
 <tr>
 <td>The contents of the <code>args</code> attribute is used
 as additional argument to the command which is run:
-<hcode lang="xml" id="code5"><![CDATA[
+<div class="hide" id="code5">
+<![CDATA[
 <dot prefix-svg-ids="bar" args="-Nshape=box">
 digraph g {
   rankdir = LR;
   a -> b; a -> c ; b -> c ;
 }</dot>]]>
-</hcode></td>
+</div>
+<hcode lang="xml" defer_="1"><include subs-only="true" href="#code5"/></hcode></td>
 <td><as-xml defer_="1"><include subs-only="true" href="#code5"/></as-xml></td>
 </tr>
 

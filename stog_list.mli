@@ -26,84 +26,23 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Producing list of documents. *)
 
-let site_title = "site-title"
-let site_desc = "site-description"
-let site_url = "site-url"
-let site_email = "site-email"
-let stog_dir = "stog-dir"
-let rss_length = "rss-length"
-let languages = "languages"
-let functions = "functions_"
+val docs :
+  ?set:Stog_types.Doc_set.t ->
+  ?setname:string ->
+  ?filter:Stog_filter_types.t ->
+  ?typ:string list ->
+  ?max:int ->
+  ?reverse:bool ->
+  ?sort:string list ->
+  Stog_types.stog ->
+  Stog_types.stog Xtmpl.env ->
+  Stog_types.stog * (Stog_types.Doc_set.elt * Stog_types.doc) list
 
-let doc = "doc"
-let doc_body = "doc-body"
-let doc_date = "doc-date"
-let doc_datetime = "doc-datetime"
-let doc_intro = "doc-intro"
-let doc_keywords = "doc-keywords"
-let doc_navpath = "doc-navpath"
-let doc_path = "doc-path"
-let doc_src = "doc-src"
-let doc_title = "doc-title"
-let doc_topics = "doc-topics"
-let doc_type = "doc-type"
-let doc_url = "doc-url"
-
-let sep = "sep_"
-
-let archive_tree = "archive-tree"
-let as_cdata = "as-cdata"
-let as_xml = "as-xml"
-let block = "block"
-let command_line = "command-line"
-let counter = "counter"
-let date_now = "date-now"
-let date_today = "date-today"
-let dummy_ = "dummy_"
-let documents = "documents"
-let ext_a = "ext-a"
-let error_ = "error_"
-let graph = "graph"
-let hcode = "hcode"
-let path_sep = "path-sep"
-let icode = "icode"
-let if_ = "if"
-let image = "image"
-let inc = "inc"
-let include_ = "include"
-let keyword = "keyword"
-let langswitch = "langswitch"
-let late_cdata = "late-cdata"
-let late_inc = "late-inc"
-let latex = "latex"
-let latex_body = "latex-body"
-let list = "list"
-let n_columns = "n-columns"
-let next = "next"
-let next_path = "next-path"
-let ocaml = "ocaml"
-let ocaml_eval = "ocaml-eval"
-let ocaml_printf = "ocaml-printf"
-let page = "page"
-let paragraph = "paragraph"
-let post = "post"
-let prefix_svg_ids = "prefix-svg-ids"
-let prepare_toc = "prepare-toc"
-let previous = "previous"
-let previous_path = "previous-path"
-let search_form = "search-form"
-let section = "section"
-let subsection = "subsection"
-let subsubsection = "subsubsection"
-let toc = "toc"
-let topic = "topic"
-let two_columns = "two-columns"
-
-let default_sectionning =
-  [ section ;
-    subsection ;
-    subsubsection ;
-    paragraph ;
-  ]
+val docs_of_args :
+  ?set:Stog_types.Doc_set.t ->
+  Stog_types.stog ->
+  Stog_types.stog Xtmpl.env ->
+  Xtmpl.attributes ->
+  Stog_types.stog * (Stog_types.Doc_set.elt * Stog_types.doc) list

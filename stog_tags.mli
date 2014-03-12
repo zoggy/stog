@@ -54,6 +54,7 @@ val doc_url : string
 val sep : string
 
 val archive_tree : string
+val as_cdata : string
 val as_xml : string
 val block : string
 val command_line : string
@@ -74,6 +75,7 @@ val inc : string
 val include_ : string
 val keyword : string
 val langswitch : string
+val late_cdata : string
 val late_inc : string
 val latex : string
 val latex_body : string

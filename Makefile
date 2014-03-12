@@ -90,6 +90,7 @@ LIB_CMXFILES= \
 	stog_of_latex.cmx \
 	stog_latex.cmx \
 	stog_cut.cmx \
+	stog_list.cmx \
 	stog_html.cmx \
 	stog_blocks.cmx \
 	stog_plug.cmx \

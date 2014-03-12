@@ -554,9 +554,13 @@ let gather_existing_ids =
         | Some "" -> set
         | Some id ->
             if Sset.mem id set then
-              failwith (Printf.sprintf
-               "id %S defined twice in the same document %S (here for tag %S)" id
-               (Stog_types.string_of_path path) (Stog_html.concat_name tag))
+              (
+               Stog_msg.warning
+                 (Printf.sprintf
+                  "id %S defined twice in the same document %S (here for tag %S)" id
+                    (Stog_types.string_of_path path) (Stog_html.concat_name tag));
+               set
+              )
             else
                Sset.add id set
       in

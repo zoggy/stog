@@ -155,7 +155,7 @@ let rss stog =
        <channel>
          <title><site-title/> : <doc-title/></title>
          <link><site-url/></link>
-         <description><site-description/></description>
+         <description><late-cdata><site-description/></late-cdata></description>
          <managingEditor><site-email/></managingEditor>
          <pubDate>"^default_date^"</pubDate>"^
          "<lastBuildDate><date-now format=\"%d %b %Y %T %z\"/></lastBuildDate>
@@ -176,7 +176,7 @@ let rss_item stog =
     "<item>
       <title><doc-title/></title>
       <link><doc-url/></link>
-      <description><doc-intro/></description>
+      <description><late-cdata><doc-intro/></late-cdata></description>
       <pubDate><doc-date format=\"%d %b %Y %T %z\"/></pubDate>
       <guid isPermaLink=\"true\"><doc-url/></guid>
     </item>"

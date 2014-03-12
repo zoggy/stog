@@ -45,6 +45,8 @@ let plugins = ref [];;
 let packages = ref [];;
 let only_doc = ref None;;
 
+let debug = ref false;;
+
 let add_stog_def s =
   match Stog_misc.split_string s [':'] with
     [] -> ()
@@ -91,6 +93,8 @@ let options = [
     "-version",
     Arg.Unit (fun () -> print_endline (Printf.sprintf "%s" Stog_config.version); exit 0),
     " print version and exit";
+
+    "-D", Arg.Set debug, " debug mode" ;
 
     "-v", Arg.Unit Stog_msg.incr_verbose_level, " increase verbose level by one";
     "--verbose", Arg.Int Stog_msg.set_verbose_level, "<n> set verbose level to <n>";
@@ -147,57 +151,62 @@ let main () =
   let remain = ref [] in
   Arg.parse (Arg.align options) (fun s -> remain := s :: !remain) usage ;
 
-  Stog_dyn.load_packages !packages;
-  Stog_dyn.load_files !plugins;
-  begin
-    match !default_lang_to_set with
-      None -> ()
-    | Some abbrev -> Stog_intl.set_default_lang abbrev
-  end;
-  begin
-    match List.rev !remain with
-      [] -> failwith usage
-    | dirs ->
-        try
-          let stogs = List.map Stog_io.read_stog dirs in
-          (*prerr_endline "directories read";*)
-          let stog = Stog_types.merge_stogs stogs in
-          (*prerr_endline "directories merged";*)
-          let stog = Stog_info.remove_not_published stog in
-          (*prerr_endline "removed not published articles";*)
-          let stog = Stog_info.compute stog in
-          (*prerr_endline "graph computed";*)
-          let stog = set_stog_options stog in
-          let modules = Stog_engine.modules () in
-          let modules = List.map
-            (fun (name, f) ->
-               Stog_msg.verbose ~level: 2 ("Initializing module "^name);
-               f stog
-            )
-              modules
+  try
+    Stog_dyn.load_packages !packages;
+    Stog_dyn.load_files !plugins;
+    begin
+      match !default_lang_to_set with
+        None -> ()
+      | Some abbrev -> Stog_intl.set_default_lang abbrev
+    end;
+    begin
+      match List.rev !remain with
+        [] -> failwith usage
+      | dirs ->
+          try
+            let stogs = List.map Stog_io.read_stog dirs in
+            (*prerr_endline "directories read";*)
+            let stog = Stog_types.merge_stogs stogs in
+            (*prerr_endline "directories merged";*)
+            let stog = Stog_info.remove_not_published stog in
+            (*prerr_endline "removed not published articles";*)
+            let stog = Stog_info.compute stog in
+            (*prerr_endline "graph computed";*)
+            let stog = set_stog_options stog in
+            let modules = Stog_engine.modules () in
+            let modules = List.map
+              (fun (name, f) ->
+                 Stog_msg.verbose ~level: 2 ("Initializing module "^name);
+                 f stog
+              )
+                modules
+            in
+            let only_docs =
+              match !only_doc with
+                None -> None
+              | Some s -> Some [s]
+            in
+            Stog_engine.generate ~use_cache: !use_cache ?only_docs stog modules
+          with Stog_types.Path_trie.Already_present l ->
+              let msg = "Path already present: "^(String.concat "/" l) in
+              failwith msg
+    end;
+    let err = Stog_msg.errors () in
+    let warn = Stog_msg.warnings () in
+    begin
+      match err, warn with
+        0, 0 -> ()
+      | _, _ ->
+          let msg = Printf.sprintf "%d error%s, %d warning%s"
+            err (if err > 1 then "s" else "")
+              warn (if warn > 1 then "s" else "")
           in
-          let only_docs =
-            match !only_doc with
-            None -> None
-            | Some s -> Some [s]
-          in
-          Stog_engine.generate ~use_cache: !use_cache ?only_docs stog modules
-        with Stog_types.Path_trie.Already_present l ->
-          let msg = "Path already present: "^(String.concat "/" l) in
-          failwith msg
-  end;
-  let err = Stog_msg.errors () in
-  let warn = Stog_msg.warnings () in
-  begin
-    match err, warn with
-      0, 0 -> ()
-    | _, _ ->
-        let msg = Printf.sprintf "%d error%s, %d warning%s"
-          err (if err > 1 then "s" else "")
-          warn (if warn > 1 then "s" else "")
-        in
-        prerr_endline msg;
-  end;
-  exit err
+          prerr_endline msg;
+    end;
+    exit err
+  with
+    e when !debug -> raise e
+  | e -> Stog_misc.safe_main (fun () -> raise e)
 ;;
-Stog_misc.safe_main main;;
+
+let () = main ()

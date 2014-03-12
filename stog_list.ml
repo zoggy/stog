@@ -28,82 +28,75 @@
 
 (** *)
 
-let site_title = "site-title"
-let site_desc = "site-description"
-let site_url = "site-url"
-let site_email = "site-email"
-let stog_dir = "stog-dir"
-let rss_length = "rss-length"
-let languages = "languages"
-let functions = "functions_"
+open Stog_types;;
 
-let doc = "doc"
-let doc_body = "doc-body"
-let doc_date = "doc-date"
-let doc_datetime = "doc-datetime"
-let doc_intro = "doc-intro"
-let doc_keywords = "doc-keywords"
-let doc_navpath = "doc-navpath"
-let doc_path = "doc-path"
-let doc_src = "doc-src"
-let doc_title = "doc-title"
-let doc_topics = "doc-topics"
-let doc_type = "doc-type"
-let doc_url = "doc-url"
+let docs ?set ?setname ?filter ?typ ?max ?(reverse=true) ?(sort=[]) stog env =
+  let docs =
+    match set with
+      Some set ->
+        let l = Stog_types.Doc_set.elements set in
+        List.map (fun id -> (id, Stog_types.doc stog id)) l
+    | None ->
+        Stog_types.doc_list ?set: setname stog
+  in
+  let (stog, docs) =
+    match filter with
+      None -> (stog, docs)
+    | Some filter -> Stog_filter.filter_docs stog env filter docs
+  in
+  let docs =
+    match typ with
+    | None | Some [] -> docs
+    | Some types ->
+        List.filter (fun (_,doc) -> List.mem doc.doc_type types) docs
+  in
+  let (stog, docs) =
+    match sort with
+      [] -> (stog, Stog_types.sort_ids_docs_by_date docs)
+    | fields ->
+        let docs = List.map
+          (fun (id, e) -> (id, e, Stog_engine.env_of_defs ~env e.doc_defs))
+            docs
+        in
+        Stog_types.sort_ids_docs_by_rules stog fields docs
+  in
+  let docs = if reverse then List.rev docs else docs in
+  let docs =
+    match max with
+      None -> docs
+    | Some n -> Stog_misc.list_chop n docs
+  in
+  (*prerr_endline (Printf.sprintf "Stog_list.docs: %d docs returned" (List.length docs));*)
+  (stog, docs)
+;;
 
-let sep = "sep_"
+let docs_of_args ?set stog env args =
+  let setname = Xtmpl.get_arg_cdata args ("", "set") in
+  let filter =
+    Stog_misc.map_opt
+      Stog_filter.filter_of_string
+      (Xtmpl.get_arg_cdata args ("", "filter"))
+  in
+  let typ =
+    match Xtmpl.get_arg_cdata args ("", "type") with
+      None | Some "" -> None
+    | Some s ->
+        Some (Stog_misc.split_string s [',' ; ';'])
+  in
+  let max = Stog_misc.map_opt int_of_string
+    (Xtmpl.get_arg_cdata args ("", "max"))
+  in
+  let reverse =
+    match Xtmpl.get_arg_cdata args ("", "reverse") with
+      None -> true
+    | Some s -> Stog_io.bool_of_string s
+  in
+  let sort =
+    match Xtmpl.get_arg_cdata args ("", "sort") with
+      None -> None
+    | Some s -> Some (Stog_misc.split_string s [','])
+  in
+  docs ?set ?setname ?filter ?typ ?max ~reverse ?sort stog env
+;;
 
-let archive_tree = "archive-tree"
-let as_cdata = "as-cdata"
-let as_xml = "as-xml"
-let block = "block"
-let command_line = "command-line"
-let counter = "counter"
-let date_now = "date-now"
-let date_today = "date-today"
-let dummy_ = "dummy_"
-let documents = "documents"
-let ext_a = "ext-a"
-let error_ = "error_"
-let graph = "graph"
-let hcode = "hcode"
-let path_sep = "path-sep"
-let icode = "icode"
-let if_ = "if"
-let image = "image"
-let inc = "inc"
-let include_ = "include"
-let keyword = "keyword"
-let langswitch = "langswitch"
-let late_cdata = "late-cdata"
-let late_inc = "late-inc"
-let latex = "latex"
-let latex_body = "latex-body"
-let list = "list"
-let n_columns = "n-columns"
-let next = "next"
-let next_path = "next-path"
-let ocaml = "ocaml"
-let ocaml_eval = "ocaml-eval"
-let ocaml_printf = "ocaml-printf"
-let page = "page"
-let paragraph = "paragraph"
-let post = "post"
-let prefix_svg_ids = "prefix-svg-ids"
-let prepare_toc = "prepare-toc"
-let previous = "previous"
-let previous_path = "previous-path"
-let search_form = "search-form"
-let section = "section"
-let subsection = "subsection"
-let subsubsection = "subsubsection"
-let toc = "toc"
-let topic = "topic"
-let two_columns = "two-columns"
-
-let default_sectionning =
-  [ section ;
-    subsection ;
-    subsubsection ;
-    paragraph ;
-  ]
+        

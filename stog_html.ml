@@ -368,8 +368,12 @@ let fun_as_xml =
     Xtmpl.E (t, atts, List.map iter subs)
   in
   fun x _env _ subs ->
-    (x, List.map iter subs)
+    match Xtmpl.merge_cdata (Xtmpl.E (("","foo"), Xtmpl.atts_empty, subs)) with
+    | Xtmpl.E (_,_,xmls) -> (x, List.map iter xmls)
+    | _ -> assert false
 ;;
+
+let fun_as_cdata x _env _ subs = (x, [Xtmpl.D (Xtmpl.string_of_xmls subs)])
 
 (* FIXME: add dependency ? *)
 let fun_graph =
@@ -949,6 +953,7 @@ let rec build_base_rules stog doc_id =
     !plugin_base_rules @
     [
       ("", Stog_tags.archive_tree), fun_archive_tree ;
+      ("", Stog_tags.as_cdata), fun_as_cdata ;
       ("", Stog_tags.as_xml), fun_as_xml ;
       ("", Stog_tags.command_line), fun_command_line ~inline: false ;
       ("", Stog_tags.date_now), fun_date_now ;
@@ -992,54 +997,7 @@ let rec build_base_rules stog doc_id =
 
 and doc_list doc ?rss ?set stog env args _ =
   let report_error msg = Stog_msg.error ~info: "Stog_html.doc_list" msg in
-  let docs =
-    match set with
-      Some set ->
-        let l = Stog_types.Doc_set.elements set in
-        List.map (fun id -> (id, Stog_types.doc stog id)) l
-    | None ->
-        let set = Xtmpl.get_arg_cdata args ("", "set") in
-        Stog_types.doc_list ?set stog
-  in
-  let (stog, docs) =
-    match Xtmpl.get_arg_cdata args ("", "filter") with
-      None -> (stog, docs)
-    | Some s ->
-        let filter = Stog_filter.filter_of_string s in
-        Stog_filter.filter_docs stog env filter docs
-  in
-  let docs =
-    match Xtmpl.get_arg_cdata args ("", "type") with
-      None -> docs
-    | Some s ->
-        let types = Stog_misc.split_string s [',' ; ';'] in
-        List.filter (fun (_,doc) -> List.mem doc.doc_type types) docs
-  in
-  let max = Stog_misc.map_opt int_of_string
-    (Xtmpl.get_arg_cdata args ("", "max"))
-  in
-  let reverse =
-    match Xtmpl.get_arg_cdata args ("", "reverse") with
-      None -> true
-    | Some s -> Stog_io.bool_of_string s
-  in
-  let (stog, docs) =
-    match Xtmpl.get_arg_cdata args ("", "sort") with
-      None -> (stog, Stog_types.sort_ids_docs_by_date docs)
-    | Some s ->
-        let fields = Stog_misc.split_string s [','] in
-        let docs = List.map
-          (fun (id, e) -> (id, e, Stog_engine.env_of_defs ~env e.doc_defs))
-          docs
-        in
-        Stog_types.sort_ids_docs_by_rules stog fields docs
-  in
-  let docs = if reverse then List.rev docs else docs in
-  let docs =
-    match max with
-      None -> docs
-    | Some n -> Stog_misc.list_chop n docs
-  in
+  let (stog, docs) = Stog_list.docs_of_args ?set stog env args in
   let (stog, tmpl) =
     let file =
       match Xtmpl.get_arg_cdata args ("", "tmpl") with
@@ -1048,7 +1006,7 @@ and doc_list doc ?rss ?set stog env args _ =
     in
     Stog_tmpl.get_template stog ~doc Stog_tmpl.doc_in_list file
   in
-  let f_doc (stog, acc) (doc_id, doc) =
+  let f_doc tmpl (stog, acc) (doc_id, doc) =
     let name = Stog_types.string_of_path doc.doc_path in
     let (stog, env) = Stog_engine.doc_env stog env stog doc in
     let rules = build_base_rules stog doc_id in
@@ -1060,7 +1018,7 @@ and doc_list doc ?rss ?set stog env args _ =
         report_error ("Error while processing " ^ name);
         assert false
   in
-  let (stog, xmls) = List.fold_left f_doc (stog, []) docs in
+  let (stog, xmls) = List.fold_left (f_doc tmpl) (stog, []) docs in
   let xmls = List.rev xmls in
   (*prerr_endline "doc_list:";
   List.iter
@@ -1083,8 +1041,8 @@ and doc_list doc ?rss ?set stog env args _ =
           None -> (stog, None)
         | Some path ->
             let alt_doc_type = Xtmpl.opt_arg_cdata ~def: "rss" args ("","alt-doc-type") in
-            let _alt_doc_in_list_tmpl =
-              Xtmpl.opt_arg_cdata ~def: "rss-item" args ("","alt-doc-in-list-tmpl")
+            let alt_doc_in_list_tmpl =
+              Xtmpl.opt_arg_cdata ~def: "rss-item.tmpl" args ("","alt-doc-in-list-tmpl")
             in
             let doc_path =
               let s =
@@ -1100,7 +1058,12 @@ and doc_list doc ?rss ?set stog env args _ =
                 None -> doc.doc_title
               | Some t -> t
             in
-            let doc_body = [] in
+            let (stog, tmpl) =
+              Stog_tmpl.get_template stog ~doc Stog_tmpl.rss_item
+                alt_doc_in_list_tmpl
+            in
+            let (stog, xmls) = List.fold_left (f_doc tmpl) (stog, []) docs in
+            let doc_body = List.rev xmls in
             let doc = { doc with
                 doc_path ; doc_parent = Some doc.doc_path ;
                 doc_children = [] ; doc_type = alt_doc_type ;
@@ -1119,7 +1082,7 @@ and doc_list doc ?rss ?set stog env args _ =
             (stog, Some url)
   in
   let xml =
-    match rss with
+    match alt_link with
       None -> xmls
     | Some link ->
         (Xtmpl.E (("", "div"),
@@ -1201,7 +1164,7 @@ let make_keyword_indexes stog env =
   "by-keyword" stog.stog_docs_by_kw
 ;;
 
-let make_archive_index stog env =
+let make_archive_indexes stog env =
   Stog_msg.verbose ~level: 2 "creating archive documents";
   let f_month year month set stog =
     let path = month_index_path ~year ~month in
@@ -1209,6 +1172,8 @@ let make_archive_index stog env =
       ignore(Stog_types.doc_by_path stog path);
       stog
     with Failure _ ->
+        Stog_msg.verbose ~level: 3
+          ("Creating document "^(Stog_types.string_of_path path));
         let title =
           let month_str = Stog_intl.get_month stog.stog_lang month in
           Printf.sprintf "%s %d" month_str year
@@ -1244,7 +1209,7 @@ let make_archive_index stog env =
 ;;
 
 let add_docs env stog _ =
-  let stog = make_archive_index stog env in
+  let stog = make_archive_indexes stog env in
   let stog = make_keyword_indexes stog env in
   let stog = make_topic_indexes stog env in
   stog
@@ -1293,7 +1258,9 @@ let fun_level_toc = Stog_engine.fun_apply_stog_doc_rules rules_toc ;;
 let rules_inc_doc stog doc_id =
   let doc = Stog_types.doc stog doc_id in
   [ ("", Stog_tags.inc), fun_inc doc ;
-    ("", Stog_tags.late_inc), fun_late_inc doc ]
+    ("", Stog_tags.late_inc), fun_late_inc doc ;
+    ("", Stog_tags.late_cdata), fun_as_cdata ;
+  ]
 ;;
 let fun_level_inc_doc =
   Stog_engine.fun_apply_stog_doc_rules rules_inc_doc ;;

@@ -4,7 +4,7 @@ topics="stog"
 keywords="ocaml, evaluation, code, print"
 published="true">
 <p>
-Since <doc href="release-0.10.0"/>, the <rule>ocaml-printf</rule>
+Since <doc href="release-0.10.0"/>, the <rule>ocaml-printf</rule> rule
 can be used to access the content of computed OCaml values, as
 strings.
 </p>
@@ -16,17 +16,19 @@ strings.
 Let's take a first example. Suppose we evaluated some OCaml code
 with the following rule:
 </p>
-<hcode lang="xml" id="code1"><![CDATA[
+<div class="hide" id="code1"><![CDATA[
 <ocaml-eval show-code="false">let x = "Hello world!";;</ocaml-eval>
-]]></hcode>
+]]></div>
+<hcode lang="xml" defer_="1"><include href="#code1" subs-only="true"/></hcode>
 <as-xml defer_="1"><include subs-only="true" href="#code1"/></as-xml>
 <p>
 Now we can get the contents of <code>x</code> as a string
 to include in our document using the new rule:
 </p>
-<hcode lang="xml" id="code1p"><![CDATA[
+<div class="hide" id="code1p"><![CDATA[
 The value of <code>x</code> is: <ocaml-printf>x</ocaml-printf>
-]]></hcode>
+]]></div>
+<hcode lang="xml" defer_="1"><include subs-only="true" href="#code1p"/></hcode>
 &#x21b3; <as-xml defer_="1"><include subs-only="true" href="#code1p"/></as-xml>
 </section>
 
@@ -40,9 +42,10 @@ node, and <code>&lt;format&gt;</code> is <code>%s</code> by default.
 Another format can be used by setting the <code>format</code> attribute
 like in the following example:
 </p>
-<hcode lang="xml" id="code2p"><![CDATA[
+<div class="hide" id="code2p"><![CDATA[
 1 + 2 = <ocaml-printf format="%d">(1+2)</ocaml-printf>
-]]></hcode>
+]]></div>
+<hcode lang="xml" defer_="1"><include subs-only="true" href="#code2p"/></hcode>
 &#x21b3; <as-xml defer_="1"><include subs-only="true" href="#code2p"/></as-xml>
 <p>Note that the parentheses around the expression in the <rule>ocaml-printf</rule>
 node is mandatory, otherwise the <icode lang="ocaml">Printf.sprintf "%d" 1+2</icode>
@@ -52,9 +55,10 @@ would result in an error.
 Of course more compilated format and ocaml expressions can be used:
 </p>
 <ocaml-eval toplevel="true">let y = 1 and z = 21.;;</ocaml-eval>
-<hcode lang="xml" id="code3p"><![CDATA[
+<div class="hide" id="code3p"><![CDATA[
 <ocaml-printf format="The result of %d + %.2f is %.0f.">y z ((float y) +. z)</ocaml-printf>
-]]></hcode>
+]]></div>
+<hcode lang="xml" defer_="1"><include subs-only="true" href="#code3p"/></hcode>
 &#x21b3; <as-xml defer_="1"><include subs-only="true" href="#code3p"/></as-xml>
 </section>
 
@@ -62,7 +66,7 @@ Of course more compilated format and ocaml expressions can be used:
 <p>
 The result of <rule>ocaml-printf</rule> is considered as CDATA in the XML document:
 </p>
-<hcode lang="xml" id="code4p" defer_="1">
+<hcode lang="xml" defer_="1">
 <include file="./ocaml-printf-code.foo" raw="true"/>
 </hcode>
 <p>

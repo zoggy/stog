@@ -28,7 +28,7 @@ This plugin was contributed by
 This plugin adds a new <doc href="module_base#base">base rule</doc>
 <rule>markdown</rule>.
 </p>
-<hcode lang="xml" id="code1"><![CDATA[
+<div class="hide" id="code1"><![CDATA[
 <markdown>
 ## A typical markdown example
 
@@ -38,7 +38,8 @@ with a markup that is both easy to read and write. It is later
 translated into HTML by one of the numerous `markdown`
 implementations.
  </markdown>
-]]></hcode>
+]]></div>
+<hcode lang="xml" defer_="1"><include href="#code1" subs-only="true"/></hcode>
 <p>
 The <rule>markdown</rule> rule calls the <code>markdown</code> command
 line tool to convert Markdown syntax to (X)HTML.
@@ -61,7 +62,7 @@ is added on the command line.
 <code>args</code> attribute to make it translate our markdown code
 into XHTML:
 </p>
-<hcode lang="xml" id="code2"><![CDATA[
+<div class="hide" id="code2"><![CDATA[
 <markdown command="pandoc" args="-f markdown -t html">
 ## A typical markdown example
 
@@ -71,7 +72,8 @@ with a markup that is both easy to read and write. It is later
 translated into HTML by one of the numerous `markdown`
 implementations.
  </markdown>
-]]></hcode>
+]]></div>
+<hcode lang="xml" defer_="1"><include href="#code2" subs-only="true"/></hcode>
 <p>
 Here is the result, embedded in a box:
 </p>
