@@ -1,9 +1,16 @@
 Next release:
+* Definining twice the same id in a document is not an
+  error anymore but a warning is emitted
+* New way to create feeds associated to a list of documents,
+  with a way to specify the alternative document template,
+  path and template for documents listed in this element
+* The term "element" is replaced by "document", and all
+  <elt*> rules are replaced by <doc*> rules
 * The term "human id" is replaced by "path". In all rules and
-  attributes, "hid" is replaced by "path". <elt-path> rule
-  is replace by <elt-navpath>.
+  attributes, "hid" is replaced by "path". <doc-path> rule
+  is replace by <doc-navpath>.
 * Use Higlo syntax highlighter when possible
-* <cut-elt>: add previous-path and next-path in definitions of cut
+* <cut-doc>: add previous-path and next-path in definitions of cut
   elements, to create navigation links
 * mod: merge CData in resulting XML trees when computing elements
 * fix: compile and install odoc_stog.cmo
@@ -14,7 +21,7 @@ Next release:
   to compute instead of computing all elements (before only one
   element could be specified)
 * add: <stog-dir> rule is pre-defined to return the absolute stog directory
-* fix default elt-in-list.tmpl template to handle dependencies on
+* fix default doc-in-list.tmpl template to handle dependencies on
   listed elements
 * compile and install .cmxs files
 * depend on next release of config_file for .cmxs files
