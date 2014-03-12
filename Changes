@@ -1,4 +1,6 @@
 Next release:
+* new -D option to enable debug mode (i.e. do not catch
+  top exceptions to be able to get the backtrace)
 * Definining twice the same id in a document is not an
   error anymore but a warning is emitted
 * New way to create feeds associated to a list of documents,
