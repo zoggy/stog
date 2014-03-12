@@ -1,4 +1,7 @@
 Next release:
+* new rules <date-now> and <date-today>
+* new attribute format="..." for rules <date>, <datetime>,
+  <date-now> and <date-today>.
 * new -D option to enable debug mode (i.e. do not catch
   top exceptions to be able to get the backtrace)
 * Definining twice the same id in a document is not an
