@@ -997,6 +997,13 @@ let rec build_base_rules stog doc_id =
 and doc_list doc ?rss ?set stog env args _ =
   let report_error msg = Stog_msg.error ~info: "Stog_html.doc_list" msg in
   let (stog, docs) = Stog_list.docs_of_args ?set stog env args in
+  (* the document depends on the listed documents *)
+  let stog = List.fold_left
+    (fun stog (doc2_id, doc2) ->
+       Stog_deps.add_dep stog doc (Stog_types.Doc doc2)
+    )
+    stog docs
+  in
   let (stog, tmpl) =
     let file =
       match Xtmpl.get_arg_cdata args ("", "tmpl") with
@@ -1270,9 +1277,9 @@ let fun_level_clean =
     let env = Xtmpl.env_of_list ~env
       [ ("", Stog_tags.sep), (fun d _ _ _ -> (d, [])) ]
     in
-    List.fold_left
-      (fun stog doc_id -> Stog_engine.apply_stog_env_doc stog env doc_id)
-      stog docs
+    Stog_types.Doc_set.fold
+      (fun doc_id stog -> Stog_engine.apply_stog_env_doc stog env doc_id)
+      docs stog
   in
   Stog_engine.Fun_stog f
 ;;

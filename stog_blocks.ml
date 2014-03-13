@@ -566,7 +566,7 @@ let gather_existing_ids =
       in
       List.fold_left (f path) set subs
   in
-  fun env (stog, data) doc_id ->
+  fun env doc_id (stog, data) ->
     let doc = Stog_types.doc stog doc_id in
     match doc.doc_out with
       None -> (stog, data)
@@ -592,7 +592,7 @@ let gather_existing_ids =
 ;;
 
 let fun_init _ (stog,data) doc_ids =
-  let f (stog, data) doc_id =
+  let f doc_id (stog, data) =
     let doc = Stog_types.doc stog doc_id in
     let path = Stog_path.to_string doc.doc_path in
     let counters = Smap.add path Smap.empty data.counters in
@@ -600,7 +600,7 @@ let fun_init _ (stog,data) doc_ids =
     let data = { blocks ; counters } in
     (stog, data)
   in
-  List.fold_left f (stog,data) doc_ids
+  Stog_types.Doc_set.fold f doc_ids (stog,data)
 ;;
 
 let fun_level_base =
@@ -614,7 +614,7 @@ let fun_level_base =
 
 let fun_level_gather_ids =
   let f env (stog, data) docs =
-    List.fold_left (gather_existing_ids env) (stog, data) docs
+    Stog_types.Doc_set.fold (gather_existing_ids env) docs (stog, data)
   in
   Stog_engine.Fun_stog_data f
 ;;

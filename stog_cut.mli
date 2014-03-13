@@ -37,4 +37,4 @@ val mk_path : Stog_path.path -> string -> string -> Stog_path.path
 
 val cut_docs :
   Stog_types.stog Xtmpl.env ->
-    Stog_types.stog -> Stog_types.doc Stog_tmap.key list -> Stog_types.stog
+    Stog_types.stog -> Stog_types.Doc_set.t -> Stog_types.stog

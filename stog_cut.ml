@@ -283,7 +283,7 @@ let cut_docs =
     let stog = add_id_mappings stog orig_path doc.doc_path ids in
     add_id_mappings stog doc.doc_path orig_path (Sset.diff all_ids ids)
   in
-  let f_doc env stog doc_id =
+  let f_doc env doc_id stog =
     let doc = Stog_types.doc stog doc_id in
     let (stog, doc2, new_docs, links) = cut_doc stog doc in
     match new_docs with
@@ -301,5 +301,5 @@ let cut_docs =
         stog
   in
   fun env stog docs ->
-    List.fold_left (f_doc env) stog docs
+    Stog_types.Doc_set.fold (f_doc env) docs stog
 ;;

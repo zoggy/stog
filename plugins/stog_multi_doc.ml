@@ -97,13 +97,13 @@ let f_multi_doc stog doc_id =
 ;;
 
 let fun_level_init =
-  let f_doc stog doc_id =
+  let f_doc doc_id stog =
     let doc = Stog_types.doc stog doc_id in
     match doc.doc_type with
       "multi" -> f_multi_doc stog doc_id
     | _ -> stog
   in
-  let f env stog docs = List.fold_left f_doc stog docs in
+  let f env stog docs = Stog_types.Doc_set.fold f_doc docs stog in
   Stog_engine.Fun_stog f
 ;;
 

@@ -38,9 +38,9 @@ open Stog_types;;
   function returns it with the stog structure.
 *)
 type 'a level_fun =
-  | Fun_stog of (stog Xtmpl.env -> stog -> doc_id list -> stog)
-  | Fun_data of ('a Xtmpl.env -> stog * 'a -> doc_id list -> stog * 'a)
-  | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> doc_id list -> stog * 'a)
+  | Fun_stog of (stog Xtmpl.env -> stog -> Doc_set.t -> stog)
+  | Fun_data of ('a Xtmpl.env -> stog * 'a -> Doc_set.t -> stog * 'a)
+  | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> Doc_set.t -> stog * 'a)
 
 (** A structure containing data and functions associated to levels.
   Contains also the module name. *)
@@ -63,9 +63,10 @@ module type Module = sig
 type stog_state =
   { st_stog : stog ;
     st_modules : (module Module) list ;
+    st_docs : Doc_set.t option ;
   };;
 
-val run : ?use_cache:bool -> ?docs:Stog_types.doc_id list -> stog_state -> stog_state
+val run : ?use_cache:bool -> stog_state -> stog_state
 
 (** Generate the target files, with the following steps:
   - create the output directory,
