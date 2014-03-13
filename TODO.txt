@@ -1,5 +1,3 @@
-<date-now format="...">
-<doc-date[time] format="...">
 
 Add initialization of counters
 

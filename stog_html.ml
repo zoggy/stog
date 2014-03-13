@@ -1259,8 +1259,6 @@ let rules_toc stog doc_id =
 
 let fun_level_toc = Stog_engine.fun_apply_stog_doc_rules rules_toc ;;
 
-
-
 let rules_inc_doc stog doc_id =
   let doc = Stog_types.doc stog doc_id in
   [ ("", Stog_tags.inc), fun_inc doc ;
