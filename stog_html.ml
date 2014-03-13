@@ -1138,17 +1138,6 @@ let make_by_word_indexes stog env f_doc_path doc_type map =
           (try Filename.chop_extension s with _ -> s)^".rss"
         in
         let atts = Xtmpl.atts_one ("","rss") [Xtmpl.D rss_path] in
-        (*let url = Stog_engine.doc_url stog doc in
-        let rss_url =
-          let url_s = Stog_types.string_of_url url in
-          Stog_types.url_of_string
-            ((try Filename.chop_extension url_s with _ -> url_s)^".rss")
-        in
-        let stog = generate_rss_feed_file stog ~title: word url
-          (List.map (fun id -> (id, Stog_types.doc stog id)) (Stog_types.Doc_set.elements set))
-            rss_file
-        in
-        *)
         let (stog, body) = doc_list doc ~set (*~rss: rss_url*) stog env atts [] in
         let doc = { doc with Stog_types.doc_body = body } in
         Stog_types.add_doc stog doc
