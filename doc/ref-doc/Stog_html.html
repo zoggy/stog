@@ -31,7 +31,7 @@ Html generation.
   then return <code class="code">""</code> else return the reduced value as a string.<br/>
 </div>
 
-<pre><span id="VALget_path"><span class="keyword">val</span> get_path</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * <a href="Stog_types.html#TYPEpath">Stog_types.path</a></code></pre><div class="info ">
+<pre><span id="VALget_path"><span class="keyword">val</span> get_path</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * <a href="Stog_path.html#TYPEpath">Stog_path.path</a></code></pre><div class="info ">
 <code class="code">get_path env</code> returns the path associated to <code class="code">"path"</code> in <code class="code">env</code>.<br/>
 <b>Raises</b> <code>Assert_failure</code> if <code class="code">"path"</code> is not found in the environment.<br/>
 </div>
@@ -42,7 +42,7 @@ Escape html code in the given string: change <code class="code">&amp;</code> to 
 </div>
 
 <pre><span id="VALconcat_name"><span class="keyword">val</span> concat_name</span> : <code class="type">?sep:string -&gt; string * string -&gt; string</code></pre>
-<pre><span id="VALurl_of_path"><span class="keyword">val</span> url_of_path</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; ?ext:string -&gt; <a href="Stog_types.html#TYPEpath">Stog_types.path</a> -&gt; Neturl.url</code></pre><div class="info ">
+<pre><span id="VALurl_of_path"><span class="keyword">val</span> url_of_path</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; ?ext:string -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; Neturl.url</code></pre><div class="info ">
 Build an url from the given path, using the given optional extension.
   This is used for documents created on the fly, like by-word or by-month index.<br/>
 </div>

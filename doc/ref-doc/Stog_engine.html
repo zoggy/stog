@@ -132,9 +132,15 @@ Build the final url of the given document.<br/>
  in <code class="code">args</code> of else return the result of <code class="code">get_in_env env s</code>.<br/>
 </div>
 
-<pre><span id="VALget_path"><span class="keyword">val</span> get_path</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * <a href="Stog_types.html#TYPEpath">Stog_types.path</a></code></pre><div class="info ">
-<code class="code">get_path env</code> returns the path associated to <code class="code">"path"</code> in <code class="code">env</code>.<br/>
-<b>Raises</b> <code>Assert_failure</code> if <code class="code">"path"</code> is not found in the environment.<br/>
+<pre><span id="VALget_path"><span class="keyword">val</span> get_path</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * <a href="Stog_path.html#TYPEpath">Stog_path.path</a></code></pre><div class="info ">
+<code class="code">get_path env</code> returns the path associated to <code class="code">"doc-path"</code> in <code class="code">env</code>.<br/>
+<b>Raises</b> <code>Stog_path.Invalid</code> if <code class="code">"doc-path"</code> is not found in the environment or is not a
+  valid path.<br/>
+</div>
+
+<pre><span id="VALget_path_in_args_or_env"><span class="keyword">val</span> get_path_in_args_or_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; Xtmpl.attributes -&gt; 'a * <a href="Stog_path.html#TYPEpath">Stog_path.path</a></code></pre><div class="info ">
+Same as <a href="Stog_engine.html#VALget_path"><code class="code">Stog_engine.get_path</code></a> but first looks for <code class="code">"doc-path"</code> attribute in
+  the given args.<br/>
 </div>
 
 <pre><span id="VALdoc_env"><span class="keyword">val</span> doc_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt; 'a * 'a Xtmpl.env</code></pre>

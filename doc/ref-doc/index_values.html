@@ -35,6 +35,8 @@ For a given document, add a dependency on a file or another document.
 <td></td></tr>
 <tr><td><a href="Stog_types.html#VALadd_path">add_path</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_path.html#VALappend">append</a> [<a href="Stog_path.html">Stog_path</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_engine.html#VALapply_data_env_doc">apply_data_env_doc</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_engine.html#VALapply_stog_data_env_doc">apply_stog_data_env_doc</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
@@ -78,9 +80,13 @@ Build the base rules, using the default ones and the <code class="code">plugin_r
 <td></td></tr>
 <tr><td><a href="Stog_tmap.S.html#VALcard">card</a> [<a href="Stog_tmap.S.html">Stog_tmap.S</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_path.html#VALchop_extension">chop_extension</a> [<a href="Stog_path.html">Stog_path</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_ocaml.html#VALclose_sessions">close_sessions</a> [<a href="Stog_ocaml.html">Stog_ocaml</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALcommand_line">command_line</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_path.html#VALcompare">compare</a> [<a href="Stog_path.html">Stog_path</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tmap.S.html#VALcompare_key">compare_key</a> [<a href="Stog_tmap.S.html">Stog_tmap.S</a>]</td>
 <td></td></tr>
@@ -390,7 +396,13 @@ Generate the target files, with the following steps: create the output directory
 </td></tr>
 <tr><td><a href="Stog_engine.html#VALget_path">get_path</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
 <td><div class="info">
-<code class="code">get_path env</code> returns the path associated to <code class="code">"path"</code> in <code class="code">env</code>.
+<code class="code">get_path env</code> returns the path associated to <code class="code">"doc-path"</code> in <code class="code">env</code>.
+</div>
+</td></tr>
+<tr><td><a href="Stog_engine.html#VALget_path_in_args_or_env">get_path_in_args_or_env</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
+<td><div class="info">
+Same as <a href="Stog_engine.html#VALget_path"><code class="code">Stog_engine.get_path</code></a> but first looks for <code class="code">"doc-path"</code> attribute in
+  the given args.
 </div>
 </td></tr>
 <tr><td><a href="Stog_html.html#VALget_sectionning_tags">get_sectionning_tags</a> [<a href="Stog_html.html">Stog_html</a>]</td>
@@ -436,6 +448,8 @@ Highlight the given code.
 <tr><td><a href="Stog_msg.html#VALincr_verbose_level">incr_verbose_level</a> [<a href="Stog_msg.html">Stog_msg</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tmap.S.html#VALint">int</a> [<a href="Stog_tmap.S.html">Stog_tmap.S</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_path.html#VALinvalid">invalid</a> [<a href="Stog_path.html">Stog_path</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_misc.html#VALis_prefix">is_prefix</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td><div class="info">
@@ -610,6 +624,8 @@ Marshal the given graph.
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALocaml_printf">ocaml_printf</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_path.html#VALof_string">of_string</a> [<a href="Stog_path.html">Stog_path</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_engine.html#VALopt_in_env">opt_in_env</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_misc.html#VALopt_of_string">opt_of_string</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
@@ -625,11 +641,11 @@ Marshal the given graph.
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALparagraph">paragraph</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_types.html#VALparent_path">parent_path</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<tr><td><a href="Stog_path.html#VALparent">parent</a> [<a href="Stog_path.html">Stog_path</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_of_latex.html#VALparse">parse</a> [<a href="Stog_of_latex.html">Stog_of_latex</a>]</td>
 <td></td></tr>
-<tr><td><a href="Stog_types.html#VALpath_of_string">path_of_string</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<tr><td><a href="Stog_path.html#VALpath">path</a> [<a href="Stog_path.html">Stog_path</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALpath_sep">path_sep</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
@@ -854,8 +870,6 @@ Separate the given string according to the given list of characters.
    <code class="code">s_opt = None</code> or <code class="code">s</code> if <code class="code">s_opt = Some s</code>.
 </div>
 </td></tr>
-<tr><td><a href="Stog_types.html#VALstring_of_path">string_of_path</a> [<a href="Stog_types.html">Stog_types</a>]</td>
-<td></td></tr>
 <tr><td><a href="Stog_of_latex.html#VALstring_of_stog_directives">string_of_stog_directives</a> [<a href="Stog_of_latex.html">Stog_of_latex</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_misc.html#VALstring_of_time">string_of_time</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
@@ -908,6 +922,8 @@ Same as <a href="Stog_graph.S.html#VALpred_roots"><code class="code">Stog_graph.
   stog project directory.
 </div>
 </td></tr>
+<tr><td><a href="Stog_path.html#VALto_string">to_string</a> [<a href="Stog_path.html">Stog_path</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_trie.S.html#VALto_string">to_string</a> [<a href="Stog_trie.S.html">Stog_trie.S</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_of_latex.html#VALto_xml">to_xml</a> [<a href="Stog_of_latex.html">Stog_of_latex</a>]</td>

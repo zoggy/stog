@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <ocamldoc with-contents="true">
 <title>Stog library reference documentation : Stog_types</title><contents><div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_graph.html" title="Stog_graph">Previous</a>
+<div class="navbar"><a class="pre" href="Stog_path.html" title="Stog_path">Previous</a>
 &#160;<a class="up" href="index.html" title="Index">Up</a>
 &#160;<a class="post" href="Stog_intl.html" title="Stog_intl">Next</a>
 </div>
@@ -18,28 +18,6 @@ Types.<br/>
 <pre><span id="TYPEbody"><span class="keyword">type</span> body</span> = <code class="type">Xtmpl.tree list</code> </pre>
 
 
-<pre><code><span id="TYPEpath"><span class="keyword">type</span> path</span> = {</code></pre><table class="typetable">
-<tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTpath.path">path</span>&#160;: <code class="type">string list</code>;</code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top" >
-<code>&#160;&#160;</code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTpath.path_absolute">path_absolute</span>&#160;: <code class="type">bool</code>;</code></td>
-
-</tr></table>
-}
-
-
-
-<pre><span id="VALstring_of_path"><span class="keyword">val</span> string_of_path</span> : <code class="type"><a href="Stog_types.html#TYPEpath">path</a> -&gt; string</code></pre>
-<pre><span id="VALpath_of_string"><span class="keyword">val</span> path_of_string</span> : <code class="type">string -&gt; <a href="Stog_types.html#TYPEpath">path</a></code></pre>
-<pre><span id="VALparent_path"><span class="keyword">val</span> parent_path</span> : <code class="type"><a href="Stog_types.html#TYPEpath">path</a> -&gt; <a href="Stog_types.html#TYPEpath">path</a></code></pre>
 <pre><span id="TYPEdef"><span class="keyword">type</span> def</span> = <code class="type">Xtmpl.name * Xtmpl.attributes * <a href="Stog_types.html#TYPEbody">body</a></code> </pre>
 
 
@@ -51,21 +29,21 @@ Types.<br/>
 <td align="left" valign="top" >
 <code>&#160;&#160;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTdoc.doc_path">doc_path</span>&#160;: <code class="type"><a href="Stog_types.html#TYPEpath">path</a></code>;</code></td>
+<code><span id="TYPEELTdoc.doc_path">doc_path</span>&#160;: <code class="type"><a href="Stog_path.html#TYPEpath">Stog_path.path</a></code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&#160;&#160;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTdoc.doc_parent">doc_parent</span>&#160;: <code class="type"><a href="Stog_types.html#TYPEpath">path</a> option</code>;</code></td>
+<code><span id="TYPEELTdoc.doc_parent">doc_parent</span>&#160;: <code class="type"><a href="Stog_path.html#TYPEpath">Stog_path.path</a> option</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&#160;&#160;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTdoc.doc_children">doc_children</span>&#160;: <code class="type"><a href="Stog_types.html#TYPEpath">path</a> list</code>;</code></td>
+<code><span id="TYPEELTdoc.doc_children">doc_children</span>&#160;: <code class="type"><a href="Stog_path.html#TYPEpath">Stog_path.path</a> list</code>;</code></td>
 
 </tr>
 <tr>
@@ -173,14 +151,12 @@ Types.<br/>
 <pre><span id="TYPEdoc_id"><span class="keyword">type</span> doc_id</span> = <code class="type"><a href="Stog_types.html#TYPEdoc">doc</a> Stog_tmap.key</code> </pre>
 
 
-<pre><span id="VALmake_doc"><span class="keyword">val</span> make_doc</span> : <code class="type">?typ:string -&gt; ?path:<a href="Stog_types.html#TYPEpath">path</a> -&gt; unit -&gt; <a href="Stog_types.html#TYPEdoc">doc</a></code></pre>
+<pre><span id="VALmake_doc"><span class="keyword">val</span> make_doc</span> : <code class="type">?typ:string -&gt; ?path:<a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; unit -&gt; <a href="Stog_types.html#TYPEdoc">doc</a></code></pre>
 <pre><span id="VALtoday"><span class="keyword">val</span> today</span> : <code class="type">unit -&gt; <a href="Stog_types.html#TYPEdate">date</a></code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Path_trie.html">Path_trie</a>: <code class="type"><a href="Stog_trie.S.html">Stog_trie.S</a></code><code class="type">  with type symbol = string</code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Doc_set.html">Doc_set</a>: <code class="type">Set.S</code><code class="type">  with type elt = doc_id</code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Int_map.html">Int_map</a>: <code class="type">Map.S</code><code class="type">  with type key = int</code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Int_set.html">Int_set</a>: <code class="type">Set.S</code><code class="type">  with type elt = int</code></pre>
-<pre><span class="keyword">module</span> <a href="Stog_types.Path_map.html">Path_map</a>: <code class="type">Map.S</code><code class="type">  with type key = path</code></pre>
-<pre><span class="keyword">module</span> <a href="Stog_types.Path_set.html">Path_set</a>: <code class="type">Set.S</code><code class="type">  with type elt = path</code></pre>
 <pre><code><span id="TYPEedge_type"><span class="keyword">type</span> edge_type</span> = </code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
@@ -440,7 +416,7 @@ Types.<br/>
 <td align="left" valign="top" >
 <code>&#160;&#160;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTstog.stog_id_map">stog_id_map</span>&#160;: <code class="type">(<a href="Stog_types.html#TYPEpath">path</a> * string option) Str_map.t Path_map.t</code>;</code></td>
+<code><span id="TYPEELTstog.stog_id_map">stog_id_map</span>&#160;: <code class="type">(<a href="Stog_path.html#TYPEpath">Stog_path.path</a> * string option) Str_map.t Stog_path.Map.t</code>;</code></td>
 
 </tr>
 <tr>
@@ -460,11 +436,11 @@ Types.<br/>
 <pre><span id="VALcreate_stog"><span class="keyword">val</span> create_stog</span> : <code class="type">string -&gt; <a href="Stog_types.html#TYPEstog">stog</a></code></pre>
 <pre><span id="VALstog_md5"><span class="keyword">val</span> stog_md5</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt; string</code></pre>
 <pre><span id="VALdoc"><span class="keyword">val</span> doc</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt; <a href="Stog_types.html#TYPEdoc">doc</a> Stog_tmap.key -&gt; <a href="Stog_types.html#TYPEdoc">doc</a></code></pre>
-<pre><span id="VALdocs_by_path"><span class="keyword">val</span> docs_by_path</span> : <code class="type">?typ:string -&gt;<br/>       <a href="Stog_types.html#TYPEstog">stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEpath">path</a> -&gt; (<a href="Stog_types.html#TYPEdoc_id">doc_id</a> * <a href="Stog_types.html#TYPEdoc">doc</a>) list</code></pre>
-<pre><span id="VALdoc_by_path"><span class="keyword">val</span> doc_by_path</span> : <code class="type">?typ:string -&gt;<br/>       <a href="Stog_types.html#TYPEstog">stog</a> -&gt; <a href="Stog_types.html#TYPEpath">path</a> -&gt; <a href="Stog_types.html#TYPEdoc_id">doc_id</a> * <a href="Stog_types.html#TYPEdoc">doc</a></code></pre>
+<pre><span id="VALdocs_by_path"><span class="keyword">val</span> docs_by_path</span> : <code class="type">?typ:string -&gt;<br/>       <a href="Stog_types.html#TYPEstog">stog</a> -&gt;<br/>       <a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; (<a href="Stog_types.html#TYPEdoc_id">doc_id</a> * <a href="Stog_types.html#TYPEdoc">doc</a>) list</code></pre>
+<pre><span id="VALdoc_by_path"><span class="keyword">val</span> doc_by_path</span> : <code class="type">?typ:string -&gt;<br/>       <a href="Stog_types.html#TYPEstog">stog</a> -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; <a href="Stog_types.html#TYPEdoc_id">doc_id</a> * <a href="Stog_types.html#TYPEdoc">doc</a></code></pre>
 <pre><span id="VALdoc_children"><span class="keyword">val</span> doc_children</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt; <a href="Stog_types.html#TYPEdoc">doc</a> -&gt; <a href="Stog_types.html#TYPEdoc">doc</a> list</code></pre>
 <pre><span id="VALset_doc"><span class="keyword">val</span> set_doc</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEdoc">doc</a> Stog_tmap.key -&gt; <a href="Stog_types.html#TYPEdoc">doc</a> -&gt; <a href="Stog_types.html#TYPEstog">stog</a></code></pre>
-<pre><span id="VALadd_path"><span class="keyword">val</span> add_path</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt; <a href="Stog_types.html#TYPEpath">path</a> -&gt; <a href="Stog_types.html#TYPEdoc_id">doc_id</a> -&gt; <a href="Stog_types.html#TYPEstog">stog</a></code></pre>
+<pre><span id="VALadd_path"><span class="keyword">val</span> add_path</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; <a href="Stog_types.html#TYPEdoc_id">doc_id</a> -&gt; <a href="Stog_types.html#TYPEstog">stog</a></code></pre>
 <pre><span id="VALadd_doc"><span class="keyword">val</span> add_doc</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt; <a href="Stog_types.html#TYPEdoc">doc</a> -&gt; <a href="Stog_types.html#TYPEstog">stog</a></code></pre>
 <pre><span id="VALsort_docs_by_date"><span class="keyword">val</span> sort_docs_by_date</span> : <code class="type"><a href="Stog_types.html#TYPEdoc">doc</a> list -&gt; <a href="Stog_types.html#TYPEdoc">doc</a> list</code></pre>
 <pre><span id="VALsort_ids_docs_by_date"><span class="keyword">val</span> sort_ids_docs_by_date</span> : <code class="type">('a * <a href="Stog_types.html#TYPEdoc">doc</a>) list -&gt; ('a * <a href="Stog_types.html#TYPEdoc">doc</a>) list</code></pre>
@@ -473,6 +449,6 @@ Types.<br/>
 <pre><span id="VALmerge_stogs"><span class="keyword">val</span> merge_stogs</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> list -&gt; <a href="Stog_types.html#TYPEstog">stog</a></code></pre>
 <pre><span id="VALmake_path"><span class="keyword">val</span> make_path</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt; string -&gt; string list</code></pre>
 <pre><span id="VALfind_block_by_id"><span class="keyword">val</span> find_block_by_id</span> : <code class="type"><a href="Stog_types.html#TYPEdoc">doc</a> -&gt; string -&gt; Xtmpl.tree option</code></pre>
-<pre><span id="VALid_map_add"><span class="keyword">val</span> id_map_add</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt;<br/>       Path_map.key -&gt;<br/>       Str_map.key -&gt; <a href="Stog_types.html#TYPEpath">path</a> -&gt; string option -&gt; <a href="Stog_types.html#TYPEstog">stog</a></code></pre>
-<pre><span id="VALmap_href"><span class="keyword">val</span> map_href</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt;<br/>       Path_map.key -&gt;<br/>       Str_map.key -&gt; Path_map.key * Str_map.key</code></pre>
+<pre><span id="VALid_map_add"><span class="keyword">val</span> id_map_add</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt;<br/>       Stog_path.Map.key -&gt;<br/>       Str_map.key -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; string option -&gt; <a href="Stog_types.html#TYPEstog">stog</a></code></pre>
+<pre><span id="VALmap_href"><span class="keyword">val</span> map_href</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt;<br/>       Stog_path.Map.key -&gt;<br/>       Str_map.key -&gt; Stog_path.Map.key * Str_map.key</code></pre>
 <pre><span id="VALmap_doc_ref"><span class="keyword">val</span> map_doc_ref</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEdoc">doc</a> -&gt;<br/>       Str_map.key -&gt; <a href="Stog_types.html#TYPEdoc">doc</a> * Str_map.key</code></pre></div></contents></ocamldoc>
