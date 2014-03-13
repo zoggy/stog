@@ -142,42 +142,11 @@ let (compute_level : ?cached: Stog_types.Doc_set.t -> 'a Xtmpl.env -> int -> sto
           Some set
       | Some _, _ -> state.st_docs
     in
-    (*
-       let f_doc f (stog, data) (doc_id, doc) =
-       let doc = f env (stog, data) doc_id doc in
-       Stog_types.set_doc stog doc_id doc
-       in
-       *)
     let state = List.fold_left (apply_module level env)
       { state with st_modules = [] ; st_docs } state.st_modules
     in
     state
-(*
-  let f_fun stog f =
-    match f with
-      On_doc f -> List.fold_left (f_doc f) stog docs
-    | On_doc_list f ->
-        let (modified, added) = f env stog docs in
-        let stog = List.fold_left
-          (fun stog (doc_id, doc) -> Stog_types.set_doc stog doc_id doc)
-          stog modified
-        in
-        List.fold_left Stog_types.add_doc stog added
-  in
-  List.fold_left f_fun stog funs
-*)
 ;;
-
-(*
-let load_cached_doc file =
-  let ic = open_in_bin file in
-  let (t : Stog_types.cached_doc) = input_value ic in
-  close_in ic;
-  let path = Stog_path.to_string t.cache_doc.doc_path in
-  blocks := Smap.add path t.cache_blocks !blocks;
-  t.cache_doc
-;;
-*)
 
 let levels =
   let add level _ set = Stog_types.Int_set.add level set in
