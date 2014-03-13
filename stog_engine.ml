@@ -768,7 +768,8 @@ let doc_env data env stog doc =
   let rules = [
       ("", Stog_tags.doc_path),
       (fun  acc _ _ _ ->
-         (acc, [Xtmpl.D (Stog_path.to_string doc.doc_path)]))]
+         (acc, [Xtmpl.D (Stog_path.to_string doc.doc_path)]))
+    ]
   in
   let env = Xtmpl.env_of_list ~env rules in
   let (data, env) = env_add_lang_rules data env stog doc in
