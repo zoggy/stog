@@ -7,4 +7,26 @@ published="true"
 <p>
 Release 0.4 of stog is available from the <page href="/install"/> page.
 </p>
+<sep_/>
+<ul id="changes">
+<li>handle relative paths in <icode>&lt;include&gt;</icode>, when starting with
+  <icode>.</icode> or <icode>..</icode>,</li>
+<li>use a separate tool to evaluate ocaml code, "stog-ocaml-session";
+   this allows to use native code version of stog even when evaluating
+   ocaml code; it also makes possible to use distinct ocaml toplevels in
+   ocaml-eval (with session="..."); details <doc href="ocaml-sessions">here</doc>,</li>
+<li>add simple cache system, and option <icode>--nocache</icode>,</li>
+<li>new <icode>&lt;inc&gt;</icode> rule to include a block from another
+  document: <icode lang="xml">&lt;inc doc-path="/install" id="blockid"/&gt;</icode>,
+</li>
+<li>ability to define "functions", site-wide or document-wide,</li>
+<li>handle blocks and counters,</li>
+<li>sectionning now uses blocks and counters,</li>
+<li>a "sectionning" attribute is used to determine which nodes are used for
+  sectionning a document; default is "section,subsection",</li>
+<li>verify references to blocks by id (sections, ...) and use their title in links,</li>
+<li>use "id" attribute instead of "name" attribute in sectionning tags,</li>
+<li>define and use levels of rules; plugins can extend the number of levels
+    to define their own rewriting system.</li>
+</ul>
 </post>

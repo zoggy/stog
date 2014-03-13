@@ -26,15 +26,61 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Cutting documents into pieces. This function is associated to
-  a level in the [Base] module. *)
+(** *)
 
-(** [mk_path path sep id] forges a new path using the given one,
-  the given separator and the given id.
-  @raise Failure if the given [path] has no extension.
-*)
-val mk_path : Stog_path.path -> string -> string -> Stog_path.path
 
-val cut_docs :
-  Stog_types.stog Xtmpl.env ->
-    Stog_types.stog -> Stog_types.doc Stog_tmap.key list -> Stog_types.stog
+exception Invalid of string
+
+let invalid s = raise (Invalid s);;
+
+
+type path = {
+    path : string list;
+    path_absolute : bool ;
+  }
+
+let path path path_absolute = { path ; path_absolute };;
+
+let compare = Pervasives.compare;;
+
+module Ordered = struct type t = path let compare = compare end;;
+module Map = Map.Make(Ordered)
+module Set = Set.Make(Ordered)
+
+let append p l = { p with path = p.path @ l };;
+
+let chop_extension path =
+  match List.rev path.path with
+    [] -> None
+  | s :: q ->
+      try
+        let s = Filename.chop_extension s in
+        Some { path with path = List.rev (s :: q) }
+      with
+        Invalid_argument _ -> (* no extension *) None
+;;
+
+let to_string path =
+  Printf.sprintf "%s%s"
+  (if path.path_absolute then "/" else "")
+  (String.concat "/" path.path)
+
+let of_string s =
+  let len = String.length s in
+  if len <= 0 then failwith (Printf.sprintf "Invalid path: %S" s);
+  let (abs, s) =
+    match s.[0] with
+      '/' -> (true, String.sub s 1 (len - 1))
+    | _ -> (false, s)
+  in
+  { path = Stog_misc.split_string s ['/'];
+    path_absolute = abs ;
+  }
+;;
+
+let parent p =
+  assert p.path_absolute ;
+  match List.rev p.path with
+    [] -> p
+  | _ :: q -> { p with path = List.rev q }
+;;

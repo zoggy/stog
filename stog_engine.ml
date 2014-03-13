@@ -143,7 +143,7 @@ let load_cached_doc file =
   let ic = open_in_bin file in
   let (t : Stog_types.cached_doc) = input_value ic in
   close_in ic;
-  let path = Stog_types.string_of_path t.cache_doc.doc_path in
+  let path = Stog_path.to_string t.cache_doc.doc_path in
   blocks := Smap.add path t.cache_blocks !blocks;
   t.cache_doc
 ;;
@@ -168,7 +168,7 @@ let stog_cache_name = "_stog";;
 let cache_file name stog doc =
   let cache_dir = Filename.concat stog.stog_cache_dir name in
   Filename.concat cache_dir
-    ((String.concat "/" doc.doc_path.path)^"._doc")
+    ((String.concat "/" doc.doc_path.Stog_path.path)^"._doc")
 ;;
 
 let get_cached_docs stog =
@@ -195,7 +195,7 @@ let get_cached_docs stog =
 
 let set_doc_env doc stog doc_envs =
   let digest = Stog_types.stog_md5 stog in
-  Stog_types.Path_map.add doc.doc_path digest doc_envs
+  Stog_path.Map.add doc.doc_path digest doc_envs
 ;;
 
 let apply_loaders state doc =
@@ -243,8 +243,8 @@ let get_cached_documents state env =
       begin
         let ic = open_in_bin info_file in
         let ((doc_envs, deps, id_map) :
-           (string Stog_types.Path_map.t * Stog_types.Depset.t Smap.t *
-            (path * string option) Smap.t Stog_types.Path_map.t)) =
+           (string Stog_path.Map.t * Stog_types.Depset.t Smap.t *
+            (Stog_path.path * string option) Smap.t Stog_path.Map.t)) =
           input_value ic
         in
         close_in ic;
@@ -256,7 +256,7 @@ let get_cached_documents state env =
         (doc_envs, stog)
       end
     else
-      (Stog_types.Path_map.empty, state.st_stog)
+      (Stog_path.Map.empty, state.st_stog)
   in
   let state = { state with st_stog = stog } in
   let digest = Stog_types.stog_md5 state.st_stog in
@@ -266,7 +266,7 @@ let get_cached_documents state env =
   let doc_by_path =
     let map = List.fold_left
       (fun map doc -> Stog_types.Str_map.add
-         (Stog_types.string_of_path doc.doc_path) doc map)
+         (Stog_path.to_string doc.doc_path) doc map)
         Stog_types.Str_map.empty docs
     in
     fun path -> Stog_types.Str_map.find path map
@@ -275,13 +275,13 @@ let get_cached_documents state env =
     let path = doc.doc_path in
     let same_doc_env =
       try
-        let d = Stog_types.Path_map.find path doc_envs in
+        let d = Stog_path.Map.find path doc_envs in
         Stog_msg.verbose ~info: "cache" ~level: 5
-          ("digest(path="^(Stog_types.string_of_path path)^",stog)="^d);
+          ("digest(path="^(Stog_path.to_string path)^",stog)="^d);
         d = digest
       with Not_found ->
           Stog_msg.verbose ~info: "cache" ~level: 5
-            ("cached doc "^(Stog_types.string_of_path path)^" not found in stog");
+            ("cached doc "^(Stog_path.to_string path)^" not found in stog");
           false
     in
     let use_cache =
@@ -290,7 +290,7 @@ let get_cached_documents state env =
           let src_cache_file = cache_file stog_cache_name state.st_stog doc in
           let src_cache_time = Stog_misc.file_mtime src_cache_file in
           let deps_time = Stog_deps.max_deps_date state.st_stog doc_by_path
-            (Stog_types.string_of_path doc.doc_path)
+            (Stog_path.to_string doc.doc_path)
           in
           Stog_msg.verbose ~info: "cache" ~level: 5
            (Printf.sprintf "deps_time for %S = %s, last generated on %s" src_cache_file
@@ -304,7 +304,7 @@ let get_cached_documents state env =
       else
         (
          Stog_msg.verbose ~info: "cache" ~level: 5
-           ("path="^(Stog_types.string_of_path path)^": not same env");
+           ("path="^(Stog_path.to_string path)^": not same env");
          false
         )
     in
@@ -313,13 +313,13 @@ let get_cached_documents state env =
         let state = apply_loaders state doc in
         (* keep deps of this document, as it did not change *)
         let kept_deps =
-          let spath = Stog_types.string_of_path path in
+          let spath = Stog_path.to_string path in
           try Smap.add spath (Smap.find spath state.st_stog.stog_deps) kept_deps
           with Not_found -> kept_deps
         in
         let kept_id_map =
-          try Stog_types.Path_map.add path
-            (Stog_types.Path_map.find path state.st_stog.stog_id_map) kept_id_map
+          try Stog_path.Map.add path
+            (Stog_path.Map.find path state.st_stog.stog_id_map) kept_id_map
           with
             Not_found -> kept_id_map
         in
@@ -333,7 +333,7 @@ let get_cached_documents state env =
   in
   let (state, cached, kept_deps, kept_id_map) =
     List.fold_left f
-      (state, [], Smap.empty, Stog_types.Path_map.empty) docs
+      (state, [], Smap.empty, Stog_path.Map.empty) docs
   in
   let stog = {
       state.st_stog with
@@ -359,8 +359,8 @@ let output_cache_info stog doc_envs =
   (*Stog_tmap.iter
     (fun doc_id doc ->
        ignore(Stog_deps.max_deps_date stog
-        (fun path -> snd (Stog_types.doc_by_path stog (Stog_types.path_of_string path)))
-          (Stog_types.string_of_path doc.Stog_types.doc_path))
+        (fun path -> snd (Stog_types.doc_by_path stog (Stog_path.of_string path)))
+          (Stog_path.to_string doc.Stog_types.doc_path))
     )
        stog.Stog_types.stog_docs;
   *)
@@ -381,7 +381,7 @@ let state_merge_cdata ?docs state =
       match doc.doc_out with
         None -> doc
       | Some xmls ->
-          { doc with doc_out = Some (List.map Xtmpl.merge_cdata xmls) }
+          { doc with doc_out = Some (Xtmpl.merge_cdata_list xmls) }
     in
     Stog_types.set_doc stog doc_id doc
   in
@@ -512,7 +512,7 @@ let encode_for_url s =
 
 let doc_dst f_concat ?(encode=true) stog base doc =
   let path =
-    match doc.doc_path.path with
+    match doc.doc_path.Stog_path.path with
       [] -> failwith "Invalid path: []"
     | h :: q -> List.fold_left f_concat h q
   in
@@ -560,7 +560,7 @@ let output_doc state doc =
     None ->
       failwith
         (Printf.sprintf "Element %S not computed!"
-         (Stog_types.string_of_path doc.doc_path)
+         (Stog_path.to_string doc.doc_path)
         )
   | Some xmls ->
       let oc = open_out file in
@@ -592,7 +592,7 @@ let output_docs ?docs state =
   in
   let doc_envs = List.fold_left
     (fun doc_envs doc -> set_doc_env doc stog doc_envs)
-      Stog_types.Path_map.empty docs
+      Stog_path.Map.empty docs
   in
   output_cache_info stog doc_envs
 ;;
@@ -636,7 +636,7 @@ let generate ?(use_cache=true) ?only_docs stog modules =
       None -> None
     | Some l ->
         let f s =
-          let path = Stog_types.path_of_string s in
+          let path = Stog_path.of_string s in
           let (doc_id, _) = Stog_types.doc_by_path stog path in
           doc_id
         in
@@ -672,14 +672,21 @@ let opt_in_env data env (prefix, s) =
 let get_in_args_or_env data env args s =
   match Xtmpl.get_arg args s with
     None -> get_in_env data env s
-  | Some s -> (data, s)
+  | Some xmls -> (data, xmls)
 ;;
 
 let get_path data env =
   let (data, xmls) = get_in_env data env ("", Stog_tags.doc_path) in
-  let s = Xtmpl.string_of_xmls xmls in
-  assert (s <> "");
-  (data, path_of_string s)
+  match Xtmpl.merge_cdata_list xmls with
+    [Xtmpl.D s] -> (data, Stog_path.of_string s)
+  | xmls -> Stog_path.invalid (Xtmpl.string_of_xmls xmls)
+;;
+
+let get_path_in_args_or_env data env args =
+  let (data,x) = get_in_args_or_env data env args ("", Stog_tags.doc_path) in
+  match Xtmpl.merge_cdata_list x with
+    [Xtmpl.D s] -> (data, Stog_path.of_string s)
+  | xmls -> Stog_path.invalid (Xtmpl.string_of_xmls xmls)
 ;;
 
 let get_doc_out stog doc =
@@ -750,7 +757,7 @@ let doc_env data env stog doc =
   let env = env_of_defs ~env doc.doc_defs in
 (*  prerr_endline
     (Printf.sprintf "doc=%s\ndefs=%s"
-      (Stog_types.string_of_path doc.doc_path)
+      (Stog_path.to_string doc.doc_path)
       (String.concat "\n"
         (List.map (fun ((p,name),_,subs) -> Printf.sprintf "%s:%s=>%s" p name (Xtmpl.string_of_xmls subs))
           doc.doc_defs)
@@ -761,7 +768,7 @@ let doc_env data env stog doc =
   let rules = [
       ("", Stog_tags.doc_path),
       (fun  acc _ _ _ ->
-         (acc, [Xtmpl.D (Stog_types.string_of_path doc.doc_path)]))]
+         (acc, [Xtmpl.D (Stog_path.to_string doc.doc_path)]))]
   in
   let env = Xtmpl.env_of_list ~env rules in
   let (data, env) = env_add_lang_rules data env stog doc in
@@ -775,7 +782,7 @@ let apply_stog_env_doc stog env doc_id =
   let (stog, env) = doc_env stog env stog doc in
   let (stog, xmls) = get_doc_out stog doc in
   (*prerr_endline (Printf.sprintf "%s = %s"
-     (Stog_types.string_of_path doc.doc_path)
+     (Stog_path.to_string doc.doc_path)
      (Xtmpl.string_of_xsmls xmls));*)
   let (stog, xmls) = Xtmpl.apply_to_xmls stog env xmls in
   let doc = { doc with doc_out = Some xmls } in

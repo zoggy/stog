@@ -167,7 +167,7 @@ let add_refs_in_graph stog = stog
         (*prerr_endline (Printf.sprintf "f_ref path=%s" path);*)
         (
          let (id2, _) = Stog_types.doc_by_path stog
-           (Stog_types.path_of_string path)
+           (Stog_path.of_string path)
          in
          g := Stog_types.Graph.add !g (id, id2, Stog_types.Ref)
         );

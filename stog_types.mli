@@ -32,12 +32,6 @@ type date = Netdate.t
 
 type body = Xtmpl.tree list
 
-type path = { path : string list; path_absolute : bool; }
-
-val string_of_path : path -> string
-val path_of_string : string -> path
-val parent_path : path -> path
-
 type def = Xtmpl.name * Xtmpl.attributes * body
 
 val get_def : def list -> Xmlm.name -> (Xtmpl.attributes * body) option
@@ -46,9 +40,9 @@ module Str_map : Map.S with type key = string
 module Str_set : Set.S with type elt = string
 
 type doc = {
-  doc_path : path ;
-  doc_parent : path option ;
-  doc_children : path list ;
+  doc_path : Stog_path.path ;
+  doc_parent : Stog_path.path option ;
+  doc_children : Stog_path.path list ;
   doc_type : string ;
   doc_body : body ;
   doc_date : date option ;
@@ -66,7 +60,7 @@ type doc = {
 }
 type doc_id = doc Stog_tmap.key
 
-val make_doc : ?typ:string -> ?path:path -> unit -> doc
+val make_doc : ?typ:string -> ?path:Stog_path.path -> unit -> doc
 
 
 val today : unit -> date
@@ -75,8 +69,6 @@ module Path_trie : Stog_trie.S with type symbol = string
 module Doc_set : Set.S with type elt = doc_id
 module Int_map : Map.S with type key = int
 module Int_set : Set.S with type elt = int
-module Path_map : Map.S with type key = path
-module Path_set : Set.S with type elt = path
 
 type edge_type = Date | Topic of string | Keyword of string | Ref
 
@@ -116,7 +108,7 @@ type stog = {
   stog_used_mods : Str_set.t ;
   stog_depcut : bool ;
   stog_deps : stog_dependencies ;
-  stog_id_map : (path * string option) Str_map.t Path_map.t ;
+  stog_id_map : (Stog_path.path * string option) Str_map.t Stog_path.Map.t ;
   stog_levels : (string * int list) list Str_map.t ;
   }
 
@@ -129,12 +121,12 @@ val stog_md5 : stog -> string
 
 val doc : stog -> doc Stog_tmap.key -> doc
 
-val docs_by_path : ?typ:string -> stog -> path -> (doc_id * doc) list
-val doc_by_path : ?typ:string -> stog -> path -> doc_id * doc
+val docs_by_path : ?typ:string -> stog -> Stog_path.path -> (doc_id * doc) list
+val doc_by_path : ?typ:string -> stog -> Stog_path.path -> doc_id * doc
 val doc_children : stog -> doc -> doc list
 
 val set_doc : stog -> doc Stog_tmap.key -> doc -> stog
-val add_path : stog -> path -> doc_id -> stog
+val add_path : stog -> Stog_path.path -> doc_id -> stog
 val add_doc : stog -> doc -> stog
 
 val sort_docs_by_date : doc list -> doc list
@@ -150,6 +142,6 @@ val make_path : stog -> string -> string list
 
 val find_block_by_id : doc -> string -> Xtmpl.tree option
 
-val id_map_add : stog -> Path_map.key -> Str_map.key -> path -> string option -> stog
-val map_href : stog -> Path_map.key -> Str_map.key -> Path_map.key * Str_map.key
+val id_map_add : stog -> Stog_path.Map.key -> Str_map.key -> Stog_path.path -> string option -> stog
+val map_href : stog -> Stog_path.Map.key -> Str_map.key -> Stog_path.Map.key * Str_map.key
 val map_doc_ref : stog -> doc -> Str_map.key -> doc * Str_map.key

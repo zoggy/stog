@@ -26,15 +26,24 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Cutting documents into pieces. This function is associated to
-  a level in the [Base] module. *)
+(** Document paths. *)
 
-(** [mk_path path sep id] forges a new path using the given one,
-  the given separator and the given id.
-  @raise Failure if the given [path] has no extension.
-*)
-val mk_path : Stog_path.path -> string -> string -> Stog_path.path
 
-val cut_docs :
-  Stog_types.stog Xtmpl.env ->
-    Stog_types.stog -> Stog_types.doc Stog_tmap.key list -> Stog_types.stog
+exception Invalid of string
+
+val invalid : string -> 'a
+
+type path = { path : string list; path_absolute : bool; }
+
+module Map : Map.S with type key = path
+module Set : Set.S with type elt = path
+
+val path : string list -> bool ->  path
+
+val compare : path -> path -> int
+
+val append : path -> string list -> path
+val chop_extension : path -> path option
+val to_string : path -> string
+val of_string : string -> path
+val parent : path -> path

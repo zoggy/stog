@@ -33,6 +33,8 @@ open Stog_types
 module Sset = Stog_types.Str_set;;
 module Nmap = Xtmpl.Name_map;;
 
+module PMap = Stog_path.Map
+
 type cutpoint =
   {
     cut_tag : string * string ;
@@ -45,8 +47,8 @@ type cutpoint =
 (* since we iter in documents with List.fold_right to keep documents in
   order, we encounter next document of a cutpoint A before cutpoint A. *)
 type links = {
-  by_doc : (Stog_types.path option * Stog_types.path option) Path_map.t ;
-  next_by_cp : Stog_types.path Nmap.t ;
+  by_doc : (Stog_path.path option * Stog_path.path option) Stog_path.Map.t ;
+  next_by_cp : Stog_path.path Nmap.t ;
 }
 
 let cutpoint_of_atts doc atts =
@@ -76,17 +78,17 @@ let new_doc_in_cutpoint cut_tag links doc =
       None -> links
     | Some next_path ->
         let next =
-          try snd (Path_map.find next_path links.by_doc)
+          try snd (PMap.find next_path links.by_doc)
           with Not_found -> None
         in
-        let by_doc = Path_map.add next_path
+        let by_doc = PMap.add next_path
           (Some doc.doc_path, next) links.by_doc
         in
         let prev =
-          try fst (Path_map.find doc.doc_path links.by_doc)
+          try fst (PMap.find doc.doc_path links.by_doc)
           with Not_found -> None
         in
-        let by_doc = Path_map.add doc.doc_path
+        let by_doc = PMap.add doc.doc_path
           (prev, Some next_path) by_doc
         in
         { links with by_doc }
@@ -97,7 +99,7 @@ let new_doc_in_cutpoint cut_tag links doc =
 
 let add_doc links stog doc =
   let (prev, next) =
-    try Path_map.find doc.doc_path links.by_doc
+    try PMap.find doc.doc_path links.by_doc
     with Not_found -> None, None
   in
   let doc =
@@ -105,7 +107,7 @@ let add_doc links stog doc =
       None -> doc
     | Some prev_path ->
         let def = (("", Stog_tags.previous_path), Xtmpl.atts_empty,
-           [Xtmpl.D (Stog_types.string_of_path prev_path)])
+           [Xtmpl.D (Stog_path.to_string prev_path)])
         in
         { doc with doc_defs = def :: doc.doc_defs }
     in
@@ -114,7 +116,7 @@ let add_doc links stog doc =
       None -> doc
     | Some next_path ->
         let def = (("", Stog_tags.next_path), Xtmpl.atts_empty,
-           [Xtmpl.D (Stog_types.string_of_path next_path)])
+           [Xtmpl.D (Stog_path.to_string next_path)])
         in
         { doc with doc_defs = def :: doc.doc_defs }
   in
@@ -122,14 +124,14 @@ let add_doc links stog doc =
 ;;
 
 let mk_path path sep id =
-  let path_s = Stog_types.string_of_path path in
+  let path_s = Stog_path.to_string path in
   match Stog_misc.filename_extension path_s with
     "" ->
       let msg =  "To be cut, " ^path_s ^ " should have an extension (e.g. \".html\")" in
       failwith msg
   | ext ->
       let p = (Filename.chop_extension path_s) ^ sep ^ id ^ "." ^ ext in
-      Stog_types.path_of_string p
+      Stog_path.of_string p
 ;;
 
 let cut_docs =
@@ -230,7 +232,7 @@ let cut_docs =
                      Xtmpl.atts_one ("","class") [Xtmpl.D ("cutlink "^(snd tag))],
                      [Xtmpl.E (("","doc"),
                         Xtmpl.atts_one ("","href")
-                          [Xtmpl.D (Stog_types.string_of_path new_path)],
+                          [Xtmpl.D (Stog_path.to_string new_path)],
                         [])]
                     )
                   ]
@@ -254,7 +256,7 @@ let cut_docs =
     (stog, xmls2 @ xmls, new_docs, links)
   in
   let cut_doc stog doc =
-    let links = { by_doc = Path_map.empty ; next_by_cp = Nmap.empty } in
+    let links = { by_doc = PMap.empty ; next_by_cp = Nmap.empty } in
     match doc.doc_out with
       None -> (stog, doc, [], links)
     | Some body ->

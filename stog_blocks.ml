@@ -100,7 +100,7 @@ let add_block ?(on_dup=`Warn) ~path ~id ~short ~long data =
 ;;
 
 let add_block_for_doc data doc =
-  let path = Stog_types.string_of_path doc.doc_path in
+  let path = Stog_path.to_string doc.doc_path in
   try ignore(Smap.find path data.blocks); data
   with Not_found ->
       let blocks = Smap.add path Smap.empty data.blocks in
@@ -116,13 +116,13 @@ let fun_counter (stog, data) env atts subs =
     None -> ((stog, data), subs)
   | Some name ->
       let ((stog, data), path) = Stog_html.get_path (stog, data) env in
-      let cpt = get_counter data (Stog_types.string_of_path path) name in
+      let cpt = get_counter data (Stog_path.to_string path) name in
       ((stog, data), [Xtmpl.D (string_of_int cpt)])
 ;;
 
 
 let fun_doc_href ?typ src_doc href (stog, data) env args subs =
-  let src_path_s = Stog_types.string_of_path src_doc.doc_path in
+  let src_path_s = Stog_path.to_string src_doc.doc_path in
   let report_error msg = Stog_msg.error ~info: "Stog_html.fun_doc_href" msg in
   let quotes =
     match Xtmpl.get_arg_cdata args ("", "quotes") with
@@ -145,7 +145,7 @@ let fun_doc_href ?typ src_doc href (stog, data) env args subs =
               (stog, [Xtmpl.xml_of_string s])
           | text, None -> (stog, text)
           | _, Some id ->
-              let path = Stog_types.string_of_path doc.doc_path in
+              let path = Stog_path.to_string doc.doc_path in
               let title =
                 try
                   let id_map = Smap.find path data.blocks in
@@ -216,7 +216,7 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
   let data = List.fold_left
     (fun data cls_down ->
        set_counter data 
-         (Stog_types.string_of_path path)
+         (Stog_path.to_string path)
          (Stog_html.concat_name ~sep: ":" cls_down) 0
      )
     data sect_down
@@ -473,7 +473,7 @@ let fun_block1 (stog, data) env args subs =
           Some _ -> raise Xtmpl.No_change
         | None ->
             let ((stog, data), path) = Stog_html.get_path (stog, data) env in
-            let path = Stog_types.string_of_path path in
+            let path = Stog_path.to_string path in
             let xmls =
               [ Xtmpl.E (("", Stog_tags.block),
                  Xtmpl.atts_of_list [("", Stog_tags.doc_path), [Xtmpl.D path] ; ("", "href"), [Xtmpl.D s]],
@@ -484,7 +484,7 @@ let fun_block1 (stog, data) env args subs =
       end
   | _ ->
       let ((stog, data), path) = Stog_html.get_path (stog, data) env in
-      let path = Stog_types.string_of_path path in
+      let path = Stog_path.to_string path in
       let block = read_block stog args subs in
       let data =
         match block.blk_cpt_name with
@@ -558,7 +558,7 @@ let gather_existing_ids =
                Stog_msg.warning
                  (Printf.sprintf
                   "id %S defined twice in the same document %S (here for tag %S)" id
-                    (Stog_types.string_of_path path) (Stog_html.concat_name tag));
+                    (Stog_path.to_string path) (Stog_html.concat_name tag));
                set
               )
             else
@@ -582,7 +582,7 @@ let gather_existing_ids =
           List.fold_left g Sset.empty body
         in
         let title = Xtmpl.xml_of_string doc.doc_title in
-        let path = Stog_types.string_of_path doc.doc_path in
+        let path = Stog_path.to_string doc.doc_path in
         let data = Sset.fold
           (fun id data ->
              add_block ~on_dup: `Ignore ~path ~id ~short: title ~long: title data)
@@ -594,7 +594,7 @@ let gather_existing_ids =
 let fun_init _ (stog,data) doc_ids =
   let f (stog, data) doc_id =
     let doc = Stog_types.doc stog doc_id in
-    let path = Stog_types.string_of_path doc.doc_path in
+    let path = Stog_path.to_string doc.doc_path in
     let counters = Smap.add path Smap.empty data.counters in
     let blocks =  Smap.add path Smap.empty data.blocks in
     let data = { blocks ; counters } in
@@ -704,12 +704,12 @@ let make_module ?levels () =
       }
 
     let cache_load _stog data doc t =
-      let path = Stog_types.string_of_path doc.doc_path in
+      let path = Stog_path.to_string doc.doc_path in
       let blocks = Smap.add path t.cache_blocks data.blocks in
       { data with blocks }
 
     let cache_store _stog data doc =
-      let path = Stog_types.string_of_path doc.doc_path in
+      let path = Stog_path.to_string doc.doc_path in
       {
         cache_blocks = (try Smap.find path data.blocks with Not_found -> Smap.empty) ;
       }

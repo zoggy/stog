@@ -7,4 +7,23 @@ published="true"
 <p>
 Release 0.6 of stog is available from the <page href="/install"/> page.
 </p>
+<sep_/>
+<ul id="changes">
+<li>mod: do not write the config file if it already exists,</li>
+<li>add: <icode>&lt;documents&gt;</icode> node handles <icode>reverse="false"</icode> attribute not to
+    reverse order of documents (which is default, i.e. the more recent first),</li>
+<li>mod: better cache system, using dependencies of each document on other
+    documents and files; also handles the stog environment used to compute
+    documents in cache, so that a change in the stog environment will
+    make all documents recomputed (for example when language changes),</li>
+<li>add: a rule using a file or another document must add a dependency from
+    the computed document to the document or file it depends on, using
+    <a href="ref-doc/Stog_plug.html#VALadd_dep"><icode>Stog_plug.add_dep</icode></a>,</li>
+<li>add: <icode>&lt;include&gt;</icode> now handles a <icode>depend="false"</icode> attribute, to prevent
+    adding a dependency of the document on the included file,</li>
+<li>add: <icode>--depcut</icode> option, used when getting cached documents, to use
+    only one level of dependency between documents; this is useful
+    for example in case the site has a menubar, leading to having
+    almost all documents depending on almost all documents.</li>
+</ul>
 </post>

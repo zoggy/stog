@@ -45,7 +45,7 @@ let mk_doc path_sep doc_id (stog,doc) = function
       match Xtmpl.get_arg_cdata atts ("","type") with
         None ->
           let msg = "Missing type attribute in <contents> in "^
-            (Stog_types.string_of_path doc.doc_path)
+            (Stog_path.to_string doc.doc_path)
             in
             Stog_msg.error msg;
             (stog, doc)
@@ -56,7 +56,7 @@ let mk_doc path_sep doc_id (stog,doc) = function
            | _ ->
                Stog_msg.warning
                  (Printf.sprintf "Element %s: more than one <contents> node"
-                  (Stog_types.string_of_path doc.doc_path)
+                  (Stog_path.to_string doc.doc_path)
                  )
           );
           let doc = { doc with doc_body = subs ; doc_type = typ } in
@@ -66,12 +66,12 @@ let mk_doc path_sep doc_id (stog,doc) = function
 | Xtmpl.E ((_,typ),atts,subs) ->
     let path =
       match Xtmpl.get_arg_cdata atts ("","path") with
-        Some path -> Stog_types.path_of_string path
+        Some path -> Stog_path.of_string path
       | None ->
           match Xtmpl.get_arg_cdata atts ("","id") with
             None ->
               let msg = "No id and no path attributes for an element in "^
-                (Stog_types.string_of_path doc.doc_path)
+                (Stog_path.to_string doc.doc_path)
               in
               failwith msg
           | Some id ->

@@ -132,8 +132,8 @@ Build the final url of the given document.<br/>
  in <code class="code">args</code> of else return the result of <code class="code">get_in_env env s</code>.<br/>
 </div>
 
-<pre><span id="VALget_path"><span class="keyword">val</span> get_path</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * string</code></pre><div class="info ">
-<code class="code">get_path env</code> returns the value associated to <code class="code">"path"</code> in <code class="code">env</code>.<br/>
+<pre><span id="VALget_path"><span class="keyword">val</span> get_path</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * <a href="Stog_types.html#TYPEpath">Stog_types.path</a></code></pre><div class="info ">
+<code class="code">get_path env</code> returns the path associated to <code class="code">"path"</code> in <code class="code">env</code>.<br/>
 <b>Raises</b> <code>Assert_failure</code> if <code class="code">"path"</code> is not found in the environment.<br/>
 </div>
 

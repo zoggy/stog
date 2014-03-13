@@ -70,6 +70,7 @@ LIB_CMXFILES= \
 	stog_trie.cmx \
 	stog_tmap.cmx \
 	stog_graph.cmx \
+	stog_path.cmx \
 	stog_types.cmx \
 	stog_intl.cmx \
 	stog_find.cmx \

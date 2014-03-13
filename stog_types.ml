@@ -35,46 +35,6 @@ and 'a tree_node = Node of 'a * 'a tree list
 
 type body = Xtmpl.tree list
 
-type path = {
-    path : string list;
-    path_absolute : bool ;
-  }
-
-let path_chop_extension path =
-  match List.rev path.path with
-    [] -> None
-  | s :: q ->
-      try
-        let s = Filename.chop_extension s in
-        Some { path with path = List.rev (s :: q) }
-      with
-        Invalid_argument _ -> (* no extension *) None
-;;
-
-let string_of_path path =
-  Printf.sprintf "%s%s"
-  (if path.path_absolute then "/" else "")
-  (String.concat "/" path.path)
-
-let path_of_string s =
-  let len = String.length s in
-  if len <= 0 then failwith (Printf.sprintf "Invalid path: %S" s);
-  let (abs, s) =
-    match s.[0] with
-      '/' -> (true, String.sub s 1 (len - 1))
-    | _ -> (false, s)
-  in
-  { path = Stog_misc.split_string s ['/'];
-    path_absolute = abs ;
-  }
-;;
-
-let parent_path p =
-  assert p.path_absolute ;
-  match List.rev p.path with
-    [] -> p
-  | _ :: q -> { p with path = List.rev q }
-;;
 
 type def = Xtmpl.name * Xtmpl.attributes * body
 
@@ -92,9 +52,9 @@ module Str_map = Map.Make (struct type t = string let compare = String.compare e
 module Str_set = Set.Make (struct type t = string let compare = String.compare end);;
 
 type doc =
-  { doc_path : path ;
-    doc_parent : path option ;
-    doc_children : path list ;
+  { doc_path : Stog_path.path ;
+    doc_parent : Stog_path.path option ;
+    doc_children : Stog_path.path list ;
     doc_type : string ;
     doc_body : body ;
     doc_date : date option ;
@@ -114,7 +74,7 @@ and doc_id = doc Stog_tmap.key
 
 let today () = Netdate.create (Unix.time()) ;;
 
-let make_doc ?(typ="dummy") ?(path={ path = [] ; path_absolute = false }) () =
+let make_doc ?(typ="dummy") ?(path=Stog_path.path [] false) () =
   { doc_path = path ;
     doc_parent = None ;
     doc_children = [] ;
@@ -140,10 +100,7 @@ module Doc_set = Set.Make (struct type t = doc_id let compare = Stog_tmap.compar
 module Doc_map = Set.Make (struct type t = doc_id let compare = Stog_tmap.compare_key end);;
 module Int_map = Map.Make (struct type t = int let compare = compare end);;
 module Int_set = Set.Make (struct type t = int let compare = compare end);;
-module Path_map = Map.Make
-  (struct type t = path let compare = Pervasives.compare end);;
-module Path_set = Set.Make
-  (struct type t = path let compare = Pervasives.compare end);;
+
 
 
 type edge_type =
@@ -202,7 +159,7 @@ type stog = {
   stog_used_mods : Str_set.t ;
   stog_depcut : bool ;
   stog_deps : stog_dependencies ;
-  stog_id_map : (path * string option) Str_map.t Path_map.t ;
+  stog_id_map : (Stog_path.path * string option) Str_map.t Stog_path.Map.t ;
   stog_levels : (string * int list) list Str_map.t ;
 }
 
@@ -257,7 +214,7 @@ let create_stog dir = {
   stog_used_mods = Str_set.empty ;
   stog_depcut = false ;
   stog_deps = Str_map.empty ;
-  stog_id_map = Path_map.empty ;
+  stog_id_map = Stog_path.Map.empty ;
   stog_levels = Str_map.empty ;
   }
 ;;
@@ -281,18 +238,18 @@ let stog_md5 stog =
 
 let doc stog id = Stog_tmap.get stog.stog_docs id;;
 let docs_by_path ?typ stog h =
-  let rev_path = List.rev h.path in
+  let rev_path = List.rev h.Stog_path.path in
   (*prerr_endline (Printf.sprintf "lookup rev_path=%s" (String.concat "/" rev_path));*)
   let ids = Path_trie.find rev_path stog.stog_docs_by_path in
   let l = List.map (fun id -> (id, doc stog id)) ids in
   let path_pred (_, doc) =
     doc.doc_path = h ||
-      (match path_chop_extension doc.doc_path with
+      (match Stog_path.chop_extension doc.doc_path with
          None -> true
        | Some p -> p = h)
   in
   let pred =
-    match h.path_absolute, typ with
+    match h.Stog_path.path_absolute, typ with
       false, None -> None
     | false, Some typ -> Some (fun (_, doc) -> doc.doc_type = typ)
     | true, None -> Some path_pred
@@ -305,14 +262,14 @@ let doc_by_path ?typ stog h =
   match docs_by_path ?typ stog h with
     [] ->
       (*prerr_endline (Path_trie.to_string (fun x -> x) stog.stog_docs_by_path);*)
-      failwith (Printf.sprintf "Unknown document %S" (string_of_path h))
+      failwith (Printf.sprintf "Unknown document %S" (Stog_path.to_string h))
   | [x] -> x
   | l ->
       let msg = Printf.sprintf "More than one document matches %S%s: %s"
-        (string_of_path h)
+        (Stog_path.to_string h)
         (match typ with None -> "" | Some t -> Printf.sprintf " of type %S" t)
         (String.concat ", "
-          (List.map (fun (id, doc) -> string_of_path doc.doc_path) l))
+          (List.map (fun (id, doc) -> Stog_path.to_string doc.doc_path) l))
       in
       failwith msg
 ;;
@@ -329,7 +286,7 @@ let set_doc stog id doc =
 
 let add_path =
   let add ~fail stog path id =
-    let rev_path = List.rev path.path in
+    let rev_path = List.rev path.Stog_path.path in
     let map = Path_trie.add ~fail
       rev_path id stog.stog_docs_by_path
     in
@@ -347,7 +304,7 @@ let add_path =
   in
   fun stog path id ->
     let stog = add ~fail: true stog path id in
-    match path_chop_extension path with
+    match Stog_path.chop_extension path with
       None -> stog
     | Some path -> add ~fail: false stog path id
 ;;
@@ -481,19 +438,19 @@ let find_block_by_id =
 ;;
 
 let id_map_add stog path id target_path target_id =
-  assert path.path_absolute ;
-  assert target_path.path_absolute ;
+  assert path.Stog_path.path_absolute ;
+  assert target_path.Stog_path.path_absolute ;
   let map =
-    try Path_map.find path stog.stog_id_map
+    try Stog_path.Map.find path stog.stog_id_map
     with Not_found -> Str_map.empty
   in
   let map = Str_map.add id (target_path, target_id) map in
-  { stog with stog_id_map = Path_map.add path map stog.stog_id_map }
+  { stog with stog_id_map = Stog_path.Map.add path map stog.stog_id_map }
 ;;
 
 let rec map_href stog path id =
   try
-    let map = Path_map.find path stog.stog_id_map in
+    let map = Stog_path.Map.find path stog.stog_id_map in
     match Str_map.find id map with
       (path, None) -> (path, "")
     | (path, Some id) -> map_href stog path id

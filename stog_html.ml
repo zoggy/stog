@@ -53,18 +53,18 @@ let escape_html s =
 let url_of_path stog ?ext path =
   let doc = Stog_types.make_doc ~path () in
   let src =
-    Printf.sprintf "%s%s" (Stog_types.string_of_path path)
+    Printf.sprintf "%s%s" (Stog_path.to_string path)
       (match ext with None -> "" | Some s -> "."^s)
   in
   Stog_engine.doc_url stog { doc with Stog_types.doc_src = src }
 ;;
 
 let topic_index_path topic =
-  Stog_types.path_of_string ("/topic_" ^ topic ^".html");;
+  Stog_path.of_string ("/topic_" ^ topic ^".html");;
 let keyword_index_path kw =
-  Stog_types.path_of_string ("/kw_"^ kw ^ ".html");;
+  Stog_path.of_string ("/kw_"^ kw ^ ".html");;
 let month_index_path ~year ~month =
-  Stog_types.path_of_string (Printf.sprintf "/%04d_%02d.html" year month);;
+  Stog_path.of_string (Printf.sprintf "/%04d_%02d.html" year month);;
 
 let plugin_base_rules = ref [];;
 
@@ -87,7 +87,7 @@ let include_href name stog doc ?id ~raw ~subsonly ~depend href env =
     let (stog, path) =
       match path with
         "" -> get_path stog env
-      | s ->  (stog, Stog_types.path_of_string s)
+      | s ->  (stog, Stog_path.of_string s)
     in
     let (_, doc) = Stog_types.doc_by_path stog path in
     let stog =
@@ -98,7 +98,7 @@ let include_href name stog doc ?id ~raw ~subsonly ~depend href env =
     | None ->
         failwith
           (Printf.sprintf "No id %S in document %S"
-           id (Stog_types.string_of_path path))
+           id (Stog_path.to_string path))
     | Some (Xtmpl.D _) -> assert false
     | Some ((Xtmpl.E (tag, atts, subs)) as xml)->
         let xmls =
@@ -228,11 +228,11 @@ let doc_by_href ?typ ?src_doc stog acc env href =
       let (acc, path) =
         match path with
           "" -> get_path acc env
-        | s ->  (acc, Stog_types.path_of_string s)
+        | s ->  (acc, Stog_path.of_string s)
       in
       let (_, doc) = Stog_types.doc_by_path ?typ stog path in
       let (doc, id) = Stog_types.map_doc_ref stog doc id in
-      let path = Stog_types.string_of_path doc.doc_path in
+      let path = Stog_path.to_string doc.doc_path in
       (acc, Some (doc, path, id))
     with
       Failure s ->
@@ -240,7 +240,7 @@ let doc_by_href ?typ ?src_doc stog acc env href =
           match src_doc with
             None -> s
           | Some doc ->
-            "In "^(Stog_types.string_of_path doc.doc_path)^": "^s
+            "In "^(Stog_path.to_string doc.doc_path)^": "^s
         in
         Stog_msg.error ~info: "Stog_html.doc_by_href" msg;
         (acc, None)
@@ -368,9 +368,8 @@ let fun_as_xml =
     Xtmpl.E (t, atts, List.map iter subs)
   in
   fun x _env _ subs ->
-    match Xtmpl.merge_cdata (Xtmpl.E (("","foo"), Xtmpl.atts_empty, subs)) with
-    | Xtmpl.E (_,_,xmls) -> (x, List.map iter xmls)
-    | _ -> assert false
+    let xmls = Xtmpl.merge_cdata_list subs in
+    (x, List.map iter xmls)
 ;;
 
 let fun_as_cdata x _env _ subs = (x, [Xtmpl.D (Xtmpl.string_of_xmls subs)])
@@ -635,7 +634,7 @@ let fun_doc_navpath doc stog env args subs =
     match Xtmpl.get_arg_cdata args ("", "with-root") with
       None -> None
     | Some root_path ->
-        let root_path = Stog_types.path_of_string root_path in
+        let root_path = Stog_path.of_string root_path in
         ignore(Stog_types.doc_by_path stog root_path);
         Some root_path
   in
@@ -649,13 +648,13 @@ let fun_doc_navpath doc stog env args subs =
           | Some path -> path :: acc
         end
     | _ :: q ->
-        let path = { Stog_types.path = path ; path_absolute = true } in
+        let path = { Stog_path.path = path ; path_absolute = true } in
         f (path :: acc) (List.rev q)
   in
   let path = doc.Stog_types.doc_path in
   let paths =
     (* remove last component of path to keep only "parent path" *)
-    match List.rev path.Stog_types.path with
+    match List.rev path.Stog_path.path with
       [] | [_] -> (match root with None -> [] | Some path -> [path])
     | _ :: q -> f [] (List.rev q)
   in
@@ -664,7 +663,7 @@ let fun_doc_navpath doc stog env args subs =
       let path =
         (* try to link to /the/path/index *)
         try
-          let path = { path with path = path.path @ ["index"] } in
+          let path = Stog_path.append path ["index"] in
           ignore(Stog_types.doc_by_path stog path);
           path
         with
@@ -675,12 +674,12 @@ let fun_doc_navpath doc stog env args subs =
       in
       let xml = Xtmpl.E
         (("", Stog_tags.doc),
-         Xtmpl.atts_one ("","href") [Xtmpl.D (Stog_types.string_of_path path)],
+         Xtmpl.atts_one ("","href") [Xtmpl.D (Stog_path.to_string path)],
          [])
       in
       [ xml ]
     with Failure _ ->
-        match List.rev path.path with
+        match List.rev path.Stog_path.path with
           [] -> [Xtmpl.D "?"]
         | h :: _ -> [ Xtmpl.D h ]
   in
@@ -876,7 +875,7 @@ let format_date d f stog args =
 ;;
 
 let fun_date_gen f stog env args _ =
-  let (stog, path) = Stog_engine.get_path stog env in
+  let (stog, path) = Stog_engine.get_path_in_args_or_env stog env args in
   let (_, doc) = Stog_types.doc_by_path stog path in
   match doc.doc_date with
     None -> (stog, [])
@@ -913,7 +912,7 @@ let rec build_base_rules stog doc_id =
         None -> Stog_types.doc stog doc_id
       | Some path ->
           let (_, doc) = Stog_types.doc_by_path
-            stog (Stog_types.path_of_string path)
+            stog (Stog_path.of_string path)
           in
           doc
     in
@@ -936,7 +935,7 @@ let rec build_base_rules stog doc_id =
         match Stog_types.get_def doc.doc_defs key with
           None -> fallback ()
         | Some (_,body) ->
-            let path = Stog_types.path_of_string (Xtmpl.string_of_xmls body) in
+            let path = Stog_path.of_string (Xtmpl.string_of_xmls body) in
             try
               let (_, doc) = Stog_types.doc_by_path stog path in
               html_link stog doc
@@ -1007,7 +1006,7 @@ and doc_list doc ?rss ?set stog env args _ =
     Stog_tmpl.get_template stog ~doc Stog_tmpl.doc_in_list file
   in
   let f_doc tmpl (stog, acc) (doc_id, doc) =
-    let name = Stog_types.string_of_path doc.doc_path in
+    let name = Stog_path.to_string doc.doc_path in
     let (stog, env) = Stog_engine.doc_env stog env stog doc in
     let rules = build_base_rules stog doc_id in
     let env = Xtmpl.env_of_list ~env rules in
@@ -1047,11 +1046,11 @@ and doc_list doc ?rss ?set stog env args _ =
             let doc_path =
               let s =
                 if Filename.is_relative path then
-                  (Stog_types.string_of_path (parent_path doc.doc_path))^"/"^path
+                  (Stog_path.to_string (Stog_path.parent doc.doc_path))^"/"^path
                 else
                   path
               in
-              Stog_types.path_of_string s
+              Stog_path.of_string s
             in
             let doc_title =
               match Xtmpl.get_arg_cdata args ("", "alt-doc-title") with
@@ -1119,7 +1118,7 @@ let make_by_word_indexes stog env f_doc_path doc_type map =
             doc_topics = [] ;
             doc_published = true ;
             doc_defs = [] ;
-            doc_src = Stog_types.string_of_path path ;
+            doc_src = Stog_path.to_string path ;
             doc_sets = [] ;
             doc_lang_dep = true ;
             doc_xml_doctype = None ;
@@ -1128,7 +1127,7 @@ let make_by_word_indexes stog env f_doc_path doc_type map =
           }
         in
         let rss_path =
-          let s = Stog_types.string_of_path doc.doc_path in
+          let s = Stog_path.to_string doc.doc_path in
           (try Filename.chop_extension s with _ -> s)^".rss"
         in
         let atts = Xtmpl.atts_one ("","rss") [Xtmpl.D rss_path] in
@@ -1173,7 +1172,7 @@ let make_archive_indexes stog env =
       stog
     with Failure _ ->
         Stog_msg.verbose ~level: 3
-          ("Creating document "^(Stog_types.string_of_path path));
+          ("Creating document "^(Stog_path.to_string path));
         let title =
           let month_str = Stog_intl.get_month stog.stog_lang month in
           Printf.sprintf "%s %d" month_str year
@@ -1190,7 +1189,7 @@ let make_archive_indexes stog env =
             doc_topics = [] ;
             doc_published = true ;
             doc_defs = [] ;
-            doc_src = Stog_types.string_of_path path ;
+            doc_src = Stog_path.to_string path ;
             doc_sets = [] ;
             doc_lang_dep = true ;
             doc_xml_doctype = None ;

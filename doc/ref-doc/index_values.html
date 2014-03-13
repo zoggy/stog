@@ -43,6 +43,8 @@ For a given document, add a dependency on a file or another document.
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALarchive_tree">archive_tree</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_tags.html#VALas_cdata">as_cdata</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_tags.html#VALas_xml">as_xml</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td align="left"><br/>B</td></tr>
@@ -131,6 +133,10 @@ Same as <code class="code">create_log_fun</code> but also return a function to c
 <tr><td align="left"><br/>D</td></tr>
 <tr><td><a href="Stog_intl.html#VALdata_of_lang">data_of_lang</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_tags.html#VALdate_now">date_now</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_tags.html#VALdate_today">date_today</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_tags.html#VALdefault_sectionning">default_sectionning</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALdoc">doc</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
@@ -205,7 +211,11 @@ Build the final url of the given document.
 </td></tr>
 <tr><td><a href="Stog_tags.html#VALdoc_url">doc_url</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_list.html#VALdocs">docs</a> [<a href="Stog_list.html">Stog_list</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_types.html#VALdocs_by_path">docs_by_path</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_list.html#VALdocs_of_args">docs_of_args</a> [<a href="Stog_list.html">Stog_list</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALdocuments">documents</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
@@ -375,12 +385,12 @@ Generate the target files, with the following steps: create the output directory
 <td></td></tr>
 <tr><td><a href="Stog_html.html#VALget_path">get_path</a> [<a href="Stog_html.html">Stog_html</a>]</td>
 <td><div class="info">
-<code class="code">get_path env</code> returns the value associated to <code class="code">"path"</code> in <code class="code">env</code>.
+<code class="code">get_path env</code> returns the path associated to <code class="code">"path"</code> in <code class="code">env</code>.
 </div>
 </td></tr>
 <tr><td><a href="Stog_engine.html#VALget_path">get_path</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
 <td><div class="info">
-<code class="code">get_path env</code> returns the value associated to <code class="code">"path"</code> in <code class="code">env</code>.
+<code class="code">get_path env</code> returns the path associated to <code class="code">"path"</code> in <code class="code">env</code>.
 </div>
 </td></tr>
 <tr><td><a href="Stog_html.html#VALget_sectionning_tags">get_sectionning_tags</a> [<a href="Stog_html.html">Stog_html</a>]</td>
@@ -461,6 +471,8 @@ Same as <a href="Stog_graph.S.html#VALiter_succ"><code class="code">Stog_graph.S
 <tr><td><a href="Stog_tags.html#VALlangswitch">langswitch</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALlanguages">languages</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_tags.html#VALlate_cdata">late_cdata</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALlate_inc">late_inc</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
@@ -613,6 +625,8 @@ Marshal the given graph.
 <td></td></tr>
 <tr><td><a href="Stog_tags.html#VALparagraph">paragraph</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
+<tr><td><a href="Stog_types.html#VALparent_path">parent_path</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_of_latex.html#VALparse">parse</a> [<a href="Stog_of_latex.html">Stog_of_latex</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_types.html#VALpath_of_string">path_of_string</a> [<a href="Stog_types.html">Stog_types</a>]</td>
@@ -736,6 +750,10 @@ Remove from the stog structure the documents having
 <code class="code">reverse g</code> return a graph where all edges of <code class="code">g</code> are reversed, i.e.
 </div>
 </td></tr>
+<tr><td><a href="Stog_tmpl.html#VALrss">rss</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
+<td></td></tr>
+<tr><td><a href="Stog_tmpl.html#VALrss_item">rss_item</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
+<td></td></tr>
 <tr><td><a href="Stog_tags.html#VALrss_length">rss_length</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td></td></tr>
 <tr><td><a href="Stog_engine.html#VALrun">run</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>

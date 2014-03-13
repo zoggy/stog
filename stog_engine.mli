@@ -102,9 +102,15 @@ val opt_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * Xtmpl.tree list option
  in [args] of else return the result of [get_in_env env s]. *)
 val get_in_args_or_env : 'a -> 'a Xtmpl.env -> Xtmpl.attributes -> Xmlm.name -> 'a * Xtmpl.tree list
 
-(** [get_path env] returns the path associated to ["path"] in [env].
-  @raise Assert_failure if ["path"] is not found in the environment.*)
-val get_path : 'a -> 'a Xtmpl.env -> 'a * path
+(** [get_path env] returns the path associated to ["doc-path"] in [env].
+  @raise Stog_path.Invalid if ["doc-path"] is not found in the environment or is not a
+  valid path.*)
+val get_path : 'a -> 'a Xtmpl.env -> 'a * Stog_path.path
+
+(** Same as {!get_path} but first looks for ["doc-path"] attribute in
+  the given args. *)
+val get_path_in_args_or_env :
+  'a -> 'a Xtmpl.env -> Xtmpl.attributes -> 'a * Stog_path.path
 
 val doc_env : 'a -> 'a Xtmpl.env -> Stog_types.stog -> Stog_types.doc -> 'a * 'a Xtmpl.env
 

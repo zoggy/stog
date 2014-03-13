@@ -7,4 +7,22 @@ published="true"
 <p>
 Release 0.5 of stog is available from the <page href="/install"/> page.
 </p>
+<sep_/>
+<ul id="changes">
+<li>minor fixes (thanks to Gabriel Scherer),</li>
+<li>better error and warning messages (thanks to Gabriel Scherer),</li>
+<li>handle prefix in all xml nodes and attributes (upgrade to Xtmpl 0.5),</li>
+<li>global definitions now are of the form <code>stog:foo</code>,</li>
+<li>add: module system (not yet stable),</li>
+<li>add: new <a href="ref-doc/Stog_cache.html">caching system</a>, available for plugins too,</li>
+<li>add: <a href="ref-doc/Stog_plug.html#VALplugin_config_file">Stog_plug.plugin_config_file</a>,</li>
+<li>add: <a href="ref-doc/Stog_plug.html#VALregister_level_fun_on_doc_list">Stog_plug.register_level_fun_on_doc_list</a>
+    to register functions handling all documents at a time.</li>
+<li>fix: add '.' after counters in section title,</li>
+<li>add: when a basic template is missing, create one and issue a warning;
+    these templates are: <code>page.tmpl</code>, <code>doc-in-list.tmpl</code>,
+    <code>by-keyword.tmpl</code>, <code>by-topic.tmpl</code>, <code>keyword.tmpl</code>,
+    <code>topic.tmpl</code>, <code>by-month.tmpl</code>.
+</li>
+</ul>
 </post>

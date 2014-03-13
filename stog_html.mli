@@ -60,7 +60,7 @@ val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * Xtmpl.tree list
 
 (** [get_path env] returns the path associated to ["path"] in [env].
   @raise Assert_failure if ["path"] is not found in the environment.*)
-val get_path : 'a -> 'a Xtmpl.env -> 'a * Stog_types.path
+val get_path : 'a -> 'a Xtmpl.env -> 'a * Stog_path.path
 
 (** Escape html code in the given string: change [&] to [&amp;],
   [<] to [&lt;] and [>] to [&gt;].*)
@@ -71,7 +71,7 @@ val concat_name : ?sep: string -> (string * string) -> string
 (** Build an url from the given path, using the given optional extension.
   This is used for documents created on the fly, like by-word or by-month index. *)
 val url_of_path :
-  Stog_types.stog -> ?ext:string -> Stog_types.path -> Neturl.url
+  Stog_types.stog -> ?ext:string -> Stog_path.path -> Neturl.url
 
 (*
 (** Generate a RSS file from the given list of documents. The final RSS

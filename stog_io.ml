@@ -237,7 +237,7 @@ let fill_doc_from_atts_and_subs doc atts subs =
   let doc =
     match Xtmpl.get_arg_cdata atts ("","path") with
       None -> doc
-    | Some s -> { doc with doc_path = Stog_types.path_of_string s }
+    | Some s -> { doc with doc_path = Stog_path.of_string s }
   in
   let doc = fill_doc_from_atts atts doc in
   match Xtmpl.get_arg_cdata atts ("", "with-contents") with
@@ -254,7 +254,7 @@ let doc_of_file stog file =
   let rel_file = Stog_misc.path_under ~parent: stog.stog_dir file in
   let path =
     let s = "/" ^ rel_file in
-    Stog_types.path_of_string s
+    Stog_path.of_string s
   in
   Stog_msg.verbose ~level: 3 (Printf.sprintf "reading document file %S" file);
   let xml = Xtmpl.xml_of_file file in

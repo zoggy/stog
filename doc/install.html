@@ -1,6 +1,14 @@
 <page title="Installation"
 navbar-install="active"
+with-contents="true"
 >
+<release version="">
+<li><a href="stog-&lt;version/&gt;.tar.gz"><version/></a>
+<span class="date">[<doc-date doc-path="release-&lt;version/&gt;"/>]</span>
+<late-inc href="release-&lt;version/&gt;#changes" id="changes-&lt;version/&gt;"/>
+</li>
+</release>
+<contents>
 <prepare-toc depth="2">
 <toc></toc>
 <section id="deps" title="Dependencies">
@@ -42,101 +50,21 @@ $ opam install stog
 
 <section id="download" title="From the sources">
 <p>Get the sources from git repository:</p>
-<command-line>git clone https://github.com/zoggy/stog.git</command-line>
+<command-line>$ git clone https://github.com/zoggy/stog.git</command-line>
 
 <p>Or pick one of the releases:</p>
 <ul>
-<li><a href="stog-0.10.0.tar.gz">0.10.0</a> [2014-01-21]:
-  <late-inc href="release-0.10.0#changes" id="changes0.10.0"/>
-</li>
-<li><a href="stog-0.9.0.tar.gz">0.9.0</a> [2013-09-24]:
-  <late-inc href="release-0.9.0#changes" id="changes0.9.0"/>
-</li>
-<li><a href="stog-0.8.0.tar.gz">0.8.0</a> [2013-03-19]:
-  <late-inc href="release-0.8.0#changes" id="changes0.8.0"/>
-</li>
-<li><a href="stog-0.7.0.tar.gz">0.7.0</a> [2013-02-13]:
-  <late-inc href="release-0.7.0#changes"/>
-</li>
-<li><a href="stog-0.6.1.tar.gz">0.6.1</a> [2013-01-17]: Fix version number META file and remove Pcre useless dependency in Makefile and META.</li>
-<li><a href="stog-0.6.tar.gz">0.6</a> [2013-01-16]:
-<ul>
-<li>mod: do not write the config file if it already exists,</li>
-<li>add: <icode>&lt;documents&gt;</icode> node handles <icode>reverse="false"</icode> attribute not to
-    reverse order of documents (which is default, i.e. the more recent first),</li>
-<li>mod: better cache system, using dependencies of each document on other
-    documents and files; also handles the stog environment used to compute
-    documents in cache, so that a change in the stog environment will
-    make all documents recomputed (for example when language changes),</li>
-<li>add: a rule using a file or another document must add a dependency from
-    the computed document to the document or file it depends on, using
-    <a href="ref-doc/Stog_plug.html#VALadd_dep"><icode>Stog_plug.add_dep</icode></a>,</li>
-<li>add: <icode>&lt;include&gt;</icode> now handles a <icode>depend="false"</icode> attribute, to prevent
-    adding a dependency of the document on the included file,</li>
-<li>add: <icode>--depcut</icode> option, used when getting cached documents, to use
-    only one level of dependency between documents; this is useful
-    for example in case the site has a menubar, leading to having
-    almost all documents depending on almost all documents.</li>
-</ul>
-</li>
-
-<li><a href="stog-0.5.tar.gz">0.5</a> [2012-12-18]:
-<ul>
-<li>minor fixes (thanks to Gabriel Scherer),</li>
-<li>better error and warning messages (thanks to Gabriel Scherer),</li>
-<li>handle prefix in all xml nodes and attributes (upgrade to Xtmpl 0.5),</li>
-<li>global definitions now are of the form <code>stog:foo</code>,</li>
-<li>add: module system (not yet stable),</li>
-<li>add: new <a href="ref-doc/Stog_cache.html">caching system</a>, available for plugins too,</li>
-<li>add: <a href="ref-doc/Stog_plug.html#VALplugin_config_file">Stog_plug.plugin_config_file</a>,</li>
-<li>add: <a href="ref-doc/Stog_plug.html#VALregister_level_fun_on_doc_list">Stog_plug.register_level_fun_on_doc_list</a>
-    to register functions handling all documents at a time.</li>
-<li>fix: add '.' after counters in section title,</li>
-<li>add: when a basic template is missing, create one and issue a warning;
-    these templates are: <code>page.tmpl</code>, <code>doc-in-list.tmpl</code>,
-    <code>by-keyword.tmpl</code>, <code>by-topic.tmpl</code>, <code>keyword.tmpl</code>,
-    <code>topic.tmpl</code>, <code>by-month.tmpl</code>.
-</li>
-</ul>
-</li>
-<li><a href="stog-0.4.tar.gz">0.4</a> [2012-11-21]:
-<ul>
-<li>handle relative paths in <icode>&lt;include&gt;</icode>, when starting with
-  <icode>.</icode> or <icode>..</icode>,</li>
-<li>use a separate tool to evaluate ocaml code, "stog-ocaml-session";
-   this allows to use native code version of stog even when evaluating
-   ocaml code; it also makes possible to use distinct ocaml toplevels in
-   ocaml-eval (with session="..."); details <doc href="ocaml-sessions">here</doc>,</li>
-<li>add simple cache system, and option <icode>--nocache</icode>,</li>
-<li>new <icode>&lt;inc&gt;</icode> rule to include a block from another
-  document: <icode lang="xml">&lt;inc doc-path="/install" id="blockid"/&gt;</icode>,
-</li>
-<li>ability to define "functions", site-wide or document-wide,</li>
-<li>handle blocks and counters,</li>
-<li>sectionning now uses blocks and counters,</li>
-<li>a "sectionning" attribute is used to determine which nodes are used for
-  sectionning a document; default is "section,subsection",</li>
-<li>verify references to blocks by id (sections, ...) and use their title in links,</li>
-<li>use "id" attribute instead of "name" attribute in sectionning tags,</li>
-<li>define and use levels of rules; plugins can extend the number of levels
-    to define their own rewriting system.</li>
-</ul>
-</li>
-<li><a href="stog-0.3.tar.gz">0.3</a> [2012-08-30]:
-<ul>
-<li>new stage 0 to allow plugins to change the stog structure before generating,</li>
-<li>new fields <icode>doc_xml_doctype</icode>, <icode>doc_out</icode> in
-<a href="&lt;site-url/&gt;/ref-doc/Stog_types.html#TYPEdoc"><icode>doc type</icode></a>,</li>
-<li>handle doctype attribute in document description,</li>
-<li>define and use stage1 and stage 2 functions for plugins,</li>
-<li>more .mlis file and comments in the library.</li>
-</ul>
-</li>
-<li><a href="stog-0.2.tar.gz">0.2</a> [2012-08-28]:
-Change the format of files, now all in XML. Config and templates are in <icode>.stog</icode>
-directory. Less templates required. User can define documents of any "type" (post, page, ...).
-</li>
-<li><a href="stog-0.1.tar.gz">0.1</a> [2012-06-20]: Initial release.</li>
+<release version="0.10.0"/>
+<release version="0.9.0"/>
+<release version="0.8.0"/>
+<release version="0.7.0"/>
+<release version="0.6.1"/>
+<release version="0.6"/>
+<release version="0.5"/>
+<release version="0.4"/>
+<release version="0.3"/>
+<release version="0.2"/>
+<release version="0.1"/>
 </ul>
 
 <subsection id="compilation" title="Compilation">
@@ -155,4 +83,5 @@ and <icode>mk-stog-ocaml-session</icode> in the same directory as
 </section>
 
 </prepare-toc>
+</contents>
 </page>

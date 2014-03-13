@@ -64,15 +64,15 @@ let add_dep stog doc dep =
                 None -> doc.doc_path
               | Some path -> path
             in
-            let dst_path = Stog_types.string_of_path dst_path in
+            let dst_path = Stog_path.to_string dst_path in
             Doc dst_path
         in
 
       let src_paths = List.map
-        (fun doc -> Stog_types.string_of_path doc.doc_path) srcs
+        (fun doc -> Stog_path.to_string doc.doc_path) srcs
       in
       let f_doc stog doc =
-        let src_path = Stog_types.string_of_path doc.doc_path in
+        let src_path = Stog_path.to_string doc.doc_path in
         let set =
           try Smap.find src_path stog.stog_deps
           with Not_found -> Depset.empty
