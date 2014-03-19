@@ -21,7 +21,8 @@ To build Stog, you will need:
 <li><ext-a href="http://erratique.ch/software/xmlm">Xmlm >= 1.1.0</ext-a>,</li>
 <li><ext-a href="http://projects.camlcity.org/projects/ocamlnet.html">OCamlnet >= 3.6</ext-a>.</li>
 <li><ext-a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS >= 2.2.2</ext-a>,</li>
-<li><ext-a href="https://github.com/zoggy/xtmpl">Xtmpl >= 0.8</ext-a>.</li>
+<li><ext-a href="https://github.com/zoggy/xtmpl">Xtmpl >= 0.8</ext-a>,</li>
+<li><ext-a href="http://zoggy.github.io/higlo/">Higlo >= 0.2</ext-a>.</li>
 </ul>
 <p>
 You will need to have the following tools installed to use
@@ -29,7 +30,8 @@ some functions:
 </p>
 <ul>
 <li><ext-a href="http://www.andre-simon.de/doku/highlight/en/highlight.html">highlight</ext-a>
-to use syntax highlighting,</li>
+to use syntax highlighting for languages not support by
+<ext-a href="http://zoggy.github.io/higlo/">Higlo</ext-a>,</li>
 <li>LaTeX and <ext-a href="http://dvisvgm.sourceforge.net/">dvisvgm</ext-a> to embed
 LaTeX in your pages.</li>
 </ul>
@@ -77,7 +79,11 @@ This will install <icode>stog</icode>, <icode>stog.byte</icode>,
 <icode>stog-ocaml-session</icode>, <icode>mk-stog</icode>, <icode>mk-stog.byte</icode>
 and <icode>mk-stog-ocaml-session</icode> in the same directory as
 <icode>ocamlc</icode>. This will also install the <icode>stog</icode> library and the
-<icode>stog.disqus</icode> and <icode>stog.markdown</icode> plugins, with findlib.
+<icode>stog.asy</icode>,
+<icode>stog.disqus</icode>,
+<icode>stog.dot</icode>,
+<icode>stog.markdown</icode> and
+<icode>stog.multi-doc</icode> plugins, with findlib.
 </p>
 </subsection>
 </section>

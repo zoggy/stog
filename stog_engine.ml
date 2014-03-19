@@ -54,7 +54,7 @@ module type Module = sig
 type stog_state =
   { st_stog : stog ;
     st_modules : (module Module) list ;
-    st_docs : Stog_types.Doc_set.t option ;
+    st_docs : Stog_types.Doc_set.t ;
   };;
 
 let apply_module level env state modul =
@@ -67,25 +67,16 @@ let apply_module level env state modul =
   | Some f ->
       let old_stog = state.st_stog in
       let stog = state.st_stog in
-      let docs =
-        match state.st_docs with
-          None ->
-            Stog_tmap.fold
-              (fun doc_id _ acc -> Stog_types.Doc_set.add doc_id acc)
-              state.st_stog.stog_docs
-              Stog_types.Doc_set.empty
-        | Some set -> set
-      in
       let (stog, data) =
         try
           match f with
             Fun_stog f ->
-              let stog = f env stog docs in
+              let stog = f env stog state.st_docs in
               (stog, E.modul.mod_data)
           | Fun_data f ->
-              f (Obj.magic env) (stog, E.modul.mod_data) docs
+              f (Obj.magic env) (stog, E.modul.mod_data) state.st_docs
           | Fun_stog_data f ->
-              f (Obj.magic env) (stog, E.modul.mod_data) docs
+              f (Obj.magic env) (stog, E.modul.mod_data) state.st_docs
         with
           Xtmpl.Loop stack ->
             let msg = "Possible loop when applying module "^
@@ -106,15 +97,18 @@ let apply_module level env state modul =
         (module E2 : Module)
       in
       let docs =
-        match state.st_docs with
-          None -> state.st_docs
-        | Some docs ->
-            let f id _ set =
+        let f id d set =
+          match d.doc_out with
+            None ->
+              (* new element of existing element recreated *)
+              Stog_types.Doc_set.add id set
+          | _ ->
               try ignore(Stog_tmap.get old_stog.stog_docs id); set
-              with _ -> Stog_types.Doc_set.add id set
-            in
-            let set = Stog_tmap.fold f stog.stog_docs docs in
-            Some set
+              with _ ->
+                  (* new element *)
+                  Stog_types.Doc_set.add id set
+        in
+        Stog_tmap.fold f stog.stog_docs state.st_docs
       in
       { st_stog = stog ;
         st_modules = modul :: state.st_modules ;
@@ -122,28 +116,11 @@ let apply_module level env state modul =
       }
 ;;
 
-let (compute_level : ?cached: Stog_types.Doc_set.t -> 'a Xtmpl.env -> int -> stog_state -> stog_state) =
-  fun ?cached env level state ->
+let (compute_level : 'a Xtmpl.env -> int -> stog_state -> stog_state) =
+  fun env level state ->
     Stog_msg.verbose (Printf.sprintf "Computing level %d" level);
-    let st_docs =
-      match state.st_docs, cached with
-        None, None -> None
-      | None, Some cached ->
-          let set =
-            Stog_tmap.fold
-              (fun doc_id _ acc ->
-                 if Stog_types.Doc_set.mem doc_id cached then
-                   acc
-                 else
-                   Stog_types.Doc_set.add doc_id acc
-              )
-              state.st_stog.stog_docs Stog_types.Doc_set.empty
-          in
-          Some set
-      | Some _, _ -> state.st_docs
-    in
     let state = List.fold_left (apply_module level env)
-      { state with st_modules = [] ; st_docs } state.st_modules
+      { state with st_modules = [] } state.st_modules
     in
     state
 ;;
@@ -378,7 +355,8 @@ let state_merge_cdata ?docs state =
   let f stog (doc_id, doc) =
     let doc =
       match doc.doc_out with
-        None -> doc
+        None ->
+          doc
       | Some xmls ->
           { doc with doc_out = Some (Xtmpl.merge_cdata_list xmls) }
     in
@@ -387,35 +365,49 @@ let state_merge_cdata ?docs state =
   { state with st_stog = List.fold_left f state.st_stog docs }
 ;;
 
-let compute_levels ?(use_cache=true) env state =
-  let levels = levels state in
-  let state =
-    if use_cache then
-      begin
-        let (state, cached) = get_cached_documents state env in
-        Stog_msg.verbose (Printf.sprintf "%d documents kept from cache" (List.length cached));
-        let f_doc (stog, cached) cached_doc =
-          try
+let set_docs_to_compute ?(use_cache=true) env state =
+  match use_cache with
+    false -> state
+  | true when not (Stog_types.Doc_set.is_empty state.st_docs) ->
+      state
+  | true ->
+      let (state, cached) = get_cached_documents state env in
+      Stog_msg.verbose (Printf.sprintf "%d documents kept from cache" (List.length cached));
+      let f_doc (stog, cached) cached_doc =
+        try
+          let (doc_id, _) = Stog_types.doc_by_path stog cached_doc.doc_path in
+          (* replace document by cached one *)
+          let stog = Stog_types.set_doc stog doc_id cached_doc in
+          (stog, Stog_types.Doc_set.add doc_id cached)
+        with _ ->
+            (* document not loaded but cached; keep it as it may be a
+               document from a cut-doc rule *)
+            let stog = Stog_types.add_doc stog cached_doc in
             let (doc_id, _) = Stog_types.doc_by_path stog cached_doc.doc_path in
-            (* replace document by cached one *)
-            let stog = Stog_types.set_doc stog doc_id cached_doc in
             (stog, Stog_types.Doc_set.add doc_id cached)
-          with _ ->
-              (* document not loaded but cached; keep it as it may be an
-                 document from a cut-doc rule *)
-              let stog = Stog_types.add_doc stog cached_doc in
-              let (doc_id, _) = Stog_types.doc_by_path stog cached_doc.doc_path in
-              (stog, Stog_types.Doc_set.add doc_id cached)
-        in
-        let (stog, cached) = List.fold_left f_doc
-          (state.st_stog, Stog_types.Doc_set.empty) cached
-        in
-        let state = { state with st_stog = stog } in
-        Stog_types.Int_set.fold (compute_level ~cached env) levels state
-      end
-    else
-      Stog_types.Int_set.fold (compute_level env) levels state
-  in
+      in
+      let (stog, cached) = List.fold_left f_doc
+        (state.st_stog, Stog_types.Doc_set.empty) cached
+      in
+      let st_docs =
+        Stog_tmap.fold
+          (fun doc_id doc acc ->
+             if Stog_types.Doc_set.mem doc_id cached then
+               acc
+             else
+               Stog_types.Doc_set.add doc_id acc
+          )
+          state.st_stog.stog_docs
+          Stog_types.Doc_set.empty
+      in
+      { state with st_stog = stog ; st_docs }
+;;
+
+
+let compute_levels ?use_cache env state =
+  let levels = levels state in
+  let state = set_docs_to_compute ?use_cache env state in
+  let state = Stog_types.Int_set.fold (compute_level env) levels state in
   state_merge_cdata state
 ;;
 
@@ -645,13 +637,13 @@ let generate ?(use_cache=true) ?only_docs stog modules =
   in
   let st_docs =
     match only_docs with
-      None -> None
+      None -> Stog_types.Doc_set.empty
     | Some ids ->
         let set =
           List.fold_right Stog_types.Doc_set.add
             ids Stog_types.Doc_set.empty
         in
-        Some set
+        set
   in
   let state = { st_stog = stog ; st_modules = modules ; st_docs } in
   let state = run ~use_cache state in

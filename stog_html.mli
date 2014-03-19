@@ -68,10 +68,10 @@ val escape_html : string -> string
 
 val concat_name : ?sep: string -> (string * string) -> string
 
-(** Build an url from the given path, using the given optional extension.
+(** Build an url from the given path.
   This is used for documents created on the fly, like by-word or by-month index. *)
 val url_of_path :
-  Stog_types.stog -> ?ext:string -> Stog_path.path -> Neturl.url
+  Stog_types.stog -> Stog_path.path -> Neturl.url
 
 (*
 (** Generate a RSS file from the given list of documents. The final RSS

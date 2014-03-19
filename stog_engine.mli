@@ -63,7 +63,7 @@ module type Module = sig
 type stog_state =
   { st_stog : stog ;
     st_modules : (module Module) list ;
-    st_docs : Doc_set.t option ;
+    st_docs : Doc_set.t ;
   };;
 
 val run : ?use_cache:bool -> stog_state -> stog_state

@@ -50,12 +50,9 @@ let escape_html s =
   Buffer.contents b
 ;;
 
-let url_of_path stog ?ext path =
+let url_of_path stog path =
   let doc = Stog_types.make_doc ~path () in
-  let src =
-    Printf.sprintf "%s%s" (Stog_path.to_string path)
-      (match ext with None -> "" | Some s -> "."^s)
-  in
+  let src = Stog_path.to_string path in
   Stog_engine.doc_url stog { doc with Stog_types.doc_src = src }
 ;;
 
@@ -271,7 +268,7 @@ let fun_archive_tree stog _env _atts _subs =
 
   let f_mon year (month, set) =
     let path = month_index_path ~year ~month in
-    let href = url_of_path stog ~ext: "html" path in
+    let href = url_of_path stog path in
     let month_str = Stog_intl.get_month stog.stog_lang month in
     Xtmpl.E (("", "li"), Xtmpl.atts_empty, [
        Xtmpl.E (("", "a"),
@@ -729,7 +726,7 @@ let html_of_topics doc stog env args _ =
     List.fold_left
       (fun (stog, acc) w ->
          let (stog, xmls) = f stog w in
-         let href = url_of_path stog ~ext: "html" (topic_index_path w) in
+         let href = url_of_path stog (topic_index_path w) in
          let xml = Xtmpl.E (("", "a"),
             Xtmpl.atts_one ("", "href") [ Xtmpl.D (Stog_types.string_of_url href) ],
             xmls)
@@ -755,7 +752,7 @@ let html_of_keywords doc stog env args _ =
     List.fold_left
       (fun (stog, acc) w ->
          let (stog, xmls) = f stog w in
-         let href = url_of_path stog ~ext: "html" (keyword_index_path w) in
+         let href = url_of_path stog (keyword_index_path w) in
          let xml = Xtmpl.E (("", "a"),
             Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_types.string_of_url href)],
             xmls)
@@ -1137,10 +1134,16 @@ let make_by_word_indexes stog env f_doc_path doc_type map =
           let s = Stog_path.to_string doc.doc_path in
           (try Filename.chop_extension s with _ -> s)^".rss"
         in
+        (* we must register the document before evaluating
+          the doc_list, because when we add depencies from the
+          alternative document to the document containing the list,
+          this latter document must exist *)
+        let stog = Stog_types.add_doc stog doc in
+        let (doc_id, _) = Stog_types.doc_by_path stog doc.doc_path in
         let atts = Xtmpl.atts_one ("","rss") [Xtmpl.D rss_path] in
         let (stog, body) = doc_list doc ~set (*~rss: rss_url*) stog env atts [] in
         let doc = { doc with Stog_types.doc_body = body } in
-        Stog_types.add_doc stog doc
+        Stog_types.set_doc stog doc_id doc
   in
   Stog_types.Str_map.fold f map stog
 ;;
@@ -1193,9 +1196,15 @@ let make_archive_indexes stog env =
             doc_used_mods = Stog_types.Str_set.empty ;
           }
         in
+        (* we must register the document before evaluating
+          the doc_list, because when we add depencies from the
+          alternative document to the document containing the list,
+          this latter document must exist *)
+        let stog = Stog_types.add_doc stog doc in
+        let (doc_id, _) = Stog_types.doc_by_path stog doc.doc_path in
         let (stog, body) = doc_list doc ~set stog env Xtmpl.atts_empty [] in
         let doc = { doc with doc_body = body } in
-        Stog_types.add_doc stog doc
+        Stog_types.set_doc stog doc_id doc
   in
   let f_year year mmap stog =
     Stog_types.Int_map.fold (f_month year) mmap stog

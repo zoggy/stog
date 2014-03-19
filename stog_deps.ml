@@ -66,8 +66,7 @@ let add_dep stog doc dep =
             in
             let dst_path = Stog_path.to_string dst_path in
             Doc dst_path
-        in
-
+      in
       let src_paths = List.map
         (fun doc -> Stog_path.to_string doc.doc_path) srcs
       in
@@ -83,7 +82,7 @@ let add_dep stog doc dep =
               (*prerr_endline ("add dep "^src_path^" -> "^f);*)
               Depset.add dep set
           | Doc dst_path ->
-              (* do not add deps from an document to its parent, child or brothers *)
+              (* do not add deps from a document to its parent, child or brothers *)
               if List.mem dst_path src_paths then
                 set
               else

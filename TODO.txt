@@ -3,7 +3,6 @@ Add initialization of counters
 
 Stog_info.compute should be a level fun in Base module
 
-- rules <elt-date> and <elt-datetime> should handle a format attribute
 - function rules defined in elements:
      - use f_contents is rule is called f ?
      - or handle a param_="foo" to place contents in <foo/> instead of <contents/> ?
