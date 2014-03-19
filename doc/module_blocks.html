@@ -8,6 +8,10 @@ levels (see <doc href="funs"/>):
 <prepare-toc depth="1">
 <toc/>
 
+<section id="init" title="init">
+<p>This functions initialize section counters. </p>
+</section>
+
 <section id="base" title="base">
 <p>
 This function applies the following rules:
@@ -78,11 +82,11 @@ The function also applies the <doc href="#block"/> and <doc href="#counter"/> ru
 
 <section id="gather-ids" title="gather-ids">
 <p>
-This function collect all ids (the values attached to <ixml>id="..."</ixml> attributes)
-in all document, so they can be referenced to in upper levels.
+This function collects all ids (the values attached to <ixml>id="..."</ixml> attributes)
+in all documents, so they can be referenced to in upper levels.
 </p>
 <p>
-Having twice the same id in a document results in an error.
+Having twice the same id in a document results in a warning.
 </p>
 </section>
 
@@ -92,7 +96,7 @@ This function applies the following rules:
 <ixml>&lt;doc&gt;</ixml>, <ixml>&lt;post&gt;</ixml>,
 <ixml>&lt;page&gt;</ixml> and <ixml>&lt;block&gt;</ixml>.
 </p>
-<include file="syntax.tmpl"><![CDATA[<doc href=path[#id]>text</doc>]]></include>
+<include file="syntax.tmpl"><![CDATA[<doc href="path[#id]">text</doc>]]></include>
 <p>
 This will return a link to the document specified by its path and optional fragment id.
 The path of a document is its absolute name from the root directoty of your project.
@@ -103,18 +107,22 @@ of the path, as long as it uniquely identifies an existing document.
 <p>
 For example, suppose you want to refer to the document defined in file
 <code>&lt;root dir&gt;/foo/bar/hello.html</code>. The path of this document
-is "/foo/bar/hello". You can refer to it in various ways:
+is "/foo/bar/hello.html". You can refer to it in various ways:
 </p>
 <ul>
-<li>with its absolute path, providing the heading '/': <code>/foo/bar/hello</code>,</li>
-<li>with only the last part of its path: <code>hello</code>,</li>
-<li>with an ending subpart of its path: <code>bar/hello</code>.</li>
+<li>with its absolute path, providing the heading '/': <code>/foo/bar/hello.html</code>,</li>
+<li>with only the last part of its path: <code>hello.html</code>,</li>
+<li>with an ending subpart of its path: <code>bar/hello.html</code>.</li>
 </ul>
 <p>In the last two cases, an error will be raised if more than one documents
 match the incomplete path. You can provide an additional attribute <code>type</code>
 to prevent ambiguities, for example:
 </p>
 <hxml><![CDATA[<doc href="bar/hello" type="post"/>]]></hxml>
+<p>
+The extension of the path can be omitted if there is no ambiguity with another
+document having the same path modulo its extension.
+</p>
 <p>
 Refering to an unknown document will raise an error. If no path is given,
 <ixml>&lt;doc-path/&gt;</ixml> is used instead, i.e. the string associated to
@@ -148,7 +156,7 @@ be reduced to a link to the corresponding document, using the given text.
 </p>
 <p>If the node matching the <code>href</code> was defined with the
 <doc href="#block"/> base rule (i.e. without <code>href</code> attribute),
-then the title associated to this node is used as text for the procuded link, if no
+then the title associated to this node is used as text for the produced link, if no
 text was given (<ixml><block href="..."/></ixml>).
 </p>
 <p>So,</p>

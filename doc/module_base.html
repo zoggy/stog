@@ -28,7 +28,8 @@ function, possibly redefining pre-defined rules with the same names.
 <li><doc href="#archive-tree"/></li>
 <li><doc href="#as-xml"/></li>
 <li><doc href="#command-line"/></li>
-<li><doc href="#dummy_"/></li>
+<li><doc href="#date-now"/></li>
+<li><doc href="#date-today"/></li>
 <li><doc href="#documents"/></li>
 <li><doc href="#doc-bodyx"/></li>
 <li><doc href="#doc-date"/></li>
@@ -45,6 +46,7 @@ function, possibly redefining pre-defined rules with the same names.
 <li><doc href="#doc-title"/></li>
 <li><doc href="#doc-type"/></li>
 <li><doc href="#doc-url"/></li>
+<li><doc href="#dummy_"/></li>
 <li><doc href="#error_"/></li>
 <li><doc href="#ext-a"/></li>
 <li><doc href="#graphx"/></li>
@@ -78,10 +80,19 @@ function, possibly redefining pre-defined rules with the same names.
 </ul>
 </col4>
 </n-columns>
-<also-base-rules/>
 <subsection id="archive-tree" title="archive-tree">
 <p>
-<ixml>&lt;archive-tree/&gt;</ixml> inserts the articles archive tree.
+<ixml>&lt;archive-tree/&gt;</ixml> inserts the archive tree.
+</p>
+</subsection>
+
+<subsection id="as-cdata" title="as-cdata">
+<p>
+<ixml>&lt;as-cdata/&gt;</ixml> transforms the children of the node
+into simple CDATA.
+For example, <hcode>&lt;as-cdata&gt;&lt;coucou/&gt;&lt;/as-cdata&gt;</hcode>
+will be replaced by
+  <hcode defer_="1"><as-cdata>&lt;coucou/&gt;</as-cdata></hcode>
 </p>
 </subsection>
 
@@ -103,11 +114,17 @@ attribute already set to "sh".
 </p>
 </subsection>
 
-<subsection id="dummy_" title="dummy_">
+<subsection id="date-now" title="date-now">
 <p>
-<ixml>&lt;dummy_/&gt;</ixml> is replaced by the contents of the node.
-It is useful to insert an empty tree where a tree is required, for example
-in a <doc href="#if"/>.
+<ixml>&lt;date-now/&gt;</ixml> returns the current date and time. It handles
+the <code>format</code> attribute (see. <doc href="#doc-date"/>).
+</p>
+</subsection>
+
+<subsection id="date-today" title="date-today">
+<p>
+<ixml>&lt;date-today/&gt;</ixml> returns the current date. It handles
+the <code>format</code> attribute (see. <doc href="#doc-date"/>).
 </p>
 </subsection>
 
@@ -169,13 +186,19 @@ or of the document referenced by the <code>doc-path</code> attribute.
 or of the document referenced by the <code>doc-path</code> attribute,
 or an empty string if no date were specified.
 </p>
+<p>
+The <code>format</code> attribute, if present, specifies the format used
+to print the date. See the <ext-a href="http://projects.camlcity.org/projects/dl/ocamlnet-3.5.1/doc/html-main/Netdate.html#VALformat_to">documentation of Netdate.format_to</ext-a> for details, which is
+the function used to print dates.
+</p>
 </subsection>
 
 <subsection id="doc-datetime" title="doc-datetime">
 <p>
 <ixml>&lt;doc-datetime/&gt;</ixml> returns the date and time of the current document,
 or of the document referenced by the <code>doc-path</code> attribute,
-or an empty string if no date were specified.
+or an empty string if no date were specified.  It handles
+the <code>format</code> attribute (see. <doc href="#doc-date"/>).
 </p>
 </subsection>
 
@@ -259,6 +282,14 @@ or of the document referenced by the <code>doc-path</code> attribute:
 <p> is reduced to <doc-url doc-path="/engine"/></p>
 </subsection>
 
+<subsection id="dummy_" title="dummy_">
+<p>
+<ixml>&lt;dummy_/&gt;</ixml> is replaced by the contents of the node.
+It is useful to insert an empty tree where a tree is required, for example
+in a <doc href="#if"/>.
+</p>
+</subsection>
+
 <subsection id="error_" title="error_">
 <p>
 When encountered, <ixml>&lt;error_/&gt;</ixml> will produce an error
@@ -287,9 +318,10 @@ graph to jump to the document.
 <subsection id="hcode" title="hcode">
 <include file="syntax.tmpl"><![CDATA[<hcode lang="...">your code</hcode>]]></include>
 <p>
-This function inserts the given pre-formatted code. It uses the
+This function inserts the given pre-formatted code. If the language is not
+natively known by the <ext-a href="http://zoggy.github.io/higlo/">Higlo</ext-a> engine in Stog, the external
 <ext-a href="http://www.andre-simon.de/doku/highlight/en/highlight.html"><code>highlight</code></ext-a>
-tool to add syntax highlighting. For example, the code examples of this page are
+tool is used to add syntax highlighting. For example, the code examples of this page are
 inserted using
 </p>
 <hcode lang="xml"><![CDATA[<hcode lang="xml">...</hcode>]]></hcode>
@@ -330,7 +362,7 @@ calls to functions, as in:
 a block or not:
 </p>
 <hcode lang="xml"><![CDATA[<if list="">
-<span/>
+<dummy_/>
 <div>The list is not empty, let's print it:<ul><list/></ul></div>
 </if>]]></hcode>
 </subsection>
@@ -403,7 +435,7 @@ Instead of including a file, it is possible to include a block
 of a document, by referring to its path and id in the
 <code>href</code> attribute:
 </p>
-<hxml><![CDATA[<include href="foo#id/>]]></hxml>
+<hxml><![CDATA[<include href="foo#id"/>]]></hxml>
 <p>
 This code includes the XML node referenced by the <code>href</code>
 attribute. An error is raised if the document does not exist, if
@@ -472,7 +504,7 @@ You can try to put some LaTeX code as contents and see...
 <subsection id="prefix-svg-ids" title="prefix-svg-ids">
 <include file="syntax.tmpl"><![CDATA[<prefix-svg-ids prefix="foo">...</prefix-svg-ids>]]></include>
 <p>
-This add the given prefix to all <code>id</code> and <code>href</code> attributes
+This adds the given prefix to all <code>id</code> and <code>href</code> attributes
 in the subnodes. This is useful when including generated SVG files to prevent
 conflicts in ids.
 </p>

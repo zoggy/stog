@@ -16,7 +16,7 @@ let fun_list stog env args subs =
       in
       iter acc q
   in
-  (* and finally return the list of xml trees *)
+  (* and finally return the stog structure untouched and the list of xml trees *)
   (stog, iter [] subs)
 ;;
 

@@ -18,7 +18,7 @@ defined by these modules:
 </p>
 <table class="table table-bordered table-condensed">
 <tr><th>Level</th><th>Function(s)</th></tr>
-<tr><td>  0</td><td><doc href="module_base#base"/> (Base)</td></tr>
+<tr><td>  0</td><td><doc href="module_base#base"/> (Base), <doc href="module_blocks#init"/> (Blocks)</td></tr>
 <tr><td> 30</td><td><doc href="module_base#add-docs"/> (Base)</td></tr>
 <tr><td> 50</td><td><doc href="module_base#toc"/> (Base)</td></tr>
 <tr><td> 60</td><td><doc href="module_base#cut"/> (Base)</td></tr>
@@ -32,7 +32,7 @@ defined by these modules:
 <p>For most of the rules applied by module functions, you should look
 at the generated XML to modify
 your CSS stylesheet according to the classes used. You can start from
-the <icode>.less</icode> files in the <icode>doc</icode> directory
+the <icode>.less</icode> files in the <icode>doc/less</icode> directory
 of the stog sources.
 </p>
 </section>
@@ -62,7 +62,8 @@ given module. The default scheme could be expressed with:
       ("clean", [ 500 ]) ;
     ]) ;
   ("blocks",
-    [ ("base", [ 61 ]) ;
+    [ ("init", [ 0 ]) ;
+      ("base", [ 61 ]) ;
       ("sectionning", [ 100 ]) ;
       ("gather-ids", [ 120 ]) ;
       ("doc", [ 150 ]) ;
@@ -112,7 +113,7 @@ on the context.
 before analysing children. For example, here we add an association
 between "login" and "zoggy". This will add to the environment
 an association between the key "login" and
-the function returning the one-document list ["zoggy"], which is used
+the function returning the one-element list ["zoggy"], which is used
 later in the "login" attribute:
 </p>
 <hcode lang="xml"><![CDATA[<env_ login="zoggy">

@@ -41,7 +41,7 @@ node, and the body is the contents under this node.
 <p>The multi-doc plugin adds a level -10 to cut the documents of type
 "multi". To do so, each root node of the body is read as if it was
 in its own file. Here we declare two documents of type "smallpost",
-with titles, dates and body. The <rule>contents</rule> node contains
+with titles, dates and bodies. The <rule>contents</rule> node contains
 the body of the document "/smallposts". The two other documents are named
 "/smallposts/post1" and "/smallposts/post2", from the path of the
 document and their respective ids, using a default separator "/".
@@ -78,7 +78,7 @@ for example with <rule>doc</rule> rule:
 <p>
 As any other document, one can use the <ixml>with-contents="true"</ixml> attribute
 to indicate that the body of the document is included in a <rule>contents</rule> node.
-Here is an example using <ixml>with-contnts="true"</ixml> for the multi document,
+Here is an example using <ixml>with-contents="true"</ixml> for the multi document,
 for the rest of the definition of this documents and for one of the "smallpost" documents:
 </p>
 <hxml defer_="1"><include file="../smallposts.html" raw="true"/></hxml>
