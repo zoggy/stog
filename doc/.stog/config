@@ -1,5 +1,5 @@
 (* Regexps of files to ignore *)
-ignored = [".*\\.git"; ".*Makefile"; ".*tmpl$"; ".*less$"; ".*\\.chamo.*"; ".*/testX.*" ; ".*/log$" ; ".*/slides/inria_code.*\\.xml" ]
+ignored = [".*\\.git"; ".*Makefile"; ".*tmpl$"; ".*less$"; ".*\\.chamo.*"; ".*/test.*" ; ".*/log$" ; ".*/slides/inria_code.*\\.xml" ]
 (* Regexps of files containing documents *)
 documents = [".*\\..xml$"; ".*\\.html$"]
 (* Regexps of files matching 'documents' regexps but not containing documents
