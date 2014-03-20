@@ -49,7 +49,6 @@ type doc = {
   doc_title : string ;
   doc_keywords : string list ;
   doc_topics : string list ;
-  doc_published : bool ;
   doc_defs : def list ;
   doc_src : string ;
   doc_sets : string list ; (** list of sets ("blog", "foo", etc.) this document belongs to *)
@@ -110,6 +109,8 @@ type stog = {
   stog_deps : stog_dependencies ;
   stog_id_map : (Stog_path.path * string option) Str_map.t Stog_path.Map.t ;
   stog_levels : (string * int list) list Str_map.t ;
+  stog_publish_keep : Stog_filter_types.t option ;
+  stog_publish_remove : Stog_filter_types.t option ;
   }
 
 val url_of_string : string -> Neturl.url

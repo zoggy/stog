@@ -45,6 +45,9 @@ let plugins = ref [];;
 let packages = ref [];;
 let only_doc = ref None;;
 
+let publish_only = ref None ;;
+let publish_remove = ref None ;;
+
 let debug = ref false;;
 
 let add_stog_def s =
@@ -86,6 +89,16 @@ let set_stog_options stog =
   in
   let stog = { stog with Stog_types.stog_depcut = !depcut } in
   let stog = { stog with Stog_types.stog_defs = stog.stog_defs @ !stog_defs } in
+  let stog =
+    match !publish_only, !publish_remove with
+      None, None -> stog
+    | _, _ ->
+
+        { stog with
+          stog_publish_keep = !publish_only ;
+          stog_publish_remove = !publish_remove ;
+        }
+  in
   stog
 ;;
 
@@ -138,6 +151,14 @@ let options = [
     "--def", Arg.String add_stog_def,
     "name:contents add a global rule name with the given contents" ;
 
+    "--publish-only",
+    Arg.String (fun s -> publish_only := Some (Stog_filter.filter_of_string s)),
+    "<filter> only keep documents verifying the given condition" ;
+
+    "--publish-remove",
+    Arg.String (fun s -> publish_remove := Some (Stog_filter.filter_of_string s)),
+    "<filter> remove documents verifying the given condition" ;
+
     "--hackcmxs", Arg.Set Stog_dyn.hack_cmxs,
     " when a package to load depend on .cmxa or .cmx file, try to build .cmxs.";
   ];;
@@ -168,11 +189,11 @@ let main () =
             (*prerr_endline "directories read";*)
             let stog = Stog_types.merge_stogs stogs in
             (*prerr_endline "directories merged";*)
+            let stog = set_stog_options stog in
             let stog = Stog_info.remove_not_published stog in
             (*prerr_endline "removed not published articles";*)
             let stog = Stog_info.compute stog in
             (*prerr_endline "graph computed";*)
-            let stog = set_stog_options stog in
             let modules = Stog_engine.modules () in
             let modules = List.map
               (fun (name, f) ->

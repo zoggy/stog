@@ -1,4 +1,5 @@
 Release 0.11.0:
+* new options --publish-only and --publish-remove
 * more generic way to define an alternative document when using
   the <documents> rule
 * new rules <date-now> and <date-today>

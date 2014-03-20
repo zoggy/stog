@@ -71,6 +71,7 @@ LIB_CMXFILES= \
 	stog_tmap.cmx \
 	stog_graph.cmx \
 	stog_path.cmx \
+	stog_filter_types.cmx \
 	stog_types.cmx \
 	stog_intl.cmx \
 	stog_find.cmx \
@@ -80,7 +81,6 @@ LIB_CMXFILES= \
 	stog_ocaml_types.cmx \
 	stog_deps.cmx \
 	stog_tmpl.cmx \
-	stog_filter_types.cmx \
 	stog_filter_parser.cmx \
 	stog_filter_lexer.cmx \
 	stog_filter.cmx \

@@ -29,6 +29,7 @@
 (** Computing information from articles. *)
 
 open Stog_types;;
+open Stog_filter_types;;
 
 let is_archived_doc stog =
   match Stog_types.get_def stog.stog_defs ("","archived-docs") with
@@ -294,10 +295,38 @@ let compute stog =
   stog
 ;;
 
+
+let rec doc_verifies doc = function
+| Or (f1, f2) -> (doc_verifies doc f1) || (doc_verifies doc f2)
+| And (f1, f2) -> (doc_verifies doc f1) && (doc_verifies doc f2)
+| Not f  -> not (doc_verifies doc f)
+| Pred (("","set"), name) -> List.mem name doc.doc_sets
+| Pred (("","keyword"), name) -> List.mem name doc.doc_keywords
+| Pred (("","topic"), name) -> List.mem name doc.doc_topics
+| Pred (("","type"), v) -> doc.doc_type = v
+| Pred (name, v) ->
+    match Stog_types.get_def doc.doc_defs name with
+      None -> v = ""
+    | Some (_, body) ->
+        let s = Xtmpl.string_of_xmls body in
+        v = s
+;;
+
 let remove_not_published stog =
+  let pred =
+    match stog.stog_publish_keep, stog.stog_publish_remove with
+      None, None -> (fun _ -> true)
+    | Some f, None -> (fun doc -> doc_verifies doc f)
+    | None, Some f -> (fun doc -> not (doc_verifies doc f))
+    | Some f1, Some f2 ->
+        (fun doc ->
+           doc_verifies doc f1 &&
+             (not (doc_verifies doc f2))
+        )
+  in
   let (docs, removed) = Stog_tmap.fold
     (fun id doc (acc, removed) ->
-       if doc.doc_published then
+       if pred doc then
          (acc, removed)
        else
          (Stog_tmap.remove acc id, doc.doc_path :: removed)
