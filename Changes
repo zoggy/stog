@@ -1,4 +1,4 @@
-Next release:
+Release 0.11.0:
 * more generic way to define an alternative document when using
   the <documents> rule
 * new rules <date-now> and <date-today>
@@ -8,9 +8,6 @@ Next release:
   top exceptions to be able to get the backtrace)
 * Definining twice the same id in a document is not an
   error anymore but a warning is emitted
-* New way to create feeds associated to a list of documents,
-  with a way to specify the alternative document template,
-  path and template for documents listed in this element
 * The term "element" is replaced by "document", and all
   <elt*> rules are replaced by <doc*> rules
 * The term "human id" is replaced by "path". In all rules and
@@ -31,7 +28,8 @@ Next release:
 * fix default doc-in-list.tmpl template to handle dependencies on
   listed elements
 * compile and install .cmxs files
-* depend on next release of config_file for .cmxs files
+* depend on config_file 1.2 for .cmxs files
+* new rules <as-cdata> and <late-cdata>
 
 Release 0.10.0:
 * new command: <prefix-svg-ids prefix="p">...</prefix-svg-ids>
