@@ -1,5 +1,5 @@
 <post title="Stog 0.11.0"
-date="2014/03/12"
+date="2014/03/20"
 topics="stog"
 keywords="release"
 published="true"
@@ -10,7 +10,41 @@ Release 0.11.0 of stog is available from the <page href="/install"/> page.
 <sep_/>
 <p>Changes include:</p>
 <ul id="changes">
-
+<li>the term "element" is replaced by "document", and all
+  <rule>elt*</rule> rules are replaced by <rule>doc*</rule> rules,</li>
+<li>the term "human id" is replaced by "path". In all rules and
+  attributes, "hid" is replaced by "path". The <rule>doc-path</rule> rule
+  is replace by <rule>doc-navpath</rule>,</li>
+<li>document path now includes the extension of the document's filename;
+  when referencing a document, the extension is only needed where
+  an ambiguity is possible between two documents whose paths differ
+  only by their extension,</li>
+<li>new rules <doc href="module_base#as-cdata"><rule>as-cdata</rule></doc>,
+  <doc href="module_base#late-cdata"><rule>late-cdata</rule></doc>,
+  <doc href="module_base#date-now"><rule>date-now</rule></doc>,
+  <doc href="module_base#date-today"><rule>date-today</rule></doc>,
+</li>
+<li>new option <doc href="running#filter">--publish-only</doc>,</li>
+<li>more generic way to define an alternative document when using
+  the <doc href="module_base#documents"><rule>documents</rule></doc> rule,</li>
+<li>new attribute <ixml>format="..."</ixml> for rules
+  <rule>date</rule>, <rule>datetime</rule>,
+  <rule>date-now</rule> and <rule>date-today</rule>,</li>
+<li>defining twice the same id in a document is not an
+  error anymore but a warning is emitted,</li>
+<li>use Higlo syntax highlighter when possible,</li>
+<li><rule>cut-doc</rule>: add previous-path and next-path in definitions
+  of cut documents, to create navigation links,</li>
+<li>merge CData in resulting XML trees when computing documents,</li>
+<li>urls of <icode>.../index.html</icode> documents now include a final "/",</li>
+<li>the new <rule>stog-dir</rule> rule is pre-defined to return the
+  absolute stog directory,</li>
+<li>(fix) compile and install <icode>odoc_stog.cmo</icode>,</li>
+<li>(fix) when creating by-topic, by-keyword and by-month documents,
+  update existing documents if they exist,</li>
+<li>(fix) default <icode>doc-in-list.tmpl</icode> template now handles
+  dependencies on listed documents,</li>
+<li>(fix) compile and install .cmxs files,</li>
 </ul>
 <p>
 To migrate a site made with Stog &lt;= 0.10.0, you have to perform
@@ -31,7 +65,7 @@ and modules (in <code>.stog/modules</code>):
 <li>replace <code>elt</code> with <code>doc</code>.</li>
 </ul>
 Of course, if <code>elt-path</code>, <code>hid</code> or <code>elt</code>
-appeared in another context than Stog rules, beware not to replace them.
+appeared in another context than Stog rules, beware not to replace them,
 </li>
 <li>Rename the templates whose name contains <code>elt</code>, typically
   <code>elt-in-list.tmpl</code> must be renamed to <code>doc-in-list.tmpl</code>,</li>
