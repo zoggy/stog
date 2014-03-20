@@ -1,0 +1,175 @@
+<test title="bla bla"
+with-contents="true"
+subsection-counter="subsection"
+section-counter="section"
+>
+<testfun foo="1">foo + bar = <foo/> + <bar/> <andmore/></testfun>
+<latex-defs>
+\unitlength 1cm
+
+\newcommand{\carre}[2]{
+  \put(-0.5,-0.5){$A(0,0)$}
+  \put(-0.5,4.25){$C(0,1)$}
+  \put(3.5,-0.5){$T(1,0)$}
+  \put(3.5,4.25){$G(1,1)$}
+  \multiput(0,0)(#1,0){#2}{\line(0,1){4}}
+  \multiput(0,0)(0,#1){#2}{\line(1,0){4}}}
+</latex-defs>
+<figure id="" title="" href="" >
+  <if href="">
+    <block protect_="title,id" counter-name="figure" class="figure"
+           label="Figure" href="&lt;href/&gt;"
+           id="&lt;id/&gt;" title="&lt;title/&gt;">
+<div class="&lt;class/&gt;" id="&lt;id/&gt;">
+  <div class="title"><title/></div>
+  <div class="contents"><contents/></div>
+</div><more/></block>
+<block href="&lt;href/&gt;" doc-path="&lt;doc-path/&gt;"/>
+</if>
+</figure>
+
+<ocaml-map sep="" list="[]">
+<as-xml defer_="2"><ocaml-printf defer_="1">
+  begin
+    String.concat "<sep/>"
+      (List.map (<contents/>) (<list/>))
+  end
+</ocaml-printf></as-xml>
+</ocaml-map>
+<contents>
+<cut-doc path-sep="/" tag="section">
+<cut-doc path-sep="/" tag="subsection">
+<section id="sec1" title="Section 1">
+ <p id="p1">bla bla section 1 bla bla bla bla</p>
+ <subsection id="sub1" title="Sub1">coucou</subsection>
+ <subsection id="sub2" title="Sub2">coucou</subsection>
+</section>
+
+<section id="sec2" title="Section 2">
+ <p id="p2">bla bla section 2 bla bla bli blouh</p>
+ <subsection id="s2sub1" title="Sub1">coucou</subsection>
+ <subsection id="s2sub2" title="Sub2">coucou</subsection>
+</section>
+
+<section id="sec3" title="Section 3">
+ <p id="p2">bla bla section 2 bla bla bli blouh</p>
+ <documents type="smallpost" rss="test.rss"/>
+</section>
+</cut-doc>
+</cut-doc>
+
+<late-inc href="/running#optiondef" id="newid" />
+
+<hxml defer_="1"><late-inc href="/running#optiondef" raw="true"/></hxml>
+
+<section id="mysection" title="My section">
+<figure id="fig1" title="La figure">
+Hello figure !
+<figure id="subfig" title="Subfigure"><div>This is the subfigure</div></figure>
+</figure>
+<p>
+Link to <figure href="subfig"/> in <figure href="fig1"/>.
+</p>
+<figure id="coucou" title="code" more="Mon truc en plus">
+<ocaml-eval defer_="1"><include raw="true" file="./test.ml"/></ocaml-eval>
+</figure>
+</section>
+
+<section id="latex" title="testing latex">
+<latex-body>
+\subsection{Hello subsection 1}\label{ss1}
+bla bla bla
+
+\begin{figure}
+\begin{center}
+\begin{picture}(11,5)(-2.5,-2.5)
+% Table for nucleotides
+\put(-2,-2){\carre{2}{3}}
+\put(-1.2,-1.2){$A$}
+\put(-1.2,0.8){$C$}
+\put(0.8,-1.2){$T$}
+\put(0.8,0.8){$G$}
+% Table for dinucleotides
+\put(4,-2){\carre{1}{5}}
+\put(4.2,-1.6){$AA$}
+\put(4.2,-0.6){$CA$}
+\put(4.2,0.4){$AC$}
+\put(4.2,1.4){$CC$}
+\put(5.2,-1.6){$TA$}
+\put(5.2,-0.6){$GA$}
+\put(5.2,0.4){$TC$}
+\put(5.2,1.4){$GC$}
+\put(6.2,-1.6){$AT$}
+\put(6.2,-0.6){$CT$}
+\put(6.2,0.4){$AG$}
+\put(6.2,1.4){$CG$}
+\put(7.2,-1.6){$TT$}
+\put(7.2,-0.6){$GT$}
+\put(7.2,0.4){$TG$}
+\put(7.2,1.4){$GG$}
+\end{picture}
+\end{center}
+\caption{\label{fig:carre}
+Définitions des carrés correspondant aux nucléotides (à gauche) et aux dinucléotides (à droite) pour la CGR sur $[0,1[^2$.}
+\end{figure}
+
+\subsection{Hello subsection 2}\label{ss2}
+bla bla bla bla bla bla bla
+
+c'est quoi ce problème ?
+
+</latex-body>
+
+Referencing <doc href="#ss1"/>.
+</section>
+
+<section id="ocaml" title="test ocaml">
+<subsection id="ocaml1" title="Toplevel">
+<ocaml-eval toplevel="true">
+let x = 41 + 1;;
+let y = string_of_int x;;
+let l = [ 1 ; 2 ; 3 ; 4 ; 5 ; 6 ];;
+let b = List.mem x l;;
+</ocaml-eval>
+</subsection>
+
+<subsection id="ocaml2" title="ocaml-printf">
+<ocaml-printf format="%d = %s">x y</ocaml-printf>*<ocaml-printf>(if b then y^" est dans la liste" else "")</ocaml-printf>*
+<p>
+La liste est par là: <table class="table table-condensed table-bordered" >
+<ocaml-map list="l" ><![CDATA[fun n ->
+  Printf.sprintf "<tr><td>%d</td><td><ocaml-printf format=\"%%S\">(string_of_int %d)</ocaml-printf></td></tr>" n n]]></ocaml-map>
+</table>
+</p>
+</subsection>
+</section>
+
+<section id="dot" title="testing dot">
+<p>The graph:</p>
+
+<pre class="hide" id="dot-code">
+digraph g {
+node [ color = gray29, fontcolor = gray29 ];
+edge [ color = gray29 ];
+index  [ href="<site-url/>" ];
+e [ href="<doc-url doc-path="doc"/>", label="<doc-title doc-path="doc"/>" ] ;
+index -> b ;
+index -> e ;
+b -> c ;
+index -> d ;
+}
+</pre>
+<hcode defer_="1" lang="dot"><include subs-only="true" href="#dot-code" subs-only="true"/>
+</hcode>
+<dot defer_="1"><!-- type="png" outfile="testdot.png" >-->
+<include href="#dot-code" subs-only="true"/>
+</dot>
+</section>
+
+<section id="funs" title="test funs">
+<p><ixml>&lt;testfun foo="2"/&gt;</ixml> ==> <testfun foo="2" andmore="AND MORE"/></p>
+<p><ixml>&lt;testfun foo="2" bar="3"/&gt;</ixml> ==> <testfun foo="2" bar="3"/></p>
+
+</section>
+</contents>
+</test>

@@ -1,0 +1,19 @@
+<multi
+sets="testset"
+path-sep="-"
+with-contents="true"
+>
+<high foo=""><pre><contents/></pre></high>
+<contents>
+<post id="p1" title="coucou le post de test" date="2013/11/30">coucou</post>
+<post id="p2" title="coucou le post de test 2" date="2013/12/01" with-contents="true">
+  <st foo=""><strong><contents/></strong></st>
+  <contents>
+    <high><st>coucou décembre</st></high>
+  </contents>
+</post>
+<contents type="page" title="Test-multi">
+  <documents type="post" set="testset"/>
+</contents>
+</contents>
+</multi>
