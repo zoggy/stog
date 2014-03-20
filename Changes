@@ -1,6 +1,6 @@
 Next release:
-* new attibutes alt-doc-path, alt-doc-type and alt-doc-tmpl for
-  <documents> rule
+* more generic way to define an alternative document when using
+  the <documents> rule
 * new rules <date-now> and <date-today>
 * new attribute format="..." for rules <date>, <datetime>,
   <date-now> and <date-today>.

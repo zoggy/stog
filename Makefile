@@ -27,7 +27,7 @@
 #################################################################################
 
 # DO NOT FORGET TO CHANGE ALSO IN META AND stog_config.ml
-VERSION=0.10.0
+VERSION=0.11.0
 
 OCAMLC=ocamlc
 OCAMLDOC=ocamldoc.opt
@@ -40,7 +40,7 @@ OCAMLFIND=ocamlfind
 P=#p -p
 PBYTE=#p -p a
 
-PACKAGES=xmlm,rss,xtmpl,config-file,dynlink,unix,str,higlo.lexers
+PACKAGES=xmlm,xtmpl,netstring,config-file,dynlink,unix,str,higlo.lexers
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
 
 COMPFLAGS=-I +ocamldoc -annot -rectypes -g #-w +K

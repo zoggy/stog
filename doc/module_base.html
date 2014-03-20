@@ -137,15 +137,29 @@ published documents.
 <ul>
 <li><ixml>max="n"</ixml> can be used to list only the <code>n</code> most recent
 documents.</li>
-<li><ixml>rss="filename"</ixml> triggers the creation of a RSS file corresponding
-to the selected documents. The given filename is appended to the stog output directory.
-A link to the RSS file is also added before the list.</li>
+<li><ixml>rss="..."</ixml> or <ixml>alt-doc-path="..."</ixml>
+triggers the creation of an alternative document listing the selected documents.
+If the given path is not absolute (i.e. it does not start with '/'), the path
+is appended to the parent path of the document. For example, if
+<rule>documents alt-doc-path="bar.rss"</rule> is used in a document
+with path "/foo/bar.html", the alternative document will have path
+"/foo/bar.rss".
+A link to this alternative document is also added before the list.
+</li>
+<li><ixml>alt-doc-type="..."</ixml> specifies the type of the alternative
+document if it is created; default type is "rss", and a default template
+will be created if no template for this type exists.</li>
+<li><ixml>alt-doc-in-list-tmpl="..."</ixml> specifies the template to
+use for each document in the list of documents in the alternative document.
+Default template is "rss-item.tmpl" and it is created if is does not exist.
+</li>
 <li><ixml>set="name"</ixml> can be used to select only the documents belonging to
 the given set.</li>
 <li><ixml>type="type1,type2,..."</ixml> filters the documents to keep only the ones with one
 of the given types.</li>
-<li><ixml>title="title"</ixml> specifies the title of the RSS channel, if a RSS
-file is created. If no title is given, the site title is used.</li>
+<li><ixml>alt-doc-title="title"</ixml> specifies the title of the alternative document,
+if it is created. If no alternative document title is given, the document title is used.
+</li>
 <li>By default, items are sorted according to the date of each document. Specifying
 <ixml>sort="rule1,rule2,..."</ixml> make documents sorted according to the given rules,
 expanded for each document.</li>
