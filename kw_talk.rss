@@ -1,15 +1,40 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0"><channel><title>Stog: talk</title><link>http://zoggy.github.io/stog/kw_talk.html</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>15 Mar 2013 00:00:00 +0000</pubDate><lastBuildDate>15 Mar 2013 00:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.io/stog</url><title>Stog</title><link>http://zoggy.github.io/stog</link></image><item><title>Talk about Stog at INRIA</title><link>http://zoggy.github.io/stog/posts/2013-04-23-stog-at-inria.html</link><description>
+<!DOCTYPE HTML>
+<rss version="2.0">
+       <channel>
+         <title>Stog : talk</title>
+         <link>http://zoggy.github.io/stog</link>
+         <description>Static blog and web site generator</description>
+         <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>20 Mar 2014 14:14:01 +0000</lastBuildDate>
+         <generator>Stog</generator>
+         <div class="img"><img class="img" src="" width=""/><div class="legend"><url>http://zoggy.github.io/stog/logo.png</url>
+           <title>Stog</title><link>http://zoggy.github.io/stog</link>
+         </div></div>
+         <item>
+      <title>Talk about Stog at INRIA</title>
+      <link>http://zoggy.github.io/stog/posts/2013-04-23-stog-at-inria.html</link>
+      <description>
 &lt;p&gt;
 Maxence Guesdon introduced Stog during a talk at
-&lt;ext-a href=&quot;http://www.inria.fr/en/centre/saclay&quot;&gt;INRIA Saclay-Île-de-France&lt;/ext-a&gt;
+&lt;span class=&quot;ext-a&quot;&gt;&lt;a href=&quot;http://www.inria.fr/en/centre/saclay&quot;&gt;INRIA Saclay-Île-de-France&lt;/a&gt;&lt;/span&gt;
 on Tuesday, 23&lt;sup&gt;rd&lt;/sup&gt; of April 2013. The slides are
-available &lt;elt href=&quot;slides/2013_04_23_inria&quot;&gt;here&lt;/elt&gt;.
+available &lt;a href=&quot;http://zoggy.github.io/stog/slides/2013_04_23_inria.html&quot;&gt;here&lt;/a&gt;.
 &lt;/p&gt;
-</description><pubDate>23 Apr 2013 00:00:00 +0000</pubDate><category>stog</category><category>talk</category><category>inria</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/2013-04-23-stog-at-inria.html</guid></item><item><title>Talk about Stog at INRIA</title><link>http://zoggy.github.io/stog/posts/stog-at-inria.html</link><description>
+</description>
+      <pubDate>23 Apr 2013 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/2013-04-23-stog-at-inria.html</guid>
+    </item><item>
+      <title>Talk about Stog at INRIA</title>
+      <link>http://zoggy.github.io/stog/posts/stog-at-inria.html</link>
+      <description>
 &lt;p&gt;
 Maxence Guesdon will introduce Stog during a talk at
-&lt;ext-a href=&quot;http://www.inria.fr/en/centre/saclay&quot;&gt;INRIA Saclay-Île-de-France&amp;quot;&lt;/ext-a&gt;
+&lt;span class=&quot;ext-a&quot;&gt;&lt;a href=&quot;http://www.inria.fr/en/centre/saclay&quot;&gt;INRIA Saclay-Île-de-France&amp;quot;&lt;/a&gt;&lt;/span&gt;
 on &lt;strong&gt;Tuesday, 23&lt;sup&gt;rd&lt;/sup&gt; of April 2013, at 14h&lt;/strong&gt; in room &amp;quot;Gilles Khan&amp;quot;.
 &lt;/p&gt;
-</description><pubDate>15 Mar 2013 00:00:00 +0000</pubDate><category>stog</category><category>talk</category><category>inria</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-at-inria.html</guid></item></channel></rss>
+</description>
+      <pubDate>15 Mar 2013 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-at-inria.html</guid>
+    </item>
+       </channel>
+     </rss>

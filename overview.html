@@ -31,6 +31,7 @@
 <div id="header">
   
   
+  
   <div class="page-title">Overview</div>
 </div>
 
@@ -38,65 +39,66 @@
 
 
 <p>
-When launched on a given root directory, <span class="icode">stog</span> will read all files
+When launched on a given root directory, <span class="icode"><span class="hl std">stog</span></span> will read all files
 and directories
 from this starting point and generate the same hierarchy in the output directory.
 </p>
 <p>
-Some of the files will be read as <a href="http://zoggy.github.io/stog/stog-elements.html">Stog elements</a>,
+Some of the files will be read as <a href="http://zoggy.github.io/stog/stog-documents.html">Stog documents</a>,
 i.e. XML files which will
 be processed through a templating engine to produce the final files.
 </p>
 <div class="alert alert-warning">
 <p>
-Since the element files arex handled as XML documents, the boolean attributes,
+Since the document files are handled as XML documents, the boolean attributes,
 like in HTML5, are not allowed. So, when using Stog to generate HTML5 pages,
 instead of writing
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;tag</span> <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span> boolean-attribute <span class="hl kwb">att3</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>...</pre>
+<pre class="code-xml"><span class="hl kwa">&lt;tag</span><span class="hl std"> </span><span class="">att1</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">att2</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">boolean-attribute</span><span class="hl std"> </span><span class="">att3</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span></pre>
 <p>you have to give a
 <span class="ext-a"><a href="http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#boolean-attributes">value
 to the boolean attribute</a></span>, for example</p>
-<pre class="code-xml"><span class="hl kwa">&lt;tag</span> <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">boolean-att</span>=<span class="hl str">&quot;boolean-att&quot;</span> <span class="hl kwb">att3</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>...</pre>
+<pre class="code-xml"><span class="hl kwa">&lt;tag</span><span class="hl std"> </span><span class="">att1</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">att2</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">boolean-att</span><span class="hl std">=</span><span class="hl str">&quot;boolean-att&quot;</span><span class="hl std"> </span><span class="">att3</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span></pre>
 <p>
 or simply
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;tag</span> <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">boolean-att</span>=<span class="hl str">&quot;&quot;</span> <span class="hl kwb">att3</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>...</pre>
+<pre class="code-xml"><span class="hl kwa">&lt;tag</span><span class="hl std"> </span><span class="">att1</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">att2</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">boolean-att</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl std"> </span><span class="">att3</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span></pre>
 </div>
 <p>
-The <span class="icode">.stog</span> directory in the given root directory contains the
-templates (in directory <span class="icode">templates</span>) and the
-<span class="icode">config</span> file, containing stog configuration.
+The <span class="icode"><span class="hl std">.stog</span></span> directory in the given root directory contains the
+templates (in directory <span class="icode"><span class="hl std">templates</span></span>) and the
+<span class="icode"><span class="hl std">config</span></span> file, containing stog configuration.
 </p>
 <p id="config-file">In this file,
 using regular expressions, one can indicate which files must be ignored,
-and which files are elements. Files not being ignored nor being elements
-will be copied by <span class="icode">stog</span> to the target directory.
+and which files are documents. Files not being ignored nor being documents
+will be copied by <span class="icode"><span class="hl std">stog</span></span> to the target directory.
 The &quot;follow-symlinks&quot; option indicates whether to follow symlinks or not.
 Default is to ignore symlinks.
 </p>
 <p>
-Here is an example of <span class="icode">.stog/config</span> file:
+Here is an example of <span class="icode"><span class="hl std">.stog/config</span></span> file:
 </p>
-<pre class="code-ocaml"><span class="hl com">(* Regexps of files to ignore *)</span>
-ignored <span class="hl opt">= [</span><span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">.git&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*Makefile&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*tmpl$&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*less$&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">.chamo.*&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*/test.*&quot;</span><span class="hl opt">]</span>
-<span class="hl com">(* Regexps of files containing elements *)</span>
-elements <span class="hl opt">= [</span><span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">..xml$&quot;</span><span class="hl opt">;</span> <span class="hl str">&quot;.*</span><span class="hl esc">\\</span><span class="hl str">.html$&quot;</span><span class="hl opt">]</span>
-<span class="hl com">(* Regexps of files matching 'elements' regexps but not containing elements</span>
-<span class="hl com">   *)</span>
-<span class="hl str">&quot;not-elements&quot;</span> <span class="hl opt">= []</span>
-<span class="hl str">&quot;follow-symlinks&quot;</span> <span class="hl opt">=</span> <span class="hl kwa">false</span></pre>
+<pre class="code-ocaml"><span class="hl com">(* Regexps of files to ignore *)</span><span class="hl std">
+</span><span class="">ignored</span><span class="hl std"> = [</span><span class="hl str">&quot;.*\\.git&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*Makefile&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*tmpl$&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*less$&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*\\.chamo.*&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*/test.*&quot;</span><span class="hl std"> ; </span><span class="hl str">&quot;.*/log$&quot;</span><span class="hl std"> ; </span><span class="hl str">&quot;.*/slides/inria_code.*\\.xml&quot;</span><span class="hl std"> ]
+</span><span class="hl com">(* Regexps of files containing documents *)</span><span class="hl std">
+</span><span class="">documents</span><span class="hl std"> = [</span><span class="hl str">&quot;.*\\..xml$&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*\\.html$&quot;</span><span class="hl std">]
+</span><span class="hl com">(* Regexps of files matching 'documents' regexps but not containing documents
+   *)</span><span class="hl std">
+</span><span class="hl str">&quot;not-documents&quot;</span><span class="hl std"> = []
+</span><span class="hl str">&quot;follow-symlinks&quot;</span><span class="hl std"> = </span><span class="hl num">false</span><span class="hl std">
+</span></pre>
 <p>
-A default file is generated by <span class="icode">stog</span> if it does not exist.
+A default file is generated by <span class="icode"><span class="hl std">stog</span></span> if it does not exist.
 </p>
 <p>
-When launched, <span class="icode">stog</span> performs the following actions:
+When launched, <span class="icode"><span class="hl std">stog</span></span> performs the following actions:
 </p>
 <ol>
-<li>Read the given directory hierarchy;</li>
-<li>Create the target directory if it does not exist;</li>
-<li>Apply the engine on elements;</li>
-<li>Generate resulting element files in the target directory;</li>
+<li>Read the given directory hierarchy,</li>
+<li>Create the target directory if it does not exist,</li>
+<li>Apply the engine on documents,</li>
+<li>Generate resulting document files in the target directory,</li>
 <li>Copy all other files in the target directory, of course
   keeping the source directory structure.</li>
 </ol>
@@ -109,74 +111,77 @@ When launched, <span class="icode">stog</span> performs the following actions:
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Overview&quot;</span>
-<span class="hl kwb">navbar-doc</span>=<span class="hl str">&quot;active&quot;</span>
-<span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;contents&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-When launched on a given root directory, <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> will read all files
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Overview&quot;</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
+</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+When launched on a given root directory, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> will read all files
 and directories
 from this starting point and generate the same hierarchy in the output directory.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Some of the files will be read as <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-elements&quot;</span><span class="hl kwa">/&gt;</span>,
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+Some of the files will be read as </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-documents&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">,
 i.e. XML files which will
 be processed through a templating engine to produce the final files.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;alert alert-warning&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Since the element files arex handled as XML documents, the boolean attributes,
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;alert alert-warning&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+Since the document files are handled as XML documents, the boolean attributes,
 like in HTML5, are not allowed. So, when using Stog to generate HTML5 pages,
 instead of writing
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hxml&gt;</span><span class="hl kwd">&amp;lt;</span>tag <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span> boolean-attribute <span class="hl kwb">att3</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwd">&amp;gt;</span>...<span class="hl kwa">&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>you have to give a
-<span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#boolean-attributes&quot;</span><span class="hl kwa">&gt;</span>value
-to the boolean attribute<span class="hl kwa">&lt;/ext-a&gt;</span>, for example<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hxml&gt;</span><span class="hl kwd">&amp;lt;</span>tag <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">boolean-att</span>=<span class="hl str">&quot;boolean-att&quot;</span> <span class="hl kwb">att3</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwd">&amp;gt;</span>...<span class="hl kwa">&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hxml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">tag att1=&quot;...&quot; att2=&quot;...&quot; boolean-attribute att3=&quot;...&quot; ...</span><span class="hl kwb">&amp;gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/hxml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">you have to give a
+</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#boolean-attributes&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">value
+to the boolean attribute</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">, for example</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hxml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">tag att1=&quot;...&quot; att2=&quot;...&quot; boolean-att=&quot;boolean-att&quot; att3=&quot;...&quot; ...</span><span class="hl kwb">&amp;gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/hxml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 or simply
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hxml&gt;</span><span class="hl kwd">&amp;lt;</span>tag <span class="hl kwb">att1</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">att2</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">boolean-att</span>=<span class="hl str">&quot;&quot;</span> <span class="hl kwb">att3</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwd">&amp;gt;</span>...<span class="hl kwa">&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;/div&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The <span class="hl kwa">&lt;icode&gt;</span>.stog<span class="hl kwa">&lt;/icode&gt;</span> directory in the given root directory contains the
-templates (in directory <span class="hl kwa">&lt;icode&gt;</span>templates<span class="hl kwa">&lt;/icode&gt;</span>) and the
-<span class="hl kwa">&lt;icode&gt;</span>config<span class="hl kwa">&lt;/icode&gt;</span> file, containing stog configuration.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;config-file&quot;</span><span class="hl kwa">&gt;</span>In this file,
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hxml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">tag att1=&quot;...&quot; att2=&quot;...&quot; boolean-att=&quot;&quot; att3=&quot;...&quot; ...</span><span class="hl kwb">&amp;gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/hxml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> directory in the given root directory contains the
+templates (in directory </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">templates</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">) and the
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">config</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file, containing stog configuration.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;config-file&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">In this file,
 using regular expressions, one can indicate which files must be ignored,
-and which files are elements. Files not being ignored nor being elements
-will be copied by <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> to the target directory.
-The <span class="hl str">&quot;follow-symlinks&quot;</span> option indicates whether to follow symlinks or not.
+and which files are documents. Files not being ignored nor being documents
+will be copied by </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> to the target directory.
+The &quot;follow-symlinks&quot; option indicates whether to follow symlinks or not.
 Default is to ignore symlinks.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Here is an example of <span class="hl kwa">&lt;icode&gt;</span>.stog/config<span class="hl kwa">&lt;/icode&gt;</span> file:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./.stog/config&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">depend</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-A default file is generated by <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> if it does not exist.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-When launched, <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> performs the following actions:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ol&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>Read the given directory hierarchy;<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>Create the target directory if it does not exist;<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>Apply the engine on elements;<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>Generate resulting element files in the target directory;<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>Copy all other files in the target directory, of course
-  keeping the source directory structure.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ol&gt;</span>
-<span class="hl kwa">&lt;/contents&gt;</span>
-<span class="hl kwa">&lt;/page&gt;</span></pre>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+Here is an example of </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/config</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;./.stog/config&quot;</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">depend</span><span class="hl std">=</span><span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+A default file is generated by </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> if it does not exist.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+When launched, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> performs the following actions:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ol</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Read the given directory hierarchy,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Create the target directory if it does not exist,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Apply the engine on documents,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Generate resulting document files in the target directory,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Copy all other files in the target directory, of course
+  keeping the source directory structure.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ol</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
 </div>
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

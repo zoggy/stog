@@ -31,6 +31,7 @@
 <div id="header">
   
   
+  
   <div class="page-title">Plugins</div>
 </div>
 
@@ -44,7 +45,7 @@ Some plugins are included in Stog distribution:
 <li><a href="http://zoggy.github.io/stog/plugins/asy.html">Stog-asy</a>,</li>
 <li><a href="http://zoggy.github.io/stog/plugins/dot.html">Stog-dot</a>,</li>
 <li><a href="http://zoggy.github.io/stog/plugins/markdown.html">Stog-markdown</a>,</li>
-<li><a href="http://zoggy.github.io/stog/plugins/multi-elt.html">Stog-multi-elt</a>.</li>
+<li><a href="http://zoggy.github.io/stog/plugins/multi-doc.html">Stog-multi-doc</a>.</li>
 </ul>
 
 <p>Some other plugins are developped separately:
@@ -65,34 +66,37 @@ Some plugins are included in Stog distribution:
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Plugins&quot;</span>
-<span class="hl kwb">navbar-plugins</span>=<span class="hl str">&quot;active&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Plugins&quot;</span><span class="hl std">
+</span><span class="">navbar-plugins</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Some plugins are included in Stog distribution:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins/asy&quot;</span><span class="hl kwa">/&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins/dot&quot;</span><span class="hl kwa">/&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins/markdown&quot;</span><span class="hl kwa">/&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins/multi-elt&quot;</span><span class="hl kwa">/&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;plugins/asy&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;plugins/dot&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;plugins/markdown&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;plugins/multi-doc&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;p&gt;</span>Some other plugins are developped separately:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins/rdf&quot;</span><span class="hl kwa">/&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;plugins/writing&quot;</span><span class="hl kwa">/&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-<span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;mailto:zoggy%20AT%20bat8.org&quot;</span><span class="hl kwa">&gt;</span>Tell me<span class="hl kwa">&lt;/a&gt;</span> if you known about other plugins.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/page&gt;</span></pre>
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Some other plugins are developped separately:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;plugins/rdf&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;plugins/writing&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;mailto:zoggy%20AT%20bat8.org&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Tell me</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl std"> if you known about other plugins.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
 </div>
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

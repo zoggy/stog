@@ -32,6 +32,7 @@
   
   
   
+  
 </div>
 
 
@@ -43,16 +44,23 @@
   <span class="keyword">type</span> <span class="keywordsign">'</span>a t<br/>
   <span class="keyword">exception</span> <span class="constructor">Already_present</span> <span class="keyword">of</span> <span class="constructor">Stog_trie</span>.<span class="constructor">S</span>.path<br/>
   <span class="keyword">val</span> empty : <span class="keywordsign">'</span>a <span class="constructor">Stog_trie</span>.<span class="constructor">S</span>.t<br/>
-  <span class="keyword">val</span> add : <span class="constructor">Stog_trie</span>.<span class="constructor">S</span>.path <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_trie</span>.<span class="constructor">S</span>.t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_trie</span>.<span class="constructor">S</span>.t<br/>
+  <span class="keyword">val</span> add :<br/>
+    ?fail:bool <span class="keywordsign">-&gt;</span><br/>
+    <span class="constructor">Stog_trie</span>.<span class="constructor">S</span>.path <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_trie</span>.<span class="constructor">S</span>.t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_trie</span>.<span class="constructor">S</span>.t<br/>
   <span class="keyword">val</span> find : <span class="constructor">Stog_trie</span>.<span class="constructor">S</span>.path <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_trie</span>.<span class="constructor">S</span>.t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a list<br/>
+  <span class="keyword">val</span> to_string :<br/>
+    (<span class="constructor">Stog_trie</span>.<span class="constructor">S</span>.symbol <span class="keywordsign">-&gt;</span> string) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_trie</span>.<span class="constructor">S</span>.t <span class="keywordsign">-&gt;</span> string<br/>
 <span class="keyword">end</span></code></div>
 
 
 
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h14</div>
+</div>
+
+
 
 </div> 
 </body>

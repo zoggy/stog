@@ -32,32 +32,31 @@
   
   
   
+  
 </div>
 
 
 
 <div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_latex.html" title="Stog_latex">Previous</a>
+<div class="navbar"><a class="pre" href="Stog_list.html" title="Stog_list">Previous</a>
  <a class="up" href="index.html" title="Index">Up</a>
  <a class="post" href="Stog_blocks.html" title="Stog_blocks">Next</a>
 </div>
 <h1>Module <a href="type_Stog_html.html">Stog_html</a></h1>
 
 <pre><span class="keyword">module</span> Stog_html: <code class="code">sig</code> <a href="Stog_html.html">..</a> <code class="code">end</code></pre><div class="info module top">
-Html generation.
-<div class="vertical-space"> </div>
-
-  While the only function called from &quot;main&quot; is <code class="code">generate</code>,
-  some values are made available for the <a href="Stog_plug.html"><code class="code">Stog_plug</code></a> module.<br/>
+Base module.<br/>
 </div>
 <hr width="100%"/>
 
-<pre><span id="VALelt_by_href"><span class="keyword">val</span> elt_by_href</span> : <code class="type">?typ:string -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       'a -&gt;<br/>       'a Xtmpl.env -&gt;<br/>       string -&gt; 'a * (<a href="Stog_types.html#TYPEelt">Stog_types.elt</a> * string * string option) option</code></pre><div class="info">
-<code class="code">elt_by_href ?typ stog env href</code> returns the element, hid and
-  optional id matching the given href string, of the form <code class="code">hid[#id]</code>.
-  Return None if the element could not be found, of the id could not be found,
+<pre><span id="VALdoc_by_href"><span class="keyword">val</span> doc_by_href</span> : <code class="type">?typ:string -&gt;<br/>       ?src_doc:<a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       'a -&gt;<br/>       'a Xtmpl.env -&gt;<br/>       string -&gt; 'a * (<a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> * string * string option) option</code></pre><div class="info">
+<code class="code">doc_by_href ?typ ?src_doc stog env href</code> returns the document, path and
+  optional id matching the given href string, of the form <code class="code">path[#id]</code>.
+  Return None if the document could not be found, of the id could not be found,
   and an error is issued.<br/>
 </div>
+<div class="param_info"><code class="code">src_doc</code> : can be used to specify the source document, to improve
+  the error message.</div>
 
 <pre><span id="VALget_in_env"><span class="keyword">val</span> get_in_env</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; Xmlm.name -&gt; 'a * Xtmpl.tree list</code></pre><div class="info">
 <code class="code">get_in_env env tag</code> will look for the given string in the environment,
@@ -65,9 +64,9 @@ Html generation.
   then return <code class="code">&quot;&quot;</code> else return the reduced value as a string.<br/>
 </div>
 
-<pre><span id="VALget_hid"><span class="keyword">val</span> get_hid</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * string</code></pre><div class="info">
-<code class="code">get_hid env</code> returns the value associated to <code class="code">&quot;hid&quot;</code> in <code class="code">env</code>.<br/>
-<b>Raises</b> <code>Assert_failure</code> if <code class="code">&quot;hid&quot;</code> is not found in the environment.<br/>
+<pre><span id="VALget_path"><span class="keyword">val</span> get_path</span> : <code class="type">'a -&gt; 'a Xtmpl.env -&gt; 'a * <a href="Stog_path.html#TYPEpath">Stog_path.path</a></code></pre><div class="info">
+<code class="code">get_path env</code> returns the path associated to <code class="code">&quot;path&quot;</code> in <code class="code">env</code>.<br/>
+<b>Raises</b> <code>Assert_failure</code> if <code class="code">&quot;path&quot;</code> is not found in the environment.<br/>
 </div>
 
 <pre><span id="VALescape_html"><span class="keyword">val</span> escape_html</span> : <code class="type">string -&gt; string</code></pre><div class="info">
@@ -76,26 +75,22 @@ Escape html code in the given string: change <code class="code">&amp;</code> to 
 </div>
 
 <pre><span id="VALconcat_name"><span class="keyword">val</span> concat_name</span> : <code class="type">?sep:string -&gt; string * string -&gt; string</code></pre>
-<pre><span id="VALhighlight"><span class="keyword">val</span> highlight</span> : <code class="type">opts:string -&gt; string -&gt; string</code></pre><div class="info">
-Call the highlight command on the given string and make it produce xhtml code.
-  Options are passed to the highlight command.<br/>
+<pre><span id="VALurl_of_path"><span class="keyword">val</span> url_of_path</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; Neturl.url</code></pre><div class="info">
+Build an url from the given path.
+  This is used for documents created on the fly, like by-word or by-month index.<br/>
 </div>
 
-<pre><span id="VALurl_of_hid"><span class="keyword">val</span> url_of_hid</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; ?ext:string -&gt; <a href="Stog_types.html#TYPEhuman_id">Stog_types.human_id</a> -&gt; Neturl.url</code></pre><div class="info">
-Build an url from the given hid, using the given optional extension.
-  This is used for elements created on the fly, like by-word or by-month index.<br/>
+<pre><span id="VALbuild_base_rules"><span class="keyword">val</span> build_base_rules</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEdoc_id">Stog_types.doc_id</a> -&gt; (Xmlm.name * <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.callback) list</code></pre><div class="info">
+Build the base rules, using the default ones and the base rules register
+  by plugins.<br/>
 </div>
 
-<pre><span id="VALbuild_base_rules"><span class="keyword">val</span> build_base_rules</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEelt_id">Stog_types.elt_id</a> -&gt; (Xmlm.name * <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.callback) list</code></pre><div class="info">
-Build the base rules, using the default ones and the <code class="code">plugin_rules</code>.<br/>
-</div>
-
-<pre><span id="VALelt_list"><span class="keyword">val</span> elt_list</span> : <code class="type"><a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt;<br/>       ?rss:Neturl.url -&gt;<br/>       ?set:Stog_types.Elt_set.t -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.callback</code></pre><div class="info">
-The calllback to insert a list of elements. Can be called directly
+<pre><span id="VALdoc_list"><span class="keyword">val</span> doc_list</span> : <code class="type"><a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       ?rss:Neturl.url -&gt;<br/>       ?set:Stog_types.Doc_set.t -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.callback</code></pre><div class="info">
+The calllback to insert a list of documents. Can be called directly
   if provided an additional environment, argument and children nodes.<br/>
 </div>
 
-<pre><span id="VALget_sectionning_tags"><span class="keyword">val</span> get_sectionning_tags</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; Xtmpl.name list</code></pre>
+<pre><span id="VALget_sectionning_tags"><span class="keyword">val</span> get_sectionning_tags</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt; Xtmpl.name list</code></pre>
 <pre><span id="VALmk_levels"><span class="keyword">val</span> mk_levels</span> : <code class="type">string -&gt;<br/>       (string * 'a <a href="Stog_engine.html#TYPElevel_fun">Stog_engine.level_fun</a>) list -&gt;<br/>       int list Stog_types.Str_map.t -&gt;<br/>       ?levels:(string * int list) list -&gt;<br/>       unit -&gt; 'a <a href="Stog_engine.html#TYPElevel_fun">Stog_engine.level_fun</a> Stog_types.Int_map.t</code></pre><div class="info">
 <code class="code">mk_levels modname funs default_levels</code> returns a function
   to create the level map from an optional list of pairs <code class="code">(funname, [level1 ; level2; ...])</code>.
@@ -110,8 +105,11 @@ The calllback to insert a list of elements. Can be called directly
 
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h14</div>
+</div>
+
+
 
 </div> 
 </body>

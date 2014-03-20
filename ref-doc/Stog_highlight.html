@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog library reference documentation : Stog_highlight</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
+<div class="navbar"><a class="pre" href="Stog_misc.html" title="Stog_misc">Previous</a>
+ <a class="up" href="index.html" title="Index">Up</a>
+ <a class="post" href="Stog_config.html" title="Stog_config">Next</a>
+</div>
+<h1>Module <a href="type_Stog_highlight.html">Stog_highlight</a></h1>
+
+<pre><span class="keyword">module</span> Stog_highlight: <code class="code">sig</code> <a href="Stog_highlight.html">..</a> <code class="code">end</code></pre><div class="info module top">
+Highlighting code.<br/>
+</div>
+<hr width="100%"/>
+
+<pre><span id="VALexternal_highlight"><span class="keyword">val</span> external_highlight</span> : <code class="type">opts:string -&gt; string -&gt; Xtmpl.tree list</code></pre><div class="info">
+Call the highlight command on the given string and make it produce xhtml code.
+  Options are passed to the highlight command.<br/>
+</div>
+
+<pre><span id="VALhighlight"><span class="keyword">val</span> highlight</span> : <code class="type">?lang:string -&gt; ?opts:string -&gt; string -&gt; Xtmpl.tree list</code></pre><div class="info">
+Highlight the given code.
+  If a lang and no option are given, then Higlo is tried first.
+  If the language is unknown, we fallback to using external highlight command.<br/>
+</div>
+<div class="param_info"><code class="code">lang</code> : is used to indicate the language.</div>
+</div>
+
+
+
+
+
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h14</div>
+</div>
+
+
+
+</div> 
+</body>
+</html>

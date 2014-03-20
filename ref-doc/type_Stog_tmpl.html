@@ -32,6 +32,7 @@
   
   
   
+  
 </div>
 
 
@@ -40,30 +41,35 @@
 <code class="code"><span class="keyword">sig</span><br/>
   <span class="keyword">type</span> contents = <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog * <span class="constructor">Xtmpl</span>.tree<br/>
   <span class="keyword">val</span> get_template_file :<br/>
-    <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.elt <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> string<br/>
+    <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.doc <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> string<br/>
   <span class="keyword">val</span> read_template_file :<br/>
     <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span><br/>
-    <span class="constructor">Stog_types</span>.elt <span class="keywordsign">-&gt;</span><br/>
+    <span class="constructor">Stog_types</span>.doc <span class="keywordsign">-&gt;</span><br/>
     ?depend:bool <span class="keywordsign">-&gt;</span> ?raw:bool <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog * <span class="constructor">Xtmpl</span>.tree<br/>
   <span class="keyword">val</span> get_template :<br/>
     <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span><br/>
-    ?elt:<span class="constructor">Stog_types</span>.elt <span class="keywordsign">-&gt;</span><br/>
+    ?doc:<span class="constructor">Stog_types</span>.doc <span class="keywordsign">-&gt;</span><br/>
     <span class="constructor">Stog_tmpl</span>.contents <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog * <span class="constructor">Xtmpl</span>.tree<br/>
   <span class="keyword">val</span> page : <span class="constructor">Stog_tmpl</span>.contents<br/>
   <span class="keyword">val</span> by_keyword : <span class="constructor">Stog_tmpl</span>.contents<br/>
   <span class="keyword">val</span> by_topic : <span class="constructor">Stog_tmpl</span>.contents<br/>
   <span class="keyword">val</span> by_month : <span class="constructor">Stog_tmpl</span>.contents<br/>
-  <span class="keyword">val</span> elt_in_list : <span class="constructor">Stog_tmpl</span>.contents<br/>
+  <span class="keyword">val</span> doc_in_list : <span class="constructor">Stog_tmpl</span>.contents<br/>
   <span class="keyword">val</span> keyword : <span class="constructor">Stog_tmpl</span>.contents<br/>
   <span class="keyword">val</span> topic : <span class="constructor">Stog_tmpl</span>.contents<br/>
+  <span class="keyword">val</span> rss : <span class="constructor">Stog_tmpl</span>.contents<br/>
+  <span class="keyword">val</span> rss_item : <span class="constructor">Stog_tmpl</span>.contents<br/>
 <span class="keyword">end</span></code></div>
 
 
 
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h14</div>
+</div>
+
+
 
 </div> 
 </body>

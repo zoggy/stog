@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog documents</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+  <div class="page-title">Stog documents</div>
+</div>
+
+
+
+
+<p>
+A document is an XML tree, defined in a file matched by the regular expressions
+given in the <a href="http://zoggy.github.io/stog/overview.html#config-file">configuration file</a>.
+It has one of the following forms. First form:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;type</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Element title&quot;</span><span class="hl std">
+ </span><span class="">attribute</span><span class="hl std">=</span><span class="hl str">&quot;value&quot;</span><span class="hl std">
+ </span><span class="">attribute2</span><span class="hl std">=</span><span class="hl str">&quot;value2&quot;</span><span class="hl std">
+ ...
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+Here is the body of the document.
+</span><span class="hl kwa">&lt;/type</span><span class="hl kwa">&gt;</span><span class="hl std">
+
+</span></pre>
+<p>Second form, almost the same, except that <span class="icode"><span class="hl std">with-contents=&quot;true&quot;</span></span>
+indicates that more attributes are given in subnodes, and the body is in the
+<span class="icode"><span class="hl std">contents</span></span> subnode:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;type</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Element title&quot;</span><span class="hl std">
+ </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+ </span><span class="">attribute</span><span class="hl std">=</span><span class="hl str">&quot;value&quot;</span><span class="hl std">
+ ...
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+ </span><span class="hl kwa">&lt;attribute2</span><span class="hl kwa">&gt;</span><span class="hl std">value2</span><span class="hl kwa">&lt;/attribute2</span><span class="hl kwa">&gt;</span><span class="hl std">
+ ...
+ </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">Here is the body of the document.</span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/type</span><span class="hl kwa">&gt;</span><span class="hl std">
+
+</span></pre>
+<p>
+<span class="icode"><span class="hl std">type</span></span> can be any string (like &quot;post&quot;, &quot;page&quot;, ...) and defines the type
+of the document. This allows different treatments according to the document type.
+</p>
+<p>
+You can specify any attribute for a document. Some attributes are used
+internally:
+</p>
+<ul>
+<li><b>title</b>: this is the title of the document; use <span class="icode"><span class="hl kwa">&lt;doc-title</span><span class="hl kwa">/&gt;</span></span>
+in templates to access it,</li>
+<li><b>keywords</b>: the list of comma-separated keywords associated to the document;
+use <span class="icode"><span class="hl kwa">&lt;doc-keywords</span><span class="hl kwa">/&gt;</span></span> in templates to insert the list of keywords
+with links to by-keyword index,</li>
+<li><b>topics</b>: same as keywords, but for topics (access with <span class="icode"><span class="hl kwa">&lt;doc-topics</span><span class="hl kwa">/&gt;</span></span>),</li>
+<li><b>date</b>: the document date, used for sorting in list. The date format follows
+<span class="ext-a"><a href="https://tools.ietf.org/html/rfc3339">RFC 3339</a></span>,
+for example <i>2013/11/26</i> or <i>2013/11/26 09:16:45</i>.
+Use <span class="icode"><span class="hl kwa">&lt;doc-date</span><span class="hl kwa">/&gt;</span></span> or <span class="icode"><span class="hl kwa">&lt;doc-datetime</span><span class="hl kwa">/&gt;</span></span>
+in templates to insert it.
+The function
+<span class="ext-a"><a href="http://projects.camlcity.org/projects/dl/ocamlnet-3.7.3/doc/html-main/Netdate.html#VALparse">Netdate.parse</a></span> from OCamlnet is used to parse dates,</li>
+<li><b>sets</b>: a comma-separated list of set names; sets can be used to list documents
+belonging to a set,</li>
+<li><b>language-dep</b>: can be set to <i>false</i> to indicate that this page is not
+language dependent, when generating multi-language sites (this affects the name of the
+generated file),</li>
+<li><b>doctype</b>: specify the doctype which will be printed into the final XML file. Default is &quot;HTML&quot;.
+If doctype is &quot;HTML&quot; (case-insensitive), tags are not self-closed, except
+    <span class="ext-a"><a href="http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-documents">HTML5 void documents</a></span>.
+</li>
+</ul>
+<p>
+Any other attribute will be available by its name in the environment when processing the template
+associated to the document type. The document type can be accessed with <span class="icode"><span class="hl kwa">&lt;doc-type</span><span class="hl kwa">/&gt;</span></span>.
+More details in <a href="http://zoggy.github.io/stog/atts-functions.html">Attributes and functions</a>.
+</p>
+<p>
+To generate the file corresponding to a document, <span class="icode"><span class="hl std">stog</span></span> will use the type of
+the document (for example &quot;post&quot;) to load the associated template (for example &quot;post.tmpl&quot; in
+the templates directory).
+</p>
+<p>You can have a look at the source of the pages of this site at the bottom of each page.
+The sources of this site can be a good starting point. You can browse it in the
+<span class="ext-a"><a href="https://github.com/zoggy/stog/tree/master/doc">doc directory of the
+distribution</a></span>.
+</p>
+<hr width="100%"/>
+<notes></notes>
+
+
+
+
+
+<p class="alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Stog documents&quot;</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+A document is an XML tree, defined in a file matched by the regular expressions
+given in the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;overview#config-file&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">configuration file</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
+It has one of the following forms. First form:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+&lt;![CDATA[</span><span class="hl kwa">&lt;type</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Element title&quot;</span><span class="hl std">
+ </span><span class="">attribute</span><span class="hl std">=</span><span class="hl str">&quot;value&quot;</span><span class="hl std">
+ </span><span class="">attribute2</span><span class="hl std">=</span><span class="hl str">&quot;value2&quot;</span><span class="hl std">
+ ...
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+Here is the body of the document.
+</span><span class="hl kwa">&lt;/type</span><span class="hl kwa">&gt;</span><span class="hl std">
+]]&gt;
+</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Second form, almost the same, except that </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">with-contents=&quot;true&quot;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">
+indicates that more attributes are given in subnodes, and the body is in the
+</span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">contents</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> subnode:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+&lt;![CDATA[</span><span class="hl kwa">&lt;type</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Element title&quot;</span><span class="hl std">
+ </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+ </span><span class="">attribute</span><span class="hl std">=</span><span class="hl str">&quot;value&quot;</span><span class="hl std">
+ ...
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+ </span><span class="hl kwa">&lt;attribute2</span><span class="hl kwa">&gt;</span><span class="hl std">value2</span><span class="hl kwa">&lt;/attribute2</span><span class="hl kwa">&gt;</span><span class="hl std">
+ ...
+ </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">Here is the body of the document.</span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/type</span><span class="hl kwa">&gt;</span><span class="hl std">
+]]&gt;
+</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">type</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> can be any string (like &quot;post&quot;, &quot;page&quot;, ...) and defines the type
+of the document. This allows different treatments according to the document type.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+You can specify any attribute for a document. Some attributes are used
+internally:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">title</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: this is the title of the document; use </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">doc-title/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">
+in templates to access it,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">keywords</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: the list of comma-separated keywords associated to the document;
+use </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">doc-keywords/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> in templates to insert the list of keywords
+with links to by-keyword index,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">topics</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: same as keywords, but for topics (access with </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">doc-topics/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">),</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">date</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: the document date, used for sorting in list. The date format follows
+</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://tools.ietf.org/html/rfc3339&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">RFC 3339</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,
+for example </span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl std">2013/11/26</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl std"> or </span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl std">2013/11/26 09:16:45</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl std">.
+Use </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">doc-date/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> or </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">doc-datetime/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">
+in templates to insert it.
+The function
+</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://projects.camlcity.org/projects/dl/ocamlnet-3.7.3/doc/html-main/Netdate.html#VALparse&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Netdate.parse</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> from OCamlnet is used to parse dates,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">sets</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: a comma-separated list of set names; sets can be used to list documents
+belonging to a set,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">language-dep</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: can be set to </span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl std">false</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl std"> to indicate that this page is not
+language dependent, when generating multi-language sites (this affects the name of the
+generated file),</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">doctype</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: specify the doctype which will be printed into the final XML file. Default is &quot;HTML&quot;.
+If doctype is &quot;HTML&quot; (case-insensitive), tags are not self-closed, except
+    </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-documents&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">HTML5 void documents</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+Any other attribute will be available by its name in the environment when processing the template
+associated to the document type. The document type can be accessed with </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">doc-type/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">.
+More details in </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;atts-functions&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+To generate the file corresponding to a document, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> will use the type of
+the document (for example &quot;post&quot;) to load the associated template (for example &quot;post.tmpl&quot; in
+the templates directory).
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">You can have a look at the source of the pages of this site at the bottom of each page.
+The sources of this site can be a good starting point. You can browse it in the
+</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/zoggy/stog/tree/master/doc&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">doc directory of the
+distribution</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hr</span><span class="hl std"> </span><span class="">width</span><span class="hl std">=</span><span class="hl str">&quot;100%&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;notes</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
+</div>
+
+
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
+
+</div> 
+</body>
+</html>

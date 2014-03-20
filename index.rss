@@ -1,52 +1,255 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0"><channel><title>Stog</title><link>http://zoggy.github.io/stog/index.rss</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>09 Mar 2012 00:00:00 +0000</pubDate><lastBuildDate>09 Mar 2012 00:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.io/stog</url><title>Stog</title><link>http://zoggy.github.io/stog</link></image><item><title>Stog 0.10.0</title><link>http://zoggy.github.io/stog/posts/release-0.10.0.html</link><description>
+<!DOCTYPE HTML>
+<rss version="2.0">
+       <channel>
+         <title>Stog : Stog latest news</title>
+         <link>http://zoggy.github.io/stog</link>
+         <description>Static blog and web site generator</description>
+         <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>20 Mar 2014 14:14:01 +0000</lastBuildDate>
+         <generator>Stog</generator>
+         <div class="img"><img class="img" src="" width=""/><div class="legend"><url>http://zoggy.github.io/stog/logo.png</url>
+           <title>Stog</title><link>http://zoggy.github.io/stog</link>
+         </div></div>
+         <item>
+      <title>Stog 0.11.0</title>
+      <link>http://zoggy.github.io/stog/posts/release-0.11.0.html</link>
+      <description>
 &lt;p&gt;
-Release 0.10.0 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
+Release 0.11.0 of stog is available from the &lt;a href=&quot;http://zoggy.github.io/stog/install.html&quot;&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.10.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>21 Jan 2014 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.10.0.html</guid></item><item><title>ocaml-printf</title><link>http://zoggy.github.io/stog/posts/ocaml-printf.html</link><description>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.11.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>20 Mar 2014 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.11.0.html</guid>
+    </item><item>
+      <title>Stog 0.10.0</title>
+      <link>http://zoggy.github.io/stog/posts/release-0.10.0.html</link>
+      <description>
 &lt;p&gt;
-Since &lt;elt href=&quot;release-0.10.0&quot;/&gt;, the &lt;rule&gt;ocaml-printf&lt;/rule&gt;
+Release 0.10.0 of stog is available from the &lt;a href=&quot;http://zoggy.github.io/stog/install.html&quot;&gt;Installation&lt;/a&gt; page.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.10.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>21 Jan 2014 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.10.0.html</guid>
+    </item><item>
+      <title>ocaml-printf</title>
+      <link>http://zoggy.github.io/stog/posts/ocaml-printf.html</link>
+      <description>
+&lt;p&gt;
+Since &lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.10.0.html&quot;&gt;Stog 0.10.0&lt;/a&gt;, the &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;ocaml-printf&lt;/span&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt; rule
 can be used to access the content of computed OCaml values, as
 strings.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/ocaml-printf.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>16 Jan 2014 00:00:00 +0000</pubDate><category>stog</category><category>ocaml</category><category>evaluation</category><category>code</category><category>print</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/ocaml-printf.html</guid></item><item><title>Stog-rdf 0.9.0</title><link>http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html</link><description>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/ocaml-printf.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>16 Jan 2014 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/ocaml-printf.html</guid>
+    </item><item>
+      <title>Stog-rdf 0.9.0</title>
+      <link>http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html</link>
+      <description>
 &lt;p&gt;
-Release 0.9.0 of stog-rdf is available from the &lt;page href=&quot;plugins/rdf&quot;/&gt; page.
+Release 0.9.0 of stog-rdf is available from the &lt;a href=&quot;http://zoggy.github.io/stog/plugins/rdf.html&quot;&gt;Stog-rdf&lt;/a&gt; page.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>27 Sep 2013 00:00:00 +0000</pubDate><category>stog-rdf</category><category>release</category><category>rdf</category><category>sparql</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html</guid></item><item><title>Stog 0.9.0</title><link>http://zoggy.github.io/stog/posts/release-0.9.0.html</link><description>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>27 Sep 2013 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html</guid>
+    </item><item>
+      <title>Stog 0.9.0</title>
+      <link>http://zoggy.github.io/stog/posts/release-0.9.0.html</link>
+      <description>
 &lt;p&gt;
-Release 0.9.0 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
+Release 0.9.0 of stog is available from the &lt;a href=&quot;http://zoggy.github.io/stog/install.html&quot;&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.9.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>24 Sep 2013 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.9.0.html</guid></item><item><title>Talk about Stog at INRIA</title><link>http://zoggy.github.io/stog/posts/2013-04-23-stog-at-inria.html</link><description>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.9.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>24 Sep 2013 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.9.0.html</guid>
+    </item><item>
+      <title>Talk about Stog at INRIA</title>
+      <link>http://zoggy.github.io/stog/posts/2013-04-23-stog-at-inria.html</link>
+      <description>
 &lt;p&gt;
 Maxence Guesdon introduced Stog during a talk at
-&lt;ext-a href=&quot;http://www.inria.fr/en/centre/saclay&quot;&gt;INRIA Saclay-Île-de-France&lt;/ext-a&gt;
+&lt;span class=&quot;ext-a&quot;&gt;&lt;a href=&quot;http://www.inria.fr/en/centre/saclay&quot;&gt;INRIA Saclay-Île-de-France&lt;/a&gt;&lt;/span&gt;
 on Tuesday, 23&lt;sup&gt;rd&lt;/sup&gt; of April 2013. The slides are
-available &lt;elt href=&quot;slides/2013_04_23_inria&quot;&gt;here&lt;/elt&gt;.
+available &lt;a href=&quot;http://zoggy.github.io/stog/slides/2013_04_23_inria.html&quot;&gt;here&lt;/a&gt;.
 &lt;/p&gt;
-</description><pubDate>23 Apr 2013 00:00:00 +0000</pubDate><category>stog</category><category>talk</category><category>inria</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/2013-04-23-stog-at-inria.html</guid></item><item><title>Stog 0.8.0</title><link>http://zoggy.github.io/stog/posts/release-0.8.0.html</link><description>
+</description>
+      <pubDate>23 Apr 2013 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/2013-04-23-stog-at-inria.html</guid>
+    </item><item>
+      <title>Stog 0.8.0</title>
+      <link>http://zoggy.github.io/stog/posts/release-0.8.0.html</link>
+      <description>
 &lt;p&gt;
-Release 0.8.0 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
+Release 0.8.0 of stog is available from the &lt;a href=&quot;http://zoggy.github.io/stog/install.html&quot;&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.8.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>19 Mar 2013 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.8.0.html</guid></item><item><title>Talk about Stog at INRIA</title><link>http://zoggy.github.io/stog/posts/stog-at-inria.html</link><description>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.8.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>19 Mar 2013 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.8.0.html</guid>
+    </item><item>
+      <title>Talk about Stog at INRIA</title>
+      <link>http://zoggy.github.io/stog/posts/stog-at-inria.html</link>
+      <description>
 &lt;p&gt;
 Maxence Guesdon will introduce Stog during a talk at
-&lt;ext-a href=&quot;http://www.inria.fr/en/centre/saclay&quot;&gt;INRIA Saclay-Île-de-France&amp;quot;&lt;/ext-a&gt;
+&lt;span class=&quot;ext-a&quot;&gt;&lt;a href=&quot;http://www.inria.fr/en/centre/saclay&quot;&gt;INRIA Saclay-Île-de-France&amp;quot;&lt;/a&gt;&lt;/span&gt;
 on &lt;strong&gt;Tuesday, 23&lt;sup&gt;rd&lt;/sup&gt; of April 2013, at 14h&lt;/strong&gt; in room &amp;quot;Gilles Khan&amp;quot;.
 &lt;/p&gt;
-</description><pubDate>15 Mar 2013 00:00:00 +0000</pubDate><category>stog</category><category>talk</category><category>inria</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-at-inria.html</guid></item><item><title>Stog 0.7.0</title><link>http://zoggy.github.io/stog/posts/release-0.7.0.html</link><description>
+</description>
+      <pubDate>15 Mar 2013 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-at-inria.html</guid>
+    </item><item>
+      <title>Stog 0.7.0</title>
+      <link>http://zoggy.github.io/stog/posts/release-0.7.0.html</link>
+      <description>
 &lt;p&gt;
-Release 0.7.0 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
+Release 0.7.0 of stog is available from the &lt;a href=&quot;http://zoggy.github.io/stog/install.html&quot;&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.7.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>13 Feb 2013 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.7.0.html</guid></item><item><title>Stog in Opam</title><link>http://zoggy.github.io/stog/posts/stog-in-opam.html</link><description>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.7.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>13 Feb 2013 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.7.0.html</guid>
+    </item><item>
+      <title>Stog in Opam</title>
+      <link>http://zoggy.github.io/stog/posts/stog-in-opam.html</link>
+      <description>
 &lt;p&gt;
 Stog has been available in
-&lt;ext-a href=&quot;http://opam.ocamlpro.com&quot;&gt;Opam&lt;/ext-a&gt; since release 0.4.
-The &lt;elt href=&quot;plugins/writing&quot;/&gt; and &lt;elt href=&quot;plugins/rdf&quot;/&gt; plugins
+&lt;span class=&quot;ext-a&quot;&gt;&lt;a href=&quot;http://opam.ocamlpro.com&quot;&gt;Opam&lt;/a&gt;&lt;/span&gt; since release 0.4.
+The &lt;a href=&quot;http://zoggy.github.io/stog/plugins/writing.html&quot;&gt;Stog-writing&lt;/a&gt; and &lt;a href=&quot;http://zoggy.github.io/stog/plugins/rdf.html&quot;&gt;Stog-rdf&lt;/a&gt; plugins
 are also available in Opam since yesterday.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/stog-in-opam.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>22 Jan 2013 00:00:00 +0000</pubDate><category>stog</category><category>opam</category><category>plugins</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-in-opam.html</guid></item><item><title>Stog 0.6</title><link>http://zoggy.github.io/stog/posts/release-0.6.html</link><description>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/stog-in-opam.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>22 Jan 2013 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-in-opam.html</guid>
+    </item><item>
+      <title>Stog 0.6.1</title>
+      <link>http://zoggy.github.io/stog/posts/release-0.6.1.html</link>
+      <description>
 &lt;p&gt;
-Release 0.6 of stog is available from the &lt;page href=&quot;/install&quot;/&gt; page.
+Release 0.6.1 of stog is available from the &lt;a href=&quot;http://zoggy.github.io/stog/install.html&quot;&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
-</description><pubDate>16 Jan 2013 00:00:00 +0000</pubDate><category>stog</category><category>release</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.6.html</guid></item></channel></rss>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.6.1.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>17 Jan 2013 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.6.1.html</guid>
+    </item><item>
+      <title>Stog 0.6</title>
+      <link>http://zoggy.github.io/stog/posts/release-0.6.html</link>
+      <description>
+&lt;p&gt;
+Release 0.6 of stog is available from the &lt;a href=&quot;http://zoggy.github.io/stog/install.html&quot;&gt;Installation&lt;/a&gt; page.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.6.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>16 Jan 2013 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.6.html</guid>
+    </item><item>
+      <title>Stog 0.5</title>
+      <link>http://zoggy.github.io/stog/posts/release-0.5.html</link>
+      <description>
+&lt;p&gt;
+Release 0.5 of stog is available from the &lt;a href=&quot;http://zoggy.github.io/stog/install.html&quot;&gt;Installation&lt;/a&gt; page.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.5.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>18 Dec 2012 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.5.html</guid>
+    </item><item>
+      <title>Stog-writing plugin</title>
+      <link>http://zoggy.github.io/stog/posts/stog-writing.html</link>
+      <description>
+&lt;p&gt;The &lt;span class=&quot;ext-a&quot;&gt;&lt;a href=&quot;https://github.com/zoggy/stog-writing&quot;&gt;Stog-writing&lt;/a&gt;&lt;/span&gt; plug-in
+can be used to add foot notes and bibliographies to your stog generated site.
+&lt;/p&gt;
+</description>
+      <pubDate>28 Nov 2012 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-writing.html</guid>
+    </item><item>
+      <title>Stog 0.4</title>
+      <link>http://zoggy.github.io/stog/posts/release-0.4.html</link>
+      <description>
+&lt;p&gt;
+Release 0.4 of stog is available from the &lt;a href=&quot;http://zoggy.github.io/stog/install.html&quot;&gt;Installation&lt;/a&gt; page.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.4.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>22 Nov 2012 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.4.html</guid>
+    </item><item>
+      <title>OCaml sessions</title>
+      <link>http://zoggy.github.io/stog/posts/ocaml-sessions.html</link>
+      <description>
+&lt;p&gt;
+A &lt;a href=&quot;http://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html&quot;&gt;previous post&lt;/a&gt;
+introduced the &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl std&quot;&gt;&amp;lt;ocaml-eval&amp;gt;&lt;/span&gt;&lt;/span&gt; function to
+evaluate ocaml code, enventually displaying the result in a toplevel way, etc.
+&lt;/p&gt;
+&lt;p&gt;
+OCaml code was evaluated in the Stog process, which required Stog to
+embed the OCaml toplevel, only available as bytecode. As a consequence,
+only the bytecode version of Stog could evaluate OCaml code using the
+internal toplevel.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/ocaml-sessions.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>21 Nov 2012 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/ocaml-sessions.html</guid>
+    </item><item>
+      <title>Stog 0.3</title>
+      <link>http://zoggy.github.io/stog/posts/release-0.3.html</link>
+      <description>
+&lt;p&gt;
+Release 0.3 of stog is available from the &lt;a href=&quot;http://zoggy.github.io/stog/install.html&quot;&gt;Installation&lt;/a&gt; page.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.3.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>30 Aug 2012 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.3.html</guid>
+    </item><item>
+      <title>Stog 0.2</title>
+      <link>http://zoggy.github.io/stog/posts/release-0.2.html</link>
+      <description>
+&lt;p&gt;
+Release 0.2 of stog is available from the &lt;a href=&quot;http://zoggy.github.io/stog/install.html&quot;&gt;Installation&lt;/a&gt; page.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.2.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>28 Aug 2012 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.2.html</guid>
+    </item><item>
+      <title>Stog 0.1</title>
+      <link>http://zoggy.github.io/stog/posts/release-0.1.html</link>
+      <description>
+&lt;p&gt;
+Release 0.1 of stog is available from the &lt;a href=&quot;http://zoggy.github.io/stog/install.html&quot;&gt;Installation&lt;/a&gt; page.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.1.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>20 Jun 2012 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.1.html</guid>
+    </item><item>
+      <title>Including a code file (deferring evaluation)</title>
+      <link>http://zoggy.github.io/stog/posts/including-code-file.html</link>
+      <description>
+&lt;p&gt;How to highlight a file inserted with &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;include&lt;/span&gt;&lt;span class=&quot;hl std&quot;&gt; ...&lt;/span&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt; ?
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/including-code-file.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>13 Mar 2012 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/including-code-file.html</guid>
+    </item><item>
+      <title>Displaying evaluated OCaml code</title>
+      <link>http://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html</link>
+      <description>
+&lt;p&gt;
+Bytecode version of Stog, &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl std&quot;&gt;stog.byte&lt;/span&gt;&lt;/span&gt;,
+offers the &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;ocaml-eval&lt;/span&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;hl std&quot;&gt; ... &lt;/span&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;/ocaml-eval&lt;/span&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+function to evaluate code and display the result. This is nice to provide
+verified code examples on your pages.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>11 Mar 2012 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html</guid>
+    </item><item>
+      <title>LaTeX in stog</title>
+      <link>http://zoggy.github.io/stog/posts/latex-in-stog.html</link>
+      <description>
+&lt;p&gt;
+Stog handles &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;latex&lt;/span&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;hl std&quot;&gt; ... &lt;/span&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;/latex&lt;/span&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/latex-in-stog.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>09 Mar 2012 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/latex-in-stog.html</guid>
+    </item>
+       </channel>
+     </rss>

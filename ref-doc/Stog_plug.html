@@ -32,6 +32,7 @@
   
   
   
+  
 </div>
 
 
@@ -64,12 +65,14 @@ Interface for plugins.
      to <code class="code">name</code> in the set of base rules of the &quot;html&quot; predefined module.<br/>
 </div>
 
-<pre><span id="VALelt_by_href"><span class="keyword">val</span> elt_by_href</span> : <code class="type">?typ:string -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       'a -&gt;<br/>       'a Xtmpl.env -&gt;<br/>       string -&gt; 'a * (<a href="Stog_types.html#TYPEelt">Stog_types.elt</a> * string * string option) option</code></pre><div class="info">
-<code class="code">elt_by_href ?typ stog env href</code> returns the element, hid and
-  optional if matching the given href string, of the form <code class="code">hid[#id]</code>.
-  Return None if the element could not be found, of the id could not be found,
+<pre><span id="VALdoc_by_href"><span class="keyword">val</span> doc_by_href</span> : <code class="type">?typ:string -&gt;<br/>       ?src_doc:<a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       'a -&gt;<br/>       'a Xtmpl.env -&gt;<br/>       string -&gt; 'a * (<a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> * string * string option) option</code></pre><div class="info">
+<code class="code">doc_by_href ?typ ?src_doc stog env href</code> returns the document, path and
+  optional if matching the given href string, of the form <code class="code">path[#id]</code>.
+  Return None if the document could not be found, of the id could not be found,
   and an error is issued.<br/>
 </div>
+<div class="param_info"><code class="code">src_doc</code> : can be used to specify the source document, to improve
+  the error message.</div>
 
 <pre><span id="VALmk_block_node"><span class="keyword">val</span> mk_block_node</span> : <code class="type">id:string -&gt;<br/>       ?label:Xtmpl.tree list -&gt;<br/>       ?clas:string -&gt;<br/>       title:Xtmpl.tree list -&gt;<br/>       ?counter:string -&gt;<br/>       short_fmt:Xtmpl.tree list -&gt;<br/>       long_fmt:Xtmpl.tree list -&gt; Xtmpl.tree list -&gt; Xtmpl.tree</code></pre><div class="info">
 <code class="code">mk_block_node ...</code> creates a <code class="code">&lt;block ...</code> with the given information.<br/>
@@ -85,11 +88,11 @@ Interface for plugins.
 <pre><span id="VALset_print_error"><span class="keyword">val</span> set_print_error</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre><br/>
 <div class="section-title" id="2_Dependencies">Dependencies</div><br/>
 
-<pre><span id="TYPEdependency"><span class="keyword">type</span> dependency</span> = <code class="type"><a href="Stog_types.html#TYPEelt">Stog_types.elt</a> <a href="Stog_types.html#TYPEdependency">Stog_types.dependency</a></code> </pre>
+<pre><span id="TYPEdependency"><span class="keyword">type</span> dependency</span> = <code class="type"><a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> <a href="Stog_types.html#TYPEdependency">Stog_types.dependency</a></code> </pre>
 
 
-<pre><span id="VALadd_dep"><span class="keyword">val</span> add_dep</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEelt">Stog_types.elt</a> -&gt; <a href="Stog_plug.html#TYPEdependency">dependency</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><div class="info">
-For a given element, add a dependency on a file or another element.<br/>
+<pre><span id="VALadd_dep"><span class="keyword">val</span> add_dep</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt; <a href="Stog_plug.html#TYPEdependency">dependency</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><div class="info">
+For a given document, add a dependency on a file or another document.<br/>
 </div>
 </div>
 
@@ -97,8 +100,11 @@ For a given element, add a dependency on a file or another element.<br/>
 
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h14</div>
+</div>
+
+
 
 </div> 
 </body>

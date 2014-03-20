@@ -30,7 +30,8 @@
 
 <div id="header">
   
-  <div class="elt-navbar">
+  
+  <div class="doc-navbar">
       <div class="navleft"><a href="http://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html">Displaying evaluated OCaml code</a></div>
       <div class="navright"><a href="http://zoggy.github.io/stog/posts/release-0.1.html">Stog 0.1</a></div>
     </div>
@@ -40,45 +41,46 @@
 <div class="date">March 13, 2012</div>
 
 
-<p>How to highlight a file inserted with <span class="icode"><span class="hl kwa">&lt;include</span> ...<span class="hl kwa">&gt;</span></span> ?
+<p>How to highlight a file inserted with <span class="icode"><span class="hl kwa">&lt;include</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span> ?
 </p>
 
 <p>
-If you want to include and highlight for example the <span class="icode">../plugins/stog_disqus.ml</span> file
+If you want to include and highlight for example the <span class="icode"><span class="hl std">../plugins/stog_disqus.ml</span></span> file
 relative to your project directory, you can try
-<pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span></pre>
 but this will only result in
-<pre class="code-ocaml"><span class="hl opt">&lt;</span><span class="hl kwa">include</span> file<span class="hl opt">=</span><span class="hl str">&quot;../../plugins/stog_disqus.ml&quot;</span><span class="hl opt">/&gt;</span></pre>
+<pre class="code-ocaml"><span class="hl std">&lt;</span><span class="hl kwa">include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../../plugins/stog_disqus.ml&quot;</span><span class="hl std">/&gt;</span></pre>
 </p>
-<p>This is because <span class="icode">&lt;hcode...&gt;</span> is evaluated immediately, displaying
-its children nodes. What you need is to defer the evaluation of <span class="icode">&lt;hcode...&gt;</span>,
-using the special <span class="icode">defer_</span> attribute:
-<pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span></pre>
+<p>This is because <span class="icode"><span class="hl std">&lt;hcode...&gt;</span></span> is evaluated immediately, displaying
+its children nodes. What you need is to defer the evaluation of <span class="icode"><span class="hl std">&lt;hcode...&gt;</span></span>,
+using the special <span class="icode"><span class="hl std">defer_</span></span> attribute:
+<pre class="code-xml"><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span></pre>
 This will give the expected result:
-<pre class="code-ocaml"><span class="hl kwa">open</span> <span class="hl kwd">Stog_types</span><span class="hl opt">;;</span>
+<pre class="code-ocaml"><span class="hl kwa">open</span><span class="hl std"> </span><span class="hl kwc">Stog_types</span><span class="hl std">;;
 
-<span class="hl kwa">let</span> fun_comments stog env args subs <span class="hl opt">=</span>
-  <span class="hl kwa">let</span> tmpl <span class="hl opt">=</span> <span class="hl kwc">Filename</span><span class="hl opt">.</span>concat stog<span class="hl opt">.</span>stog_tmpl_dir <span class="hl str">&quot;disqus.tmpl&quot;</span> <span class="hl kwa">in</span>
-  <span class="hl kwc">Xtmpl</span><span class="hl opt">.</span>apply_to_file stog env tmpl
-<span class="hl opt">;;</span>
+</span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">fun_comments</span><span class="hl std"> </span><span class="">stog</span><span class="hl std"> </span><span class="">env</span><span class="hl std"> </span><span class="">args</span><span class="hl std"> </span><span class="">subs</span><span class="hl std"> =
+  </span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">tmpl</span><span class="hl std"> = </span><span class="hl kwc">Filename</span><span class="hl std">.</span><span class="">concat</span><span class="hl std"> </span><span class="">stog</span><span class="hl std">.</span><span class="">stog_tmpl_dir</span><span class="hl std"> </span><span class="hl str">&quot;disqus.tmpl&quot;</span><span class="hl std"> </span><span class="hl kwa">in</span><span class="hl std">
+  </span><span class="hl kwc">Xtmpl</span><span class="hl std">.</span><span class="">apply_to_file</span><span class="hl std"> </span><span class="">stog</span><span class="hl std"> </span><span class="">env</span><span class="hl std"> </span><span class="">tmpl</span><span class="hl std">
+;;
 
-<span class="hl kwa">let</span> <span class="hl opt">() =</span> <span class="hl kwc">Stog_plug</span><span class="hl opt">.</span>register_html_base_rule <span class="hl opt">(</span><span class="hl str">&quot;&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;comments&quot;</span><span class="hl opt">)</span> fun_comments<span class="hl opt">;;</span></pre>
+</span><span class="hl kwa">let</span><span class="hl std"> () = </span><span class="hl kwc">Stog_plug</span><span class="hl std">.</span><span class="">register_html_base_rule</span><span class="hl std"> (</span><span class="hl str">&quot;&quot;</span><span class="hl std">, </span><span class="hl str">&quot;comments&quot;</span><span class="hl std">) </span><span class="">fun_comments</span><span class="hl std">;;
+</span></pre>
 </p>
 <p>
-The <span class="icode">defer_</span> attribute is decremented each time the node should be evaluated.
+The <span class="icode"><span class="hl std">defer_</span></span> attribute is decremented each time the node should be evaluated.
 So the first time, the value is 1, so the children are evaluated first, then the
-<span class="icode">&lt;hcode&gt;</span> node is returned with a <span class="icode">defer_</span> attribute
-decremented, i.e. 0, and with the result of <span class="icode">&lt;include ...&gt;</span>
-as children. During the next evaluation, the <span class="icode">&lt;hcode&gt;</span> is evaluated
+<span class="icode"><span class="hl std">&lt;hcode&gt;</span></span> node is returned with a <span class="icode"><span class="hl std">defer_</span></span> attribute
+decremented, i.e. 0, and with the result of <span class="icode"><span class="hl std">&lt;include ...&gt;</span></span>
+as children. During the next evaluation, the <span class="icode"><span class="hl std">&lt;hcode&gt;</span></span> is evaluated
 and it now highlights its children, that is the contents of the included file.
 </p>
-<p><span class="icode">defer_</span> can take values greater than 1, if you need to nest deferred evaluations.</p>
+<p><span class="icode"><span class="hl std">defer_</span></span> can take values greater than 1, if you need to nest deferred evaluations.</p>
 
 
 <div class="comments">
  <hr width="100%"/>
   <div>
-    <div class="elt-keywords">
+    <div class="doc-keywords">
       <div class="bloc-keywords">
       Topics: <div class="keywords"><a href="http://zoggy.github.io/stog/topic_stog.html"><span itemprop="keywords">stog</span></a></div>
       </div>
@@ -112,43 +114,46 @@ and it now highlights its children, that is the contents of the included file.
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Including a code file (deferring evaluation)&quot;</span>
-<span class="hl kwb">date</span>=<span class="hl str">&quot;2012/03/13&quot;</span>
-<span class="hl kwb">topics</span>=<span class="hl str">&quot;stog&quot;</span>
-<span class="hl kwb">keywords</span>=<span class="hl str">&quot;highlight, include, code&quot;</span>
-<span class="hl kwb">published</span>=<span class="hl str">&quot;true&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>How to highlight a file inserted with <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>include ...<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> ?
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;sep_/&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-If you want to include and highlight for example the <span class="hl kwa">&lt;icode&gt;</span>../plugins/stog_disqus.ml<span class="hl kwa">&lt;/icode&gt;</span> file
+  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Including a code file (deferring evaluation)&quot;</span><span class="hl std">
+</span><span class="">date</span><span class="hl std">=</span><span class="hl str">&quot;2012/03/13&quot;</span><span class="hl std">
+</span><span class="">topics</span><span class="hl std">=</span><span class="hl str">&quot;stog&quot;</span><span class="hl std">
+</span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">&quot;highlight, include, code&quot;</span><span class="hl std">
+</span><span class="">published</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">How to highlight a file inserted with </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">include ...</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> ?
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+If you want to include and highlight for example the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">../plugins/stog_disqus.ml</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file
 relative to your project directory, you can try
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 but this will only result in
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>This is because <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>hcode...<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> is evaluated immediately, displaying
-its children nodes. What you need is to defer the evaluation of <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>hcode...<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>,
-using the special <span class="hl kwa">&lt;icode&gt;</span>defer_<span class="hl kwa">&lt;/icode&gt;</span> attribute:
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">This is because </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">hcode...</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is evaluated immediately, displaying
+its children nodes. What you need is to defer the evaluation of </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">hcode...</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
+using the special </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">defer_</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute:
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 This will give the expected result:
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;../../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The <span class="hl kwa">&lt;icode&gt;</span>defer_<span class="hl kwa">&lt;/icode&gt;</span> attribute is decremented each time the node should be evaluated.
-So the first time, the value is <span class="hl num">1</span>, so the children are evaluated first, then the
-<span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>hcode<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> node is returned with a <span class="hl kwa">&lt;icode&gt;</span>defer_<span class="hl kwa">&lt;/icode&gt;</span> attribute
-decremented, i.e. <span class="hl num">0</span>, and with the result of <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>include ...<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>
-as children. During the next evaluation, the <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>hcode<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> is evaluated
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">defer_</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute is decremented each time the node should be evaluated.
+So the first time, the value is 1, so the children are evaluated first, then the
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">hcode</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> node is returned with a </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">defer_</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute
+decremented, i.e. 0, and with the result of </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">include ...</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
+as children. During the next evaluation, the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">hcode</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is evaluated
 and it now highlights its children, that is the contents of the included file.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;&lt;icode&gt;</span>defer_<span class="hl kwa">&lt;/icode&gt;</span> can take values greater than <span class="hl num">1</span>, if you need to nest deferred evaluations.<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/post&gt;</span></pre>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">defer_</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> can take values greater than 1, if you need to nest deferred evaluations.</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span></pre>
 </div>
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

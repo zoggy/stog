@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog library reference documentation : Stog_types.Hid_trie</title>
+<title>Stog : Stog library reference documentation : Stog_cut</title>
 <link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
@@ -32,27 +32,28 @@
   
   
   
+  
 </div>
 
 
 
 <div class="ocamldoc-page">
 <code class="code"><span class="keyword">sig</span><br/>
-  <span class="keyword">type</span> symbol = string<br/>
-  <span class="keyword">type</span> path = symbol list<br/>
-  <span class="keyword">type</span> <span class="keywordsign">'</span>a t<br/>
-  <span class="keyword">exception</span> <span class="constructor">Already_present</span> <span class="keyword">of</span> path<br/>
-  <span class="keyword">val</span> empty : <span class="keywordsign">'</span>a t<br/>
-  <span class="keyword">val</span> add : path <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t<br/>
-  <span class="keyword">val</span> find : path <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a list<br/>
+  <span class="keyword">val</span> mk_path : <span class="constructor">Stog_path</span>.path <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_path</span>.path<br/>
+  <span class="keyword">val</span> cut_docs :<br/>
+    <span class="constructor">Stog_types</span>.stog <span class="constructor">Xtmpl</span>.env <span class="keywordsign">-&gt;</span><br/>
+    <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.<span class="constructor">Doc_set</span>.t <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog<br/>
 <span class="keyword">end</span></code></div>
 
 
 
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h14</div>
+</div>
+
+
 
 </div> 
 </body>

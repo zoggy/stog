@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog main document</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+  <div class="page-title">Stog main document</div>
+</div>
+
+
+
+
+<p>
+One <a href="http://zoggy.github.io/stog/stog-documents.html">document</a> is called the main document. This document is a regular
+document with the <span class="icode"><span class="hl std">main</span></span> attribute set to &quot;true&quot;. There can be only
+one main document.
+</p>
+<p>
+Some attributes of this main document are used to specify site-wide information:
+</p>
+<ul>
+<li><b>title</b>: The title of the site is the same as this document and can be accessed
+with <span class="icode"><span class="hl kwa">&lt;site-title</span><span class="hl kwa">&gt;</span></span> in templates,</li>
+<li><b>stog:site-description</b>: A short description of the site; use <span class="icode"><span class="hl kwa">&lt;site-description</span><span class="hl kwa">&gt;</span></span>
+to access it in templates;</li>
+<li><b>stog:site-url</b>: The base url of the site, used to forge urls when generating pages;
+use <span class="icode"><span class="hl kwa">&lt;site-url</span><span class="hl kwa">/&gt;</span></span> to insert it in templates,</li>
+<li><b>stog:site-email</b>: A contact email for the site, accessible with <span class="icode"><span class="hl kwa">&lt;site-email</span><span class="hl kwa">&gt;</span></span>,</li>
+<li><b>stog:rss-length</b>: The default length of RSS feeds.</li>
+</ul>
+<p>
+In the main document, any attribute beginning with &quot;stog:&quot; will be used as global attribute
+and accessible in all templates by its name. Other attributes are associated to the document only.
+</p>
+
+
+
+
+
+<p class="alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Stog main document&quot;</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+One </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-documents&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">document</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> is called the main document. This document is a regular
+document with the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">main</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute set to &quot;true&quot;. There can be only
+one main document.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+Some attributes of this main document are used to specify site-wide information:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">title</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: The title of the site is the same as this document and can be accessed
+with </span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">site-title</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std"> in templates,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">stog:site-description</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: A short description of the site; use </span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">site-description</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std">
+to access it in templates;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">stog:site-url</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: The base url of the site, used to forge urls when generating pages;
+use </span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">site-url/</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std"> to insert it in templates,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">stog:site-email</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: A contact email for the site, accessible with </span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">site-email</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">stog:rss-length</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: The default length of RSS feeds.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+In the main document, any attribute beginning with &quot;stog:&quot; will be used as global attribute
+and accessible in all templates by its name. Other attributes are associated to the document only.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
+</div>
+
+
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
+
+</div> 
+</body>
+</html>

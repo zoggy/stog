@@ -30,7 +30,8 @@
 
 <div id="header">
   
-  <div class="elt-navbar">
+  
+  <div class="doc-navbar">
       
       <div class="navright"><a href="http://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html">Displaying evaluated OCaml code</a></div>
     </div>
@@ -41,7 +42,7 @@
 
 
 <p>
-Stog handles <span class="icode"><span class="hl kwa">&lt;latex&gt;</span> ... <span class="hl kwa">&lt;/latex&gt;</span></span>.
+Stog handles <span class="icode"><span class="hl kwa">&lt;latex</span><span class="hl kwa">&gt;</span><span class="hl std"> ... </span><span class="hl kwa">&lt;/latex</span><span class="hl kwa">&gt;</span></span>.
 </p>
 
 <p>
@@ -52,14 +53,14 @@ compile it to a SVG file, to show the result in your page.
 will scale accordingly.
 </p>
 <p>How does this work ? The LaTeX code is compiled
-with <span class="icode">latex -interaction=batchmode</span> to get a <span class="icode">.dvi</span> file.
-This file is sent to <span class="ext-a"><a href="http://dvisvgm.sourceforge.net/"><span class="icode">dvisvgm</span></a></span>
+with <span class="icode"><span class="hl std">latex -interaction=batchmode</span></span> to get a <span class="icode"><span class="hl std">.dvi</span></span> file.
+This file is sent to <span class="ext-a"><a href="http://dvisvgm.sourceforge.net/"><span class="icode"><span class="hl std">dvisvgm</span></span></a></span>
 to generate a SVG file.
 </p>
 <p>
 Example:
-<pre class="code-xml"><span class="hl kwa">&lt;latex&gt;</span>$a x^<span class="hl num">2</span> + <span class="hl esc">\f</span>rac{<span class="hl num">3</span>}{<span class="hl num">2</span>} x - <span class="hl num">1</span> = \pi$<span class="hl kwa">&lt;/latex&gt;</span></pre>
-will display this: <img alt="$ x^2 + \frac{3}{2} x - 1 = \pi$" class="latex" src="http://zoggy.github.io/stog/_latex26.svg" title="$ x^2 + \frac{3}{2} x - 1 = \pi$"/>
+<pre class="code-xml"><span class="hl kwa">&lt;latex</span><span class="hl kwa">&gt;</span><span class="hl std">$a x^2 + \frac{3}{2} x - 1 = \pi$</span><span class="hl kwa">&lt;/latex</span><span class="hl kwa">&gt;</span></pre>
+will display this: <img alt="$ x^2 + \frac{3}{2} x - 1 = \pi$" class="latex" src="http://zoggy.github.io/stog/_latex1.svg" title="$ x^2 + \frac{3}{2} x - 1 = \pi$"/>
 </p>
 <p>
 Another example:
@@ -88,7 +89,7 @@ Another example:
 \draw (2, 3) node {{\color{red}$\bullet$}};
 \end{tikzpicture}}
 \centerline{...100111}
-" class="latex" src="http://zoggy.github.io/stog/_latex27.svg" title="
+" class="latex" src="http://zoggy.github.io/stog/_latex2.svg" title="
 \centerline{\begin{tikzpicture}[scale=1.8]
 \draw (0,0) -- (0,4) ;
 \draw [&amp;gt;=stealth,-&amp;gt;] (0,0) -- (0,1) ;
@@ -114,37 +115,38 @@ Another example:
 "/>
 </p>
 <p>The code:
-<pre class="code-xml"><span class="hl kwa">&lt;latex</span> <span class="hl kwb">packages</span>=<span class="hl str">&quot;{tikz}&quot;</span> <span class="hl kwa">&gt;</span>&lt;![CDATA[
-\centerline{<span class="hl esc">\b</span>egin{tikzpicture}[scale=<span class="hl num">1.8</span>]
-\draw (<span class="hl num">0</span>,<span class="hl num">0</span>) -- (<span class="hl num">0</span>,<span class="hl num">4</span>) ;
-\draw [<span class="hl kwa">&gt;</span>=stealth,-<span class="hl kwa">&gt;</span>] (<span class="hl num">0</span>,<span class="hl num">0</span>) -- (<span class="hl num">0</span>,<span class="hl num">1</span>) ;
-\draw (<span class="hl num">0</span>,<span class="hl num">0</span>) -- (<span class="hl num">3</span>,<span class="hl num">0</span>) ;
-\draw [dotted, very thin, gray] (<span class="hl num">0</span>,<span class="hl num">0</span>) grid (<span class="hl num">3</span>,<span class="hl num">4</span>);
-\draw (<span class="hl num">3</span>,<span class="hl num">0</span>) node[right]{$X_n$} ;
-\draw (<span class="hl num">0</span>,<span class="hl num">4</span>) node[left]{$M_n$} ;
-\draw (<span class="hl num">1</span>,<span class="hl num">0</span>) node[below]{<span class="hl num">0</span>};
-\draw (<span class="hl num">2</span>,<span class="hl num">0</span>) node[below]{<span class="hl num">1</span>};\draw (<span class="hl num">1</span>, <span class="hl num">1</span>) node {$<span class="hl esc">\b</span>ullet$};
-\draw [<span class="hl kwa">&gt;</span>=stealth, -<span class="hl kwa">&gt;</span>] (<span class="hl num">1</span>, <span class="hl num">1</span>) -- (<span class="hl num">1</span>, <span class="hl num">2</span>) node[midway,above,sloped]{$q_{<span class="hl num">0</span>}(<span class="hl num">0</span>)$};
-\draw (<span class="hl num">1</span>, <span class="hl num">2</span>) node {$<span class="hl esc">\b</span>ullet$};
-\draw [<span class="hl kwa">&gt;</span>=stealth, -<span class="hl kwa">&gt;</span>] (<span class="hl num">1</span>, <span class="hl num">2</span>) -- (<span class="hl num">2</span>, <span class="hl num">1</span>) node[midway,below,sloped]{$q_{<span class="hl num">00</span>}(<span class="hl num">1</span>)$};
-\draw (<span class="hl num">2</span>, <span class="hl num">1</span>) node {$<span class="hl esc">\b</span>ullet$};
-\draw [<span class="hl kwa">&gt;</span>=stealth, -<span class="hl kwa">&gt;</span>] (<span class="hl num">2</span>, <span class="hl num">1</span>) -- (<span class="hl num">2</span>, <span class="hl num">2</span>) node[midway,below,sloped]{$q_{<span class="hl num">100</span>}(<span class="hl num">1</span>)$};
-\draw (<span class="hl num">2</span>, <span class="hl num">2</span>) node {$<span class="hl esc">\b</span>ullet$};
-\draw [<span class="hl kwa">&gt;</span>=stealth, -<span class="hl kwa">&gt;</span>] (<span class="hl num">2</span>, <span class="hl num">2</span>) -- (<span class="hl num">2</span>, <span class="hl num">3</span>) node[midway,below,sloped]{$q_{<span class="hl num">1100</span>}(<span class="hl num">1</span>)$};
-\draw (<span class="hl num">2</span>, <span class="hl num">3</span>) node {$<span class="hl esc">\b</span>ullet$};
-\draw [draw=red, fill=red, -<span class="hl kwa">&gt;</span>, double,thick] (<span class="hl num">2</span>, <span class="hl num">3</span>) -- (<span class="hl num">1</span>, <span class="hl num">1</span>) node[midway,above,sloped]{{\color{red}$q_{<span class="hl num">11100</span>}(<span class="hl num">0</span>)$}};
-\draw [draw=red, fill=red, -<span class="hl kwa">&gt;</span>, double,thick] (<span class="hl num">2</span>, <span class="hl num">3</span>) -- (<span class="hl num">2</span>, <span class="hl num">4</span>) node[midway,above,sloped]{{\color{red}$q_{<span class="hl num">11100</span>}(<span class="hl num">1</span>)$}};
-\draw (<span class="hl num">2</span>, <span class="hl num">3</span>) node {{\color{red}$<span class="hl esc">\b</span>ullet$}};
+<pre class="code-xml"><span class="hl kwa">&lt;latex</span><span class="hl std"> </span><span class="">packages</span><span class="hl std">=</span><span class="hl str">&quot;{tikz}&quot;</span><span class="hl std"> </span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[
+\centerline{\begin{tikzpicture}[scale=1.8]
+\draw (0,0) -- (0,4) ;
+\draw [&gt;=stealth,-&gt;] (0,0) -- (0,1) ;
+\draw (0,0) -- (3,0) ;
+\draw [dotted, very thin, gray] (0,0) grid (3,4);
+\draw (3,0) node[right]{$X_n$} ;
+\draw (0,4) node[left]{$M_n$} ;
+\draw (1,0) node[below]{0};
+\draw (2,0) node[below]{1};\draw (1, 1) node {$\bullet$};
+\draw [&gt;=stealth, -&gt;] (1, 1) -- (1, 2) node[midway,above,sloped]{$q_{0}(0)$};
+\draw (1, 2) node {$\bullet$};
+\draw [&gt;=stealth, -&gt;] (1, 2) -- (2, 1) node[midway,below,sloped]{$q_{00}(1)$};
+\draw (2, 1) node {$\bullet$};
+\draw [&gt;=stealth, -&gt;] (2, 1) -- (2, 2) node[midway,below,sloped]{$q_{100}(1)$};
+\draw (2, 2) node {$\bullet$};
+\draw [&gt;=stealth, -&gt;] (2, 2) -- (2, 3) node[midway,below,sloped]{$q_{1100}(1)$};
+\draw (2, 3) node {$\bullet$};
+\draw [draw=red, fill=red, -&gt;, double,thick] (2, 3) -- (1, 1) node[midway,above,sloped]{{\color{red}$q_{11100}(0)$}};
+\draw [draw=red, fill=red, -&gt;, double,thick] (2, 3) -- (2, 4) node[midway,above,sloped]{{\color{red}$q_{11100}(1)$}};
+\draw (2, 3) node {{\color{red}$\bullet$}};
 \end{tikzpicture}}
-\centerline{..<span class="hl num">.100111</span>}]]<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;/latex&gt;</span></pre>
+\centerline{...100111}]]&gt;
+</span><span class="hl kwa">&lt;/latex</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 </p>
 
 
 <div class="comments">
  <hr width="100%"/>
   <div>
-    <div class="elt-keywords">
+    <div class="doc-keywords">
       <div class="bloc-keywords">
       Topics: <div class="keywords"><a href="http://zoggy.github.io/stog/topic_stog.html"><span itemprop="keywords">stog</span></a></div>
       </div>
@@ -178,49 +180,52 @@ Another example:
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;LaTeX in stog&quot;</span>
-<span class="hl kwb">date</span>=<span class="hl str">&quot;2012/03/09&quot;</span>
-<span class="hl kwb">topics</span>=<span class="hl str">&quot;stog&quot;</span>
-<span class="hl kwb">keywords</span>=<span class="hl str">&quot;latex, svg&quot;</span>
-<span class="hl kwb">published</span>=<span class="hl str">&quot;true&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Stog handles <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;latex&gt;</span> ... <span class="hl kwa">&lt;/latex&gt;</span>]]<span class="hl kwa">&gt;&lt;/icode&gt;</span>.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;sep_/&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;LaTeX in stog&quot;</span><span class="hl std">
+</span><span class="">date</span><span class="hl std">=</span><span class="hl str">&quot;2012/03/09&quot;</span><span class="hl std">
+</span><span class="">topics</span><span class="hl std">=</span><span class="hl str">&quot;stog&quot;</span><span class="hl std">
+</span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">&quot;latex, svg&quot;</span><span class="hl std">
+</span><span class="">published</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+Stog handles </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;latex</span><span class="hl kwa">&gt;</span><span class="hl std"> ... </span><span class="hl kwa">&lt;/latex</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Just put some LaTeX code inside and Stog will
 compile it to a SVG file, to show the result in your page.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>The big advantage is that you can zoom in or out and the result
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The big advantage is that you can zoom in or out and the result
 will scale accordingly.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>How does this work ? The LaTeX code is compiled
-with <span class="hl kwa">&lt;icode&gt;</span>latex -interaction=batchmode<span class="hl kwa">&lt;/icode&gt;</span> to get a <span class="hl kwa">&lt;icode&gt;</span>.dvi<span class="hl kwa">&lt;/icode&gt;</span> file.
-This file is sent to <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://dvisvgm.sourceforge.net/&quot;</span><span class="hl kwa">&gt;&lt;icode&gt;</span>dvisvgm<span class="hl kwa">&lt;/icode&gt;&lt;/ext-a&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">How does this work ? The LaTeX code is compiled
+with </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">latex -interaction=batchmode</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> to get a </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.dvi</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file.
+This file is sent to </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://dvisvgm.sourceforge.net/&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">dvisvgm</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">
 to generate a SVG file.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Example:
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;latex&gt;</span>$a x^<span class="hl num">2</span> + <span class="hl esc">\f</span>rac{<span class="hl num">3</span>}{<span class="hl num">2</span>} x - <span class="hl num">1</span> = \pi$<span class="hl kwa">&lt;/latex&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
-will display this: <span class="hl kwa">&lt;latex&gt;</span>$ x^<span class="hl num">2</span> + <span class="hl esc">\f</span>rac{<span class="hl num">3</span>}{<span class="hl num">2</span>} x - <span class="hl num">1</span> = \pi$<span class="hl kwa">&lt;/latex&gt;</span>
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;latex</span><span class="hl kwa">&gt;</span><span class="hl std">$a x^2 + \frac{3}{2} x - 1 = \pi$</span><span class="hl kwa">&lt;/latex</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+will display this: </span><span class="hl kwa">&lt;latex</span><span class="hl kwa">&gt;</span><span class="hl std">$ x^2 + \frac{3}{2} x - 1 = \pi$</span><span class="hl kwa">&lt;/latex</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Another example:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./example.tex&quot;</span><span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>The code:
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./example.tex&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/post&gt;</span></pre>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;./example.tex&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The code:
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;./example.tex&quot;</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span></pre>
 </div>
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

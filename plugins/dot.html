@@ -30,6 +30,7 @@
 
 <div id="header">
   
+  <a href="http://zoggy.github.io/stog/plugins.html">Plugins</a>
   
   <div class="page-title">Stog-dot</div>
 </div>
@@ -49,20 +50,28 @@ The Graphviz tools must be installed to use this plugin.
 <pre class="code-sh">$ stog <span class="hl opt">--</span>package stog.dot ...</pre>
 
 <p>This plugin adds a new <a href="http://zoggy.github.io/stog/module_base.html#base">base rule</a>
- <span class="icode"><span class="hl kwa">&lt;dot&gt;</span></span>.
+ <span class="icode"><span class="hl kwa">&lt;dot</span><span class="hl kwa">&gt;</span></span>.
 Here are the possible ways to use it:
 </p>
 <table class="table table-bordered">
 <tr><th>Code</th><th>Result</th></tr>
 <tr>
 <td>
-Output to <code>graph1.svg</code>, using an <span class="icode"><span class="hl kwa">&lt;img&gt;</span></span>
+Output to <code>graph1.svg</code>, using an <span class="icode"><span class="hl kwa">&lt;img</span><span class="hl kwa">&gt;</span></span>
 node to show the image:
-<pre class="code-xml" id="code1"><span class="hl kwa">&lt;dot</span> <span class="hl kwb">outfile</span>=<span class="hl str">&quot;graph1.svg&quot;</span><span class="hl kwa">&gt;</span>digraph g {
+<div class="hide" id="code1">
+&lt;dot outfile=&quot;graph1.svg&quot;&gt;digraph g {
   rankdir = LR;
-  a [ <span class="hl kwb">shape</span>=<span class="hl str">&quot;box&quot;</span> ] ;
-  a -<span class="hl kwa">&gt;</span> b; a -<span class="hl kwa">&gt;</span> c ; b -<span class="hl kwa">&gt;</span> c ;
-}<span class="hl kwa">&lt;/dot&gt;</span></pre></td>
+  a [ shape=&quot;box&quot; ] ;
+  a -&gt; b; a -&gt; c ; b -&gt; c ;
+}&lt;/dot&gt;
+</div>
+<pre class="code-xml"><span class="hl kwa">&lt;dot</span><span class="hl std"> </span><span class="">outfile</span><span class="hl std">=</span><span class="hl str">&quot;graph1.svg&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">digraph g {
+  rankdir = LR;
+  a [ shape=&quot;box&quot; ] ;
+  a -&gt; b; a -&gt; c ; b -&gt; c ;
+}</span><span class="hl kwa">&lt;/dot</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre></td>
 <td>
 <img src="graph1.svg"/>
 </td>
@@ -73,8 +82,13 @@ node to show the image:
 Output a <code>png</code> file to <code>graph2.png</code>,
 use <code>neato</code> instead of <code>dot</code> in
 the command and read source from <code>graph.dot</code>:
-<pre class="code-xml" id="code2"><span class="hl kwa">&lt;dot</span> <span class="hl kwb">command</span>=<span class="hl str">&quot;neato&quot;</span>
-   <span class="hl kwb">src</span>=<span class="hl str">&quot;graph.dot&quot;</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;png&quot;</span> <span class="hl kwb">outfile</span>=<span class="hl str">&quot;graph2.png&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<div class="hide" id="code2">
+&lt;dot command=&quot;neato&quot;
+   src=&quot;graph.dot&quot; type=&quot;png&quot; outfile=&quot;graph2.png&quot;/&gt;
+</div>
+<pre class="code-xml"><span class="hl kwa">&lt;dot</span><span class="hl std"> </span><span class="">command</span><span class="hl std">=</span><span class="hl str">&quot;neato&quot;</span><span class="hl std">
+   </span><span class="">src</span><span class="hl std">=</span><span class="hl str">&quot;graph.dot&quot;</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">&quot;png&quot;</span><span class="hl std"> </span><span class="">outfile</span><span class="hl std">=</span><span class="hl str">&quot;graph2.png&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span></pre>
 With <code>graph.dot</code>:
 <pre class="code-dot"><span class="hl kwa">graph</span> g {
   a <span class="hl opt">--</span> b <span class="hl opt">;</span>
@@ -83,29 +97,42 @@ With <code>graph.dot</code>:
 }</pre></td>
 <td>
 <img command="neato" src="graph2.png"/>
-
 </td>
 </tr>
 
 <tr>
 <td>
-With <span class="icode"><span class="hl kwa">&lt;elt-</span>...<span class="hl kwa">&gt;</span></span> rules to get links and labels,
-using attribute <span class="icode"><span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span></span> in the <span class="icode"><span class="hl kwa">&lt;dot&gt;</span></span>
+With <span class="icode"><span class="hl kwa">&lt;doc-</span><span class="hl std">...</span><span class="hl kwa">&gt;</span></span> rules to get links and labels,
+using attribute <span class="icode"><span class="hl std">defer_=&quot;1&quot;</span></span> in the <span class="icode"><span class="hl kwa">&lt;dot</span><span class="hl kwa">&gt;</span></span>
 so that rewriting is performed in its children before the
 code is being passed to dot:
-<pre class="code-xml" id="code3"><span class="hl kwa">&lt;dot</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span>
+<div class="hide" id="code3">
+&lt;dot defer_=&quot;1&quot;&gt;
 digraph g {
   rankdir = LR;
-  plugins -<span class="hl kwa">&gt;</span> asy ;
-  plugins -<span class="hl kwa">&gt;</span> dot ;
-  plugins [ <span class="hl kwb">href</span>=<span class="hl str">&quot;&lt;elt-url elt-hid=&quot;</span>plugins<span class="hl str">&quot;/&gt;&quot;</span> ]
+  plugins -&gt; asy ;
+  plugins -&gt; dot ;
+  plugins [ href=&quot;&lt;doc-url doc-path=&quot;plugins&quot;/&gt;&quot; ]
   asy [
-     <span class="hl kwb">href</span>=<span class="hl str">&quot;&lt;elt-url elt-hid=&quot;</span>plugins/asy<span class="hl str">&quot;/&gt;&quot;</span>,
-     <span class="hl kwb">label</span>=<span class="hl str">&quot;&lt;elt-title elt-hid=&quot;</span>plugins/asy<span class="hl str">&quot;/&gt;&quot;</span> ] ;
-  dot [ <span class="hl kwb">href</span>=<span class="hl str">&quot;&lt;elt-url elt-hid=&quot;</span>plugins/dot<span class="hl str">&quot;/&gt;&quot;</span> ] ;
-}<span class="hl kwa">&lt;/dot&gt;</span></pre>
+     href=&quot;&lt;doc-url doc-path=&quot;plugins/asy&quot;/&gt;&quot;,
+     label=&quot;&lt;doc-title doc-path=&quot;plugins/asy&quot;/&gt;&quot; ] ;
+  dot [ href=&quot;&lt;doc-url doc-path=&quot;plugins/dot&quot;/&gt;&quot; ] ;
+}&lt;/dot&gt;
+</div>
+<pre class="code-xml"><span class="hl kwa">&lt;dot</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+digraph g {
+  rankdir = LR;
+  plugins -&gt; asy ;
+  plugins -&gt; dot ;
+  plugins [ href=&quot;</span><span class="hl kwa">&lt;doc-url</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;plugins&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">&quot; ]
+  asy [
+     href=&quot;</span><span class="hl kwa">&lt;doc-url</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;plugins/asy&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">&quot;,
+     label=&quot;</span><span class="hl kwa">&lt;doc-title</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;plugins/asy&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">&quot; ] ;
+  dot [ href=&quot;</span><span class="hl kwa">&lt;doc-url</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;plugins/dot&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">&quot; ] ;
+}</span><span class="hl kwa">&lt;/dot</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 Since no <code>outfile</code> attribute is given, the <code>svg</code>
-file produced is included (no use of <span class="icode"><span class="hl kwa">&lt;img&gt;</span></span>).
+file produced is included (no use of <span class="icode"><span class="hl kwa">&lt;img</span><span class="hl kwa">&gt;</span></span>).
 </td>
 <td>The node labels are clickable and the links are generated
 (and so valid) by Stog:
@@ -153,13 +180,19 @@ file produced is included (no use of <span class="icode"><span class="hl kwa">&l
 <tr>
 <td>
 Including again the produced <code>svg</code> file. To avoid
-conflicts in ids, we use the <span class="icode"><span class="hl kwb">prefix-svg-ids</span>=<span class="hl str">&quot;foo&quot;</span></span>
+conflicts in ids, we use the <span class="icode"><span class="hl std">prefix-svg-ids=&quot;foo&quot;</span></span>
 attribute:
-<pre class="code-xml" id="code4"><span class="hl kwa">&lt;dot</span> <span class="hl kwb">prefix-svg-ids</span>=<span class="hl str">&quot;foo&quot;</span><span class="hl kwa">&gt;</span>digraph g {
+<div class="hide" id="code4">
+&lt;dot prefix-svg-ids=&quot;foo&quot;&gt;digraph g {
   rankdir = LR;
-  a [ <span class="hl kwb">shape</span>=<span class="hl str">&quot;box&quot;</span> ] ;
-  a -<span class="hl kwa">&gt;</span> b; a -<span class="hl kwa">&gt;</span> c ; b -<span class="hl kwa">&gt;</span> c ;
-}<span class="hl kwa">&lt;/dot&gt;</span></pre></td>
+  a [ shape=&quot;box&quot; ] ;
+  a -&gt; b; a -&gt; c ; b -&gt; c ;
+}&lt;/dot&gt;</div>
+<pre class="code-xml"><span class="hl kwa">&lt;dot</span><span class="hl std"> </span><span class="">prefix-svg-ids</span><span class="hl std">=</span><span class="hl str">&quot;foo&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">digraph g {
+  rankdir = LR;
+  a [ shape=&quot;box&quot; ] ;
+  a -&gt; b; a -&gt; c ; b -&gt; c ;
+}</span><span class="hl kwa">&lt;/dot</span><span class="hl kwa">&gt;</span></pre></td>
 <td>
 <svg height="67pt" viewBox="0.00 0.00 242.00 67.00" width="242pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 <g class="graph" id="foograph1" transform="scale(1 1) rotate(0) translate(4 63)">
@@ -196,19 +229,28 @@ attribute:
 <polygon fill="black" points="172.876,-30.3332 181.698,-24.4661 171.143,-23.5511 172.876,-30.3332" stroke="black"/>
 </g>
 </g>
-</svg>
-</td>
+</svg></td>
 </tr>
 
 <tr>
 <td>The contents of the <code>args</code> attribute is used
 as additional argument to the command which is run:
-<pre class="code-xml" id="code5"><span class="hl kwa">&lt;dot</span> <span class="hl kwb">prefix-svg-ids</span>=<span class="hl str">&quot;bar&quot;</span> <span class="hl kwb">args</span>=<span class="hl str">&quot;-Nshape=box&quot;</span><span class="hl kwa">&gt;</span>
+<div class="hide" id="code5">
+
+&lt;dot prefix-svg-ids=&quot;bar&quot; args=&quot;-Nshape=box&quot;&gt;
 digraph g {
   rankdir = LR;
-  a -<span class="hl kwa">&gt;</span> b; a -<span class="hl kwa">&gt;</span> c ; b -<span class="hl kwa">&gt;</span> c ;
-}<span class="hl kwa">&lt;/dot&gt;</span></pre></td>
+  a -&gt; b; a -&gt; c ; b -&gt; c ;
+}&lt;/dot&gt;
+</div>
+<pre class="code-xml"><span class="hl kwa">&lt;dot</span><span class="hl std"> </span><span class="">prefix-svg-ids</span><span class="hl std">=</span><span class="hl str">&quot;bar&quot;</span><span class="hl std"> </span><span class="">args</span><span class="hl std">=</span><span class="hl str">&quot;-Nshape=box&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+digraph g {
+  rankdir = LR;
+  a -&gt; b; a -&gt; c ; b -&gt; c ;
+}</span><span class="hl kwa">&lt;/dot</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre></td>
 <td>
+
 <svg height="67pt" viewBox="0.00 0.00 242.00 67.00" width="242pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 <g class="graph" id="bargraph1" transform="scale(1 1) rotate(0) translate(4 63)">
 <title>g</title>
@@ -255,8 +297,11 @@ digraph g {
 
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

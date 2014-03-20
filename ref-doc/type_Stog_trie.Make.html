@@ -32,6 +32,7 @@
   
   
   
+  
 </div>
 
 
@@ -44,16 +45,20 @@
     <span class="keyword">type</span> <span class="keywordsign">'</span>a t<br/>
     <span class="keyword">exception</span> <span class="constructor">Already_present</span> <span class="keyword">of</span> path<br/>
     <span class="keyword">val</span> empty : <span class="keywordsign">'</span>a t<br/>
-    <span class="keyword">val</span> add : path <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t<br/>
+    <span class="keyword">val</span> add : ?fail:bool <span class="keywordsign">-&gt;</span> path <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t<br/>
     <span class="keyword">val</span> find : path <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a list<br/>
+    <span class="keyword">val</span> to_string : (symbol <span class="keywordsign">-&gt;</span> string) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a t <span class="keywordsign">-&gt;</span> string<br/>
   <span class="keyword">end</span></code></div>
 
 
 
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h14</div>
+</div>
+
+
 
 </div> 
 </body>

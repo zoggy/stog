@@ -29,6 +29,7 @@
 </div>
 
 <div id="header">
+  
   <a href="http://zoggy.github.io/stog/plugins.html">Plugins</a>
   
   <div class="page-title">Stog-writing</div>
@@ -38,7 +39,7 @@
 
 
 <p>
-This plugin adds new rewrite rules to use the following elements in your pages:
+This plugin adds new rewrite rules to use the following documents in your pages:
 </p>
 <ul>
 <li><a href="http://zoggy.github.io/stog/plugins/writing.html#footnotes">Footnotes</a>,</li>
@@ -60,7 +61,7 @@ Stog-writing is <span class="ext-a"><a href="https://github.com/zoggy/stog-writi
   <ul>
     <li>Upgrade to new Stog 0.10.0 architecture,</li>
     <li>Add class for footnote links,</li>
-    <li>Handle multiple references in <span class="icode"><span class="hl kwa">&lt;cite&gt;</span></span>,</li>
+    <li>Handle multiple references in <span class="icode"><span class="hl kwa">&lt;cite</span><span class="hl kwa">&gt;</span></span>,</li>
     <li>Apply base rules when bulding bib entries,</li>
     <li>Use template <code>bib-entry.tmpl</code>
         instead of <code>bib_entry.tmpl</code>,</li>
@@ -84,7 +85,7 @@ To install:
 <span class="hl kwc">make</span> all <span class="hl kwc">install</span></pre>
 <p>
 (you must have <span class="ext-a"><a href="http://cristal.inria.fr/~fpottier/menhir/">Menhir</a></span> installed).
-This will install the <span class="icode">stog-writing</span> package with ocamlfind.
+This will install the <span class="icode"><span class="hl std">stog-writing</span></span> package with ocamlfind.
 </p>
 <p>
 To use:
@@ -97,118 +98,123 @@ To use:
 <p>
 Footnotes are defined with the following syntax:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;note&gt;</span>...<span class="hl kwa">&lt;/note&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;note</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/note</span><span class="hl kwa">&gt;</span></pre>
 <p>
-As usual, you can put any xml in the <span class="icode"><span class="hl kwa">&lt;note&gt;</span></span> node, it will be
+As usual, you can put any xml in the <span class="icode"><span class="hl kwa">&lt;note</span><span class="hl kwa">&gt;</span></span> node, it will be
 rewritten using the current environment.
 </p>
 <p>
 For this to work, all the XML tree containing notes must be
 included in a node
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;prepare-notes&gt;</span>
+<pre class="code-xml"><span class="hl kwa">&lt;prepare-notes</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-<span class="hl kwa">&lt;/prepare-notes&gt;</span></pre>
+</span><span class="hl kwa">&lt;/prepare-notes</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 <p>
-At last, all footnotes are inserted when a <span class="icode"><span class="hl kwa">&lt;notes/&gt;</span></span> node is encountered.
+At last, all footnotes are inserted when a <span class="icode"><span class="hl kwa">&lt;notes</span><span class="hl kwa">/&gt;</span></span> node is encountered.
 Numbering is automatic.
 </p>
 <p>
 Example:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;prepare-notes&gt;</span>
+<pre class="code-xml"><span class="hl kwa">&lt;prepare-notes</span><span class="hl kwa">&gt;</span><span class="hl std">
     ...
-    bla bla bla<span class="hl kwa">&lt;note&gt;</span>Hey, this is a footnote<span class="hl kwa">&lt;/note&gt;</span>.
+    bla bla bla</span><span class="hl kwa">&lt;note</span><span class="hl kwa">&gt;</span><span class="hl std">Hey, this is a footnote</span><span class="hl kwa">&lt;/note</span><span class="hl kwa">&gt;</span><span class="hl std">.
     ...
-    pim pam poum<span class="hl kwa">&lt;note&gt;</span>This is a second note.<span class="hl kwa">&lt;/note&gt;</span>.
+    pim pam poum</span><span class="hl kwa">&lt;note</span><span class="hl kwa">&gt;</span><span class="hl std">This is a second note.</span><span class="hl kwa">&lt;/note</span><span class="hl kwa">&gt;</span><span class="hl std">.
     ...
-    <span class="hl kwa">&lt;notes/&gt;</span>
-<span class="hl kwa">&lt;/prepare-notes&gt;</span></pre>
+    </span><span class="hl kwa">&lt;notes</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/prepare-notes</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 </div>
 
 <div class="section"><div class="section-title" id="biblio">Bibliography</div>
 <div class="subsection"><div class="subsection-title" id="definebib">Defining bibliographies</div>
 <p>
-Bibliographies can be defined in any element header, with the following syntax:
+Bibliographies can be defined in any document header, with the following syntax:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;bibliographies</span> ...<span class="hl kwa">&gt;</span>
-  <span class="hl kwa">&lt;bibliography</span> ...<span class="hl kwa">/&gt;</span>
-  <span class="hl kwa">&lt;bibliography</span> ...<span class="hl kwa">/&gt;</span>
+<pre class="code-xml"><span class="hl kwa">&lt;bibliographies</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;bibliography</span><span class="hl std"> ...</span><span class="hl kwa">/&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;bibliography</span><span class="hl std"> ...</span><span class="hl kwa">/&gt;</span><span class="hl std">
   ...
-<span class="hl kwa">&lt;/bibliographies&gt;</span></pre>
+</span><span class="hl kwa">&lt;/bibliographies</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 <p>
-The <span class="icode"><span class="hl kwa">&lt;bibliographies&gt;</span></span> node can have the following attributes:
+The <span class="icode"><span class="hl kwa">&lt;bibliographies</span><span class="hl kwa">&gt;</span></span> node can have the following attributes:
 </p>
 <ul>
-<li><span class="icode"><span class="hl kwb">sort</span>=<span class="hl str">&quot;...&quot;</span></span>:
+<li><span class="icode"><span class="hl std">sort=&quot;...&quot;</span></span>:
   the items in each bibliography will be sorted by default, according
   to the given list of comma-separated fields,</li>
-<li><span class="icode"><span class="hl kwb">reverse</span>=<span class="hl str">&quot;true&quot;</span></span>:
+<li><span class="icode"><span class="hl std">reverse=&quot;true&quot;</span></span>:
    the items in each bibliography will be sorted in reverse order,</li>
-<li><span class="icode"><span class="hl kwb">prefix</span>=<span class="hl str">&quot;...&quot;</span></span>:
+<li><span class="icode"><span class="hl std">prefix=&quot;...&quot;</span></span>:
    a default string to use as prefix for ids of entries read from bibtex files.</li>
 </ul>
 <p>
-Each <span class="icode"><span class="hl kwa">&lt;bibliography&gt;</span></span> node can have the following attributes:
+Each <span class="icode"><span class="hl kwa">&lt;bibliography</span><span class="hl kwa">&gt;</span></span> node can have the following attributes:
 </p>
 <ul>
-<li><span class="icode"><span class="hl kwb">name</span>=<span class="hl str">&quot;...&quot;</span></span>:
+<li><span class="icode"><span class="hl std">name=&quot;...&quot;</span></span>:
    the name of the bibliography, for further reference; default name is &quot;default&quot;;
               each bibliography must have a site-wide unique name,</li>
-<li><span class="icode"><span class="hl kwb">files</span>=<span class="hl str">&quot;...&quot;</span></span>:
+<li><span class="icode"><span class="hl std">files=&quot;...&quot;</span></span>:
    a comma-separated list of filenames, in bibtex format;
-   filenames are relative to the element source file,</li>
-<li><span class="icode">sort</span>, <span class="icode">reverse</span> and <span class="icode">prefix</span>:
-  can be used to override the same attributes of the <span class="icode"><span class="hl kwa">&lt;bibliographies&gt;</span></span> node.
+   filenames are relative to the document source file,</li>
+<li><span class="icode"><span class="hl std">sort</span></span>, <span class="icode"><span class="hl std">reverse</span></span> and <span class="icode"><span class="hl std">prefix</span></span>:
+  can be used to override the same attributes of the <span class="icode"><span class="hl kwa">&lt;bibliographies</span><span class="hl kwa">&gt;</span></span> node.
 </li>
 </ul>
 <p>
-Using attribute <span class="icode"><span class="hl kwb">bib-files</span>=<span class="hl str">&quot;file1.bib,file2.bib,...&quot;</span></span> in an element
+Using attribute <span class="icode"><span class="hl std">bib-files=&quot;file1.bib,file2.bib,...&quot;</span></span> in an document
 header is a shortcut for
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;bibliographies&gt;</span>
-  <span class="hl kwa">&lt;bibliography</span> <span class="hl kwb">files</span>=<span class="hl str">&quot;file1.bib,file2.bib,...&quot;</span><span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;/bibliographies&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;bibliographies</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;bibliography</span><span class="hl std"> </span><span class="">files</span><span class="hl std">=</span><span class="hl str">&quot;file1.bib,file2.bib,...&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/bibliographies</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="usingbib">Using bibliographies</div>
 <p>
 In your pages and posts, you can use this syntax to cite an entry:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;cite</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;entryid&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<pre class="code-xml"><span class="hl std">    </span><span class="hl kwa">&lt;cite</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;entryid&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span></pre>
 <p>
 The format of the reference can be set by various means, in order of priority:
 </p>
 <ul>
-<li>in the children of the <span class="icode"><span class="hl kwa">&lt;cite&gt;</span></span> node, for example:
-  <pre class="code-xml"><span class="hl kwa">&lt;cite</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;&lt;bib-entry-author/&gt;</span>, <span class="hl kwa">&lt;i&gt;&lt;bib-entry-title/&gt;&lt;/i&gt;&lt;/cite&gt;</span></pre>
+<li>in the children of the <span class="icode"><span class="hl kwa">&lt;cite</span><span class="hl kwa">&gt;</span></span> node, for example:
+  <pre class="code-xml"><span class="hl kwa">&lt;cite</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;bib-entry-author</span><span class="hl kwa">/&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;bib-entry-title</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/cite</span><span class="hl kwa">&gt;</span></pre>
 </li>
-<li>using the <span class="icode">format</span> attribute, for example:
-  <pre class="code-xml"><span class="hl kwa">&lt;cite</span> <span class="hl kwb">format</span>=<span class="hl str">&quot;$(author): $(title)&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;entryid&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<li>using the <span class="icode"><span class="hl std">format</span></span> attribute, for example:
+  <pre class="code-xml"><span class="hl kwa">&lt;cite</span><span class="hl std"> </span><span class="">format</span><span class="hl std">=</span><span class="hl str">&quot;$(author): $(title)&quot;</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;entryid&quot;</span><span class="hl kwa">/&gt;</span></pre>
 </li>
-<li>setting <span class="icode">cite-format</span> in the environment, for example in the header
+<li>setting <span class="icode"><span class="hl std">cite-format</span></span> in the environment, for example in the header
   of the page/article:
-  <pre class="code-xml"><span class="hl kwa">&lt;cite-format&gt;&lt;bib-entry-author/&gt;</span>, <span class="hl kwa">&lt;i&gt;&lt;bib-entry-title/&gt;&lt;/i&gt;&lt;/cite-format&gt;</span></pre>
+  <pre class="code-xml"><span class="hl kwa">&lt;cite-format</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;bib-entry-author</span><span class="hl kwa">/&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;bib-entry-title</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/cite-format</span><span class="hl kwa">&gt;</span></pre>
 </li>
 </ul>
 <p>
-These examples will display the contents of the fields <span class="icode">author</span> and <span class="icode">title</span>
+These examples will display the contents of the fields <span class="icode"><span class="hl std">author</span></span> and <span class="icode"><span class="hl std">title</span></span>
 of the entry as text for the reference link.
 </p>
-<p>The default format is <span class="icode">[<span class="hl kwa">&lt;bib-entry-rank/&gt;</span>]</span>.</p>
+<p>The default format is <span class="icode"><span class="hl std">[</span><span class="hl kwa">&lt;bib-entry-rank</span><span class="hl kwa">/&gt;</span><span class="hl std">]</span></span>.</p>
 <p>The rank is the position of the item in its bibliography.</p>
 <p>
 To include the complete list of entries of a bibliography, use the following node:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;bibliography/&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;bibliography</span><span class="hl kwa">/&gt;</span></pre>
 <p>
-The attribute <span class="icode"><span class="hl kwb">name</span>=<span class="hl str">&quot;...&quot;</span></span> can be used to specify the name of the bibliography to
+The attribute <span class="icode"><span class="hl std">name=&quot;...&quot;</span></span> can be used to specify the name of the bibliography to
 insert. Default name is &quot;default&quot;.
 </p>
 <p>
-The <span class="icode"><span class="hl kwa">&lt;bibliography&gt;</span></span> node will reduced into the list of its entries,
-each entry being inserted using the <span class="icode">bib_entry.tmpl</span> template. You can use
-the <span class="icode">bib_entry.tmpl</span> file included as an example. You will have to place it in your stog
+The <span class="icode"><span class="hl kwa">&lt;bibliography</span><span class="hl kwa">&gt;</span></span> node will reduced into the list of its entries,
+each entry being inserted using the <span class="icode"><span class="hl std">bib_entry.tmpl</span></span> template. You can use
+the <span class="icode"><span class="hl std">bib_entry.tmpl</span></span> file included as an example. You will have to place it in your stog
 template directory.
 </p>
 </div>
@@ -218,212 +224,12 @@ template directory.
 
 
 
-<p class="alert alert-info">
-For information you can see the <a href="#pagesource"> source code of the page</a>.
-</p>
-<div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Stog-writing&quot;</span>
-<span class="hl kwb">navbar-plugins</span>=<span class="hl str">&quot;active&quot;</span>
-<span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;contents&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-This plugin adds new rewrite rules to use the following elements in your pages:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#footnotes&quot;</span><span class="hl kwa">/&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#biblio&quot;</span><span class="hl kwa">/&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;download&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Download&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;alert alert-info&quot;</span><span class="hl kwa">&gt;</span>
-Stog-writing is available in <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://opam.ocaml.org/&quot;</span><span class="hl kwa">&gt;</span>Opam<span class="hl kwa">&lt;/ext-a&gt;</span>.
-With opam installed, just type the following command to install stog-writing:
-<span class="hl kwa">&lt;command-line&gt;</span>opam install stog-writing<span class="hl kwa">&lt;/command-line&gt;</span>
-<span class="hl kwa">&lt;/div&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Stog-writing is <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/stog-writing&quot;</span><span class="hl kwa">&gt;</span>hosted on Github<span class="hl kwa">&lt;/ext-a&gt;</span>.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;releases&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Releases&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-writing-0.10.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.10.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2014</span>/<span class="hl num">01</span>/<span class="hl num">21</span>]:
-  <span class="hl kwa">&lt;ul&gt;</span>
-    <span class="hl kwa">&lt;li&gt;</span>Upgrade to new Stog <span class="hl num">0.10.0</span> architecture,<span class="hl kwa">&lt;/li&gt;</span>
-    <span class="hl kwa">&lt;li&gt;</span>Add class for footnote links,<span class="hl kwa">&lt;/li&gt;</span>
-    <span class="hl kwa">&lt;li&gt;</span>Handle multiple references in <span class="hl kwa">&lt;rule&gt;</span>cite<span class="hl kwa">&lt;/rule&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-    <span class="hl kwa">&lt;li&gt;</span>Apply base rules when bulding bib entries,<span class="hl kwa">&lt;/li&gt;</span>
-    <span class="hl kwa">&lt;li&gt;</span>Use template <span class="hl kwa">&lt;code&gt;</span>bib-entry.tmpl<span class="hl kwa">&lt;/code&gt;</span>
-        instead of <span class="hl kwa">&lt;code&gt;</span>bib_entry.tmpl<span class="hl kwa">&lt;/code&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-    <span class="hl kwa">&lt;li&gt;</span>Fix: generate paragraph link code even for paragraphs with predefined ids,<span class="hl kwa">&lt;/li&gt;</span>
-    <span class="hl kwa">&lt;li&gt;</span>Simplify auto id generation.<span class="hl kwa">&lt;/li&gt;</span>
-  <span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-writing-0.8.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.8.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>/<span class="hl num">03</span>/<span class="hl num">19</span>]: Upgrade to Stog <span class="hl num">0.8.0</span>.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-writing-0.7.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.7.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>/<span class="hl num">02</span>/<span class="hl num">13</span>]: Minor fixes.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-writing-0.6.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.6</span><span class="hl kwa">&lt;/a&gt;</span>: First numbered release.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;/subsection&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
-
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;install&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Installation and usage&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-To install:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;command-line&gt;</span>
-git clone git@github.com:zoggy/stog-writing.git
-cd stog-writing
-make all install
-<span class="hl kwa">&lt;/command-line&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-(you must have <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://cristal.inria.fr/~fpottier/menhir/&quot;</span><span class="hl kwa">&gt;</span>Menhir<span class="hl kwa">&lt;/ext-a&gt;</span> installed).
-This will install the <span class="hl kwa">&lt;icode&gt;</span>stog-writing<span class="hl kwa">&lt;/icode&gt;</span> package with ocamlfind.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-To use:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;command-line&gt;</span>
-stog --package stog-writing ...
-<span class="hl kwa">&lt;/command-line&gt;</span>
-
-<span class="hl kwa">&lt;/section&gt;</span>
-
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;footnotes&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Footnotes&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Footnotes are defined with the following syntax:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hxml&gt;&lt;note&gt;</span>...<span class="hl kwa">&lt;/note&gt;&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-As usual, you can put any xml in the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>note<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node, it will be
-rewritten using the current environment.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-For this to work, all the XML tree containing notes must be
-included in a node
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hxml&gt;</span>
-<span class="hl kwa">&lt;prepare-notes&gt;</span>
-  ...
-<span class="hl kwa">&lt;/prepare-notes&gt;</span>
-<span class="hl kwa">&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-At last, all footnotes are inserted when a <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>notes/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node is encountered.
-Numbering is automatic.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Example:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hxml&gt;</span>
-<span class="hl kwa">&lt;prepare-notes&gt;</span>
-    ...
-    bla bla bla<span class="hl kwa">&lt;note&gt;</span>Hey, this is a footnote<span class="hl kwa">&lt;/note&gt;</span>.
-    ...
-    pim pam poum<span class="hl kwa">&lt;note&gt;</span>This is a second note.<span class="hl kwa">&lt;/note&gt;</span>.
-    ...
-    <span class="hl kwa">&lt;notes/&gt;</span>
-<span class="hl kwa">&lt;/prepare-notes&gt;</span>
-<span class="hl kwa">&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
-
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;biblio&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Bibliography&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;definebib&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Defining bibliographies&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Bibliographies can be defined in any element header, with the following syntax:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hxml&gt;</span>&lt;![CDATA[
-<span class="hl kwa">&lt;bibliographies</span> ...<span class="hl kwa">&gt;</span>
-  <span class="hl kwa">&lt;bibliography</span> ...<span class="hl kwa">/&gt;</span>
-  <span class="hl kwa">&lt;bibliography</span> ...<span class="hl kwa">/&gt;</span>
-  ...
-<span class="hl kwa">&lt;/bibliographies&gt;</span>
-]]<span class="hl kwa">&gt;&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>bibliographies<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node can have the following attributes:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ixml&gt;</span><span class="hl kwb">sort</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&lt;/ixml&gt;</span>:
-  the items in each bibliography will be sorted by default, according
-  to the given list of comma-separated fields,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ixml&gt;</span><span class="hl kwb">reverse</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&lt;/ixml&gt;</span>:
-   the items in each bibliography will be sorted in reverse order,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ixml&gt;</span><span class="hl kwb">prefix</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&lt;/ixml&gt;</span>:
-   a default string to use as prefix for ids of entries read from bibtex files.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Each <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>bibliography<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node can have the following attributes:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ixml&gt;</span><span class="hl kwb">name</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&lt;/ixml&gt;</span>:
-   the name of the bibliography, for further reference; default name is <span class="hl str">&quot;default&quot;</span>;
-              each bibliography must have a site-wide unique name,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ixml&gt;</span><span class="hl kwb">files</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&lt;/ixml&gt;</span>:
-   a comma-separated list of filenames, in bibtex format;
-   filenames are relative to the element source file,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ixml&gt;</span>sort<span class="hl kwa">&lt;/ixml&gt;</span>, <span class="hl kwa">&lt;ixml&gt;</span>reverse<span class="hl kwa">&lt;/ixml&gt;</span> and <span class="hl kwa">&lt;ixml&gt;</span>prefix<span class="hl kwa">&lt;/ixml&gt;</span>:
-  can be used to override the same attributes of the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>bibliographies<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node.
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Using attribute <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwb">bib-files</span>=<span class="hl str">&quot;file1.bib,file2.bib,...&quot;</span><span class="hl kwa">&lt;/ixml&gt;</span> in an element
-header is a shortcut for
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hxml&gt;</span>
-<span class="hl kwa">&lt;bibliographies&gt;</span>
-  <span class="hl kwa">&lt;bibliography</span> <span class="hl kwb">files</span>=<span class="hl str">&quot;file1.bib,file2.bib,...&quot;</span><span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;/bibliographies&gt;</span>
-<span class="hl kwa">&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;/subsection&gt;</span>
-
-<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;usingbib&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Using bibliographies&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-In your pages and posts, you can use this syntax to cite an entry:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hxml&gt;</span>
-    <span class="hl kwa">&lt;cite</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;entryid&quot;</span><span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The format of the reference can be set by various means, in order of priority:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>in the children of the <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>cite<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node, for example:
-  <span class="hl kwa">&lt;hxml&gt;&lt;cite</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;&lt;bib-entry-author/&gt;</span>, <span class="hl kwa">&lt;i&gt;&lt;bib-entry-title/&gt;&lt;/i&gt;&lt;/cite&gt;&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>using the <span class="hl kwa">&lt;ixml&gt;</span>format<span class="hl kwa">&lt;/ixml&gt;</span> attribute, for example:
-  <span class="hl kwa">&lt;hxml&gt;&lt;cite</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;entryid&quot;</span> <span class="hl kwb">format</span>=<span class="hl str">&quot;$(author): $(title)&quot;</span><span class="hl kwa">/&gt;&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>setting <span class="hl kwa">&lt;ixml&gt;</span>cite-format<span class="hl kwa">&lt;/ixml&gt;</span> in the environment, for example in the header
-  of the page/article:
-  <span class="hl kwa">&lt;hxml&gt;&lt;cite-format&gt;&lt;bib-entry-author/&gt;</span>, <span class="hl kwa">&lt;i&gt;&lt;bib-entry-title/&gt;&lt;/i&gt;&lt;/cite-format&gt;&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-These examples will display the contents of the fields <span class="hl kwa">&lt;ixml&gt;</span>author<span class="hl kwa">&lt;/ixml&gt;</span> and <span class="hl kwa">&lt;ixml&gt;</span>title<span class="hl kwa">&lt;/ixml&gt;</span>
-of the entry as text for the reference link.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>The default format is <span class="hl kwa">&lt;ixml&gt;</span>[<span class="hl kwa">&lt;bib-entry-rank/&gt;</span>]<span class="hl kwa">&lt;/ixml&gt;</span>.<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>The rank is the position of the item in its bibliography.<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-To include the complete list of entries of a bibliography, use the following node:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hxml&gt;&lt;bibliography/&gt;&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The attribute <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwb">name</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&lt;/ixml&gt;</span> can be used to specify the name of the bibliography to
-insert. Default name is <span class="hl str">&quot;default&quot;</span>.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The <span class="hl kwa">&lt;ixml&gt;</span><span class="hl kwd">&amp;lt;</span>bibliography<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ixml&gt;</span> node will reduced into the list of its entries,
-each entry being inserted using the <span class="hl kwa">&lt;icode&gt;</span>bib_entry.tmpl<span class="hl kwa">&lt;/icode&gt;</span> template. You can use
-the <span class="hl kwa">&lt;icode&gt;</span>bib_entry.tmpl<span class="hl kwa">&lt;/icode&gt;</span> file included as an example. You will have to place it in your stog
-template directory.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/subsection&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
-<span class="hl kwa">&lt;/contents&gt;</span>
-<span class="hl kwa">&lt;/page&gt;</span></pre>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h14</div>
 </div>
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
 
 </div> 
 </body>

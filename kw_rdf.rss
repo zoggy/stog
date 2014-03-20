@@ -1,6 +1,25 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0"><channel><title>Stog: rdf</title><link>http://zoggy.github.io/stog/kw_rdf.html</link><description>Static blog and web site generator</description><managingEditor>foo@bar.com</managingEditor><pubDate>27 Sep 2013 00:00:00 +0000</pubDate><lastBuildDate>27 Sep 2013 00:00:00 +0000</lastBuildDate><generator>Stog</generator><image><url>http://zoggy.github.io/stog</url><title>Stog</title><link>http://zoggy.github.io/stog</link></image><item><title>Stog-rdf 0.9.0</title><link>http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html</link><description>
+<!DOCTYPE HTML>
+<rss version="2.0">
+       <channel>
+         <title>Stog : rdf</title>
+         <link>http://zoggy.github.io/stog</link>
+         <description>Static blog and web site generator</description>
+         <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>20 Mar 2014 14:14:01 +0000</lastBuildDate>
+         <generator>Stog</generator>
+         <div class="img"><img class="img" src="" width=""/><div class="legend"><url>http://zoggy.github.io/stog/logo.png</url>
+           <title>Stog</title><link>http://zoggy.github.io/stog</link>
+         </div></div>
+         <item>
+      <title>Stog-rdf 0.9.0</title>
+      <link>http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html</link>
+      <description>
 &lt;p&gt;
-Release 0.9.0 of stog-rdf is available from the &lt;page href=&quot;plugins/rdf&quot;/&gt; page.
+Release 0.9.0 of stog-rdf is available from the &lt;a href=&quot;http://zoggy.github.io/stog/plugins/rdf.html&quot;&gt;Stog-rdf&lt;/a&gt; page.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description><pubDate>27 Sep 2013 00:00:00 +0000</pubDate><category>stog-rdf</category><category>release</category><category>rdf</category><category>sparql</category><guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html</guid></item></channel></rss>
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>27 Sep 2013 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html</guid>
+    </item>
+       </channel>
+     </rss>

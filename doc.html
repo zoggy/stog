@@ -31,6 +31,7 @@
 <div id="header">
   
   
+  
   <div class="page-title">Documentation</div>
 </div>
 
@@ -39,8 +40,8 @@
 
 <div class="alert alert-warning">
 We assume Stog was correctly installed (see <a href="http://zoggy.github.io/stog/install.html">Installation</a>)
-and the <span class="icode">stog</span> and <span class="icode">stog-ocaml-session</span>
-executables are in your <span class="icode">PATH</span>.
+and the <span class="icode"><span class="hl std">stog</span></span> and <span class="icode"><span class="hl std">stog-ocaml-session</span></span>
+executables are in your <span class="icode"><span class="hl std">PATH</span></span>.
 </div>
 
 <div class="section"><div class="section-title" id="aa43-170c-c948-91e5">General considerations</div>
@@ -51,8 +52,8 @@ All text is assumed to be UTF-8.
 <ul class="toc">
 <li><a href="http://zoggy.github.io/stog/5-minutes.html">Start using Stog in 5 minutes</a></li>
 <li><a href="http://zoggy.github.io/stog/overview.html">Overview</a></li>
-<li><a href="http://zoggy.github.io/stog/stog-elements.html">Stog elements</a></li>
-<li><a href="http://zoggy.github.io/stog/stog-main-element.html">Stog main element</a></li>
+<li><a href="http://zoggy.github.io/stog/stog-documents.html">Stog documents</a></li>
+<li><a href="http://zoggy.github.io/stog/stog-main-document.html">Stog main document</a></li>
 <li><a href="http://zoggy.github.io/stog/running.html">Running Stog</a></li>
 <li><a href="http://zoggy.github.io/stog/engine.html">Evaluation and templating</a></li>
 <li><a href="http://zoggy.github.io/stog/atts-functions.html">Attributes and functions</a></li>
@@ -78,47 +79,50 @@ All text is assumed to be UTF-8.
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Documentation&quot;</span>
-<span class="hl kwb">navbar-doc</span>=<span class="hl str">&quot;active&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;alert alert-warning&quot;</span><span class="hl kwa">&gt;</span>
-We assume Stog was correctly installed (see <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;/install&quot;</span><span class="hl kwa">/&gt;</span>)
-and the <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> and <span class="hl kwa">&lt;icode&gt;</span>stog-ocaml-session<span class="hl kwa">&lt;/icode&gt;</span>
-executables are in your <span class="hl kwa">&lt;icode&gt;</span>PATH<span class="hl kwa">&lt;/icode&gt;</span>.
-<span class="hl kwa">&lt;/div&gt;</span>
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Documentation&quot;</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;alert alert-warning&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+We assume Stog was correctly installed (see </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;/install&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">)
+and the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> and </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog-ocaml-session</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
+executables are in your </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">PATH</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;General considerations&quot;</span><span class="hl kwa">&gt;</span>
-All text is assumed to be UTF-<span class="hl num">8</span>.
-<span class="hl kwa">&lt;/section&gt;</span>
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;General considerations&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+All text is assumed to be UTF-8.
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Topics&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;ul</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;toc&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;5-minutes&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;overview&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-elements&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-main-element&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;running&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;engine&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;atts-functions&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;funs&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;writing_plugins&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;odoc&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;latex2stog&quot;</span><span class="hl kwa">/&gt;&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;site-url/&amp;gt;/ref-doc/index.html&quot;</span><span class="hl kwa">&gt;</span>Library reference documentation<span class="hl kwa">&lt;/a&gt;&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Topics&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;toc&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;5-minutes&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;overview&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-documents&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-main-document&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;running&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;engine&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;atts-functions&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;funs&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;writing_plugins&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;odoc&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;latex2stog&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;site-url/&amp;gt;/ref-doc/index.html&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Library reference documentation</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Presentations&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span><span class="hl num">2013</span>/<span class="hl num">04</span>/<span class="hl num">23</span>: <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;slides/2013_04_23_inria&quot;</span><span class="hl kwa">&gt;</span>Talk about Stog at INRIA<span class="hl kwa">&lt;/elt&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
-<span class="hl kwa">&lt;/page&gt;</span></pre>
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Presentations&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">2013/04/23: </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;slides/2013_04_23_inria&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Talk about Stog at INRIA</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
 </div>
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

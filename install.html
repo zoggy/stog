@@ -31,6 +31,7 @@
 <div id="header">
   
   
+  
   <div class="page-title">Installation</div>
 </div>
 
@@ -48,8 +49,8 @@ To build Stog, you will need:
 <li><span class="ext-a"><a href="http://config-file.forge.ocamlcore.org/">Config-file &gt;= 1.1</a></span>.</li>
 <li><span class="ext-a"><a href="http://erratique.ch/software/xmlm">Xmlm &gt;= 1.1.0</a></span>,</li>
 <li><span class="ext-a"><a href="http://projects.camlcity.org/projects/ocamlnet.html">OCamlnet &gt;= 3.6</a></span>.</li>
-<li><span class="ext-a"><a href="http://zoggy.github.com/ocamlrss/">OCaml-RSS &gt;= 2.2.2</a></span>,</li>
-<li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl &gt;= 0.8</a></span>.</li>
+<li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl &gt;= 0.8</a></span>,</li>
+<li><span class="ext-a"><a href="http://zoggy.github.io/higlo/">Higlo &gt;= 0.2</a></span>.</li>
 </ul>
 <p>
 You will need to have the following tools installed to use
@@ -57,7 +58,8 @@ some functions:
 </p>
 <ul>
 <li><span class="ext-a"><a href="http://www.andre-simon.de/doku/highlight/en/highlight.html">highlight</a></span>
-to use syntax highlighting,</li>
+to use syntax highlighting for languages not support by
+<span class="ext-a"><a href="http://zoggy.github.io/higlo/">Higlo</a></span>,</li>
 <li>LaTeX and <span class="ext-a"><a href="http://dvisvgm.sourceforge.net/">dvisvgm</a></span> to embed
 LaTeX in your pages.</li>
 </ul>
@@ -76,79 +78,133 @@ $ opam <span class="hl kwc">install</span> stog</pre>
 
 <div class="section"><div class="section-title" id="download">From the sources</div>
 <p>Get the sources from git repository:</p>
-<pre class="code-sh">git clone https<span class="hl opt">://</span>github.com<span class="hl opt">/</span>zoggy<span class="hl opt">/</span>stog.git</pre>
+<pre class="code-sh">$ git clone https<span class="hl opt">://</span>github.com<span class="hl opt">/</span>zoggy<span class="hl opt">/</span>stog.git</pre>
 
 <p>Or pick one of the releases:</p>
 <ul>
-<li><a href="stog-0.10.0.tar.gz">0.10.0</a> [2014-01-21]:
-  <ul id="changes0.10.0">
+
+
+<li><a href="stog-0.11.0.tar.gz">0.11.0</a>
+<span class="date">[March 20, 2014]</span>
+<ul id="changes-0.11.0">
+<li>the term &quot;element&quot; is replaced by &quot;document&quot;, and all
+  <span class="icode"><span class="hl kwa">&lt;elt</span><span class="hl std">*</span><span class="hl kwa">&gt;</span></span> rules are replaced by <span class="icode"><span class="hl kwa">&lt;doc</span><span class="hl std">*</span><span class="hl kwa">&gt;</span></span> rules,</li>
+<li>the term &quot;human id&quot; is replaced by &quot;path&quot;. In all rules and
+  attributes, &quot;hid&quot; is replaced by &quot;path&quot;. The <span class="icode"><span class="hl kwa">&lt;doc-path</span><span class="hl kwa">&gt;</span></span> rule
+  is replace by <span class="icode"><span class="hl kwa">&lt;doc-navpath</span><span class="hl kwa">&gt;</span></span>,</li>
+<li>document path now includes the extension of the document's filename;
+  when referencing a document, the extension is only needed where
+  an ambiguity is possible between two documents whose paths differ
+  only by their extension,</li>
+<li>new rules <a href="http://zoggy.github.io/stog/module_base.html#as-cdata"><span class="icode"><span class="hl kwa">&lt;as-cdata</span><span class="hl kwa">&gt;</span></span></a>,
+  <a href="http://zoggy.github.io/stog/module_base.html#late-cdata"><span class="icode"><span class="hl kwa">&lt;late-cdata</span><span class="hl kwa">&gt;</span></span></a>,
+  <a href="http://zoggy.github.io/stog/module_base.html#date-now"><span class="icode"><span class="hl kwa">&lt;date-now</span><span class="hl kwa">&gt;</span></span></a>,
+  <a href="http://zoggy.github.io/stog/module_base.html#date-today"><span class="icode"><span class="hl kwa">&lt;date-today</span><span class="hl kwa">&gt;</span></span></a>,
+</li>
+<li>new option <a href="http://zoggy.github.io/stog/running.html#filter">--publish-only</a>,</li>
+<li>more generic way to define an alternative document when using
+  the <a href="http://zoggy.github.io/stog/module_base.html#documents"><span class="icode"><span class="hl kwa">&lt;documents</span><span class="hl kwa">&gt;</span></span></a> rule,</li>
+<li>new attribute <span class="icode"><span class="hl std">format=&quot;...&quot;</span></span> for rules
+  <span class="icode"><span class="hl kwa">&lt;date</span><span class="hl kwa">&gt;</span></span>, <span class="icode"><span class="hl kwa">&lt;datetime</span><span class="hl kwa">&gt;</span></span>,
+  <span class="icode"><span class="hl kwa">&lt;date-now</span><span class="hl kwa">&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;date-today</span><span class="hl kwa">&gt;</span></span>,</li>
+<li>defining twice the same id in a document is not an
+  error anymore but a warning is emitted,</li>
+<li>use Higlo syntax highlighter when possible,</li>
+<li><span class="icode"><span class="hl kwa">&lt;cut-doc</span><span class="hl kwa">&gt;</span></span>: add previous-path and next-path in definitions
+  of cut documents, to create navigation links,</li>
+<li>merge CData in resulting XML trees when computing documents,</li>
+<li>urls of <span class="icode"><span class="hl std">.../index.html</span></span> documents now include a final &quot;/&quot;,</li>
+<li>the new <span class="icode"><span class="hl kwa">&lt;stog-dir</span><span class="hl kwa">&gt;</span></span> rule is pre-defined to return the
+  absolute stog directory,</li>
+<li>(fix) compile and install <span class="icode"><span class="hl std">odoc_stog.cmo</span></span>,</li>
+<li>(fix) when creating by-topic, by-keyword and by-month documents,
+  update existing documents if they exist,</li>
+<li>(fix) default <span class="icode"><span class="hl std">doc-in-list.tmpl</span></span> template now handles
+  dependencies on listed documents,</li>
+<li>(fix) compile and install .cmxs files,</li>
+</ul>
+</li>
+
+
+
+<li><a href="stog-0.10.0.tar.gz">0.10.0</a>
+<span class="date">[January 21, 2014]</span>
+<ul id="changes-0.10.0">
 <li>Fix caching system,</li>
-<li>Use <span class="icode">||</span> instead of deprecated <span class="icode"><span class="hl kwa">or</span></span>.</li>
+<li>Use <span class="icode"><span class="hl std">||</span></span> instead of deprecated <span class="icode"><span class="hl kwb">or</span></span>.</li>
 <li>Change architecture of <a href="http://zoggy.github.io/stog/engine.html">engine</a>, introducing modules and fold-like
   rewrite rules (following Xtmpl library),
 </li>
-<li>Do not use the <span class="icode">main_</span> tag, but rather <span class="icode">dummy_</span>,</li>
-<li><span class="icode"><span class="hl kwa">&lt;inc&gt;</span></span> is now deprecated and replaced by
-  <a href="http://zoggy.github.io/stog/module_base.html#late-inc"><span class="icode"><span class="hl kwa">&lt;late-inc&gt;</span></span></a>,
+<li>Do not use the <span class="icode"><span class="hl std">main_</span></span> tag, but rather <span class="icode"><span class="hl std">dummy_</span></span>,</li>
+<li><span class="icode"><span class="hl kwa">&lt;inc</span><span class="hl kwa">&gt;</span></span> is now deprecated and replaced by
+  <a href="http://zoggy.github.io/stog/module_base.html#late-inc"><span class="icode"><span class="hl kwa">&lt;late-inc</span><span class="hl kwa">&gt;</span></span></a>,
 </li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#include"><span class="icode"><span class="hl kwa">&lt;include&gt;</span></span></a> and
-  <a href="http://zoggy.github.io/stog/module_base.html#late-inc"><span class="icode"><span class="hl kwa">&lt;late-inc&gt;</span></span></a> both
+<li><a href="http://zoggy.github.io/stog/module_base.html#include"><span class="icode"><span class="hl kwa">&lt;include</span><span class="hl kwa">&gt;</span></span></a> and
+  <a href="http://zoggy.github.io/stog/module_base.html#late-inc"><span class="icode"><span class="hl kwa">&lt;late-inc</span><span class="hl kwa">&gt;</span></span></a> both
   handle <code>depend</code>, <code>file</code>, <code>href</code>,
   <code>id</code>, <code>raw</code> and <code>subs-only</code> attributes,
 </li>
-<li>New rule <a href="http://zoggy.github.io/stog/module_base.html#cut"><span class="icode"><span class="hl kwa">&lt;cut-elt&gt;</span></span></a>
+<li>New rule <a href="http://zoggy.github.io/stog/module_base.html#cut"><span class="icode"><span class="hl kwa">&lt;cut-doc</span><span class="hl kwa">&gt;</span></span></a>
   to split a document into pieces according to some nodes (equivalent
   of Hevea's <span class="ext-a"><a href="http://para.inria.fr/~maranget/hevea/doc/cutname.html#hacha">Hacha</a></span>),
 </li>
-<li>Rules defined in elements now can use all attributes (parameters), with
+<li>Rules defined in documents now can use all attributes (parameters), with
   default values for the ones specified in rule definition,
 </li>
 <li>New option <a href="http://zoggy.github.io/stog/running.html#optionlocal"><code>--local</code></a>,</li>
-<li>New base rule <a href="http://zoggy.github.io/stog/module_base.html#elt-datetime"><span class="icode"><span class="hl kwa">&lt;elt-datetime&gt;</span></span></a>,</li>
-<li>New plugins: <a href="http://zoggy.github.io/stog/plugins/asy.html">Stog-asy</a>, <a href="http://zoggy.github.io/stog/plugins/dot.html">Stog-dot</a> and <a href="http://zoggy.github.io/stog/plugins/multi-elt.html">Stog-multi-elt</a>,</li>
+<li>New base rule <a href="http://zoggy.github.io/stog/module_base.html#doc-datetime"><span class="icode"><span class="hl kwa">&lt;doc-datetime</span><span class="hl kwa">&gt;</span></span></a>,</li>
+<li>New plugins: <a href="http://zoggy.github.io/stog/plugins/asy.html">Stog-asy</a>, <a href="http://zoggy.github.io/stog/plugins/dot.html">Stog-dot</a> and <a href="http://zoggy.github.io/stog/plugins/multi-doc.html">Stog-multi-doc</a>,</li>
 <li>New <code>show-without-ids</code> attribute for
-   <a href="http://zoggy.github.io/stog/module_base.html#toc"><span class="icode"><span class="hl kwa">&lt;prepare-toc&gt;</span></span></a>
+   <a href="http://zoggy.github.io/stog/module_base.html#toc"><span class="icode"><span class="hl kwa">&lt;prepare-toc</span><span class="hl kwa">&gt;</span></span></a>
    to handle sections without id,</li>
-<li>New rules <a href="http://zoggy.github.io/stog/posts/ocaml-printf.html"><span class="icode"><span class="hl kwa">&lt;ocaml-printf&gt;</span></span></a>,
-    <a href="http://zoggy.github.io/stog/module_base.html#as-xml"><span class="icode"><span class="hl kwa">&lt;as-xml&gt;</span></span></a>, and
-    <a href="http://zoggy.github.io/stog/module_base.html#prefix-svg-ids"><span class="icode"><span class="hl kwa">&lt;prefix-svg-ids&gt;</span></span></a>,
+<li>New rules <a href="http://zoggy.github.io/stog/posts/ocaml-printf.html"><span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span></a>,
+    <a href="http://zoggy.github.io/stog/module_base.html#as-xml"><span class="icode"><span class="hl kwa">&lt;as-xml</span><span class="hl kwa">&gt;</span></span></a>, and
+    <a href="http://zoggy.github.io/stog/module_base.html#prefix-svg-ids"><span class="icode"><span class="hl kwa">&lt;prefix-svg-ids</span><span class="hl kwa">&gt;</span></span></a>,
 </li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#latex"><span class="icode"><span class="hl kwa">&lt;latex&gt;</span></span></a> rule now uses
+<li><a href="http://zoggy.github.io/stog/module_base.html#latex"><span class="icode"><span class="hl kwa">&lt;latex</span><span class="hl kwa">&gt;</span></span></a> rule now uses
   <code>latex-packages</code> Stog environment variable
   if no <code>package</code> attribute is given,
 </li>
 <li>New <a href="http://zoggy.github.io/stog/latex2stog.html">LaTeX to Stog</a> translator, not finished yet.</li>
 </ul>
 </li>
-<li><a href="stog-0.9.0.tar.gz">0.9.0</a> [2013-09-24]:
-  <ul id="changes0.9.0">
-<li>New option follow-symlinks in <span class="icode">.stog/config</span> to follow symlinks
+
+
+
+<li><a href="stog-0.9.0.tar.gz">0.9.0</a>
+<span class="date">[September 24, 2013]</span>
+<ul id="changes-0.9.0">
+<li>New option follow-symlinks in <span class="icode"><span class="hl std">.stog/config</span></span> to follow symlinks
   or not when building the file and directory source tree,</li>
-<li>For elements with doctype=html, prevent self-closing of tags, except
-    <span class="ext-a"><a href="http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements">HTML5 void elements</a></span>,</li>
-<li>New <a href="http://zoggy.github.io/stog/odoc.html">ocamldoc generator</a> (<span class="icode">odoc_stog.cm{o,xs}</span>)
+<li>For documents with doctype=html, prevent self-closing of tags, except
+    <span class="ext-a"><a href="http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-documents">HTML5 void documents</a></span>,</li>
+<li>New <a href="http://zoggy.github.io/stog/odoc.html">ocamldoc generator</a> (<span class="icode"><span class="hl std">odoc_stog.cm{o,xs}</span></span>)
     to embed ocamldoc-generated documentation into sites generated with stog,</li>
-<li><span class="icode">&lt;elt-*&gt;</span> predefined functions handle a
-    <span class="icode"><span class="hl kwb">elt-hid</span>=<span class="hl str">&quot;hid of element&quot;</span></span> attribute, to access information about
-    another element rather than the current one,</li>
-<li>Fix <a href="http://zoggy.github.io/stog/module_base.html#ocaml-eval">ocaml-eval</a>: use return of <span class="icode">Toploop.execute_phrase</span>
-    to consider catched exceptions as errors if <span class="icode"><span class="hl kwb">error-exc</span>=<span class="hl str">&quot;true&quot;</span></span>,</li>
+<li><span class="icode"><span class="hl std">&lt;doc-*&gt;</span></span> predefined functions handle a
+    <span class="icode"><span class="hl std">doc-hid=&quot;hid of document&quot;</span></span> attribute, to access information about
+    another document rather than the current one,</li>
+<li>Fix <a href="http://zoggy.github.io/stog/module_base.html#ocaml-eval">ocaml-eval</a>: use return of <span class="icode"><span class="hl std">Toploop.execute_phrase</span></span>
+    to consider catched exceptions as errors if <span class="icode"><span class="hl std">error-exc=&quot;true&quot;</span></span>,</li>
 <li>Fix: allow list of CDATA in ocaml code,</li>
-<li>New <a href="http://zoggy.github.io/stog/running.html#optiondef"><span class="icode">--def</span> command-line option</a>
+<li>New <a href="http://zoggy.github.io/stog/running.html#optiondef"><span class="icode"><span class="hl std">--def</span></span> command-line option</a>
     to define a global rule on command line,</li>
-<li>New <a href="http://zoggy.github.io/stog/module_base.html#elt-path">elt-path</a> rule, to create a navigation bar,</li>
+<li>New <a href="http://zoggy.github.io/stog/module_base.html#doc-navpath">doc-navpath</a> rule, to create a navigation bar,</li>
 <li>Fix Malformed_URL bug when generating with a site-url having an empty path,</li>
 <li><a href="http://zoggy.github.io/stog/module_base.html#hcode">hcode</a> and <a href="http://zoggy.github.io/stog/module_base.html#icode">icode</a> now keep id attribute
-    in <span class="icode"><span class="hl kwa">&lt;pre&gt;</span></span> or <span class="icode"><span class="hl kwa">&lt;span&gt;</span></span> resulting element,</li>
+    in <span class="icode"><span class="hl kwa">&lt;pre</span><span class="hl kwa">&gt;</span></span> or <span class="icode"><span class="hl kwa">&lt;span</span><span class="hl kwa">&gt;</span></span> resulting document,</li>
 <li><a href="http://zoggy.github.io/stog/module_base.html#late-inc">Module Base</a> handles id attribute to redefine the id of the included node,</li>
-<li>New <span class="icode">filter</span> attribute for the <a href="http://zoggy.github.io/stog/module_base.html#elements">elements</a> rule,</li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#elements">elements</a> handles ','- or ';'-separated list of element types.</li>
+<li>New <span class="icode"><span class="hl std">filter</span></span> attribute for the <a href="http://zoggy.github.io/stog/module_base.html#documents">documents</a> rule,</li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#documents">documents</a> handles ','- or ';'-separated list of document types.</li>
 </ul>
 </li>
-<li><a href="stog-0.8.0.tar.gz">0.8.0</a> [2013-03-19]:
-  <ul id="changes0.8.0">
+
+
+
+<li><a href="stog-0.8.0.tar.gz">0.8.0</a>
+<span class="date">[March 19, 2013]</span>
+<ul id="changes-0.8.0">
 <li>now depends on <span class="ext-a"><a href="http://zoggy.github.com/ocamlrss/">ocamlrss</a></span> &gt;= 2.1.0,</li>
-<li>handle <code>stog:archived-elts</code> to indicate the types of elements appearing
+<li>handle <code>stog:archived-docs</code> to indicate the types of documents appearing
     in archive tree,</li>
 <li>do not issue twice the same warning message,</li>
 <li>&lt;latex&gt; uses <code>latex-svg-scale</code>
@@ -156,8 +212,12 @@ $ opam <span class="hl kwc">install</span> stog</pre>
 </li>
 </ul>
 </li>
-<li><a href="stog-0.7.0.tar.gz">0.7.0</a> [2013-02-13]:
-  <ul id="changes">
+
+
+
+<li><a href="stog-0.7.0.tar.gz">0.7.0</a>
+<span class="date">[February 13, 2013]</span>
+<ul id="changes-0.7.0">
 <li>mod: split (un)install target into (un)install-lib and (un)install-bin,</li>
 <li>add: -I and -package options to stog-ocaml-session,</li>
 <li>add: new scripts mk-stog, mk-stog.byte, mk-stog-ocaml-session
@@ -169,30 +229,46 @@ $ opam <span class="hl kwc">install</span> stog</pre>
 <li>mod: use ocamlfind to compile.</li>
 </ul>
 </li>
-<li><a href="stog-0.6.1.tar.gz">0.6.1</a> [2013-01-17]: Fix version number META file and remove Pcre useless dependency in Makefile and META.</li>
-<li><a href="stog-0.6.tar.gz">0.6</a> [2013-01-16]:
-<ul>
-<li>mod: do not write the config file if it already exists,</li>
-<li>add: <span class="icode">&lt;elements&gt;</span> node handles <span class="icode">reverse=&quot;false&quot;</span> attribute not to
-    reverse order of elements (which is default, i.e. the more recent first),</li>
-<li>mod: better cache system, using dependencies of each element on other
-    elements and files; also handles the stog environment used to compute
-    elements in cache, so that a change in the stog environment will
-    make all elements recomputed (for example when language changes),</li>
-<li>add: a rule using a file or another element must add a dependency from
-    the computed element to the element or file it depends on, using
-    <a href="ref-doc/Stog_plug.html#VALadd_dep"><span class="icode">Stog_plug.add_dep</span></a>,</li>
-<li>add: <span class="icode">&lt;include&gt;</span> now handles a <span class="icode">depend=&quot;false&quot;</span> attribute, to prevent
-    adding a dependency of the element on the included file,</li>
-<li>add: <span class="icode">--depcut</span> option, used when getting cached elements, to use
-    only one level of dependency between elements; this is useful
-    for example in case the site has a menubar, leading to having
-    almost all elements depending on almost all elements.</li>
+
+
+
+<li><a href="stog-0.6.1.tar.gz">0.6.1</a>
+<span class="date">[January 17, 2013]</span>
+<ul id="changes-0.6.1">
+<li>fix version number META file,</li>
+<li>remove Pcre useless dependency in Makefile and META.</li>
 </ul>
 </li>
 
-<li><a href="stog-0.5.tar.gz">0.5</a> [2012-12-18]:
-<ul>
+
+
+<li><a href="stog-0.6.tar.gz">0.6</a>
+<span class="date">[January 16, 2013]</span>
+<ul id="changes-0.6">
+<li>mod: do not write the config file if it already exists,</li>
+<li>add: <span class="icode"><span class="hl std">&lt;documents&gt;</span></span> node handles <span class="icode"><span class="hl std">reverse=&quot;false&quot;</span></span> attribute not to
+    reverse order of documents (which is default, i.e. the more recent first),</li>
+<li>mod: better cache system, using dependencies of each document on other
+    documents and files; also handles the stog environment used to compute
+    documents in cache, so that a change in the stog environment will
+    make all documents recomputed (for example when language changes),</li>
+<li>add: a rule using a file or another document must add a dependency from
+    the computed document to the document or file it depends on, using
+    <a href="ref-doc/Stog_plug.html#VALadd_dep"><span class="icode"><span class="hl std">Stog_plug.add_dep</span></span></a>,</li>
+<li>add: <span class="icode"><span class="hl std">&lt;include&gt;</span></span> now handles a <span class="icode"><span class="hl std">depend=&quot;false&quot;</span></span> attribute, to prevent
+    adding a dependency of the document on the included file,</li>
+<li>add: <span class="icode"><span class="hl std">--depcut</span></span> option, used when getting cached documents, to use
+    only one level of dependency between documents; this is useful
+    for example in case the site has a menubar, leading to having
+    almost all documents depending on almost all documents.</li>
+</ul>
+</li>
+
+
+
+<li><a href="stog-0.5.tar.gz">0.5</a>
+<span class="date">[December 18, 2012]</span>
+<ul id="changes-0.5">
 <li>minor fixes (thanks to Gabriel Scherer),</li>
 <li>better error and warning messages (thanks to Gabriel Scherer),</li>
 <li>handle prefix in all xml nodes and attributes (upgrade to Xtmpl 0.5),</li>
@@ -200,54 +276,79 @@ $ opam <span class="hl kwc">install</span> stog</pre>
 <li>add: module system (not yet stable),</li>
 <li>add: new <a href="ref-doc/Stog_cache.html">caching system</a>, available for plugins too,</li>
 <li>add: <a href="ref-doc/Stog_plug.html#VALplugin_config_file">Stog_plug.plugin_config_file</a>,</li>
-<li>add: <a href="ref-doc/Stog_plug.html#VALregister_level_fun_on_elt_list">Stog_plug.register_level_fun_on_elt_list</a>
-    to register functions handling all elements at a time.</li>
+<li>add: <a href="ref-doc/Stog_plug.html#VALregister_level_fun_on_doc_list">Stog_plug.register_level_fun_on_doc_list</a>
+    to register functions handling all documents at a time.</li>
 <li>fix: add '.' after counters in section title,</li>
 <li>add: when a basic template is missing, create one and issue a warning;
-    these templates are: <code>page.tmpl</code>, <code>elt-in-list.tmpl</code>,
+    these templates are: <code>page.tmpl</code>, <code>doc-in-list.tmpl</code>,
     <code>by-keyword.tmpl</code>, <code>by-topic.tmpl</code>, <code>keyword.tmpl</code>,
     <code>topic.tmpl</code>, <code>by-month.tmpl</code>.
 </li>
 </ul>
 </li>
-<li><a href="stog-0.4.tar.gz">0.4</a> [2012-11-21]:
-<ul>
-<li>handle relative paths in <span class="icode">&lt;include&gt;</span>, when starting with
-  <span class="icode">.</span> or <span class="icode">..</span>,</li>
+
+
+
+<li><a href="stog-0.4.tar.gz">0.4</a>
+<span class="date">[November 22, 2012]</span>
+<ul id="changes-0.4">
+<li>handle relative paths in <span class="icode"><span class="hl std">&lt;include&gt;</span></span>, when starting with
+  <span class="icode"><span class="hl std">.</span></span> or <span class="icode"><span class="hl std">..</span></span>,</li>
 <li>use a separate tool to evaluate ocaml code, &quot;stog-ocaml-session&quot;;
    this allows to use native code version of stog even when evaluating
    ocaml code; it also makes possible to use distinct ocaml toplevels in
    ocaml-eval (with session=&quot;...&quot;); details <a href="http://zoggy.github.io/stog/posts/ocaml-sessions.html">here</a>,</li>
-<li>add simple cache system, and option <span class="icode">--nocache</span>,</li>
-<li>new <span class="icode">&lt;inc&gt;</span> rule to include a block from another
-  element: <span class="icode"><span class="hl kwa">&lt;inc</span> <span class="hl kwb">elt-hid</span>=<span class="hl str">&quot;/install&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;blockid&quot;</span><span class="hl kwa">/&gt;</span></span>,
+<li>add simple cache system, and option <span class="icode"><span class="hl std">--nocache</span></span>,</li>
+<li>new <span class="icode"><span class="hl std">&lt;inc&gt;</span></span> rule to include a block from another
+  document: <span class="icode"><span class="hl kwa">&lt;inc</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;/install&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;blockid&quot;</span><span class="hl kwa">/&gt;</span></span>,
 </li>
-<li>ability to define &quot;functions&quot;, site-wide or element-wide,</li>
+<li>ability to define &quot;functions&quot;, site-wide or document-wide,</li>
 <li>handle blocks and counters,</li>
 <li>sectionning now uses blocks and counters,</li>
 <li>a &quot;sectionning&quot; attribute is used to determine which nodes are used for
-  sectionning an element; default is &quot;section,subsection&quot;,</li>
+  sectionning a document; default is &quot;section,subsection&quot;,</li>
 <li>verify references to blocks by id (sections, ...) and use their title in links,</li>
 <li>use &quot;id&quot; attribute instead of &quot;name&quot; attribute in sectionning tags,</li>
 <li>define and use levels of rules; plugins can extend the number of levels
     to define their own rewriting system.</li>
 </ul>
 </li>
-<li><a href="stog-0.3.tar.gz">0.3</a> [2012-08-30]:
-<ul>
+
+
+
+<li><a href="stog-0.3.tar.gz">0.3</a>
+<span class="date">[August 30, 2012]</span>
+<ul id="changes-0.3">
 <li>new stage 0 to allow plugins to change the stog structure before generating,</li>
-<li>new fields <span class="icode">elt_xml_doctype</span>, <span class="icode">elt_out</span> in
-<a href="http://zoggy.github.io/stog/ref-doc/Stog_types.html#TYPEelt"><span class="icode">elt type</span></a>,</li>
-<li>handle doctype attribute in element description,</li>
+<li>new fields <span class="icode"><span class="hl std">doc_xml_doctype</span></span>, <span class="icode"><span class="hl std">doc_out</span></span> in
+<a href="http://zoggy.github.io/stog/ref-doc/Stog_types.html#TYPEdoc"><span class="icode"><span class="hl std">doc type</span></span></a>,</li>
+<li>handle doctype attribute in document description,</li>
 <li>define and use stage1 and stage 2 functions for plugins,</li>
 <li>more .mlis file and comments in the library.</li>
 </ul>
 </li>
-<li><a href="stog-0.2.tar.gz">0.2</a> [2012-08-28]:
-Change the format of files, now all in XML. Config and templates are in <span class="icode">.stog</span>
-directory. Less templates required. User can define elements of any &quot;type&quot; (post, page, ...).
+
+
+
+<li><a href="stog-0.2.tar.gz">0.2</a>
+<span class="date">[August 28, 2012]</span>
+<ul id="changes-0.2">
+<li>change the format of files, now all in XML. Config and templates are in <span class="icode"><span class="hl std">.stog</span></span>
+directory,</li>
+<li>less templates required,</li>
+<li>user can define documents of any &quot;type&quot; (post, page, ...).</li>
+</ul>
 </li>
-<li><a href="stog-0.1.tar.gz">0.1</a> [2012-06-20]: Initial release.</li>
+
+
+
+<li><a href="stog-0.1.tar.gz">0.1</a>
+<span class="date">[June 20, 2012]</span>
+<p id="changes-0.1">
+Initial release.
+</p>
+</li>
+
 </ul>
 
 <div class="subsection"><div class="subsection-title" id="compilation">Compilation</div>
@@ -256,11 +357,15 @@ Just type
 </p>
 <pre class="code-sh"><span class="hl kwc">make</span> <span class="hl opt">&amp;&amp;</span> <span class="hl kwc">make install</span></pre>
 <p>
-This will install <span class="icode">stog</span>, <span class="icode">stog.byte</span>,
-<span class="icode">stog-ocaml-session</span>, <span class="icode">mk-stog</span>, <span class="icode">mk-stog.byte</span>
-and <span class="icode">mk-stog-ocaml-session</span> in the same directory as
-<span class="icode">ocamlc</span>. This will also install the <span class="icode">stog</span> library and the
-<span class="icode">stog.disqus</span> and <span class="icode">stog.markdown</span> plugins, with findlib.
+This will install <span class="icode"><span class="hl std">stog</span></span>, <span class="icode"><span class="hl std">stog.byte</span></span>,
+<span class="icode"><span class="hl std">stog-ocaml-session</span></span>, <span class="icode"><span class="hl std">mk-stog</span></span>, <span class="icode"><span class="hl std">mk-stog.byte</span></span>
+and <span class="icode"><span class="hl std">mk-stog-ocaml-session</span></span> in the same directory as
+<span class="icode"><span class="hl std">ocamlc</span></span>. This will also install the <span class="icode"><span class="hl std">stog</span></span> library and the
+<span class="icode"><span class="hl std">stog.asy</span></span>,
+<span class="icode"><span class="hl std">stog.disqus</span></span>,
+<span class="icode"><span class="hl std">stog.dot</span></span>,
+<span class="icode"><span class="hl std">stog.markdown</span></span> and
+<span class="icode"><span class="hl std">stog.multi-doc</span></span> plugins, with findlib.
 </p>
 </div>
 </div>
@@ -275,169 +380,109 @@ and <span class="icode">mk-stog-ocaml-session</span> in the same directory as
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Installation&quot;</span>
-<span class="hl kwb">navbar-install</span>=<span class="hl str">&quot;active&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;prepare-toc</span> <span class="hl kwb">depth</span>=<span class="hl str">&quot;2&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;toc&gt;&lt;/toc&gt;</span>
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;deps&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Dependencies&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Installation&quot;</span><span class="hl std">
+</span><span class="">navbar-install</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
+</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;error_</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">release</span><span class="hl kwb">&amp;gt;</span><span class="hl std">: missing version</span><span class="hl kwa">&lt;/error_</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-&amp;lt;version/&amp;gt;.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;version</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;span</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;date&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">[</span><span class="hl kwa">&lt;doc-date</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;release-&amp;lt;version/&amp;gt;&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">]</span><span class="hl kwa">&lt;/span</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;late-inc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;release-&amp;lt;version/&amp;gt;#changes&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;changes-&amp;lt;version/&amp;gt;&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/release</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;prepare-toc</span><span class="hl std"> </span><span class="">depth</span><span class="hl std">=</span><span class="hl str">&quot;2&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;toc</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/toc</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;deps&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Dependencies&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 To build Stog, you will need:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://caml.inria.fr/&quot;</span><span class="hl kwa">&gt;</span>OCaml <span class="hl kwa">&gt;</span>= <span class="hl num">4.00.1</span><span class="hl kwa">&lt;/ext-a&gt;</span> installed,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://config-file.forge.ocamlcore.org/&quot;</span><span class="hl kwa">&gt;</span>Config-file <span class="hl kwa">&gt;</span>= <span class="hl num">1.1</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://erratique.ch/software/xmlm&quot;</span><span class="hl kwa">&gt;</span>Xmlm <span class="hl kwa">&gt;</span>= <span class="hl num">1.1.0</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://projects.camlcity.org/projects/ocamlnet.html&quot;</span><span class="hl kwa">&gt;</span>OCamlnet <span class="hl kwa">&gt;</span>= <span class="hl num">3.6</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://zoggy.github.com/ocamlrss/&quot;</span><span class="hl kwa">&gt;</span>OCaml-RSS <span class="hl kwa">&gt;</span>= <span class="hl num">2.2.2</span><span class="hl kwa">&lt;/ext-a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span>Xtmpl <span class="hl kwa">&gt;</span>= <span class="hl num">0.8</span><span class="hl kwa">&lt;/ext-a&gt;</span>.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://caml.inria.fr/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml &gt;= 4.00.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> installed,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://config-file.forge.ocamlcore.org/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Config-file &gt;= 1.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://erratique.ch/software/xmlm&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xmlm &gt;= 1.1.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://projects.camlcity.org/projects/ocamlnet.html&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCamlnet &gt;= 3.6</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xtmpl &gt;= 0.8</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://zoggy.github.io/higlo/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Higlo &gt;= 0.2</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 You will need to have the following tools installed to use
 some functions:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://www.andre-simon.de/doku/highlight/en/highlight.html&quot;</span><span class="hl kwa">&gt;</span>highlight<span class="hl kwa">&lt;/ext-a&gt;</span>
-to use syntax highlighting,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>LaTeX and <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://dvisvgm.sourceforge.net/&quot;</span><span class="hl kwa">&gt;</span>dvisvgm<span class="hl kwa">&lt;/ext-a&gt;</span> to embed
-LaTeX in your pages.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://www.andre-simon.de/doku/highlight/en/highlight.html&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">highlight</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">
+to use syntax highlighting for languages not support by
+</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://zoggy.github.io/higlo/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Higlo</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">LaTeX and </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://dvisvgm.sourceforge.net/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">dvisvgm</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> to embed
+LaTeX in your pages.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;quickdebian&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Quick install with Opam&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The easiest way to install is to use  <span class="hl kwa">&lt;ext-a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;http://opam.ocaml.org&quot;</span><span class="hl kwa">&gt;</span>OPAM<span class="hl kwa">&lt;/ext-a&gt;</span>.
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;quickdebian&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Quick install with Opam&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+The easiest way to install is to use  </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://opam.ocaml.org&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OPAM</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.
 Install Opam, then, as a regular user, fetch and install an OCaml version and install Stog.
 The whole can be done with the following opam commands:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;command-line&gt;</span>
-$ opam init --comp=<span class="hl num">4.01</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
+$ opam init --comp=4.01
 $ opam update
 $ opam install stog
-<span class="hl kwa">&lt;/command-line&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+</span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;download&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;From the sources&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>Get the sources from git repository:<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;command-line&gt;</span>git clone https://github.com/zoggy/stog.git<span class="hl kwa">&lt;/command-line&gt;</span>
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;download&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;From the sources&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Get the sources from git repository:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span><span class="hl std">$ git clone https://github.com/zoggy/stog.git</span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;p&gt;</span>Or pick one of the releases:<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.10.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.10.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2014</span>-<span class="hl num">01</span>-<span class="hl num">21</span>]:
-  <span class="hl kwa">&lt;late-inc</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;release-0.10.0#changes&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;changes0.10.0&quot;</span><span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.9.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.9.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>-<span class="hl num">09</span>-<span class="hl num">24</span>]:
-  <span class="hl kwa">&lt;late-inc</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;release-0.9.0#changes&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;changes0.9.0&quot;</span><span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.8.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.8.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>-<span class="hl num">03</span>-<span class="hl num">19</span>]:
-  <span class="hl kwa">&lt;late-inc</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;release-0.8.0#changes&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;changes0.8.0&quot;</span><span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.7.0.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.7.0</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>-<span class="hl num">02</span>-<span class="hl num">13</span>]:
-  <span class="hl kwa">&lt;late-inc</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;release-0.7.0#changes&quot;</span><span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.6.1.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.6.1</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>-<span class="hl num">01</span>-<span class="hl num">17</span>]: Fix version number META file and remove Pcre useless dependency in Makefile and META.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.6.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.6</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2013</span>-<span class="hl num">01</span>-<span class="hl num">16</span>]:
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>mod: do not write the config file if it already exists,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>add: <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>elements<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> node handles <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwb">reverse</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> attribute not to
-    reverse order of elements (which is default, i.e. the more recent first),<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>mod: better cache system, using dependencies of each element on other
-    elements and files; also handles the stog environment used to compute
-    elements in cache, so that a change in the stog environment will
-    make all elements recomputed (for example when language changes),<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>add: a rule using a file or another element must add a dependency from
-    the computed element to the element or file it depends on, using
-    <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_plug.html#VALadd_dep&quot;</span><span class="hl kwa">&gt;&lt;icode&gt;</span>Stog_plug.add_dep<span class="hl kwa">&lt;/icode&gt;&lt;/a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>add: <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>include<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> now handles a <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwb">depend</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> attribute, to prevent
-    adding a dependency of the element on the included file,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>add: <span class="hl kwa">&lt;icode&gt;</span>--depcut<span class="hl kwa">&lt;/icode&gt;</span> option, used when getting cached elements, to use
-    only one level of dependency between elements; this is useful
-    for example in case the site has a menubar, leading to having
-    almost all elements depending on almost all elements.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;/li&gt;</span>
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Or pick one of the releases:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.11.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.10.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.9.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.8.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.7.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.6.1&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.6&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.5&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.4&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.3&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.2&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.1&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.5.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.5</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">12</span>-<span class="hl num">18</span>]:
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>minor fixes (thanks to Gabriel Scherer),<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>better error and warning messages (thanks to Gabriel Scherer),<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>handle prefix in all xml nodes and attributes (upgrade to Xtmpl <span class="hl num">0.5</span>),<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>global definitions now are of the form <span class="hl kwa">&lt;code&gt;</span>stog:foo<span class="hl kwa">&lt;/code&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>add: module system (not yet stable),<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>add: new <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_cache.html&quot;</span><span class="hl kwa">&gt;</span>caching system<span class="hl kwa">&lt;/a&gt;</span>, available for plugins too,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>add: <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_plug.html#VALplugin_config_file&quot;</span><span class="hl kwa">&gt;</span>Stog_plug.plugin_config_file<span class="hl kwa">&lt;/a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>add: <span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ref-doc/Stog_plug.html#VALregister_level_fun_on_elt_list&quot;</span><span class="hl kwa">&gt;</span>Stog_plug.register_level_fun_on_elt_list<span class="hl kwa">&lt;/a&gt;</span>
-    to register functions handling all elements at a time.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>fix: add '.' after counters in section title,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>add: when a basic template is missing, create one and issue a warning;
-    these templates are: <span class="hl kwa">&lt;code&gt;</span>page.tmpl<span class="hl kwa">&lt;/code&gt;</span>, <span class="hl kwa">&lt;code&gt;</span>elt-in-list.tmpl<span class="hl kwa">&lt;/code&gt;</span>,
-    <span class="hl kwa">&lt;code&gt;</span>by-keyword.tmpl<span class="hl kwa">&lt;/code&gt;</span>, <span class="hl kwa">&lt;code&gt;</span>by-topic.tmpl<span class="hl kwa">&lt;/code&gt;</span>, <span class="hl kwa">&lt;code&gt;</span>keyword.tmpl<span class="hl kwa">&lt;/code&gt;</span>,
-    <span class="hl kwa">&lt;code&gt;</span>topic.tmpl<span class="hl kwa">&lt;/code&gt;</span>, <span class="hl kwa">&lt;code&gt;</span>by-month.tmpl<span class="hl kwa">&lt;/code&gt;</span>.
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.4.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.4</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">11</span>-<span class="hl num">21</span>]:
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>handle relative paths in <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>include<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>, when starting with
-  <span class="hl kwa">&lt;icode&gt;</span>.<span class="hl kwa">&lt;/icode&gt;</span> or <span class="hl kwa">&lt;icode&gt;</span>..<span class="hl kwa">&lt;/icode&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>use a separate tool to evaluate ocaml code, <span class="hl str">&quot;stog-ocaml-session&quot;</span>;
-   this allows to use native code version of stog even when evaluating
-   ocaml code; it also makes possible to use distinct ocaml toplevels in
-   ocaml-eval (with <span class="hl kwb">session</span>=<span class="hl str">&quot;...&quot;</span>); details <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ocaml-sessions&quot;</span><span class="hl kwa">&gt;</span>here<span class="hl kwa">&lt;/elt&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>add simple cache system, and option <span class="hl kwa">&lt;icode&gt;</span>--nocache<span class="hl kwa">&lt;/icode&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>new <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwd">&amp;lt;</span>inc<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> rule to include a block from another
-  element: <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>inc <span class="hl kwb">elt-hid</span>=<span class="hl str">&quot;/install&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;blockid&quot;</span>/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span>,
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>ability to define <span class="hl str">&quot;functions&quot;</span>, site-wide or element-wide,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>handle blocks and counters,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>sectionning now uses blocks and counters,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>a <span class="hl str">&quot;sectionning&quot;</span> attribute is used to determine which nodes are used for
-  sectionning an element; default is <span class="hl str">&quot;section,subsection&quot;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>verify references to blocks by id (sections, ...) and use their title in links,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>use <span class="hl str">&quot;id&quot;</span> attribute instead of <span class="hl str">&quot;name&quot;</span> attribute in sectionning tags,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>define and use levels of rules; plugins can extend the number of levels
-    to define their own rewriting system.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.3.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.3</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">08</span>-<span class="hl num">30</span>]:
-<span class="hl kwa">&lt;ul&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>new stage <span class="hl num">0</span> to allow plugins to change the stog structure before generating,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>new fields <span class="hl kwa">&lt;icode&gt;</span>elt_xml_doctype<span class="hl kwa">&lt;/icode&gt;</span>, <span class="hl kwa">&lt;icode&gt;</span>elt_out<span class="hl kwa">&lt;/icode&gt;</span> in
-<span class="hl kwa">&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;site-url/&amp;gt;/ref-doc/Stog_types.html#TYPEelt&quot;</span><span class="hl kwa">&gt;&lt;icode&gt;</span>elt type<span class="hl kwa">&lt;/icode&gt;&lt;/a&gt;</span>,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>handle doctype attribute in element description,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>define and use stage1 and stage <span class="hl num">2</span> functions for plugins,<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;</span>more .mlis file and comments in the library.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.2.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.2</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">08</span>-<span class="hl num">28</span>]:
-Change the format of files, now all in XML. Config and templates are in <span class="hl kwa">&lt;icode&gt;</span>.stog<span class="hl kwa">&lt;/icode&gt;</span>
-directory. Less templates required. User can define elements of any <span class="hl str">&quot;type&quot;</span> (post, page, ...).
-<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;li&gt;&lt;a</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;stog-0.1.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl num">0.1</span><span class="hl kwa">&lt;/a&gt;</span> [<span class="hl num">2012</span>-<span class="hl num">06</span>-<span class="hl num">20</span>]: Initial release.<span class="hl kwa">&lt;/li&gt;</span>
-<span class="hl kwa">&lt;/ul&gt;</span>
-
-<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;compilation&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Compilation&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;compilation&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Compilation&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Just type
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;command-line&gt;</span>make <span class="hl kwd">&amp;amp;&amp;amp;</span> make install<span class="hl kwa">&lt;/command-line&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-This will install <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span>, <span class="hl kwa">&lt;icode&gt;</span>stog.byte<span class="hl kwa">&lt;/icode&gt;</span>,
-<span class="hl kwa">&lt;icode&gt;</span>stog-ocaml-session<span class="hl kwa">&lt;/icode&gt;</span>, <span class="hl kwa">&lt;icode&gt;</span>mk-stog<span class="hl kwa">&lt;/icode&gt;</span>, <span class="hl kwa">&lt;icode&gt;</span>mk-stog.byte<span class="hl kwa">&lt;/icode&gt;</span>
-and <span class="hl kwa">&lt;icode&gt;</span>mk-stog-ocaml-session<span class="hl kwa">&lt;/icode&gt;</span> in the same directory as
-<span class="hl kwa">&lt;icode&gt;</span>ocamlc<span class="hl kwa">&lt;/icode&gt;</span>. This will also install the <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> library and the
-<span class="hl kwa">&lt;icode&gt;</span>stog.disqus<span class="hl kwa">&lt;/icode&gt;</span> and <span class="hl kwa">&lt;icode&gt;</span>stog.markdown<span class="hl kwa">&lt;/icode&gt;</span> plugins, with findlib.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/subsection&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span><span class="hl std">make </span><span class="hl kwb">&amp;amp;</span><span class="hl kwb">&amp;amp;</span><span class="hl std"> make install</span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+This will install </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.byte</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog-ocaml-session</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">mk-stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">mk-stog.byte</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
+and </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">mk-stog-ocaml-session</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> in the same directory as
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">ocamlc</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">. This will also install the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> library and the
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.asy</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.disqus</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.dot</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.markdown</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> and
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.multi-doc</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> plugins, with findlib.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/subsection</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;/prepare-toc&gt;</span>
-<span class="hl kwa">&lt;/page&gt;</span></pre>
+</span><span class="hl kwa">&lt;/prepare-toc</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 </div>
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

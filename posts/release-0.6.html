@@ -30,9 +30,10 @@
 
 <div id="header">
   
-  <div class="elt-navbar">
+  
+  <div class="doc-navbar">
       <div class="navleft"><a href="http://zoggy.github.io/stog/posts/release-0.5.html">Stog 0.5</a></div>
-      <div class="navright"><a href="http://zoggy.github.io/stog/posts/stog-in-opam.html">Stog in Opam</a></div>
+      <div class="navright"><a href="http://zoggy.github.io/stog/posts/release-0.6.1.html">Stog 0.6.1</a></div>
     </div>
   <div class="page-title">Stog 0.6</div>
 </div>
@@ -44,11 +45,31 @@
 Release 0.6 of stog is available from the <a href="http://zoggy.github.io/stog/install.html">Installation</a> page.
 </p>
 
+<p>Changes:</p>
+<ul id="changes">
+<li>mod: do not write the config file if it already exists,</li>
+<li>add: <span class="icode"><span class="hl std">&lt;documents&gt;</span></span> node handles <span class="icode"><span class="hl std">reverse=&quot;false&quot;</span></span> attribute not to
+    reverse order of documents (which is default, i.e. the more recent first),</li>
+<li>mod: better cache system, using dependencies of each document on other
+    documents and files; also handles the stog environment used to compute
+    documents in cache, so that a change in the stog environment will
+    make all documents recomputed (for example when language changes),</li>
+<li>add: a rule using a file or another document must add a dependency from
+    the computed document to the document or file it depends on, using
+    <a href="ref-doc/Stog_plug.html#VALadd_dep"><span class="icode"><span class="hl std">Stog_plug.add_dep</span></span></a>,</li>
+<li>add: <span class="icode"><span class="hl std">&lt;include&gt;</span></span> now handles a <span class="icode"><span class="hl std">depend=&quot;false&quot;</span></span> attribute, to prevent
+    adding a dependency of the document on the included file,</li>
+<li>add: <span class="icode"><span class="hl std">--depcut</span></span> option, used when getting cached documents, to use
+    only one level of dependency between documents; this is useful
+    for example in case the site has a menubar, leading to having
+    almost all documents depending on almost all documents.</li>
+</ul>
+
 
 <div class="comments">
  <hr width="100%"/>
   <div>
-    <div class="elt-keywords">
+    <div class="doc-keywords">
       <div class="bloc-keywords">
       Topics: <div class="keywords"><a href="http://zoggy.github.io/stog/topic_stog.html"><span itemprop="keywords">stog</span></a></div>
       </div>
@@ -82,20 +103,43 @@ Release 0.6 of stog is available from the <a href="http://zoggy.github.io/stog/i
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Stog 0.6&quot;</span>
-<span class="hl kwb">date</span>=<span class="hl str">&quot;2013/01/16&quot;</span>
-<span class="hl kwb">topics</span>=<span class="hl str">&quot;stog&quot;</span>
-<span class="hl kwb">keywords</span>=<span class="hl str">&quot;release&quot;</span>
-<span class="hl kwb">published</span>=<span class="hl str">&quot;true&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Release <span class="hl num">0.6</span> of stog is available from the <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;/install&quot;</span><span class="hl kwa">/&gt;</span> page.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/post&gt;</span></pre>
+  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Stog 0.6&quot;</span><span class="hl std">
+</span><span class="">date</span><span class="hl std">=</span><span class="hl str">&quot;2013/01/16&quot;</span><span class="hl std">
+</span><span class="">topics</span><span class="hl std">=</span><span class="hl str">&quot;stog&quot;</span><span class="hl std">
+</span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">&quot;release&quot;</span><span class="hl std">
+</span><span class="">published</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+Release 0.6 of stog is available from the </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;/install&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> page.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Changes:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;changes&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">mod: do not write the config file if it already exists,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">add: </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">documents</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> node handles </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">reverse=&quot;false&quot;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute not to
+    reverse order of documents (which is default, i.e. the more recent first),</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">mod: better cache system, using dependencies of each document on other
+    documents and files; also handles the stog environment used to compute
+    documents in cache, so that a change in the stog environment will
+    make all documents recomputed (for example when language changes),</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">add: a rule using a file or another document must add a dependency from
+    the computed document to the document or file it depends on, using
+    </span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;ref-doc/Stog_plug.html#VALadd_dep&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">Stog_plug.add_dep</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">add: </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">include</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> now handles a </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">depend=&quot;false&quot;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute, to prevent
+    adding a dependency of the document on the included file,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">add: </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--depcut</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option, used when getting cached documents, to use
+    only one level of dependency between documents; this is useful
+    for example in case the site has a menubar, leading to having
+    almost all documents depending on almost all documents.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span></pre>
 </div>
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

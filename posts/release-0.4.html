@@ -30,7 +30,8 @@
 
 <div id="header">
   
-  <div class="elt-navbar">
+  
+  <div class="doc-navbar">
       <div class="navleft"><a href="http://zoggy.github.io/stog/posts/ocaml-sessions.html">OCaml sessions</a></div>
       <div class="navright"><a href="http://zoggy.github.io/stog/posts/stog-writing.html">Stog-writing plugin</a></div>
     </div>
@@ -44,11 +45,34 @@
 Release 0.4 of stog is available from the <a href="http://zoggy.github.io/stog/install.html">Installation</a> page.
 </p>
 
+<p>Changes:</p>
+<ul id="changes">
+<li>handle relative paths in <span class="icode"><span class="hl std">&lt;include&gt;</span></span>, when starting with
+  <span class="icode"><span class="hl std">.</span></span> or <span class="icode"><span class="hl std">..</span></span>,</li>
+<li>use a separate tool to evaluate ocaml code, &quot;stog-ocaml-session&quot;;
+   this allows to use native code version of stog even when evaluating
+   ocaml code; it also makes possible to use distinct ocaml toplevels in
+   ocaml-eval (with session=&quot;...&quot;); details <a href="http://zoggy.github.io/stog/posts/ocaml-sessions.html">here</a>,</li>
+<li>add simple cache system, and option <span class="icode"><span class="hl std">--nocache</span></span>,</li>
+<li>new <span class="icode"><span class="hl std">&lt;inc&gt;</span></span> rule to include a block from another
+  document: <span class="icode"><span class="hl kwa">&lt;inc</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;/install&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;blockid&quot;</span><span class="hl kwa">/&gt;</span></span>,
+</li>
+<li>ability to define &quot;functions&quot;, site-wide or document-wide,</li>
+<li>handle blocks and counters,</li>
+<li>sectionning now uses blocks and counters,</li>
+<li>a &quot;sectionning&quot; attribute is used to determine which nodes are used for
+  sectionning a document; default is &quot;section,subsection&quot;,</li>
+<li>verify references to blocks by id (sections, ...) and use their title in links,</li>
+<li>use &quot;id&quot; attribute instead of &quot;name&quot; attribute in sectionning tags,</li>
+<li>define and use levels of rules; plugins can extend the number of levels
+    to define their own rewriting system.</li>
+</ul>
+
 
 <div class="comments">
  <hr width="100%"/>
   <div>
-    <div class="elt-keywords">
+    <div class="doc-keywords">
       <div class="bloc-keywords">
       Topics: <div class="keywords"><a href="http://zoggy.github.io/stog/topic_stog.html"><span itemprop="keywords">stog</span></a></div>
       </div>
@@ -82,20 +106,46 @@ Release 0.4 of stog is available from the <a href="http://zoggy.github.io/stog/i
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Stog 0.4&quot;</span>
-<span class="hl kwb">date</span>=<span class="hl str">&quot;2012/11/22&quot;</span>
-<span class="hl kwb">topics</span>=<span class="hl str">&quot;stog&quot;</span>
-<span class="hl kwb">keywords</span>=<span class="hl str">&quot;release&quot;</span>
-<span class="hl kwb">published</span>=<span class="hl str">&quot;true&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Release <span class="hl num">0.4</span> of stog is available from the <span class="hl kwa">&lt;page</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;/install&quot;</span><span class="hl kwa">/&gt;</span> page.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/post&gt;</span></pre>
+  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Stog 0.4&quot;</span><span class="hl std">
+</span><span class="">date</span><span class="hl std">=</span><span class="hl str">&quot;2012/11/22&quot;</span><span class="hl std">
+</span><span class="">topics</span><span class="hl std">=</span><span class="hl str">&quot;stog&quot;</span><span class="hl std">
+</span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">&quot;release&quot;</span><span class="hl std">
+</span><span class="">published</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+Release 0.4 of stog is available from the </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;/install&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> page.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Changes:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;changes&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">handle relative paths in </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">include</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, when starting with
+  </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> or </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">..</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">use a separate tool to evaluate ocaml code, &quot;stog-ocaml-session&quot;;
+   this allows to use native code version of stog even when evaluating
+   ocaml code; it also makes possible to use distinct ocaml toplevels in
+   ocaml-eval (with session=&quot;...&quot;); details </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;ocaml-sessions&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">here</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">add simple cache system, and option </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--nocache</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">new </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">inc</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> rule to include a block from another
+  document: </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">inc doc-path=&quot;/install&quot; id=&quot;blockid&quot;/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
+</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">ability to define &quot;functions&quot;, site-wide or document-wide,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">handle blocks and counters,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">sectionning now uses blocks and counters,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">a &quot;sectionning&quot; attribute is used to determine which nodes are used for
+  sectionning a document; default is &quot;section,subsection&quot;,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">verify references to blocks by id (sections, ...) and use their title in links,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">use &quot;id&quot; attribute instead of &quot;name&quot; attribute in sectionning tags,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">define and use levels of rules; plugins can extend the number of levels
+    to define their own rewriting system.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span></pre>
 </div>
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

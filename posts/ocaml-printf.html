@@ -30,7 +30,8 @@
 
 <div id="header">
   
-  <div class="elt-navbar">
+  
+  <div class="doc-navbar">
       <div class="navleft"><a href="http://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html">Stog-rdf 0.9.0</a></div>
       <div class="navright"><a href="http://zoggy.github.io/stog/posts/release-0.10.0.html">Stog 0.10.0</a></div>
     </div>
@@ -41,7 +42,7 @@
 
 
 <p>
-Since <a href="http://zoggy.github.io/stog/posts/release-0.10.0.html">Stog 0.10.0</a>, the <span class="icode"><span class="hl kwa">&lt;ocaml-printf&gt;</span></span>
+Since <a href="http://zoggy.github.io/stog/posts/release-0.10.0.html">Stog 0.10.0</a>, the <span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span> rule
 can be used to access the content of computed OCaml values, as
 strings.
 </p>
@@ -53,7 +54,11 @@ strings.
 Let's take a first example. Suppose we evaluated some OCaml code
 with the following rule:
 </p>
-<pre class="code-xml" id="code1"><span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">show-code</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&gt;</span>let x = <span class="hl str">&quot;Hello world!&quot;</span>;;<span class="hl kwa">&lt;/ocaml-eval&gt;</span></pre>
+<div class="hide" id="code1">
+&lt;ocaml-eval show-code=&quot;false&quot;&gt;let x = &quot;Hello world!&quot;;;&lt;/ocaml-eval&gt;
+</div>
+<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">show-code</span><span class="hl std">=</span><span class="hl str">&quot;false&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">let x = &quot;Hello world!&quot;;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 
 
 
@@ -61,7 +66,11 @@ with the following rule:
 Now we can get the contents of <code>x</code> as a string
 to include in our document using the new rule:
 </p>
-<pre class="code-xml" id="code1p">The value of <span class="hl kwa">&lt;code&gt;</span>x<span class="hl kwa">&lt;/code&gt;</span> is: <span class="hl kwa">&lt;ocaml-printf&gt;</span>x<span class="hl kwa">&lt;/ocaml-printf&gt;</span></pre>
+<div class="hide" id="code1p">
+The value of &lt;code&gt;x&lt;/code&gt; is: &lt;ocaml-printf&gt;x&lt;/ocaml-printf&gt;
+</div>
+<pre class="code-xml"><span class="hl std">The value of </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">x</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> is: </span><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">x</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 ↳ 
 The value of <code>x</code> is: Hello world!
 
@@ -69,20 +78,24 @@ The value of <code>x</code> is: Hello world!
 
 <div class="section"><div class="section-title" id="formats">Formatting</div>
 <p>
-The <span class="icode"><span class="hl kwa">&lt;ocaml-printf&gt;</span></span> rule builds some OCaml code of the form:
+The <span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span> rule builds some OCaml code of the form:
 </p>
 <pre class="code-ocaml"><span class="hl kwd">Printf</span><span class="hl opt">.</span>sprintf <span class="hl str">&quot;&lt;format&gt;&quot;</span> <span class="hl opt">&lt;</span>code<span class="hl opt">&gt;</span></pre>
-<p>The <code>&lt;code&gt;</code> is the contents of the <span class="icode"><span class="hl kwa">&lt;ocaml-printf&gt;</span></span>
+<p>The <code>&lt;code&gt;</code> is the contents of the <span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span>
 node, and <code>&lt;format&gt;</code> is <code>%s</code> by default.
 Another format can be used by setting the <code>format</code> attribute
 like in the following example:
 </p>
-<pre class="code-xml" id="code2p"><span class="hl num">1</span> + <span class="hl num">2</span> = <span class="hl kwa">&lt;ocaml-printf</span> <span class="hl kwb">format</span>=<span class="hl str">&quot;%d&quot;</span><span class="hl kwa">&gt;</span>(<span class="hl num">1</span>+<span class="hl num">2</span>)<span class="hl kwa">&lt;/ocaml-printf&gt;</span></pre>
+<div class="hide" id="code2p">
+1 + 2 = &lt;ocaml-printf format=&quot;%d&quot;&gt;(1+2)&lt;/ocaml-printf&gt;
+</div>
+<pre class="code-xml"><span class="hl std">1 + 2 = </span><span class="hl kwa">&lt;ocaml-printf</span><span class="hl std"> </span><span class="">format</span><span class="hl std">=</span><span class="hl str">&quot;%d&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">(1+2)</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 ↳ 
 1 + 2 = 3
 
-<p>Note that the parentheses around the expression in the <span class="icode"><span class="hl kwa">&lt;ocaml-printf&gt;</span></span>
-node is mandatory, otherwise the <span class="icode"><span class="hl kwc">Printf</span><span class="hl opt">.</span>sprintf <span class="hl str">&quot;%d&quot;</span> <span class="hl num">1</span><span class="hl opt">+</span><span class="hl num">2</span></span>
+<p>Note that the parentheses around the expression in the <span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span>
+node is mandatory, otherwise the <span class="icode"><span class="hl kwc">Printf</span><span class="hl std">.</span><span class="">sprintf</span><span class="hl std"> </span><span class="hl str">&quot;%d&quot;</span><span class="hl std"> </span><span class="hl num">1</span><span class="hl num">+2</span></span>
 would result in an error.
 </p>
 <p>
@@ -90,7 +103,11 @@ Of course more compilated format and ocaml expressions can be used:
 </p>
 <pre class="code-ocaml"><div># <span class="hl kwa">let</span> y <span class="hl opt">=</span> <span class="hl num">1</span> <span class="hl kwa">and</span> z <span class="hl opt">=</span> <span class="hl num">21</span><span class="hl opt">.;;</span></div><div class="ocaml-toplevel">val y : int = 1
 val z : float = 21.</div></pre>
-<pre class="code-xml" id="code3p"><span class="hl kwa">&lt;ocaml-printf</span> <span class="hl kwb">format</span>=<span class="hl str">&quot;The result of %d + %.2f is %.0f.&quot;</span><span class="hl kwa">&gt;</span>y z ((float y) +. z)<span class="hl kwa">&lt;/ocaml-printf&gt;</span></pre>
+<div class="hide" id="code3p">
+&lt;ocaml-printf format=&quot;The result of %d + %.2f is %.0f.&quot;&gt;y z ((float y) +. z)&lt;/ocaml-printf&gt;
+</div>
+<pre class="code-xml"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl std"> </span><span class="">format</span><span class="hl std">=</span><span class="hl str">&quot;The result of %d + %.2f is %.0f.&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">y z ((float y) +. z)</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 ↳ 
 The result of 1 + 21.00 is 22.
 
@@ -98,9 +115,10 @@ The result of 1 + 21.00 is 22.
 
 <div class="section"><div class="section-title" id="xml">Using result as XML</div>
 <p>
-The result of <span class="icode"><span class="hl kwa">&lt;ocaml-printf&gt;</span></span> is considered as CDATA in the XML document:
+The result of <span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span> is considered as CDATA in the XML document:
 </p>
-<pre class="code-xml" id="code4p"><span class="hl kwa">&lt;ocaml-printf &gt;</span>&lt;![CDATA[(<span class="hl str">&quot;&lt;strong&gt;&quot;</span> ^ x ^ <span class="hl str">&quot;&lt;/strong&gt;&quot;</span>)]]<span class="hl kwa">&gt;&lt;/ocaml-printf&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl std"> </span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[(&quot;</span><span class="hl kwa">&lt;strong</span><span class="hl kwa">&gt;</span><span class="hl std">&quot; ^ x ^ &quot;</span><span class="hl kwa">&lt;/strong</span><span class="hl kwa">&gt;</span><span class="hl std">&quot;)]]&gt;</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 <p>
 is rewritten &lt;strong&gt;Hello world!&lt;/strong&gt;
 </p>
@@ -108,24 +126,26 @@ is rewritten &lt;strong&gt;Hello world!&lt;/strong&gt;
 Let's define a list:
 </p>
 <pre class="code-ocaml"><div># <span class="hl kwa">let</span> my_list <span class="hl opt">= [</span> <span class="hl num">101</span> <span class="hl opt">;</span> <span class="hl num">202</span> <span class="hl opt">;</span> <span class="hl num">303</span> <span class="hl opt">;</span> <span class="hl num">404</span> <span class="hl opt">];;</span></div><div class="ocaml-toplevel">val my_list : int list = [101; 202; 303; 404]</div></pre>
-<p>The <a href="http://zoggy.github.io/stog/module_base.html#as-xml"><span class="icode"><span class="hl kwa">&lt;as-xml&gt;</span></span></a> rule can be used to
-parse the result of <span class="icode"><span class="hl kwa">&lt;ocaml-printf&gt;</span></span> as XML, using the <code>defer_</code>
+<p>The <a href="http://zoggy.github.io/stog/module_base.html#as-xml"><span class="icode"><span class="hl kwa">&lt;as-xml</span><span class="hl kwa">&gt;</span></span></a> rule can be used to
+parse the result of <span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span> as XML, using the <code>defer_</code>
 attribute to compute the contents of the node first:
 </p>
-<pre class="code-xml" id="code5p"><span class="hl kwa">&lt;table</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;table table-bordered table-striped&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;tr&gt;&lt;th&gt;</span>N<span class="hl kwa">&lt;/th&gt;&lt;th&gt;</span>N^<span class="hl num">2</span><span class="hl kwa">&lt;/th&gt;&lt;th&gt;</span>Toplevel<span class="hl kwa">&lt;/th&gt;&lt;/tr&gt;</span>
-<span class="hl kwa">&lt;as-xml</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;ocaml-printf&gt;</span>&lt;![CDATA[
-  (String.concat <span class="hl str">&quot;&quot;</span>
+<pre class="code-xml" id="code5p"><span class="hl kwa">&lt;table</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;table table-bordered table-striped&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;th</span><span class="hl kwa">&gt;</span><span class="hl std">N</span><span class="hl kwa">&lt;/th</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;th</span><span class="hl kwa">&gt;</span><span class="hl std">N^2</span><span class="hl kwa">&lt;/th</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;th</span><span class="hl kwa">&gt;</span><span class="hl std">Toplevel</span><span class="hl kwa">&lt;/th</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;as-xml</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[
+  (String.concat &quot;&quot;
     (List.map
-      (fun n -<span class="hl kwa">&gt;</span>
-        <span class="hl str">&quot;&lt;tr&gt;&lt;td&gt;&quot;</span>^(string_of_int n)^<span class="hl str">&quot;&lt;/td&gt;&quot;</span>^
-        <span class="hl str">&quot;&lt;td&gt;&quot;</span>^(string_of_int (n*n))^<span class="hl str">&quot;&lt;/td&gt;&quot;</span>^
-        <span class="hl str">&quot;&lt;td&gt;&lt;ocaml-eval toplevel=</span><span class="hl esc">\&quot;</span><span class="hl str">true</span><span class="hl esc">\&quot;</span><span class="hl str">&gt;</span>
-<span class="hl str">            let foo = &quot;</span>^(string_of_int n)^<span class="hl str">&quot;&lt;/ocaml-eval&gt;</span>
-<span class="hl str">         &lt;/td&gt;&lt;/tr&gt;&quot;</span>)
+      (fun n -&gt;
+        &quot;</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">&quot;^(string_of_int n)^&quot;</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl std">&quot;^
+        &quot;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">&quot;^(string_of_int (n*n))^&quot;</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl std">&quot;^
+        &quot;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=\</span><span class="hl str">&quot;true\&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+            let foo = &quot;^(string_of_int n)^&quot;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
+         </span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">&quot;)
       my_list))
-]]<span class="hl kwa">&gt;&lt;/ocaml-printf&gt;&lt;/as-xml&gt;</span>
-<span class="hl kwa">&lt;/table&gt;</span></pre>
+]]&gt;</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/as-xml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/table</span><span class="hl kwa">&gt;</span><span class="hl std">
+
+</span></pre>
 <p>This gives the following table:</p>
 <table class="table table-bordered table-striped">
 <tr><th>N</th><th>N^2</th><th>Toplevel</th></tr>
@@ -148,7 +168,7 @@ The current value of <code>foo</code> is
 <p>
 The <code>session</code> attribute is honored:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;ocaml-printf</span> <span class="hl kwb">session</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/ocaml-printf&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl std"> </span><span class="">session</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span></pre>
 <p>See <a href="http://zoggy.github.io/stog/posts/ocaml-sessions.html">this post</a> for details about OCaml sessions.</p>
 </div>
 
@@ -157,7 +177,7 @@ The <code>session</code> attribute is honored:
 <div class="comments">
  <hr width="100%"/>
   <div>
-    <div class="elt-keywords">
+    <div class="doc-keywords">
       <div class="bloc-keywords">
       Topics: <div class="keywords"><a href="http://zoggy.github.io/stog/topic_stog.html"><span itemprop="keywords">stog</span></a></div>
       </div>
@@ -191,110 +211,117 @@ The <code>session</code> attribute is honored:
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;ocaml-printf&quot;</span>
-<span class="hl kwb">date</span>=<span class="hl str">&quot;2014/01/16&quot;</span>
-<span class="hl kwb">topics</span>=<span class="hl str">&quot;stog&quot;</span>
-<span class="hl kwb">keywords</span>=<span class="hl str">&quot;ocaml, evaluation, code, print&quot;</span>
-<span class="hl kwb">published</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Since <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;release-0.10.0&quot;</span><span class="hl kwa">/&gt;</span>, the <span class="hl kwa">&lt;rule&gt;</span>ocaml-printf<span class="hl kwa">&lt;/rule&gt;</span>
+  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;ocaml-printf&quot;</span><span class="hl std">
+</span><span class="">date</span><span class="hl std">=</span><span class="hl str">&quot;2014/01/16&quot;</span><span class="hl std">
+</span><span class="">topics</span><span class="hl std">=</span><span class="hl str">&quot;stog&quot;</span><span class="hl std">
+</span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">&quot;ocaml, evaluation, code, print&quot;</span><span class="hl std">
+</span><span class="">published</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+Since </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;release-0.10.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">, the </span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-printf</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std"> rule
 can be used to access the content of computed OCaml values, as
 strings.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;sep_/&gt;</span>
-<span class="hl kwa">&lt;prepare-toc&gt;</span>
-<span class="hl kwa">&lt;toc/&gt;</span>
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;first&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;First example&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;prepare-toc</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;toc</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;first&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;First example&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Let's take a first example. Suppose we evaluated some OCaml code
 with the following rule:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;code1&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[
-<span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">show-code</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&gt;</span>let x = <span class="hl str">&quot;Hello world!&quot;</span>;;<span class="hl kwa">&lt;/ocaml-eval&gt;</span>
-]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;as-xml</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">subs-only</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#code1&quot;</span><span class="hl kwa">/&gt;&lt;/as-xml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Now we can get the contents of <span class="hl kwa">&lt;code&gt;</span>x<span class="hl kwa">&lt;/code&gt;</span> as a string
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;hide&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;code1&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[
+</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">show-code</span><span class="hl std">=</span><span class="hl str">&quot;false&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">let x = &quot;Hello world!&quot;;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
+]]&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;#code1&quot;</span><span class="hl std"> </span><span class="">subs-only</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;as-xml</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">subs-only</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;#code1&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/as-xml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+Now we can get the contents of </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">x</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> as a string
 to include in our document using the new rule:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;code1p&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[
-The value of <span class="hl kwa">&lt;code&gt;</span>x<span class="hl kwa">&lt;/code&gt;</span> is: <span class="hl kwa">&lt;ocaml-printf&gt;</span>x<span class="hl kwa">&lt;/ocaml-printf&gt;</span>
-]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
-<span class="hl kwd">&amp;#x21b3;</span> <span class="hl kwa">&lt;as-xml</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">subs-only</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#code1p&quot;</span><span class="hl kwa">/&gt;&lt;/as-xml&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;hide&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;code1p&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[
+The value of </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">x</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> is: </span><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">x</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">
+]]&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">subs-only</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;#code1p&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwb">&amp;#x21b3;</span><span class="hl std"> </span><span class="hl kwa">&lt;as-xml</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">subs-only</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;#code1p&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/as-xml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;formats&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Formatting&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The <span class="hl kwa">&lt;rule&gt;</span>ocaml-printf<span class="hl kwa">&lt;/rule&gt;</span> rule builds some OCaml code of the form:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ocaml&gt;</span>Printf.sprintf <span class="hl str">&quot;&amp;lt;format&amp;gt;&quot;</span> <span class="hl kwd">&amp;lt;</span>code<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/ocaml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>The <span class="hl kwa">&lt;code&gt;</span><span class="hl kwd">&amp;lt;</span>code<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/code&gt;</span> is the contents of the <span class="hl kwa">&lt;rule&gt;</span>ocaml-printf<span class="hl kwa">&lt;/rule&gt;</span>
-node, and <span class="hl kwa">&lt;code&gt;</span><span class="hl kwd">&amp;lt;</span>format<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/code&gt;</span> is <span class="hl kwa">&lt;code&gt;</span>%s<span class="hl kwa">&lt;/code&gt;</span> by default.
-Another format can be used by setting the <span class="hl kwa">&lt;code&gt;</span>format<span class="hl kwa">&lt;/code&gt;</span> attribute
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;formats&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Formatting&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+The </span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-printf</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std"> rule builds some OCaml code of the form:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">Printf.sprintf &quot;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">format</span><span class="hl kwb">&amp;gt;</span><span class="hl std">&quot; </span><span class="hl kwb">&amp;lt;</span><span class="hl std">code</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">code</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> is the contents of the </span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-printf</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std">
+node, and </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">format</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> is </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">%s</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> by default.
+Another format can be used by setting the </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">format</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute
 like in the following example:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;code2p&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[
-<span class="hl num">1</span> + <span class="hl num">2</span> = <span class="hl kwa">&lt;ocaml-printf</span> <span class="hl kwb">format</span>=<span class="hl str">&quot;%d&quot;</span><span class="hl kwa">&gt;</span>(<span class="hl num">1</span>+<span class="hl num">2</span>)<span class="hl kwa">&lt;/ocaml-printf&gt;</span>
-]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
-<span class="hl kwd">&amp;#x21b3;</span> <span class="hl kwa">&lt;as-xml</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">subs-only</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#code2p&quot;</span><span class="hl kwa">/&gt;&lt;/as-xml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>Note that the parentheses around the expression in the <span class="hl kwa">&lt;rule&gt;</span>ocaml-printf<span class="hl kwa">&lt;/rule&gt;</span>
-node is mandatory, otherwise the <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;</span>Printf.sprintf <span class="hl str">&quot;%d&quot;</span> <span class="hl num">1</span>+<span class="hl num">2</span><span class="hl kwa">&lt;/icode&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;hide&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;code2p&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[
+1 + 2 = </span><span class="hl kwa">&lt;ocaml-printf</span><span class="hl std"> </span><span class="">format</span><span class="hl std">=</span><span class="hl str">&quot;%d&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">(1+2)</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">
+]]&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">subs-only</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;#code2p&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwb">&amp;#x21b3;</span><span class="hl std"> </span><span class="hl kwa">&lt;as-xml</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">subs-only</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;#code2p&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/as-xml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Note that the parentheses around the expression in the </span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-printf</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std">
+node is mandatory, otherwise the </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Printf.sprintf &quot;%d&quot; 1+2</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
 would result in an error.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Of course more compilated format and ocaml expressions can be used:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>let y = <span class="hl num">1</span> and z = <span class="hl num">21</span>.;;<span class="hl kwa">&lt;/ocaml-eval&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;code3p&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[
-<span class="hl kwa">&lt;ocaml-printf</span> <span class="hl kwb">format</span>=<span class="hl str">&quot;The result of %d + %.2f is %.0f.&quot;</span><span class="hl kwa">&gt;</span>y z ((float y) +. z)<span class="hl kwa">&lt;/ocaml-printf&gt;</span>
-]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
-<span class="hl kwd">&amp;#x21b3;</span> <span class="hl kwa">&lt;as-xml</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">subs-only</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#code3p&quot;</span><span class="hl kwa">/&gt;&lt;/as-xml&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">let y = 1 and z = 21.;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;hide&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;code3p&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[
+</span><span class="hl kwa">&lt;ocaml-printf</span><span class="hl std"> </span><span class="">format</span><span class="hl std">=</span><span class="hl str">&quot;The result of %d + %.2f is %.0f.&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">y z ((float y) +. z)</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">
+]]&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">subs-only</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;#code3p&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwb">&amp;#x21b3;</span><span class="hl std"> </span><span class="hl kwa">&lt;as-xml</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">subs-only</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;#code3p&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/as-xml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;xml&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Using result as XML&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The result of <span class="hl kwa">&lt;rule&gt;</span>ocaml-printf<span class="hl kwa">&lt;/rule&gt;</span> is considered as CDATA in the XML document:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;code4p&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./ocaml-printf-code.foo&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-is rewritten <span class="hl kwa">&lt;as-xml</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./ocaml-printf-code.foo&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;&lt;/as-xml&gt;</span>
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Using result as XML&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+The result of </span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-printf</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std"> is considered as CDATA in the XML document:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;./ocaml-printf-code.foo&quot;</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+is rewritten </span><span class="hl kwa">&lt;as-xml</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;./ocaml-printf-code.foo&quot;</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/as-xml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Let's define a list:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>let my_list = [ <span class="hl num">101</span> ; <span class="hl num">202</span> ; <span class="hl num">303</span> ; <span class="hl num">404</span> ];;<span class="hl kwa">&lt;/ocaml-eval&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>The <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base#as-xml&quot;</span><span class="hl kwa">&gt;&lt;rule&gt;</span>as-xml<span class="hl kwa">&lt;/rule&gt;&lt;/elt&gt;</span> rule can be used to
-parse the result of <span class="hl kwa">&lt;rule&gt;</span>ocaml-printf<span class="hl kwa">&lt;/rule&gt;</span> as XML, using the <span class="hl kwa">&lt;code&gt;</span>defer_<span class="hl kwa">&lt;/code&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">let my_list = [ 101 ; 202 ; 303 ; 404 ];;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#as-xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">as-xml</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> rule can be used to
+parse the result of </span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-printf</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std"> as XML, using the </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">defer_</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">
 attribute to compute the contents of the node first:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;code5p&quot;</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./ocaml-printf-table.foo&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>This gives the following table:<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;as-xml</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;./ocaml-printf-table.foo&quot;</span> <span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;&lt;/as-xml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;code5p&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;./ocaml-printf-table.foo&quot;</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">This gives the following table:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;as-xml</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;./ocaml-printf-table.foo&quot;</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/as-xml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 As shown above, the parsed XML is then rewritten during the rest of the
 evaluation process.
-The current value of <span class="hl kwa">&lt;code&gt;</span>foo<span class="hl kwa">&lt;/code&gt;</span> is
-<span class="hl kwa">&lt;ocaml-printf</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;3&quot;</span> <span class="hl kwb">format</span>=<span class="hl str">&quot;%d&quot;</span><span class="hl kwa">&gt;</span>foo<span class="hl kwa">&lt;/ocaml-printf&gt;</span>.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+The current value of </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">foo</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> is
+</span><span class="hl kwa">&lt;ocaml-printf</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;3&quot;</span><span class="hl std"> </span><span class="">format</span><span class="hl std">=</span><span class="hl str">&quot;%d&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">foo</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;sessions&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Sessions&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The <span class="hl kwa">&lt;code&gt;</span>session<span class="hl kwa">&lt;/code&gt;</span> attribute is honored:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hxml&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;ocaml-printf</span> <span class="hl kwb">session</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/ocaml-printf&gt;</span>]]<span class="hl kwa">&gt;&lt;/hxml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>See <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;ocaml-sessions&quot;</span><span class="hl kwa">&gt;</span>this post<span class="hl kwa">&lt;/elt&gt;</span> for details about OCaml sessions.<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
-<span class="hl kwa">&lt;/prepare-toc&gt;</span>
-<span class="hl kwa">&lt;/post&gt;</span></pre>
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;sessions&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Sessions&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+The </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">session</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute is honored:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hxml</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;ocaml-printf</span><span class="hl std"> </span><span class="">session</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hxml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">See </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;ocaml-sessions&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">this post</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> for details about OCaml sessions.</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/prepare-toc</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span></pre>
 </div>
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

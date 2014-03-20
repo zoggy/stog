@@ -32,6 +32,7 @@
   
   
   
+  
 </div>
 
 
@@ -39,7 +40,7 @@
 <div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_msg.html" title="Stog_msg">Previous</a>
  <a class="up" href="index.html" title="Index">Up</a>
- <a class="post" href="Stog_config.html" title="Stog_config">Next</a>
+ <a class="post" href="Stog_highlight.html" title="Stog_highlight">Next</a>
 </div>
 <h1>Module <a href="type_Stog_misc.html">Stog_misc</a></h1>
 
@@ -119,7 +120,7 @@ Separate the given string according to the given list of characters.<br/>
 </div>
 
 <pre><span id="VALlist_chop"><span class="keyword">val</span> list_chop</span> : <code class="type">int -&gt; 'h list -&gt; 'h list</code></pre><div class="info">
-<code class="code">list_chop n l</code> returns the <code class="code">n</code> first elements of list <code class="code">l</code> or the whole
+<code class="code">list_chop n l</code> returns the <code class="code">n</code> first documents of list <code class="code">l</code> or the whole
    list if <code class="code">n &gt;= List.length l</code>.<br/>
 <b>Author(s):</b> Maxence Guesdon<br/>
 <b>Version:</b> 1.0<br/>
@@ -174,19 +175,17 @@ Return mdification time of the given file, or None if
 <b>Raises</b> <code>Failure</code> if <code class="code">parent</code> is not a prefix of <code class="code">file</code>.<br/>
 </div>
 
-<pre><span id="VALhighlight"><span class="keyword">val</span> highlight</span> : <code class="type">opts:string -&gt; string -&gt; string</code></pre><div class="info">
-Call the highlight command on the given string and make it produce xhtml code.
-  Options are passed to the highlight command.<br/>
-</div>
-
 <pre><span id="VALstring_of_time"><span class="keyword">val</span> string_of_time</span> : <code class="type">float -&gt; string</code></pre></div>
 
 
 
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h14</div>
+</div>
+
+
 
 </div> 
 </body>

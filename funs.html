@@ -31,6 +31,7 @@
 <div id="header">
   
   
+  
   <div class="page-title">Predefined modules and functions</div>
 </div>
 
@@ -40,7 +41,7 @@
 <div class="section"><div class="section-title" id="default_scheme">Default scheme</div>
 <p>
 As explained in <a href="http://zoggy.github.io/stog/engine.html">Evaluation and templating</a>, modules provide named functions associated
-to levels, and the elements are succesively modified by these functions.
+to levels, and the documents are succesively modified by these functions.
 Additionaly, a function of a module can be associated to various levels.
 </p>
 <p>
@@ -52,21 +53,21 @@ defined by these modules:
 </p>
 <table class="table table-bordered table-condensed">
 <tr><th>Level</th><th>Function(s)</th></tr>
-<tr><td>  0</td><td><a href="http://zoggy.github.io/stog/module_base.html#base">base</a> (Base)</td></tr>
-<tr><td> 30</td><td><a href="http://zoggy.github.io/stog/module_base.html#add-elts">add-elts</a> (Base)</td></tr>
+<tr><td>  0</td><td><a href="http://zoggy.github.io/stog/module_base.html#base">base</a> (Base), <a href="http://zoggy.github.io/stog/module_blocks.html#init">init</a> (Blocks)</td></tr>
+<tr><td> 30</td><td><a href="http://zoggy.github.io/stog/module_base.html#add-docs">add-docs</a> (Base)</td></tr>
 <tr><td> 50</td><td><a href="http://zoggy.github.io/stog/module_base.html#toc">toc</a> (Base)</td></tr>
 <tr><td> 60</td><td><a href="http://zoggy.github.io/stog/module_base.html#cut">cut</a> (Base)</td></tr>
 <tr><td> 61</td><td><a href="http://zoggy.github.io/stog/module_base.html#base">base</a> (Base), <a href="http://zoggy.github.io/stog/module_blocks.html#base">base</a> (Blocks)</td></tr>
 <tr><td>100</td><td><a href="http://zoggy.github.io/stog/module_blocks.html#sectionning">sectionning</a> (Blocks)</td></tr>
 <tr><td>120</td><td><a href="http://zoggy.github.io/stog/module_blocks.html#gather-ids">gather-ids</a> (Blocks)</td></tr>
-<tr><td>150</td><td><a href="http://zoggy.github.io/stog/module_blocks.html#elt">elt</a> (Blocks)</td></tr>
+<tr><td>150</td><td><a href="http://zoggy.github.io/stog/module_blocks.html#doc">doc</a> (Blocks)</td></tr>
 <tr><td>160</td><td><a href="http://zoggy.github.io/stog/module_base.html#inc">inc</a> (Base)</td></tr>
 <tr><td>500</td><td><a href="http://zoggy.github.io/stog/module_base.html#clean">clean</a> (Base)</td></tr>
 </table>
 <p>For most of the rules applied by module functions, you should look
 at the generated XML to modify
 your CSS stylesheet according to the classes used. You can start from
-the <span class="icode">.less</span> files in the <span class="icode">doc</span> directory
+the <span class="icode"><span class="hl std">.less</span></span> files in the <span class="icode"><span class="hl std">doc/less</span></span> directory
 of the stog sources.
 </p>
 </div>
@@ -89,17 +90,18 @@ given module. The default scheme could be expressed with:
 <pre class="code-ocaml">levels <span class="hl opt">= [</span>
   <span class="hl opt">(</span><span class="hl str">&quot;html&quot;</span><span class="hl opt">,</span>
     <span class="hl opt">[ (</span><span class="hl str">&quot;base&quot;</span><span class="hl opt">, [</span> <span class="hl num">0</span> <span class="hl opt">;</span> <span class="hl num">61</span> <span class="hl opt">]) ;</span>
-      <span class="hl opt">(</span><span class="hl str">&quot;add-elts&quot;</span><span class="hl opt">, [</span> <span class="hl num">30</span> <span class="hl opt">]) ;</span>
+      <span class="hl opt">(</span><span class="hl str">&quot;add-docs&quot;</span><span class="hl opt">, [</span> <span class="hl num">30</span> <span class="hl opt">]) ;</span>
       <span class="hl opt">(</span><span class="hl str">&quot;toc&quot;</span><span class="hl opt">, [</span> <span class="hl num">50</span> <span class="hl opt">]) ;</span>
       <span class="hl opt">(</span><span class="hl str">&quot;cut&quot;</span><span class="hl opt">, [</span> <span class="hl num">60</span> <span class="hl opt">]) ;</span>
       <span class="hl opt">(</span><span class="hl str">&quot;inc&quot;</span><span class="hl opt">, [</span> <span class="hl num">160</span> <span class="hl opt">]) ;</span>
       <span class="hl opt">(</span><span class="hl str">&quot;clean&quot;</span><span class="hl opt">, [</span> <span class="hl num">500</span> <span class="hl opt">]) ;</span>
     <span class="hl opt">]) ;</span>
   <span class="hl opt">(</span><span class="hl str">&quot;blocks&quot;</span><span class="hl opt">,</span>
-    <span class="hl opt">[ (</span><span class="hl str">&quot;base&quot;</span><span class="hl opt">, [</span> <span class="hl num">61</span> <span class="hl opt">]) ;</span>
+    <span class="hl opt">[ (</span><span class="hl str">&quot;init&quot;</span><span class="hl opt">, [</span> <span class="hl num">0</span> <span class="hl opt">]) ;</span>
+      <span class="hl opt">(</span><span class="hl str">&quot;base&quot;</span><span class="hl opt">, [</span> <span class="hl num">61</span> <span class="hl opt">]) ;</span>
       <span class="hl opt">(</span><span class="hl str">&quot;sectionning&quot;</span><span class="hl opt">, [</span> <span class="hl num">100</span> <span class="hl opt">]) ;</span>
       <span class="hl opt">(</span><span class="hl str">&quot;gather-ids&quot;</span><span class="hl opt">, [</span> <span class="hl num">120</span> <span class="hl opt">]) ;</span>
-      <span class="hl opt">(</span><span class="hl str">&quot;elt&quot;</span><span class="hl opt">, [</span> <span class="hl num">150</span> <span class="hl opt">]) ;</span>
+      <span class="hl opt">(</span><span class="hl str">&quot;doc&quot;</span><span class="hl opt">, [</span> <span class="hl num">150</span> <span class="hl opt">]) ;</span>
     <span class="hl opt">]) ;</span>
  <span class="hl opt">]</span></pre>
 <p>It is possible to change only the levels of some functions.
@@ -132,37 +134,37 @@ predefined modules. They are listed here.
 
 <div class="subsection"><div class="subsection-title" id="contents">contents</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;contents/&gt;</span></span> is the generic function to insert some
+<span class="icode"><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span></span> is the generic function to insert some
 contents in an included file or template. It may be available or not depending
 on the context.
 </p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="env_">env_</div>
-<p>The special tag <span class="icode">env_</span> can be used to modify the environment
+<p>The special tag <span class="icode"><span class="hl std">env_</span></span> can be used to modify the environment
 before analysing children. For example, here we add an association
 between &quot;login&quot; and &quot;zoggy&quot;. This will add to the environment
 an association between the key &quot;login&quot; and
 the function returning the one-element list [&quot;zoggy&quot;], which is used
 later in the &quot;login&quot; attribute:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;env_</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;zoggy&quot;</span><span class="hl kwa">&gt;</span>
+<pre class="code-xml"><span class="hl kwa">&lt;env_</span><span class="hl std"> </span><span class="">login</span><span class="hl std">=</span><span class="hl str">&quot;zoggy&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-  <span class="hl kwa">&lt;user</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;&amp;lt;login/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/user&gt;</span>
+  </span><span class="hl kwa">&lt;user</span><span class="hl std"> </span><span class="">login</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;login/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/user</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-<span class="hl kwa">&lt;/env_&gt;</span></pre>
+</span><span class="hl kwa">&lt;/env_</span><span class="hl kwa">&gt;</span></pre>
 <p>Such a function cannot be created in plugins, since functions only return
 XML trees, not a new environment. But your functions can return XML trees
-containing <span class="icode">env_</span> tags to modify the environment used to
+containing <span class="icode"><span class="hl std">env_</span></span> tags to modify the environment used to
 evaluate the returned XML trees.
 </p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="langswitch">langswitch</div>
 <p>
-If <span class="icode">stog</span> is launched with option <span class="icode">--lang language</span>, the
-<span class="icode"><span class="hl kwa">&lt;langswitch&gt;</span></span> function returns some code to access
-to pages in other languages than <span class="icode">language</span>.
+If <span class="icode"><span class="hl std">stog</span></span> is launched with option <span class="icode"><span class="hl std">--lang language</span></span>, the
+<span class="icode"><span class="hl kwa">&lt;langswitch</span><span class="hl kwa">&gt;</span></span> function returns some code to access
+to pages in other languages than <span class="icode"><span class="hl std">language</span></span>.
 </p>
 </div>
 
@@ -177,152 +179,156 @@ to pages in other languages than <span class="icode">language</span>.
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Predefined modules and functions&quot;</span>
-<span class="hl kwb">navbar-doc</span>=<span class="hl str">&quot;active&quot;</span>
-<span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;contents&gt;</span>
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;default_scheme&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Default scheme&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-As explained in <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;engine&quot;</span><span class="hl kwa">/&gt;</span>, modules provide named functions associated
-to levels, and the elements are succesively modified by these functions.
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Predefined modules and functions&quot;</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
+</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;default_scheme&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Default scheme&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+As explained in </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;engine&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">, modules provide named functions associated
+to levels, and the documents are succesively modified by these functions.
 Additionaly, a function of a module can be associated to various levels.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The following modules are available by default:
-<span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base&quot;</span><span class="hl kwa">&gt;</span>Base<span class="hl kwa">&lt;/elt&gt;</span>, <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_blocks&quot;</span><span class="hl kwa">&gt;</span>Blocks<span class="hl kwa">&lt;/elt&gt;</span>.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>Here is the list of default levels and their associated functions
+</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Base</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_blocks&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Blocks</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Here is the list of default levels and their associated functions
 defined by these modules:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;table</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;table table-bordered table-condensed&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;tr&gt;&lt;th&gt;</span>Level<span class="hl kwa">&lt;/th&gt;&lt;th&gt;</span>Function(s)<span class="hl kwa">&lt;/th&gt;&lt;/tr&gt;</span>
-<span class="hl kwa">&lt;tr&gt;&lt;td&gt;</span>  <span class="hl num">0</span><span class="hl kwa">&lt;/td&gt;&lt;td&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base#base&quot;</span><span class="hl kwa">/&gt;</span> (Base)<span class="hl kwa">&lt;/td&gt;&lt;/tr&gt;</span>
-<span class="hl kwa">&lt;tr&gt;&lt;td&gt;</span> <span class="hl num">30</span><span class="hl kwa">&lt;/td&gt;&lt;td&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base#add-elts&quot;</span><span class="hl kwa">/&gt;</span> (Base)<span class="hl kwa">&lt;/td&gt;&lt;/tr&gt;</span>
-<span class="hl kwa">&lt;tr&gt;&lt;td&gt;</span> <span class="hl num">50</span><span class="hl kwa">&lt;/td&gt;&lt;td&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base#toc&quot;</span><span class="hl kwa">/&gt;</span> (Base)<span class="hl kwa">&lt;/td&gt;&lt;/tr&gt;</span>
-<span class="hl kwa">&lt;tr&gt;&lt;td&gt;</span> <span class="hl num">60</span><span class="hl kwa">&lt;/td&gt;&lt;td&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base#cut&quot;</span><span class="hl kwa">/&gt;</span> (Base)<span class="hl kwa">&lt;/td&gt;&lt;/tr&gt;</span>
-<span class="hl kwa">&lt;tr&gt;&lt;td&gt;</span> <span class="hl num">61</span><span class="hl kwa">&lt;/td&gt;&lt;td&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base#base&quot;</span><span class="hl kwa">/&gt;</span> (Base), <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_blocks#base&quot;</span><span class="hl kwa">/&gt;</span> (Blocks)<span class="hl kwa">&lt;/td&gt;&lt;/tr&gt;</span>
-<span class="hl kwa">&lt;tr&gt;&lt;td&gt;</span><span class="hl num">100</span><span class="hl kwa">&lt;/td&gt;&lt;td&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_blocks#sectionning&quot;</span><span class="hl kwa">/&gt;</span> (Blocks)<span class="hl kwa">&lt;/td&gt;&lt;/tr&gt;</span>
-<span class="hl kwa">&lt;tr&gt;&lt;td&gt;</span><span class="hl num">120</span><span class="hl kwa">&lt;/td&gt;&lt;td&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_blocks#gather-ids&quot;</span><span class="hl kwa">/&gt;</span> (Blocks)<span class="hl kwa">&lt;/td&gt;&lt;/tr&gt;</span>
-<span class="hl kwa">&lt;tr&gt;&lt;td&gt;</span><span class="hl num">150</span><span class="hl kwa">&lt;/td&gt;&lt;td&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_blocks#elt&quot;</span><span class="hl kwa">/&gt;</span> (Blocks)<span class="hl kwa">&lt;/td&gt;&lt;/tr&gt;</span>
-<span class="hl kwa">&lt;tr&gt;&lt;td&gt;</span><span class="hl num">160</span><span class="hl kwa">&lt;/td&gt;&lt;td&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base#inc&quot;</span><span class="hl kwa">/&gt;</span> (Base)<span class="hl kwa">&lt;/td&gt;&lt;/tr&gt;</span>
-<span class="hl kwa">&lt;tr&gt;&lt;td&gt;</span><span class="hl num">500</span><span class="hl kwa">&lt;/td&gt;&lt;td&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base#clean&quot;</span><span class="hl kwa">/&gt;</span> (Base)<span class="hl kwa">&lt;/td&gt;&lt;/tr&gt;</span>
-<span class="hl kwa">&lt;/table&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>For most of the rules applied by module functions, you should look
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;table</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;table table-bordered table-condensed&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;th</span><span class="hl kwa">&gt;</span><span class="hl std">Level</span><span class="hl kwa">&lt;/th</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;th</span><span class="hl kwa">&gt;</span><span class="hl std">Function(s)</span><span class="hl kwa">&lt;/th</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">  0</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#base&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base), </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_blocks#init&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std"> 30</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#add-docs&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std"> 50</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#toc&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std"> 60</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#cut&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std"> 61</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#base&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base), </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_blocks#base&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">100</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_blocks#sectionning&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">120</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_blocks#gather-ids&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">150</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_blocks#doc&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">160</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#inc&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">500</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#clean&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/table</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">For most of the rules applied by module functions, you should look
 at the generated XML to modify
 your CSS stylesheet according to the classes used. You can start from
-the <span class="hl kwa">&lt;icode&gt;</span>.less<span class="hl kwa">&lt;/icode&gt;</span> files in the <span class="hl kwa">&lt;icode&gt;</span>doc<span class="hl kwa">&lt;/icode&gt;</span> directory
+the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.less</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> files in the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">doc/less</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> directory
 of the stog sources.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;config_funs&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Configuring the scheme&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-The default scheme can be changed, using the <span class="hl kwa">&lt;code&gt;</span>levels<span class="hl kwa">&lt;/code&gt;</span>
-option in the <span class="hl kwa">&lt;code&gt;</span>.stog/config<span class="hl kwa">&lt;/code&gt;</span> file.
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;config_funs&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Configuring the scheme&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+The default scheme can be changed, using the </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">levels</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">
+option in the </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/config</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> file.
 This option contains a list of pairs of the following form:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ocaml&gt;</span>(<span class="hl str">&quot;module-name&quot;</span>,
-  [ (<span class="hl str">&quot;fun1&quot;</span>, [ l1 ; l2 ; ...]) ;
-    (<span class="hl str">&quot;fun2&quot;</span>, [ l3 ; l4 ; ...]) ;
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">(&quot;module-name&quot;,
+  [ (&quot;fun1&quot;, [ l1 ; l2 ; ...]) ;
+    (&quot;fun2&quot;, [ l3 ; l4 ; ...]) ;
     ... ;
-  ])<span class="hl kwa">&lt;/ocaml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+  ])</span><span class="hl kwa">&lt;/ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The list is used to set the levels a function is associated to in a
 given module. The default scheme could be expressed with:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ocaml&gt;</span>levels = [
-  (<span class="hl str">&quot;html&quot;</span>,
-    [ (<span class="hl str">&quot;base&quot;</span>, [ <span class="hl num">0</span> ; <span class="hl num">61</span> ]) ;
-      (<span class="hl str">&quot;add-elts&quot;</span>, [ <span class="hl num">30</span> ]) ;
-      (<span class="hl str">&quot;toc&quot;</span>, [ <span class="hl num">50</span> ]) ;
-      (<span class="hl str">&quot;cut&quot;</span>, [ <span class="hl num">60</span> ]) ;
-      (<span class="hl str">&quot;inc&quot;</span>, [ <span class="hl num">160</span> ]) ;
-      (<span class="hl str">&quot;clean&quot;</span>, [ <span class="hl num">500</span> ]) ;
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">levels = [
+  (&quot;html&quot;,
+    [ (&quot;base&quot;, [ 0 ; 61 ]) ;
+      (&quot;add-docs&quot;, [ 30 ]) ;
+      (&quot;toc&quot;, [ 50 ]) ;
+      (&quot;cut&quot;, [ 60 ]) ;
+      (&quot;inc&quot;, [ 160 ]) ;
+      (&quot;clean&quot;, [ 500 ]) ;
     ]) ;
-  (<span class="hl str">&quot;blocks&quot;</span>,
-    [ (<span class="hl str">&quot;base&quot;</span>, [ <span class="hl num">61</span> ]) ;
-      (<span class="hl str">&quot;sectionning&quot;</span>, [ <span class="hl num">100</span> ]) ;
-      (<span class="hl str">&quot;gather-ids&quot;</span>, [ <span class="hl num">120</span> ]) ;
-      (<span class="hl str">&quot;elt&quot;</span>, [ <span class="hl num">150</span> ]) ;
+  (&quot;blocks&quot;,
+    [ (&quot;init&quot;, [ 0 ]) ;
+      (&quot;base&quot;, [ 61 ]) ;
+      (&quot;sectionning&quot;, [ 100 ]) ;
+      (&quot;gather-ids&quot;, [ 120 ]) ;
+      (&quot;doc&quot;, [ 150 ]) ;
     ]) ;
  ]
-<span class="hl kwa">&lt;/ocaml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>It is possible to change only the levels of some functions.
-In the example below, the <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base#inc&quot;</span><span class="hl kwa">/&gt;</span> function
-of module <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base&quot;</span><span class="hl kwa">&gt;</span>Base<span class="hl kwa">&lt;/elt&gt;</span> will not be called,
+</span><span class="hl kwa">&lt;/ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">It is possible to change only the levels of some functions.
+In the example below, the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#inc&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> function
+of module </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Base</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> will not be called,
 (as it is associated to an empty list of levels)
-and the <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;module_base#base&quot;</span><span class="hl kwa">/&gt;</span> function of the same module
-will be associated to levels <span class="hl num">2</span> and <span class="hl num">230</span>, while the rest of the scheme
+and the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#base&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> function of the same module
+will be associated to levels 2 and 230, while the rest of the scheme
 remains unchanged:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;ocaml&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">
 levels = [
-  (<span class="hl str">&quot;html&quot;</span>,
-    [ (<span class="hl str">&quot;base&quot;</span>, [ <span class="hl num">2</span> ; <span class="hl num">230</span> ]) ;
-      (<span class="hl str">&quot;inc&quot;</span>, [ ]) ;
+  (&quot;html&quot;,
+    [ (&quot;base&quot;, [ 2 ; 230 ]) ;
+      (&quot;inc&quot;, [ ]) ;
     ]) ;
  ]
-<span class="hl kwa">&lt;/ocaml&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+</span><span class="hl kwa">&lt;/ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Each module can associate only one function to a given level:
 for a level and a module, the last associated function hides the
 previous function associated to this level, if any.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/section&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;base&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Common base rules&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;base&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Common base rules&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Some predefined rules are applied in various functions of the
 predefined modules. They are listed here.
-<span class="hl kwa">&lt;/p&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;contents&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;contents&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>contents/<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> is the generic function to insert some
+</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;contents&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;contents&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">contents/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is the generic function to insert some
 contents in an included file or template. It may be available or not depending
 on the context.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/subsection&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/subsection</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;env_&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;env_&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>The special tag <span class="hl kwa">&lt;icode&gt;</span>env_<span class="hl kwa">&lt;/icode&gt;</span> can be used to modify the environment
+</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;env_&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;env_&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The special tag </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">env_</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> can be used to modify the environment
 before analysing children. For example, here we add an association
-between <span class="hl str">&quot;login&quot;</span> and <span class="hl str">&quot;zoggy&quot;</span>. This will add to the environment
-an association between the key <span class="hl str">&quot;login&quot;</span> and
-the function returning the one-element list [<span class="hl str">&quot;zoggy&quot;</span>], which is used
-later in the <span class="hl str">&quot;login&quot;</span> attribute:
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;env_</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;zoggy&quot;</span><span class="hl kwa">&gt;</span>
+between &quot;login&quot; and &quot;zoggy&quot;. This will add to the environment
+an association between the key &quot;login&quot; and
+the function returning the one-element list [&quot;zoggy&quot;], which is used
+later in the &quot;login&quot; attribute:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;env_</span><span class="hl std"> </span><span class="">login</span><span class="hl std">=</span><span class="hl str">&quot;zoggy&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-  <span class="hl kwa">&lt;user</span> <span class="hl kwb">login</span>=<span class="hl str">&quot;&amp;lt;login/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/user&gt;</span>
+  </span><span class="hl kwa">&lt;user</span><span class="hl std"> </span><span class="">login</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;login/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/user</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-<span class="hl kwa">&lt;/env_&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>Such a function cannot be created in plugins, since functions only return
+</span><span class="hl kwa">&lt;/env_</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Such a function cannot be created in plugins, since functions only return
 XML trees, not a new environment. But your functions can return XML trees
-containing <span class="hl kwa">&lt;icode&gt;</span>env_<span class="hl kwa">&lt;/icode&gt;</span> tags to modify the environment used to
+containing </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">env_</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> tags to modify the environment used to
 evaluate the returned XML trees.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/subsection&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/subsection</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;langswitch&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;langswitch&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-If <span class="hl kwa">&lt;icode&gt;</span>stog<span class="hl kwa">&lt;/icode&gt;</span> is launched with option <span class="hl kwa">&lt;icode&gt;</span>--lang language<span class="hl kwa">&lt;/icode&gt;</span>, the
-<span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwd">&amp;lt;</span>langswitch<span class="hl kwd">&amp;gt;</span><span class="hl kwa">&lt;/icode&gt;</span> function returns some code to access
-to pages in other languages than <span class="hl kwa">&lt;icode&gt;</span>language<span class="hl kwa">&lt;/icode&gt;</span>.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/subsection&gt;</span>
+</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;langswitch&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;langswitch&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+If </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is launched with option </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--lang language</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, the
+</span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">langswitch</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> function returns some code to access
+to pages in other languages than </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">language</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/subsection</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;/section&gt;</span>
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;/contents&gt;</span>
-<span class="hl kwa">&lt;/page&gt;</span></pre>
+</span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
 </div>
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

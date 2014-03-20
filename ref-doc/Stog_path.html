@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog library reference documentation : Stog_path</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
+<div class="navbar"><a class="pre" href="Stog_graph.html" title="Stog_graph">Previous</a>
+ <a class="up" href="index.html" title="Index">Up</a>
+ <a class="post" href="Stog_filter_types.html" title="Stog_filter_types">Next</a>
+</div>
+<h1>Module <a href="type_Stog_path.html">Stog_path</a></h1>
+
+<pre><span class="keyword">module</span> Stog_path: <code class="code">sig</code> <a href="Stog_path.html">..</a> <code class="code">end</code></pre><div class="info module top">
+Document paths.<br/>
+</div>
+<hr width="100%"/>
+
+<pre><span id="EXCEPTIONInvalid"><span class="keyword">exception</span> Invalid</span> <span class="keyword">of</span> <code class="type">string</code></pre>
+
+<pre><span id="VALinvalid"><span class="keyword">val</span> invalid</span> : <code class="type">string -&gt; 'a</code></pre>
+<pre><code><span id="TYPEpath"><span class="keyword">type</span> path</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTpath.path">path</span> : <code class="type">string list</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTpath.path_absolute">path_absolute</span> : <code class="type">bool</code>;</code></td>
+
+</tr></table>
+}
+
+
+
+<pre><span class="keyword">module</span> <a href="Stog_path.Map.html">Map</a>: <code class="type">Map.S</code><code class="type">  with type key = path</code></pre>
+<pre><span class="keyword">module</span> <a href="Stog_path.Set.html">Set</a>: <code class="type">Set.S</code><code class="type">  with type elt = path</code></pre>
+<pre><span id="VALpath"><span class="keyword">val</span> path</span> : <code class="type">string list -&gt; bool -&gt; <a href="Stog_path.html#TYPEpath">path</a></code></pre>
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type"><a href="Stog_path.html#TYPEpath">path</a> -&gt; <a href="Stog_path.html#TYPEpath">path</a> -&gt; int</code></pre>
+<pre><span id="VALappend"><span class="keyword">val</span> append</span> : <code class="type"><a href="Stog_path.html#TYPEpath">path</a> -&gt; string list -&gt; <a href="Stog_path.html#TYPEpath">path</a></code></pre>
+<pre><span id="VALchop_extension"><span class="keyword">val</span> chop_extension</span> : <code class="type"><a href="Stog_path.html#TYPEpath">path</a> -&gt; <a href="Stog_path.html#TYPEpath">path</a> option</code></pre>
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="Stog_path.html#TYPEpath">path</a> -&gt; string</code></pre>
+<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">string -&gt; <a href="Stog_path.html#TYPEpath">path</a></code></pre>
+<pre><span id="VALparent"><span class="keyword">val</span> parent</span> : <code class="type"><a href="Stog_path.html#TYPEpath">path</a> -&gt; <a href="Stog_path.html#TYPEpath">path</a></code></pre></div>
+
+
+
+
+
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h14</div>
+</div>
+
+
+
+</div> 
+</body>
+</html>

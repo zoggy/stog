@@ -30,6 +30,7 @@
 
 <div id="header">
   
+  <a href="http://zoggy.github.io/stog/plugins.html">Plugins</a>
   
   <div class="page-title">Stog-markdown</div>
 </div>
@@ -40,11 +41,11 @@
 <p>
 This plugin allows using
 <span class="ext-a"><a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a></span> syntax
-in Stog elements, by calling an external tool to convert this syntax
+in Stog documents, by calling an external tool to convert this syntax
 to XHTML.
 </p>
 <p class="alert alert-warning">
-By default, the <span class="icode"><span class="hl kwa">&lt;markdown&gt;</span></span> calls the
+By default, the <span class="icode"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span></span> calls the
 <code>markdown</code> command, so make sure that
 <span class="ext-a"><a href="http://daringfireball.net/projects/markdown/">markdown</a></span>
 is installed.
@@ -60,9 +61,10 @@ This plugin was contributed by
 <div class="section"><div class="section-title" id="example">Example</div>
 <p>
 This plugin adds a new <a href="http://zoggy.github.io/stog/module_base.html#base">base rule</a>
-<span class="icode"><span class="hl kwa">&lt;markdown&gt;</span></span>.
+<span class="icode"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span></span>.
 </p>
-<pre class="code-xml" id="code1"><span class="hl kwa">&lt;markdown&gt;</span>
+<div class="hide" id="code1">
+&lt;markdown&gt;
 ## A typical markdown example
 
 [Markdown](http://daringfireball.net/projects/markdown/) is
@@ -70,9 +72,20 @@ a markup language meant to be written simply in a text editor,
 with a markup that is both easy to read and write. It is later
 translated into HTML by one of the numerous `markdown`
 implementations.
- <span class="hl kwa">&lt;/markdown&gt;</span></pre>
+ &lt;/markdown&gt;
+</div>
+<pre class="code-xml"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span><span class="hl std">
+## A typical markdown example
+
+[Markdown](http://daringfireball.net/projects/markdown/) is
+a markup language meant to be written simply in a text editor,
+with a markup that is both easy to read and write. It is later
+translated into HTML by one of the numerous `markdown`
+implementations.
+ </span><span class="hl kwa">&lt;/markdown</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 <p>
-The <span class="icode"><span class="hl kwa">&lt;markdown&gt;</span></span> rule calls the <code>markdown</code> command
+The <span class="icode"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span></span> rule calls the <code>markdown</code> command
 line tool to convert Markdown syntax to (X)HTML.
 Here is the result, embedded in a box:
 </p>
@@ -91,7 +104,7 @@ implementations.</p>
 </div>
 
 <div class="section"><div class="section-title" id="command">Command and arguments</div>
-<p>The <span class="icode"><span class="hl kwa">&lt;markdown&gt;</span></span> rule handles attributes <code>command</code>
+<p>The <span class="icode"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span></span> rule handles attributes <code>command</code>
 and <code>args</code>.
 </p>
 <p>The <code>command</code> attribute is used to specify another command
@@ -102,7 +115,8 @@ is added on the command line.
 <code>args</code> attribute to make it translate our markdown code
 into XHTML:
 </p>
-<pre class="code-xml" id="code2"><span class="hl kwa">&lt;markdown</span> <span class="hl kwb">command</span>=<span class="hl str">&quot;pandoc&quot;</span> <span class="hl kwb">args</span>=<span class="hl str">&quot;-f markdown -t html&quot;</span><span class="hl kwa">&gt;</span>
+<div class="hide" id="code2">
+&lt;markdown command=&quot;pandoc&quot; args=&quot;-f markdown -t html&quot;&gt;
 ## A typical markdown example
 
 [Markdown](http://daringfireball.net/projects/markdown/) is
@@ -110,7 +124,18 @@ a markup language meant to be written simply in a text editor,
 with a markup that is both easy to read and write. It is later
 translated into HTML by one of the numerous `markdown`
 implementations.
- <span class="hl kwa">&lt;/markdown&gt;</span></pre>
+ &lt;/markdown&gt;
+</div>
+<pre class="code-xml"><span class="hl kwa">&lt;markdown</span><span class="hl std"> </span><span class="">command</span><span class="hl std">=</span><span class="hl str">&quot;pandoc&quot;</span><span class="hl std"> </span><span class="">args</span><span class="hl std">=</span><span class="hl str">&quot;-f markdown -t html&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+## A typical markdown example
+
+[Markdown](http://daringfireball.net/projects/markdown/) is
+a markup language meant to be written simply in a text editor,
+with a markup that is both easy to read and write. It is later
+translated into HTML by one of the numerous `markdown`
+implementations.
+ </span><span class="hl kwa">&lt;/markdown</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 <p>
 Here is the result, embedded in a box:
 </p>
@@ -128,8 +153,11 @@ Here is the result, embedded in a box:
 
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

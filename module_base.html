@@ -31,6 +31,7 @@
 <div id="header">
   
   
+  
   <div class="page-title">Module Base</div>
 </div>
 
@@ -38,24 +39,24 @@
 
 
 <p>
-In the following descriptions, the current element refers to the element
-whose hid is retrieved by the <span class="icode"><span class="hl kwa">&lt;elt-hid/&gt;</span></span> function.
+In the following descriptions, the current document refers to the document
+whose path is retrieved by the <span class="icode"><span class="hl kwa">&lt;doc-path</span><span class="hl kwa">/&gt;</span></span> function.
 </p>
 <p>
 Here are the functions of the module, which can be associated to
 levels (see <a href="http://zoggy.github.io/stog/funs.html">Predefined modules and functions</a>):
 </p>
 
-<ul class="toc"><li class="toc-section"><a href="http://zoggy.github.io/stog/module_base.html#base">base</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_base.html#add-elts">add-elts</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_base.html#toc">toc</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_base.html#cut">cut</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_base.html#inc">inc</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_base.html#clean">clean</a></li></ul>
+<ul class="toc"><li class="toc-section"><a href="http://zoggy.github.io/stog/module_base.html#base">base</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_base.html#add-docs">add-docs</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_base.html#toc">toc</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_base.html#cut">cut</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_base.html#inc">inc</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_base.html#clean">clean</a></li></ul>
 
 <div class="section"><div class="section-title" id="base">base</div>
 <p>
 This function applies the following rules, mainly for simple formatting
-and referencing to the site or the current element information.
+and referencing to the site or the current document information.
 </p>
 <p>
 Plugins can add rules to this list, using the
-<a href="http://zoggy.github.io/stog/ref-doc/Stog_html.html#VALregister_base_rule"><span class="icode"><span class="hl kwc">Stog_html</span><span class="hl opt">.</span>register_base_rule</span></a>
+<a href="http://zoggy.github.io/stog/ref-doc/Stog_html.html#VALregister_base_rule"><span class="icode"><span class="hl kwc">Stog_html</span><span class="hl std">.</span><span class="">register_base_rule</span></span></a>
 function, possibly redefining pre-defined rules with the same names.
 </p>
 <table class="n-columns"><tr><td class="n-columns column-0">
@@ -63,22 +64,24 @@ function, possibly redefining pre-defined rules with the same names.
 <li><a href="http://zoggy.github.io/stog/module_base.html#archive-tree">archive-tree</a></li>
 <li><a href="http://zoggy.github.io/stog/module_base.html#as-xml">as-xml</a></li>
 <li><a href="http://zoggy.github.io/stog/module_base.html#command-line">command-line</a></li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#dummy_">dummy_</a></li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#elements">elements</a></li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#elt-bodyx">elt-body</a></li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#elt-date">elt-date</a></li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#elt-datetime">elt-datetime</a></li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#elt-hid">elt-hid</a></li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#elt-intro">elt-intro</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#date-now">date-now</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#date-today">date-today</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#documents">documents</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#doc-bodyx">doc-body</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#doc-date">doc-date</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#doc-datetime">doc-datetime</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#doc-path">doc-path</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#doc-intro">doc-intro</a></li>
 </ul>
 </td><td class="n-columns column-1">
 <ul>
-<li><a href="http://zoggy.github.io/stog/module_base.html#elt-keywordsx">elt-keywords / elt-topics</a></li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#elt-path">elt-path</a></li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#elt-src">elt-src</a></li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#elt-title">elt-title</a></li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#elt-type">elt-type</a></li>
-<li><a href="http://zoggy.github.io/stog/module_base.html#elt-url">elt-url</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#doc-keywordsx">doc-keywords / doc-topics</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#doc-navpath">doc-navpath</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#doc-src">doc-src</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#doc-title">doc-title</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#doc-type">doc-type</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#doc-url">doc-url</a></li>
+<li><a href="http://zoggy.github.io/stog/module_base.html#dummy_">dummy_</a></li>
 <li><a href="http://zoggy.github.io/stog/module_base.html#error_">error_</a></li>
 <li><a href="http://zoggy.github.io/stog/module_base.html#ext-a">ext-a</a></li>
 <li><a href="http://zoggy.github.io/stog/module_base.html#graphx">graph</a></li>
@@ -109,192 +112,232 @@ function, possibly redefining pre-defined rules with the same names.
 <li><a href="http://zoggy.github.io/stog/module_base.html#two-columns">two-columns / n-columns</a></li>
 </ul>
 </td></tr></table>
-
-<p class="alert alert-warning">This function also applies the
-<a href="http://zoggy.github.io/stog/funs.html#base">base rules</a>.</p>
-
 <div class="subsection"><div class="subsection-title" id="archive-tree">archive-tree</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;archive-tree/&gt;</span></span> inserts the articles archive tree.
+<span class="icode"><span class="hl kwa">&lt;archive-tree</span><span class="hl kwa">/&gt;</span></span> inserts the archive tree.
+</p>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="as-cdata">as-cdata</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;as-cdata</span><span class="hl kwa">/&gt;</span></span> transforms the children of the node
+into simple CDATA.
+For example, <pre class="code-txt"><span class="hl std">&lt;as-cdata&gt;&lt;coucou/&gt;&lt;/as-cdata&gt;</span></pre>
+will be replaced by
+  <pre class="code-txt"><span class="hl std">&amp;lt;coucou/&amp;gt;</span></pre>
 </p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="as-xml">as-xml</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;as-xml/&gt;</span></span> parses the contents of the node as XML.
-For example, <pre class="code-txt">&lt;as-xml&gt;&amp;lt;coucou/&amp;gt;&lt;/as-xml&gt;</pre>
+<span class="icode"><span class="hl kwa">&lt;as-xml</span><span class="hl kwa">/&gt;</span></span> parses the contents of the node as XML.
+For example, <pre class="code-txt"><span class="hl std">&lt;as-xml&gt;&amp;lt;coucou/&amp;gt;&lt;/as-xml&gt;</span></pre>
 will be replaced by
-  <pre class="code-txt">&lt;coucou/&gt;</pre>
+  <pre class="code-txt"><span class="hl std">&lt;coucou/&gt;</span></pre>
 </p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="command-line">command-line</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;command-line&gt;</span></span> works like
-<a href="#hcode"><span class="icode"><span class="hl kwa">&lt;hcode&gt;</span></span></a>
+<span class="icode"><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span></span> works like
+<a href="#hcode"><span class="icode"><span class="hl kwa">&lt;hcode</span><span class="hl kwa">&gt;</span></span></a>
 with the <code>lang</code>
 attribute already set to &quot;sh&quot;.
 </p>
 </div>
 
+<div class="subsection"><div class="subsection-title" id="date-now">date-now</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;date-now</span><span class="hl kwa">/&gt;</span></span> returns the current date and time. It handles
+the <code>format</code> attribute (see. <a href="http://zoggy.github.io/stog/module_base.html#doc-date">doc-date</a>).
+</p>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="date-today">date-today</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;date-today</span><span class="hl kwa">/&gt;</span></span> returns the current date. It handles
+the <code>format</code> attribute (see. <a href="http://zoggy.github.io/stog/module_base.html#doc-date">doc-date</a>).
+</p>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="documents">documents</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;documents</span><span class="hl std"> ...</span><span class="hl kwa">/&gt;</span></span> inserts the list of
+published documents.
+</p>
+<p>The following optional attributes can be specified:</p>
+<ul>
+<li><span class="icode"><span class="hl std">max=&quot;n&quot;</span></span> can be used to list only the <code>n</code> most recent
+documents.</li>
+<li><span class="icode"><span class="hl std">rss=&quot;...&quot;</span></span> or <span class="icode"><span class="hl std">alt-doc-path=&quot;...&quot;</span></span>
+triggers the creation of an alternative document listing the selected documents.
+If the given path is not absolute (i.e. it does not start with '/'), the path
+is appended to the parent path of the document. For example, if
+<span class="icode"><span class="hl kwa">&lt;documents</span><span class="hl std"> </span><span class="">alt-doc-path</span><span class="hl std">=</span><span class="hl str">&quot;bar.rss&quot;</span><span class="hl kwa">&gt;</span></span> is used in a document
+with path &quot;/foo/bar.html&quot;, the alternative document will have path
+&quot;/foo/bar.rss&quot;.
+A link to this alternative document is also added before the list.
+</li>
+<li><span class="icode"><span class="hl std">alt-doc-type=&quot;...&quot;</span></span> specifies the type of the alternative
+document if it is created; default type is &quot;rss&quot;, and a default template
+will be created if no template for this type exists.</li>
+<li><span class="icode"><span class="hl std">alt-doc-in-list-tmpl=&quot;...&quot;</span></span> specifies the template to
+use for each document in the list of documents in the alternative document.
+Default template is &quot;rss-item.tmpl&quot; and it is created if is does not exist.
+</li>
+<li><span class="icode"><span class="hl std">set=&quot;name&quot;</span></span> can be used to select only the documents belonging to
+the given set.</li>
+<li><span class="icode"><span class="hl std">type=&quot;type1,type2,...&quot;</span></span> filters the documents to keep only the ones with one
+of the given types.</li>
+<li><span class="icode"><span class="hl std">alt-doc-title=&quot;title&quot;</span></span> specifies the title of the alternative document,
+if it is created. If no alternative document title is given, the document title is used.
+</li>
+<li>By default, items are sorted according to the date of each document. Specifying
+<span class="icode"><span class="hl std">sort=&quot;rule1,rule2,...&quot;</span></span> make documents sorted according to the given rules,
+expanded for each document.</li>
+<li>By default, items are listed in descending order; <span class="icode"><span class="hl std">reverse=&quot;false&quot;</span></span>
+make the documents listed in ascending order.</li>
+<li><span class="icode"><span class="hl std">tmpl=&quot;...&quot;</span></span> specifies a template file to use for each document of
+the list. Default is <code>.stog/templates/doc-in-list.tmpl</code>.</li>
+<li id="filter"><span class="icode"><span class="hl std">filter=&quot;p&quot;</span></span> specifies to keep only documents verifying
+the given predicate <code>p</code>. The predicate can be an expression such as
+  <span class="icode"><span class="hl std">attribute='value'</span></span>
+  The attribute refers to a field defined in the document header, or defined in the main
+  document for the whole site if it has the form &quot;id:id&quot;.
+  The expressions accepted as filters follow this grammar:
+  <pre class="code-ocaml"><span class="">attribute</span><span class="hl std"> ::= </span><span class="">id</span><span class="hl std">
+            | </span><span class="">id</span><span class="hl std"> </span><span class="hl str">&quot;:&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">
+    </span><span class="">value</span><span class="hl std"> ::= </span><span class="hl str">&quot;'&quot;</span><span class="hl std"> </span><span class="hl kwd">string</span><span class="hl std"> </span><span class="hl str">&quot;'&quot;</span><span class="hl std">
+     </span><span class="">expr</span><span class="hl std"> ::= </span><span class="hl str">&quot;(&quot;</span><span class="hl std"> </span><span class="">expr</span><span class="hl std"> </span><span class="hl str">&quot;)&quot;</span><span class="hl std">
+            | </span><span class="">attribute</span><span class="hl std"> </span><span class="hl str">&quot;=&quot;</span><span class="hl std"> </span><span class="">value</span><span class="hl std">
+            | </span><span class="">expr</span><span class="hl std"> </span><span class="hl str">&quot;|&quot;</span><span class="hl std"> </span><span class="">expr</span><span class="hl std">       </span><span class="hl kwb">#</span><span class="hl std"> </span><span class="hl kwb">or</span><span class="hl std">
+            | </span><span class="">expr</span><span class="hl std"> </span><span class="hl str">&quot;&amp;&quot;</span><span class="hl std"> </span><span class="">expr</span><span class="hl std">       </span><span class="hl kwb">#</span><span class="hl std"> </span><span class="hl kwa">and</span><span class="hl std">
+            | </span><span class="hl str">&quot;!&quot;</span><span class="hl std"> </span><span class="">expr</span><span class="hl std">            </span><span class="hl kwb">#</span><span class="hl std"> </span><span class="">negation</span></pre>
+</li>
+</ul>
+<p>Example: <span class="icode"><span class="hl kwa">&lt;documents</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">&quot;post&quot;</span><span class="hl std"> </span><span class="">max</span><span class="hl std">=</span><span class="hl str">&quot;10&quot;</span><span class="hl std"> </span><span class="">rss</span><span class="hl std">=</span><span class="hl str">&quot;index.rss&quot;</span><span class="hl kwa">/&gt;</span></span></p>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="doc-bodyx">doc-body</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;doc-body</span><span class="hl kwa">/&gt;</span></span> returns the body of the current document,
+or of the document referenced by the <code>doc-path</code> attribute.
+</p>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="doc-date">doc-date</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;doc-date</span><span class="hl kwa">/&gt;</span></span> returns the date of the current document,
+or of the document referenced by the <code>doc-path</code> attribute,
+or an empty string if no date were specified.
+</p>
+<p>
+The <code>format</code> attribute, if present, specifies the format used
+to print the date. See the <span class="ext-a"><a href="http://projects.camlcity.org/projects/dl/ocamlnet-3.5.1/doc/html-main/Netdate.html#VALformat_to">documentation of Netdate.format_to</a></span> for details, which is
+the function used to print dates.
+</p>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="doc-datetime">doc-datetime</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;doc-datetime</span><span class="hl kwa">/&gt;</span></span> returns the date and time of the current document,
+or of the document referenced by the <code>doc-path</code> attribute,
+or an empty string if no date were specified.  It handles
+the <code>format</code> attribute (see. <a href="http://zoggy.github.io/stog/module_base.html#doc-date">doc-date</a>).
+</p>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="doc-path">doc-path</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;doc-path</span><span class="hl kwa">/&gt;</span></span> returns the path of the current document.
+
+</p>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="doc-intro">doc-intro</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;doc-intro</span><span class="hl kwa">/&gt;</span></span> returns the introduction of the current
+document (or of the document referenced by the <code>doc-path</code> attribute),
+that is the body code before the <span class="icode"><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span></span> marker.
+</p>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="doc-navpath">doc-navpath</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;doc-navpath</span><span class="hl kwa">/&gt;</span></span> builds a navigation bar in the form
+of a list of links showing the hierarchy to the current document (or the document
+referenced by the <code>doc-path</code> attribute).
+</p>
+<p>
+Suppose we're handling the document whose source file is
+<code>STOGDIR/foo/bar/gee.html</code>. Its <span class="icode"><span class="hl std">doc-path</span></span> is
+<code>/foo/bar/gee.html</code>. The path will contain two parts, one for
+<code>foo</code> and one for <code>bar</code>.
+If a document <code>/foo</code> exists, then a link to this document is
+added. Else, if a document /foo/index exists, then a link to this
+document is added. Else no link is added and the directory name is used,
+with no link. The same is done for the <code>/foo/bar</code> document.
+</p>
+<p>
+The separator of path parts is the code given under the
+<span class="icode"><span class="hl kwa">&lt;doc-navpath</span><span class="hl kwa">&gt;</span></span> node.
+</p>
+<p>To illustrate, the code</p>
+<pre class="code-xml"><span class="hl kwa">&lt;doc-navpath</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;/foo/bar/gee&quot;</span><span class="hl kwa">&gt;</span><span class="hl std"> / </span><span class="hl kwa">&lt;/doc-navpath</span><span class="hl kwa">&gt;</span></pre>
+<p>will produce the following code:</p>
+<pre class="code-xml"><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;/foo/index&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> / </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;/foo/bar&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<p>which results in:</p>
+<a href="http://zoggy.github.io/stog/foo/">The Foo page</a> / <a href="http://zoggy.github.io/stog/foo/bar.html">The Bar page</a>
+<p>
+The <span class="icode"><span class="hl std">with-root=&quot;...&quot;</span></span> attribute can be used to specify the
+path of a document used as root. For example:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;doc-navpath</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;/foo/bar/gee.html&quot;</span><span class="hl std"> </span><span class="">with-root</span><span class="hl std">=</span><span class="hl str">&quot;/index&quot;</span><span class="hl kwa">&gt;</span><span class="hl std"> / </span><span class="hl kwa">&lt;/doc-navpath</span><span class="hl kwa">&gt;</span></pre>
+<p>will produce the following path:</p>
+<a href="http://zoggy.github.io/stog/">Stog</a> / <a href="http://zoggy.github.io/stog/foo/">The Foo page</a> / <a href="http://zoggy.github.io/stog/foo/bar.html">The Bar page</a>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="doc-src">doc-src</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;doc-src</span><span class="hl kwa">/&gt;</span></span> returns the source filename
+of the document or of the document referenced by the <code>doc-path</code> attribute.
+</p>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="doc-title">doc-title</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;doc-title</span><span class="hl kwa">/&gt;</span></span> returns the title of the current document
+or of the document referenced by the <code>doc-path</code> attribute.
+</p>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="doc-type">doc-type</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;doc-type</span><span class="hl kwa">/&gt;</span></span> returns the type of the current document
+or of the document referenced by the <code>doc-path</code> attribute.
+</p>
+</div>
+
+<div class="subsection"><div class="subsection-title" id="doc-url">doc-url</div>
+<p>
+<span class="icode"><span class="hl kwa">&lt;doc-url</span><span class="hl kwa">/&gt;</span></span> returns the final url of the current document
+or of the document referenced by the <code>doc-path</code> attribute:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;doc-url</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;/engine&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<p> is reduced to http://zoggy.github.io/stog/engine.html</p>
+</div>
+
 <div class="subsection"><div class="subsection-title" id="dummy_">dummy_</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;dummy_/&gt;</span></span> is replaced by the contents of the node.
+<span class="icode"><span class="hl kwa">&lt;dummy_</span><span class="hl kwa">/&gt;</span></span> is replaced by the contents of the node.
 It is useful to insert an empty tree where a tree is required, for example
 in a <a href="http://zoggy.github.io/stog/module_base.html#if">if</a>.
 </p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="elements">elements</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;elements</span> ...<span class="hl kwa">/&gt;</span></span> inserts the list of
-published elements.
-</p>
-<p>The following optional attributes can be specified:</p>
-<ul>
-<li><span class="icode"><span class="hl kwb">max</span>=<span class="hl str">&quot;n&quot;</span></span> can be used to list only the <code>n</code> most recent
-elements.</li>
-<li><span class="icode"><span class="hl kwb">rss</span>=<span class="hl str">&quot;filename&quot;</span></span> triggers the creation of a RSS file corresponding
-to the selected elements. The given filename is appended to the stog output directory.
-A link to the RSS file is also added before the list.</li>
-<li><span class="icode"><span class="hl kwb">set</span>=<span class="hl str">&quot;name&quot;</span></span> can be used to select only the elements belonging to
-the given set.</li>
-<li><span class="icode"><span class="hl kwb">type</span>=<span class="hl str">&quot;type1,type2,...&quot;</span></span> filters the elements to keep only the ones with one
-of the given types.</li>
-<li><span class="icode"><span class="hl kwb">title</span>=<span class="hl str">&quot;title&quot;</span></span> specifies the title of the RSS channel, if a RSS
-file is created. If no title is given, the site title is used.</li>
-<li>By default, items are sorted according to the date of each element. Specifying
-<span class="icode"><span class="hl kwb">sort</span>=<span class="hl str">&quot;rule1,rule2,...&quot;</span></span> make elements sorted according to the given rules,
-expanded for each element.</li>
-<li>By default, items are listed in descending order; <span class="icode"><span class="hl kwb">reverse</span>=<span class="hl str">&quot;false&quot;</span></span>
-make the elements listed in ascending order.</li>
-<li><span class="icode"><span class="hl kwb">tmpl</span>=<span class="hl str">&quot;...&quot;</span></span> specifies a template file to use for each element of
-the list. Default is <code>.stog/templates/elt-in-list.tmpl</code>.</li>
-<li><span class="icode"><span class="hl kwb">filter</span>=<span class="hl str">&quot;p&quot;</span></span> specifies to keep only elements verifying
-the given predicate <code>p</code>. The predicate can be an expression such as
-  <span class="icode">attribute='value'</span>
-  The attribute refers to a field defined in the element header, or defined in the main
-  element for the whole site if it has the form &quot;id:id&quot;.
-  The expressions accepted as filters follow this grammar:
-  <pre class="code-ocaml">attribute <span class="hl opt">::=</span> id
-            | id <span class="hl str">&quot;:&quot;</span> id
-    <span class="hl kwa">value</span> <span class="hl opt">::=</span> <span class="hl str">&quot;'&quot;</span> <span class="hl kwb">string</span> <span class="hl str">&quot;'&quot;</span>
-     expr <span class="hl opt">::=</span> <span class="hl str">&quot;(&quot;</span> expr <span class="hl str">&quot;)&quot;</span>
-            | attribute <span class="hl str">&quot;=&quot;</span> <span class="hl kwa">value</span>
-            | expr <span class="hl str">&quot;|&quot;</span> expr       # <span class="hl kwa">or</span>
-            | expr <span class="hl str">&quot;&amp;&quot;</span> expr       # <span class="hl kwa">and</span>
-            | <span class="hl str">&quot;!&quot;</span> expr            # negation</pre>
-</li>
-</ul>
-<p>Example: <span class="icode"><span class="hl kwa">&lt;elements</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;post&quot;</span> <span class="hl kwb">max</span>=<span class="hl str">&quot;10&quot;</span> <span class="hl kwb">rss</span>=<span class="hl str">&quot;index.rss&quot;</span><span class="hl kwa">/&gt;</span></span></p>
-</div>
-
-<div class="subsection"><div class="subsection-title" id="elt-bodyx">elt-body</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;elt-body/&gt;</span></span> returns the body of the current element,
-or of the element referenced by the <code>elt-hid</code> attribute.
-</p>
-</div>
-
-<div class="subsection"><div class="subsection-title" id="elt-date">elt-date</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;elt-date/&gt;</span></span> returns the date of the current element,
-or of the element referenced by the <code>elt-hid</code> attribute,
-or an empty string if no date were specified.
-</p>
-</div>
-
-<div class="subsection"><div class="subsection-title" id="elt-datetime">elt-datetime</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;elt-datetime/&gt;</span></span> returns the date and time of the current element,
-or of the element referenced by the <code>elt-hid</code> attribute,
-or an empty string if no date were specified.
-</p>
-</div>
-
-<div class="subsection"><div class="subsection-title" id="elt-hid">elt-hid</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;elt-hid/&gt;</span></span> returns the hid of the current element
-or of the element referenced by the <code>elt-hid</code> attribute.
-</p>
-</div>
-
-<div class="subsection"><div class="subsection-title" id="elt-intro">elt-intro</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;elt-intro/&gt;</span></span> returns the introduction of the current
-element (or of the element referenced by the <code>elt-hid</code> attribute),
-that is the body code before the <span class="icode"><span class="hl kwa">&lt;sep_/&gt;</span></span> marker.
-</p>
-</div>
-
-<div class="subsection"><div class="subsection-title" id="elt-path">elt-path</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;elt-path/&gt;</span></span> builds a navigation bar in the form
-of a list of links showing the hierarchy to the current element (or the element
-referenced by the <code>elt-hid</code> attribute).
-</p>
-<p>
-Suppose we're handling the element whose source file is
-<code>STOGDIR/foo/bar/gee.html</code>. Its <span class="icode">elt-hid</span> is
-<code>/foo/bar/gee</code>. The path will contain two parts, one for
-<code>foo</code> and one for <code>bar</code>.
-If an element <code>/foo</code> exists, then a link to this element is
-added. Else, if an element /foo/index exists, then a link to this
-element is added. Else no link is added and the directory name is used,
-with no link. The same is done for the <code>/foo/bar</code> element.
-</p>
-<p>
-The separator of path parts is the code given under the
-<span class="icode"><span class="hl kwa">&lt;elt-path&gt;</span></span> node.
-</p>
-<p>To illustrate, the code</p>
-<pre class="code-xml"><span class="hl kwa">&lt;elt-path</span> <span class="hl kwb">elt-hid</span>=<span class="hl str">&quot;/foo/bar/gee&quot;</span><span class="hl kwa">&gt;</span> / <span class="hl kwa">&lt;/elt-path&gt;</span></pre>
-<p>will produce the following code:</p>
-<pre class="code-xml"><span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;/foo/index&quot;</span><span class="hl kwa">/&gt;</span> / <span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;/foo/bar&quot;</span><span class="hl kwa">/&gt;</span></pre>
-<p>which results in:</p>
-<a href="http://zoggy.github.io/stog/foo">The Foo page</a> / <a href="http://zoggy.github.io/stog/foo/bar.html">The Bar page</a>
-<p>
-The <span class="icode"><span class="hl kwb">with-root</span>=<span class="hl str">&quot;...&quot;</span></span> attribute can be used to specify the
-hid of an element used as root. For example:
-</p>
-<pre class="code-xml"><span class="hl kwa">&lt;elt-path</span> <span class="hl kwb">elt-hid</span>=<span class="hl str">&quot;/foo/bar/gee&quot;</span> <span class="hl kwb">with-root</span>=<span class="hl str">&quot;/index&quot;</span><span class="hl kwa">&gt;</span> / <span class="hl kwa">&lt;/elt-path&gt;</span></pre>
-<p>will produce the following path:</p>
-<a href="http://zoggy.github.io/stog">Stog</a> / <a href="http://zoggy.github.io/stog/foo">The Foo page</a> / <a href="http://zoggy.github.io/stog/foo/bar.html">The Bar page</a>
-</div>
-
-<div class="subsection"><div class="subsection-title" id="elt-src">elt-src</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;elt-src/&gt;</span></span> returns the source filename
-of the element or of the element referenced by the <code>elt-hid</code> attribute.
-</p>
-</div>
-
-<div class="subsection"><div class="subsection-title" id="elt-title">elt-title</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;elt-title/&gt;</span></span> returns the title of the current element
-or of the element referenced by the <code>elt-hid</code> attribute.
-</p>
-</div>
-
-<div class="subsection"><div class="subsection-title" id="elt-type">elt-type</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;elt-type/&gt;</span></span> returns the type of the current element
-or of the element referenced by the <code>elt-hid</code> attribute.
-</p>
-</div>
-
-<div class="subsection"><div class="subsection-title" id="elt-url">elt-url</div>
-<p>
-<span class="icode"><span class="hl kwa">&lt;elt-url/&gt;</span></span> returns the final url of the current element
-or of the element referenced by the <code>elt-hid</code> attribute:
-</p>
-<pre class="code-xml"><span class="hl kwa">&lt;elt-url</span> <span class="hl kwb">elt-hid</span>=<span class="hl str">&quot;/engine&quot;</span><span class="hl kwa">/&gt;</span></pre>
-<p> is reduced to http://zoggy.github.io/stog/engine.html</p>
-</div>
-
 <div class="subsection"><div class="subsection-title" id="error_">error_</div>
 <p>
-When encountered, <span class="icode"><span class="hl kwa">&lt;error_/&gt;</span></span> will produce an error
+When encountered, <span class="icode"><span class="hl kwa">&lt;error_</span><span class="hl kwa">/&gt;</span></span> will produce an error
 message from the contents of the node. It is useful with <a href="http://zoggy.github.io/stog/module_base.html#if">if</a> to
 ensure some condition is verified, for example to make sure a variable is
 not empty in the environment.
@@ -303,17 +346,17 @@ not empty in the environment.
 
 <div class="subsection"><div class="subsection-title" id="ext-a">ext-a</div>
 <p>
-<pre class="code-xml"><span class="hl kwa">&lt;ext-a</span> attributes<span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/ext-a&gt;</span></pre> is reduced
-to <pre class="code-xml"><span class="hl kwa">&lt;span</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;ext-a&quot;</span><span class="hl kwa">&gt;&lt;a</span> attributes<span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/a&gt;&lt;/ext-a&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">attributes</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span></pre> is reduced
+to <pre class="code-xml"><span class="hl kwa">&lt;span</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;ext-a&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">attributes</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span></pre>
 This can be used to add specific style for links to external sites.
 </p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="graphx">graph</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;graph/&gt;</span></span> computes the graph of elements in SVG format, and returns
-a link to this graph displayed as a small graph. One can click on an element in the generated SVG
-graph to jump to the element.
+<span class="icode"><span class="hl kwa">&lt;graph</span><span class="hl kwa">/&gt;</span></span> computes the graph of documents in SVG format, and returns
+a link to this graph displayed as a small graph. One can click on a document in the generated SVG
+graph to jump to the document.
 </p>
 </div>
 
@@ -321,22 +364,23 @@ graph to jump to the element.
 <p>
 Syntax:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>your code<span class="hl kwa">&lt;/hcode&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">your code</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span></pre>
 
 <p>
-This function inserts the given pre-formatted code. It uses the
+This function inserts the given pre-formatted code. If the language is not
+natively known by the <span class="ext-a"><a href="http://zoggy.github.io/higlo/">Higlo</a></span> engine in Stog, the external
 <span class="ext-a"><a href="http://www.andre-simon.de/doku/highlight/en/highlight.html"><code>highlight</code></a></span>
-tool to add syntax highlighting. For example, the code examples of this page are
+tool is used to add syntax highlighting. For example, the code examples of this page are
 inserted using
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/hcode&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span></pre>
 
 </div>
 
 <div class="subsection"><div class="subsection-title" id="icode">icode</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;icode&gt;</span></span> works like
-<a href="#hcode"><span class="icode"><span class="hl kwa">&lt;hcode&gt;</span></span></a> but is used to
+<span class="icode"><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span></span> works like
+<a href="#hcode"><span class="icode"><span class="hl kwa">&lt;hcode</span><span class="hl kwa">&gt;</span></span></a> but is used to
 generate inline highlighted code instead of using a box.
 </p>
 </div>
@@ -345,33 +389,34 @@ generate inline highlighted code instead of using a box.
 <p>
 Syntax:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;if</span> <span class="hl kwb">attr1</span>=<span class="hl str">&quot;value1&quot;</span> <span class="hl kwb">attr2</span>=<span class="hl str">&quot;value2&quot;</span> ...<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;XML</span> tree used when all conditions are verified<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;optional</span> XML tree used when at least one condition is not verified<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;/if&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">attr1</span><span class="hl std">=</span><span class="hl str">&quot;value1&quot;</span><span class="hl std"> </span><span class="">attr2</span><span class="hl std">=</span><span class="hl str">&quot;value2&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;XML</span><span class="hl std"> </span><span class="">tree</span><span class="hl std"> </span><span class="">used</span><span class="hl std"> </span><span class="">when</span><span class="hl std"> </span><span class="">all</span><span class="hl std"> </span><span class="">conditions</span><span class="hl std"> </span><span class="">are</span><span class="hl std"> </span><span class="">verified</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;optional</span><span class="hl std"> </span><span class="">XML</span><span class="hl std"> </span><span class="">tree</span><span class="hl std"> </span><span class="">used</span><span class="hl std"> </span><span class="">when</span><span class="hl std"> </span><span class="">at</span><span class="hl std"> </span><span class="">least</span><span class="hl std"> </span><span class="">one</span><span class="hl std"> </span><span class="">condition</span><span class="hl std"> </span><span class="">is</span><span class="hl std"> </span><span class="">not</span><span class="hl std"> </span><span class="">verified</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 
 <p>
-The <span class="icode">if</span> function tests whether each condition expressed as <span class="icode"><span class="hl kwb">attr</span>=<span class="hl str">&quot;value&quot;</span></span>
+The <span class="icode"><span class="hl std">if</span></span> function tests whether each condition expressed as <span class="icode"><span class="hl std">attr=&quot;value&quot;</span></span>
 is verified. If so, the first XML child is returned, else the second one is returned.
 To test the value of <code>attr</code>, <code>attr</code> is looked up in the current
 environment. If its value is the same as the given value, the condition is verified.
 For  this evaluation, a tag <code>t</code> not found in the environment in not
 reduced to itself but to the empty string, so that the condition in
-<span class="icode"><span class="hl kwa">&lt;if</span> <span class="hl kwb">foo</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/if&gt;</span></span>
+<span class="icode"><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">foo</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span></span>
 will be verified if <code>foo</code> is not in the environment.
 </p>
 <p>
 The <code>&quot;value&quot;</code> part of the condition must be valid XML, and can contain
 calls to functions, as in:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;if</span> <span class="hl kwb">elt-title</span>=<span class="hl str">&quot;&amp;lt;site-title&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>....<span class="hl kwa">&lt;/if&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-title</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;site-title&amp;gt;&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">....</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span></pre>
 <p>Other example: Testing whether a variable is empty to known whether to output
 a block or not:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;if</span> <span class="hl kwb">list</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;span/&gt;</span>
-<span class="hl kwa">&lt;div&gt;</span>The list is not empty, let's print it:<span class="hl kwa">&lt;ul&gt;&lt;list/&gt;&lt;/ul&gt;&lt;/div&gt;</span>
-<span class="hl kwa">&lt;/if&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">list</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dummy_</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl kwa">&gt;</span><span class="hl std">The list is not empty, let's print it:</span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;list</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span></pre>
 </div>
 
 
@@ -379,10 +424,10 @@ a block or not:
 <p>
 Syntax:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;image</span> <span class="hl kwb">float</span>=<span class="hl str">&quot;[left|right]&quot;</span> <span class="hl kwb">src</span>=<span class="hl str">&quot;...&quot;</span> ...<span class="hl kwa">&gt;</span>legend<span class="hl kwa">&lt;/image&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;image</span><span class="hl std"> </span><span class="">float</span><span class="hl std">=</span><span class="hl str">&quot;[left|right]&quot;</span><span class="hl std"> </span><span class="">src</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">legend</span><span class="hl kwa">&lt;/image</span><span class="hl kwa">&gt;</span></pre>
 
 <p>
-This inserts an image using an <span class="icode"><span class="hl kwa">&lt;img</span> ...<span class="hl kwa">/&gt;</span></span> node.
+This inserts an image using an <span class="icode"><span class="hl kwa">&lt;img</span><span class="hl std"> ...</span><span class="hl kwa">/&gt;</span></span> node.
 The legend is optional.
 </p>
 <p>
@@ -390,13 +435,13 @@ The <code>float</code> attribute can be used to change a class in the generated 
 so you can set the style of the image to be left or right floating.
 </p>
 <p>
-Additional attributes are passed to the generated <span class="icode"><span class="hl kwa">&lt;img&gt;</span></span> node.
+Additional attributes are passed to the generated <span class="icode"><span class="hl kwa">&lt;img</span><span class="hl kwa">&gt;</span></span> node.
 </p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="keyword">keyword</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;keyword/&gt;</span></span> inserts the name of the current keyword,
+<span class="icode"><span class="hl kwa">&lt;keyword</span><span class="hl kwa">/&gt;</span></span> inserts the name of the current keyword,
 when computing keyword list (in template <code>keyword.tmpl</code>).
 </p>
 </div>
@@ -405,57 +450,57 @@ when computing keyword list (in template <code>keyword.tmpl</code>).
 <p>
 Syntax:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;template&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/include&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;template&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/include</span><span class="hl kwa">&gt;</span></pre>
 
 <p>
 This function will load the file <code>template</code> from the template directory
 (or fail if the file does not exist). The contents of the file will then be evaluated.
-The code between <span class="icode"><span class="hl kwa">&lt;include</span> ...<span class="hl kwa">&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;/include&gt;</span></span>
+The code between <span class="icode"><span class="hl kwa">&lt;include</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;/include</span><span class="hl kwa">&gt;</span></span>
 is added to the environment used to evaluate the contents of the file, associated to
 the name <code>contents</code>.
 </p>
 <p>
-With the additional attribute <span class="icode"><span class="hl kwb">raw</span>=<span class="hl str">&quot;true&quot;</span></span>, the contents of the loaded file
+With the additional attribute <span class="icode"><span class="hl std">raw=&quot;true&quot;</span></span>, the contents of the loaded file
 is considered as PCData. This is useful for example to insert code.
 </p>
 <p>
 If the file attribute begins with &quot;.&quot; or &quot;..&quot;, that is the filename is explicitely relative,
-the file path is concatenated to the current element source file path.
+the file path is concatenated to the current document source file path.
 </p>
 <p>
 If the file attribute is an absolute filename, then this absolute filename is used.
 </p>
 <p>
-By default, using <span class="icode"><span class="hl kwa">&lt;include&gt;</span></span> adds a dependency of the current
-element on the given file. Use <span class="icode"><span class="hl kwb">depend</span>=<span class="hl str">&quot;false&quot;</span></span> to prevent adding this
+By default, using <span class="icode"><span class="hl kwa">&lt;include</span><span class="hl kwa">&gt;</span></span> adds a dependency of the current
+document on the given file. Use <span class="icode"><span class="hl std">depend=&quot;false&quot;</span></span> to prevent adding this
 dependency.
 </p>
-<p>All additional attributes to <span class="icode"><span class="hl kwa">&lt;include</span> ...<span class="hl kwa">&gt;</span></span> will
+<p>All additional attributes to <span class="icode"><span class="hl kwa">&lt;include</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span> will
 be added to the environment used to evaluate the contents of the file.
 </p>
 <p>Here is an example. If we have the <code>foo.tmpl</code> file
 in the template directory, with the following contents:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;p&gt;</span> key=<span class="hl kwa">&lt;key/&gt;</span> value=<span class="hl kwa">&lt;contents/&gt; &lt;/p&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std"> key=</span><span class="hl kwa">&lt;key</span><span class="hl kwa">/&gt;</span><span class="hl std"> value=</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl std"> </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std"> </span></pre>
 <p>The following code</p>
-<pre class="code-xml"><span class="hl kwa">&lt;include</span> <span class="hl kwb">file</span>=<span class="hl str">&quot;foo.tmpl&quot;</span> <span class="hl kwb">key</span>=<span class="hl str">&quot;bar&quot;</span><span class="hl kwa">&gt;</span>the value of bar<span class="hl kwa">&lt;/include&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;foo.tmpl&quot;</span><span class="hl std"> </span><span class="">key</span><span class="hl std">=</span><span class="hl str">&quot;bar&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">the value of bar</span><span class="hl kwa">&lt;/include</span><span class="hl kwa">&gt;</span></pre>
 <p>will be reduced to</p>
-<pre class="code-xml"><span class="hl kwa">&lt;p&gt;</span> key=bar value=the value of bar <span class="hl kwa">&lt;/p&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std"> key=bar value=the value of bar </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span></pre>
 <p>
 It is possible to include only the contents of the XML node read in the
-file, by setting the attribute <span class="icode"><span class="hl kwb">subs-only</span>=<span class="hl str">&quot;true&quot;</span></span>.
+file, by setting the attribute <span class="icode"><span class="hl std">subs-only=&quot;true&quot;</span></span>.
 </p>
 <p>
 Instead of including a file, it is possible to include a block
-of an element, by referring to its hid and id in the
+of a document, by referring to its path and id in the
 <code>href</code> attribute:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;include</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;foo#id/&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;foo#id&quot;</span><span class="hl kwa">/&gt;</span></pre>
 <p>
 This code includes the XML node referenced by the <code>href</code>
-attribute. An error is raised if the element does not exist, if
+attribute. An error is raised if the document does not exist, if
 no fragment id is provided, or if the fragment id does not exist
-in the referenced element.
+in the referenced document.
 If an <code>id</code> attribute is provided, the included node has this new
 id, else the original node id is kept; this is useful to avoid conflicts
 with other ids.
@@ -466,37 +511,37 @@ site to show changes of a release both in the <a href="http://zoggy.github.io/st
 page and in blog post such as <a href="http://zoggy.github.io/stog/posts/release-0.9.0.html">Stog 0.9.0</a>.
 </p>
 <p>For example, the following code will include the paragraph with
-id &quot;optiondef&quot; of element &quot;running&quot;:
+id &quot;optiondef&quot; of document &quot;running&quot;:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;late-inc</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;running#optiondef&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;late-inc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;running#optiondef&quot;</span><span class="hl kwa">/&gt;</span></pre>
 <p>This is the result:</p>
 <p id="optiondef">
-The <span class="icode">--def</span> option can be used to define an additional global rule. For example
+The <span class="icode"><span class="hl std">--def</span></span> option can be used to define an additional global rule. For example
 </p>
 </div>
 
 
-<div class="subsection"><div class="subsection-title" id="elt-keywordsx">elt-keywords / elt-topics</div>
+<div class="subsection"><div class="subsection-title" id="doc-keywordsx">doc-keywords / doc-topics</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;elt-keywords</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></span> and
-<span class="icode"><span class="hl kwa">&lt;elt-topics</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></span> respectively return
+<span class="icode"><span class="hl kwa">&lt;doc-keywords</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></span> and
+<span class="icode"><span class="hl kwa">&lt;doc-topics</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></span> respectively return
 the keyword and topic list of
-the current element, as defined in the element. The optional <code>sep</code> attribute
+the current document, as defined in the document. The optional <code>sep</code> attribute
 can be used to specify a separator between each keyword or topic.
 </p>
 <p>Each keyword will be displayed using a <code>keyword.tmpl</code> template file.
 Each topic will be displayed using a <code>topic.tmpl</code> template file.
 </p>
 <p>
-In these templates, <span class="icode"><span class="hl kwa">&lt;keyword/&gt;</span></span>
-(resp. <span class="icode"><span class="hl kwa">&lt;topic/&gt;</span></span>) inserts the name of the current keyword
+In these templates, <span class="icode"><span class="hl kwa">&lt;keyword</span><span class="hl kwa">/&gt;</span></span>
+(resp. <span class="icode"><span class="hl kwa">&lt;topic</span><span class="hl kwa">/&gt;</span></span>) inserts the name of the current keyword
 (resp. topic), when computing keyword (resp. topic) list.
 </p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="latex">latex</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;latex&gt;</span>...<span class="hl kwa">&lt;/latex&gt;</span></span> is used to compile
+<span class="icode"><span class="hl kwa">&lt;latex</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/latex</span><span class="hl kwa">&gt;</span></span> is used to compile
 latex code and display it as SVG in the page. Read
 <a href="http://zoggy.github.io/stog/posts/latex-in-stog.html">this post</a> for details.
 </p>
@@ -504,28 +549,28 @@ latex code and display it as SVG in the page. Read
 
 <div class="subsection"><div class="subsection-title" id="latex-body">latex-body</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;latex-body&gt;</span>...<span class="hl kwa">&lt;/latex-body&gt;</span></span> is not documented yet.
+<span class="icode"><span class="hl kwa">&lt;latex-body</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/latex-body</span><span class="hl kwa">&gt;</span></span> is not documented yet.
 You can try to put some LaTeX code as contents and see...
 </p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="list">list</div>
-<pre class="code-xml"><span class="hl kwa">&lt;list</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;&lt;node1&gt;</span>...<span class="hl kwa">&lt;/node1&gt;&lt;node2&gt;</span>...<span class="hl kwa">&lt;/node2&gt;</span>...<span class="hl kwa">&lt;/list&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;list</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;node1</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/node1</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;node2</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/node2</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/list</span><span class="hl kwa">&gt;</span></pre>
 <p>will is reduced to the list of subnodes, separated by the given <code>sep</code> attribute.</p>
 <p>For example:</p>
-<pre class="code-xml"><span class="hl kwa">&lt;list</span> <span class="hl kwb">sep</span>=<span class="hl str">&quot;,&quot;</span><span class="hl kwa">&gt;&lt;b&gt;</span>apple<span class="hl kwa">&lt;/b&gt;&lt;b&gt;</span>banana<span class="hl kwa">&lt;/b&gt;&lt;b&gt;</span>orange<span class="hl kwa">&lt;/b&gt;&lt;/list&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;list</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">&quot;,&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">apple</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">banana</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">orange</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/list</span><span class="hl kwa">&gt;</span></pre>
 <p>will be reduced to</p>
-<pre class="code-xml"><span class="hl kwa">&lt;b&gt;</span>apple<span class="hl kwa">&lt;/b&gt;</span>,<span class="hl kwa">&lt;b&gt;</span>banana<span class="hl kwa">&lt;/b&gt;</span>,<span class="hl kwa">&lt;b&gt;</span>orange<span class="hl kwa">&lt;/b&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">apple</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">banana</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">orange</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span></pre>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="prefix-svg-ids">prefix-svg-ids</div>
 <p>
 Syntax:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;prefix-svg-ids</span> <span class="hl kwb">prefix</span>=<span class="hl str">&quot;foo&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/prefix-svg-ids&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;prefix-svg-ids</span><span class="hl std"> </span><span class="">prefix</span><span class="hl std">=</span><span class="hl str">&quot;foo&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/prefix-svg-ids</span><span class="hl kwa">&gt;</span></pre>
 
 <p>
-This add the given prefix to all <code>id</code> and <code>href</code> attributes
+This adds the given prefix to all <code>id</code> and <code>href</code> attributes
 in the subnodes. This is useful when including generated SVG files to prevent
 conflicts in ids.
 </p>
@@ -533,16 +578,16 @@ conflicts in ids.
 
 <div class="subsection"><div class="subsection-title" id="previous">previous / next</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;previous/&gt;</span></span> and
-<span class="icode"><span class="hl kwa">&lt;next/&gt;</span></span> respectively return a link to the previous and next
-element according to the chronological order of element dates.
+<span class="icode"><span class="hl kwa">&lt;previous</span><span class="hl kwa">/&gt;</span></span> and
+<span class="icode"><span class="hl kwa">&lt;next</span><span class="hl kwa">/&gt;</span></span> respectively return a link to the previous and next
+document according to the chronological order of document dates.
 </p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="ocaml">ocaml</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;ocaml&gt;</span></span> works like
-<a href="#hcode"><span class="icode"><span class="hl kwa">&lt;hcode&gt;</span></span></a>
+<span class="icode"><span class="hl kwa">&lt;ocaml</span><span class="hl kwa">&gt;</span></span> works like
+<a href="#hcode"><span class="icode"><span class="hl kwa">&lt;hcode</span><span class="hl kwa">&gt;</span></span></a>
 with the <code>lang</code>
 attribute already set to &quot;ocaml&quot;.
 </p>
@@ -562,36 +607,36 @@ See the following blog post: <a href="http://zoggy.github.io/stog/posts/ocaml-pr
 
 <div class="subsection"><div class="subsection-title" id="sep_">sep_</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;sep_/&gt;</span></span> is the tag used to indicate the end of the introduction
-of an element. It is reduced to an empty string.
+<span class="icode"><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span></span> is the tag used to indicate the end of the introduction
+of a document. It is reduced to an empty string.
 </p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="site-descriptionx">site-description</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;site-description/&gt;</span></span> returns the site description
-as specified in the main element.
+<span class="icode"><span class="hl kwa">&lt;site-description</span><span class="hl kwa">/&gt;</span></span> returns the site description
+as specified in the main document.
 </p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="site-email">site-email</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;site-email/&gt;</span></span> returns the site contact email
-as specified in the main element.
+<span class="icode"><span class="hl kwa">&lt;site-email</span><span class="hl kwa">/&gt;</span></span> returns the site contact email
+as specified in the main document.
 </p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="site-titlex">site-title</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;site-title/&gt;</span></span> returns the site title as specified in the
-main element.
+<span class="icode"><span class="hl kwa">&lt;site-title</span><span class="hl kwa">/&gt;</span></span> returns the site title as specified in the
+main document.
 </p>
 </div>
 
 <div class="subsection"><div class="subsection-title" id="site-url">site-url</div>
 <p>
-<span class="icode"><span class="hl kwa">&lt;site-url/&gt;</span></span> returns the site url as specified in the
-main element.
+<span class="icode"><span class="hl kwa">&lt;site-url</span><span class="hl kwa">/&gt;</span></span> returns the site url as specified in the
+main document.
 </p>
 </div>
 
@@ -599,75 +644,76 @@ main element.
 <p>
 Syntax:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;two-columns&gt;</span>
-<span class="hl kwa">&lt;XML</span> for left column<span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;XML</span> for right column<span class="hl kwa">/&gt;</span>
-<span class="hl kwa">&lt;/two-columns&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;two-columns</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;XML</span><span class="hl std"> </span><span class="">for</span><span class="hl std"> </span><span class="">left</span><span class="hl std"> </span><span class="">column</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;XML</span><span class="hl std"> </span><span class="">for</span><span class="hl std"> </span><span class="">right</span><span class="hl std"> </span><span class="">column</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/two-columns</span><span class="hl kwa">&gt;</span></pre>
 
 <p>
 This will put the two given XML nodes in a two-columns layout. Note that the tag used to
 enclose the left and right contents is not kept, so you may use any tag you want, for example:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;two-columns&gt;&lt;left&gt;</span>bla bla bla<span class="hl kwa">&lt;/left&gt;&lt;right&gt;</span>bla bla bla<span class="hl kwa">&lt;/right&gt;&lt;/two-columns&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;two-columns</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;left</span><span class="hl kwa">&gt;</span><span class="hl std">bla bla bla</span><span class="hl kwa">&lt;/left</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;right</span><span class="hl kwa">&gt;</span><span class="hl std">bla bla bla</span><span class="hl kwa">&lt;/right</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/two-columns</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 <p>
-<span class="icode"><span class="hl kwa">&lt;n-columns&gt;</span></span> works the same way but produces as many columns as there are
+<span class="icode"><span class="hl kwa">&lt;n-columns</span><span class="hl kwa">&gt;</span></span> works the same way but produces as many columns as there are
 children in the node.
 </p>
 </div>
 
 </div>
 
-<div class="section"><div class="section-title" id="add-elts">add-elts</div>
+<div class="section"><div class="section-title" id="add-docs">add-docs</div>
 <p>
-This function creates new elements:
+This function creates new documents:
 </p>
 <ul>
 <li>The archive pages, one for each month when there is at least
-one element in this month (see also <a href="http://zoggy.github.io/stog/module_base.html#archive-tree">archive-tree</a>),
+one document in this month (see also <a href="http://zoggy.github.io/stog/module_base.html#archive-tree">archive-tree</a>),
 </li>
-<li>The keyword pages, one for each keyword appearing in elements,</li>
-<li>The topic pages, one for each topic appearing in elements.</li>
+<li>The keyword pages, one for each keyword appearing in documents,</li>
+<li>The topic pages, one for each topic appearing in documents.</li>
 </ul>
 </div>
 
 <div class="section"><div class="section-title" id="toc">toc</div>
 <p>
-This function only contains two rules: <span class="icode"><span class="hl kwa">&lt;toc&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;prepare-toc&gt;</span></span>.
+This function only contains two rules: <span class="icode"><span class="hl kwa">&lt;toc</span><span class="hl kwa">&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;prepare-toc</span><span class="hl kwa">&gt;</span></span>.
 </p>
 <p>
 Syntax:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;prepare-toc</span> <span class="hl kwb">depth</span>=<span class="hl str">&quot;[1|2|...]&quot;</span><span class="hl kwa">&gt;</span>
+<pre class="code-xml"><span class="hl kwa">&lt;prepare-toc</span><span class="hl std"> </span><span class="">depth</span><span class="hl std">=</span><span class="hl str">&quot;[1|2|...]&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
-<span class="hl kwa">&lt;toc&gt;</span>text<span class="hl kwa">&lt;/toc&gt;</span>
+</span><span class="hl kwa">&lt;toc</span><span class="hl kwa">&gt;</span><span class="hl std">text</span><span class="hl kwa">&lt;/toc</span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
-<span class="hl kwa">&lt;section</span> ...<span class="hl kwa">&gt;</span>
-  <span class="hl kwa">&lt;subsection</span> ...<span class="hl kwa">&gt;</span>
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;subsection</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-  <span class="hl kwa">&lt;/subsection&gt;</span>
+  </span><span class="hl kwa">&lt;/subsection</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-<span class="hl kwa">&lt;/section&gt;</span>
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
-<span class="hl kwa">&lt;/prepare-toc&gt;</span></pre>
+</span><span class="hl kwa">&lt;/prepare-toc</span><span class="hl kwa">&gt;</span></pre>
 
 <p>
-The <span class="icode"><span class="hl kwa">&lt;toc&gt;</span></span> node is used to insert a table of contents.
+The <span class="icode"><span class="hl kwa">&lt;toc</span><span class="hl kwa">&gt;</span></span> node is used to insert a table of contents.
 If a text is given, it is added ahead of the table of contents.
 </p>
 <p>
-Since the <span class="icode"><span class="hl kwa">&lt;toc&gt;</span></span> node does not include the sections and subsections, it is
+Since the <span class="icode"><span class="hl kwa">&lt;toc</span><span class="hl kwa">&gt;</span></span> node does not include the sections and subsections, it is
 not sufficient to build the table of contents. So it will use what is returned by
 the function associated to &quot;toc-contents&quot; in its environment.
 </p>
-<p>This function is added to the environment by the <span class="icode"><span class="hl kwa">&lt;prepare-toc&gt;</span></span> node,
-which includes all the sections and subsections. The <span class="icode"><span class="hl kwa">&lt;depth&gt;</span></span> attribute
+<p>This function is added to the environment by the <span class="icode"><span class="hl kwa">&lt;prepare-toc</span><span class="hl kwa">&gt;</span></span> node,
+which includes all the sections and subsections. The <span class="icode"><span class="hl kwa">&lt;depth</span><span class="hl kwa">&gt;</span></span> attribute
 is used to specify the depth of the table of contents.
 </p>
 <p>The nodes used for sectionning can be changed, see the
 <a href="http://zoggy.github.io/stog/module_blocks.html#sectionning">sectionning</a> function of the <a href="http://zoggy.github.io/stog/module_blocks.html">Module Blocks</a>.
 </p>
 <p>By default, sectionning nodes without <code>id</code> attribute are not kept.
-Set attribute <span class="icode"><span class="hl kwb">show-without-ids</span>=<span class="hl str">&quot;true&quot;</span></span> to keep all sectionning nodes.
+Set attribute <span class="icode"><span class="hl std">show-without-ids=&quot;true&quot;</span></span> to keep all sectionning nodes.
 </p>
 
 
@@ -678,87 +724,95 @@ Set attribute <span class="icode"><span class="hl kwb">show-without-ids</span>=<
 
 <div class="section"><div class="section-title" id="cut">cut</div>
 <p>
-This function applies the <span class="icode"><span class="hl kwa">&lt;cut-elt&gt;</span></span> rule to cut
-an element in pieces according to some specified nodes.
+This function applies the <span class="icode"><span class="hl kwa">&lt;cut-doc</span><span class="hl kwa">&gt;</span></span> rule to cut
+a document in pieces according to some specified nodes.
 </p>
 <p>
 Syntax:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;foo</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;My document&quot;</span><span class="hl kwa">&gt;</span>
+<pre class="code-xml"><span class="hl kwa">&lt;foo</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;My document&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
-<span class="hl kwa">&lt;cut-elt</span> <span class="hl kwb">tag</span>=<span class="hl str">&quot;section&quot;</span><span class="hl kwa">&gt;</span>
+</span><span class="hl kwa">&lt;cut-doc</span><span class="hl std"> </span><span class="">tag</span><span class="hl std">=</span><span class="hl str">&quot;section&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;sec1&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Section 1&quot;</span><span class="hl kwa">&gt;</span>
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;sec1&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Section 1&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-<span class="hl kwa">&lt;/section&gt;</span>
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-<span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;sec2&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Section 2&quot;</span><span class="hl kwa">&gt;</span>
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;sec2&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Section 2&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-<span class="hl kwa">&lt;/section&gt;</span>
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
-<span class="hl kwa">&lt;/cut-elt&gt;</span></pre>
+</span><span class="hl kwa">&lt;/cut-doc</span><span class="hl kwa">&gt;</span></pre>
 
 <p>
-If the element has hid <code>/foo</code>, this will create two more elements,
+If the document has path <code>/foo</code>, this will create two more documents,
 <code>/foo-sec1</code> and <code>/foo-sec2</code>, of the same type of
-the element (here <code>foo</code>). Their titles will be respectively
+the document (here <code>foo</code>). Their titles will be respectively
 &quot;Section 1&quot; and &quot;Section 2&quot;, i.e. the titles of the cut nodes.
 </p>
 <p>
-The hid of each created element is forged by appending &quot;-&quot; and the cut node id
-to the hid of the element.
+The path of each created document is forged by appending &quot;-&quot; and the cut node id
+to the path of the document.
 </p>
-<p>Each created element has the subnodes of the cut node as body. Each cut node
-is replaced by a link to the corresponding created element. In our example,
-after <span class="icode"><span class="hl kwa">&lt;cut-elt&gt;</span></span> has been applied, our element body becomes:
+<p>Each created document has the subnodes of the cut node as body. Each cut node
+is replaced by a link to the corresponding created document. In our example,
+after <span class="icode"><span class="hl kwa">&lt;cut-doc</span><span class="hl kwa">&gt;</span></span> has been applied, our document body becomes:
 </p>
-<pre class="code-xml">...
-<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;cutlink&quot;</span><span class="hl kwa">&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;/foo/sec1&quot;</span><span class="hl kwa">/&gt;&lt;/div&gt;</span>
-<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;cutlink&quot;</span><span class="hl kwa">&gt;&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;/foo/sec2&quot;</span><span class="hl kwa">/&gt;&lt;/div&gt;</span>
-...</pre>
+<pre class="code-xml"><span class="hl std">...
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;cutlink&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;/foo/sec1&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;cutlink&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;/foo/sec2&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+...
+</span></pre>
 <p>If a node has no <code>id</code> or no <code>title</code> attribute, then
 it is not cut and a warning is issued.
 </p>
-<p>The following attributes can be added to <span class="icode"><span class="hl kwa">&lt;cut-elt&gt;</span></span> to change
+<p>The following attributes can be added to <span class="icode"><span class="hl kwa">&lt;cut-doc</span><span class="hl kwa">&gt;</span></span> to change
 the behaviour:
 </p>
 <ul>
 <li><code>insert-link</code> can be set to <code>false</code> to prevent adding links
-to the new elements in the original element,
+to the new documents in the original document,
 </li>
 <li><code>type</code> can be set to a string to specify the type of the created
-elements, instead of inheriting the type of the original element,</li>
-<li><code>hid-sep</code> specifies the separator used to forge the new hids;
+documents, instead of inheriting the type of the original document,</li>
+<li><code>path-sep</code> specifies the separator used to forge the new paths;
 by default it is <code>-</code> but it can be for example <code>/</code>,
 </li>
 </ul>
 <p>
-At last, various <span class="icode"><span class="hl kwa">&lt;cut-elt&gt;</span></span> can be nested, for example
-to cut according to <span class="icode"><span class="hl kwa">&lt;section&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;subsection&gt;</span></span>
+At last, various <span class="icode"><span class="hl kwa">&lt;cut-doc</span><span class="hl kwa">&gt;</span></span> can be nested, for example
+to cut according to <span class="icode"><span class="hl kwa">&lt;section</span><span class="hl kwa">&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;subsection</span><span class="hl kwa">&gt;</span></span>
 nodes:
 </p>
-<pre class="code-xml">...
-<span class="hl kwa">&lt;cut-elt</span> <span class="hl kwb">tag</span>=<span class="hl str">&quot;section&quot;</span><span class="hl kwa">&gt;</span>
-  <span class="hl kwa">&lt;cut-elt</span> <span class="hl kwb">tag</span>=<span class="hl str">&quot;subsection&quot;</span><span class="hl kwa">&gt;</span>
-    <span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>
+<pre class="code-xml"><span class="hl std">...
+</span><span class="hl kwa">&lt;cut-doc</span><span class="hl std"> </span><span class="">tag</span><span class="hl std">=</span><span class="hl str">&quot;section&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;cut-doc</span><span class="hl std"> </span><span class="">tag</span><span class="hl std">=</span><span class="hl str">&quot;subsection&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+    </span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
       ...
-      <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>
+      </span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
         ...
-      <span class="hl kwa">&lt;/subsection&gt;</span>
-    <span class="hl kwa">&lt;/section&gt;</span>
-  <span class="hl kwa">&lt;/cut-elt&gt;</span>
-<span class="hl kwa">&lt;/cut-elt&gt;</span></pre>
-<p>Of course, nodes which are not under the <span class="icode"><span class="hl kwa">&lt;cut-elt&gt;</span></span> nodes
-remain untouched, allowing to cut only a part of the element.
+      </span><span class="hl kwa">&lt;/subsection</span><span class="hl kwa">&gt;</span><span class="hl std">
+    </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;/cut-doc</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/cut-doc</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
+<p>Of course, nodes which are not under the <span class="icode"><span class="hl kwa">&lt;cut-doc</span><span class="hl kwa">&gt;</span></span> nodes
+remain untouched, allowing to cut only a part of the document.
 </p>
 </div>
 
 <div class="section"><div class="section-title" id="inc">inc</div>
 <p id="late-inc">
-This function applies the <span class="icode"><span class="hl kwa">&lt;late-inc&gt;</span></span> rule, which
+This function applies the <span class="icode"><span class="hl kwa">&lt;late-inc</span><span class="hl kwa">&gt;</span></span> rule, which
 works like <a href="http://zoggy.github.io/stog/module_base.html#include">include</a> but, having a different name, it can
 be applied later, typically to include blocks which were not available
 earlier in the rewrite process.
+</p>
+<p id="late-cdata">
+It also applies the <span class="icode"><span class="hl kwa">&lt;late-cdata</span><span class="hl kwa">&gt;</span></span> rule, which
+works like <a href="http://zoggy.github.io/stog/module_base.html#as-cdata">as-cdata</a> but, having a different name, it can
+be applied later, typically to transform into CData an XML tree after
+it has been rewritten in the previous levels.
 </p>
 
 <p class="alert alert-warning">This function also applies the
@@ -769,7 +823,7 @@ earlier in the rewrite process.
 <div class="section"><div class="section-title" id="clean">clean</div>
 <p>
 This function closes the OCaml sessions previously opened with
-<a href="http://zoggy.github.io/stog/module_base.html#ocaml-eval"><span class="icode"><span class="hl kwa">&lt;ocaml-eval&gt;</span></span></a>.
+<a href="http://zoggy.github.io/stog/module_base.html#ocaml-eval"><span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span></span></a>.
 </p>
 </div>
 
@@ -780,8 +834,11 @@ This function closes the OCaml sessions previously opened with
 
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

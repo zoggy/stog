@@ -30,7 +30,8 @@
 
 <div id="header">
   
-  <div class="elt-navbar">
+  
+  <div class="doc-navbar">
       <div class="navleft"><a href="http://zoggy.github.io/stog/posts/latex-in-stog.html">LaTeX in stog</a></div>
       <div class="navright"><a href="http://zoggy.github.io/stog/posts/including-code-file.html">Including a code file (deferring evaluation)</a></div>
     </div>
@@ -41,41 +42,42 @@
 
 
 <p>
-Bytecode version of Stog, <span class="icode">stog.byte</span>,
-offers the <span class="icode"><span class="hl kwa">&lt;ocaml-eval&gt;</span> ... <span class="hl kwa">&lt;/ocaml-eval&gt;</span></span>
+Bytecode version of Stog, <span class="icode"><span class="hl std">stog.byte</span></span>,
+offers the <span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std"> ... </span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span></span>
 function to evaluate code and display the result. This is nice to provide
 verified code examples on your pages.
 </p>
 
 <p>
 Example:
-<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval&gt;</span>
-let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;
-<span class="hl kwa">&lt;/ocaml-eval&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
+let mylist = [ 1 ; 2 ; 3 ; 4];;
+</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span></pre>
 will display this: <pre class="code-ocaml"><div><span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span></div></pre>
 </p>
-<p>Adding the <span class="icode">toplevel=&quot;true&quot;</span> attribute will enable printing of the
+<p>Adding the <span class="icode"><span class="hl std">toplevel=&quot;true&quot;</span></span> attribute will enable printing of the
 toplevel result, so
-<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>
-let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;<span class="hl kwa">&lt;/ocaml-eval&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+let mylist = [ 1 ; 2 ; 3 ; 4];;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 will display this: <pre class="code-ocaml"><div># <span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span></div><div class="ocaml-toplevel">val mylist : int list = [1; 2; 3; 4]</div></pre>
 </p>
 <p>
-By default, <span class="icode">ocaml-eval</span> will stop Stog if an exception is
+By default, <span class="icode"><span class="hl std">ocaml-eval</span></span> will stop Stog if an exception is
 raised when evaluating code.
-The <span class="icode">error-exc</span> attribute can be used to change this behaviour.
-By default it is <span class="icode">&quot;true&quot;</span>, but
+The <span class="icode"><span class="hl std">error-exc</span></span> attribute can be used to change this behaviour.
+By default it is <span class="icode"><span class="hl std">&quot;true&quot;</span></span>, but
 giving this attribute another value will result in printing the raised exception instead
 of stopping Stog. This is useful when you want to show code raising exceptions, but still
 don't want to let other piece of code fail silently.
-<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">error-exc</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&gt;</span>
-let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;
-let mylist2 = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl str">&quot;hello&quot;</span>];;
-<span class="hl kwa">&lt;/ocaml-eval&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">error-exc</span><span class="hl std">=</span><span class="hl str">&quot;false&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+let mylist = [ 1 ; 2 ; 3 ; 4];;
+let mylist2 = [ 1 ; 2 ; 3 ; &quot;hello&quot;];;
+</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span></pre>
 will display this: <pre class="code-ocaml"><div># <span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span></div><div class="ocaml-toplevel">val mylist : int list = [1; 2; 3; 4]</div><div># <span class="hl kwa">let</span> mylist2 <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl str">&quot;hello&quot;</span><span class="hl opt">];;</span></div><div class="ocaml-toplevel ocaml-exc">Line 1, characters 28-35:
 Error: This expression has type string but an expression was expected of type
          int</div></pre>
-Without <span class="icode">error-exc=&quot;false&quot;</span>, Stog would have failed with the
+Without <span class="icode"><span class="hl std">error-exc=&quot;false&quot;</span></span>, Stog would have failed with the
 OCaml error message.
 </p>
 
@@ -83,7 +85,7 @@ OCaml error message.
 <div class="comments">
  <hr width="100%"/>
   <div>
-    <div class="elt-keywords">
+    <div class="doc-keywords">
       <div class="bloc-keywords">
       Topics: <div class="keywords"><a href="http://zoggy.github.io/stog/topic_stog.html"><span itemprop="keywords">stog</span></a></div>
       </div>
@@ -117,56 +119,59 @@ OCaml error message.
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Displaying evaluated OCaml code&quot;</span>
-<span class="hl kwb">date</span>=<span class="hl str">&quot;2012/03/11&quot;</span>
-<span class="hl kwb">topics</span>=<span class="hl str">&quot;stog&quot;</span>
-<span class="hl kwb">keywords</span>=<span class="hl str">&quot;ocaml, evaluation, code&quot;</span>
-<span class="hl kwb">published</span>=<span class="hl str">&quot;true&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-Bytecode version of Stog, <span class="hl kwa">&lt;icode&gt;</span>stog.byte<span class="hl kwa">&lt;/icode&gt;</span>,
-offers the <span class="hl kwa">&lt;icode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;ocaml-eval&gt;</span> ... <span class="hl kwa">&lt;/ocaml-eval&gt;</span>]]<span class="hl kwa">&gt;&lt;/icode&gt;</span>
+  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Displaying evaluated OCaml code&quot;</span><span class="hl std">
+</span><span class="">date</span><span class="hl std">=</span><span class="hl str">&quot;2012/03/11&quot;</span><span class="hl std">
+</span><span class="">topics</span><span class="hl std">=</span><span class="hl str">&quot;stog&quot;</span><span class="hl std">
+</span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">&quot;ocaml, evaluation, code&quot;</span><span class="hl std">
+</span><span class="">published</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+Bytecode version of Stog, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.byte</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
+offers the </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std"> ... </span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
 function to evaluate code and display the result. This is nice to provide
 verified code examples on your pages.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;sep_/&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Example:
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;ocaml-eval&gt;</span>
-let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;
-<span class="hl kwa">&lt;/ocaml-eval&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
-will display this: <span class="hl kwa">&lt;ocaml-eval&gt;</span>let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;<span class="hl kwa">&lt;/ocaml-eval&gt;</span>
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>Adding the <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&lt;/icode&gt;</span> attribute will enable printing of the
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
+let mylist = [ 1 ; 2 ; 3 ; 4];;
+</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+will display this: </span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">let mylist = [ 1 ; 2 ; 3 ; 4];;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Adding the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">toplevel=&quot;true&quot;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute will enable printing of the
 toplevel result, so
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>
-let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;<span class="hl kwa">&lt;/ocaml-eval&gt;</span>
-]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
-will display this: <span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;<span class="hl kwa">&lt;/ocaml-eval&gt;</span>
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;p&gt;</span>
-By default, <span class="hl kwa">&lt;icode&gt;</span>ocaml-eval<span class="hl kwa">&lt;/icode&gt;</span> will stop Stog if an exception is
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+let mylist = [ 1 ; 2 ; 3 ; 4];;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
+]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+will display this: </span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">let mylist = [ 1 ; 2 ; 3 ; 4];;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+By default, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-eval</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> will stop Stog if an exception is
 raised when evaluating code.
-The <span class="hl kwa">&lt;icode&gt;</span>error-exc<span class="hl kwa">&lt;/icode&gt;</span> attribute can be used to change this behaviour.
-By default it is <span class="hl kwa">&lt;icode&gt;</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&lt;/icode&gt;</span>, but
+The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">error-exc</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute can be used to change this behaviour.
+By default it is </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">&quot;true&quot;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, but
 giving this attribute another value will result in printing the raised exception instead
 of stopping Stog. This is useful when you want to show code raising exceptions, but still
 don't want to let other piece of code fail silently.
-<span class="hl kwa">&lt;hcode</span> <span class="hl kwb">lang</span>=<span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span>&lt;![CDATA[<span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">error-exc</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&gt;</span>
-let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;
-let mylist2 = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl str">&quot;hello&quot;</span>];;
-<span class="hl kwa">&lt;/ocaml-eval&gt;</span>]]<span class="hl kwa">&gt;&lt;/hcode&gt;</span>
-will display this: <span class="hl kwa">&lt;ocaml-eval</span> <span class="hl kwb">toplevel</span>=<span class="hl str">&quot;true&quot;</span> <span class="hl kwb">error-exc</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&gt;</span>
-let mylist = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl num">4</span>];;
-let mylist2 = [ <span class="hl num">1</span> ; <span class="hl num">2</span> ; <span class="hl num">3</span> ; <span class="hl str">&quot;hello&quot;</span>];;<span class="hl kwa">&lt;/ocaml-eval&gt;</span>
-Without <span class="hl kwa">&lt;icode&gt;</span><span class="hl kwb">error-exc</span>=<span class="hl str">&quot;false&quot;</span><span class="hl kwa">&lt;/icode&gt;</span>, Stog would have failed with the
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">error-exc</span><span class="hl std">=</span><span class="hl str">&quot;false&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+let mylist = [ 1 ; 2 ; 3 ; 4];;
+let mylist2 = [ 1 ; 2 ; 3 ; &quot;hello&quot;];;
+</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+will display this: </span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">error-exc</span><span class="hl std">=</span><span class="hl str">&quot;false&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+let mylist = [ 1 ; 2 ; 3 ; 4];;
+let mylist2 = [ 1 ; 2 ; 3 ; &quot;hello&quot;];;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
+Without </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">error-exc=&quot;false&quot;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, Stog would have failed with the
 OCaml error message.
-<span class="hl kwa">&lt;/p&gt;</span>
-<span class="hl kwa">&lt;/post&gt;</span></pre>
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span></pre>
 </div>
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

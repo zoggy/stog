@@ -5603,6 +5603,14 @@ div.navright {
 #header {
   margin-bottom: 0.5em;
 }
+#footer {
+  font-size: 0.889em;
+}
+.generatedon {
+  text-align: right;
+  font-size: 0.889em;
+  color: #999999;
+}
 .page-title {
   clear: both ;
   font-size: 1.802em;
@@ -5648,23 +5656,23 @@ p + ul {
 .rss-button {
   float: right;
 }
-.elt-item {
+.doc-item {
   font-size: 1em;
   line-height: 1.5em;
   margin-bottom: 1.5em;
 }
-.elt-item-title {
+.doc-item-title {
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   margin-bottom: 0;
 }
-.elt-item .date {
+.doc-item .date {
   margin-bottom: 0;
 }
-.elt-item .author-list {
+.doc-item .author-list {
   margin-bottom: 0;
 }
-.elt-item .abstract {
+.doc-item .abstract {
   margin-left: 2em;
   margin-right: 2em;
 }
@@ -5754,12 +5762,12 @@ span.icode {
 .options pre.code-txt {
   font-size: 0.790321em;
 }
-div.elt-keywords {
+div.doc-keywords {
   font-size: 0.9em;
   /*.rounded-box ;*/
 
   margin-left: 1em;
-  margin-right: /*@eltRightMargin ;*/
+  margin-right: /*@docRightMargin ;*/
 ;
 }
 div.bloc-keywords {
@@ -5770,11 +5778,11 @@ div.keywords {
   font-style: italic ;
   display: inline ;
 }
-div.elt-intro {
+div.doc-intro {
   display: inline ;
   padding-left: 2em;
 }
-div.elt-intro p {
+div.doc-intro p {
   display: inline ;
 }
 div#archives {
@@ -6106,7 +6114,7 @@ div#navpath {
   om: 2em;
   height: 30px;
 }
-@elt RightMargin;
+@doc RightMargin;
 div#pagesource {
   display: none;
 }

@@ -30,6 +30,7 @@
 
 <div id="header">
   
+  <a href="http://zoggy.github.io/stog/plugins.html">Plugins</a>
   
   <div class="page-title">Stog-asy</div>
 </div>
@@ -51,7 +52,7 @@ be installed too.
 <pre class="code-sh">$ stog <span class="hl opt">--</span>package stog.asy ...</pre>
 
 <p>This plugin adds a new <a href="http://zoggy.github.io/stog/module_base.html#base">base rule</a>
- <span class="icode"><span class="hl kwa">&lt;asy&gt;</span></span>.
+ <span class="icode"><span class="hl kwa">&lt;asy</span><span class="hl kwa">&gt;</span></span>.
 Here are the possible ways to use it:
 </p>
 
@@ -59,68 +60,104 @@ Here are the possible ways to use it:
 <tr><th>Code</th><th>Result</th></tr>
 <tr>
 <td>
-Output to <code>asy.svg</code>, using an <span class="icode"><span class="hl kwa">&lt;img&gt;</span></span>
+Output to <code>asy.svg</code>, using an <span class="icode"><span class="hl kwa">&lt;img</span><span class="hl kwa">&gt;</span></span>
 node to show the image:
-<pre class="code-xml" id="code1"><span class="hl kwa">&lt;asy</span> <span class="hl kwb">outfile</span>=<span class="hl str">&quot;asy1.svg&quot;</span><span class="hl kwa">&gt;</span>
+<div class="hide" id="code1">
+&lt;asy outfile=&quot;asy1.svg&quot;&gt;
 void testline(real y) {
-  draw((<span class="hl num">0</span>,y)--(<span class="hl num">100</span>,y),currentpen+solid);
-  draw((<span class="hl num">0</span>,y-<span class="hl num">10</span>)--(<span class="hl num">100</span>,y-<span class="hl num">10</span>),currentpen+dotted);
-  draw((<span class="hl num">0</span>,y-<span class="hl num">20</span>)--(<span class="hl num">100</span>,y-<span class="hl num">20</span>),currentpen+Dotted());
-  draw((<span class="hl num">0</span>,y-<span class="hl num">30</span>)--(<span class="hl num">100</span>,y-<span class="hl num">30</span>),currentpen+dashed);
-  draw((<span class="hl num">0</span>,y-<span class="hl num">40</span>)--(<span class="hl num">100</span>,y-<span class="hl num">40</span>),currentpen+longdashed);
-  draw((<span class="hl num">0</span>,y-<span class="hl num">50</span>)--(<span class="hl num">100</span>,y-<span class="hl num">50</span>),currentpen+dashdotted);
-  draw((<span class="hl num">0</span>,y-<span class="hl num">60</span>)--(<span class="hl num">100</span>,y-<span class="hl num">60</span>),currentpen+longdashdotted);
+  draw((0,y)--(100,y),currentpen+solid);
+  draw((0,y-10)--(100,y-10),currentpen+dotted);
+  draw((0,y-20)--(100,y-20),currentpen+Dotted());
+  draw((0,y-30)--(100,y-30),currentpen+dashed);
+  draw((0,y-40)--(100,y-40),currentpen+longdashed);
+  draw((0,y-50)--(100,y-50),currentpen+dashdotted);
+  draw((0,y-60)--(100,y-60),currentpen+longdashdotted);
 }
 
-currentpen=linewidth(<span class="hl num">0.5</span>);
-testline(<span class="hl num">100</span>);
-currentpen=linewidth(<span class="hl num">4</span>);
-testline(<span class="hl num">0</span>);
-<span class="hl kwa">&lt;/asy&gt;</span></pre></td>
+currentpen=linewidth(0.5);
+testline(100);
+currentpen=linewidth(4);
+testline(0);
+&lt;/asy&gt;</div>
+<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">outfile</span><span class="hl std">=</span><span class="hl str">&quot;asy1.svg&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+void testline(real y) {
+  draw((0,y)--(100,y),currentpen+solid);
+  draw((0,y-10)--(100,y-10),currentpen+dotted);
+  draw((0,y-20)--(100,y-20),currentpen+Dotted());
+  draw((0,y-30)--(100,y-30),currentpen+dashed);
+  draw((0,y-40)--(100,y-40),currentpen+longdashed);
+  draw((0,y-50)--(100,y-50),currentpen+dashdotted);
+  draw((0,y-60)--(100,y-60),currentpen+longdashdotted);
+}
+
+currentpen=linewidth(0.5);
+testline(100);
+currentpen=linewidth(4);
+testline(0);
+</span><span class="hl kwa">&lt;/asy</span><span class="hl kwa">&gt;</span></pre></td>
 <td>
-<img src="asy1.svg"/>
-</td>
+<img src="asy1.svg"/></td>
 </tr>
 
 <tr>
 <td>
 Output a <code>png</code> file to <code>asy2.png</code>
 and read source from <code>code2.asy</code>:
-<pre class="code-xml" id="code2"><span class="hl kwa">&lt;asy</span> <span class="hl kwb">src</span>=<span class="hl str">&quot;code2.asy&quot;</span>
-  <span class="hl kwb">type</span>=<span class="hl str">&quot;png&quot;</span> <span class="hl kwb">outfile</span>=<span class="hl str">&quot;asy2.png&quot;</span>
-  <span class="hl kwb">width</span>=<span class="hl str">&quot;200px&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<div class="hide" id="code2">
+&lt;asy src=&quot;code2.asy&quot;
+  type=&quot;png&quot; outfile=&quot;asy2.png&quot;
+  width=&quot;200px&quot;/&gt;
+</div>
+<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">src</span><span class="hl std">=</span><span class="hl str">&quot;code2.asy&quot;</span><span class="hl std">
+  </span><span class="">type</span><span class="hl std">=</span><span class="hl str">&quot;png&quot;</span><span class="hl std"> </span><span class="">outfile</span><span class="hl std">=</span><span class="hl str">&quot;asy2.png&quot;</span><span class="hl std">
+  </span><span class="">width</span><span class="hl std">=</span><span class="hl str">&quot;200px&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span></pre>
 With <a href="code2.asy"><code>code2.asy</code></a>.
 The additional attributes (here <code>width</code>) are
-passed to the <span class="icode"><span class="hl kwa">&lt;img&gt;</span></span> node.
+passed to the <span class="icode"><span class="hl kwa">&lt;img</span><span class="hl kwa">&gt;</span></span> node.
 </td>
 <td>
 <img src="asy2.png" width="200px"/>
-
 </td>
 </tr>
 
 <tr>
 <td>
-With <span class="icode"><span class="hl kwa">&lt;elt-</span>...<span class="hl kwa">&gt;</span></span> rules to get labels,
-using attribute <span class="icode"><span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span></span> in the <span class="icode"><span class="hl kwa">&lt;dot&gt;</span></span>
+With <span class="icode"><span class="hl kwa">&lt;doc-</span><span class="hl std">...</span><span class="hl kwa">&gt;</span></span> rules to get labels,
+using attribute <span class="icode"><span class="hl std">defer_=&quot;1&quot;</span></span> in the <span class="icode"><span class="hl kwa">&lt;asy</span><span class="hl kwa">&gt;</span></span>
 so that rewriting is performed in its children before the
-code is being passed to dot:
-<pre class="code-xml" id="code3"><span class="hl kwa">&lt;asy</span> <span class="hl kwb">defer_</span>=<span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span>
-real margin=<span class="hl num">1.5</span>mm;
+code is being passed to asymptote:
+<div class="hide" id="code3">
+&lt;asy defer_=&quot;1&quot;&gt;
+real margin=1.5mm;
 object left=align(
-  object(<span class="hl str">&quot;&lt;elt-title elt-hid=&quot;</span>plugins/asy<span class="hl str">&quot;/&gt;&quot;</span>,
+  object(&quot;&lt;doc-title doc-path=&quot;plugins/asy&quot;/&gt;&quot;,
          ellipse,margin),W);
 add(left);
 object right=align(
-  object(<span class="hl str">&quot;&lt;elt-title elt-hid=&quot;</span>plugins<span class="hl str">&quot;/&gt;&quot;</span>,
-         ellipse,margin),<span class="hl num">4</span>E);
+  object(&quot;&lt;doc-title doc-path=&quot;plugins&quot;/&gt;&quot;,
+         ellipse,margin),4E);
 add(right);
 add(new void(frame f, transform t) {
     draw(f,point(left,NE,t)--point(right,W,t));
   });
-<span class="hl kwa">&lt;/asy&gt;</span></pre>
+&lt;/asy&gt;</div>
+<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+real margin=1.5mm;
+object left=align(
+  object(&quot;</span><span class="hl kwa">&lt;doc-title</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;plugins/asy&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">&quot;,
+         ellipse,margin),W);
+add(left);
+object right=align(
+  object(&quot;</span><span class="hl kwa">&lt;doc-title</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;plugins&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">&quot;,
+         ellipse,margin),4E);
+add(right);
+add(new void(frame f, transform t) {
+    draw(f,point(left,NE,t)--point(right,W,t));
+  });
+</span><span class="hl kwa">&lt;/asy</span><span class="hl kwa">&gt;</span></pre>
 Since no <code>outfile</code> attribute is given, the <code>svg</code>
-file produced is included (no use of <span class="icode"><span class="hl kwa">&lt;img&gt;</span></span>).
+file produced is included (no use of <span class="icode"><span class="hl kwa">&lt;img</span><span class="hl kwa">&gt;</span></span>).
 </td>
 <td>
 
@@ -166,16 +203,18 @@ file produced is included (no use of <span class="icode"><span class="hl kwa">&l
 <g transform="matrix(1 0 0 1 132.892 68.4954)">
 <path d="M -12.2039 -9.96309L 4.26594 -1.04366e-14" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10.0375" stroke-width="0.501875"/>
 </g></g>
-</svg>
-</td>
+</svg></td>
 </tr>
 
 <tr>
 <td>
 Including again the produced <code>svg</code> file. To avoid
-conflicts in ids, we use the <span class="icode"><span class="hl kwb">prefix-svg-ids</span>=<span class="hl str">&quot;foo&quot;</span></span>
+conflicts in ids, we use the <span class="icode"><span class="hl std">prefix-svg-ids=&quot;foo&quot;</span></span>
 attribute:
-<pre class="code-xml" id="code4"><span class="hl kwa">&lt;asy</span> <span class="hl kwb">prefix-svg-ids</span>=<span class="hl str">&quot;foo&quot;</span> <span class="hl kwb">src</span>=<span class="hl str">&quot;code4.asy&quot;</span><span class="hl kwa">/&gt;</span></pre>With <a href="code4.asy"><code>code4.asy</code></a>.
+<div class="hide" id="code4">
+&lt;asy prefix-svg-ids=&quot;foo&quot; src=&quot;code4.asy&quot;/&gt;</div>
+<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">prefix-svg-ids</span><span class="hl std">=</span><span class="hl str">&quot;foo&quot;</span><span class="hl std"> </span><span class="">src</span><span class="hl std">=</span><span class="hl str">&quot;code4.asy&quot;</span><span class="hl kwa">/&gt;</span></pre>
+With <a href="code4.asy"><code>code4.asy</code></a>.
 </td>
 <td>
 <svg height="198.425pt" version="1.1" viewBox="56.4094 53.8583 198.426 198.425" width="198.426pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
@@ -234,17 +273,22 @@ attribute:
 <g transform="matrix(1 0 0 1 -41.9599 252.728)">
 <path d="M 158.253 -149.452L 158.393 -149.112L 158.532 -148.773L 158.829 -148.088L 159.126 -147.405L 159.756 -146.377L 160.39 -145.357L 160.452 -145.28L 160.514 -145.203L 161.32 -144.252L 162.133 -143.31L 162.314 -143.139L 162.496 -142.968L 163.463 -142.111L 164.439 -141.263L 164.458 -141.249L 164.477 -141.234L 165.464 -140.554L 166.459 -139.88L 166.986 -139.547L 167.516 -139.216L 167.977 -138.965L 168.441 -138.716L 169.428 -138.221L 170.422 -137.731L 171.041 -137.449L 171.663 -137.168L 172.033 -137.02L 172.404 -136.873L 173.392 -136.511L 174.386 -136.151L 175.374 -135.825L 176.367 -135.501L 177.011 -135.311L 177.656 -135.121L 178.002 -135.029L 178.349 -134.938L 179.337 -134.703L 180.331 -134.469L 181.319 -134.262L 182.312 -134.055L 183.301 -133.875L 184.294 -133.696L 185.283 -133.541L 186.276 -133.387L 187.265 -133.258L 188.257 -133.129L 188.518 -133.101L 188.779 -133.074L 189.509 -133.003L 190.239 -132.932L 191.229 -132.858L 192.221 -132.784L 193.211 -132.731L 194.202 -132.678L 195.193 -132.647L 196.184 -132.615L 197.175 -132.605L 198.166 -132.594L 199.156 -132.605L 200.147 -132.615L 201.138 -132.647L 202.129 -132.678L 203.12 -132.731L 204.111 -132.784L 205.102 -132.858L 206.092 -132.932L 206.823 -133.003L 207.552 -133.074L 207.813 -133.101L 208.074 -133.129L 209.066 -133.258L 210.055 -133.387L 211.048 -133.541L 212.037 -133.696L 213.03 -133.875L 214.019 -134.055L 215.012 -134.262L 216 -134.469L 216.994 -134.703L 217.982 -134.938L 218.329 -135.029L 218.675 -135.121L 219.32 -135.311L 219.964 -135.501L 220.958 -135.825L 221.945 -136.151L 222.939 -136.511L 223.927 -136.873L 224.298 -137.02L 224.668 -137.168L 225.29 -137.449L 225.909 -137.731L 226.903 -138.221L 227.89 -138.716L 228.354 -138.965L 228.815 -139.216L 229.345 -139.547L 229.872 -139.88L 230.867 -140.554L 231.854 -141.234L 231.873 -141.249L 231.892 -141.263L 232.868 -142.111L 233.835 -142.968L 234.017 -143.139L 234.198 -143.31L 235.011 -144.252L 235.817 -145.203L 235.879 -145.28L 235.941 -145.357L 236.575 -146.377L 237.205 -147.405L 237.502 -148.088L 237.799 -148.773L 237.938 -149.112L 238.078 -149.452L 238.329 -150.474L 238.58 -151.499L 238.663 -152.522L 238.746 -153.547L 238.663 -154.571L 238.58 -155.594L 238.329 -156.619L 238.078 -157.641L 237.938 -157.981L 237.799 -158.32L 237.502 -159.006L 237.205 -159.688L 236.575 -160.716L 235.941 -161.736L 235.879 -161.813L 235.817 -161.891L 235.011 -162.841L 234.198 -163.783L 234.017 -163.954L 233.835 -164.125L 232.868 -164.982L 231.892 -165.83L 231.873 -165.845L 231.854 -165.859L 230.867 -166.539L 229.872 -167.213L 229.345 -167.546L 228.815 -167.878L 228.354 -168.128L 227.89 -168.378L 226.903 -168.872L 225.909 -169.362L 225.29 -169.644L 224.668 -169.925L 224.298 -170.073L 223.927 -170.22L 222.939 -170.582L 221.945 -170.942L 220.958 -171.268L 219.964 -171.592L 219.32 -171.782L 218.675 -171.972L 218.329 -172.064L 217.982 -172.155L 216.994 -172.39L 216 -172.624L 215.012 -172.832L 214.019 -173.038L 213.03 -173.218L 212.037 -173.398L 211.048 -173.552L 210.055 -173.706L 209.066 -173.835L 208.074 -173.964L 207.813 -173.992L 207.552 -174.019L 206.823 -174.09L 206.092 -174.161L 205.102 -174.235L 204.111 -174.309L 203.12 -174.362L 202.129 -174.415L 201.138 -174.446L 200.147 -174.478L 199.156 -174.488L 198.166 -174.499L 197.175 -174.488L 196.184 -174.478L 195.193 -174.446L 194.202 -174.415L 193.211 -174.362L 192.221 -174.309L 191.229 -174.235L 190.239 -174.161L 189.509 -174.09L 188.779 -174.019L 188.518 -173.992L 188.257 -173.964L 187.265 -173.835L 186.276 -173.706L 185.283 -173.552L 184.294 -173.398L 183.301 -173.218L 182.312 -173.038L 181.319 -172.832L 180.331 -172.624L 179.337 -172.39L 178.349 -172.155L 178.002 -172.064L 177.656 -171.972L 177.011 -171.782L 176.367 -171.592L 175.374 -171.268L 174.386 -170.942L 173.392 -170.582L 172.404 -170.22L 172.033 -170.073L 171.663 -169.925L 171.041 -169.644L 170.422 -169.362L 169.428 -168.872L 168.441 -168.378L 167.977 -168.128L 167.516 -167.878L 166.986 -167.546L 166.459 -167.213L 165.464 -166.539L 164.477 -165.859L 164.458 -165.845L 164.439 -165.83L 163.463 -164.982L 162.496 -164.125L 162.314 -163.954L 162.133 -163.783L 161.32 -162.841L 160.514 -161.891L 160.452 -161.813L 160.39 -161.736L 159.756 -160.716L 159.126 -159.688L 158.829 -159.006L 158.532 -158.32L 158.393 -157.981L 158.253 -157.641L 158.002 -156.619L 157.751 -155.594L 157.668 -154.571L 157.585 -153.547L 157.668 -152.522L 157.751 -151.499L 158.002 -150.474L 158.253 -149.452Z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10.0375" stroke-width="1.00375"/>
 </g></g>
-</svg>
-</td>
+</svg></td>
 </tr>
 
 <tr>
 <td>The contents of the <code>args</code> attribute is used
 as additional argument to the command which is run:
-<pre class="code-xml" id="code5"><span class="hl kwa">&lt;asy</span> <span class="hl kwb">prefix-svg-ids</span>=<span class="hl str">&quot;bar&quot;</span>
-  <span class="hl kwb">args</span>=<span class="hl str">&quot;-gray&quot;</span>
-  <span class="hl kwb">src</span>=<span class="hl str">&quot;code4.asy&quot;</span><span class="hl kwa">/&gt;</span></pre>With <a href="code4.asy"><code>code4.asy</code></a>.
-</td>
+<div class="hide" id="code5">
+&lt;asy prefix-svg-ids=&quot;bar&quot;
+  args=&quot;-gray&quot;
+  src=&quot;code4.asy&quot;/&gt;
+</div>
+<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">prefix-svg-ids</span><span class="hl std">=</span><span class="hl str">&quot;bar&quot;</span><span class="hl std">
+  </span><span class="">args</span><span class="hl std">=</span><span class="hl str">&quot;-gray&quot;</span><span class="hl std">
+  </span><span class="">src</span><span class="hl std">=</span><span class="hl str">&quot;code4.asy&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span></pre>
+With <a href="code4.asy"><code>code4.asy</code></a>.</td>
 <td>
 <svg height="198.425pt" version="1.1" viewBox="56.4094 53.8583 198.426 198.425" width="198.426pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 <g id="barpage1" transform="matrix(0.996264 0 0 0.996264 0 0)">
@@ -303,7 +347,6 @@ as additional argument to the command which is run:
 <path d="M 158.253 -149.452L 158.393 -149.112L 158.532 -148.773L 158.829 -148.088L 159.126 -147.405L 159.756 -146.377L 160.39 -145.357L 160.452 -145.28L 160.514 -145.203L 161.32 -144.252L 162.133 -143.31L 162.314 -143.139L 162.496 -142.968L 163.463 -142.111L 164.439 -141.263L 164.458 -141.249L 164.477 -141.234L 165.464 -140.554L 166.459 -139.88L 166.986 -139.547L 167.516 -139.216L 167.977 -138.965L 168.441 -138.716L 169.428 -138.221L 170.422 -137.731L 171.041 -137.449L 171.663 -137.168L 172.033 -137.02L 172.404 -136.873L 173.392 -136.511L 174.386 -136.151L 175.374 -135.825L 176.367 -135.501L 177.011 -135.311L 177.656 -135.121L 178.002 -135.029L 178.349 -134.938L 179.337 -134.703L 180.331 -134.469L 181.319 -134.262L 182.312 -134.055L 183.301 -133.875L 184.294 -133.696L 185.283 -133.541L 186.276 -133.387L 187.265 -133.258L 188.257 -133.129L 188.518 -133.101L 188.779 -133.074L 189.509 -133.003L 190.239 -132.932L 191.229 -132.858L 192.221 -132.784L 193.211 -132.731L 194.202 -132.678L 195.193 -132.647L 196.184 -132.615L 197.175 -132.605L 198.166 -132.594L 199.156 -132.605L 200.147 -132.615L 201.138 -132.647L 202.129 -132.678L 203.12 -132.731L 204.111 -132.784L 205.102 -132.858L 206.092 -132.932L 206.823 -133.003L 207.552 -133.074L 207.813 -133.101L 208.074 -133.129L 209.066 -133.258L 210.055 -133.387L 211.048 -133.541L 212.037 -133.696L 213.03 -133.875L 214.019 -134.055L 215.012 -134.262L 216 -134.469L 216.994 -134.703L 217.982 -134.938L 218.329 -135.029L 218.675 -135.121L 219.32 -135.311L 219.964 -135.501L 220.958 -135.825L 221.945 -136.151L 222.939 -136.511L 223.927 -136.873L 224.298 -137.02L 224.668 -137.168L 225.29 -137.449L 225.909 -137.731L 226.903 -138.221L 227.89 -138.716L 228.354 -138.965L 228.815 -139.216L 229.345 -139.547L 229.872 -139.88L 230.867 -140.554L 231.854 -141.234L 231.873 -141.249L 231.892 -141.263L 232.868 -142.111L 233.835 -142.968L 234.017 -143.139L 234.198 -143.31L 235.011 -144.252L 235.817 -145.203L 235.879 -145.28L 235.941 -145.357L 236.575 -146.377L 237.205 -147.405L 237.502 -148.088L 237.799 -148.773L 237.938 -149.112L 238.078 -149.452L 238.329 -150.474L 238.58 -151.499L 238.663 -152.522L 238.746 -153.547L 238.663 -154.571L 238.58 -155.594L 238.329 -156.619L 238.078 -157.641L 237.938 -157.981L 237.799 -158.32L 237.502 -159.006L 237.205 -159.688L 236.575 -160.716L 235.941 -161.736L 235.879 -161.813L 235.817 -161.891L 235.011 -162.841L 234.198 -163.783L 234.017 -163.954L 233.835 -164.125L 232.868 -164.982L 231.892 -165.83L 231.873 -165.845L 231.854 -165.859L 230.867 -166.539L 229.872 -167.213L 229.345 -167.546L 228.815 -167.878L 228.354 -168.128L 227.89 -168.378L 226.903 -168.872L 225.909 -169.362L 225.29 -169.644L 224.668 -169.925L 224.298 -170.073L 223.927 -170.22L 222.939 -170.582L 221.945 -170.942L 220.958 -171.268L 219.964 -171.592L 219.32 -171.782L 218.675 -171.972L 218.329 -172.064L 217.982 -172.155L 216.994 -172.39L 216 -172.624L 215.012 -172.832L 214.019 -173.038L 213.03 -173.218L 212.037 -173.398L 211.048 -173.552L 210.055 -173.706L 209.066 -173.835L 208.074 -173.964L 207.813 -173.992L 207.552 -174.019L 206.823 -174.09L 206.092 -174.161L 205.102 -174.235L 204.111 -174.309L 203.12 -174.362L 202.129 -174.415L 201.138 -174.446L 200.147 -174.478L 199.156 -174.488L 198.166 -174.499L 197.175 -174.488L 196.184 -174.478L 195.193 -174.446L 194.202 -174.415L 193.211 -174.362L 192.221 -174.309L 191.229 -174.235L 190.239 -174.161L 189.509 -174.09L 188.779 -174.019L 188.518 -173.992L 188.257 -173.964L 187.265 -173.835L 186.276 -173.706L 185.283 -173.552L 184.294 -173.398L 183.301 -173.218L 182.312 -173.038L 181.319 -172.832L 180.331 -172.624L 179.337 -172.39L 178.349 -172.155L 178.002 -172.064L 177.656 -171.972L 177.011 -171.782L 176.367 -171.592L 175.374 -171.268L 174.386 -170.942L 173.392 -170.582L 172.404 -170.22L 172.033 -170.073L 171.663 -169.925L 171.041 -169.644L 170.422 -169.362L 169.428 -168.872L 168.441 -168.378L 167.977 -168.128L 167.516 -167.878L 166.986 -167.546L 166.459 -167.213L 165.464 -166.539L 164.477 -165.859L 164.458 -165.845L 164.439 -165.83L 163.463 -164.982L 162.496 -164.125L 162.314 -163.954L 162.133 -163.783L 161.32 -162.841L 160.514 -161.891L 160.452 -161.813L 160.39 -161.736L 159.756 -160.716L 159.126 -159.688L 158.829 -159.006L 158.532 -158.32L 158.393 -157.981L 158.253 -157.641L 158.002 -156.619L 157.751 -155.594L 157.668 -154.571L 157.585 -153.547L 157.668 -152.522L 157.751 -151.499L 158.002 -150.474L 158.253 -149.452Z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10.0375" stroke-width="1.00375"/>
 </g></g>
 </svg>
-
 </td>
 </tr>
 </table>
@@ -314,8 +357,11 @@ as additional argument to the command which is run:
 
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>

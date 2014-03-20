@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog library reference documentation : Stog_cut</title>
+<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
+<div class="navbar"><a class="pre" href="Stog_latex.html" title="Stog_latex">Previous</a>
+ <a class="up" href="index.html" title="Index">Up</a>
+ <a class="post" href="Stog_list.html" title="Stog_list">Next</a>
+</div>
+<h1>Module <a href="type_Stog_cut.html">Stog_cut</a></h1>
+
+<pre><span class="keyword">module</span> Stog_cut: <code class="code">sig</code> <a href="Stog_cut.html">..</a> <code class="code">end</code></pre><div class="info module top">
+Cutting documents into pieces. This function is associated to
+  a level in the <code class="code">Base</code> module.<br/>
+</div>
+<hr width="100%"/>
+
+<pre><span id="VALmk_path"><span class="keyword">val</span> mk_path</span> : <code class="type"><a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; string -&gt; string -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a></code></pre><div class="info">
+<code class="code">mk_path path sep id</code> forges a new path using the given one,
+  the given separator and the given id.<br/>
+<b>Raises</b> <code>Failure</code> if the given <code class="code">path</code> has no extension.<br/>
+</div>
+
+<pre><span id="VALcut_docs"><span class="keyword">val</span> cut_docs</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.env -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; Stog_types.Doc_set.t -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre></div>
+
+
+
+
+
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h14</div>
+</div>
+
+
+
+</div> 
+</body>
+</html>

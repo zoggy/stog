@@ -31,6 +31,7 @@
 <div id="header">
   
   
+  
   <div class="page-title">Module Blocks</div>
 </div>
 
@@ -42,7 +43,11 @@ Here are the functions of the module, which can be associated to
 levels (see <a href="http://zoggy.github.io/stog/funs.html">Predefined modules and functions</a>):
 </p>
 
-<ul class="toc"><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#base">base</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#sectionning">sectionning</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#gather-ids">gather-ids</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#elt">elt</a></li></ul>
+<ul class="toc"><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#init">init</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#base">base</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#sectionning">sectionning</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#gather-ids">gather-ids</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#doc">doc</a></li></ul>
+
+<div class="section"><div class="section-title" id="init">init</div>
+<p>This functions initialize section counters. </p>
+</div>
 
 <div class="section"><div class="section-title" id="base">base</div>
 <p>
@@ -60,7 +65,7 @@ This function applies the following rules:
 </div>
 
 <div class="subsection"><div class="subsection-title" id="counter">counter</div>
-<pre class="code-xml"><span class="hl kwa">&lt;counter</span> <span class="hl kwb">counter-name</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;counter</span><span class="hl std"> </span><span class="">counter-name</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></pre>
 <p>is reduced to the current value of the counter associated to the given name.</p>
 </div>
 
@@ -75,11 +80,12 @@ nodes.
 <p>
 Syntax:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;section</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>
+<pre class="code-xml"><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-  <span class="hl kwa">&lt;subsection</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/subsection&gt;</span>
+  </span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/subsection</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-<span class="hl kwa">&lt;/section&gt;</span></pre>
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
+ </span></pre>
 
 <p>
 This is used to insert sections and subsections, with a given title. The id,
@@ -92,13 +98,13 @@ Default sectionning tags are, in this order,
 You can specify other nodes:
 </p>
 <ul>
-<li>for one element, using the &quot;sectionning&quot; attribute in the element, for example:
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span> <span class="hl kwb">sectionning</span>=<span class="hl str">&quot;section,subsection,paragraph&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/page&gt;</span></pre>
+<li>for one document, using the &quot;sectionning&quot; attribute in the document, for example:
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">sectionning</span><span class="hl std">=</span><span class="hl str">&quot;section,subsection,paragraph&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
   will define &quot;section&quot;, &quot;subsection&quot; and &quot;paragraph&quot; as sectionning nodes.
 </li>
-<li>for all the site elements, using the &quot;stog:sectionning&quot; attribute in the main element
-  (see <a href="http://zoggy.github.io/stog/stog-main-element.html">Stog main element</a>):
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span> stog:<span class="hl kwb">sectionning</span>=<span class="hl str">&quot;section,subsection,paragraph&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/page&gt;</span></pre>
+<li>for all the site documents, using the &quot;stog:sectionning&quot; attribute in the main document
+  (see <a href="http://zoggy.github.io/stog/stog-main-document.html">Stog main document</a>):
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">stog:sectionning</span><span class="hl std">=</span><span class="hl str">&quot;section,subsection,paragraph&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
 </li>
 </ul>
 <p>
@@ -108,8 +114,8 @@ refering to the section (or subsection, or ...), will use the title of the secti
 (or subsection, or ...) for the produced link default text.
 </p>
 <p>To prevent a sectionning node having a counter associated, you can use
-<span class="icode"><span class="hl kwb">section-counter</span>=<span class="hl str">&quot;false&quot;</span></span> in the element attribute, or
-<span class="icode">stog:<span class="hl kwb">section-counter</span>=<span class="hl str">&quot;false&quot;</span></span> in the main element. &quot;section&quot; can be replaced
+<span class="icode"><span class="hl std">section-counter=&quot;false&quot;</span></span> in the document attribute, or
+<span class="icode"><span class="hl std">stog:section-counter=&quot;false&quot;</span></span> in the main document. &quot;section&quot; can be replaced
 by &quot;subsection&quot; or any other node to prevent this node having a counter.
 </p>
 <p>
@@ -123,111 +129,115 @@ The function also applies the <a href="http://zoggy.github.io/stog/module_blocks
 
 <div class="section"><div class="section-title" id="gather-ids">gather-ids</div>
 <p>
-This function collect all ids (the values attached to <span class="icode"><span class="hl kwb">id</span>=<span class="hl str">&quot;...&quot;</span></span> attributes)
-in all element, so they can be referenced to in upper levels.
+This function collects all ids (the values attached to <span class="icode"><span class="hl std">id=&quot;...&quot;</span></span> attributes)
+in all documents, so they can be referenced to in upper levels.
 </p>
 <p>
-Having twice the same id in an element results in an error.
+Having twice the same id in a document results in a warning.
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="elt">elt</div>
+<div class="section"><div class="section-title" id="doc">doc</div>
 <p>
 This function applies the following rules:
-<span class="icode"><span class="hl kwa">&lt;elt&gt;</span></span>, <span class="icode"><span class="hl kwa">&lt;post&gt;</span></span>,
-<span class="icode"><span class="hl kwa">&lt;page&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;block&gt;</span></span>.
+<span class="icode"><span class="hl kwa">&lt;doc</span><span class="hl kwa">&gt;</span></span>, <span class="icode"><span class="hl kwa">&lt;post</span><span class="hl kwa">&gt;</span></span>,
+<span class="icode"><span class="hl kwa">&lt;page</span><span class="hl kwa">&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;block</span><span class="hl kwa">&gt;</span></span>.
 </p>
 <p>
 Syntax:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;elt</span> href=hid[#id]<span class="hl kwa">&gt;</span>text<span class="hl kwa">&lt;/elt&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;path[#id]&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">text</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span></pre>
 
 <p>
-This will return a link to the element specified by its hid and optional fragment id.
-The hid of an element is its absolute name from the root directoty of your project.
+This will return a link to the document specified by its path and optional fragment id.
+The path of a document is its absolute name from the root directoty of your project.
 You are not forced
 to give the full path, but can also give only one or more of the last parts
-of the path, as long as it uniquely identifies an existing element.
+of the path, as long as it uniquely identifies an existing document.
 </p>
 <p>
-For example, suppose you want to refer to the element defined in file
-<code>&lt;root dir&gt;/foo/bar/hello.html</code>. The hid of this element
-is &quot;/foo/bar/hello&quot;. You can refer to it in various ways:
+For example, suppose you want to refer to the document defined in file
+<code>&lt;root dir&gt;/foo/bar/hello.html</code>. The path of this document
+is &quot;/foo/bar/hello.html&quot;. You can refer to it in various ways:
 </p>
 <ul>
-<li>with its absolute hid, providing the heading '/': <code>/foo/bar/hello</code>,</li>
-<li>with only the last part of its hid: <code>hello</code>,</li>
-<li>with an ending subpart of its hid: <code>bar/hello</code>.</li>
+<li>with its absolute path, providing the heading '/': <code>/foo/bar/hello.html</code>,</li>
+<li>with only the last part of its path: <code>hello.html</code>,</li>
+<li>with an ending subpart of its path: <code>bar/hello.html</code>.</li>
 </ul>
-<p>In the last two cases, an error will be raised if more than one elements
-match the incomplete hid. You can provide an additional attribute <code>type</code>
+<p>In the last two cases, an error will be raised if more than one documents
+match the incomplete path. You can provide an additional attribute <code>type</code>
 to prevent ambiguities, for example:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;bar/hello&quot;</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;post&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;bar/hello&quot;</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">&quot;post&quot;</span><span class="hl kwa">/&gt;</span></pre>
 <p>
-Refering to an unknown element will raise an error. If no hid is given,
-<span class="icode"><span class="hl kwa">&lt;elt-hid/&gt;</span></span> is used instead, i.e. the string associated to
-<code>elt-hid</code> in the environment, to retrieve the current element hid.
+The extension of the path can be omitted if there is no ambiguity with another
+document having the same path modulo its extension.
+</p>
+<p>
+Refering to an unknown document will raise an error. If no path is given,
+<span class="icode"><span class="hl kwa">&lt;doc-path</span><span class="hl kwa">/&gt;</span></span> is used instead, i.e. the string associated to
+<code>doc-path</code> in the environment, to retrieve the current document path.
 </p>
 <p>
 A node id can also be specified, like <code>thisblock</code> in
-<span class="icode"><span class="hl kwb">href</span>=<span class="hl str">&quot;blabla#thisblock&quot;</span></span>. Refering to an unknown block id
+<span class="icode"><span class="hl std">href=&quot;blabla#thisblock&quot;</span></span>. Refering to an unknown block id
 will raise an error.
 </p>
 <p>
-If no text is given for the link, the title of the element
+If no text is given for the link, the title of the document
 will be used instead (or, if a node id is given, the title associated to
-the node id, if any). Specifying in attributes <span class="icode"><span class="hl kwb">quotes</span>=<span class="hl str">&quot;true&quot;</span></span>
-indicates to add quotes around the element title.
+the node id, if any). Specifying in attributes <span class="icode"><span class="hl std">quotes=&quot;true&quot;</span></span>
+indicates to add quotes around the document title.
 </p>
 <p>
-<span class="icode"><span class="hl kwa">&lt;page</span> ...<span class="hl kwa">&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;post</span> ... <span class="hl kwa">&gt;</span></span>
+<span class="icode"><span class="hl kwa">&lt;page</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;post</span><span class="hl std"> ... </span><span class="hl kwa">&gt;</span></span>
 are equivalent respectively to
-<span class="icode"><span class="hl kwa">&lt;elt</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;page&quot;</span> ...<span class="hl kwa">&gt;</span></span> and
-<span class="icode"><span class="hl kwa">&lt;elt</span> <span class="hl kwb">type</span>=<span class="hl str">&quot;post&quot;</span> ...<span class="hl kwa">&gt;</span></span>.
+<span class="icode"><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">&quot;page&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span> and
+<span class="icode"><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">&quot;post&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span>.
 </p>
-<p>The <span class="icode"><span class="hl kwa">&lt;block&gt;</span></span> rule in this function is not the
+<p>The <span class="icode"><span class="hl kwa">&lt;block</span><span class="hl kwa">&gt;</span></span> rule in this function is not the
 same as <a href="http://zoggy.github.io/stog/module_blocks.html#block">block</a> base rule.
 In this function,
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;block</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span>text<span class="hl kwa">&lt;/block&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;block</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">text</span><span class="hl kwa">&lt;/block</span><span class="hl kwa">&gt;</span></pre>
 <p>is used to refer to a block using the given <code>href</code> attribute. Here the
-href only contains an id, it is not of the form &quot;hid[#id]&quot;. This will
-be reduced to a link to the corresponding element, using the given text.
+href only contains an id, it is not of the form &quot;path[#id]&quot;. This will
+be reduced to a link to the corresponding document, using the given text.
 </p>
 <p>If the node matching the <code>href</code> was defined with the
 <a href="http://zoggy.github.io/stog/module_blocks.html#block">block</a> base rule (i.e. without <code>href</code> attribute),
-then the title associated to this node is used as text for the procuded link, if no
-text was given (<span class="icode"><span class="hl kwa">&lt;block</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></span>).
+then the title associated to this node is used as text for the produced link, if no
+text was given (<span class="icode"><span class="hl kwa">&lt;block</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></span>).
 </p>
 <p>So,</p>
-<pre class="code-xml"><span class="hl kwa">&lt;block</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;fig1&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;block</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;fig1&quot;</span><span class="hl kwa">/&gt;</span></pre>
 <p>is equivalent to</p>
-<pre class="code-xml"><span class="hl kwa">&lt;elt</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;#fig1&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;#fig1&quot;</span><span class="hl kwa">/&gt;</span></pre>
 <p>or</p>
-<pre class="code-xml"><span class="hl kwa">&lt;elt</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;&amp;lt;elt-hid/&amp;gt;#fig1&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;doc-path/&amp;gt;#fig1&quot;</span><span class="hl kwa">/&gt;</span></pre>
 <p>
 But the purpose of <code>&lt;block&gt;</code> rule is not to be used directly, but rather
 by defining other rules reducing to <code>&lt;block&gt;</code>, like environments in
 latex for figures, proofs, propositions, ...
 </p>
-<p>Here is an example of definition of a function in an element definition:</p>
-<pre class="code-xml"><span class="hl kwa">&lt;article</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;...&quot;</span> <span class="hl kwb">with-contents</span>=<span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;theorem</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;&lt;block</span>
-  <span class="hl kwb">counter-name</span>=<span class="hl str">&quot;theorem&quot;</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;theorem&quot;</span>
-  <span class="hl kwb">label</span>=<span class="hl str">&quot;Theorem&quot;</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;&amp;lt;href/&amp;gt;&quot;</span>
-  <span class="hl kwb">id</span>=<span class="hl str">&quot;&amp;lt;id/&amp;gt;&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;&amp;lt;title/&amp;gt;&quot;</span>
-<span class="hl kwa">&gt;</span>
-<span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;&amp;lt;class/&amp;gt;&quot;</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;&amp;lt;id/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span>
-  <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;title&quot;</span><span class="hl kwa">&gt;&lt;title/&gt;&lt;/div&gt;</span>
-  <span class="hl kwa">&lt;div</span> <span class="hl kwb">class</span>=<span class="hl str">&quot;contents&quot;</span><span class="hl kwa">&gt;&lt;contents/&gt;&lt;/div&gt;</span>
-<span class="hl kwa">&lt;/div&gt;&lt;/block&gt;&lt;/theorem&gt;</span>
-<span class="hl kwa">&lt;contents&gt;</span>...<span class="hl kwa">&lt;/contents&gt;</span>
-<span class="hl kwa">&lt;/article&gt;</span></pre>
-<p>This defines a new rule <span class="icode"><span class="hl kwa">&lt;theorem&gt;</span></span> used this way to define a new theorem:</p>
-<pre class="code-xml"><span class="hl kwa">&lt;theorem</span> <span class="hl kwb">id</span>=<span class="hl str">&quot;thmain&quot;</span> <span class="hl kwb">title</span>=<span class="hl str">&quot;Main result&quot;</span><span class="hl kwa">&gt;</span>...<span class="hl kwa">&lt;/theorem&gt;</span></pre>
+<p>Here is an example of definition of a function in a document definition:</p>
+<pre class="code-xml"><span class="hl kwa">&lt;article</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;theorem</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;block</span><span class="hl std">
+  </span><span class="">counter-name</span><span class="hl std">=</span><span class="hl str">&quot;theorem&quot;</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;theorem&quot;</span><span class="hl std">
+  </span><span class="">label</span><span class="hl std">=</span><span class="hl str">&quot;Theorem&quot;</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;href/&amp;gt;&quot;</span><span class="hl std">
+  </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;id/&amp;gt;&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;title/&amp;gt;&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;class/&amp;gt;&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;id/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;title&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;title</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;contents&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/block</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/theorem</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/article</span><span class="hl kwa">&gt;</span></pre>
+<p>This defines a new rule <span class="icode"><span class="hl kwa">&lt;theorem</span><span class="hl kwa">&gt;</span></span> used this way to define a new theorem:</p>
+<pre class="code-xml"><span class="hl kwa">&lt;theorem</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;thmain&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Main result&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/theorem</span><span class="hl kwa">&gt;</span></pre>
 <p>Elsewhere, this theorem can be referred to using</p>
-<pre class="code-xml"><span class="hl kwa">&lt;theorem</span> <span class="hl kwb">href</span>=<span class="hl str">&quot;thmain&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;theorem</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;thmain&quot;</span><span class="hl kwa">/&gt;</span></pre>
 <p>which will be reduced to a link with &quot;Theorem 1&quot; as text, if this theorem was the
 first defined in the article.
 </p>
@@ -245,8 +255,11 @@ first defined in the article.
 
 
 
-<script src="http://zoggy.github.io/stog/jquery.js" type="text/javascript">_</script>
-<script src="http://zoggy.github.io/stog/bootstrap-collapse.js" type="text/javascript">_</script>
+<div id="footer">
+<div class="generatedon">Generated on March 20, 2014 at 14h13</div>
+</div>
+
+
 
 </div> 
 </body>
