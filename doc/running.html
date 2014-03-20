@@ -4,7 +4,7 @@ navbar-doc="active"
 <p>
 To compile your web site, use the following command:
 </p>
-<command-line><![CDATA[stog <root-directory>]]></command-line>
+<command><![CDATA[stog <root-directory>]]></command>
 <p>Stog will generate the result in <icode>./stog-output</icode>,
 except if you use the <icode>-d</icode> option to specify another
 output directory.
@@ -18,26 +18,32 @@ It is possible to give more than one directory to <icode>stog</icode>. In this c
 all documents are merged as if all were defined in the last directory
 given. It may be useful to gather blogs or pages to generate one big site. Or not.
 </p>
+
+<section id="siteurl" title="Site location">
 <p>The <icode>--site-url</icode> option is used to override the <icode>stog:site-url</icode>
 field of the main document. It it useful to generate a local site, for example
 </p>
-<command-line>stog --site-url file:///tmp/website your-directory</command-line>
+<command>stog --site-url file:///tmp/website your-directory</command>
 <p>
 to test your site locally with correct links.
 </p>
+</section>
 <p id="optionlocal">
 As a shortcut, the <icode>--local</icode> option sets <icode>stog:site-url</icode> to
 <icode>file://&lt;absolute path of output directory/&gt;</icode>.
 </p>
+
+<section id="def" title="Additional definitions">
 <p id="optiondef">
 The <icode>--def</icode> option can be used to define an additional global rule. For example
 </p>
-<command-line>stog --def stogdir:`pwd`</command-line>
+<command>stog --def stogdir:`pwd`</command>
 <p>
 will make the current working directory accessible using <ixml>&lt;stogdir/&gt;</ixml>.
 </p>
+</section>
 
-
+<section id="plugins" title="Plugins">
 <p>The <icode>--plugin</icode> option makes <icode>stog</icode> dynamically
 load the given OCaml object file. The loaded plugin can define new functions
 to associate to some tags, or even override some pre-defined functions.
@@ -49,6 +55,8 @@ to specify a list of comma-separated packages to load. <icode>ocamlfind</icode> 
 then be used to get the location and required files to load these packages, in bytecode
 for <icode>stog.byte</icode> or native-code for <icode>stog</icode>.
 </p>
+</section>
+<section id="multilang" title="Handling languages">
 <p>The <icode>--lang</icode> option is used to generate the website
 for one language. By default, the only known languages are "en" and "fr".
 If you use the <icode>--lang en</icode> option, then pages will be generated
@@ -65,6 +73,9 @@ this way:
 <p>This makes &lt;languages/&gt; returning the list of languages, and it is used by
 the provided
 -->
+</section>
+
+<section id="caching" title="Caching">
 <p>
 Stog will keep computed documents in directory <code>.stog/cache</code>.
 To prevent stog from using this cache, use the <code>--nocache</code>
@@ -87,10 +98,47 @@ on all documents. A change in any document will then make every document recompu
 at each run. To prevent this, the <code>--depcut</code> option specifies
 to use non-recursive dependencies in the caching strategy.
 </p>
+</section>
+
+<section id="filter" title="Filtering published documents">
+<p>
+By default, Stog will not compute documents having definition
+<ixml>published="false"</ixml> or <ixml>published="0"</ixml>
+in its header.
+</p>
+<p>The <icode>--publish-only</icode> option takes a filter and will
+make Stog keep only the documents matching this filter.
+</p>
+<p>
+For example, the following command will compute all documents except
+the ones having "ocaml" in their topics:
+</p>
+<command>stog --publish-only "! (topic='ocaml')" ...</command>
+<p>
+See <doc href="module_base#documents">here</doc> for filter syntax. Beware
+that the condition to keep only some documents to publish is evaluated
+without performing XML rewriting on the document definitions, as opposed
+as when evaluating filters in the <rule>documents</rule> rule.
+</p>
+<p>Some attributes in the filter are handled specially:</p>
+<ul>
+<li><icode>type="t"</icode> is true if the document is of type <icode>t</icode>,</li>
+<li><icode>keyword="k"</icode> is true if the document has <icode>k</icode> among its keywords,</li>
+<li><icode>topic="t"</icode> is true if the document has <icode>t</icode> among its topics,</li>
+<li><icode>set="s"</icode> is true if the document belong to set <icode>s</icode>.</li>
+</ul>
+<p>
+At last, the condition <icode>foo=""</icode> is true if the document has no
+attribute <icode>foo</icode> or if the attribute <icode>foo</icode> is empty.
+</p>
+</section>
+
+<section id="makefile" title="Using with Make">
 <p>
 A convenient way to use stog is to create a Makefile with different targets,
 to generate your site for a local test and for online publishing.
 Have a look at <ext-a href="https://github.com/zoggy/stog/tree/master/doc/Makefile">this
 Makefile</ext-a> used to build stog documentation.
 </p>
+</section>
 </page>

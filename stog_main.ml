@@ -46,7 +46,6 @@ let packages = ref [];;
 let only_doc = ref None;;
 
 let publish_only = ref None ;;
-let publish_remove = ref None ;;
 
 let debug = ref false;;
 
@@ -90,13 +89,11 @@ let set_stog_options stog =
   let stog = { stog with Stog_types.stog_depcut = !depcut } in
   let stog = { stog with Stog_types.stog_defs = stog.stog_defs @ !stog_defs } in
   let stog =
-    match !publish_only, !publish_remove with
-      None, None -> stog
-    | _, _ ->
-
+    match !publish_only with
+      None -> stog
+    | _ ->
         { stog with
-          stog_publish_keep = !publish_only ;
-          stog_publish_remove = !publish_remove ;
+          stog_publish_only = !publish_only ;
         }
   in
   stog
@@ -154,10 +151,6 @@ let options = [
     "--publish-only",
     Arg.String (fun s -> publish_only := Some (Stog_filter.filter_of_string s)),
     "<filter> only keep documents verifying the given condition" ;
-
-    "--publish-remove",
-    Arg.String (fun s -> publish_remove := Some (Stog_filter.filter_of_string s)),
-    "<filter> remove documents verifying the given condition" ;
 
     "--hackcmxs", Arg.Set Stog_dyn.hack_cmxs,
     " when a package to load depend on .cmxa or .cmx file, try to build .cmxs.";

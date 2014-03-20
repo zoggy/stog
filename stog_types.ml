@@ -159,8 +159,7 @@ type stog = {
   stog_deps : stog_dependencies ;
   stog_id_map : (Stog_path.path * string option) Str_map.t Stog_path.Map.t ;
   stog_levels : (string * int list) list Str_map.t ;
-  stog_publish_keep : Stog_filter_types.t option ;
-  stog_publish_remove : Stog_filter_types.t option ;
+  stog_publish_only : Stog_filter_types.t option ;
 }
 
 let url_of_string s =
@@ -216,11 +215,12 @@ let create_stog dir = {
   stog_deps = Str_map.empty ;
   stog_id_map = Stog_path.Map.empty ;
   stog_levels = Str_map.empty ;
-  stog_publish_keep = None ;
-  stog_publish_remove = 
-      Some (Stog_filter_types.Or
-       (Stog_filter_types.Pred (("","published"), "false"),
-        Stog_filter_types.Pred (("","published"), "0"))) ;
+  stog_publish_only =
+      Some (Stog_filter_types.Not
+       (Stog_filter_types.Or
+        (Stog_filter_types.Pred (("","published"), "false"),
+         Stog_filter_types.Pred (("","published"), "0"))
+       )) ;
   }
 ;;
 

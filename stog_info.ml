@@ -314,15 +314,9 @@ let rec doc_verifies doc = function
 
 let remove_not_published stog =
   let pred =
-    match stog.stog_publish_keep, stog.stog_publish_remove with
-      None, None -> (fun _ -> true)
-    | Some f, None -> (fun doc -> doc_verifies doc f)
-    | None, Some f -> (fun doc -> not (doc_verifies doc f))
-    | Some f1, Some f2 ->
-        (fun doc ->
-           doc_verifies doc f1 &&
-             (not (doc_verifies doc f2))
-        )
+    match stog.stog_publish_only with
+      None -> (fun _ -> true)
+    | Some f -> (fun doc -> doc_verifies doc f)
   in
   let (docs, removed) = Stog_tmap.fold
     (fun id doc (acc, removed) ->

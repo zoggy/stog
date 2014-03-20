@@ -109,8 +109,7 @@ type stog = {
   stog_deps : stog_dependencies ;
   stog_id_map : (Stog_path.path * string option) Str_map.t Stog_path.Map.t ;
   stog_levels : (string * int list) list Str_map.t ;
-  stog_publish_keep : Stog_filter_types.t option ;
-  stog_publish_remove : Stog_filter_types.t option ;
+  stog_publish_only : Stog_filter_types.t option ;
   }
 
 val url_of_string : string -> Neturl.url
