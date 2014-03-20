@@ -26,10 +26,7 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Html generation.
-
-  While the only function called from "main" is {!val:generate},
-  some values are made available for the {!Stog_plug} module.
+(** Base module.
 *)
 
 (** [doc_by_href ?typ ?src_doc stog env href] returns the document, path and
@@ -81,7 +78,8 @@ val generate_rss_feed_file :
   ?title:string -> Rss.url -> (Stog_types.doc_id * Stog_types.doc) list -> string -> unit
 *)
 
-(** Build the base rules, using the default ones and the {!plugin_rules}. *)
+(** Build the base rules, using the default ones and the base rules register
+  by plugins. *)
 val build_base_rules : Stog_types.stog ->
   Stog_types.doc_id -> (Xmlm.name * Stog_types.stog Xtmpl.callback) list
 

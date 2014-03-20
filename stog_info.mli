@@ -44,6 +44,6 @@ val pred_by_date :
   annotated by the topic and keywords. *)
 val dot_of_graph : (Stog_types.doc -> Neturl.url) -> Stog_types.stog -> string
 
-(** Remove from the stog structure the documents having
-  {!Stog_types.doc.doc_published}[=false]. *)
+(** Keep in the stog structure only the documents matching the
+  {!Stog_types.stog.stog_publish_only} filter, if any. *)
 val remove_not_published : Stog_types.stog -> Stog_types.stog

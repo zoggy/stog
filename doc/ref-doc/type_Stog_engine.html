@@ -3,15 +3,13 @@
 &#160;&#160;<span class="keyword">type</span>&#160;<span class="keywordsign">'</span>a&#160;level_fun&#160;=<br/>
 &#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Fun_stog</span>&#160;<span class="keyword">of</span><br/>
 &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(<span class="constructor">Stog_types</span>.stog&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.doc_id&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog)<br/>
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Doc_set</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog)<br/>
 &#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Fun_data</span>&#160;<span class="keyword">of</span><br/>
 &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(<span class="keywordsign">'</span>a&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;*&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.doc_id&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog&#160;*&#160;<span class="keywordsign">'</span>a)<br/>
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;*&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Doc_set</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog&#160;*&#160;<span class="keywordsign">'</span>a)<br/>
 &#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Fun_stog_data</span>&#160;<span class="keyword">of</span><br/>
 &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;((<span class="constructor">Stog_types</span>.stog&#160;*&#160;<span class="keywordsign">'</span>a)&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;*&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.doc_id&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog&#160;*&#160;<span class="keywordsign">'</span>a)<br/>
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;*&#160;<span class="keywordsign">'</span>a&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Doc_set</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog&#160;*&#160;<span class="keywordsign">'</span>a)<br/>
 &#160;&#160;<span class="keyword">type</span>&#160;<span class="keywordsign">'</span>a&#160;modul&#160;=&#160;{<br/>
 &#160;&#160;&#160;&#160;mod_data&#160;:&#160;<span class="keywordsign">'</span>a;<br/>
 &#160;&#160;&#160;&#160;mod_levels&#160;:&#160;<span class="keywordsign">'</span>a&#160;<span class="constructor">Stog_engine</span>.level_fun&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Int_map</span>.t;<br/>
@@ -35,11 +33,10 @@
 &#160;&#160;<span class="keyword">type</span>&#160;stog_state&#160;=&#160;{<br/>
 &#160;&#160;&#160;&#160;st_stog&#160;:&#160;<span class="constructor">Stog_types</span>.stog;<br/>
 &#160;&#160;&#160;&#160;st_modules&#160;:&#160;(<span class="keyword">module</span>&#160;<span class="constructor">Stog_engine</span>.<span class="constructor">Module</span>)&#160;list;<br/>
+&#160;&#160;&#160;&#160;st_docs&#160;:&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Doc_set</span>.t;<br/>
 &#160;&#160;}<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;run&#160;:<br/>
-&#160;&#160;&#160;&#160;?use_cache:bool&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;?docs:<span class="constructor">Stog_types</span>.doc_id&#160;list&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_engine</span>.stog_state&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_engine</span>.stog_state<br/>
+&#160;&#160;&#160;&#160;?use_cache:bool&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_engine</span>.stog_state&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_engine</span>.stog_state<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;generate&#160;:<br/>
 &#160;&#160;&#160;&#160;?use_cache:bool&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;?only_docs:string&#160;list&#160;<span class="keywordsign">-&gt;</span><br/>

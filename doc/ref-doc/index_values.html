@@ -59,7 +59,8 @@ For a given document, add a dependency on a file or another document.
 </td></tr>
 <tr><td><a href="Stog_html.html#VALbuild_base_rules">build_base_rules</a> [<a href="Stog_html.html">Stog_html</a>]</td>
 <td><div class="info">
-Build the base rules, using the default ones and the <code class="code">plugin_rules</code>.
+Build the base rules, using the default ones and the base rules register
+  by plugins.
 </div>
 </td></tr>
 <tr><td><a href="Stog_tmpl.html#VALby_keyword">by_keyword</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
@@ -757,8 +758,8 @@ Same as <a href="Stog_graph.S.html#VALrecursive_succs"><code class="code">Stog_g
 </td></tr>
 <tr><td><a href="Stog_info.html#VALremove_not_published">remove_not_published</a> [<a href="Stog_info.html">Stog_info</a>]</td>
 <td><div class="info">
-Remove from the stog structure the documents having
-  <a href="Stog_types.html#TYPEELTdoc.doc_published"><code class="code">Stog_types.doc.doc_published</code></a><code class="code">=false</code>.
+Keep in the stog structure only the documents matching the
+  <a href="Stog_types.html#TYPEELTstog.stog_publish_only"><code class="code">Stog_types.stog.stog_publish_only</code></a> filter, if any.
 </div>
 </td></tr>
 <tr><td><a href="Stog_graph.S.html#VALreverse">reverse</a> [<a href="Stog_graph.S.html">Stog_graph.S</a>]</td>
@@ -948,7 +949,7 @@ Unmarshal.
 <td></td></tr>
 <tr><td><a href="Stog_html.html#VALurl_of_path">url_of_path</a> [<a href="Stog_html.html">Stog_html</a>]</td>
 <td><div class="info">
-Build an url from the given path, using the given optional extension.
+Build an url from the given path.
 </div>
 </td></tr>
 <tr><td><a href="Stog_types.html#VALurl_of_string">url_of_string</a> [<a href="Stog_types.html">Stog_types</a>]</td>

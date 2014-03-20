@@ -8,11 +8,7 @@
 <h1>Module <a href="type_Stog_html.html">Stog_html</a></h1>
 
 <pre><span class="keyword">module</span> Stog_html: <code class="code">sig</code> <a href="Stog_html.html">..</a> <code class="code">end</code></pre><div class="info module top">
-Html generation.
-<div class="vertical-space"> </div>
-
-  While the only function called from "main" is <code class="code">generate</code>,
-  some values are made available for the <a href="Stog_plug.html"><code class="code">Stog_plug</code></a> module.<br/>
+Base module.<br/>
 </div>
 <hr width="100%"/>
 
@@ -42,13 +38,14 @@ Escape html code in the given string: change <code class="code">&amp;</code> to 
 </div>
 
 <pre><span id="VALconcat_name"><span class="keyword">val</span> concat_name</span> : <code class="type">?sep:string -&gt; string * string -&gt; string</code></pre>
-<pre><span id="VALurl_of_path"><span class="keyword">val</span> url_of_path</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; ?ext:string -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; Neturl.url</code></pre><div class="info ">
-Build an url from the given path, using the given optional extension.
+<pre><span id="VALurl_of_path"><span class="keyword">val</span> url_of_path</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; Neturl.url</code></pre><div class="info ">
+Build an url from the given path.
   This is used for documents created on the fly, like by-word or by-month index.<br/>
 </div>
 
 <pre><span id="VALbuild_base_rules"><span class="keyword">val</span> build_base_rules</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEdoc_id">Stog_types.doc_id</a> -&gt; (Xmlm.name * <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.callback) list</code></pre><div class="info ">
-Build the base rules, using the default ones and the <code class="code">plugin_rules</code>.<br/>
+Build the base rules, using the default ones and the base rules register
+  by plugins.<br/>
 </div>
 
 <pre><span id="VALdoc_list"><span class="keyword">val</span> doc_list</span> : <code class="type"><a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       ?rss:Neturl.url -&gt;<br/>       ?set:Stog_types.Doc_set.t -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.callback</code></pre><div class="info ">

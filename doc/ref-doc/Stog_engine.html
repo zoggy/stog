@@ -17,21 +17,21 @@ Rewrite engine.<br/>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTlevel_fun.Fun_stog"><span class="constructor">Fun_stog</span></span> <span class="keyword">of</span> <code class="type">(<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.env -&gt;<br/>      <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEdoc_id">Stog_types.doc_id</a> list -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a>)</code></code></td>
+<code><span id="TYPEELTlevel_fun.Fun_stog"><span class="constructor">Fun_stog</span></span> <span class="keyword">of</span> <code class="type">(<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.env -&gt;<br/>      <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; Stog_types.Doc_set.t -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a>)</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTlevel_fun.Fun_data"><span class="constructor">Fun_data</span></span> <span class="keyword">of</span> <code class="type">('a Xtmpl.env -&gt;<br/>      <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a -&gt; <a href="Stog_types.html#TYPEdoc_id">Stog_types.doc_id</a> list -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a)</code></code></td>
+<code><span id="TYPEELTlevel_fun.Fun_data"><span class="constructor">Fun_data</span></span> <span class="keyword">of</span> <code class="type">('a Xtmpl.env -&gt;<br/>      <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a -&gt; Stog_types.Doc_set.t -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a)</code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTlevel_fun.Fun_stog_data"><span class="constructor">Fun_stog_data</span></span> <span class="keyword">of</span> <code class="type">((<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a) Xtmpl.env -&gt;<br/>      <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a -&gt; <a href="Stog_types.html#TYPEdoc_id">Stog_types.doc_id</a> list -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a)</code></code></td>
+<code><span id="TYPEELTlevel_fun.Fun_stog_data"><span class="constructor">Fun_stog_data</span></span> <span class="keyword">of</span> <code class="type">((<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a) Xtmpl.env -&gt;<br/>      <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a -&gt; Stog_types.Doc_set.t -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * 'a)</code></code></td>
 
 </tr></table>
 
@@ -93,12 +93,19 @@ A module.
 <td align="left" valign="top" >
 <code><span id="TYPEELTstog_state.st_modules">st_modules</span>&#160;: <code class="type">(module Stog_engine.Module) list</code>;</code></td>
 
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&#160;&#160;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTstog_state.st_docs">st_docs</span>&#160;: <code class="type">Stog_types.Doc_set.t</code>;</code></td>
+
 </tr></table>
 }
 
 
 
-<pre><span id="VALrun"><span class="keyword">val</span> run</span> : <code class="type">?use_cache:bool -&gt;<br/>       ?docs:<a href="Stog_types.html#TYPEdoc_id">Stog_types.doc_id</a> list -&gt;<br/>       <a href="Stog_engine.html#TYPEstog_state">stog_state</a> -&gt; <a href="Stog_engine.html#TYPEstog_state">stog_state</a></code></pre>
+<pre><span id="VALrun"><span class="keyword">val</span> run</span> : <code class="type">?use_cache:bool -&gt; <a href="Stog_engine.html#TYPEstog_state">stog_state</a> -&gt; <a href="Stog_engine.html#TYPEstog_state">stog_state</a></code></pre>
 <pre><span id="VALgenerate"><span class="keyword">val</span> generate</span> : <code class="type">?use_cache:bool -&gt;<br/>       ?only_docs:string list -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; (module Stog_engine.Module) list -&gt; unit</code></pre><div class="info ">
 Generate the target files, with the following steps:<ul>
 <li>create the output directory,</li>
