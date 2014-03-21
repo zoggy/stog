@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog 0.8.0</title>
+<title>Stog : Stog 0.11.1</title>
 <link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
@@ -32,27 +32,22 @@
   
   
   <div class="doc-navbar">
-      <div class="navleft"><a href="http://zoggy.github.io/stog/posts/stog-at-inria.html">Talk about Stog at INRIA</a></div>
-      <div class="navright"><a href="http://zoggy.github.io/stog/posts/2013-04-23-stog-at-inria.html">Talk about Stog at INRIA</a></div>
+      <div class="navleft"><a href="http://zoggy.github.io/stog/posts/release-0.11.0.html">Stog 0.11.0</a></div>
+      
     </div>
-  <div class="page-title">Stog 0.8.0</div>
+  <div class="page-title">Stog 0.11.1</div>
 </div>
 
-<div class="date">March 19, 2013</div>
+<div class="date">March 21, 2014</div>
 
 
 <p>
-Release 0.8.0 of stog is available from the <a href="http://zoggy.github.io/stog/install.html">Installation</a> page.
+Release 0.11.1 of stog is available from the <a href="http://zoggy.github.io/stog/install.html">Installation</a> page.
 </p>
 
+<p>Changes include:</p>
 <ul id="changes">
-<li>now depends on <span class="ext-a"><a href="http://zoggy.github.com/ocamlrss/">ocamlrss</a></span> &gt;= 2.1.0,</li>
-<li>handle <code>stog:archived-docs</code> to indicate the types of documents appearing
-    in archive tree,</li>
-<li>do not issue twice the same warning message,</li>
-<li>&lt;latex&gt; uses <code>latex-svg-scale</code>
-   (default is 1.1) if defined in the environment when producing <code>.svg</code> files.
-</li>
+<li>(fix) compute all documents when using --nocache</li>
 </ul>
 
 
@@ -73,7 +68,7 @@ Release 0.8.0 of stog is available from the <a href="http://zoggy.github.io/stog
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'stog'; // required: replace example with your forum shortname
-    var disqus_url = 'http://zoggy.github.io/stog/posts/release-0.8.0.html' ;
+    var disqus_url = 'http://zoggy.github.io/stog/posts/release-0.11.1.html' ;
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -93,26 +88,22 @@ Release 0.8.0 of stog is available from the <a href="http://zoggy.github.io/stog
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Stog 0.8.0&quot;</span><span class="hl std">
-</span><span class="">date</span><span class="hl std">=</span><span class="hl str">&quot;2013/03/19&quot;</span><span class="hl std">
+  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Stog 0.11.1&quot;</span><span class="hl std">
+</span><span class="">date</span><span class="hl std">=</span><span class="hl str">&quot;2014/03/21&quot;</span><span class="hl std">
 </span><span class="">topics</span><span class="hl std">=</span><span class="hl str">&quot;stog&quot;</span><span class="hl std">
 </span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">&quot;release&quot;</span><span class="hl std">
 </span><span class="">published</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-Release 0.8.0 of stog is available from the </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;/install&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> page.
+Release 0.11.1 of stog is available from the </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;/install&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> page.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Changes include:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;changes&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">now depends on </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://zoggy.github.com/ocamlrss/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">ocamlrss</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> &gt;= 2.1.0,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">handle </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">stog:archived-docs</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> to indicate the types of documents appearing
-    in archive tree,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">do not issue twice the same warning message,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">latex</span><span class="hl kwb">&amp;gt;</span><span class="hl std"> uses </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">latex-svg-scale</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">
-   (default is 1.1) if defined in the environment when producing </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">.svg</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> files.
-</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">(fix) compute all documents when using --nocache</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span></pre>
+</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 </div>
 
 <div id="footer">

@@ -5,12 +5,22 @@
          <link>http://zoggy.github.io/stog</link>
          <description>Static blog and web site generator</description>
          <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
-         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>20 Mar 2014 14:34:02 +0000</lastBuildDate>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>21 Mar 2014 16:11:13 +0000</lastBuildDate>
          <generator>Stog</generator>
          <div class="img"><img class="img" src="" width=""/><div class="legend"><url>http://zoggy.github.io/stog/logo.png</url>
            <title>Stog</title><link>http://zoggy.github.io/stog</link>
          </div></div>
          <item>
+      <title>Stog 0.11.1</title>
+      <link>http://zoggy.github.io/stog/posts/release-0.11.1.html</link>
+      <description>
+&lt;p&gt;
+Release 0.11.1 of stog is available from the &lt;a href=&quot;http://zoggy.github.io/stog/install.html&quot;&gt;Installation&lt;/a&gt; page.
+&lt;/p&gt;
+&lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.11.1.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>21 Mar 2014 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/release-0.11.1.html</guid>
+    </item><item>
       <title>Stog 0.11.0</title>
       <link>http://zoggy.github.io/stog/posts/release-0.11.0.html</link>
       <description>
