@@ -367,9 +367,14 @@ let state_merge_cdata ?docs state =
 
 let set_docs_to_compute ?(use_cache=true) env state =
   match use_cache with
-    false -> state
-  | true when not (Stog_types.Doc_set.is_empty state.st_docs) ->
+  | _ when not (Stog_types.Doc_set.is_empty state.st_docs) ->
       state
+  | false ->
+      let st_docs = Stog_tmap.fold
+        (fun doc_id doc acc -> Stog_types.Doc_set.add doc_id acc)
+        state.st_stog.stog_docs Stog_types.Doc_set.empty
+      in
+      { state with st_docs }
   | true ->
       let (state, cached) = get_cached_documents state env in
       Stog_msg.verbose (Printf.sprintf "%d documents kept from cache" (List.length cached));
