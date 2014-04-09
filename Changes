@@ -1,3 +1,14 @@
+Next release:
+* ocaml toplevel output now highlight code corresponding to
+  warnings and errors; use highlight-locs="false" in <ocaml-eval ...>
+  to disable; when enabled, use print-locs="true" in <ocaml-eval ...>
+  to force printing also the warning and error locations.
+  To highlight the code, <span class="warning-loc"> and <span class="error-loc">
+  nodes are added.
+* use more HTML blocks in output of <ocaml-eval>:
+  <div class="stderr"/>, <div class="stdout"/>, <div class="toplevel-out"/>.
+
+
 Release 0.11.1:
 * (fix) compute all elements when not using cache
 

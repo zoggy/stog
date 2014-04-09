@@ -144,13 +144,13 @@ let file_of_string ~file s =
 (*/c==v=[File.file_of_string]=1.1====*)
 
 
-(*c==v=[String.split_string]=1.1====*)
+(*c==v=[String.split_string]=1.2====*)
 let split_string ?(keep_empty=false) s chars =
   let len = String.length s in
   let rec iter acc pos =
     if pos >= len then
       match acc with
-        "" -> []
+        "" -> if keep_empty then [""] else []
       | _ -> [acc]
     else
       if List.mem s.[pos] chars then
@@ -165,7 +165,7 @@ let split_string ?(keep_empty=false) s chars =
         iter (Printf.sprintf "%s%c" acc s.[pos]) (pos + 1)
   in
   iter "" 0
-(*/c==v=[String.split_string]=1.1====*)
+(*/c==v=[String.split_string]=1.2====*)
 
 
 (*c==v=[String.lowercase]=1.0====*)
