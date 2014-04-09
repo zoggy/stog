@@ -44,6 +44,7 @@ let stderr_file = Filename.temp_file "stogocamlsession" "err";;
 let stdout_file = Filename.temp_file "stogocamlsession" "out";;
 let log_file = Filename.temp_file "stogocamlsession" "log";;
 let log_oc = open_out log_file;;
+let log s = output_string log_oc s ; output_string log_oc "\n";;
 
 let remove_empty_filename =
   let empty = "File \"\", l" in
@@ -66,9 +67,9 @@ let eval_ocaml_phrase phrase =
     in
     Unix.dup2 fd_out Unix.stdout;
     Unix.close fd_out;
-    Printf.fprintf log_oc "executing phrase: %s\n" phrase;
+    log ("executing phrase: " ^ phrase);
     let phrase = !Toploop.parse_toplevel_phrase lexbuf in
-    Printf.fprintf log_oc "phrase parsed\n";
+    log "phrase parsed";
     let ok = Toploop.execute_phrase true Format.str_formatter phrase in
     let output =
       { topout = Format.flush_str_formatter () ;
@@ -76,9 +77,9 @@ let eval_ocaml_phrase phrase =
         stdout = Stog_misc.string_of_file stdout_file ;
       }
     in
-    Printf.fprintf log_oc "exec_output: %s\n" output.topout;
-    Printf.fprintf log_oc "err: %s\n" output.stderr;
-    Printf.fprintf log_oc "out: %s\n" output.stdout;
+    log ("exec_output: " ^ output.topout);
+    log ("err: " ^ output.stderr);
+    log ("out: " ^ output.stdout);
     if ok then
       Stog_ocaml_types.Ok output
     else
@@ -99,11 +100,8 @@ let eval_ocaml_phrase phrase =
       begin
         try Errors.report_error Format.str_formatter e
         with exn ->
-          Printf.fprintf log_oc
-            "an error happened during phrase error reporting:\n%s\n%!"
-            (Printexc.to_string exn);
-          Printf.fprintf log_oc "error backtrace:\n%s\n%!"
-            (Printexc.get_backtrace ());
+          log ("an error happened during phrase error reporting:\n"^(Printexc.to_string exn));
+          log ("error backtrace:\n%s"^(Printexc.get_backtrace ()));
       end;
       if not backtrace_enabled then Printexc.record_backtrace false;
 
