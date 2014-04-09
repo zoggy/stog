@@ -32,10 +32,16 @@ type input =
   { in_phrase : string ;
   }
 
+type output =
+  { stdout : string ;
+    stderr : string ;
+    topout : string ;
+  }
+
 type result =
   | Exc of string
-  | Ok of string * string
-  | Handled_error of string * string
+  | Ok of output
+  | Handled_error of output
 
 let pid = Unix.getpid();;
 

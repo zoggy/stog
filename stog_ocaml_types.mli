@@ -29,7 +29,14 @@
 (** Types for interfacing stog and ocaml-session. *)
 
 type input = { in_phrase : string; }
-type result = Exc of string | Ok of string * string | Handled_error of string * string
+
+type output =
+  { stdout : string ;
+    stderr : string ;
+    topout : string ;
+  }
+
+type result = Exc of string | Ok of output | Handled_error of output
 val read_input : in_channel -> input
 val write_input : out_channel -> input -> unit
 val read_result : in_channel -> result

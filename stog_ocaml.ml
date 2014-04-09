@@ -28,6 +28,8 @@
 
 (** *)
 
+open Stog_ocaml_types;;
+
 let stog_ocaml_session = ref "stog-ocaml-session";;
 
 type session =
@@ -128,6 +130,48 @@ let concat_code =
     Buffer.contents b
 ;;
 
+let get_underline_pos =
+  let re = Str.regexp "^Line ([0-9]+), characters ([0-9]+)(-[0-9]+)?:$" in
+  fun s ->
+    let positions = ref [] in
+    let f matched_s =
+      let line = int_of_string (Str.matched_group 1 s) in
+      let start = int_of_string (Str.matched_group 2 s) in
+      let stop =
+        try int_of_string (Str.matched_group 3 s)
+        with _ -> start
+      in
+      positions := (line, start, stop) :: !positions ;
+      ""
+    in
+    let s = Str.global_substitute re f s in
+    (s, List.rev !positions)
+;;
+
+let underline_code positions code =
+  let pos = List.sort positions in
+  code
+(*  let rec iter cur_pos positions xmls =
+
+  in
+*)
+
+let underline_warns_and_errs output code =
+  let (output, positions) = get_underline_pos output.stderr in
+  code
+;;
+
+let concat_toplevel_outputs output =
+  let mk (cl, s) =
+    Xtmpl.E (("","span"), Xtmpl.atts_one ("","class") [Xtmpl.D cl], [Xtmpl.D s]) 
+  in
+  List.map mk
+    [ "stderr", output.stderr ;
+      "stdout", output.stdout ;
+      "toplevel-out", output.topout ;
+    ]    
+;;
+
 let fun_eval stog env args code =
   try
     let exc = Xtmpl.opt_arg_cdata args ~def: "true" ("", "error-exc") = "true" in
@@ -167,15 +211,16 @@ let fun_eval stog env args code =
             Xtmpl.D ""
         in
         (*prerr_endline (Printf.sprintf "evaluate %S" phrase);*)
-        let (output, stdout, raised_exc) =
+        let (output, raised_exc) =
           match eval_ocaml_phrase ?session_name phrase with
-            Stog_ocaml_types.Ok (s, stdout) -> (s, stdout, false)
-          | Stog_ocaml_types.Handled_error (s, stdout) -> (s, stdout, true)
-          | Stog_ocaml_types.Exc s -> (s, "", true)
+            Stog_ocaml_types.Ok output -> (output, false)
+          | Stog_ocaml_types.Handled_error output -> (output, true)
+          | Stog_ocaml_types.Exc s ->
+              ({ stderr = s ; stdout = "" ; topout = "" }, true)
         in
         if raised_exc && exc then
           begin
-            let msg = Printf.sprintf "ocaml error with code:\n%s\n%s" phrase output in
+            let msg = Printf.sprintf "ocaml error with code:\n%s\n%s" phrase output.stderr in
             failwith msg
           end;
 
@@ -187,9 +232,9 @@ let fun_eval stog env args code =
                   if in_xml_block then
                     Xtmpl.E (("","div"),
                      Xtmpl.atts_one ("","class") [Xtmpl.D "ocaml-toplevel"],
-                     [Xtmpl.D stdout])
+                     [Xtmpl.D output.stdout])
                   else
-                     Xtmpl.D stdout
+                     Xtmpl.D output.stdout
                   in
                 xml :: code :: acc
               else
@@ -201,8 +246,10 @@ let fun_eval stog env args code =
               let xml =
                 Xtmpl.E (("","div"),
                  Xtmpl.atts_one ("","class") [Xtmpl.D classes],
-                 [Xtmpl.D output])
+                 (concat_toplevel_outputs output)
+                )
               in
+              let code = underline_warns_and_errs output code in
               xml :: code :: acc
         in
         iter acc q

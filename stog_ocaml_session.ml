@@ -26,6 +26,8 @@
 (*                                                                               *)
 (*********************************************************************************)
 
+open Stog_ocaml_types;;
+
 let _ = Toploop.set_paths ();;
 let _ = Toploop.initialize_toplevel_env();;
 let _ =
@@ -68,28 +70,19 @@ let eval_ocaml_phrase phrase =
     let phrase = !Toploop.parse_toplevel_phrase lexbuf in
     Printf.fprintf log_oc "phrase parsed\n";
     let ok = Toploop.execute_phrase true Format.str_formatter phrase in
-    let exec_output = Format.flush_str_formatter () in
-    let err = Stog_misc.string_of_file stderr_file in
-    let err = remove_empty_filename err in
-    let out = Stog_misc.string_of_file stdout_file in
-    Printf.fprintf log_oc "exec_output: %s\n" exec_output;
-    Printf.fprintf log_oc "err: %s\n" err;
-    Printf.fprintf log_oc "out: %s\n" out;
-    (
-     match err with
-       "" -> ()
-     | s -> Format.pp_print_string Format.str_formatter s
-    );
-    (
-     match out with
-       "" -> ()
-     | s -> Format.pp_print_string Format.str_formatter s
-    );
-    Format.pp_print_string Format.str_formatter exec_output;
+    let output =
+      { topout = Format.flush_str_formatter () ;
+        stderr = remove_empty_filename (Stog_misc.string_of_file stderr_file) ;
+        stdout = Stog_misc.string_of_file stdout_file ;
+      }
+    in
+    Printf.fprintf log_oc "exec_output: %s\n" output.topout;
+    Printf.fprintf log_oc "err: %s\n" output.stderr;
+    Printf.fprintf log_oc "out: %s\n" output.stdout;
     if ok then
-      Stog_ocaml_types.Ok (Stog_misc.strip_string (Format.flush_str_formatter ()), out)
+      Stog_ocaml_types.Ok output
     else
-      Stog_ocaml_types.Handled_error (Stog_misc.strip_string (Format.flush_str_formatter ()), out)
+      Stog_ocaml_types.Handled_error output
   with
   | e ->
       (* Errors.report_error relies on exported compiler lib; on some
