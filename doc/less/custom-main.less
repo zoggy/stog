@@ -297,14 +297,22 @@ p + pre { margin-top: -1.5em ; }
   border-color: lighten(@textColor, 40);
 */
 }
-pre div.ocaml-exc {
-  color: @errorText ;
-  font-weight: bold ;
+
+
+div.ocaml-exc {
+  div.toplevel-out {
+  color: @errorText;
+  font-weight: bold;
+  }
 }
 
 .error-loc {
   text-decoration: none;
   border-bottom: 2px solid red;
+}
+.warning-loc {
+  text-decoration: none;
+  border-bottom: 2px solid orange;
 }
 
 .table-bench {
