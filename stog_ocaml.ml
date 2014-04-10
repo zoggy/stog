@@ -377,7 +377,7 @@ let fun_eval stog env args code =
         let acc =
           match toplevel with
             false ->
-              let code = Xtmpl.E (("","div"), Xtmpl.atts_empty, code) in
+              let code = if in_xml_block then [Xtmpl.E (("","div"), Xtmpl.atts_empty, code)] else code in
               if show_stdout then
                 let xml =
                   if in_xml_block then
@@ -387,9 +387,9 @@ let fun_eval stog env args code =
                   else
                      Xtmpl.D output.stdout
                 in
-                xml :: code :: acc
+                xml :: code @ acc
               else
-                code::acc
+                code @ acc
           | true ->
               let (output, code) =
                 if highlight_locs then
@@ -398,7 +398,10 @@ let fun_eval stog env args code =
                   (output, code)
               in
               let code =
-                Xtmpl.E (("","div"), Xtmpl.atts_empty, (Xtmpl.D prompt) :: code)
+                if in_xml_block then
+                  [ Xtmpl.E (("","div"), Xtmpl.atts_empty, (Xtmpl.D prompt) :: code) ]
+                else
+                  code
               in
               let classes = Printf.sprintf "ocaml-toplevel%s"
                 (if raised_exc then " ocaml-exc" else "")
@@ -409,7 +412,7 @@ let fun_eval stog env args code =
                  (concat_toplevel_outputs output)
                 )
               in
-              xml :: code :: acc
+              xml :: code @ acc
         in
         iter acc q
     in
