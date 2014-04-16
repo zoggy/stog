@@ -210,6 +210,12 @@ let generate_from_files files =
     let stog = Stog_types.merge_stogs stogs in
     let stog = set_stog_options stog in
     let stog = Stog_info.remove_not_published stog in
+    (* remove add-docs levels from base module *)
+    let stog = { stog with
+        stog_levels = Stog_types.Str_map.add
+          Stog_html.module_name ["add-docs", []] stog.stog_levels ;
+      }
+    in
     let modules = Stog_engine.modules () in
     let modules = List.map
       (fun (name, f) ->
