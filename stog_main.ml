@@ -189,7 +189,39 @@ let generate_from_dirs dirs =
       failwith msg
 ;;
 
-let generate_from_files files = ()
+let generate_from_files files =
+  try
+    let dir = Sys.getcwd () in
+    let load_doc file =
+      let file =
+        if Filename.is_relative file then
+          Filename.concat dir file
+        else
+          file
+      in
+      let dir = Filename.dirname file in
+      let stog = Stog_types.create_stog dir in
+      let stog = { stog with stog_tmpl_dirs = [dir] } in
+      let doc = Stog_io.doc_of_file stog file in
+      let doc = { doc with doc_src = file } in
+      Stog_types.add_doc stog doc
+    in
+    let stogs = List.map load_doc files in
+    let stog = Stog_types.merge_stogs stogs in
+    let stog = set_stog_options stog in
+    let stog = Stog_info.remove_not_published stog in
+    let modules = Stog_engine.modules () in
+    let modules = List.map
+      (fun (name, f) ->
+         Stog_msg.verbose ~level: 2 ("Initializing module "^name);
+         f stog
+      )
+        modules
+    in
+    Stog_engine.generate ~use_cache: false stog modules
+  with Stog_types.Path_trie.Already_present l ->
+      let msg = "Path already present: "^(String.concat "/" l) in
+      failwith msg
 ;;
 
 let file_kind file =

@@ -33,7 +33,7 @@
 val bool_of_string : string -> bool
 
 (** Read an document from the given absolute filename. The file
-must be "under" the directory in [stog_dir] of the [stog] parameter. *)
+     must be "under" the directory in [stog_dir] of the [stog] parameter. *)
 val doc_of_file : Stog_types.stog -> string -> Stog_types.doc
 
 (** Build a {!Stog_types.stog} structure from the given directory. *)
