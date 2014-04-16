@@ -105,7 +105,7 @@ let page stog =
     parse
       "<html>
     <head>
-      <title><site-title/> : <doc-title/></title>
+      <title><if site-title=\"\"><dummy_/><dummy_><site-title/> : </dummy_></if><doc-title/></title>
       <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
       <link href=\"&lt;site-url/&gt;/style.css\" rel=\"stylesheet\" type=\"text/css\"/>
     </head>

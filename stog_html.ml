@@ -427,17 +427,17 @@ let fun_if stog env args subs =
     let nodes = [ Xtmpl.E ((prefix, name), Xtmpl.atts_empty, []) ] in
     let (stog, nodes2) = Xtmpl.apply_to_xmls stog env nodes in
     let v2 = if nodes = nodes2 then [] else nodes2 in
-    (*
-       prerr_endline (Printf.sprintf "fun_if: pred: att=(%s,%s), nodes=%S nodes2=%S, v=%S, v2=%S"
-       prefix name (Xtmpl.string_of_xmls nodes)
-       (Xtmpl.string_of_xmls nodes2) v (Xtmpl.string_of_xmls v2));
-    *)
-    (*let v_xml = Xtmpl.xml_of_string v in
-    let v2_xml = Xtmpl.E (("", Xtmpl.tag_main), [], v2) in*)
-    (*
-       prerr_endline (Printf.sprintf "v_xml=%S, v2_xml=%S"
-       (Xtmpl.string_of_xml v_xml) (Xtmpl.string_of_xml v2_xml));
-    *)
+    let v = match v with [Xtmpl.D ""] -> [] | _ -> v in
+    let v2 = match v2 with [Xtmpl.D ""] -> [] | _ -> v2 in
+(*
+    prerr_endline (Printf.sprintf "fun_if: pred: att=(%s,%s), nodes=%S nodes2=%S, v=%S, v2=%S"
+     prefix name (Xtmpl.string_of_xmls nodes)
+       (Xtmpl.string_of_xmls nodes2) (Xtmpl.string_of_xmls v) (Xtmpl.string_of_xmls v2));
+*)
+(*
+       prerr_endline (Printf.sprintf "v_xml=%S, v2_xml=%S, subs=%S, v=v2=%b"
+       (Xtmpl.string_of_xmls v) (Xtmpl.string_of_xmls v2) (Xtmpl.string_of_xmls subs) (v=v2));
+*)
     (stog, cond && (v = v2))
   in
   let (stog, cond) = Xtmpl.Name_map.fold pred args (stog, true) in
