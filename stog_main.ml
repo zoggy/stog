@@ -149,7 +149,7 @@ let options = [
     "<filter> only keep documents verifying the given condition" ;
 
     "--hackcmxs", Arg.Set Stog_dyn.hack_cmxs,
-    " when a package to load depend on .cmxa or .cmx file, try to build .cmxs.";
+    " when a package to load depends on .cmxa or .cmx file, try to build .cmxs.";
   ];;
 
 let usage ?(with_options=true) ()=
