@@ -75,9 +75,12 @@ val run : ?use_cache:bool -> stog_state -> stog_state
   - compute documents,
   - for each level, for each document, apply level functions on the document
   - output {!Stog_types.doc.doc_out} field in the destination file.
+  @use_cache reuse documents from cache, default is [true]
+  @gen_cache update cache, default is [true]
 *)
 val generate :
-  ?use_cache: bool -> ?only_docs:string list -> Stog_types.stog ->
+  ?use_cache: bool -> ?gen_cache: bool ->
+    ?only_docs:string list -> Stog_types.stog ->
     (module Module) list -> unit
 
 val doc_dst : (string -> string -> string) ->

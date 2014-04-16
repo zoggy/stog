@@ -551,7 +551,7 @@ let doc_url stog doc =
   url_of_string url
 ;;
 
-let output_doc state doc =
+let output_doc ~gen_cache state doc =
   let file = doc_dst_file state.st_stog doc in
   Stog_misc.safe_mkdir (Filename.dirname file);
   match doc.doc_out with
@@ -575,24 +575,24 @@ let output_doc state doc =
       in
       List.iter (fun xml -> output_string oc (Xtmpl.string_of_xml xml)) xmls;
       close_out oc;
-      cache_doc state doc
+      if gen_cache then cache_doc state doc
 ;;
 
-let output_docs ?docs state =
+let output_docs ~gen_cache ?docs state =
   let stog = state.st_stog in
   let docs =
     match docs with
       None ->
         Stog_tmap.fold
-          (fun _ doc acc -> output_doc state doc ; doc :: acc)
+          (fun _ doc acc -> output_doc ~gen_cache state doc ; doc :: acc)
           stog.stog_docs []
-    | Some l -> List.iter (output_doc state) l; l
+    | Some l -> List.iter (output_doc ~gen_cache state) l; l
   in
   let doc_envs = List.fold_left
     (fun doc_envs doc -> set_doc_env doc stog doc_envs)
       Stog_path.Map.empty docs
   in
-  output_cache_info stog doc_envs
+  if gen_cache then output_cache_info stog doc_envs
 ;;
 
 let copy_other_files stog =
@@ -622,7 +622,7 @@ let copy_other_files stog =
   iter stog.stog_outdir stog.stog_dir stog.stog_files
 ;;
 
-let generate ?(use_cache=true) ?only_docs stog modules =
+let generate ?(use_cache=true) ?(gen_cache=true) ?only_docs stog modules =
   begin
     match stog.stog_lang with
       None -> ()
@@ -654,11 +654,11 @@ let generate ?(use_cache=true) ?only_docs stog modules =
   let state = run ~use_cache state in
   match only_docs with
     None ->
-      output_docs state ;
+      output_docs ~gen_cache state ;
       copy_other_files state.st_stog
   | Some ids ->
       let docs = List.map (Stog_types.doc state.st_stog) ids in
-      output_docs ~docs state
+      output_docs ~gen_cache ~docs state
 ;;
 
 

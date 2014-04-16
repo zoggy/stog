@@ -218,7 +218,7 @@ let generate_from_files files =
       )
         modules
     in
-    Stog_engine.generate ~use_cache: false stog modules
+    Stog_engine.generate ~use_cache: false ~gen_cache: false stog modules
   with Stog_types.Path_trie.Already_present l ->
       let msg = "Path already present: "^(String.concat "/" l) in
       failwith msg
