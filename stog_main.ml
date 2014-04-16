@@ -152,14 +152,55 @@ let options = [
     " when a package to load depend on .cmxa or .cmx file, try to build .cmxs.";
   ];;
 
-let usage = Printf.sprintf
-  "Usage: %s [options] directory\nwhere options are:"
-  Sys.argv.(0)
+let usage ?(with_options=true) ()=
+  Printf.sprintf
+    "Usage: %s [options] <directory>\n    or %s [options] <files>%s"
+    Sys.argv.(0)  Sys.argv.(0)
+    (if with_options then "\nwhere options are:" else "")
+;;
+
+let generate_from_dirs dirs =
+  try
+    let stogs = List.map Stog_io.read_stog dirs in
+    (*prerr_endline "directories read";*)
+    let stog = Stog_types.merge_stogs stogs in
+    (*prerr_endline "directories merged";*)
+    let stog = set_stog_options stog in
+    let stog = Stog_info.remove_not_published stog in
+    (*prerr_endline "removed not published articles";*)
+    let stog = Stog_info.compute stog in
+    (*prerr_endline "graph computed";*)
+    let modules = Stog_engine.modules () in
+    let modules = List.map
+      (fun (name, f) ->
+         Stog_msg.verbose ~level: 2 ("Initializing module "^name);
+         f stog
+      )
+        modules
+    in
+    let only_docs =
+      match !only_doc with
+        None -> None
+      | Some s -> Some [s]
+    in
+    Stog_engine.generate ~use_cache: !use_cache ?only_docs stog modules
+  with Stog_types.Path_trie.Already_present l ->
+      let msg = "Path already present: "^(String.concat "/" l) in
+      failwith msg
+;;
+
+let generate_from_files files = ()
+;;
+
+let file_kind file =
+  try (Unix.stat file).Unix.st_kind
+  with Unix.Unix_error (e,s1,s2) ->
+      failwith (Printf.sprintf "%s: %s %s" (Unix.error_message e) s1 s2)
 ;;
 
 let main () =
   let remain = ref [] in
-  Arg.parse (Arg.align options) (fun s -> remain := s :: !remain) usage ;
+  Arg.parse (Arg.align options) (fun s -> remain := s :: !remain) (usage()) ;
 
   try
     Stog_dyn.load_packages !packages;
@@ -171,35 +212,18 @@ let main () =
     end;
     begin
       match List.rev !remain with
-        [] -> failwith usage
-      | dirs ->
-          try
-            let stogs = List.map Stog_io.read_stog dirs in
-            (*prerr_endline "directories read";*)
-            let stog = Stog_types.merge_stogs stogs in
-            (*prerr_endline "directories merged";*)
-            let stog = set_stog_options stog in
-            let stog = Stog_info.remove_not_published stog in
-            (*prerr_endline "removed not published articles";*)
-            let stog = Stog_info.compute stog in
-            (*prerr_endline "graph computed";*)
-            let modules = Stog_engine.modules () in
-            let modules = List.map
-              (fun (name, f) ->
-                 Stog_msg.verbose ~level: 2 ("Initializing module "^name);
-                 f stog
-              )
-                modules
-            in
-            let only_docs =
-              match !only_doc with
-                None -> None
-              | Some s -> Some [s]
-            in
-            Stog_engine.generate ~use_cache: !use_cache ?only_docs stog modules
-          with Stog_types.Path_trie.Already_present l ->
-              let msg = "Path already present: "^(String.concat "/" l) in
-              failwith msg
+        [] -> failwith (usage ~with_options: false ())
+      | h :: q ->
+          let k = file_kind h in
+          List.iter
+            (fun f ->
+              if file_kind f <> k then
+                 failwith (usage ~with_options: false ()))
+            q;
+          match k with
+            Unix.S_REG -> generate_from_files (h::q)
+          | Unix.S_DIR -> generate_from_dirs (h::q)
+          | _ -> failwith ("Invalid file type for "^h)
     end;
     let err = Stog_msg.errors () in
     let warn = Stog_msg.warnings () in
