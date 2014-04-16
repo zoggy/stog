@@ -30,13 +30,17 @@
 
 type contents = Stog_types.stog -> Stog_types.stog * Xtmpl.tree
 
+exception Template_file_not_found of string
+
 (** [get_template_file stog doc file] returns absolute filename of the given
   template filename.
-  If [file] is relative and implicit then it is concatenated to
-  the stog template directory.
+  If [file] is relative and implicit then the file is looked up the
+  stog include directories.
   If [file] is relative and not implicit (i.e. it starts with . or ..), it
   is concatenated to the document source file directory.
   Else (the filename is absolute), it is returned as is.
+  @raise Template_file_not_found if no include directory contains the
+  given file (when the file is relative an implicit).
 *)
 val get_template_file : Stog_types.stog -> Stog_types.doc -> string -> string
 
@@ -47,6 +51,7 @@ val get_template_file : Stog_types.stog -> Stog_types.doc -> string -> string
   as CData ([true]). Default is [false].
   @param depend indicate whether to add a dependency from the document
   on the file. Default is [true].
+  @raise Template_file_not_found (see {!get_template_file})
   *)
 val read_template_file : Stog_types.stog -> Stog_types.doc ->
   ?depend: bool -> ?raw: bool -> string -> Stog_types.stog * Xtmpl.tree

@@ -358,19 +358,20 @@ let node_of_block b =
   Xtmpl.E (("",Stog_tags.block), atts, subs)
 ;;
 
-let block_body_of_subs stog blk = function
+let block_body_of_subs stog doc blk = function
   [] ->
     let tmpl_file =
       match blk.blk_class with
         None -> "block.tmpl"
       | Some c -> Printf.sprintf "block-%s.tmpl" c
     in
-    let tmpl = Filename.concat stog.Stog_types.stog_tmpl_dir tmpl_file in
+    
+    let tmpl = Stog_tmpl.get_template_file stog doc tmpl_file in
     [ Xtmpl.xml_of_file tmpl ]
 | l -> l
 ;;
 
-let read_block_from_subs stog =
+let read_block_from_subs stog doc =
   let s_xmls l = String.concat "" (List.map Xtmpl.string_of_xml l) in
   let rec f blk = function
     Xtmpl.D _ -> blk
@@ -399,7 +400,7 @@ let read_block_from_subs stog =
         | "title", _ -> { blk with blk_title = xmls }
         | "long-title-format", _ -> { blk with blk_long_f = xmls }
         | "short-title-format", _ -> { blk with blk_short_f = xmls }
-        | "contents", _ -> { blk with blk_body = block_body_of_subs stog blk xmls }
+        | "contents", _ -> { blk with blk_body = block_body_of_subs stog doc blk xmls }
         | _, _ ->
             Stog_msg.warning (Printf.sprintf "Ignoring block node %S" tag);
             blk
@@ -409,7 +410,7 @@ let read_block_from_subs stog =
   List.fold_left f
 ;;
 
-let read_block stog args subs =
+let read_block stog doc args subs =
   let with_contents =
     match Xtmpl.get_arg_cdata args ("", "with-contents") with
       Some "true" -> true
@@ -461,8 +462,8 @@ let read_block stog args subs =
     }
   in
   match with_contents with
-    false -> { blk with blk_body = block_body_of_subs stog blk subs }
-  | true -> read_block_from_subs stog blk subs
+    false -> { blk with blk_body = block_body_of_subs stog doc blk subs }
+  | true -> read_block_from_subs stog doc blk subs
 ;;
 
 let fun_block1 (stog, data) env args subs =
@@ -484,8 +485,9 @@ let fun_block1 (stog, data) env args subs =
       end
   | _ ->
       let ((stog, data), path) = Stog_html.get_path (stog, data) env in
+      let (_,doc) = Stog_types.doc_by_path stog path in
       let path = Stog_path.to_string path in
-      let block = read_block stog args subs in
+      let block = read_block stog doc args subs in
       let data =
         match block.blk_cpt_name with
           None -> data

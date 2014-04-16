@@ -353,11 +353,6 @@ let concat_name ?(sep=":") (prefix, name) =
   | p -> p ^ sep ^ name
 ;;
 
-let fun_search_form stog _env _ _ =
-  let tmpl = Filename.concat stog.stog_tmpl_dir "search.tmpl" in
-  (stog, [ Xtmpl.xml_of_file tmpl ])
-;;
-
 let fun_as_xml =
   let rec iter = function
     Xtmpl.D s -> Xtmpl.xml_of_string s
@@ -985,7 +980,6 @@ let rec build_base_rules stog doc_id =
       ("", Stog_tags.ocaml_printf), Stog_ocaml.fun_printf  ;
       ("", Stog_tags.prefix_svg_ids), Stog_svg.fun_prefix_svg_ids ;
       ("", Stog_tags.previous), previous;
-      ("", Stog_tags.search_form), fun_search_form ;
       ("", Stog_tags.two_columns), fun_twocolumns ;
     ]
   in

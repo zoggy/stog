@@ -31,7 +31,7 @@ open Stog_types;;
 let output_dir = ref "stog-output";;
 
 let site_url = ref None ;;
-let tmpl_dir = ref None ;;
+let tmpl_dirs = ref [] ;;
 let use_cache = ref true;;
 let depcut = ref false;;
 let local = ref false;;
@@ -76,11 +76,7 @@ let set_stog_options stog =
     | Some _, true ->
         failwith "Please choose --local or --site-url but not both"
   in
-  let stog =
-    match !tmpl_dir with
-      None -> stog
-    | Some s -> { stog with Stog_types.stog_tmpl_dir = s }
-  in
+  let stog = { stog with stog_tmpl_dirs = List.rev (stog.stog_tmpl_dirs @ !tmpl_dirs) } in
   let stog =
     match !lang with
       None -> stog
@@ -118,8 +114,8 @@ let options = [
     "--local", Arg.Set local,
     " set site-url as file://<destination directory>" ;
 
-    "--tmpl", Arg.String (fun s -> tmpl_dir := Some s),
-    "<dir> use <dir> as template directory instead tmpl of stog dir";
+    "--tmpl", Arg.String (fun s -> tmpl_dirs := s :: !tmpl_dirs ),
+    "<dir> add <dir> as include directory";
 
     "--lang", Arg.String (fun s -> lang := Some s),
     "<s> generate pages for language <s>" ;

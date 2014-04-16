@@ -1,4 +1,5 @@
 Next release:
+* --tmpl now adds a directory to look for templates
 * ocaml toplevel output now highlight code corresponding to
   warnings and errors; use highlight-locs="false" in <ocaml-eval ...>
   to disable; when enabled, use print-locs="true" in <ocaml-eval ...>

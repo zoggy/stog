@@ -111,7 +111,7 @@ module Make (P : Map.OrderedType) =
                       Node (map, [data])
                   | [], d ->
                       if fail then
-                        raise (Already_present (List.rev backpath))
+                        raise (Already_present (List.rev (sym :: backpath)))
                       else
                         Node (map, data :: d)
                   | _, _ ->
