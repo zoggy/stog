@@ -1,4 +1,6 @@
 Next release:
+* handling a file or a list of files instead of a directory for
+  compiling single documents
 * --tmpl now adds a directory to look for templates
 * ocaml toplevel output now highlight code corresponding to
   warnings and errors; use highlight-locs="false" in <ocaml-eval ...>
