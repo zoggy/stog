@@ -1,0 +1,171 @@
+<module name="math">
+<math:qed>&#x220e;</math:qed>
+
+<math:figure-label>Figure</math:figure-label>
+<math:theorem-label>Theorem</math:theorem-label>
+<math:lemma-label>Lemma</math:lemma-label>
+<math:prop-label>Proposition</math:prop-label>
+<math:property-label>Property</math:property-label>
+<math:definition-label>Definition</math:definition-label>
+<math:corollary-label>Corollary</math:corollary-label>
+<math:remark-label>Remark</math:remark-label>
+<math:proof-label>Proof</math:proof-label>
+<math:equation-label></math:equation-label>
+
+
+<figure id="" title="" href="">
+<if href=""><block protect_="title,id"
+  counter-name="figure" class="figure"
+  label="&lt;math:figure-label/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+>
+<div class="&lt;class/&gt;" id="&lt;id/&gt;">
+  <div class="title"><title/></div>
+  <div class="contents"><contents/></div>
+</div></block>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></figure>
+
+
+<math:theorem id="" title="" href="">
+<if href=""><block protect_="title,id"
+  counter-name="theorem" class="theorem"
+  label="&lt;math:theorem-label/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+>
+<div class="&lt;class/&gt;" id="&lt;id/&gt;">
+  <div class="title"><title/></div>
+  <div class="contents"><contents/></div>
+</div></block>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></math:theorem>
+
+
+<math:lemma id="" title="" href="">
+<if href=""><block protect_="title,id"
+  counter-name="lemma" class="lemma"
+  label="&lt;math:lemma-label/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+>
+<div class="&lt;class/&gt;" id="&lt;id/&gt;">
+  <div class="title"><label/> <counter counter-name="lemma"/></div>
+  <div class="contents"><contents/></div>
+</div></block>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></math:lemma>
+
+
+<math:prop id="" title="" href="">
+<env_ foo="&lt;contents/&gt;">
+<if href=""><block protect_="title,id,label,contents"
+  with-contents="true"
+  counter-name="prop" class="prop"
+  label="&lt;math:prop-label/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+>
+<long-title-format><label/> <counter counter-name="prop"/>: <title/></long-title-format>
+<short-title-format><label/> <counter counter-name="prop"/></short-title-format>
+<contents><div class="&lt;class/&gt;" id="&lt;id/&gt;">
+  <div class="title"><title/></div>
+  <div class="contents"><foo/></div>
+</div></contents></block>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></env_></math:prop>
+
+<math:property id="" title="" href="">
+<env_ foo="&lt;contents/&gt;">
+<if href=""><block protect_="title,id,label,contents"
+  with-contents="true"
+  counter-name="property" class="property"
+  label="&lt;math:property-label/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+>
+<long-title-format><label/> <counter counter-name="property"/>: <title/></long-title-format>
+<short-title-format><label/> <counter counter-name="property"/></short-title-format>
+<contents><div class="&lt;class/&gt;" id="&lt;id/&gt;">
+  <div class="title"><title/></div>
+  <div class="contents"><foo/></div>
+</div></contents></block>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></env_></math:property>
+
+
+<math:definition id="" title="" href="">
+<env_ foo="&lt;contents/&gt;">
+<if href=""><block protect_="title,id,label,contents"
+  with-contents="true"
+  counter-name="definition" class="definition"
+  label="&lt;math:definition-label/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+>
+<long-title-format><label/> <counter counter-name="definition"/>: <title/></long-title-format>
+<short-title-format><label/> <counter counter-name="definition"/></short-title-format>
+<contents><div class="&lt;class/&gt;" id="&lt;id/&gt;">
+  <div class="title"><title/></div>
+  <div class="contents"><foo/></div>
+</div></contents></block>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></env_></math:definition>
+
+
+
+<math:corollary id="" title="" href="">
+<env_ foo="&lt;contents/&gt;">
+<if href=""><block protect_="title,id,label,contents"
+  with-contents="true"
+  counter-name="corollary" class="corollary"
+  label="&lt;math:corollary-label/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+>
+<long-title-format><label/> <counter counter-name="corollary"/>: <title/></long-title-format>
+<short-title-format><label/> <counter counter-name="corollary"/></short-title-format>
+<contents><div class="&lt;class/&gt;" id="&lt;id/&gt;">
+  <div class="title"><title/></div>
+  <div class="contents"><foo/></div>
+</div></contents></block>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></env_></math:corollary>
+
+
+
+<remark id="" title="" href="">
+<if href=""><block protect_="title,id"
+  counter-name="remark" class="remark"
+  label="&lt;math:remark-label/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+>
+<div class="&lt;class/&gt;" id="&lt;id/&gt;">
+  <div class="title"><title/></div>
+  <div class="contents"><contents/></div>
+</div></block>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></remark>
+
+<math:proof id="" title="" href="" >
+<if id=""><error_>Missing title for proof <title/></error_></if>
+<if href=""><block protect_="title,id"
+  counter-name="" class="proof"
+  label="&lt;math:proof-label/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+><div class="&lt;class/&gt;">
+<button href="#&lt;id/&gt;" data-toggle="collapse" class="btn btn-info proof">Proof.</button>
+<div class="collapse" id="&lt;id/&gt;">
+  <div class="title"><title/></div>
+  <div class="contents"><contents/></div>
+</div></div></block>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></math:proof>
+
+<math:equation id="" title="" href="">
+<env_ foo="&lt;contents/&gt;">
+<if href=""><block protect_="title,id,contents"
+  with-contents="true"
+  counter-name="equation" class="equation"
+  label="&lt;math:equation-label/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+>
+  <long-title-format>(<counter counter-name="equation"/>)</long-title-format>
+  <short-title-format>(<counter counter-name="equation"/>)</short-title-format>
+<contents><span class="&lt;class/&gt;" id="&lt;id/&gt;">
+  <span class="contents">$<foo/>$</span><span class="title"><title/></span>
+</span></contents></block>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></env_></math:equation>
+
+<math:eqnarray id="" foo="">
+  <if id=""
+  ><table class="eqnarray"><contents/></table
+  ><table id="&lt;id/&gt;" class="eqnarray"><contents/></table></if>
+  </math:eqnarray>
+
+</module>

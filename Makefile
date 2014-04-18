@@ -262,6 +262,7 @@ install-lib:
 install-share:
 	$(MKDIR) $(SHARE_DIR)
 	$(CP) -r share/templates $(SHARE_DIR)/
+	$(CP) -r share/modules $(SHARE_DIR)/
 
 install-bin:
 	$(CP) $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
