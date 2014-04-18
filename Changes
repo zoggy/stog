@@ -1,4 +1,6 @@
 Next release:
+* install default templates for pages and styles
+* --mods adds a directory where to look for modules
 * handling a file or a list of files instead of a directory for
   compiling single documents
 * --tmpl now adds a directory to look for templates

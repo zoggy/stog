@@ -139,6 +139,7 @@ type stog = {
   stog_docs_by_path : doc_id Path_trie.t ;
   stog_defs : def list ;
   stog_tmpl_dirs : string list ;
+  stog_mod_dirs : string list ;
   stog_cache_dir : string ;
   stog_title : string ;
   stog_desc : body ;
@@ -194,6 +195,7 @@ let create_stog dir = {
   stog_docs = Stog_tmap.create (make_doc ());
   stog_docs_by_path = Path_trie.empty ;
   stog_tmpl_dirs = [Stog_config.tmpl_dir dir] ;
+  stog_mod_dirs = [Stog_config.modules_dir dir ; Stog_install.modules_dir ] ;
   stog_cache_dir = Stog_config.cache_dir dir ;
   stog_title = "" ;
   stog_desc = [] ;

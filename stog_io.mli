@@ -32,6 +32,10 @@
   [bool_of_string] returns [true] for any other value. *)
 val bool_of_string : string -> bool
 
+(** [read_modules stog] read all modules found in directories of the
+  list [stog.stog_mod_dirs] and return the modified stog structure. *)
+val read_modules : Stog_types.stog -> Stog_types.stog
+
 (** Read an document from the given absolute filename. The file
      must be "under" the directory in [stog_dir] of the [stog] parameter. *)
 val doc_of_file : Stog_types.stog -> string -> Stog_types.doc

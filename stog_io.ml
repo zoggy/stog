@@ -104,16 +104,26 @@ let read_module stog file =
       { stog with stog_modules = modules }
 
 let read_modules stog =
-  let mod_dir = Stog_config.modules_dir stog.stog_dir in
-  Stog_misc.safe_mkdir mod_dir;
-  let files = Stog_find.find_list
-    Stog_find.Stderr
-    [mod_dir]
-    [ Stog_find.Type Unix.S_REG ; Stog_find.Follow ;
-      Stog_find.Regexp (Str.regexp ".*\\.stm$")
-    ]
+  let f_dir stog mod_dir =
+    Stog_msg.verbose ~level: 2 ("reading module directory "^mod_dir);
+    if Sys.file_exists mod_dir then
+      (
+       let files = Stog_find.find_list
+         Stog_find.Stderr
+           [mod_dir]
+           [ Stog_find.Type Unix.S_REG ; Stog_find.Follow ;
+             Stog_find.Regexp (Str.regexp ".*\\.stm$")
+           ]
+       in
+       List.fold_left read_module stog files
+      )
+    else
+      stog
   in
-  List.fold_left read_module stog files
+  (* read module directories starting from the
+    last one, so that modules defined ahead in the list
+    will hide the lastly defined. *)
+  List.fold_left f_dir stog (List.rev stog.stog_mod_dirs)
 ;;
 
 let used_mods_of_string set s =

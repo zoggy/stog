@@ -37,5 +37,8 @@ val share_dir : string
 (** Default templates directory. *)
 val templates_dir : string
 
+(** Default modules directory. *)
+val modules_dir : string
+
 (** Path to ocamlfind command used for compilation. *)
 val ocamlfind : string

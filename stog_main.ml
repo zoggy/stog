@@ -32,6 +32,7 @@ let output_dir = ref "stog-output";;
 
 let site_url = ref None ;;
 let tmpl_dirs = ref [] ;;
+let mod_dirs = ref [] ;;
 let use_cache = ref true;;
 let depcut = ref false;;
 let local = ref false;;
@@ -77,6 +78,7 @@ let set_stog_options stog =
         failwith "Please choose --local or --site-url but not both"
   in
   let stog = { stog with stog_tmpl_dirs = List.rev (stog.stog_tmpl_dirs @ !tmpl_dirs) } in
+  let stog = { stog with stog_mod_dirs = List.rev (stog.stog_mod_dirs @ !mod_dirs) } in
   let stog =
     match !lang with
       None -> stog
@@ -178,6 +180,7 @@ let generate_from_files files =
           "<style><include file=\"&lt;doc-type/&gt;-style.css\" raw=\"true\"/></style>"
       ]
     in
+    let stog = Stog_io.read_modules stog in
     Stog_engine.generate ~use_cache: false ~gen_cache: false ~default_style stog modules
   with Stog_types.Path_trie.Already_present l ->
       let msg = "Path already present: "^(String.concat "/" l) in
@@ -204,7 +207,10 @@ let options = [
     " set site-url as file://<destination directory>" ;
 
     "--tmpl", Arg.String (fun s -> tmpl_dirs := s :: !tmpl_dirs ),
-    "<dir> add <dir> as include directory";
+    "<dir> add <dir> as template directory";
+
+    "--mods", Arg.String (fun s -> mod_dirs := s :: !mod_dirs ),
+    "<dir> add <dir> as module directory";
 
     "--lang", Arg.String (fun s -> lang := Some s),
     "<s> generate pages for language <s>" ;

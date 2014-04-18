@@ -5287,232 +5287,6 @@ a.badge:focus {
   margin-left: 1em;
   float: right ;
 }
-div.eqn {
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  text-align: center;
-}
-div.figure {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-}
-div.figure div.title {
-  font-weight: bold;
-}
-div.figure div.contents {
-  padding: 0.5em;
-}
-div.figure div.contents {
-  text-align: center ;
-}
-div.figure div.contents div.legend {
-  text-align: justified ;
-  margin-left: 2em;
-  margin-right: 2em;
-}
-div.theorem {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  padding: 0 3px 2px;
-  border: 1px solid #006f00;
-  display: block;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  background-color: #d5ffd5;
-  background-color: #eeeeff;
-  border-width: 0 2px 0 2px;
-}
-div.theorem div.title {
-  font-weight: bold;
-}
-div.theorem div.contents {
-  padding: 0.5em;
-}
-div.theorem div.contents {
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-div.theorem p {
-  margin-bottom: 0;
-}
-div.lemma {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  padding: 0 3px 2px;
-  border: 1px solid #006f00;
-  display: block;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  background-color: #d5ffd5;
-  background-color: #eeeeff;
-  border-width: 0 2px 0 2px;
-}
-div.lemma div.title {
-  font-weight: bold;
-}
-div.lemma div.contents {
-  padding: 0.5em;
-}
-div.lemma div.contents {
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-div.lemma p {
-  margin-bottom: 0;
-}
-div.prop {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  padding: 0 3px 2px;
-  border: 1px solid #006f00;
-  display: block;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  background-color: #d5ffd5;
-  background-color: #eeeeff;
-  border-width: 0 2px 0 2px;
-}
-div.prop div.title {
-  font-weight: bold;
-}
-div.prop div.contents {
-  padding: 0.5em;
-}
-div.prop div.contents {
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-div.prop p {
-  margin-bottom: 0;
-}
-div.remark {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  padding: 0 3px 2px;
-  border: 1px solid #006f00;
-  display: block;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  background-color: #d5ffd5;
-  background-color: #eeeeff;
-  border-width: 0 2px 0 2px;
-}
-div.remark div.title {
-  font-weight: bold;
-}
-div.remark div.contents {
-  padding: 0.5em;
-}
-div.remark div.contents {
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-div.remark p {
-  margin-bottom: 0;
-}
-div.proof {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  padding: 0 3px 2px;
-  border: 1px solid #006f00;
-  display: block;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  background-color: #d5ffd5;
-  background-color: #eeeeff;
-  border-width: 0 2px 0 2px;
-  border-width: 0 ;
-  background-color: #eeeeee;
-}
-div.proof div.title {
-  font-weight: bold;
-}
-div.proof div.contents {
-  padding: 0.5em;
-}
-div.proof div.contents {
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-div.proof p {
-  margin-bottom: 0;
-}
-span.equation {
-  display: block;
-  margin-top: 1em;
-  margin-bottom: 1em;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  text-align: center;
-}
-span.equation div.title {
-  font-weight: bold;
-}
-span.equation div.contents {
-  padding: 0.5em;
-}
-span.equation span.title {
-  display: inline;
-  font-weight: normal;
-  float: right;
-  padding-right: 2em;
-}
-span.equation .contents {
-  display: inline;
-}
-table.eqnarray {
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-}
-table.eqnarray td {
-  padding-left: 0.2em ;
-  padding-right: 0.2em;
-}
-table.eqnarray tr {
-  height: 39pt;
-}
-table.eqnarray td.right {
-  text-align: right ;
-}
-table.eqnarray td.left {
-  text-align: left ;
-}
-table.eqnarray td.center {
-  text-align: center ;
-}
-table.eqnarray .equation {
-  text-align: inherit ;
-}
-table.eqnarray .equation .title {
-  padding-left: 3em;
-  float: right;
-}
 /*
 @import url(http://fonts.googleapis.com/css?family=Oswald:400,300&subset=latin,latin-ext);
 */
@@ -5602,21 +5376,6 @@ div.navright {
   font-size: 0.889em;
   color: #999999;
 }
-.page-title {
-  clear: both ;
-  font-size: 1.802em;
-  line-height: 0.832408435072142em;
-  margin-bottom: 0.832408435072142em;
-}
-.section {
-  margin-bottom: 1.5em;
-}
-div.section-title {
-  font-size: 1.602em;
-  margin-bottom: 0.9363295880149812em;
-  line-height: 0.9363295880149812em;
-  border-color: #333333;
-}
 p {
   font-size: 1em;
   line-height: 1.5em;
@@ -5627,22 +5386,6 @@ ul {
 }
 p + ul {
   margin-top: -1.5em;
-}
-.subsection {
-  margin-bottom: 1.5em;
-}
-.subsection-title {
-  font-size: 1.266em;
-  margin-bottom: 0.9363295880149812em;
-  line-height: 0.9363295880149812em;
-}
-.subsubsection {
-  margin-bottom: 1.5em;
-}
-.subsubsection-title {
-  font-size: 1.125em;
-  margin-bottom: 0.9363295880149812em;
-  line-height: 0.9363295880149812em;
 }
 .rss-button {
   float: right;
@@ -6244,6 +5987,261 @@ pre.hl {
 #page {
   margin-top: 0;
 }
+div.eqn {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  text-align: center;
+}
+div.figure {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+div.figure div.title {
+  font-weight: bold;
+}
+div.figure div.contents {
+  padding: 0.5em;
+}
+div.figure div.contents {
+  text-align: center ;
+}
+div.figure div.contents div.legend {
+  text-align: justified ;
+  margin-left: 2em;
+  margin-right: 2em;
+}
+div.theorem {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 0 3px 2px;
+  border: 1px solid #006f00;
+  display: block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #d5ffd5;
+  background-color: #eeeeff;
+  border-width: 0 2px 0 2px;
+}
+div.theorem div.title {
+  font-weight: bold;
+}
+div.theorem div.contents {
+  padding: 0.5em;
+}
+div.theorem div.contents {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+div.theorem p {
+  margin-bottom: 0;
+}
+div.definition {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 0 3px 2px;
+  border: 1px solid #006f00;
+  display: block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #d5ffd5;
+  background-color: #eeeeff;
+  border-width: 0 2px 0 2px;
+}
+div.definition div.title {
+  font-weight: bold;
+}
+div.definition div.contents {
+  padding: 0.5em;
+}
+div.definition div.contents {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+div.definition p {
+  margin-bottom: 0;
+}
+div.lemma {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 0 3px 2px;
+  border: 1px solid #006f00;
+  display: block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #d5ffd5;
+  background-color: #eeeeff;
+  border-width: 0 2px 0 2px;
+}
+div.lemma div.title {
+  font-weight: bold;
+}
+div.lemma div.contents {
+  padding: 0.5em;
+}
+div.lemma div.contents {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+div.lemma p {
+  margin-bottom: 0;
+}
+div.prop {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 0 3px 2px;
+  border: 1px solid #006f00;
+  display: block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #d5ffd5;
+  background-color: #eeeeff;
+  border-width: 0 2px 0 2px;
+}
+div.prop div.title {
+  font-weight: bold;
+}
+div.prop div.contents {
+  padding: 0.5em;
+}
+div.prop div.contents {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+div.prop p {
+  margin-bottom: 0;
+}
+div.remark {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 0 3px 2px;
+  border: 1px solid #006f00;
+  display: block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #d5ffd5;
+  background-color: #eeeeff;
+  border-width: 0 2px 0 2px;
+}
+div.remark div.title {
+  font-weight: bold;
+}
+div.remark div.contents {
+  padding: 0.5em;
+}
+div.remark div.contents {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+div.remark p {
+  margin-bottom: 0;
+}
+div.proof {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 0 3px 2px;
+  border: 1px solid #006f00;
+  display: block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #d5ffd5;
+  background-color: #eeeeff;
+  border-width: 0 2px 0 2px;
+  border-width: 0 2px 0 2px ;
+  background-color: #eeeeee;
+}
+div.proof div.title {
+  font-weight: bold;
+}
+div.proof div.contents {
+  padding: 0.5em;
+}
+div.proof div.contents {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+div.proof p {
+  margin-bottom: 0;
+}
+span.equation {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  text-align: center;
+}
+span.equation div.title {
+  font-weight: bold;
+}
+span.equation div.contents {
+  padding: 0.5em;
+}
+span.equation span.title {
+  display: inline;
+  font-weight: normal;
+  float: right;
+  padding-right: 2em;
+}
+span.equation .contents {
+  display: inline;
+}
+table.eqnarray {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+table.eqnarray td {
+  padding-left: 0.2em ;
+  padding-right: 0.2em;
+}
+table.eqnarray tr {
+  height: 39pt;
+}
+table.eqnarray td.right {
+  text-align: right ;
+}
+table.eqnarray td.left {
+  text-align: left ;
+}
+table.eqnarray td.center {
+  text-align: center ;
+}
+table.eqnarray .equation {
+  text-align: inherit ;
+}
+table.eqnarray .equation .title {
+  padding-left: 3em;
+  float: right;
+}
 body {
   font-family: 'Droid Serif', serif;
 }
@@ -6253,4 +6251,7 @@ body {
   margin-right: 2em;
   margin-top: 1em;
   margin-bottom: 1em;
+}
+.latex-defs {
+  display: none ;
 }

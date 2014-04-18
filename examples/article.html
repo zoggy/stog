@@ -1,0 +1,93 @@
+<article title="An article with Stog"
+date="2014/04/18"
+authors="by Joan Doe and Anne Onimousse"
+use="math"
+>
+<prepare-toc>
+<toc/>
+<section id="example" title="Example">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+<p>
+Including evaluated OCaml code:
+</p>
+<ocaml-eval toplevel="true">
+let x = 1 ;;
+</ocaml-eval>
+</section>
+
+<section id="math" title="Math example">
+<p class="alert alert-info">
+This is a translation of the LaTeX example
+found <a href="http://www.maths.tcd.ie/~dwilkins/LaTeXPrimer/Theorems.html">here</a>.
+</p>
+<math:definition id="def1">
+Let $H$ be a subgroup of a group $G$.  A <em>left coset</em>
+of $H$ in $G$ is a subset of $G$ that is of the form $xH$,
+where $x \in G$ and $xH = \{ xh : h \in H \}$.
+Similarly a <em>right coset</em> of $H$ in $G$ is a subset
+of $G$ that is of the form $Hx$, where
+$Hx = \{ hx : h \in H \}$
+</math:definition>
+<p>
+Note that a subgroup $H$ of a group $G$ is itself a
+left coset of $H$ in $G$.
+</p>
+<math:lemma id="LeftCosetsDisjoint">
+Let $H$ be a subgroup of a group $G$, and let $x$ and $y$ be
+elements of $G$.  Suppose that $xH \cap yH$ is non-empty.
+Then $xH = yH$.
+</math:lemma>
+
+<math:proof id="proofLeftCosetDisjoint" of="#LeftCosetDisjoint">
+Let $z$ be some element of $xH \cap yH$.  Then $z = xa$
+for some $a \in H$, and $z = yb$ for some $b \in H$.
+If $h$ is any element of $H$ then $ah \in H$ and
+$a^{-1}h \in H$, since $H$ is a subgroup of $G$.
+But $zh = x(ah)$ and $xh = z(a^{-1}h)$ for all $h \in H$.
+Therefore $zH \subset xH$ and $xH \subset zH$, and thus
+$xH = zH$.  Similarly $yH = zH$, and thus $xH = yH$,
+as required.\qed
+</math:proof>
+
+<math:lemma id="SizeOfLeftCoset">
+Let $H$ be a finite subgroup of a group $G$.  Then each left
+coset of $H$ in $G$ has the same number of elements as $H$.
+</math:lemma>
+
+<math:proof id="proofSizeOfLeftCoset" of="#SizeOfLeftCoset">
+Let $H = \{ h_1, h_2,\ldots, h_m\}$, where
+$h_1, h_2,\ldots, h_m$ are distinct, and let $x$ be an
+element of $G$.  Then the left coset $xH$ consists of
+the elements $x h_j$ for $j = 1,2,\ldots,m$.
+Suppose that $j$ and $k$ are integers between
+$1$ and $m$ for which $x h_j = x h_k$.  Then
+$h_j = x^{-1} (x h_j) = x^{-1} (x h_k) = h_k$,
+and thus $j = k$, since $h_1, h_2,\ldots, h_m$
+are distinct.  It follows that the elements
+$x h_1, x h_2,\ldots, x h_m$ are distinct.
+We conclude that the subgroup $H$ and the left
+coset $xH$ both have $m$ elements,
+as required.\qed
+</math:proof>
+
+<math:theorem title="Lagrange's Theorem" id="Lagrange">
+Let $G$ be a finite group, and let $H$ be a subgroup
+of $G$.  Then the order of $H$ divides the order of $G$.
+</math:theorem>
+
+<math:proof id="proofLagrange">
+Each element $x$ of $G$ belongs to at least one left coset
+of $H$ in $G$ (namely the coset $xH$), and no element
+can belong to two distinct left cosets of $H$ in $G$
+(see <math:lemma href="LeftCosetsDisjoint"/>).  Therefore every
+element of $G$ belongs to exactly one left coset of $H$.
+Moreover each left coset of $H$ contains $|H|$ elements
+(<math:lemma href="SizeOfLeftCoset"/>).  Therefore $|G| = n |H|$,
+where $n$ is the number of left cosets of $H$ in $G$.
+The result follows.\qed
+</math:proof>
+</section>
+</prepare-toc>
+</article>

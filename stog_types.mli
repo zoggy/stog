@@ -89,6 +89,7 @@ type stog = {
   stog_docs_by_path : doc_id Path_trie.t;
   stog_defs : def list;
   stog_tmpl_dirs : string list;
+  stog_mod_dirs : string list;
   stog_cache_dir : string;
   stog_title : string;
   stog_desc : body;

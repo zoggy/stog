@@ -31,4 +31,5 @@
 let version = "@VERSION@";;
 let share_dir = "@SHARE_DIR@" ;;
 let templates_dir = Filename.concat share_dir "templates";;
+let modules_dir = Filename.concat share_dir "modules";;
 let ocamlfind = "@OCAMLFIND@" ;;
