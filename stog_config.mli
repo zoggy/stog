@@ -28,9 +28,6 @@
 
 (** Reading stog config. *)
 
-(** Version of stog. *)
-val version : string
-
 (** Contents of [.stog/config] file. *)
 type t = {
     ignored : string list;

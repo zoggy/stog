@@ -28,5 +28,6 @@
 
 (** *)
 
+let version = "@VERSION@";;
 let share_dir = "@SHAREDIR@" ;;
 let ocamlfind = "@OCAMLFIND@" ;;

@@ -97,7 +97,7 @@ let set_stog_options stog =
 
 let options = [
     "-version",
-    Arg.Unit (fun () -> print_endline (Printf.sprintf "%s" Stog_config.version); exit 0),
+    Arg.Unit (fun () -> print_endline (Printf.sprintf "%s" Stog_install.version); exit 0),
     " print version and exit";
 
     "-D", Arg.Set debug, " debug mode" ;
