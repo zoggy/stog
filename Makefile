@@ -26,22 +26,15 @@
 #                                                                               #
 #################################################################################
 
-# DO NOT FORGET TO CHANGE ALSO IN META AND stog_config.ml
-VERSION=0.11.1
-
-OCAMLC=ocamlc
-OCAMLDOC=ocamldoc.opt
-OCAMLLEX=ocamllex
-OCAMLYACC=ocamlyacc
-CAMLP4O=camlp4o
-OCAMLLIB:=`$(OCAMLC) -where`
-OCAMLFIND=ocamlfind
+include master.Makefile
 
 P=#p -p
 PBYTE=#p -p a
 
 PACKAGES=xmlm,xtmpl,netstring,config-file,dynlink,unix,str,higlo.lexers
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
+
+OF_FLAGS=-package $(PACKAGES)
 
 COMPFLAGS=-I +ocamldoc -annot -rectypes -g #-w +K
 OCAMLPP=
@@ -302,37 +295,35 @@ noheaders:
 	headache -r -c .headache_config `ls $(HEADFILES)`
 
 #############
-.SUFFIXES: .mli .ml .cmi .cmo .cmx .mll .mly
-
 .PRECIOUS: stog_filter_lexer.ml stog_filter_lexer.mli stog_filter_parser.ml
 
-%.cmi:%.mli
-	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
-
-%.cmo:%.ml
-	if test -f `dirname $<`/`basename $< .ml`.mli && test ! -f `dirname $<`/`basename $< .ml`.cmi ; then \
-	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c `dirname $<`/`basename $< .ml`.mli; fi
-	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
-
-%.cmi %.cmo:%.ml
-	if test -f `dirname $<`/`basename $< .ml`.mli && test ! -f `dirname $<`/`basename $< .ml`.cmi ; then \
-	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c `dirname $<`/`basename $< .ml`.mli; fi
-	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
-
-%.cmx %.o:%.ml
-	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
-
-%.cmxs: %.ml
-	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -shared -o $@ $<
-
-%.ml:%.mll
-	$(OCAMLLEX) $<
-
+#%.cmi:%.mli
+#	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
+#
+#%.cmo:%.ml
+#	if test -f `dirname $<`/`basename $< .ml`.mli && test ! -f `dirname $<`/`basename $< .ml`.cmi ; then \
+#	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c `dirname $<`/`basename $< .ml`.mli; fi
+#	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
+#
+#%.cmi %.cmo:%.ml
+#	if test -f `dirname $<`/`basename $< .ml`.mli && test ! -f `dirname $<`/`basename $< .ml`.cmi ; then \
+#	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c `dirname $<`/`basename $< .ml`.mli; fi
+#	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
+#
+#%.cmx %.o:%.ml
+#	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
+#
+#%.cmxs: %.ml
+#	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -shared -o $@ $<
+#
+#%.ml:%.mll
+#	$(OCAMLLEX) $<
+#
 stog_filter_lexer.mli: stog_filter_lexer.ml
 	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -i $^ > $@
 
-%.mli %.ml:%.mly
-	$(OCAMLYACC) -v $<
+#%.mli %.ml:%.mly
+#	$(OCAMLYACC) -v $<
 
 $(PLUGINS_BYTE): $(LIB_BYTE)
 $(PLUGINS_OPT): $(LIB)

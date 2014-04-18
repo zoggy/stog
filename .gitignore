@@ -18,5 +18,10 @@ stog_filter_parser.ml
 stog_filter_parser.output
 stog_filter_lexer.mli
 stog_filter_lexer.ml
-
-
+autom4te.cache
+config.log
+config.status
+META
+master.Makefile
+ocaml_config.sh
+stog_config.ml

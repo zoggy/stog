@@ -1,4 +1,4 @@
-version = "0.11.1"
+version = "@VERSION@"
 description = "Stog"
 requires = "str,unix,config-file,dynlink,xtmpl,netstring,xmlm,higlo.lexers"
 archive(byte) = "stog.cma"
@@ -7,7 +7,7 @@ archive(plugin,byte) = "stog.cma"
 archive(plugin,native) = "stog.cmxs"
 
 package "disqus" (
-  version = "0.11.1"
+  version = "@VERSION@"
   description = "Stog disqus plugin"
   archive(byte) = "stog_disqus.cmo"
   archive(native) = "stog_disqus.cmx"
@@ -16,7 +16,7 @@ package "disqus" (
 )
 
 package "markdown" (
-  version = "0.11.1"
+  version = "@VERSION@"
   description = "Stog markdown plugin"
   archive(byte) = "stog_markdown.cmo"
   archive(native) = "stog_markdown.cmx"
@@ -25,7 +25,7 @@ package "markdown" (
 )
 
 package "asy" (
-  version = "0.11.1"
+  version = "@VERSION@"
   description = "Stog asymptote plugin"
   archive(byte) = "stog_asy.cmo"
   archive(native) = "stog_asy.cmx"
@@ -34,7 +34,7 @@ package "asy" (
 )
 
 package "dot" (
-  version = "0.11.1"
+  version = "@VERSION@"
   description = "Stog graphviz plugin"
   archive(byte) = "stog_dot.cmo"
   archive(native) = "stog_dot.cmx"
@@ -43,7 +43,7 @@ package "dot" (
 )
 
 package "multi-doc" (
-  version = "0.11.1"
+  version = "@VERSION@"
   description = "Stog multi-document plugin"
   archive(byte) = "stog_multi_doc.cmo"
   archive(native) = "stog_multi_doc.cmx"
