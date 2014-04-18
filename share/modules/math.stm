@@ -134,14 +134,15 @@
   <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></remark>
 
 <math:proof id="" title="" href="" of="">
-<if href=""><block protect_="title,id,of"
+<if href=""><block protect_="title,id"
   with-contents="true"
   counter-name="proof" class="proof"
   label="&lt;math:proof-label/&gt;"
   id="&lt;id/&gt;" title="&lt;title/&gt;"
   of="&lt;of/&gt;"
 >
-<long-title-format><label/> <counter counter-name="proof"/><if title=""><dummy_/><dummy_>: <title/></dummy_></if></long-title-format>
+<long-title-format><label/>
+<counter counter-name="proof"/><if title=""><if of=""><dummy_/><dummy_> (<doc href="&lt;of/&gt;"/>)</dummy_></if><dummy_>: <title/></dummy_></if></long-title-format>
 <short-title-format><label/> <counter counter-name="proof"/></short-title-format>
 <contents><div class="&lt;class/&gt;" id="&lt;id/&gt;">
 <!--<button href="#&lt;id/&gt;" data-toggle="collapse" class="btn btn-info proof">Proof.</button>
