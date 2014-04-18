@@ -279,6 +279,10 @@ clean:
 	$(RM) $(LATEX2STOG) $(LATEX2STOG_BYTE)
 	(cd plugins && $(RM) *.cm* *.o *.a *.x *.annot)
 
+distclean: clean
+	$(RM) master.Makefile stog_config.ml META
+	$(RM) -fr config.status autom4te.cache config.log ocaml_config.sh
+
 # archive :
 ###########
 archive:
@@ -286,13 +290,26 @@ archive:
 
 # headers :
 ###########
-HEADFILES= Makefile *.ml *.mli doc/Makefile
+HEADFILES= Makefile *.ml *.mli doc/Makefile configure configure.ac
 headers:
 	echo $(HEADFILES)
 	headache -h header -c .headache_config `ls $(HEADFILES) | grep -v plugin_example`
 
 noheaders:
 	headache -r -c .headache_config `ls $(HEADFILES)`
+
+# myself :
+##########
+master.Makefile: master.Makefile.in config.status \
+	stog_config.ml.in \
+	META.in
+	./config.status
+
+config.status: configure
+	./config.status --recheck
+
+configure: configure.ac
+	autoconf
 
 #############
 .PRECIOUS: stog_filter_lexer.ml stog_filter_lexer.mli stog_filter_parser.ml
