@@ -36,6 +36,7 @@ val stog_dir : string
 val rss_length : string
 val languages : string
 val functions : string
+val default_style : string
 
 val doc : string
 val doc_body : string

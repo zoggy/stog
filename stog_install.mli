@@ -34,5 +34,8 @@ val version : string
 (** Share directory. *)
 val share_dir : string
 
+(** Default templates directory. *)
+val templates_dir : string
+
 (** Path to ocamlfind command used for compilation. *)
 val ocamlfind : string

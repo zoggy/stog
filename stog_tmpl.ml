@@ -100,10 +100,9 @@ let get_template stog ?doc contents name =
   (stog, Xtmpl.xml_of_file file)
 ;;
 
-let page stog =
-  let xml =
-    parse
-      "<html>
+let default_page_tempalte =
+ parse
+  "<html>
     <head>
       <title><if site-title=\"\"><dummy_/><dummy_><site-title/> : </dummy_></if><doc-title/></title>
       <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
@@ -119,6 +118,17 @@ let page stog =
       </div>
     </body>
   </html>"
+;;
+
+(* As default contents, use the contents of the first page.tmpl file
+  found in templates directory, if any. Else use a builtin contents. *)
+let page stog =
+  let xml =
+    try 
+      let file = from_includes stog "page.tmpl" in
+      Xtmpl.xml_of_file file
+    with Template_file_not_found _-> default_page_tempalte
+       
   in
   (stog, xml)
 

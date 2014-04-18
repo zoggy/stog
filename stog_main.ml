@@ -92,7 +92,96 @@ let set_stog_options stog =
           stog_publish_only = !publish_only ;
         }
   in
+  (* add default template directory if there is at least one
+    other template directory, so that the default one is
+    not polluted by template files automatically created when missing. *)
+  let stog =
+    match stog.stog_tmpl_dirs with
+      [] -> stog
+    | dirs -> { stog with stog_tmpl_dirs = dirs @ [Stog_install.templates_dir] }
+  in
   stog
+;;
+
+let generate_from_dirs dirs =
+  try
+    let stogs = List.map Stog_io.read_stog dirs in
+    (*prerr_endline "directories read";*)
+    let stog = Stog_types.merge_stogs stogs in
+    (*prerr_endline "directories merged";*)
+    let stog = set_stog_options stog in
+    let stog = Stog_info.remove_not_published stog in
+    (*prerr_endline "removed not published articles";*)
+    let stog = Stog_info.compute stog in
+    (*prerr_endline "graph computed";*)
+    let modules = Stog_engine.modules () in
+    let modules = List.map
+      (fun (name, f) ->
+         Stog_msg.verbose ~level: 2 ("Initializing module "^name);
+         f stog
+      )
+        modules
+    in
+    let only_docs =
+      match !only_doc with
+        None -> None
+      | Some s -> Some [s]
+    in
+    let default_style =
+      [ Xtmpl.xml_of_string ~add_main: false
+        "<link href=\"&lt;site-url/&gt;/style.css\" rel=\"stylesheet\" type=\"text/css\"/>"
+      ]
+    in
+    Stog_engine.generate ~use_cache: !use_cache ?only_docs ~default_style stog modules
+  with Stog_types.Path_trie.Already_present l ->
+      let msg = "Path already present: "^(String.concat "/" l) in
+      failwith msg
+;;
+
+let generate_from_files files =
+  try
+    let dir = Sys.getcwd () in
+    let load_doc file =
+      let file =
+        if Filename.is_relative file then
+          Filename.concat dir file
+        else
+          file
+      in
+      let dir = Filename.dirname file in
+      let stog = Stog_types.create_stog dir in
+      let stog = { stog with stog_tmpl_dirs = [dir] } in
+      let doc = Stog_io.doc_of_file stog file in
+      let doc = { doc with doc_src = file } in
+      Stog_types.add_doc stog doc
+    in
+    let stogs = List.map load_doc files in
+    let stog = Stog_types.merge_stogs stogs in
+    let stog = set_stog_options stog in
+    let stog = Stog_info.remove_not_published stog in
+    (* remove add-docs levels from base module *)
+    let stog = { stog with
+        stog_levels = Stog_types.Str_map.add
+          Stog_html.module_name ["add-docs", []] stog.stog_levels ;
+      }
+    in
+    let modules = Stog_engine.modules () in
+    let modules = List.map
+      (fun (name, f) ->
+         Stog_msg.verbose ~level: 2 ("Initializing module "^name);
+         f stog
+      )
+        modules
+    in
+    let default_style =
+      [ Xtmpl.xml_of_string ~add_main: false
+          "<style><include file=\"&lt;doc-type/&gt;-style.css\" raw=\"true\"/></style>"
+      ]
+    in
+    Stog_engine.generate ~use_cache: false ~gen_cache: false ~default_style stog modules
+  with Stog_types.Path_trie.Already_present l ->
+      let msg = "Path already present: "^(String.concat "/" l) in
+      failwith msg
 ;;
 
 let options = [
@@ -157,77 +246,6 @@ let usage ?(with_options=true) ()=
     "Usage: %s [options] <directory>\n    or %s [options] <files>%s"
     Sys.argv.(0)  Sys.argv.(0)
     (if with_options then "\nwhere options are:" else "")
-;;
-
-let generate_from_dirs dirs =
-  try
-    let stogs = List.map Stog_io.read_stog dirs in
-    (*prerr_endline "directories read";*)
-    let stog = Stog_types.merge_stogs stogs in
-    (*prerr_endline "directories merged";*)
-    let stog = set_stog_options stog in
-    let stog = Stog_info.remove_not_published stog in
-    (*prerr_endline "removed not published articles";*)
-    let stog = Stog_info.compute stog in
-    (*prerr_endline "graph computed";*)
-    let modules = Stog_engine.modules () in
-    let modules = List.map
-      (fun (name, f) ->
-         Stog_msg.verbose ~level: 2 ("Initializing module "^name);
-         f stog
-      )
-        modules
-    in
-    let only_docs =
-      match !only_doc with
-        None -> None
-      | Some s -> Some [s]
-    in
-    Stog_engine.generate ~use_cache: !use_cache ?only_docs stog modules
-  with Stog_types.Path_trie.Already_present l ->
-      let msg = "Path already present: "^(String.concat "/" l) in
-      failwith msg
-;;
-
-let generate_from_files files =
-  try
-    let dir = Sys.getcwd () in
-    let load_doc file =
-      let file =
-        if Filename.is_relative file then
-          Filename.concat dir file
-        else
-          file
-      in
-      let dir = Filename.dirname file in
-      let stog = Stog_types.create_stog dir in
-      let stog = { stog with stog_tmpl_dirs = [dir] } in
-      let doc = Stog_io.doc_of_file stog file in
-      let doc = { doc with doc_src = file } in
-      Stog_types.add_doc stog doc
-    in
-    let stogs = List.map load_doc files in
-    let stog = Stog_types.merge_stogs stogs in
-    let stog = set_stog_options stog in
-    let stog = Stog_info.remove_not_published stog in
-    (* remove add-docs levels from base module *)
-    let stog = { stog with
-        stog_levels = Stog_types.Str_map.add
-          Stog_html.module_name ["add-docs", []] stog.stog_levels ;
-      }
-    in
-    let modules = Stog_engine.modules () in
-    let modules = List.map
-      (fun (name, f) ->
-         Stog_msg.verbose ~level: 2 ("Initializing module "^name);
-         f stog
-      )
-        modules
-    in
-    Stog_engine.generate ~use_cache: false ~gen_cache: false stog modules
-  with Stog_types.Path_trie.Already_present l ->
-      let msg = "Path already present: "^(String.concat "/" l) in
-      failwith msg
 ;;
 
 let file_kind file =

@@ -29,5 +29,6 @@
 (** *)
 
 let version = "@VERSION@";;
-let share_dir = "@SHAREDIR@" ;;
+let share_dir = "@SHARE_DIR@" ;;
+let templates_dir = Filename.concat share_dir "templates";;
 let ocamlfind = "@OCAMLFIND@" ;;

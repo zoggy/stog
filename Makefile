@@ -169,6 +169,10 @@ $(LATEX2STOG): $(LIB) latex2stog.cmx
 $(LATEX2STOG_BYTE): $(LIB_BYTE) latex2stog.cmo
 	$(OCAMLFIND) ocamlc$(P) -o $@ -package $(PACKAGES) -linkall -linkpkg $^
 
+default-styles:
+	lessc doc/less/default-page.less > share/templates/page-style.css
+	lessc doc/less/default-article.less > share/templates/article-style.css
+
 # mk scripts
 $(MK_STOG): $(LIB)
 	@echo -n "Creating $@... "
@@ -246,7 +250,7 @@ docstog: $(ODOC)
 	$(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli)
 
 ##########
-install: install-lib install-bin
+install: install-lib install-share install-bin
 
 install-lib:
 	@$(OCAMLFIND) install stog META \
@@ -255,6 +259,10 @@ install-lib:
 		$(LIB_BYTE) $(LIB) $(LIB:.cmxa=.a) $(LIB_CMXS) stog_main.cm* stog_main.o \
 		$(OCAML_SESSION_CMOFILES)
 
+install-share:
+	$(MKDIR) $(SHARE_DIR)
+	$(CP) -r share/templates $(SHARE_DIR)/
+
 install-bin:
 	$(CP) $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
 	  $(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
@@ -262,10 +270,13 @@ install-bin:
 		`dirname \`which $(OCAMLC)\``/
 	$(CP) $(ODOC) $(ODOC_BYTE) `$(OCAMLFIND) ocamldoc -customdir`/
 
-uninstall: uninstall-lib uninstall-bin
+uninstall: uninstall-lib uninstall-share uninstall-bin
 
 uninstall-lib:
 	@$(OCAMLFIND) remove stog
+
+uninstall-share:
+	$(RM) -r $(SHARE_DIR)
 
 uninstall-bin:
 	for i in $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \

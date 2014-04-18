@@ -473,7 +473,7 @@ let fun_site_url stog data _env _ _ =
   (data, [ Xtmpl.D (Stog_types.string_of_url stog.stog_base_url) ])
 ;;
 
-let run ?(use_cache=true) state =
+let run ?(use_cache=true) ?default_style state =
   let stog = state.st_stog in
   let dir =
     if Filename.is_relative stog.stog_dir then
@@ -482,13 +482,17 @@ let run ?(use_cache=true) state =
       stog.stog_dir
   in
   let env = Xtmpl.env_of_list
-    [
-      ("", Stog_tags.site_desc), (fun data _ _ _ -> (data, stog.stog_desc)) ;
-      ("", Stog_tags.site_email), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_email ])) ;
-      ("", Stog_tags.site_title), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_title ])) ;
-      ("", Stog_tags.stog_dir), (fun data _ _ _ -> (data, [ Xtmpl.D dir ])) ;
-      ("", Stog_tags.site_url), fun_site_url stog ;
-    ]
+    (
+     (("", Stog_tags.site_desc), (fun data _ _ _ -> (data, stog.stog_desc)))  ::
+     (("", Stog_tags.site_email), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_email ]))) ::
+     (("", Stog_tags.site_title), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_title ]))) ::
+     (("", Stog_tags.stog_dir), (fun data _ _ _ -> (data, [ Xtmpl.D dir ]))) ::
+     (("", Stog_tags.site_url), fun_site_url stog) ::
+       (match default_style with
+          None -> []
+        | Some xmls -> [("", Stog_tags.default_style), (fun data _ _ _ -> (data, xmls))]
+       )
+    )
   in
   let env = env_of_used_mods ~env stog stog.stog_used_mods in
   let env = env_of_defs ~env stog.stog_defs in
@@ -622,7 +626,7 @@ let copy_other_files stog =
   iter stog.stog_outdir stog.stog_dir stog.stog_files
 ;;
 
-let generate ?(use_cache=true) ?(gen_cache=true) ?only_docs stog modules =
+let generate ?(use_cache=true) ?(gen_cache=true) ?default_style ?only_docs stog modules =
   begin
     match stog.stog_lang with
       None -> ()
@@ -651,7 +655,7 @@ let generate ?(use_cache=true) ?(gen_cache=true) ?only_docs stog modules =
         set
   in
   let state = { st_stog = stog ; st_modules = modules ; st_docs } in
-  let state = run ~use_cache state in
+  let state = run ~use_cache ?default_style state in
   match only_docs with
     None ->
       output_docs ~gen_cache state ;

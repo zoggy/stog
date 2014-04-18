@@ -66,7 +66,7 @@ type stog_state =
     st_docs : Doc_set.t ;
   };;
 
-val run : ?use_cache:bool -> stog_state -> stog_state
+val run : ?use_cache:bool -> ?default_style: Xtmpl.tree list -> stog_state -> stog_state
 
 (** Generate the target files, with the following steps:
   - create the output directory,
@@ -80,6 +80,7 @@ val run : ?use_cache:bool -> stog_state -> stog_state
 *)
 val generate :
   ?use_cache: bool -> ?gen_cache: bool ->
+    ?default_style: Xtmpl.tree list ->
     ?only_docs:string list -> Stog_types.stog ->
     (module Module) list -> unit
 

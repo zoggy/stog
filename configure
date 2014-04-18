@@ -584,6 +584,7 @@ PACKAGE_URL=
 ac_unique_file="master.Makefile.in"
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+SHARE_DIR
 PACKAGE
 VERSION
 OCAMLFIND_PATH
@@ -1696,14 +1697,16 @@ if test "$prefix" = "NONE" ; then
 fi
 
 if test "$datadir" = "\${datarootdir}" ; then
-        datadir=${prefix}/share
+        datadir=${prefix}/share/stog
 fi
 if test "$datadir" = "\${prefix}/share" ; then
         datadir=$prefix/share
 fi
+SHARE_DIR=$datadir
 
 #############################
 # substitutions to perform
+
 
 
 
@@ -2887,4 +2890,11 @@ chmod a-w master.Makefile
 chmod a-w META
 chmod a-w stog_config.ml
 chmod a-w stog_install.ml
+
+echo "
+### Results of configuration ###
+
+Version is $VERSION
+Binaries will be installed in "`dirname \`which ${OCAMLC}\``"
+Shared files will be installed in ${SHARE_DIR}"
 

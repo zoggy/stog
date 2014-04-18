@@ -43,14 +43,9 @@ EXTRAC_CRC = $(OCAMLLIB)/extract_crc
 OCAMLDOC= @OCAMLDOCOPT@
 LABLGLADECC=@LABLGLADECC@
 OCAMLPP=
-LATEX=TEXINPUTS=$(ROOT)/doc: latex
-HEVEA=hevea -fix -I $(ROOT)/doc -exec xxdate.exe
-HACHA=hacha
-DVIPS=dvips
-DVIPDF=dvipdf
-BIBTEX=bibtex
 MENHIR=@MENHIR@
 VERSION=@VERSION@
+SHARE_DIR=$(DESTDIR)/@SHARE_DIR@
 
 # For installation
 ##############

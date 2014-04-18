@@ -36,6 +36,7 @@ let stog_dir = "stog-dir"
 let rss_length = "rss-length"
 let languages = "languages"
 let functions = "functions_"
+let default_style = "default-style"
 
 let doc = "doc"
 let doc_body = "doc-body"

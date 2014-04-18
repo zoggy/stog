@@ -46,11 +46,12 @@ if test "$prefix" = "NONE" ; then
 fi
 
 if test "$datadir" = "\${datarootdir}" ; then
-        datadir=${prefix}/share
+        datadir=${prefix}/share/stog
 fi
 if test "$datadir" = "\${prefix}/share" ; then
         datadir=$prefix/share
 fi
+SHARE_DIR=$datadir
 
 #############################
 # substitutions to perform
@@ -72,6 +73,7 @@ AC_SUBST(GROUP)
 AC_SUBST(OCAMLFIND_PATH)
 AC_SUBST(VERSION)
 AC_SUBST(PACKAGE)
+AC_SUBST(SHARE_DIR)
 
 
 # Finally create the master.Makefile.in
@@ -81,4 +83,11 @@ chmod a-w master.Makefile
 chmod a-w META
 chmod a-w stog_config.ml
 chmod a-w stog_install.ml
+
+echo "
+### Results of configuration ###
+
+Version is $VERSION
+Binaries will be installed in "`dirname \`which ${OCAMLC}\``"
+Shared files will be installed in ${SHARE_DIR}"
 
