@@ -75,9 +75,10 @@ AC_SUBST(PACKAGE)
 
 
 # Finally create the master.Makefile.in
-ACFILES="master.Makefile META stog_config.ml"
+ACFILES="master.Makefile META stog_config.ml stog_install.ml"
 AC_OUTPUT($ACFILES)
 chmod a-w master.Makefile
 chmod a-w META
 chmod a-w stog_config.ml
+chmod a-w stog_install.ml
 

@@ -56,6 +56,7 @@ CP=cp -f
 MKDIR=mkdir -p
 
 LIB_CMXFILES= \
+	stog_install.cmx \
 	stog_msg.cmx \
 	stog_misc.cmx \
 	stog_highlight.cmx \
@@ -219,7 +220,7 @@ $(MK_STOG_OCAML): $(LIB) $(OCAML_SESSION_CMOFILES)
 
 ocamldoc:
 	$(MKDIR) ocamldoc
-	$(OCAMLFIND) ocamldoc -package $(PACKAGES) -rectypes -d ocamldoc -html -t "Stog" \
+	$(OCAMLFIND) ocamldoc -package $(PACKAGES) -rectypes -sort -d ocamldoc -html -t "Stog" \
 	$(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli)
 
 PKGS := $(shell echo $(PACKAGES) | sed -e "s/,/ /g")
@@ -229,7 +230,7 @@ depocamldoc:
 	$(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli) -width 700 -height 700
 
 doc:
-	rm -fr doc-output
+	rm -fr doc-output/
 	(cd doc && $(MAKE) test)
 
 webdoc:
@@ -280,7 +281,7 @@ clean:
 	(cd plugins && $(RM) *.cm* *.o *.a *.x *.annot)
 
 distclean: clean
-	$(RM) master.Makefile stog_config.ml META
+	$(RM) master.Makefile stog_config.ml stog_install.ml META
 	$(RM) -fr config.status autom4te.cache config.log ocaml_config.sh
 
 # archive :
@@ -302,6 +303,7 @@ noheaders:
 ##########
 master.Makefile: master.Makefile.in config.status \
 	stog_config.ml.in \
+	stog_install.ml.in \
 	META.in
 	./config.status
 

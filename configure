@@ -1725,7 +1725,7 @@ fi
 
 
 # Finally create the master.Makefile.in
-ACFILES="master.Makefile META stog_config.ml"
+ACFILES="master.Makefile META stog_config.ml stog_install.ml"
 ac_config_files="$ac_config_files $ACFILES"
 
 cat >confcache <<\_ACEOF
@@ -2886,4 +2886,5 @@ fi
 chmod a-w master.Makefile
 chmod a-w META
 chmod a-w stog_config.ml
+chmod a-w stog_install.ml
 

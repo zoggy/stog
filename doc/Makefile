@@ -26,6 +26,8 @@
 #                                                                               #
 #################################################################################
 
+include ../master.Makefile
+
 STOGDIR=..
 STOG=$(STOGDIR)/stog #--plugin ../plugins/plugin_example.cmxs --plugin ../plugins/stog_disqus.cmxs
 #STOG=$(STOGDIR)/stog.byte --plugin ../plugins/plugin_example.cmo --plugin ../plugins/stog_disqus.cmo
@@ -48,6 +50,7 @@ build:
 	$(MAKE) site
 
 site: style plugins/rdf_fig.svg
+	$(MKDIR) $(DEST_DIR) $(DEST_DIR)/plugins
 	$(STOG) $(STOG_OPTIONS) .
 
 plugins/rdf_fig.svg: plugins/rdf_fig.dot
