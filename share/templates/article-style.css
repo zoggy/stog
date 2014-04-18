@@ -5414,21 +5414,11 @@ p + ul {
   color: #737373;
   font-size: 0.9em;
 }
-/* handles and targets */
+/* handles */
 a.paragraph-url {
   margin-left: -16px;
   float: left;
   display: none;
-}
-*:target {
-  padding: 0 3px 2px;
-  border: 1px solid #006f00;
-  display: block;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  background-color: #d5ffd5;
-  display: inline ;
 }
 p:hover a.paragraph-url {
   display: inline ;
@@ -5921,11 +5911,6 @@ div.section-title {
 .author-photo {
   max-height: 120px;
 }
-@media print {
-  div.navbar {
-    display: none;
-  }
-}
 pre.hl {
   color: #ffffff;
   background-color: #005c70;
@@ -5980,6 +5965,11 @@ pre.hl {
 }
 .hl.std {
   color: black;
+}
+@media print {
+  div.navbar {
+    display: none;
+  }
 }
 .page-title {
   text-align: center ;
@@ -6241,6 +6231,12 @@ table.eqnarray .equation {
 table.eqnarray .equation .title {
   padding-left: 3em;
   float: right;
+}
+*:target {
+  /*.target() ;*/
+
+  border-color: red;
+  background-color: yellow ;
 }
 body {
   font-family: 'Droid Serif', serif;
