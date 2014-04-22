@@ -490,7 +490,8 @@ let run ?(use_cache=true) ?default_style state =
      (("", Stog_tags.site_url), fun_site_url stog) ::
        (match default_style with
           None -> []
-        | Some xmls -> [("", Stog_tags.default_style), (fun data _ _ _ -> (data, xmls))]
+        | Some xmls ->
+           [("", Stog_tags.default_style), (fun data _ _ _ -> (data, xmls))]
        )
     )
   in
