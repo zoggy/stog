@@ -38,7 +38,7 @@ let latex_code_use_packages l =
 ;;
 
 let build_preambule ~packages ~defs ~def_files =
-  Printf.sprintf "\\pagestyle{empty}\n\\usepackage[utf8x]{inputenc}\n%s\n%s\n%s"
+  Printf.sprintf "\\pagestyle{empty}\n\\usepackage[utf8]{inputenc}\n%s\n%s\n%s"
    (latex_code_use_packages packages)
     (String.concat "\n"
      (List.map (fun file -> "\\input{"^file^"}") def_files)
