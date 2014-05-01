@@ -3,7 +3,7 @@
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Evaluation and templating</title>
-<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -14,12 +14,12 @@
 
   <div class="nav-collapse">
     <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
   <div class="nav pull-right">  </div>
   </div>
@@ -49,15 +49,15 @@ Data flow in Stog's engine.</div></div></a>
 The figure on the side shows the global architecture of the
 Stog engine and the flow of data.
 </p>
-<p><a href="http://zoggy.github.io/stog/stog-documents.html">Stog documents</a> are read from the source directory
-and a <a href="http://zoggy.github.io/stog/ref-doc/Stog_types.html#TYPEstog">stog</a> structure is created.
+<p><a href="https://zoggy.github.io/stog/stog-documents.html">Stog documents</a> are read from the source directory
+and a <a href="https://zoggy.github.io/stog/ref-doc/Stog_types.html#TYPEstog">stog</a> structure is created.
 Since some documents may be in the cache and do not need to be recomputed,
 the small yellow boxes represent the filtering of documents in the stog
 structure to create a list of documents to compute.
 </p>
 <p>
 Two modules are represented on the figure (Module 1 and Module 2). More modules
-can be present, for example when loading <a href="http://zoggy.github.io/stog/writing_plugins.html">plugins</a>.
+can be present, for example when loading <a href="https://zoggy.github.io/stog/writing_plugins.html">plugins</a>.
 </p>
 <p>These modules define functions associated to <em>levels</em>: Here
 the Module 1 has functions for levels 0, 20 and 30, while Module 2 has
@@ -111,12 +111,12 @@ be looked for (in the <span class="icode"><span class="hl std">.stog/templates</
 
 <div class="section"><div class="section-title" id="env">Environment</div>
 <p>An environment is built containing the
-<a href="http://zoggy.github.io/stog/stog-main-document.html">site-wide attributes</a>.
+<a href="https://zoggy.github.io/stog/stog-main-document.html">site-wide attributes</a>.
 This environment is a set of rewrite rules. It is passed to every &quot;level function&quot;.
 </p>
 <p>
 A &quot;level function&quot; can enrich this environment with the attributes of a document
-(using <a href="http://zoggy.github.io/stog/ref-doc/Stog_engine.html#VALdoc_env">this function</a>). This is what
+(using <a href="https://zoggy.github.io/stog/ref-doc/Stog_engine.html#VALdoc_env">this function</a>). This is what
 most of the default level functions do, in addition to defining rewrite rules,
 to get the &quot;rewrite environment&quot; to apply on each document to compute.
 </p>
@@ -139,9 +139,9 @@ library.</p>
 <p>Besides, the contents of the attributes are also analysed to perform such substitutions,
 before looking up for the tag in the environment.
 </p>
-<p>Stog comes with <a href="http://zoggy.github.io/stog/funs.html">predefined functions</a> (in two default modules)
+<p>Stog comes with <a href="https://zoggy.github.io/stog/funs.html">predefined functions</a> (in two default modules)
 associated to some tags, but more can be created in
-<a href="http://zoggy.github.io/stog/writing_plugins.html">plugins</a>.
+<a href="https://zoggy.github.io/stog/writing_plugins.html">plugins</a>.
 </p>
 </div>
 

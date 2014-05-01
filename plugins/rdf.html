@@ -3,7 +3,7 @@
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog-rdf</title>
-<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -14,12 +14,12 @@
 
   <div class="nav-collapse">
     <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="&lt;navbar-doc/&gt;"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="active"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="&lt;navbar-doc/&gt;"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="active"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
   <div class="nav pull-right">  </div>
   </div>
@@ -30,7 +30,7 @@
 
 <div id="header">
   
-  <a href="http://zoggy.github.io/stog/plugins.html">Plugins</a>
+  <a href="https://zoggy.github.io/stog/plugins.html">Plugins</a>
   
   <div class="page-title">Stog-rdf</div>
 </div>
@@ -39,7 +39,7 @@
 
 
 
-<div class="left-toc"><ul class="toc"><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#download">Download</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#install">Installation and usage</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#definetriples">Defining RDF triples</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#namespaces">Namespaces</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#sources">Using external graphs</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#querying">Querying graphs</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/plugins/rdf.html#tips">Tips</a></li></ul></div>
+<div class="left-toc"><ul class="toc"><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#download">Download</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#install">Installation and usage</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#definetriples">Defining RDF triples</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#namespaces">Namespaces</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#sources">Using external graphs</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#querying">Querying graphs</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#tips">Tips</a></li></ul></div>
 <p>
 This plugin allows to easily specify RDF triples within documents,
 to produce a RDF graph for the whole generated site. It also permits
@@ -53,11 +53,11 @@ The following figure summarizes the way it works:
 Additional rewrite levels are defined:
 </p>
 <ul>
-<li>level 200: contain rules to <a href="http://zoggy.github.io/stog/plugins/rdf.html#definetriples">define triples</a>
+<li>level 200: contain rules to <a href="https://zoggy.github.io/stog/plugins/rdf.html#definetriples">define triples</a>
      in the graph of each stog document,</li>
 <li>level 201: gather all graphs into one graph and output it in the destination directory,</li>
-<li>level 202: contain rules to <a href="http://zoggy.github.io/stog/plugins/rdf.html#sources">load external graphs</a>,</li>
-<li>level 220: contain rules to <a href="http://zoggy.github.io/stog/plugins/rdf.html#querying">query the graphs</a>,
+<li>level 202: contain rules to <a href="https://zoggy.github.io/stog/plugins/rdf.html#sources">load external graphs</a>,</li>
+<li>level 220: contain rules to <a href="https://zoggy.github.io/stog/plugins/rdf.html#querying">query the graphs</a>,
   either graphs built during document rewriting or external graphs.</li>
 </ul>
 <div class="section"><div class="section-title" id="download">Download</div>
@@ -89,7 +89,7 @@ You can clone the git repository:
     <li>Base rules are not applied, they must be
      explictely run after level 220 to apply on result
     of <span class="icode"><span class="hl kwa">&lt;rdf-select</span><span class="hl kwa">&gt;</span></span> (using the
-    <a href="http://zoggy.github.io/stog/funs.html#config_funs">&quot;levels&quot; field in
+    <a href="https://zoggy.github.io/stog/funs.html#config_funs">&quot;levels&quot; field in
     stog config file</a>),
     </li>
     <li>Bug fixes.</li>
@@ -100,10 +100,10 @@ You can clone the git repository:
     <li>Upgrade to OCaml-RDF 0.7.0,</li>
     <li>Upgrade to Stog 0.9.0,</li>
     <li>New <span class="icode"><span class="hl kwa">&lt;rdf-select</span><span class="hl kwa">&gt;</span></span> rule to
-      <a href="http://zoggy.github.io/stog/plugins/rdf.html#querying">query graphs</a> using Sparql,</li>
+      <a href="https://zoggy.github.io/stog/plugins/rdf.html#querying">query graphs</a> using Sparql,</li>
     <li>New <span class="icode"><span class="hl kwa">&lt;rdf-load</span><span class="hl kwa">&gt;</span></span> rule to
-      <a href="http://zoggy.github.io/stog/plugins/rdf.html#rdfload">load external graphs</a>,</li>
-    <li>Ability to define external graphs to <a href="http://zoggy.github.io/stog/plugins/rdf.html#startupgraphs">load at startup</a>,</li>
+      <a href="https://zoggy.github.io/stog/plugins/rdf.html#rdfload">load external graphs</a>,</li>
+    <li>Ability to define external graphs to <a href="https://zoggy.github.io/stog/plugins/rdf.html#startupgraphs">load at startup</a>,</li>
     <li>Bug fixes.</li>
   </ul>
 </li>
@@ -304,7 +304,7 @@ is encountered. This rule is registered in level 202.
 <pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span><span class="hl std"> </span><span class="">att1</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">att2</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></pre>
 <p>Each attribute defines a pair (name, value) used as an option. The complete
 option list is used as the option lists specified in the <span class="icode"><span class="hl std">.stog/config-rdf</span></span>
-file (see <a href="http://zoggy.github.io/stog/plugins/rdf.html#startupgraphs">Loading graphs at startup</a>).
+file (see <a href="https://zoggy.github.io/stog/plugins/rdf.html#startupgraphs">Loading graphs at startup</a>).
 </p>
 <p>The following code loads a graph named <span class="icode"><span class="hl std">http://foo.net/</span></span>
 from a Turtle file <span class="icode"><span class="hl std">foo_net.ttl</span></span> in the same directory
@@ -340,8 +340,8 @@ describing the triples to load in the graph. For example:
 The <span class="icode"><span class="hl kwa">&lt;rdf-select</span><span class="hl kwa">&gt;</span></span> rule, registered in level 220, allows to
 execute <span class="ext-a"><a href="http://www.w3.org/TR/sparql11-query">Sparql 1.1</a></span> queries,
 either on the graph built during rewriting of documents
-(see <a href="http://zoggy.github.io/stog/plugins/rdf.html#definetriples">Defining RDF triples</a>) or on loaded graphs
-(see <a href="http://zoggy.github.io/stog/plugins/rdf.html#sources">Using external graphs</a>).
+(see <a href="https://zoggy.github.io/stog/plugins/rdf.html#definetriples">Defining RDF triples</a>) or on loaded graphs
+(see <a href="https://zoggy.github.io/stog/plugins/rdf.html#sources">Using external graphs</a>).
 </p>
 <p>
 The <span class="icode"><span class="hl kwa">&lt;rdf-select</span><span class="hl kwa">&gt;</span></span> rule takes the following parameters:

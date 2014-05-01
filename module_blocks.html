@@ -3,7 +3,7 @@
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Module Blocks</title>
-<link href="http://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="page">
@@ -14,12 +14,12 @@
 
   <div class="nav-collapse">
     <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="http://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="http://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="active"><a href="http://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="http://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="http://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="http://zoggy.github.io/stog/about.html">?</a></li>
+    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
   </ul>
   <div class="nav pull-right">  </div>
   </div>
@@ -40,10 +40,10 @@
 
 <p>
 Here are the functions of the module, which can be associated to
-levels (see <a href="http://zoggy.github.io/stog/funs.html">Predefined modules and functions</a>):
+levels (see <a href="https://zoggy.github.io/stog/funs.html">Predefined modules and functions</a>):
 </p>
 
-<ul class="toc"><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#init">init</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#base">base</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#sectionning">sectionning</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#gather-ids">gather-ids</a></li><li class="toc-section"><a href="http://zoggy.github.io/stog/module_blocks.html#doc">doc</a></li></ul>
+<ul class="toc"><li class="toc-section"><a href="https://zoggy.github.io/stog/module_blocks.html#init">init</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/module_blocks.html#base">base</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/module_blocks.html#sectionning">sectionning</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/module_blocks.html#gather-ids">gather-ids</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/module_blocks.html#doc">doc</a></li></ul>
 
 <div class="section"><div class="section-title" id="init">init</div>
 <p>This functions initialize section counters. </p>
@@ -54,10 +54,10 @@ levels (see <a href="http://zoggy.github.io/stog/funs.html">Predefined modules a
 This function applies the following rules:
 </p>
 
-<ul class="toc"><li class="toc-subsection"><a href="http://zoggy.github.io/stog/module_blocks.html#block">block</a></li><li class="toc-subsection"><a href="http://zoggy.github.io/stog/module_blocks.html#counter">counter</a></li></ul>
+<ul class="toc"><li class="toc-subsection"><a href="https://zoggy.github.io/stog/module_blocks.html#block">block</a></li><li class="toc-subsection"><a href="https://zoggy.github.io/stog/module_blocks.html#counter">counter</a></li></ul>
 
 <p class="alert alert-warning">This function also applies the
-<a href="http://zoggy.github.io/stog/funs.html#base">base rules</a>.</p>
+<a href="https://zoggy.github.io/stog/funs.html#base">base rules</a>.</p>
 
 
 <div class="subsection"><div class="subsection-title" id="block">block</div>
@@ -103,12 +103,12 @@ You can specify other nodes:
   will define &quot;section&quot;, &quot;subsection&quot; and &quot;paragraph&quot; as sectionning nodes.
 </li>
 <li>for all the site documents, using the &quot;stog:sectionning&quot; attribute in the main document
-  (see <a href="http://zoggy.github.io/stog/stog-main-document.html">Stog main document</a>):
+  (see <a href="https://zoggy.github.io/stog/stog-main-document.html">Stog main document</a>):
   <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">stog:sectionning</span><span class="hl std">=</span><span class="hl str">&quot;section,subsection,paragraph&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
 </li>
 </ul>
 <p>
-When a sectionning node is reduced, a <a href="http://zoggy.github.io/stog/module_blocks.html#block">block</a> node
+When a sectionning node is reduced, a <a href="https://zoggy.github.io/stog/module_blocks.html#block">block</a> node
  is created, so that
 refering to the section (or subsection, or ...), will use the title of the section
 (or subsection, or ...) for the produced link default text.
@@ -119,11 +119,11 @@ refering to the section (or subsection, or ...), will use the title of the secti
 by &quot;subsection&quot; or any other node to prevent this node having a counter.
 </p>
 <p>
-The function also applies the <a href="http://zoggy.github.io/stog/module_blocks.html#block">block</a> and <a href="http://zoggy.github.io/stog/module_blocks.html#counter">counter</a> rules.
+The function also applies the <a href="https://zoggy.github.io/stog/module_blocks.html#block">block</a> and <a href="https://zoggy.github.io/stog/module_blocks.html#counter">counter</a> rules.
 </p>
 
 <p class="alert alert-warning">This function also applies the
-<a href="http://zoggy.github.io/stog/funs.html#base">base rules</a>.</p>
+<a href="https://zoggy.github.io/stog/funs.html#base">base rules</a>.</p>
 
 </div>
 
@@ -197,7 +197,7 @@ are equivalent respectively to
 <span class="icode"><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">&quot;post&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span>.
 </p>
 <p>The <span class="icode"><span class="hl kwa">&lt;block</span><span class="hl kwa">&gt;</span></span> rule in this function is not the
-same as <a href="http://zoggy.github.io/stog/module_blocks.html#block">block</a> base rule.
+same as <a href="https://zoggy.github.io/stog/module_blocks.html#block">block</a> base rule.
 In this function,
 </p>
 <pre class="code-xml"><span class="hl kwa">&lt;block</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">text</span><span class="hl kwa">&lt;/block</span><span class="hl kwa">&gt;</span></pre>
@@ -206,7 +206,7 @@ href only contains an id, it is not of the form &quot;path[#id]&quot;. This will
 be reduced to a link to the corresponding document, using the given text.
 </p>
 <p>If the node matching the <code>href</code> was defined with the
-<a href="http://zoggy.github.io/stog/module_blocks.html#block">block</a> base rule (i.e. without <code>href</code> attribute),
+<a href="https://zoggy.github.io/stog/module_blocks.html#block">block</a> base rule (i.e. without <code>href</code> attribute),
 then the title associated to this node is used as text for the produced link, if no
 text was given (<span class="icode"><span class="hl kwa">&lt;block</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></span>).
 </p>
@@ -243,7 +243,7 @@ first defined in the article.
 </p>
 
 <p class="alert alert-warning">This function also applies the
-<a href="http://zoggy.github.io/stog/funs.html#base">base rules</a>.</p>
+<a href="https://zoggy.github.io/stog/funs.html#base">base rules</a>.</p>
 
 </div>
 
