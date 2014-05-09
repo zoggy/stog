@@ -1,4 +1,5 @@
 Next release:
+* fix: missing include in mk-stog-ocaml-session
 * install default templates for pages and styles
 * --mods adds a directory where to look for modules
 * handling a file or a list of files instead of a directory for

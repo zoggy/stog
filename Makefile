@@ -210,9 +210,9 @@ $(MK_STOG_OCAML): $(LIB) $(OCAML_SESSION_CMOFILES)
 	@echo "# Multi-shell script.  Works under Bourne Shell, MPW Shell, zsh." > $@
 	@echo "if : == x" >> $@
 	@echo "then # Bourne Shell or zsh" >> $@
-	@echo "  exec $(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) -linkpkg `ocamlfind query -i-format stog` -linkall \"\$$@\" $(OCAML_SESSION_CMOFILES)" >> $@
+	@echo "  exec $(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) -linkpkg -I `ocamlfind printconf destdir`/stog -linkall \"\$$@\" $(OCAML_SESSION_CMOFILES)" >> $@
 	@echo "else #MPW Shell" >> $@
-	@echo "  exec $(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) -linkpkg `ocamlfind query -i-format stog` -linkall {\"parameters\"} $(OCAML_SESSION_CMOFILES)" >> $@
+	@echo "  exec $(OCAMLFIND) ocamlc -package $(OCAML_SESSION_PACKAGES) -linkpkg -I `ocamlfind printconf destdir`/stog -linkall {\"parameters\"} $(OCAML_SESSION_CMOFILES)" >> $@
 	@echo "End # uppercase E because \"end\" is a keyword in zsh" >> $@
 	@echo "fi" >> $@
 	@chmod ugo+rx $@
