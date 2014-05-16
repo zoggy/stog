@@ -82,18 +82,19 @@ of  <span class="icode"><span class="hl std">&lt;ocaml-eval&gt;</span></span>.
 <p>Here is an example.</p>
 <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">let x = 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span></pre>
 <p>will give</p>
-<pre class="code-ocaml"><div># <span class="hl kwa">let</span> x <span class="hl opt">=</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel">val x : int = 1</div></pre>
+<pre class="code-ocaml"><div># <span class="hl kwa">let</span> x <span class="hl opt">=</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val x : int = 1
+</div></div></pre>
 <p>Then, let's evaluate another piece of code, in the same (&quot;default&quot;) session:
 </p>
 <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">let y = x + 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span></pre>
 will give
-<pre class="code-ocaml"><div># <span class="hl kwa">let</span> y <span class="hl opt">=</span> x <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel">val y : int = 2</div></pre>
+<pre class="code-ocaml"><div># <span class="hl kwa">let</span> y <span class="hl opt">=</span> x <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val y : int = 2
+</div></div></pre>
 <p>Now, let's evaluate the same code in another session, &quot;session2&quot;:</p>
 <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">error-exc</span><span class="hl std">=</span><span class="hl str">&quot;false&quot;</span><span class="hl std"> </span><span class="">session</span><span class="hl std">=</span><span class="hl str">&quot;session2&quot;</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 let y = x + 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span></pre>
 <p>will result in</p>
-<pre class="code-ocaml"><div># <span class="hl kwa">let</span> y <span class="hl opt">=</span> x <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel ocaml-exc">Line 1, characters 8-9:
-Error: Unbound value x</div></pre>
+<pre class="code-ocaml"><div># <span class="hl kwa">let</span> y <span class="hl opt">=</span> <span class="error-loc" title="Error: Unbound value x">x</span> <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel ocaml-exc"><div class="stderr">Error: Unbound value x</div></div></pre>
 
 
 
@@ -199,7 +200,7 @@ let y = x + 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl
 </div>
 
 <div id="footer">
-<div class="generatedon">Generated on March 21, 2014 at 16h11</div>
+<div class="generatedon">Generated on May 16, 2014 at 14h17</div>
 </div>
 
 

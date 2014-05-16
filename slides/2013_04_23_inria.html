@@ -161,6 +161,7 @@ All text is assumed to be UTF-8.
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-documents&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-main-document&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;running&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;single-documents&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;engine&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;atts-functions&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;funs&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -456,7 +457,8 @@ let x = 1;;
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
   <div class="span11">
-      <div><pre class="code-ocaml"><div># <span class="hl kwa">let</span> x <span class="hl opt">=</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel">val x : int = 1</div></pre></div>
+      <div><pre class="code-ocaml"><div># <span class="hl kwa">let</span> x <span class="hl opt">=</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val x : int = 1
+</div></div></pre></div>
   </div>
 </div>
 </div>
@@ -473,9 +475,11 @@ List.map string_of_int &quot;coucou&quot;;;
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
   <div class="span11">
-      <div><pre class="code-ocaml"><div># <span class="hl kwd">List</span><span class="hl opt">.</span>map string_of_int <span class="hl str">&quot;coucou&quot;</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel ocaml-exc">Line 1, characters 23-31:
-Error: This expression has type string but an expression was expected of type
-         int list</div></pre></div>
+      <div><pre class="code-ocaml"><div># <span class="hl kwd">List</span><span class="hl opt">.</span>map string_of_int <span class="error-loc" title="Error: This expression has type string but an expression was expected of type
+         int list"></span><span class="hl str"><span class="error-loc" title="Error: This expression has type string but an expression was expected of type
+         int list">&quot;coucou&quot;</span></span><span class="hl opt"><span class="error-loc" title="Error: This expression has type string but an expression was expected of type
+         int list"></span>;;</span></div><div class="ocaml-toplevel ocaml-exc"><div class="stderr">Error: This expression has type string but an expression was expected of type
+         int list</div></div></pre></div>
   </div>
 </div>
 </div>
@@ -497,7 +501,7 @@ print_endline s;;
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
   <div class="span11">
-      <div><pre class="code-ocaml"><div class="ocaml-toplevel"></div><div class="ocaml-toplevel"></div><div class="ocaml-toplevel"></div><div class="ocaml-toplevel">This OCaml code was evaluated on 2014/02/21 at 16:11.
+      <div><pre class="code-ocaml"><div></div><div class="ocaml-toplevel"></div><div></div><div class="ocaml-toplevel"></div><div></div><div class="ocaml-toplevel"></div><div></div><div class="ocaml-toplevel">This OCaml code was evaluated on 2014/04/16 at 14:18.
 </div></pre></div>
   </div>
 </div>

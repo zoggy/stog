@@ -38,9 +38,9 @@
 
 
 <div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_deps.html" title="Stog_deps">Previous</a>
+<div class="navbar"><a class="pre" href="Stog_tmap.html" title="Stog_tmap">Previous</a>
  <a class="up" href="index.html" title="Index">Up</a>
- <a class="post" href="Stog_filter_parser.html" title="Stog_filter_parser">Next</a>
+ <a class="post" href="Stog_trie.html" title="Stog_trie">Next</a>
 </div>
 <h1>Module <a href="type_Stog_tmpl.html">Stog_tmpl</a></h1>
 
@@ -52,20 +52,25 @@ Default templates.<br/>
 <pre><span id="TYPEcontents"><span class="keyword">type</span> contents</span> = <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * Xtmpl.tree</code> </pre>
 
 
+<pre><span id="EXCEPTIONTemplate_file_not_found"><span class="keyword">exception</span> Template_file_not_found</span> <span class="keyword">of</span> <code class="type">string</code></pre>
+
 <pre><span id="VALget_template_file"><span class="keyword">val</span> get_template_file</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt; string -&gt; string</code></pre><div class="info">
 <code class="code">get_template_file stog doc file</code> returns absolute filename of the given
   template filename.
-  If <code class="code">file</code> is relative and implicit then it is concatenated to
-  the stog template directory.
+  If <code class="code">file</code> is relative and implicit then the file is looked up the
+  stog include directories.
   If <code class="code">file</code> is relative and not implicit (i.e. it starts with . or ..), it
   is concatenated to the document source file directory.
   Else (the filename is absolute), it is returned as is.<br/>
+<b>Raises</b> <code>Template_file_not_found</code> if no include directory contains the
+  given file (when the file is relative an implicit).<br/>
 </div>
 
 <pre><span id="VALread_template_file"><span class="keyword">val</span> read_template_file</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       ?depend:bool -&gt; ?raw:bool -&gt; string -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * Xtmpl.tree</code></pre><div class="info">
 <code class="code">read_template_file stog doc file</code> returns the content of the given
   template filename, after calling <a href="Stog_tmpl.html#VALget_template_file"><code class="code">Stog_tmpl.get_template_file</code></a> to get the final
   filename.<br/>
+<b>Raises</b> <code>Template_file_not_found</code> (see <a href="Stog_tmpl.html#VALget_template_file"><code class="code">Stog_tmpl.get_template_file</code></a>)<br/>
 </div>
 <div class="param_info"><code class="code">depend</code> : indicate whether to add a dependency from the document
   on the file. Default is <code class="code">true</code>.</div>
@@ -88,7 +93,7 @@ Default templates.<br/>
 
 
 <div id="footer">
-<div class="generatedon">Generated on March 21, 2014 at 16h11</div>
+<div class="generatedon">Generated on May 16, 2014 at 14h18</div>
 </div>
 
 

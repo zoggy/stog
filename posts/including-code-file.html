@@ -59,7 +59,9 @@ This will give the expected result:
 <pre class="code-ocaml"><span class="hl kwa">open</span><span class="hl std"> </span><span class="hl kwc">Stog_types</span><span class="hl std">;;
 
 </span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">fun_comments</span><span class="hl std"> </span><span class="">stog</span><span class="hl std"> </span><span class="">env</span><span class="hl std"> </span><span class="">args</span><span class="hl std"> </span><span class="">subs</span><span class="hl std"> =
-  </span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">tmpl</span><span class="hl std"> = </span><span class="hl kwc">Filename</span><span class="hl std">.</span><span class="">concat</span><span class="hl std"> </span><span class="">stog</span><span class="hl std">.</span><span class="">stog_tmpl_dir</span><span class="hl std"> </span><span class="hl str">&quot;disqus.tmpl&quot;</span><span class="hl std"> </span><span class="hl kwa">in</span><span class="hl std">
+  </span><span class="hl kwa">let</span><span class="hl std"> (</span><span class="">stog</span><span class="hl std">, </span><span class="">path</span><span class="hl std">) = </span><span class="hl kwc">Stog_engine</span><span class="hl std">.</span><span class="">get_path</span><span class="hl std"> </span><span class="">stog</span><span class="hl std"> </span><span class="">env</span><span class="hl std"> </span><span class="hl kwa">in</span><span class="hl std">
+  </span><span class="hl kwa">let</span><span class="hl std"> (</span><span class="hl num">_</span><span class="hl std">, </span><span class="">doc</span><span class="hl std">) = </span><span class="hl kwc">Stog_types</span><span class="hl std">.</span><span class="">doc_by_path</span><span class="hl std"> </span><span class="">stog</span><span class="hl std"> </span><span class="">path</span><span class="hl std"> </span><span class="hl kwa">in</span><span class="hl std">
+  </span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">tmpl</span><span class="hl std"> = </span><span class="hl kwc">Stog_tmpl</span><span class="hl std">.</span><span class="">get_template_file</span><span class="hl std"> </span><span class="">stog</span><span class="hl std"> </span><span class="">doc</span><span class="hl std"> </span><span class="hl str">&quot;disqus.tmpl&quot;</span><span class="hl std"> </span><span class="hl kwa">in</span><span class="hl std">
   </span><span class="hl kwc">Xtmpl</span><span class="hl std">.</span><span class="">apply_to_file</span><span class="hl std"> </span><span class="">stog</span><span class="hl std"> </span><span class="">env</span><span class="hl std"> </span><span class="">tmpl</span><span class="hl std">
 ;;
 
@@ -150,7 +152,7 @@ and it now highlights its children, that is the contents of the included file.
 </div>
 
 <div id="footer">
-<div class="generatedon">Generated on March 21, 2014 at 16h11</div>
+<div class="generatedon">Generated on May 16, 2014 at 14h17</div>
 </div>
 
 

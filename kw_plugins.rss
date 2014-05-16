@@ -2,27 +2,27 @@
 <rss version="2.0">
        <channel>
          <title>Stog : plugins</title>
-         <link>http://zoggy.github.io/stog</link>
+         <link>https://zoggy.github.io/stog</link>
          <description>Static blog and web site generator</description>
          <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
-         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>21 Mar 2014 16:11:13 +0000</lastBuildDate>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>16 May 2014 14:18:03 +0000</lastBuildDate>
          <generator>Stog</generator>
-         <div class="img"><img class="img" src="" width=""/><div class="legend"><url>http://zoggy.github.io/stog/logo.png</url>
-           <title>Stog</title><link>http://zoggy.github.io/stog</link>
+         <div class="img"><img class="img" src="" width=""/><div class="legend"><url>https://zoggy.github.io/stog/logo.png</url>
+           <title>Stog</title><link>https://zoggy.github.io/stog</link>
          </div></div>
          <item>
       <title>Stog in Opam</title>
-      <link>http://zoggy.github.io/stog/posts/stog-in-opam.html</link>
+      <link>https://zoggy.github.io/stog/posts/stog-in-opam.html</link>
       <description>
 &lt;p&gt;
 Stog has been available in
 &lt;span class=&quot;ext-a&quot;&gt;&lt;a href=&quot;http://opam.ocamlpro.com&quot;&gt;Opam&lt;/a&gt;&lt;/span&gt; since release 0.4.
-The &lt;a href=&quot;http://zoggy.github.io/stog/plugins/writing.html&quot;&gt;Stog-writing&lt;/a&gt; and &lt;a href=&quot;http://zoggy.github.io/stog/plugins/rdf.html&quot;&gt;Stog-rdf&lt;/a&gt; plugins
+The &lt;a href=&quot;https://zoggy.github.io/stog/plugins/writing.html&quot;&gt;Stog-writing&lt;/a&gt; and &lt;a href=&quot;https://zoggy.github.io/stog/plugins/rdf.html&quot;&gt;Stog-rdf&lt;/a&gt; plugins
 are also available in Opam since yesterday.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/stog-in-opam.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+&lt;a href=&quot;https://zoggy.github.io/stog/posts/stog-in-opam.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;https://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
       <pubDate>22 Jan 2013 00:00:00 +0000</pubDate>
-      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-in-opam.html</guid>
+      <guid isPermaLink="true">https://zoggy.github.io/stog/posts/stog-in-opam.html</guid>
     </item>
        </channel>
      </rss>

@@ -38,9 +38,9 @@
 
 
 <div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_html5.html" title="Stog_html5">Previous</a>
+<div class="navbar"><a class="pre" href="Stog_dyn.html" title="Stog_dyn">Previous</a>
  <a class="up" href="index.html" title="Index">Up</a>
- <a class="post" href="Stog_ocaml.html" title="Stog_ocaml">Next</a>
+ <a class="post" href="Stog_filter.html" title="Stog_filter">Next</a>
 </div>
 <h1>Module <a href="type_Stog_engine.html">Stog_engine</a></h1>
 
@@ -48,6 +48,11 @@
 Rewrite engine.<br/>
 </div>
 <hr width="100%"/>
+
+<pre><span id="EXCEPTIONCant_open_cache_file"><span class="keyword">exception</span> Cant_open_cache_file</span> <span class="keyword">of</span> <code class="type">string</code></pre>
+<div class="info">
+Exception raised when a cache file of a loaded plugin could not be open.<br/>
+</div>
 
 <pre><code><span id="TYPElevel_fun"><span class="keyword">type</span> <code class="type">'a</code> level_fun</span> = </code></pre><table class="typetable">
 <tr>
@@ -142,8 +147,8 @@ A module.
 
 
 
-<pre><span id="VALrun"><span class="keyword">val</span> run</span> : <code class="type">?use_cache:bool -&gt; <a href="Stog_engine.html#TYPEstog_state">stog_state</a> -&gt; <a href="Stog_engine.html#TYPEstog_state">stog_state</a></code></pre>
-<pre><span id="VALgenerate"><span class="keyword">val</span> generate</span> : <code class="type">?use_cache:bool -&gt;<br/>       ?only_docs:string list -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; (module Stog_engine.Module) list -&gt; unit</code></pre><div class="info">
+<pre><span id="VALrun"><span class="keyword">val</span> run</span> : <code class="type">?use_cache:bool -&gt;<br/>       ?default_style:Xtmpl.tree list -&gt;<br/>       <a href="Stog_engine.html#TYPEstog_state">stog_state</a> -&gt; <a href="Stog_engine.html#TYPEstog_state">stog_state</a></code></pre>
+<pre><span id="VALgenerate"><span class="keyword">val</span> generate</span> : <code class="type">?use_cache:bool -&gt;<br/>       ?gen_cache:bool -&gt;<br/>       ?default_style:Xtmpl.tree list -&gt;<br/>       ?only_docs:string list -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; (module Stog_engine.Module) list -&gt; unit</code></pre><div class="info">
 Generate the target files, with the following steps:<ul>
 <li>create the output directory,</li>
 <li>build the base environment from the site global attributes,</li>
@@ -209,7 +214,7 @@ Same as <a href="Stog_engine.html#VALget_path"><code class="code">Stog_engine.ge
 
 
 <div id="footer">
-<div class="generatedon">Generated on March 21, 2014 at 16h11</div>
+<div class="generatedon">Generated on May 16, 2014 at 14h18</div>
 </div>
 
 

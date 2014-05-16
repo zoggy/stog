@@ -38,9 +38,9 @@
 
 
 <div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_tags.html" title="Stog_tags">Previous</a>
+<div class="navbar"><a class="pre" href="Stog_intl.html" title="Stog_intl">Previous</a>
  <a class="up" href="index.html" title="Index">Up</a>
- <a class="post" href="Stog_info.html" title="Stog_info">Next</a>
+ <a class="post" href="Stog_latex.html" title="Stog_latex">Next</a>
 </div>
 <h1>Module <a href="type_Stog_io.html">Stog_io</a></h1>
 
@@ -54,9 +54,14 @@ Building a stog structure from a project tree.<br/>
   <code class="code">bool_of_string</code> returns <code class="code">true</code> for any other value.<br/>
 </div>
 
+<pre><span id="VALread_modules"><span class="keyword">val</span> read_modules</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><div class="info">
+<code class="code">read_modules stog</code> read all modules found in directories of the
+  list <code class="code">stog.stog_mod_dirs</code> and return the modified stog structure.<br/>
+</div>
+
 <pre><span id="VALdoc_of_file"><span class="keyword">val</span> doc_of_file</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; string -&gt; <a href="Stog_types.html#TYPEdoc">Stog_types.doc</a></code></pre><div class="info">
 Read an document from the given absolute filename. The file
-must be &quot;under&quot; the directory in <code class="code">stog_dir</code> of the <code class="code">stog</code> parameter.<br/>
+     must be &quot;under&quot; the directory in <code class="code">stog_dir</code> of the <code class="code">stog</code> parameter.<br/>
 </div>
 
 <pre><span id="VALread_stog"><span class="keyword">val</span> read_stog</span> : <code class="type">string -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><div class="info">
@@ -72,7 +77,7 @@ Build a <a href="Stog_types.html#TYPEstog"><code class="code">Stog_types.stog</c
 
 
 <div id="footer">
-<div class="generatedon">Generated on March 21, 2014 at 16h11</div>
+<div class="generatedon">Generated on May 16, 2014 at 14h18</div>
 </div>
 
 

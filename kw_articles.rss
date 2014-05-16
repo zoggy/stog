@@ -2,24 +2,24 @@
 <rss version="2.0">
        <channel>
          <title>Stog : articles</title>
-         <link>http://zoggy.github.io/stog</link>
+         <link>https://zoggy.github.io/stog</link>
          <description>Static blog and web site generator</description>
          <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
-         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>21 Mar 2014 16:11:13 +0000</lastBuildDate>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>16 May 2014 14:18:03 +0000</lastBuildDate>
          <generator>Stog</generator>
-         <div class="img"><img class="img" src="" width=""/><div class="legend"><url>http://zoggy.github.io/stog/logo.png</url>
-           <title>Stog</title><link>http://zoggy.github.io/stog</link>
+         <div class="img"><img class="img" src="" width=""/><div class="legend"><url>https://zoggy.github.io/stog/logo.png</url>
+           <title>Stog</title><link>https://zoggy.github.io/stog</link>
          </div></div>
          <item>
       <title>Stog-writing plugin</title>
-      <link>http://zoggy.github.io/stog/posts/stog-writing.html</link>
+      <link>https://zoggy.github.io/stog/posts/stog-writing.html</link>
       <description>
 &lt;p&gt;The &lt;span class=&quot;ext-a&quot;&gt;&lt;a href=&quot;https://github.com/zoggy/stog-writing&quot;&gt;Stog-writing&lt;/a&gt;&lt;/span&gt; plug-in
 can be used to add foot notes and bibliographies to your stog generated site.
 &lt;/p&gt;
 </description>
       <pubDate>28 Nov 2012 00:00:00 +0000</pubDate>
-      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/stog-writing.html</guid>
+      <guid isPermaLink="true">https://zoggy.github.io/stog/posts/stog-writing.html</guid>
     </item>
        </channel>
      </rss>

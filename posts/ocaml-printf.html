@@ -101,8 +101,9 @@ would result in an error.
 <p>
 Of course more compilated format and ocaml expressions can be used:
 </p>
-<pre class="code-ocaml"><div># <span class="hl kwa">let</span> y <span class="hl opt">=</span> <span class="hl num">1</span> <span class="hl kwa">and</span> z <span class="hl opt">=</span> <span class="hl num">21</span><span class="hl opt">.;;</span></div><div class="ocaml-toplevel">val y : int = 1
-val z : float = 21.</div></pre>
+<pre class="code-ocaml"><div># <span class="hl kwa">let</span> y <span class="hl opt">=</span> <span class="hl num">1</span> <span class="hl kwa">and</span> z <span class="hl opt">=</span> <span class="hl num">21</span><span class="hl opt">.;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val y : int = 1
+val z : float = 21.
+</div></div></pre>
 <div class="hide" id="code3p">
 &lt;ocaml-printf format=&quot;The result of %d + %.2f is %.0f.&quot;&gt;y z ((float y) +. z)&lt;/ocaml-printf&gt;
 </div>
@@ -125,7 +126,8 @@ is rewritten &lt;strong&gt;Hello world!&lt;/strong&gt;
 <p>
 Let's define a list:
 </p>
-<pre class="code-ocaml"><div># <span class="hl kwa">let</span> my_list <span class="hl opt">= [</span> <span class="hl num">101</span> <span class="hl opt">;</span> <span class="hl num">202</span> <span class="hl opt">;</span> <span class="hl num">303</span> <span class="hl opt">;</span> <span class="hl num">404</span> <span class="hl opt">];;</span></div><div class="ocaml-toplevel">val my_list : int list = [101; 202; 303; 404]</div></pre>
+<pre class="code-ocaml"><div># <span class="hl kwa">let</span> my_list <span class="hl opt">= [</span> <span class="hl num">101</span> <span class="hl opt">;</span> <span class="hl num">202</span> <span class="hl opt">;</span> <span class="hl num">303</span> <span class="hl opt">;</span> <span class="hl num">404</span> <span class="hl opt">];;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val my_list : int list = [101; 202; 303; 404]
+</div></div></pre>
 <p>The <a href="https://zoggy.github.io/stog/module_base.html#as-xml"><span class="icode"><span class="hl kwa">&lt;as-xml</span><span class="hl kwa">&gt;</span></span></a> rule can be used to
 parse the result of <span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span> as XML, using the <code>defer_</code>
 attribute to compute the contents of the node first:
@@ -149,10 +151,14 @@ attribute to compute the contents of the node first:
 <p>This gives the following table:</p>
 <table class="table table-bordered table-striped">
 <tr><th>N</th><th>N^2</th><th>Toplevel</th></tr>
-<tr><td>101</td><td>10201</td><td><pre class="code-ocaml"><div># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">101</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel">val foo : int = 101</div></pre>
-         </td></tr><tr><td>202</td><td>40804</td><td><pre class="code-ocaml"><div># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">202</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel">val foo : int = 202</div></pre>
-         </td></tr><tr><td>303</td><td>91809</td><td><pre class="code-ocaml"><div># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">303</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel">val foo : int = 303</div></pre>
-         </td></tr><tr><td>404</td><td>163216</td><td><pre class="code-ocaml"><div># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">404</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel">val foo : int = 404</div></pre>
+<tr><td>101</td><td>10201</td><td><pre class="code-ocaml"><div># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">101</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val foo : int = 101
+</div></div></pre>
+         </td></tr><tr><td>202</td><td>40804</td><td><pre class="code-ocaml"><div># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">202</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val foo : int = 202
+</div></div></pre>
+         </td></tr><tr><td>303</td><td>91809</td><td><pre class="code-ocaml"><div># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">303</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val foo : int = 303
+</div></div></pre>
+         </td></tr><tr><td>404</td><td>163216</td><td><pre class="code-ocaml"><div># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">404</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val foo : int = 404
+</div></div></pre>
          </td></tr>
 </table>
 
@@ -318,7 +324,7 @@ The </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><
 </div>
 
 <div id="footer">
-<div class="generatedon">Generated on March 21, 2014 at 16h11</div>
+<div class="generatedon">Generated on May 16, 2014 at 14h17</div>
 </div>
 
 

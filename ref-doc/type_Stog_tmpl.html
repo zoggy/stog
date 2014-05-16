@@ -40,6 +40,7 @@
 <div class="ocamldoc-page">
 <code class="code"><span class="keyword">sig</span><br/>
   <span class="keyword">type</span> contents = <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog * <span class="constructor">Xtmpl</span>.tree<br/>
+  <span class="keyword">exception</span> <span class="constructor">Template_file_not_found</span> <span class="keyword">of</span> string<br/>
   <span class="keyword">val</span> get_template_file :<br/>
     <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.doc <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> string<br/>
   <span class="keyword">val</span> read_template_file :<br/>
@@ -66,7 +67,7 @@
 
 
 <div id="footer">
-<div class="generatedon">Generated on March 21, 2014 at 16h11</div>
+<div class="generatedon">Generated on May 16, 2014 at 14h18</div>
 </div>
 
 

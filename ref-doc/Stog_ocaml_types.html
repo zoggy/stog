@@ -38,9 +38,9 @@
 
 
 <div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_info.html" title="Stog_info">Previous</a>
+<div class="navbar"><a class="pre" href="Stog_ocaml.html" title="Stog_ocaml">Previous</a>
  <a class="up" href="index.html" title="Index">Up</a>
- <a class="post" href="Stog_deps.html" title="Stog_deps">Next</a>
+ <a class="post" href="Stog_of_latex.html" title="Stog_of_latex">Next</a>
 </div>
 <h1>Module <a href="type_Stog_ocaml_types.html">Stog_ocaml_types</a></h1>
 
@@ -61,6 +61,32 @@ Types for interfacing stog and ocaml-session.<br/>
 
 
 
+<pre><code><span id="TYPEoutput"><span class="keyword">type</span> output</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELToutput.stdout">stdout</span> : <code class="type">string</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELToutput.stderr">stderr</span> : <code class="type">string</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELToutput.topout">topout</span> : <code class="type">string</code>;</code></td>
+
+</tr></table>
+}
+
+
+
 <pre><code><span id="TYPEresult"><span class="keyword">type</span> result</span> = </code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top">
@@ -73,14 +99,14 @@ Types for interfacing stog and ocaml-session.<br/>
 <td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top">
-<code><span id="TYPEELTresult.Ok"><span class="constructor">Ok</span></span> <span class="keyword">of</span> <code class="type">string * string</code></code></td>
+<code><span id="TYPEELTresult.Ok"><span class="constructor">Ok</span></span> <span class="keyword">of</span> <code class="type"><a href="Stog_ocaml_types.html#TYPEoutput">output</a></code></code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top">
 <code><span class="keyword">|</span></code></td>
 <td align="left" valign="top">
-<code><span id="TYPEELTresult.Handled_error"><span class="constructor">Handled_error</span></span> <span class="keyword">of</span> <code class="type">string * string</code></code></td>
+<code><span id="TYPEELTresult.Handled_error"><span class="constructor">Handled_error</span></span> <span class="keyword">of</span> <code class="type"><a href="Stog_ocaml_types.html#TYPEoutput">output</a></code></code></td>
 
 </tr></table>
 
@@ -96,7 +122,7 @@ Types for interfacing stog and ocaml-session.<br/>
 
 
 <div id="footer">
-<div class="generatedon">Generated on March 21, 2014 at 16h11</div>
+<div class="generatedon">Generated on May 16, 2014 at 14h18</div>
 </div>
 
 

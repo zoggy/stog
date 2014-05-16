@@ -2,23 +2,23 @@
 <rss version="2.0">
        <channel>
          <title>Stog : include</title>
-         <link>http://zoggy.github.io/stog</link>
+         <link>https://zoggy.github.io/stog</link>
          <description>Static blog and web site generator</description>
          <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
-         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>21 Mar 2014 16:11:13 +0000</lastBuildDate>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>16 May 2014 14:18:03 +0000</lastBuildDate>
          <generator>Stog</generator>
-         <div class="img"><img class="img" src="" width=""/><div class="legend"><url>http://zoggy.github.io/stog/logo.png</url>
-           <title>Stog</title><link>http://zoggy.github.io/stog</link>
+         <div class="img"><img class="img" src="" width=""/><div class="legend"><url>https://zoggy.github.io/stog/logo.png</url>
+           <title>Stog</title><link>https://zoggy.github.io/stog</link>
          </div></div>
          <item>
       <title>Including a code file (deferring evaluation)</title>
-      <link>http://zoggy.github.io/stog/posts/including-code-file.html</link>
+      <link>https://zoggy.github.io/stog/posts/including-code-file.html</link>
       <description>
 &lt;p&gt;How to highlight a file inserted with &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;include&lt;/span&gt;&lt;span class=&quot;hl std&quot;&gt; ...&lt;/span&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt; ?
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/including-code-file.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+&lt;a href=&quot;https://zoggy.github.io/stog/posts/including-code-file.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;https://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
       <pubDate>13 Mar 2012 00:00:00 +0000</pubDate>
-      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/including-code-file.html</guid>
+      <guid isPermaLink="true">https://zoggy.github.io/stog/posts/including-code-file.html</guid>
     </item>
        </channel>
      </rss>

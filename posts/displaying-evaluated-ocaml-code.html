@@ -60,7 +60,8 @@ toplevel result, so
 <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 let mylist = [ 1 ; 2 ; 3 ; 4];;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
-will display this: <pre class="code-ocaml"><div># <span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span></div><div class="ocaml-toplevel">val mylist : int list = [1; 2; 3; 4]</div></pre>
+will display this: <pre class="code-ocaml"><div># <span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val mylist : int list = [1; 2; 3; 4]
+</div></div></pre>
 </p>
 <p>
 By default, <span class="icode"><span class="hl std">ocaml-eval</span></span> will stop Stog if an exception is
@@ -74,9 +75,12 @@ don't want to let other piece of code fail silently.
 let mylist = [ 1 ; 2 ; 3 ; 4];;
 let mylist2 = [ 1 ; 2 ; 3 ; &quot;hello&quot;];;
 </span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span></pre>
-will display this: <pre class="code-ocaml"><div># <span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span></div><div class="ocaml-toplevel">val mylist : int list = [1; 2; 3; 4]</div><div># <span class="hl kwa">let</span> mylist2 <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl str">&quot;hello&quot;</span><span class="hl opt">];;</span></div><div class="ocaml-toplevel ocaml-exc">Line 1, characters 28-35:
-Error: This expression has type string but an expression was expected of type
-         int</div></pre>
+will display this: <pre class="code-ocaml"><div># <span class="hl kwa">let</span> mylist <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="hl num">4</span><span class="hl opt">];;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val mylist : int list = [1; 2; 3; 4]
+</div></div><div># <span class="hl kwa">let</span> mylist2 <span class="hl opt">= [</span> <span class="hl num">1</span> <span class="hl opt">;</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">3</span> <span class="hl opt">;</span> <span class="error-loc" title="Error: This expression has type string but an expression was expected of type
+         int"></span><span class="hl str"><span class="error-loc" title="Error: This expression has type string but an expression was expected of type
+         int">&quot;hello&quot;</span></span><span class="hl opt"><span class="error-loc" title="Error: This expression has type string but an expression was expected of type
+         int"></span>];;</span></div><div class="ocaml-toplevel ocaml-exc"><div class="stderr">Error: This expression has type string but an expression was expected of type
+         int</div></div></pre>
 Without <span class="icode"><span class="hl std">error-exc=&quot;false&quot;</span></span>, Stog would have failed with the
 OCaml error message.
 </p>
@@ -168,7 +172,7 @@ OCaml error message.
 </div>
 
 <div id="footer">
-<div class="generatedon">Generated on March 21, 2014 at 16h11</div>
+<div class="generatedon">Generated on May 16, 2014 at 14h17</div>
 </div>
 
 

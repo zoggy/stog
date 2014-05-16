@@ -55,6 +55,9 @@ It is possible to give more than one directory to <span class="icode"><span clas
 all documents are merged as if all were defined in the last directory
 given. It may be useful to gather blogs or pages to generate one big site. Or not.
 </p>
+<p>
+Stog can also be used to <a href="https://zoggy.github.io/stog/single-documents.html">compile single documents</a>.
+</p>
 
 <div class="section"><div class="section-title" id="siteurl">Site location</div>
 <p>The <span class="icode"><span class="hl std">--site-url</span></span> option is used to override the <span class="icode"><span class="hl std">stog:site-url</span></span>
@@ -69,6 +72,36 @@ to test your site locally with correct links.
 As a shortcut, the <span class="icode"><span class="hl std">--local</span></span> option sets <span class="icode"><span class="hl std">stog:site-url</span></span> to
 <span class="icode"><span class="hl std">file://&lt;absolute path of output directory/&gt;</span></span>.
 </p>
+
+<div class="section"><div class="section-title" id="template-path">Template paths</div>
+<p>By default, Stog will look for templates in the following directories, in this
+order: <span class="icode"><span class="hl std">.stog/templates</span></span>, <span class="icode"><span class="hl std">/path/to/stog/share/templates</span></span>.
+</p>
+<p>The <span class="icode"><span class="hl std">--tmpl &lt;dir&gt;</span></span> option allows to specify an additional
+directory to look for templates, before the default ones. This options can be used
+several times. In the following example:
+</p>
+<pre># stog --tmpl dir1 --tmpl dir2 ...</pre>
+<p>Stog will look for templates in the following directories, in this order:
+<span class="icode"><span class="hl std">dir1</span></span>, <span class="icode"><span class="hl std">dir2</span></span>, <span class="icode"><span class="hl std">.stog/templates</span></span>,
+<span class="icode"><span class="hl std">/path/to/stog/share/templates</span></span>.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="module-path">Module paths</div>
+<p>By default, Stog will look for modules in the following directories, in this
+order: <span class="icode"><span class="hl std">.stog/modules</span></span>, <span class="icode"><span class="hl std">/path/to/stog/share/modules</span></span>.
+</p>
+<p>The <span class="icode"><span class="hl std">--mods &lt;dir&gt;</span></span> option allows to specify an additional
+directory to look for modules, before the default ones. This options can be used
+several times. In the following example:
+</p>
+<pre># stog --mods dir1 --mods dir2 ...</pre>
+<p>Stog will look for modules in the following directories, in this order:
+<span class="icode"><span class="hl std">dir1</span></span>, <span class="icode"><span class="hl std">dir2</span></span>, <span class="icode"><span class="hl std">.stog/modules</span></span>,
+<span class="icode"><span class="hl std">/path/to/stog/share/modules</span></span>.
+</p>
+</div>
 
 <div class="section"><div class="section-title" id="def">Additional definitions</div>
 <p id="optiondef">
@@ -97,10 +130,17 @@ for <span class="icode"><span class="hl std">stog.byte</span></span> or native-c
 <p>The <span class="icode"><span class="hl std">--lang</span></span> option is used to generate the website
 for one language. By default, the only known languages are &quot;en&quot; and &quot;fr&quot;.
 If you use the <span class="icode"><span class="hl std">--lang en</span></span> option, then pages will be generated
-in <span class="icode"><span class="hl std">.en.html</span></span> files and all <span class="icode"><span class="hl kwa">&lt;fr</span><span class="hl kwa">&gt;</span></span> nodes will be removed.
+in <span class="icode"><span class="hl std">.html.en</span></span> files and all <span class="icode"><span class="hl kwa">&lt;fr</span><span class="hl kwa">&gt;</span></span> nodes will be removed.
 Then you can run <span class="icode"><span class="hl std">stog</span></span> with the <span class="icode"><span class="hl std">--lang fr</span></span>
 to generate the &quot;fr&quot; part of your web site, removing all <span class="icode"><span class="hl kwa">&lt;en</span><span class="hl kwa">&gt;</span></span>.
 </p>
+<p>
+The default language is &quot;en&quot;. It is used when generating date representations.
+The default language can be changed by using the <span class="icode"><span class="hl std">--default-lang</span></span> option,
+for example:
+</p>
+<pre># stog --default-lang fr ...</pre>
+<p>will generate pages with no language suffix, but with dates printed in french.</p>
 
 </div>
 
@@ -199,6 +239,9 @@ It is possible to give more than one directory to </span><span class="hl kwa">&l
 all documents are merged as if all were defined in the last directory
 given. It may be useful to gather blogs or pages to generate one big site. Or not.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+Stog can also be used to </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;single-documents&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">compile single documents</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 
 </span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;siteurl&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Site location&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--site-url</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option is used to override the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog:site-url</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -213,6 +256,36 @@ to test your site locally with correct links.
 As a shortcut, the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--local</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option sets </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog:site-url</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> to
 </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">file://</span><span class="hl kwb">&amp;lt;</span><span class="hl std">absolute path of output directory/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;template-path&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Template paths&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">By default, Stog will look for templates in the following directories, in this
+order: </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/templates</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">/path/to/stog/share/templates</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--tmpl </span><span class="hl kwb">&amp;lt;</span><span class="hl std">dir</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option allows to specify an additional
+directory to look for templates, before the default ones. This options can be used
+several times. In the following example:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">stog --tmpl dir1 --tmpl dir2 ...</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Stog will look for templates in the following directories, in this order:
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">dir1</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">dir2</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/templates</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">/path/to/stog/share/templates</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
+
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;module-path&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Module paths&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">By default, Stog will look for modules in the following directories, in this
+order: </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/modules</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">/path/to/stog/share/modules</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--mods </span><span class="hl kwb">&amp;lt;</span><span class="hl std">dir</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option allows to specify an additional
+directory to look for modules, before the default ones. This options can be used
+several times. In the following example:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">stog --mods dir1 --mods dir2 ...</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Stog will look for modules in the following directories, in this order:
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">dir1</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">dir2</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/modules</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">/path/to/stog/share/modules</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
 </span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;def&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Additional definitions&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;optiondef&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -241,10 +314,17 @@ for </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span>
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--lang</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option is used to generate the website
 for one language. By default, the only known languages are &quot;en&quot; and &quot;fr&quot;.
 If you use the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--lang en</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option, then pages will be generated
-in </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.en.html</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> files and all </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">fr</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> nodes will be removed.
+in </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.html.en</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> files and all </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">fr</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> nodes will be removed.
 Then you can run </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> with the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--lang fr</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
 to generate the &quot;fr&quot; part of your web site, removing all </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">en</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+The default language is &quot;en&quot;. It is used when generating date representations.
+The default language can be changed by using the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--default-lang</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option,
+for example:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">stog --default-lang fr ...</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">will generate pages with no language suffix, but with dates printed in french.</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl com">&lt;!--
 &lt;p&gt;
 If you need more languages, just define &quot;stog:languages&quot; in the main document
@@ -328,7 +408,7 @@ Makefile</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</
 
 
 <div id="footer">
-<div class="generatedon">Generated on March 21, 2014 at 16h11</div>
+<div class="generatedon">Generated on May 16, 2014 at 14h17</div>
 </div>
 
 

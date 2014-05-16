@@ -5341,6 +5341,35 @@ div.theorem div.contents {
 div.theorem p {
   margin-bottom: 0;
 }
+div.definition {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 0 3px 2px;
+  border: 1px solid #006f00;
+  display: block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #d5ffd5;
+  background-color: #eeeeff;
+  border-width: 0 2px 0 2px;
+}
+div.definition div.title {
+  font-weight: bold;
+}
+div.definition div.contents {
+  padding: 0.5em;
+}
+div.definition div.contents {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+div.definition p {
+  margin-bottom: 0;
+}
 div.lemma {
   margin-top: 1em;
   margin-bottom: 1em;
@@ -5443,7 +5472,7 @@ div.proof {
   background-color: #d5ffd5;
   background-color: #eeeeff;
   border-width: 0 2px 0 2px;
-  border-width: 0 ;
+  border-width: 0 2px 0 2px ;
   background-color: #eeeeee;
 }
 div.proof div.title {
@@ -5512,18 +5541,7 @@ table.eqnarray .equation .title {
   float: right;
 }
 /*
-@font-face {
-    font-family: "Computer Modern";
-    src:  url('http://cenac.perso.math.cnrs.fr/texfonts/cmunss.otf') format('opentype');
-  }
-@font-face {
-    font-family: "Computer Modern";
-    src: url('http://cenac.perso.math.cnrs.fr/texfonts/cmunsx.otf') format('opentype');
-    font-weight: bold;
-}
-*/
-/*
-@import url(http://fonts.googleapis.com/css?family=Oswald:400,300&subset=latin,latin-ext);
+@import url(https://fonts.googleapis.com/css?family=Oswald:400,300&subset=latin,latin-ext);
 */
 .bib-entry {
   margin-bottom: 1em;
@@ -5569,7 +5587,8 @@ body {
   margin-left: auto;
   *zoom: 1;
   width: 760px;
-  text-align: justify;
+  /*text-align: justify;*/
+
 }
 #page:before,
 #page:after {
@@ -5611,21 +5630,6 @@ div.navright {
   font-size: 0.889em;
   color: #999999;
 }
-.page-title {
-  clear: both ;
-  font-size: 1.802em;
-  line-height: 0.832408435072142em;
-  margin-bottom: 0.832408435072142em;
-}
-.section {
-  margin-bottom: 1.5em;
-}
-div.section-title {
-  font-size: 1.602em;
-  margin-bottom: 0.9363295880149812em;
-  line-height: 0.9363295880149812em;
-  border-color: #333333;
-}
 p {
   font-size: 1em;
   line-height: 1.5em;
@@ -5636,22 +5640,6 @@ ul {
 }
 p + ul {
   margin-top: -1.5em;
-}
-.subsection {
-  margin-bottom: 1.5em;
-}
-.subsection-title {
-  font-size: 1.266em;
-  margin-bottom: 0.9363295880149812em;
-  line-height: 0.9363295880149812em;
-}
-.subsubsection {
-  margin-bottom: 1.5em;
-}
-.subsubsection-title {
-  font-size: 1.125em;
-  margin-bottom: 0.9363295880149812em;
-  line-height: 0.9363295880149812em;
 }
 .rss-button {
   float: right;
@@ -5680,21 +5668,11 @@ p + ul {
   color: #737373;
   font-size: 0.9em;
 }
-/* handles and targets */
+/* handles */
 a.paragraph-url {
   margin-left: -16px;
   float: left;
   display: none;
-}
-*:target {
-  padding: 0 3px 2px;
-  border: 1px solid #006f00;
-  display: block;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  background-color: #d5ffd5;
-  display: inline ;
 }
 p:hover a.paragraph-url {
   display: inline ;
@@ -5838,9 +5816,18 @@ p + pre {
 */
 
 }
-pre div.ocaml-exc {
+div.ocaml-exc div.toplevel-out,
+div.ocaml-exc div.stderr {
   color: #b94a48;
-  font-weight: bold ;
+  font-weight: bold;
+}
+.error-loc {
+  text-decoration: none;
+  border-bottom: 2px solid red;
+}
+.warning-loc {
+  text-decoration: none;
+  border-bottom: 2px solid orange;
 }
 .table-bench {
   font-size: 1em ;
@@ -6144,13 +6131,39 @@ div.float-right {
 img.latex {
   vertical-align: text-top;
 }
+.page-title {
+  clear: both ;
+  font-size: 1.802em;
+  line-height: 0.832408435072142em;
+  margin-bottom: 0.832408435072142em;
+}
+.section {
+  margin-bottom: 1.5em;
+}
+div.section-title {
+  font-size: 1.602em;
+  margin-bottom: 0.9363295880149812em;
+  line-height: 0.9363295880149812em;
+  border-color: #333333;
+}
+.subsection {
+  margin-bottom: 1.5em;
+}
+.subsection-title {
+  font-size: 1.266em;
+  margin-bottom: 0.9363295880149812em;
+  line-height: 0.9363295880149812em;
+}
+.subsubsection {
+  margin-bottom: 1.5em;
+}
+.subsubsection-title {
+  font-size: 1.125em;
+  margin-bottom: 0.9363295880149812em;
+  line-height: 0.9363295880149812em;
+}
 .author-photo {
   max-height: 120px;
-}
-@media print {
-  div.navbar {
-    display: none;
-  }
 }
 pre.hl {
   color: #ffffff;
@@ -6206,4 +6219,19 @@ pre.hl {
 }
 .hl.std {
   color: black;
+}
+*:target {
+  padding: 0 3px 2px;
+  border: 1px solid #006f00;
+  display: block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #d5ffd5;
+  display: inline ;
+}
+@media print {
+  div.navbar {
+    display: none;
+  }
 }

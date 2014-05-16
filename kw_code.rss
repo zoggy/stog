@@ -2,32 +2,32 @@
 <rss version="2.0">
        <channel>
          <title>Stog : code</title>
-         <link>http://zoggy.github.io/stog</link>
+         <link>https://zoggy.github.io/stog</link>
          <description>Static blog and web site generator</description>
          <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
-         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>21 Mar 2014 16:11:13 +0000</lastBuildDate>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>16 May 2014 14:18:03 +0000</lastBuildDate>
          <generator>Stog</generator>
-         <div class="img"><img class="img" src="" width=""/><div class="legend"><url>http://zoggy.github.io/stog/logo.png</url>
-           <title>Stog</title><link>http://zoggy.github.io/stog</link>
+         <div class="img"><img class="img" src="" width=""/><div class="legend"><url>https://zoggy.github.io/stog/logo.png</url>
+           <title>Stog</title><link>https://zoggy.github.io/stog</link>
          </div></div>
          <item>
       <title>ocaml-printf</title>
-      <link>http://zoggy.github.io/stog/posts/ocaml-printf.html</link>
+      <link>https://zoggy.github.io/stog/posts/ocaml-printf.html</link>
       <description>
 &lt;p&gt;
-Since &lt;a href=&quot;http://zoggy.github.io/stog/posts/release-0.10.0.html&quot;&gt;Stog 0.10.0&lt;/a&gt;, the &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;ocaml-printf&lt;/span&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt; rule
+Since &lt;a href=&quot;https://zoggy.github.io/stog/posts/release-0.10.0.html&quot;&gt;Stog 0.10.0&lt;/a&gt;, the &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;ocaml-printf&lt;/span&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt; rule
 can be used to access the content of computed OCaml values, as
 strings.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/ocaml-printf.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+&lt;a href=&quot;https://zoggy.github.io/stog/posts/ocaml-printf.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;https://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
       <pubDate>16 Jan 2014 00:00:00 +0000</pubDate>
-      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/ocaml-printf.html</guid>
+      <guid isPermaLink="true">https://zoggy.github.io/stog/posts/ocaml-printf.html</guid>
     </item><item>
       <title>OCaml sessions</title>
-      <link>http://zoggy.github.io/stog/posts/ocaml-sessions.html</link>
+      <link>https://zoggy.github.io/stog/posts/ocaml-sessions.html</link>
       <description>
 &lt;p&gt;
-A &lt;a href=&quot;http://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html&quot;&gt;previous post&lt;/a&gt;
+A &lt;a href=&quot;https://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html&quot;&gt;previous post&lt;/a&gt;
 introduced the &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl std&quot;&gt;&amp;lt;ocaml-eval&amp;gt;&lt;/span&gt;&lt;/span&gt; function to
 evaluate ocaml code, enventually displaying the result in a toplevel way, etc.
 &lt;/p&gt;
@@ -37,21 +37,21 @@ embed the OCaml toplevel, only available as bytecode. As a consequence,
 only the bytecode version of Stog could evaluate OCaml code using the
 internal toplevel.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/ocaml-sessions.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+&lt;a href=&quot;https://zoggy.github.io/stog/posts/ocaml-sessions.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;https://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
       <pubDate>21 Nov 2012 00:00:00 +0000</pubDate>
-      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/ocaml-sessions.html</guid>
+      <guid isPermaLink="true">https://zoggy.github.io/stog/posts/ocaml-sessions.html</guid>
     </item><item>
       <title>Including a code file (deferring evaluation)</title>
-      <link>http://zoggy.github.io/stog/posts/including-code-file.html</link>
+      <link>https://zoggy.github.io/stog/posts/including-code-file.html</link>
       <description>
 &lt;p&gt;How to highlight a file inserted with &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;include&lt;/span&gt;&lt;span class=&quot;hl std&quot;&gt; ...&lt;/span&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt; ?
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/including-code-file.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+&lt;a href=&quot;https://zoggy.github.io/stog/posts/including-code-file.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;https://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
       <pubDate>13 Mar 2012 00:00:00 +0000</pubDate>
-      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/including-code-file.html</guid>
+      <guid isPermaLink="true">https://zoggy.github.io/stog/posts/including-code-file.html</guid>
     </item><item>
       <title>Displaying evaluated OCaml code</title>
-      <link>http://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html</link>
+      <link>https://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html</link>
       <description>
 &lt;p&gt;
 Bytecode version of Stog, &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl std&quot;&gt;stog.byte&lt;/span&gt;&lt;/span&gt;,
@@ -59,9 +59,9 @@ offers the &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;
 function to evaluate code and display the result. This is nice to provide
 verified code examples on your pages.
 &lt;/p&gt;
-&lt;a href=&quot;http://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;http://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+&lt;a href=&quot;https://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;https://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
       <pubDate>11 Mar 2012 00:00:00 +0000</pubDate>
-      <guid isPermaLink="true">http://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html</guid>
+      <guid isPermaLink="true">https://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html</guid>
     </item>
        </channel>
      </rss>
