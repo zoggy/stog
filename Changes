@@ -1,4 +1,4 @@
-Next release:
+Release 0.12.0:
 * fix: missing include in mk-stog-ocaml-session
 * install default templates for pages and styles
 * --mods adds a directory where to look for modules
