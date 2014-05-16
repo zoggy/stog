@@ -36,6 +36,36 @@ As a shortcut, the <icode>--local</icode> option sets <icode>stog:site-url</icod
 <icode>file://&lt;absolute path of output directory/&gt;</icode>.
 </p>
 
+<section id="template-path" title="Template paths">
+<p>By default, Stog will look for templates in the following directories, in this
+order: <icode>.stog/templates</icode>, <icode>/path/to/stog/share/templates</icode>.
+</p>
+<p>The <icode>--tmpl &lt;dir&gt;</icode> option allows to specify an additional
+directory to look for templates, before the default ones. This options can be used
+several times. In the following example:
+</p>
+<command>stog --tmpl dir1 --tmpl dir2 ...</command>
+<p>Stog will look for templates in the following directories, in this order:
+<icode>dir1</icode>, <icode>dir2</icode>, <icode>.stog/templates</icode>,
+<icode>/path/to/stog/share/templates</icode>.
+</p>
+</section>
+
+<section id="module-path" title="Module paths">
+<p>By default, Stog will look for modules in the following directories, in this
+order: <icode>.stog/modules</icode>, <icode>/path/to/stog/share/modules</icode>.
+</p>
+<p>The <icode>--mods &lt;dir&gt;</icode> option allows to specify an additional
+directory to look for modules, before the default ones. This options can be used
+several times. In the following example:
+</p>
+<command>stog --mods dir1 --mods dir2 ...</command>
+<p>Stog will look for modules in the following directories, in this order:
+<icode>dir1</icode>, <icode>dir2</icode>, <icode>.stog/modules</icode>,
+<icode>/path/to/stog/share/modules</icode>.
+</p>
+</section>
+
 <section id="def" title="Additional definitions">
 <p id="optiondef">
 The <icode>--def</icode> option can be used to define an additional global rule. For example
