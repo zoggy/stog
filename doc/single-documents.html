@@ -1,0 +1,58 @@
+<page title="Compiling single documents"
+navbar-doc="active"
+with-contents="true"
+>
+<cl foo=""><command-line defer_="1"><contents/></command-line></cl>
+<contents>
+<section id="single" title="Single documents">
+<p>
+Since <post href="release-0.12.0">release 0.12.0</post>,
+Stog can be used to compile
+a single file, to produce standalone documents instead of complete
+web sites. To do so, just give Stog a file rather than a directory
+on the command line:
+</p>
+<cl>stog [options] &lt;file&gt;</cl>
+<p>
+The result is generated in the <icode>stog-output</icode> directory,
+or the directoty specified with the <icode>-d</icode> option.
+</p>
+<p>It is also possible to give more than one file on the command
+lone. Each file is compiled and can reference the other documents:
+</p>
+<cl>stog [options] file1.html file2.html ...</cl>
+<p>
+The path of each document is created as if the given files were at
+the root of a website directory, i.e. in the following example:
+</p>
+<cl>stog foo/file1.html bar/gee/file2.html</cl>
+<p>
+the documents will be compiled to <icode>stog-output/file1.html</icode>
+and <icode>stog-output/file2.html</icode>.
+</p>
+<p>When compiling files, Stog does not copy other files (images, ...)
+to the output directory. This has to be done "manually" (for example
+in a Makefile).
+</p>
+</section>
+<section id="article" title="Example: writing an article">
+<p>Stog comes with default templates for some
+<doc href="stog-documents#documenttype">document types</doc>.
+One of them is <icode>article</icode>, which correspond to
+an HTML document referring to MathJax and using the contents associated
+to <ixml>latex-defs</ixml> and <ixml>authors</ixml> in the document header.
+</p>
+<p>Here is an example of the contents of such a document of type
+<icode>article</icode>:
+</p>
+<hxml defer_="1"><include raw="true" file="../examples/article-example.html"/></hxml>
+<p>
+The result can be seen <a href="article-example.html">here</a>.
+</p>
+
+
+<p>
+</p>
+</section>
+</contents>
+</page>

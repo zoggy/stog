@@ -51,6 +51,10 @@ build:
 
 site: style plugins/rdf_fig.svg
 	$(MKDIR) $(DEST_DIR) $(DEST_DIR)/plugins
+	$(STOG) -d $(DEST_DIR) \
+		--tmpl $(ROOT)/share/templates\
+		--mods $(ROOT)/share/modules \
+		$(ROOT)/examples/article-example.html
 	$(STOG) $(STOG_OPTIONS) .
 
 plugins/rdf_fig.svg: plugins/rdf_fig.dot

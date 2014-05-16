@@ -13,8 +13,8 @@
 <math:equation-label></math:equation-label>
 
 
-<figure id="" title="" href="">
-<if href=""><block protect_="title,id"
+<figure id="" title="" href=""
+><if href=""><block protect_="title,id"
   counter-name="figure" class="figure"
   label="&lt;math:figure-label/&gt;"
   id="&lt;id/&gt;" title="&lt;title/&gt;"
@@ -26,8 +26,8 @@
   <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></figure>
 
 
-<math:theorem id="" title="" href="">
-<if href=""><block protect_="title,id"
+<math:theorem id="" title="" href=""
+><if href=""><block protect_="title,id"
   counter-name="theorem" class="theorem"
   label="&lt;math:theorem-label/&gt;"
   id="&lt;id/&gt;" title="&lt;title/&gt;"
@@ -39,8 +39,8 @@
   <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></math:theorem>
 
 
-<math:lemma id="" title="" href="">
-<if href=""><block protect_="title,id"
+<math:lemma id="" title="" href=""
+><if href=""><block protect_="title,id"
   counter-name="lemma" class="lemma"
   label="&lt;math:lemma-label/&gt;"
   id="&lt;id/&gt;" title="&lt;title/&gt;"
@@ -52,9 +52,9 @@
   <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></math:lemma>
 
 
-<math:prop id="" title="" href="">
-<env_ foo="&lt;contents/&gt;">
-<if href=""><block protect_="title,id,label,contents"
+<math:prop id="" title="" href=""
+><env_ foo="&lt;contents/&gt;"
+><if href=""><block protect_="title,id,label,contents"
   with-contents="true"
   counter-name="prop" class="prop"
   label="&lt;math:prop-label/&gt;"
@@ -68,9 +68,9 @@
 </div></contents></block>
   <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></env_></math:prop>
 
-<math:property id="" title="" href="">
-<env_ foo="&lt;contents/&gt;">
-<if href=""><block protect_="title,id,label,contents"
+<math:property id="" title="" href=""
+><env_ foo="&lt;contents/&gt;"
+><if href=""><block protect_="title,id,label,contents"
   with-contents="true"
   counter-name="property" class="property"
   label="&lt;math:property-label/&gt;"
@@ -85,9 +85,9 @@
   <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></env_></math:property>
 
 
-<math:definition id="" title="" href="">
-<env_ foo="&lt;contents/&gt;">
-<if href=""><block protect_="title,id,label,contents"
+<math:definition id="" title="" href=""
+><env_ foo="&lt;contents/&gt;"
+><if href=""><block protect_="title,id,label,contents"
   with-contents="true"
   counter-name="definition" class="definition"
   label="&lt;math:definition-label/&gt;"
@@ -103,9 +103,9 @@
 
 
 
-<math:corollary id="" title="" href="">
-<env_ foo="&lt;contents/&gt;">
-<if href=""><block protect_="title,id,label,contents"
+<math:corollary id="" title="" href=""
+><env_ foo="&lt;contents/&gt;"
+><if href=""><block protect_="title,id,label,contents"
   with-contents="true"
   counter-name="corollary" class="corollary"
   label="&lt;math:corollary-label/&gt;"
@@ -121,8 +121,8 @@
 
 
 
-<remark id="" title="" href="">
-<if href=""><block protect_="title,id"
+<remark id="" title="" href=""
+><if href=""><block protect_="title,id"
   counter-name="remark" class="remark"
   label="&lt;math:remark-label/&gt;"
   id="&lt;id/&gt;" title="&lt;title/&gt;"
@@ -133,8 +133,8 @@
 </div></block>
   <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></remark>
 
-<math:proof id="" title="" href="" of="">
-<if href=""><block protect_="title,id"
+<math:proof id="" title="" href="" of=""
+><if href=""><block protect_="title,id"
   with-contents="true"
   counter-name="proof" class="proof"
   label="&lt;math:proof-label/&gt;"
@@ -152,9 +152,9 @@
 </div><!--</div>--></contents></block>
   <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></math:proof>
 
-<math:equation id="" title="" href="">
-<env_ foo="&lt;contents/&gt;">
-<if href=""><block protect_="title,id,contents"
+<math:equation id="" title="" href=""
+><env_ foo="&lt;contents/&gt;"
+><if href=""><block protect_="title,id,contents"
   with-contents="true"
   counter-name="equation" class="equation"
   label="&lt;math:equation-label/&gt;"
@@ -167,10 +167,8 @@
 </span></contents></block>
   <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></env_></math:equation>
 
-<math:eqnarray id="" foo="">
-  <if id=""
+<math:eqnarray id="" foo=""
+><if id=""
   ><table class="eqnarray"><contents/></table
-  ><table id="&lt;id/&gt;" class="eqnarray"><contents/></table></if>
-  </math:eqnarray>
-
+  ><table id="&lt;id/&gt;" class="eqnarray"><contents/></table></if></math:eqnarray>
 </module>
