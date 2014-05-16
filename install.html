@@ -84,6 +84,33 @@ $ opam <span class="hl kwc">install</span> stog</pre>
 <ul>
 
 
+<li><a href="stog-0.12.0.tar.gz">0.12.0</a>
+<span class="date">[April 24, 2014]</span>
+<ul id="changes-0.12.0">
+<li>[fix] missing include in <span class="icode"><span class="hl std">mk-stog-ocaml-session</span></span>,</li>
+<li>install default templates for pages and styles,</li>
+<li><a href="https://zoggy.github.io/stog/running.html#module-path"><span class="icode"><span class="hl std">--mods</span></span></a>
+  adds a directory where to look for modules,</li>
+<li>handling a file or a list of files instead of a directory for
+  <a href="https://zoggy.github.io/stog/single-documents.html">compiling single documents</a>,</li>
+<li><a href="https://zoggy.github.io/stog/running.html#template-path">--tmpl</a>
+  now adds a directory to look for templates,</li>
+<li>OCaml toplevel output now highlights code corresponding to
+  warnings and errors; use <span class="icode"><span class="hl std">highlight-locs=&quot;false&quot;</span></span> in <span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span>
+  to disable; when enabled, use <span class="icode"><span class="hl std">print-locs=&quot;true&quot;</span></span> in <span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span>
+  to force printing also the warning and error locations.
+  To highlight the code, <span class="icode"><span class="hl kwa">&lt;span</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;warning-loc&quot;</span><span class="hl kwa">&gt;</span></span>
+   and <span class="icode"><span class="hl kwa">&lt;span</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;error-loc&quot;</span><span class="hl kwa">&gt;</span></span> nodes are added,</li>
+<li>use more HTML blocks in output of <span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span></span>:
+  <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;stderr&quot;</span><span class="hl kwa">/&gt;</span></span>,
+  <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;stdout&quot;</span><span class="hl kwa">/&gt;</span></span>,
+  <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;toplevel-out&quot;</span><span class="hl kwa">/&gt;</span></span>.
+</li>
+</ul>
+</li>
+
+
+
 <li><a href="stog-0.11.1.tar.gz">0.11.1</a>
 <span class="date">[March 21, 2014]</span>
 <ul id="changes-0.11.1">
@@ -447,6 +474,7 @@ $ opam install stog
 
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Or pick one of the releases:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.12.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.11.1&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.11.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.10.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
@@ -489,7 +517,7 @@ and </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span>
 
 
 <div id="footer">
-<div class="generatedon">Generated on May 16, 2014 at 14h17</div>
+<div class="generatedon">Generated on May 16, 2014 at 14h21</div>
 </div>
 
 
