@@ -1,5 +1,6 @@
 <ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_engine</title><contents><div class="ocamldoc-page">
 <code class="code"><span class="keyword">sig</span><br/>
+&#160;&#160;<span class="keyword">exception</span>&#160;<span class="constructor">Cant_open_cache_file</span>&#160;<span class="keyword">of</span>&#160;string<br/>
 &#160;&#160;<span class="keyword">type</span>&#160;<span class="keywordsign">'</span>a&#160;level_fun&#160;=<br/>
 &#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Fun_stog</span>&#160;<span class="keyword">of</span><br/>
 &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(<span class="constructor">Stog_types</span>.stog&#160;<span class="constructor">Xtmpl</span>.env&#160;<span class="keywordsign">-&gt;</span><br/>
@@ -36,9 +37,13 @@
 &#160;&#160;&#160;&#160;st_docs&#160;:&#160;<span class="constructor">Stog_types</span>.<span class="constructor">Doc_set</span>.t;<br/>
 &#160;&#160;}<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;run&#160;:<br/>
-&#160;&#160;&#160;&#160;?use_cache:bool&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_engine</span>.stog_state&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_engine</span>.stog_state<br/>
+&#160;&#160;&#160;&#160;?use_cache:bool&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;?default_style:<span class="constructor">Xtmpl</span>.tree&#160;list&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_engine</span>.stog_state&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_engine</span>.stog_state<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;generate&#160;:<br/>
 &#160;&#160;&#160;&#160;?use_cache:bool&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;?gen_cache:bool&#160;<span class="keywordsign">-&gt;</span><br/>
+&#160;&#160;&#160;&#160;?default_style:<span class="constructor">Xtmpl</span>.tree&#160;list&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;?only_docs:string&#160;list&#160;<span class="keywordsign">-&gt;</span><br/>
 &#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;(<span class="keyword">module</span>&#160;<span class="constructor">Stog_engine</span>.<span class="constructor">Module</span>)&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;doc_dst&#160;:<br/>

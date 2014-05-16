@@ -44,6 +44,8 @@ LESSC=lessc
 
 .PHONY: build site test style
 
+all: build
+
 build:
 	for i in html css rss svg png; do rm -fr $(DEST_DIR)/*.$$i ; done
 	rm -f $(DEST_DIR)/*/*html

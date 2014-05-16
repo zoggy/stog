@@ -222,16 +222,18 @@ $(MK_STOG_OCAML): $(LIB) $(OCAML_SESSION_CMOFILES)
 ##########
 .PHONY: doc webdoc ocamldoc
 
+SOURCE_FILES=`ls $(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli) 2>/dev/null | grep -v stog_filter_parser.mli`
 ocamldoc:
 	$(MKDIR) ocamldoc
 	$(OCAMLFIND) ocamldoc -package $(PACKAGES) -rectypes -sort -d ocamldoc -html -t "Stog" \
-	$(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli)
+	$(SOURCE_FILES)
 
 PKGS := $(shell echo $(PACKAGES) | sed -e "s/,/ /g")
 depocamldoc:
 	$(MKDIR) ocamldoc
-	$(OCAMLDOC) `$(OCAMLFIND) query -i-format $(PKGS) -r` -rectypes -d ocamldoc -g odoc_depgraph.cmxs -t "Stog" \
-	$(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli) -width 700 -height 700
+	$(OCAMLDOC) `$(OCAMLFIND) query -i-format $(PKGS) -r` \
+	-rectypes -d ocamldoc -g odoc_depgraph.cmxs -t "Stog" \
+	$(SOURCE_FILES)	-width 700 -height 700
 
 doc:
 	rm -fr doc-output/
@@ -244,10 +246,11 @@ docstog: $(ODOC)
 	$(MKDIR) doc/ref-doc
 	rm -fr doc/ref-doc/*html
 	OCAMLFIND_COMMANDS="ocamldoc=ocamldoc.opt" \
-	$(OCAMLDOC) -rectypes `$(OCAMLFIND) query -i-format $(PKGS) -r` -d doc/ref-doc \
+	ocamldoc.opt -rectypes `$(OCAMLFIND) query -i-format $(PKGS) -r` -d doc/ref-doc \
 	-t "Stog library reference documentation" -short-functors \
-	-g odoc_depgraph.cmxs -g ./$(ODOC) -width 700 -height 700 -dot-options '-Nfontsize=40. -Earrowsize=3.0 -Ecolor="#444444" ' \
-	$(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli)
+	-g odoc_depgraph.cmxs -g ./$(ODOC) -width 700 -height 700 -dot-reduce \
+	-dot-options '-Nfontsize=40. -Granksep=0.1 -Earrowsize=3.0 -Ecolor="#444444" ' \
+	$(SOURCE_FILES)
 
 ##########
 install: install-lib install-share install-bin
