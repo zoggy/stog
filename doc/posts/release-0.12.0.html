@@ -8,7 +8,26 @@ published="true"
 Release 0.12.0 of stog is available from the <page href="/install"/> page.
 </p>
 <sep_/>
-<p>Changes include:</p>
+<p>Changes:</p>
 <ul id="changes">
+<li>[fix] missing include in <icode>mk-stog-ocaml-session</icode>,</li>
+<li>install default templates for pages and styles,</li>
+<li><doc href="running#module-path"><icode>--mods</icode></doc>
+  adds a directory where to look for modules,</li>
+<li>handling a file or a list of files instead of a directory for
+  <doc href="single-documents">compiling single documents</doc>,</li>
+<li><doc href="running#template-path">--tmpl</doc>
+  now adds a directory to look for templates,</li>
+<li>OCaml toplevel output now highlights code corresponding to
+  warnings and errors; use <ixml>highlight-locs="false"</ixml> in <ixml>&lt;ocaml-eval ...&gt;</ixml>
+  to disable; when enabled, use <ixml>print-locs="true"</ixml> in <ixml>&lt;ocaml-eval ...&gt;</ixml>
+  to force printing also the warning and error locations.
+  To highlight the code, <ixml>&lt;span class="warning-loc"&gt;</ixml>
+   and <ixml>&lt;span class="error-loc"&gt;</ixml> nodes are added,</li>
+<li>use more HTML blocks in output of <ixml>&lt;ocaml-eval&gt;</ixml>:
+  <ixml>&lt;div class="stderr"/&gt;</ixml>,
+  <ixml>&lt;div class="stdout"/&gt;</ixml>,
+  <ixml>&lt;div class="toplevel-out"/&gt;</ixml>.
+</li>
 </ul>
 </post>
