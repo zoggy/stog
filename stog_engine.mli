@@ -30,6 +30,9 @@
 
 open Stog_types;;
 
+(** Exception raised when a cache file of a loaded plugin could not be open.*)
+exception Cant_open_cache_file of string
+
 (** A function associated to a level. All functions take in parameter
   the environment, the stog and structure and the list of documents
   to rewrite. They return the new stog structure. Some

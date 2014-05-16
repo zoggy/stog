@@ -310,6 +310,9 @@ let main () =
     exit err
   with
     e when !debug -> raise e
+  | Stog_engine.Cant_open_cache_file cache_file ->
+      let msg = "Could open cache file "^cache_file^"\nYou should run stog once with --nocache" in
+      Stog_misc.safe_main (fun () -> failwith msg)
   | e -> Stog_misc.safe_main (fun () -> raise e)
 ;;
 

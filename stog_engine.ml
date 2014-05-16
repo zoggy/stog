@@ -31,6 +31,8 @@
 open Stog_types;;
 module Smap = Stog_types.Str_map;;
 
+exception Cant_open_cache_file of string
+
 type 'a level_fun =
   | Fun_stog of (stog Xtmpl.env -> stog -> Stog_types.Doc_set.t -> stog)
   | Fun_data of ('a Xtmpl.env -> stog * 'a -> Stog_types.Doc_set.t -> stog * 'a)
@@ -178,7 +180,10 @@ let apply_loaders state doc =
   let f_modul e =
     let module E = (val e : Module) in
     let cache_file = cache_file E.modul.mod_name state.st_stog doc in
-    let ic = open_in_bin cache_file in
+    let ic =
+      try open_in_bin cache_file
+      with _ -> raise (Cant_open_cache_file cache_file)
+    in
     let t = input_value ic in
     close_in ic;
     let data = E.cache_load state.st_stog E.modul.mod_data doc t in
