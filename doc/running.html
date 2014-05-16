@@ -93,10 +93,17 @@ for <icode>stog.byte</icode> or native-code for <icode>stog</icode>.
 <p>The <icode>--lang</icode> option is used to generate the website
 for one language. By default, the only known languages are "en" and "fr".
 If you use the <icode>--lang en</icode> option, then pages will be generated
-in <icode>.en.html</icode> files and all <ixml>&lt;fr&gt;</ixml> nodes will be removed.
+in <icode>.html.en</icode> files and all <ixml>&lt;fr&gt;</ixml> nodes will be removed.
 Then you can run <icode>stog</icode> with the <icode>--lang fr</icode>
 to generate the "fr" part of your web site, removing all <ixml>&lt;en&gt;</ixml>.
 </p>
+<p>
+The default language is "en". It is used when generating date representations.
+The default language can be changed by using the <icode>--default-lang</icode> option,
+for example:
+</p>
+<command>stog --default-lang fr ...</command>
+<p>will generate pages with no language suffix, but with dates printed in french.</p>
 <!--
 <p>
 If you need more languages, just define "stog:languages" in the main document
