@@ -34,3 +34,5 @@ val load_files : string list -> unit
 
 val load_packages : (string list -> unit)
 
+(** @raise Failure is file has no extension. *)
+val check_file_has_extension : string -> unit

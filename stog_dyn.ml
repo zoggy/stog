@@ -79,8 +79,15 @@ let hack_load_file file =
             )
 ;;
 
+let check_file_has_extension file =
+  try ignore(Filename.chop_extension file)
+  with _ ->
+    failwith ("Filename "^file^" has no extension.");
+;;
+
 let load_files =
   let load_file file =
+    check_file_has_extension file ;
     if !hack_cmxs then
       hack_load_file file
     else
