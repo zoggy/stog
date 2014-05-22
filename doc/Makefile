@@ -56,6 +56,7 @@ site: style plugins/rdf_fig.svg
 	$(STOG) -d $(DEST_DIR) \
 		--tmpl $(ROOT)/share/templates\
 		--mods $(ROOT)/share/modules \
+		--site-url https://zoggy.github.io/stog \
 		$(ROOT)/examples/article-example.html
 	$(STOG) $(STOG_OPTIONS) .
 
