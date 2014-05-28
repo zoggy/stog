@@ -1,3 +1,8 @@
+Next release:
+* use-parent-path="false" in <cut-doc> not to use parent path when
+  forging new elements' path
+* improve provided templates and math module
+
 Release 0.12.0:
 * fix: missing include in mk-stog-ocaml-session
 * install default templates for pages and styles
