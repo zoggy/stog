@@ -154,7 +154,7 @@ let generate_from_files files =
       let stog = Stog_types.create_stog dir in
       let stog = { stog with stog_tmpl_dirs = [dir] } in
       let doc = Stog_io.doc_of_file stog file in
-      let doc = { doc with doc_src = file } in
+      (*let doc = { doc with doc_src = file } in*)
       Stog_types.add_doc stog doc
     in
     let stogs = List.map load_doc files in

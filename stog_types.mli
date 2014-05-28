@@ -50,7 +50,7 @@ type doc = {
   doc_keywords : string list ;
   doc_topics : string list ;
   doc_defs : def list ;
-  doc_src : string ;
+  doc_src : string ; (* path of the source file, relative to the stog directory *)
   doc_sets : string list ; (** list of sets ("blog", "foo", etc.) this document belongs to *)
   doc_lang_dep : bool ; (** whether a file must be generated for each language *)
   doc_xml_doctype : string option ;
