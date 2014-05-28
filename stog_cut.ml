@@ -41,6 +41,7 @@ type cutpoint =
     cut_doc_type : string ;
     cut_path_sep : string ;
     cut_insert_link : bool ;
+    cut_use_parent_path : bool ;
   }
 ;;
 
@@ -63,8 +64,10 @@ let cutpoint_of_atts doc atts =
   in
   let sep = Xtmpl.opt_arg_cdata atts ~def: "-" ("", Stog_tags.path_sep) in
   let insert_link = not (Xtmpl.opt_arg_cdata atts ~def: "true" ("","insert-link") = "false") in
+  let use_parent_path = not (Xtmpl.opt_arg_cdata atts ~def: "true" ("","use-parent-path") = "false") in
   { cut_tag = tag ; cut_doc_type = typ ;
     cut_path_sep = sep ; cut_insert_link = insert_link ;
+    cut_use_parent_path = use_parent_path ;
   }
 ;;
 
@@ -123,14 +126,20 @@ let add_doc links stog doc =
   Stog_types.add_doc stog doc
 ;;
 
-let mk_path path sep id =
+let mk_path use_parent_path path sep id =
   let path_s = Stog_path.to_string path in
   match Stog_misc.filename_extension path_s with
     "" ->
       let msg =  "To be cut, " ^path_s ^ " should have an extension (e.g. \".html\")" in
       failwith msg
   | ext ->
-      let p = (Filename.chop_extension path_s) ^ sep ^ id ^ "." ^ ext in
+      let p =
+        if use_parent_path then
+          (Filename.chop_extension path_s) ^ sep ^ id
+        else
+          "/" ^ id
+      in
+      let p = p ^ "." ^ ext in
       Stog_path.of_string p
 ;;
 
@@ -208,7 +217,7 @@ let cut_docs =
                     raise Not_found
                 | Some s -> s
               in
-              let new_path = mk_path new_path cp.cut_path_sep id in
+              let new_path = mk_path cp.cut_use_parent_path new_path cp.cut_path_sep id in
               let stog = set_id_map stog doc.doc_path atts new_path false in
               let (stog, xmls, new_docs, links2) =
                 List.fold_right (fold doc new_path cutpoints)

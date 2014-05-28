@@ -75,7 +75,7 @@ let mk_doc path_sep doc_id (stog,doc) = function
               in
               failwith msg
           | Some id ->
-              Stog_cut.mk_path doc.doc_path path_sep id
+              Stog_cut.mk_path true doc.doc_path path_sep id
     in
     let new_doc = { doc with doc_out = None ; doc_type = typ ; doc_path = path } in
     let new_doc = Stog_io.fill_doc_from_atts_and_subs new_doc atts subs in

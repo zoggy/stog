@@ -29,11 +29,12 @@
 (** Cutting documents into pieces. This function is associated to
   a level in the [Base] module. *)
 
-(** [mk_path path sep id] forges a new path using the given one,
-  the given separator and the given id.
+(** [mk_path use_parent_path path sep id] forges a new path using the given one
+  (if [use_parent_path = true]), the given separator (if [use_parent_path = true])
+  and the given id.
   @raise Failure if the given [path] has no extension.
 *)
-val mk_path : Stog_path.path -> string -> string -> Stog_path.path
+val mk_path : bool -> Stog_path.path -> string -> string -> Stog_path.path
 
 val cut_docs :
   Stog_types.stog Xtmpl.env ->
