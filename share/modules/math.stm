@@ -121,7 +121,7 @@
 
 
 
-<remark id="" title="" href=""
+<math:remark id="" title="" href=""
 ><if href=""><block protect_="title,id"
   counter-name="remark" class="remark"
   label="&lt;math:remark-label/&gt;"
@@ -131,7 +131,7 @@
   <div class="title"><title/></div>
   <div class="contents"><contents/></div>
 </div></block>
-  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></remark>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></math:remark>
 
 <math:proof id="" title="" href="" of=""
 ><if href=""><block protect_="title,id"

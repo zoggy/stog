@@ -1,6 +1,6 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed);
 
-@import url(http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic);
 /*!
  * Bootstrap v2.3.0
  *
@@ -5288,7 +5288,7 @@ a.badge:focus {
   float: right ;
 }
 /*
-@import url(http://fonts.googleapis.com/css?family=Oswald:400,300&subset=latin,latin-ext);
+@import url(https://fonts.googleapis.com/css?family=Oswald:400,300&subset=latin,latin-ext);
 */
 .bib-entry {
   margin-bottom: 1em;
@@ -5334,7 +5334,8 @@ body {
   margin-left: auto;
   *zoom: 1;
   width: 760px;
-  text-align: justify;
+  /*text-align: justify;*/
+
 }
 #page:before,
 #page:after {
@@ -5351,6 +5352,7 @@ body {
 div.navleft {
   position: relative;
   float: left;
+  width: 45%;
   background-image: url('left.png');
   background-repeat: no-repeat;
   background-position: left;
@@ -5360,6 +5362,7 @@ div.navright {
   position: relative;
   float: right;
   text-align: right ;
+  width: 45%;
   background-image: url('right.png');
   background-repeat: no-repeat;
   background-position: right;
@@ -5883,6 +5886,15 @@ img.latex {
   line-height: 0.832408435072142em;
   margin-bottom: 0.832408435072142em;
 }
+.chapter {
+  margin-bottom: 1.5em;
+}
+div.chapter-title {
+  font-size: 1.602em;
+  margin-bottom: 0.9363295880149812em;
+  line-height: 0.9363295880149812em;
+  border-color: #333333;
+}
 .section {
   margin-bottom: 1.5em;
 }
@@ -6003,6 +6015,8 @@ div.figure div.contents div.legend {
   text-align: justified ;
   margin-left: 2em;
   margin-right: 2em;
+  font-size: 0.889em;
+  font-style: italic ;
 }
 div.theorem {
   margin-top: 1em;
@@ -6019,6 +6033,7 @@ div.theorem {
   background-color: #d5ffd5;
   background-color: #eeeeff;
   border-width: 0 2px 0 2px;
+  margin-bottom: 1.5em;
 }
 div.theorem div.title {
   font-weight: bold;
@@ -6031,6 +6046,66 @@ div.theorem div.contents {
   padding-bottom: 0;
 }
 div.theorem p {
+  margin-bottom: 0;
+}
+div.property {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 0 3px 2px;
+  border: 1px solid #006f00;
+  display: block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #d5ffd5;
+  background-color: #eeeeff;
+  border-width: 0 2px 0 2px;
+  margin-bottom: 1.5em;
+}
+div.property div.title {
+  font-weight: bold;
+}
+div.property div.contents {
+  padding: 0.5em;
+}
+div.property div.contents {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+div.property p {
+  margin-bottom: 0;
+}
+div.corollary {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 0 3px 2px;
+  border: 1px solid #006f00;
+  display: block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #d5ffd5;
+  background-color: #eeeeff;
+  border-width: 0 2px 0 2px;
+  margin-bottom: 1.5em;
+}
+div.corollary div.title {
+  font-weight: bold;
+}
+div.corollary div.contents {
+  padding: 0.5em;
+}
+div.corollary div.contents {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+div.corollary p {
   margin-bottom: 0;
 }
 div.definition {
@@ -6048,6 +6123,7 @@ div.definition {
   background-color: #d5ffd5;
   background-color: #eeeeff;
   border-width: 0 2px 0 2px;
+  margin-bottom: 1.5em;
 }
 div.definition div.title {
   font-weight: bold;
@@ -6077,6 +6153,7 @@ div.lemma {
   background-color: #d5ffd5;
   background-color: #eeeeff;
   border-width: 0 2px 0 2px;
+  margin-bottom: 1.5em;
 }
 div.lemma div.title {
   font-weight: bold;
@@ -6106,6 +6183,7 @@ div.prop {
   background-color: #d5ffd5;
   background-color: #eeeeff;
   border-width: 0 2px 0 2px;
+  margin-bottom: 1.5em;
 }
 div.prop div.title {
   font-weight: bold;
@@ -6135,6 +6213,7 @@ div.remark {
   background-color: #d5ffd5;
   background-color: #eeeeff;
   border-width: 0 2px 0 2px;
+  margin-bottom: 1.5em;
 }
 div.remark div.title {
   font-weight: bold;
@@ -6164,6 +6243,7 @@ div.proof {
   background-color: #d5ffd5;
   background-color: #eeeeff;
   border-width: 0 2px 0 2px;
+  margin-bottom: 1.5em;
   border-width: 0 2px 0 2px ;
   background-color: #eeeeee;
 }
@@ -6207,7 +6287,8 @@ span.equation .contents {
 table.eqnarray {
   margin-left: auto;
   margin-right: auto;
-  width: 100%;
+  /*width: 100%;*/
+
 }
 table.eqnarray td {
   padding-left: 0.2em ;
@@ -6254,4 +6335,7 @@ body {
 }
 .latex-defs {
   display: none ;
+}
+#page {
+  text-align: justify ;
 }

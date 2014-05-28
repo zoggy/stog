@@ -31,6 +31,7 @@ div.eqn {
    padding-bottom: 0;
   }
  p { margin-bottom: 0 }
+ margin-bottom: 1.5em;
 }
 
 div.figure {
@@ -41,11 +42,21 @@ div.figure {
       text-align: justified ;
       margin-left: 2em;
       margin-right: 2em;
+      font-size: 1em * @decreaseFontSizeFactor ;
+      font-style: italic ;
       }
   }
 }
 
 div.theorem {
+  .myenumblock ();
+}
+
+div.property {
+  .myenumblock ();
+}
+
+div.corollary {
   .myenumblock ();
 }
 
@@ -83,7 +94,7 @@ span.equation {
 table.eqnarray {
   margin-left: auto;
   margin-right: auto;
-  width: 100%;
+  /*width: 100%;*/
   td { padding-left: 0.2em ; padding-right: 0.2em; }
   tr { height: @baseLineHeight * 2; }
   td.right { text-align: right ; }
