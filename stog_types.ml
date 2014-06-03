@@ -301,7 +301,10 @@ let add_path =
       (*prerr_endline (Printf.sprintf "rev_path=%s" (String.concat "/" rev_path));*)
       match rev_path with
       | "index.html" :: q
-      | "index" :: q ->
+      | "index" :: q when not fail ->
+          (* if [fail = false] then we already added the path with index.html,
+             so we do not add the path for index. *)
+
           (*prerr_endline (Printf.sprintf "add again %s" (String.concat "/" q));*)
           (* also make this document accessible without "index" *)
           Path_trie.add ~fail q id map
