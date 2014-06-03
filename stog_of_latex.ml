@@ -266,6 +266,8 @@ let tokenize =
           iter source len Normal ((Tex_command " ") :: acc) bchar (i+1)
        | Escaping, '%' ->
           iter source len Normal ((Tex '%') :: acc) bchar (i+1)
+       | Escaping, '#' ->
+          iter source len Normal ((Tex '#') :: acc) bchar (i+1)
        | Escaping, c ->
            if is_com_char c then
              iter source len (Command (String.make 1 c)) acc bchar (i+1)
@@ -370,6 +372,33 @@ let count_newlines =
      iter s len 0 0
 ;;
 
+
+let to_xml =
+  let rec iter = function
+    Source s -> Xtmpl.D s
+  | Block ({ tag = ("","[") } as b) ->
+     let subs = (Xtmpl.D "[") :: (List.map iter b.subs) @ [ Xtmpl.D "]"] in
+     Xtmpl.E (("","span"), Xtmpl.atts_empty, subs)
+  | Block b ->
+     let atts =
+        (match b.title with
+          [] -> []
+        | t when b.tag = ("", "figure") -> []
+          (* hack: do not use figure option as title, because optional arg
+            is used for position *)
+        | t -> [("","title"), (List.map iter t)]
+        ) @
+        (match b.id with
+           None -> []
+         | Some id -> [("","id"), [ Xtmpl.D id ] ]
+        )
+     in
+     let atts = Xtmpl.atts_of_list ~atts: b.atts atts in
+     Xtmpl.E (b.tag, atts, List.map iter b.subs)
+  in
+  fun l -> List.map iter l
+;;
+
 let rec blocks_of_tokens map tokens =
   let rec add_chars b = function
   | (Tex c) :: q ->
@@ -420,10 +449,38 @@ let rec blocks_of_tokens map tokens =
      iter ((List.rev xmls) @ acc) q
   and command acc name tokens =
     match try Some(SMap.find name map) with Not_found -> None with
-     None -> iter ((Source ("\\"^name^"{}")) :: acc) tokens
+     None -> (*iter ((Source ("\\"^name^"{}")) :: acc) tokens*)
+       begin
+         let (params, tokens) = command_params [] tokens in
+         match params with
+           [] ->
+            let b = block ("", name) [] in
+            iter ((Block b) :: acc) tokens
+         | last :: rest ->
+            let atts =
+              let rec iter atts n = function
+                [] -> atts
+              | h :: q ->
+                  let xmls = to_xml h in
+                  let s = "p"^(string_of_int n) in
+                  let atts = Xtmpl.atts_one ~atts ("", s) xmls in
+                  iter atts (n-1) q
+              in
+              iter Xtmpl.atts_empty (List.length rest - 1) rest
+            in
+            let b = block ~atts ("", name) last in
+            iter ((Block b) :: acc) tokens
+       end
    | Some f ->
        let (res, tokens) = f name (blocks_of_tokens map) tokens in
        iter ((List.rev res) @ acc) tokens
+  (* beware that [command_params] returns params in reverse order, as
+     we want to treat the last one specially in [command] *)
+  and command_params acc = function
+    Tex_block ('{', tokens) :: q ->
+      command_params ((blocks_of_tokens map tokens) :: acc) q
+  | tokens ->
+      (acc, tokens)
   in
   iter [] tokens
 ;;
@@ -1078,31 +1135,6 @@ let rec map_block map = function
 
 and map_blocks map l = List.flatten (List.map (map_block map) l);;
 
-let to_xml =
-  let rec iter = function
-    Source s -> Xtmpl.D s
-  | Block ({ tag = ("","[") } as b) ->
-     let subs = (Xtmpl.D "[") :: (List.map iter b.subs) @ [ Xtmpl.D "]"] in
-     Xtmpl.E (("","span"), Xtmpl.atts_empty, subs)
-  | Block b ->
-     let atts =
-        (match b.title with
-          [] -> []
-        | t when b.tag = ("", "figure") -> []
-          (* hack: do not use figure option as title, because optional arg
-            is used for position *)
-        | t -> [("","title"), (List.map iter t)]
-        ) @
-        (match b.id with
-           None -> []
-         | Some id -> [("","id"), [ Xtmpl.D id ] ]
-        )
-     in
-     let atts = Xtmpl.atts_of_list ~atts: b.atts atts in
-     Xtmpl.E (b.tag, atts, List.map iter b.subs)
-  in
-  fun l -> List.map iter l
-;;
 
 let rec resolve_includes com dir s =
   let re_include = Str.regexp ("\\\\"^com^"{\\([^}]+\\)}") in
