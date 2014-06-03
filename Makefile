@@ -329,7 +329,7 @@ configure: configure.ac
 	autoconf
 
 #############
-.PRECIOUS: stog_filter_lexer.ml stog_filter_lexer.mli stog_filter_parser.ml
+.PRECIOUS: stog_filter_lexer.ml stog_filter_lexer.mli stog_filter_parser.ml stog_filter_parser.mli
 
 #%.cmi:%.mli
 #	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) $(OCAMLPP) $(COMPFLAGS) -c $<
@@ -365,6 +365,6 @@ $(PLUGINS_OPT): $(LIB)
 .PHONY: clean depend
 
 .depend depend:
-	$(OCAMLFIND) ocamldep -pp $(CAMLP4O) *.ml *.mli > .depend
+	$(OCAMLFIND) ocamldep stog*.ml stog*.mli > .depend
 
 include .depend
