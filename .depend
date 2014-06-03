@@ -1,15 +1,9 @@
-foo.cmo :
-foo.cmx :
-latex2stog.cmo : stog_of_latex.cmi stog_misc.cmi
-latex2stog.cmx : stog_of_latex.cmx stog_misc.cmx
-odoc_stog.cmo :
-odoc_stog.cmx :
-stog_blocks.cmo : stog_types.cmi stog_tags.cmi stog_path.cmi stog_msg.cmi \
-    stog_misc.cmi stog_io.cmi stog_html.cmi stog_engine.cmi stog_deps.cmi \
-    stog_blocks.cmi
-stog_blocks.cmx : stog_types.cmx stog_tags.cmx stog_path.cmx stog_msg.cmx \
-    stog_misc.cmx stog_io.cmx stog_html.cmx stog_engine.cmx stog_deps.cmx \
-    stog_blocks.cmi
+stog_blocks.cmo : stog_types.cmi stog_tmpl.cmi stog_tags.cmi stog_path.cmi \
+    stog_msg.cmi stog_misc.cmi stog_io.cmi stog_html.cmi stog_engine.cmi \
+    stog_deps.cmi stog_blocks.cmi
+stog_blocks.cmx : stog_types.cmx stog_tmpl.cmx stog_tags.cmx stog_path.cmx \
+    stog_msg.cmx stog_misc.cmx stog_io.cmx stog_html.cmx stog_engine.cmx \
+    stog_deps.cmx stog_blocks.cmi
 stog_config.cmo : stog_msg.cmi stog_misc.cmi stog_config.cmi
 stog_config.cmx : stog_msg.cmx stog_misc.cmx stog_config.cmi
 stog_cut.cmo : stog_types.cmi stog_tags.cmi stog_path.cmi stog_msg.cmi \
@@ -29,13 +23,13 @@ stog_engine.cmx : stog_types.cmx stog_tmpl.cmx stog_tmap.cmx stog_tags.cmx \
     stog_path.cmx stog_msg.cmx stog_misc.cmx stog_html5.cmx stog_find.cmx \
     stog_deps.cmx stog_engine.cmi
 stog_filter.cmo : stog_types.cmi stog_tmap.cmi stog_filter_types.cmi \
-    stog_filter_parser.cmi stog_filter_lexer.cmi stog_filter.cmi
+    stog_filter_parser.cmo stog_filter_lexer.cmi stog_filter.cmi
 stog_filter.cmx : stog_types.cmx stog_tmap.cmx stog_filter_types.cmx \
     stog_filter_parser.cmx stog_filter_lexer.cmx stog_filter.cmi
-stog_filter_lexer.cmo : stog_filter_parser.cmi stog_filter_lexer.cmi
+stog_filter_lexer.cmo : stog_filter_parser.cmo stog_filter_lexer.cmi
 stog_filter_lexer.cmx : stog_filter_parser.cmx stog_filter_lexer.cmi
-stog_filter_parser.cmo : stog_filter_types.cmi stog_filter_parser.cmi
-stog_filter_parser.cmx : stog_filter_types.cmx stog_filter_parser.cmi
+stog_filter_parser.cmo : stog_filter_types.cmi
+stog_filter_parser.cmx : stog_filter_types.cmx
 stog_filter_types.cmo : stog_filter_types.cmi
 stog_filter_types.cmx : stog_filter_types.cmi
 stog_find.cmo : stog_find.cmi
@@ -62,8 +56,12 @@ stog_html.cmx : stog_types.cmx stog_tmpl.cmx stog_tags.cmx stog_svg.cmx \
     stog_engine.cmx stog_deps.cmx stog_cut.cmx stog_html.cmi
 stog_html5.cmo : stog_types.cmi stog_html5.cmi
 stog_html5.cmx : stog_types.cmx stog_html5.cmi
-stog_info.cmo : stog_types.cmi stog_tmap.cmi stog_misc.cmi stog_info.cmi
-stog_info.cmx : stog_types.cmx stog_tmap.cmx stog_misc.cmx stog_info.cmi
+stog_info.cmo : stog_types.cmi stog_tmap.cmi stog_misc.cmi \
+    stog_filter_types.cmi stog_info.cmi
+stog_info.cmx : stog_types.cmx stog_tmap.cmx stog_misc.cmx \
+    stog_filter_types.cmx stog_info.cmi
+stog_install.cmo : stog_install.cmi
+stog_install.cmx : stog_install.cmi
 stog_intl.cmo : stog_types.cmi stog_intl.cmi
 stog_intl.cmx : stog_types.cmx stog_intl.cmi
 stog_io.cmo : stog_types.cmi stog_path.cmi stog_msg.cmi stog_misc.cmi \
@@ -79,11 +77,11 @@ stog_list.cmo : stog_types.cmi stog_misc.cmi stog_io.cmi stog_filter.cmi \
 stog_list.cmx : stog_types.cmx stog_misc.cmx stog_io.cmx stog_filter.cmx \
     stog_engine.cmx stog_list.cmi
 stog_main.cmo : stog_types.cmi stog_ocaml.cmi stog_msg.cmi stog_misc.cmi \
-    stog_io.cmi stog_intl.cmi stog_info.cmi stog_engine.cmi stog_dyn.cmi \
-    stog_config.cmi
+    stog_io.cmi stog_intl.cmi stog_install.cmi stog_info.cmi stog_html.cmi \
+    stog_filter.cmi stog_engine.cmi stog_dyn.cmi
 stog_main.cmx : stog_types.cmx stog_ocaml.cmx stog_msg.cmx stog_misc.cmx \
-    stog_io.cmx stog_intl.cmx stog_info.cmx stog_engine.cmx stog_dyn.cmx \
-    stog_config.cmx
+    stog_io.cmx stog_intl.cmx stog_install.cmx stog_info.cmx stog_html.cmx \
+    stog_filter.cmx stog_engine.cmx stog_dyn.cmx
 stog_misc.cmo : stog_misc.cmi
 stog_misc.cmx : stog_misc.cmi
 stog_msg.cmo : stog_msg.cmi
@@ -121,12 +119,11 @@ stog_tmpl.cmx : stog_types.cmx stog_msg.cmx stog_misc.cmx stog_deps.cmx \
 stog_trie.cmo : stog_trie.cmi
 stog_trie.cmx : stog_trie.cmi
 stog_types.cmo : stog_trie.cmi stog_tmap.cmi stog_path.cmi stog_misc.cmi \
-    stog_graph.cmi stog_config.cmi stog_types.cmi
+    stog_install.cmi stog_graph.cmi stog_filter_types.cmi stog_config.cmi \
+    stog_types.cmi
 stog_types.cmx : stog_trie.cmx stog_tmap.cmx stog_path.cmx stog_misc.cmx \
-    stog_graph.cmx stog_config.cmx stog_types.cmi
-test_xtmpl.cmo :
-test_xtmpl.cmx :
-errors.cmi :
+    stog_install.cmx stog_graph.cmx stog_filter_types.cmx stog_config.cmx \
+    stog_types.cmi
 stog_blocks.cmi : stog_engine.cmi
 stog_config.cmi :
 stog_cut.cmi : stog_types.cmi stog_path.cmi
@@ -134,8 +131,7 @@ stog_deps.cmi : stog_types.cmi
 stog_dyn.cmi :
 stog_engine.cmi : stog_types.cmi stog_path.cmi
 stog_filter.cmi : stog_types.cmi stog_filter_types.cmi
-stog_filter_lexer.cmi : stog_filter_parser.cmi
-stog_filter_parser.cmi : stog_filter_types.cmi
+stog_filter_lexer.cmi : stog_filter_parser.cmo
 stog_filter_types.cmi :
 stog_find.cmi :
 stog_graph.cmi :
@@ -143,6 +139,7 @@ stog_highlight.cmi :
 stog_html.cmi : stog_types.cmi stog_path.cmi stog_engine.cmi
 stog_html5.cmi :
 stog_info.cmi : stog_types.cmi
+stog_install.cmi :
 stog_intl.cmi : stog_types.cmi
 stog_io.cmi : stog_types.cmi
 stog_latex.cmi : stog_types.cmi
@@ -160,4 +157,5 @@ stog_tags.cmi :
 stog_tmap.cmi :
 stog_tmpl.cmi : stog_types.cmi
 stog_trie.cmi :
-stog_types.cmi : stog_trie.cmi stog_tmap.cmi stog_path.cmi stog_graph.cmi
+stog_types.cmi : stog_trie.cmi stog_tmap.cmi stog_path.cmi stog_graph.cmi \
+    stog_filter_types.cmi
