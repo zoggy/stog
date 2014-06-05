@@ -51,4 +51,13 @@ package "multi-doc" (
   archive(plugin,native) = "stog_multi_doc.cmxs"
 )
 
+package "rel-href" (
+  version = "@VERSION@"
+  description = "Stog relative href plugin"
+  archive(byte) = "stog_rel_href.cmo"
+  archive(native) = "stog_rel_href.cmx"
+  archive(plugin,byte) = "stog_rel_href.cmo"
+  archive(plugin,native) = "stog_rel_href.cmxs"
+)
+
 

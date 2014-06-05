@@ -45,6 +45,7 @@ PLUGINS_BYTE= \
 	plugins/stog_dot.cmo \
 	plugins/stog_markdown.cmo \
 	plugins/stog_multi_doc.cmo \
+	plugins/stog_rel_href.cmo \
 	plugins/plugin_example.cmo
 PLUGINS_OPT=$(PLUGINS_BYTE:.cmo=.cmxs)
 
@@ -170,8 +171,8 @@ $(LATEX2STOG_BYTE): $(LIB_BYTE) latex2stog.cmo
 	$(OCAMLFIND) ocamlc$(P) -o $@ -package $(PACKAGES) -linkall -linkpkg $^
 
 default-styles:
-	lessc doc/less/default-page.less > share/templates/page-style.css
-	lessc doc/less/default-article.less > share/templates/article-style.css
+	lessc doc/less/default-page.less | cleancss -o share/templates/page-style.css
+	lessc doc/less/default-article.less | cleancss -o share/templates/article-style.css
 
 # mk scripts
 $(MK_STOG): $(LIB)
