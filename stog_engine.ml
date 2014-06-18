@@ -583,7 +583,7 @@ let output_doc ~gen_cache state doc =
           "html" -> List.map Stog_html5.hack_self_closed xmls
         | _ -> xmls
       in
-      List.iter (fun xml -> output_string oc (Xtmpl.string_of_xml xml)) xmls;
+      List.iter (fun xml -> output_string oc (Xtmpl.string_of_xml ~xml_atts: false xml)) xmls;
       close_out oc;
       if gen_cache then cache_doc state doc
 ;;

@@ -1,4 +1,6 @@
 Next release:
+* depend on Xtmpl 0.10
+* dump final files unescaping XML code in attributes
 * use-parent-path="false" in <cut-doc> not to use parent path when
   forging new elements' path
 * improve provided templates and math module
