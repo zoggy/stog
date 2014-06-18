@@ -218,7 +218,10 @@ let add_loc_blocks errors code =
   let block err s =
     let cl = if err.warning then "warning-loc" else "error-loc" in
     Xtmpl.E (("","span"),
-     Xtmpl.atts_of_list [("","title"), [Xtmpl.D err.message] ; ("","class"), [Xtmpl.D cl]],
+     Xtmpl.atts_of_list [
+       ("","title"), [Xtmpl.D err.message] ;
+       ("","class"), [Xtmpl.D cl] ;
+     ],
      [Xtmpl.D s])
   in
   let rec f err (l,c) = function
