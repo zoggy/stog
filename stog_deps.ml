@@ -42,7 +42,7 @@ let add_dep stog doc dep =
          this is to force recomputing of parent document when
          one of its children depends on something which changed,
          and in this case the children document must be invalidated too.
-         By adding the same dependency for all (parent and childre),
+         By adding the same dependency for all (parent and children),
          we ensure that none or all are invalidated and will not be loaded
          from cache.*)
       let parent =
