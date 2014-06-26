@@ -550,13 +550,19 @@ let doc_url stog doc =
     (Stog_types.string_of_url stog.stog_base_url) doc
   in
   let len = String.length url in
-  let s = "/index.html" in
-  let len_s = String.length s in
+  (* if url starts with "file", do not eventually remove "/index.html" *)
   let url =
-    if len >= len_s && String.sub url (len - len_s) len_s = s then
-      (String.sub url 0 (len-len_s))^"/"
-    else
+    if len >= 5 && (String.lowercase (String.sub url 0 5)) = "file:" then
       url
+    else
+      begin
+        let s = "/index.html" in
+        let len_s = String.length s in
+        if len >= len_s && String.sub url (len - len_s) len_s = s then
+          (String.sub url 0 (len-len_s))^"/"
+        else
+          url
+      end
   in
   url_of_string url
 ;;
