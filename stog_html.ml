@@ -885,6 +885,23 @@ let fun_date_now stog env args _ =
   let d = Netdate.create (Unix.time()) in
   format_date d Stog_intl.string_of_datetime stog args;;
 
+let fun_print_date_gen f stog args subs =
+  match Xtmpl.merge_cdata_list subs with
+    [Xtmpl.D s] ->
+      begin
+        try
+          let d = Stog_io.date_of_string s in
+          format_date d f stog args
+        with Failure s ->
+          Stog_msg.error s;
+          (stog, [])
+      end
+  | _ -> raise Xtmpl.No_change
+
+let fun_print_date stog env args subs =
+  fun_print_date_gen Stog_intl.string_of_date stog args subs;;
+let fun_print_datetime stog env args subs =
+  fun_print_date_gen Stog_intl.string_of_datetime stog args subs;;
 
 let rec build_base_rules stog doc_id =
   let doc = Stog_types.doc stog doc_id in
@@ -957,6 +974,8 @@ let rec build_base_rules stog doc_id =
       ("", Stog_tags.doc_intro), mk f_intro ;
       ("", Stog_tags.doc_keywords), mk html_of_keywords ;
       ("", Stog_tags.doc_navpath), mk fun_doc_navpath ;
+      ("", Stog_tags.print_date), fun_print_date ;
+      ("", Stog_tags.print_datetime), fun_print_datetime ;
       ("", Stog_tags.doc_src), mk f_src ;
       ("", Stog_tags.doc_title), mk f_title ;
       ("", Stog_tags.doc_topics), mk html_of_topics ;

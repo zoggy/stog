@@ -94,6 +94,8 @@ val prefix_svg_ids : string
 val prepare_toc : string
 val previous : string
 val previous_path : string
+val print_date : string
+val print_datetime : string
 val search_form : string
 val section : string
 val subsection : string
