@@ -76,5 +76,5 @@ let server sockaddr =
 let run_server host port =
   prerr_endline ("setting up websocket server on host="^host^", port="^(string_of_int port));
   Lwt_io_ext.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
-    Lwt.return (server sa) >>= fun _ -> wait_forever ()
+    Lwt.return (server sa)
 ;;
