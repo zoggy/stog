@@ -34,7 +34,9 @@ PBYTE=#p -p a
 PACKAGES=xmlm,xtmpl,netstring,config-file,dynlink,unix,str,higlo.lexers
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
 
-OF_FLAGS=-package $(PACKAGES)
+SERVER_PACKAGES=lwt.unix,xmldiff
+
+OF_FLAGS=-package $(PACKAGES),$(SERVER_PACKAGES)
 
 COMPFLAGS=-I +ocamldoc -annot -rectypes -g #-w +K
 OCAMLPP=
@@ -102,6 +104,16 @@ LIB_BYTE=$(LIB:.cmxa=.cma)
 MAIN=stog
 MAIN_BYTE=$(MAIN).byte
 
+SERVER=$(MAIN)-server
+SERVER_BYTE=$(SERVER).byte
+
+SERVER_CMXFILES= \
+	stog_server_run.cmx \
+	stog_server_main.cmx
+
+SERVER_CMOFILES=$(SERVER_CMXFILES:.cmx=.cmo)
+SERVER_CMIFILES=$(SERVER_CMXFILES:.cmx=.cmi)
+
 OCAML_SESSION=$(MAIN)-ocaml-session
 
 MK_STOG=mk-$(MAIN)
@@ -117,30 +129,15 @@ OCAML_SESSION_CMOFILES= \
 	stog_ocaml_session.cmo
 OCAML_SESSION_CMIFILES=$(OCAML_SESSION_CMOFILES:.cmo=.cmi)
 
-GUI_MAIN_CMXFILES=\
-	stog_gui_arts.cmx \
-	stog_gui_main.cmx \
-	stog_gui.cmx
-
-GUI_MAIN_CMOFILES=$(Gui_MAIN_CMXFILES:.cmx=.cmo)
-GUI_MAIN_CMIFILES=$(GUi_MAIN_CMXFILES:.cmx=.cmi)
-
-GUI_MAIN=$(MAIN)-gui
-GUI_MAIN_BYTE=$(GUI_MAIN).byte
-
 all: opt byte
-gui: guiopt guibyte
 
-opt: $(LIB) $(LIB_CMXS) $(MAIN) $(LATEX2STOG) \
+opt: $(LIB) $(LIB_CMXS) $(MAIN) $(SERVER) $(LATEX2STOG) \
 	plugins/plugin_example.cmxs $(PLUGINS_OPT) $(MK_STOG) $(ODOC)
 
-guiopt: $(GUI_MAIN)
 
-byte: $(LIB_BYTE) $(MAIN_BYTE) $(LATEX2STOG_BYTE) \
+byte: $(LIB_BYTE) $(MAIN_BYTE) $(SERVER_BYTE) $(LATEX2STOG_BYTE) \
 	$(OCAML_SESSION) plugins/plugin_example.cmo $(PLUGINS_BYTE) \
 	$(MK_STOG_BYTE) $(MK_STOG_OCAML) $(ODOC_BYTE)
-
-guibyte: $(GUI_MAIN_BYTE)
 
 $(MAIN): $(LIB) stog_main.cmx
 	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES) -verbose -linkall -linkpkg -o $@ $(COMPFLAGS) $^
@@ -148,6 +145,16 @@ $(MAIN): $(LIB) stog_main.cmx
 $(MAIN_BYTE): $(LIB_BYTE) stog_main.cmo
 	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) -linkall -linkpkg -o $@ $(COMPFLAGS) $^
 #	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $^
+
+$(SERVER): $(LIB) $(SERVER_CMIFILES) $(SERVER_CMXFILES)
+	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES),$(SERVER_PACKAGES) \
+	-verbose -linkall -linkpkg -o $@ $(COMPFLAGS) \
+	$(LIB) $(SERVER_CMXFILES)
+
+$(SERVER_BYTE): $(LIB_BYTE) $(SERVER_CMIFILES) $(SERVER_CMOFILES)
+	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES),$(SERVER_PACKAGES) \
+	-linkall -linkpkg -o $@ $(COMPFLAGS) \
+	$(LIB_BYTE) $(SERVER_CMOFILES)
 
 $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 	$(OCAMLFIND) ocamlopt$(P) -a -o $@ $(LIB_CMXFILES)
@@ -269,7 +276,7 @@ install-share:
 	$(CP) -r share/modules $(SHARE_DIR)/
 
 install-bin:
-	$(CP) $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
+	$(CP) $(MAIN) $(MAIN_BYTE) $(SERVER) $(SERVER_BYTE) $(OCAML_SESSION) \
 	  $(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
 	  $(LATEX2STOG) $(LATEX2STOG_BYTE) \
 		`dirname \`which $(OCAMLC)\``/
@@ -284,14 +291,14 @@ uninstall-share:
 	$(RM) -r $(SHARE_DIR)
 
 uninstall-bin:
-	for i in $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
+	for i in $(MAIN) $(MAIN_BYTE) $(SERVER) $(SERVER_BYTE) $(OCAML_SESSION) \
 		$(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
 		$(LATEX2STOG) $(LATEX2STOG_BYTE) ; \
 		do $(RM) `dirname \`which $(OCAMLC)\``/$$i; done
 
 #####
 clean:
-	$(RM) $(MAIN) $(MAIN_BYTE) $(GUI_MAIN) $(GUI_MAIN_BYTE) *.cm* *.o *.a *.x *.annot
+	$(RM) $(MAIN) $(MAIN_BYTE) $(SERVER) $(SERVER_BYTE) *.cm* *.o *.a *.x *.annot
 	$(RM) $(MK_STOG) $(ML_STOG_BYTE) $(MK_STOG_OCAML)
 	$(RM) $(LATEX2STOG) $(LATEX2STOG_BYTE)
 	(cd plugins && $(RM) *.cm* *.o *.a *.x *.annot)
