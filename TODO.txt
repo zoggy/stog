@@ -1,33 +1,17 @@
+Server:
+- detect needed server libraries at configuration time
+
 
 Stog_info.compute should be a level fun in Base module
 
-- function rules defined in elements:
+- function rules defined in docs:
      - use f_contents is rule is called f ?
      - or handle a param_="foo" to place contents in <foo/> instead of <contents/> ?
 
-- import directive in element headers
-- to fix: computation of elt graph
+- import directive in document headers
+- to fix: computation of doc graph
 
 latex:
 - cache <latex> evaluation
 
-microdata:
-- datetime
-- blog image
-OK- blog url
-OK- blogposting url
-- comment url ?
-- date published
 
-html5:
-OK- section
-OK- article
-- time
-OK- nav
-OK- footer
-- header
-OK- aside
-- figure
-- figcaption
-
-doc: explain subsitution will formulas
