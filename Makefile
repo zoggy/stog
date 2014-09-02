@@ -34,11 +34,11 @@ PBYTE=#p -p a
 PACKAGES=xmlm,xtmpl,netstring,config-file,dynlink,unix,str,higlo.lexers
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
 
-SERVER_PACKAGES=lwt.unix,xmldiff
+SERVER_PACKAGES=lwt.unix,lwt.preemptive,xmldiff,websocket
 
 OF_FLAGS=-package $(PACKAGES),$(SERVER_PACKAGES)
 
-COMPFLAGS=-I +ocamldoc -annot -rectypes -g #-w +K
+COMPFLAGS=-I +ocamldoc -annot -rectypes -g -thread #-w +K
 OCAMLPP=
 
 PLUGINS_BYTE= \
@@ -108,7 +108,9 @@ SERVER=$(MAIN)-server
 SERVER_BYTE=$(SERVER).byte
 
 SERVER_CMXFILES= \
+	stog_server_types.cmx \
 	stog_server_run.cmx \
+	stog_server_ws.cmx \
 	stog_server_main.cmx
 
 SERVER_CMOFILES=$(SERVER_CMXFILES:.cmx=.cmo)

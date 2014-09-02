@@ -33,6 +33,7 @@ open Lwt;;
 module Xdiff = Xmldiff;;
 
 let sleep_duration = 2.0 ;;
+let debug s = Lwt_io.write Lwt_io.stderr s;;
 
 type state = {
   stog : stog ;
@@ -44,18 +45,146 @@ type state = {
 
 let current_state = ref None
 
-let run_stog state = Lwt.return state
+let run_stog ?docs state =
+  let errors = ref [] in
+  let warnings = ref [] in
+  let stog = state.stog in
+  Stog_msg.set_print_error (fun s -> errors := s :: !errors);
+  Stog_msg.set_print_warning (fun s -> warnings := s :: !warnings);
+  Lwt.catch
+    (fun () ->
+       let modules =
+         match docs, state.stog_modules with
+           Some _, ((_ :: _) as l) -> l
+         | None, _
+         | _, [] ->
+             let modules = Stog_engine.modules () in
+             List.map
+               (fun (name, f) ->
+                  Stog_msg.verbose ~level: 2 ("Initializing module "^name);
+                  f stog
+               )
+               modules
+       in
+       let stog =
+         match docs with
+           None -> Stog_info.compute stog
+         | Some _ -> stog
+       in
+       let st_docs =
+         match docs with
+           None -> Stog_types.Doc_set.empty
+         | Some set -> set
+       in
+       let stog_state = {
+           Stog_engine.st_stog = stog ;
+           st_modules = modules ;
+           st_docs = st_docs ;
+         }
+       in
+       Lwt_preemptive.detach (Stog_engine.run ~use_cache: false) stog_state
+         >>= fun stog_state ->
+       let state = { state with
+           stog = stog_state.Stog_engine.st_stog ;
+           stog_modules = stog_state.Stog_engine.st_modules ;
+           stog_errors = state.stog_errors @ (List.rev !errors) ;
+           stog_warnings = state.stog_warnings @ (List.rev !warnings) ;
+         }
+       in
+       Lwt.return state
+    )
+    (function
+         Stog_types.Path_trie.Already_present path ->
+         debug ("Elt path already present: "^(String.concat "/" path)) >>= fun () ->
+         Lwt.return state
+     | e ->
+         let state = { state with
+             stog_errors = state.stog_errors @ (List.rev ((Printexc.to_string e) :: !errors)) ;
+             stog_warnings = List.rev !warnings ;
+           }
+         in
+         Lwt.return state
+    )
 
-let rec watch_for_change on_update =
+let file_stat file =
+  Lwt.catch
+    (fun () -> Lwt_unix.stat file >>= fun st -> Lwt.return (Some st))
+    (fun _ -> Lwt.return None)
+
+let rec watch_for_change on_update on_error =
   Lwt_unix.sleep sleep_duration >>= fun () ->
     match !current_state with
-      None -> watch_for_change on_update
+      None -> watch_for_change on_update on_error
     | Some state ->
-        run_stog state >>= fun state ->
-          current_state := Some state ;
-          watch_for_change on_update
+        let state = { state with stog_errors = [] ; stog_warnings = [] } in
+        let old_stog = state.stog in
+        let doc_list = Stog_types.doc_list state.stog in
+        let read_errors = ref [] in
+        let f (acc_dates, docs, stog) (doc_id, doc) =
+          let file = Filename.concat stog.stog_dir doc.doc_src in
+          file_stat file >>=
+            function
+            | None -> Lwt.return (acc_dates, docs, stog)
+            | Some st ->
+              let date = st.Unix.st_mtime in
+              (*prerr_endline ("date for "^file);*)
+              let prev_date =
+                try Stog_path.Map.find doc.doc_path acc_dates
+                with Not_found -> date -. 1.
+              in
+              if date <= prev_date then
+                Lwt.return (acc_dates, docs, stog)
+              else
+                let doc =
+                  (** FIXME: Use a Lwt version of Stog_io.doc_of_file *)
+                  try Stog_io.doc_of_file stog file
+                  with
+                    e ->
+                      let msg =
+                        match e with
+                          Failure msg | Sys_error msg -> msg
+                        | _ -> Printexc.to_string e
+                      in
+                      read_errors := msg :: !read_errors ;
+                      doc
+                in
+                Lwt.return
+                  (
+                   Stog_path.Map.add doc.doc_path date acc_dates,
+                   Stog_types.Doc_set.add doc_id docs,
+                   Stog_types.set_doc stog doc_id doc
+                  )
+        in
+        Lwt_list.fold_left_s f (state.doc_dates, Stog_types.Doc_set.empty, state.stog) doc_list
+          >>=
+          (fun (dates, docs, stog) ->
+             debug (Printf.sprintf "%d elements modified" (Stog_types.Doc_set.cardinal docs))
+               >>= fun () ->
+             let state = { state with
+                 stog_errors = List.rev !read_errors ;
+                 stog = stog ; doc_dates = dates ;
+               }
+             in
+             if Stog_types.Doc_set.is_empty docs then
+               Lwt.return state
+             else
+               run_stog ~docs state >>=
+                 fun state ->
+                   Lwt_list.iter_s
+                     (on_update old_stog state.stog)
+                     (Stog_types.Doc_set.elements docs)
+                   >>= fun _ -> Lwt.return state
+          )
+          >>= fun state ->
+            current_state := Some state ;
+            match state.stog_errors, state.stog_warnings with
+              [], [] -> watch_for_change on_update on_error
+            | errors, warnings ->
+                on_error ~errors ~warnings >>=
+                fun () -> watch_for_change on_update on_error
+;;
 
-let watch base_url dir on_update =
+let watch base_url dir on_update on_error =
   let stog = Stog_io.read_stog dir in
   Lwt.catch
      (fun () -> Lwt_unix.mkdir (Filename.concat dir "stog-output") 0o750)

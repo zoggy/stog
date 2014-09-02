@@ -28,62 +28,53 @@
 
 (** *)
 
-
-module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
 
-let handle_preview sock req body path =
-  S.respond_string ~status:`OK ~body: ("preview of "^(String.concat "/" path)) ()
+let rec wait_forever () = Lwt_unix.sleep 1000.0 >>= wait_forever
 
-(*  Cohttp.Connection.t ->
-      Cohttp.Request.t ->
-      Cohttp_lwt_body.t ->
-      (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t;
-*)
-let handler sock req body =
-  let uri = Cohttp.Request.uri req in
-  let path = Stog_misc.split_string (Uri.path uri) ['/'] in
-  match path with
-    "preview" :: path -> handle_preview sock req body path
-  | _ ->
-      let body = Printf.sprintf "<html><header><title>Stog-server</title></header>
-    <body>Hello world !</body></html>"
-      in
-      S.respond_string ~status:`OK ~body ()
+let active_cons = ref [] ;;
 
-let start_server dir port host =
-  Lwt_io.write Lwt_io.stdout
-    (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
-  >>= fun _ ->
-  let conn_closed id () =
-    ignore(Lwt_io.write Lwt_io.stdout
-      (Printf.sprintf "connection %s closed\n%!" (Cohttp.Connection.to_string id)))
-  in
-  let config = { S.callback = handler; conn_closed } in
-  S.create ~address:host ~port config
+let handle_con uri (stream, push) =
+  prerr_endline "new connection";
+  active_cons := (stream, push) :: !active_cons ;
+  wait_forever ()
+;;
 
-let port = ref 8080
-let host = ref "0.0.0.0"
-let root_dir = ref "."
-
-let options = [
-  "-p", Arg.Set_int port, "<p> set port to listen on" ;
-  "-h", Arg.Set_string host,"<host> set hostname to listen on" ;
-  "-d", Arg.Set_string root_dir, "<dir> set stog root directory to watch" ;
-  ]
-
-let _ =
+let push_message msg acc (stream, push) =
   try
-    Arg.parse options (fun _ -> ())
-      (Printf.sprintf "Usage: %s [options]\nwhere options are:" Sys.argv.(0));
-    Lwt_unix.run (start_server !root_dir !port !host)
-  with
-  e ->
-      let msg =
-        match e with
-          Failure msg | Sys_error msg -> msg
-        | _ -> Printexc.to_string e
-      in
-      prerr_endline msg;
-      exit 1
+    push (Some msg);
+    prerr_endline "msg pushed";
+    Lwt.return ((stream, push) :: acc)
+  with _ -> Lwt.return acc
+;;
 
+let push_message (msg : Stog_server_types.server_message) =
+  (*prerr_endline ("Number of active connections: "^(string_of_int (List.length !active_cons)));*)
+  prerr_endline
+    ("pushing message: "^
+     (match msg with
+        Stog_server_types.Update _ -> "Update"
+      | Stog_server_types.Errors _ -> "Errors"
+     ));
+  let marshalled = Marshal.to_string  msg [] in
+  let hex = Stog_server_types.to_hex marshalled in
+  let msg = Websocket.Frame.of_string hex in
+  Lwt_list.fold_left_s (push_message msg) [] !active_cons >>=
+   fun l -> active_cons := l; Lwt.return_unit
+;;
+
+let server sockaddr =
+  (*
+  let rec echo_fun uri (stream, push) =
+    Lwt_stream.next stream >>= fun frame ->
+    Lwt.wrap (fun () -> push (Some frame)) >>= fun () ->
+    echo_fun uri (stream, push) in
+  *)
+  Websocket.establish_server sockaddr handle_con
+;;
+
+let run_server host port =
+  prerr_endline ("setting up websocket server on host="^host^", port="^(string_of_int port));
+  Lwt_io_ext.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
+    Lwt.return (server sa) >>= fun _ -> wait_forever ()
+;;

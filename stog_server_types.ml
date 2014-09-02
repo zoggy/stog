@@ -28,62 +28,38 @@
 
 (** *)
 
+type page_update =
+  | Patch of Xmldiff.patch
+  | Update_all of Xtmpl.tree
 
-module S = Cohttp_lwt_unix.Server
-let (>>=) = Lwt.bind
+type server_message =
+  Update of string * page_update (* path * operation *)
+| Errors of string list * string list (* errors * warnings *)
 
-let handle_preview sock req body path =
-  S.respond_string ~status:`OK ~body: ("preview of "^(String.concat "/" path)) ()
 
-(*  Cohttp.Connection.t ->
-      Cohttp.Request.t ->
-      Cohttp_lwt_body.t ->
-      (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t;
-*)
-let handler sock req body =
-  let uri = Cohttp.Request.uri req in
-  let path = Stog_misc.split_string (Uri.path uri) ['/'] in
-  match path with
-    "preview" :: path -> handle_preview sock req body path
-  | _ ->
-      let body = Printf.sprintf "<html><header><title>Stog-server</title></header>
-    <body>Hello world !</body></html>"
-      in
-      S.respond_string ~status:`OK ~body ()
+let to_hex s =
+  let len = String.length s in
+  let result = String.create (2 * len) in
+  for i = 0 to len - 1 do
+    String.blit (Printf.sprintf "%02x" (int_of_char s.[i])) 0 result (2*i) 2;
+  done;
+  result
+;;
 
-let start_server dir port host =
-  Lwt_io.write Lwt_io.stdout
-    (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
-  >>= fun _ ->
-  let conn_closed id () =
-    ignore(Lwt_io.write Lwt_io.stdout
-      (Printf.sprintf "connection %s closed\n%!" (Cohttp.Connection.to_string id)))
+let from_hex =
+  let digit c =
+    match c with
+    | '0'..'9' -> Char.code c - Char.code '0'
+    | 'A'..'F' -> Char.code c - Char.code 'A' + 10
+    | 'a'..'f' -> Char.code c - Char.code 'a' + 10
+    | _ -> raise (Invalid_argument "Digest.from_hex")
   in
-  let config = { S.callback = handler; conn_closed } in
-  S.create ~address:host ~port config
-
-let port = ref 8080
-let host = ref "0.0.0.0"
-let root_dir = ref "."
-
-let options = [
-  "-p", Arg.Set_int port, "<p> set port to listen on" ;
-  "-h", Arg.Set_string host,"<host> set hostname to listen on" ;
-  "-d", Arg.Set_string root_dir, "<dir> set stog root directory to watch" ;
-  ]
-
-let _ =
-  try
-    Arg.parse options (fun _ -> ())
-      (Printf.sprintf "Usage: %s [options]\nwhere options are:" Sys.argv.(0));
-    Lwt_unix.run (start_server !root_dir !port !host)
-  with
-  e ->
-      let msg =
-        match e with
-          Failure msg | Sys_error msg -> msg
-        | _ -> Printexc.to_string e
-      in
-      prerr_endline msg;
-      exit 1
-
+  fun s ->
+    let byte i = digit s.[i] lsl 4 + digit s.[i+1] in
+    let len = String.length s in
+    let result = String.create (len/2) in
+    for i = 0 to (len / 2) - 1 do
+      result.[i] <- Char.chr (byte (2 * i));
+    done;
+    result
+;;
