@@ -266,14 +266,7 @@ let main () =
 
   try
     Stog_dyn.load_packages !packages;
-    List.iter
-      (fun file ->
-         try Stog_dyn.check_file_has_extension file
-         with Failure msg ->
-           let msg = msg^"\nDid you mean --package ?" in
-           failwith msg
-      )
-      !plugins;
+    Stog_dyn.check_files_have_extension !plugins;
     Stog_dyn.load_files !plugins;
     begin
       match !default_lang_to_set with

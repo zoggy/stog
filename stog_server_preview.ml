@@ -26,16 +26,51 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Common module for code dynamic loading. *)
+(** *)
 
-val hack_cmxs : bool ref
+module S = Cohttp_lwt_unix.Server
+open Stog_types
+open Stog_server_run
 
-val load_files : string list -> unit
+let (>>=) = Lwt.bind
 
-val load_packages : (string list -> unit)
+let rec preview_file stog path =
+  let rec iter tree = function
+    [] -> S.respond_file ~fname: "" ()
+  | [f] ->
+      if Stog_types.Str_set.mem f tree.files then
+        let fname = Filename.concat stog.stog_dir (String.concat Filename.dir_sep path) in
+        S.respond_file ~fname ()
+      else
+        S.respond_file ~fname: "" ()
+  | d :: q ->
+      match
+        try Some (Stog_types.Str_map.find d tree.dirs)
+        with Not_found -> None
+      with
+        Some tree -> iter tree q
+      | None -> S.respond_file ~fname: "" ()
+  in
+  iter stog.stog_files path
 
-(** @raise Failure is file has no extension. *)
-val check_file_has_extension : string -> unit
+let handle_preview sock req body path =
+  Stog_server_run.state () >>=
+    function state ->
+        match
+          try Some(Stog_types.doc_by_path state.stog (Stog_path.path path true))
+          with _ -> None
+        with
+          Some (doc_id, doc) ->
+            let body =
+              match doc.doc_out with
+                None ->
+                  String.concat "\n"
+                    [ "Document not computed yet";
+                      String.concat "\n" state.stog_errors ;
+                      String.concat "\n" state.stog_warnings ;
+                    ]
+              | Some xmls -> Xtmpl.string_of_xmls xmls
+            in
+            S.respond_string ~status:`OK ~body ()
+        | None -> preview_file state.stog path
 
-(**  @raise Failure a file has no extension. *)
-val check_files_have_extension : string list -> unit

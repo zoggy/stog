@@ -48,11 +48,11 @@ stog_highlight.cmo : stog_msg.cmi stog_misc.cmi stog_highlight.cmi
 stog_highlight.cmx : stog_msg.cmx stog_misc.cmx stog_highlight.cmi
 stog_html.cmo : stog_types.cmi stog_tmpl.cmi stog_tags.cmi stog_svg.cmi \
     stog_path.cmi stog_ocaml.cmi stog_msg.cmi stog_misc.cmi stog_list.cmi \
-    stog_latex.cmi stog_intl.cmi stog_info.cmi stog_highlight.cmi \
+    stog_latex.cmi stog_io.cmi stog_intl.cmi stog_info.cmi stog_highlight.cmi \
     stog_engine.cmi stog_deps.cmi stog_cut.cmi stog_html.cmi
 stog_html.cmx : stog_types.cmx stog_tmpl.cmx stog_tags.cmx stog_svg.cmx \
     stog_path.cmx stog_ocaml.cmx stog_msg.cmx stog_misc.cmx stog_list.cmx \
-    stog_latex.cmx stog_intl.cmx stog_info.cmx stog_highlight.cmx \
+    stog_latex.cmx stog_io.cmx stog_intl.cmx stog_info.cmx stog_highlight.cmx \
     stog_engine.cmx stog_deps.cmx stog_cut.cmx stog_html.cmi
 stog_html5.cmo : stog_types.cmi stog_html5.cmi
 stog_html5.cmx : stog_types.cmx stog_html5.cmi
@@ -106,6 +106,20 @@ stog_plug.cmo : stog_types.cmi stog_msg.cmi stog_intl.cmi stog_html.cmi \
     stog_deps.cmi stog_config.cmi stog_blocks.cmi stog_plug.cmi
 stog_plug.cmx : stog_types.cmx stog_msg.cmx stog_intl.cmx stog_html.cmx \
     stog_deps.cmx stog_config.cmx stog_blocks.cmx stog_plug.cmi
+stog_server_main.cmo : stog_server_run.cmo stog_server_preview.cmo \
+    stog_misc.cmi
+stog_server_main.cmx : stog_server_run.cmx stog_server_preview.cmx \
+    stog_misc.cmx
+stog_server_preview.cmo : stog_types.cmi stog_server_run.cmo stog_path.cmi
+stog_server_preview.cmx : stog_types.cmx stog_server_run.cmx stog_path.cmx
+stog_server_run.cmo : stog_types.cmi stog_path.cmi stog_msg.cmi stog_io.cmi \
+    stog_info.cmi stog_engine.cmi
+stog_server_run.cmx : stog_types.cmx stog_path.cmx stog_msg.cmx stog_io.cmx \
+    stog_info.cmx stog_engine.cmx
+stog_server_types.cmo :
+stog_server_types.cmx :
+stog_server_ws.cmo : stog_server_types.cmo
+stog_server_ws.cmx : stog_server_types.cmx
 stog_svg.cmo : stog_svg.cmi
 stog_svg.cmx : stog_svg.cmi
 stog_tags.cmo : stog_tags.cmi

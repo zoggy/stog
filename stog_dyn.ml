@@ -85,6 +85,16 @@ let check_file_has_extension file =
     failwith ("Filename "^file^" has no extension.");
 ;;
 
+let check_files_have_extension files =
+  List.iter
+    (fun file ->
+       try check_file_has_extension file
+       with Failure msg ->
+           let msg = msg^"\nDid you mean --package ?" in
+           failwith msg
+    )
+    files
+
 let load_files =
   let load_file file =
     check_file_has_extension file ;

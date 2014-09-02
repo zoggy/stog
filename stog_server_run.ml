@@ -43,7 +43,7 @@ type state = {
   doc_dates : float Stog_path.Map.t ;
 }
 
-let current_state = ref None
+let current_state = ref (None : state option)
 
 let run_stog ?docs state =
   let errors = ref [] in
@@ -184,7 +184,7 @@ let rec watch_for_change on_update on_error =
                 fun () -> watch_for_change on_update on_error
 ;;
 
-let watch base_url dir on_update on_error =
+let watch ~base_url ~dir ~on_update ~on_error =
   let stog = Stog_io.read_stog dir in
   Lwt.catch
      (fun () -> Lwt_unix.mkdir (Filename.concat dir "stog-output") 0o750)

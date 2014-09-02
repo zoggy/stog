@@ -111,6 +111,7 @@ SERVER_CMXFILES= \
 	stog_server_types.cmx \
 	stog_server_run.cmx \
 	stog_server_ws.cmx \
+	stog_server_preview.cmx \
 	stog_server_main.cmx
 
 SERVER_CMOFILES=$(SERVER_CMXFILES:.cmx=.cmo)

@@ -32,9 +32,6 @@
 module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
 
-let handle_preview sock req body path =
-  S.respond_string ~status:`OK ~body: ("preview of "^(String.concat "/" path)) ()
-
 (*  Cohttp.Connection.t ->
       Cohttp.Request.t ->
       Cohttp_lwt_body.t ->
@@ -44,7 +41,7 @@ let handler sock req body =
   let uri = Cohttp.Request.uri req in
   let path = Stog_misc.split_string (Uri.path uri) ['/'] in
   match path with
-    "preview" :: path -> handle_preview sock req body path
+    "preview" :: path -> Stog_server_preview.handle_preview sock req body path
   | _ ->
       let body = Printf.sprintf "<html><header><title>Stog-server</title></header>
     <body>Hello world !</body></html>"
@@ -62,21 +59,51 @@ let start_server dir port host =
   let config = { S.callback = handler; conn_closed } in
   S.create ~address:host ~port config
 
+
+let launch dir port host =
+  let base_url = Printf.sprintf "http://%s:%d/preview" host port in
+  Stog_server_run.watch ~dir ~base_url
+    ~on_update: (fun _ _ _ -> Lwt.return_unit)
+    ~on_error: (fun _ -> Lwt.return_unit)
+    >>= fun _ -> start_server dir port host
+
 let port = ref 8080
 let host = ref "0.0.0.0"
 let root_dir = ref "."
 
+
+let plugins = ref [];;
+let packages = ref [];;
+
 let options = [
-  "-p", Arg.Set_int port, "<p> set port to listen on" ;
-  "-h", Arg.Set_string host,"<host> set hostname to listen on" ;
-  "-d", Arg.Set_string root_dir, "<dir> set stog root directory to watch" ;
+    "-p", Arg.Set_int port, "<p> set port to listen on" ;
+    "-h", Arg.Set_string host,"<host> set hostname to listen on" ;
+    "-d", Arg.Set_string root_dir, "<dir> set stog root directory to watch" ;
+
+    "--plugin", Arg.String (fun s -> plugins := !plugins @ [s]),
+    "<file> load plugin (ocaml object file)" ;
+
+    "--package", Arg.String (fun s -> packages := !packages @ [s]),
+    "<pkg[,pkg2[,...]]> load package (a plugin loaded with ocamlfind)";
   ]
 
 let _ =
   try
     Arg.parse options (fun _ -> ())
       (Printf.sprintf "Usage: %s [options]\nwhere options are:" Sys.argv.(0));
-    Lwt_unix.run (start_server !root_dir !port !host)
+    let dir =
+      if Filename.is_relative !root_dir then
+        if !root_dir = Filename.current_dir_name then
+          Sys.getcwd()
+        else
+          Filename.concat (Sys.getcwd()) !root_dir
+      else
+        !root_dir
+    in
+    Stog_dyn.load_packages !packages;
+    Stog_dyn.check_files_have_extension !plugins;
+    Stog_dyn.load_files !plugins;
+    Lwt_unix.run (launch dir !port !host)
   with
   e ->
       let msg =
