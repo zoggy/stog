@@ -10,6 +10,7 @@ ocamldoc
 stog
 stog-gui
 stog-output
+stog-server
 doc-output
 mk-stog*
 latex2stog
