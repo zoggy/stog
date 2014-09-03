@@ -37,11 +37,18 @@ let (>>=) = Lwt.bind
       Cohttp_lwt_body.t ->
       (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t;
 *)
-let handler sock req body =
+
+let http_url host port = Printf.sprintf "http://%s:%d/preview" host port
+let ws_url host port = Printf.sprintf "ws://%s:%d/" host port
+
+let handler host port sock req body =
   let uri = Cohttp.Request.uri req in
   let path = Stog_misc.split_string (Uri.path uri) ['/'] in
   match path with
-    "preview" :: path -> Stog_server_preview.handle_preview sock req body path
+    "preview" :: path ->
+      let http_url = http_url host port in
+      let ws_url = ws_url host (port+1) in
+      Stog_server_preview.handle_preview http_url ws_url sock req body path
   | _ ->
       let body = Printf.sprintf "<html><header><title>Stog-server</title></header>
     <body>Hello world !</body></html>"
@@ -56,18 +63,17 @@ let start_server dir host port =
     ignore(Lwt_io.write Lwt_io.stdout
       (Printf.sprintf "connection %s closed\n%!" (Cohttp.Connection.to_string id)))
   in
-  let config = { S.callback = handler; conn_closed } in
+  let config = { S.callback = handler host port; conn_closed } in
   S.create ~address:host ~port config
 
 
 let launch dir host port =
-  let base_url = Printf.sprintf "http://%s:%d/preview" host port in
-  Stog_server_run.watch ~dir ~base_url
-    ~on_update: (fun _ _ _ -> Lwt.return_unit)
-    ~on_error: (fun _ -> Lwt.return_unit)
-    >>=
-    fun _ -> Stog_server_ws.run_server host (port+1) >>=
-      fun _ -> start_server dir host port
+  let base_url = http_url host port in
+  let on_update = Stog_server_ws.send_patch in
+  let on_error = Stog_server_ws.send_errors in
+  let _watcher = Stog_server_run.watch ~dir ~base_url ~on_update ~on_error in
+  Stog_server_ws.run_server host (port+1) >>=
+    fun _ -> start_server dir host port
 
 let port = ref 8080
 let host = ref "0.0.0.0"

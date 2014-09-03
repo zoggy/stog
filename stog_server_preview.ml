@@ -34,26 +34,36 @@ open Stog_server_run
 
 let (>>=) = Lwt.bind
 
-let rec preview_file stog path =
-  let rec iter tree = function
-    [] -> S.respond_file ~fname: "" ()
-  | [f] ->
-      if Stog_types.Str_set.mem f tree.files then
-        let fname = Filename.concat stog.stog_dir (String.concat Filename.dir_sep path) in
-        S.respond_file ~fname ()
-      else
-        S.respond_file ~fname: "" ()
-  | d :: q ->
-      match
-        try Some (Stog_types.Str_map.find d tree.dirs)
-        with Not_found -> None
-      with
-        Some tree -> iter tree q
-      | None -> S.respond_file ~fname: "" ()
-  in
-  iter stog.stog_files path
+let client_js = "stog_server_client.js";;
 
-let handle_preview sock req body path =
+let rec preview_file stog = function
+  [file] when file = client_js ->
+     let body =
+       match Stog_server_files.read client_js with
+         None -> ""
+       | Some s -> s
+    in
+    S.respond_string ~status: `OK ~body ()
+  | path ->
+    let rec iter tree = function
+      [] -> S.respond_file ~fname: "" ()
+    | [f] ->
+        if Stog_types.Str_set.mem f tree.files then
+          let fname = Filename.concat stog.stog_dir (String.concat Filename.dir_sep path) in
+          S.respond_file ~fname ()
+        else
+          S.respond_file ~fname: "" ()
+    | d :: q ->
+        match
+          try Some (Stog_types.Str_map.find d tree.dirs)
+          with Not_found -> None
+        with
+          Some tree -> iter tree q
+        | None -> S.respond_file ~fname: "" ()
+    in
+    iter stog.stog_files path
+
+let handle_preview http_url ws_url sock req body path =
   Stog_server_run.state () >>=
     function state ->
         match
@@ -69,7 +79,16 @@ let handle_preview sock req body path =
                       String.concat "\n" state.stog_errors ;
                       String.concat "\n" state.stog_warnings ;
                     ]
-              | Some xmls -> Xtmpl.string_of_xmls xmls
+              | Some xmls ->
+                  let doc_path = Stog_path.to_string doc.doc_path in
+                  let title = Printf.sprintf "Loading preview of %s" doc_path in
+                  let script_url = http_url^"/"^client_js in
+                  "<html><header><meta charset=\"utf-8\"><title>"^title^"</title>"^
+                  "<script type=\"text/javascript\">
+                    stog_server = { url : '"^ws_url^"', doc : '"^doc_path^"' };
+                  </script>"^
+                  "<script src=\""^script_url^"\" type=\"text/javascript\"> </script>"^
+                  "<body><h1>"^title^"</h1></body></html>"
             in
             S.respond_string ~status:`OK ~body ()
         | None -> preview_file state.stog path

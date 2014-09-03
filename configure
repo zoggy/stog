@@ -584,6 +584,7 @@ PACKAGE_URL=
 ac_unique_file="master.Makefile.in"
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+JS_OF_OCAML
 SHARE_DIR
 PACKAGE
 VERSION
@@ -1706,6 +1707,7 @@ SHARE_DIR=$datadir
 
 #############################
 # substitutions to perform
+
 
 
 

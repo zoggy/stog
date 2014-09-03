@@ -34,11 +34,11 @@ PBYTE=#p -p a
 PACKAGES=xmlm,xtmpl,netstring,config-file,dynlink,unix,str,higlo.lexers
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
 
-SERVER_PACKAGES=lwt.unix,lwt.preemptive,xmldiff,websocket
+SERVER_PACKAGES=lwt.unix,lwt.preemptive,xmldiff,websocket,cstruct,crunch
 
 OF_FLAGS=-package $(PACKAGES),$(SERVER_PACKAGES)
 
-COMPFLAGS=-I +ocamldoc -annot -rectypes -g -thread #-w +K
+COMPFLAGS=-I +ocamldoc -annot -rectypes -g -thread  #-w +K
 OCAMLPP=
 
 PLUGINS_BYTE= \
@@ -110,12 +110,16 @@ SERVER_BYTE=$(SERVER).byte
 SERVER_CMXFILES= \
 	stog_server_types.cmx \
 	stog_server_run.cmx \
+	stog_server_files.cmx \
 	stog_server_ws.cmx \
 	stog_server_preview.cmx \
 	stog_server_main.cmx
 
+
 SERVER_CMOFILES=$(SERVER_CMXFILES:.cmx=.cmo)
 SERVER_CMIFILES=$(SERVER_CMXFILES:.cmx=.cmi)
+
+SERVER_JS=stog_server_client.js
 
 OCAML_SESSION=$(MAIN)-ocaml-session
 
@@ -132,7 +136,7 @@ OCAML_SESSION_CMOFILES= \
 	stog_ocaml_session.cmo
 OCAML_SESSION_CMIFILES=$(OCAML_SESSION_CMOFILES:.cmo=.cmi)
 
-all: opt byte
+all: opt byte $(SERVER_JS)
 
 opt: $(LIB) $(LIB_CMXS) $(MAIN) $(SERVER) $(LATEX2STOG) \
 	plugins/plugin_example.cmxs $(PLUGINS_OPT) $(MK_STOG) $(ODOC)
@@ -158,6 +162,16 @@ $(SERVER_BYTE): $(LIB_BYTE) $(SERVER_CMIFILES) $(SERVER_CMOFILES)
 	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES),$(SERVER_PACKAGES) \
 	-linkall -linkpkg -o $@ $(COMPFLAGS) \
 	$(LIB_BYTE) $(SERVER_CMOFILES)
+
+server_files/$(SERVER_JS): stog_server_types.cmi stog_server_types.cmo stog_server_client_js.ml
+	$(MKDIR) server_files
+	$(OCAMLFIND) ocamlc -o $@.byte $(COMPFLAGS) \
+	-package js_of_ocaml,js_of_ocaml.syntax,xmldiff,xtmpl -syntax camlp4o -linkpkg \
+	stog_server_types.cmo stog_server_client_js.ml
+	$(JS_OF_OCAML) $@.byte -o $@
+
+stog_server_files.ml: server_files/$(SERVER_JS)
+	ocaml-crunch --mode=plain -e js -o $@ server_files
 
 $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 	$(OCAMLFIND) ocamlopt$(P) -a -o $@ $(LIB_CMXFILES)

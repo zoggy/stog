@@ -904,6 +904,17 @@ let _ = check_ocamlfind_package conf ~min_version: [3;6] "netstring";;
 let _ = check_ocamlfind_package conf ~min_version: [1;2] "config-file";;
 let _ = check_ocamlfind_package conf ~min_version: [0;2] "higlo";;
 
+let _ =
+  let js_of_ocaml =
+    try ocaml_prog "js_of_ocaml"
+    with Program_not_found _ ->
+        prerr_endline "Cannot find js_of_ocaml";
+        exit 1
+  in
+  add_subst "JS_OF_OCAML" js_of_ocaml
+;;
+
+
 let _ = !print "\n###\n"
 
 let _ = add_conf_variables conf

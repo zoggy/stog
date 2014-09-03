@@ -46,6 +46,7 @@ type state = {
 let current_state = ref (None : state option)
 
 let run_stog ?docs state =
+  debug "Running stog\n" >>= fun _ ->
   let errors = ref [] in
   let warnings = ref [] in
   let stog = state.stog in
@@ -95,7 +96,7 @@ let run_stog ?docs state =
     )
     (function
          Stog_types.Path_trie.Already_present path ->
-         debug ("Elt path already present: "^(String.concat "/" path)) >>= fun () ->
+         debug ("Doc path already present: "^(String.concat "/" path)) >>= fun () ->
          Lwt.return state
      | e ->
          let state = { state with
@@ -113,6 +114,7 @@ let file_stat file =
 
 let rec watch_for_change on_update on_error =
   Lwt_unix.sleep sleep_duration >>= fun () ->
+    debug "watch for changes... " >>= fun _ ->
     match !current_state with
       None -> watch_for_change on_update on_error
     | Some state ->
@@ -158,7 +160,7 @@ let rec watch_for_change on_update on_error =
         Lwt_list.fold_left_s f (state.doc_dates, Stog_types.Doc_set.empty, state.stog) doc_list
           >>=
           (fun (dates, docs, stog) ->
-             debug (Printf.sprintf "%d elements modified" (Stog_types.Doc_set.cardinal docs))
+             debug (Printf.sprintf "%d elements modified\n" (Stog_types.Doc_set.cardinal docs))
                >>= fun () ->
              let state = { state with
                  stog_errors = List.rev !read_errors ;
@@ -217,8 +219,7 @@ let watch ~base_url ~dir ~on_update ~on_error =
     }
   in
   current_state := Some state ;
-  ignore(watch_for_change on_update);
-  Lwt.return state
+  watch_for_change on_update on_error
 
 let state () =
   match !current_state with
