@@ -118,7 +118,6 @@ let rec watch_for_change on_update on_error =
     match !current_state with
       None -> watch_for_change on_update on_error
     | Some state ->
-        let state = { state with stog_errors = [] ; stog_warnings = [] } in
         let old_stog = state.stog in
         let doc_list = Stog_types.doc_list state.stog in
         let read_errors = ref [] in
@@ -160,30 +159,31 @@ let rec watch_for_change on_update on_error =
         Lwt_list.fold_left_s f (state.doc_dates, Stog_types.Doc_set.empty, state.stog) doc_list
           >>=
           (fun (dates, docs, stog) ->
-             debug (Printf.sprintf "%d elements modified\n" (Stog_types.Doc_set.cardinal docs))
+             let nb_changes = Stog_types.Doc_set.cardinal docs in
+             debug (Printf.sprintf "%d elements modified\n" nb_changes)
                >>= fun () ->
-             let state = { state with
-                 stog_errors = List.rev !read_errors ;
-                 stog = stog ; doc_dates = dates ;
-               }
-             in
-             if Stog_types.Doc_set.is_empty docs then
-               Lwt.return state
-             else
-               run_stog ~docs state >>=
-                 fun state ->
-                   Lwt_list.iter_s
-                     (on_update old_stog state.stog)
-                     (Stog_types.Doc_set.elements docs)
-                   >>= fun _ -> Lwt.return state
-          )
-          >>= fun state ->
-            current_state := Some state ;
-            match state.stog_errors, state.stog_warnings with
-              [], [] -> watch_for_change on_update on_error
-            | errors, warnings ->
-                on_error ~errors ~warnings >>=
-                fun () -> watch_for_change on_update on_error
+                 match nb_changes with
+                   0 -> Lwt.return_unit (* do not change current_state *)
+                 | _ ->
+                   let state = { state with
+                       stog_errors = List.rev !read_errors ;
+                       stog_warnings = [] ;
+                       stog = stog ; doc_dates = dates ;
+                     }
+                   in
+                   run_stog ~docs state >>=
+                     fun state ->
+                       Lwt_list.iter_s
+                         (on_update old_stog state.stog)
+                         (Stog_types.Doc_set.elements docs)
+                         >>=
+                         (fun () ->
+                            current_state := Some state ;
+                            match state.stog_errors, state.stog_warnings with
+                              [], [] -> Lwt.return_unit
+                            | errors, warnings -> on_error ~errors ~warnings
+                         )
+          ) >>= fun () -> watch_for_change on_update on_error
 ;;
 
 let watch ~base_url ~dir ~on_update ~on_error =

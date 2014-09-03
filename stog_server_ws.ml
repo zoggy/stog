@@ -53,7 +53,8 @@ let push_message ?push (msg : Stog_server_types.server_message) =
     ("pushing message: "^
      (match msg with
         Stog_server_types.Update _ -> "Update"
-      | Stog_server_types.Errors _ -> "Errors"
+      | Stog_server_types.Errors (errs,warns) -> 
+          String.concat "\n" ("Errors:" :: errs @ ["Warnings:"] @ warns)
      ));
   let marshalled = Marshal.to_string  msg [] in
   let hex = Stog_server_types.to_hex marshalled in

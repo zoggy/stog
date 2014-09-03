@@ -29,6 +29,8 @@
 (** *)
 
 
+open Stog_server_run
+
 module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
 
@@ -49,6 +51,22 @@ let handler host port sock req body =
       let http_url = http_url host port in
       let ws_url = ws_url host (port+1) in
       Stog_server_preview.handle_preview http_url ws_url sock req body path
+  | ["status"] ->
+     Stog_server_run.state () >>= fun state ->
+        let b = Buffer.create 256 in
+        let p = Buffer.add_string b in
+        p "<html><header><meta charset=\"utf-8\"><title>Stog-server : Status</title></header>";
+        p "<body>";
+        p "<h1>Status</h1>" ;
+        p "<h2>Errors</h2><ul>";
+        List.iter (fun s -> p ("<li>"^s^"</li>")) state.stog_errors ;
+        p "</ul>";
+        p "<h2>Warnings</h2><ul>";
+        List.iter (fun s -> p ("<li>"^s^"</li>")) state.stog_warnings ;
+        p "</ul>";
+        p "</body></html>";
+        let body = Buffer.contents b in
+        S.respond_string ~status: `OK ~body ()
   | _ ->
       let body = Printf.sprintf "<html><header><title>Stog-server</title></header>
     <body>Hello world !</body></html>"
@@ -93,6 +111,9 @@ let options = [
 
     "--package", Arg.String (fun s -> packages := !packages @ [s]),
     "<pkg[,pkg2[,...]]> load package (a plugin loaded with ocamlfind)";
+
+    "--stog-ocaml-session", Arg.Set_string Stog_ocaml.stog_ocaml_session,
+    "<command> use <command> as stog-ocaml-session program";
   ]
 
 let _ =
