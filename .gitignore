@@ -19,6 +19,7 @@ stog_filter_parser.ml
 stog_filter_parser.output
 stog_filter_lexer.mli
 stog_filter_lexer.ml
+stog_server_files.ml
 autom4te.cache
 config.log
 config.status

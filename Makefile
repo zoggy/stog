@@ -136,7 +136,7 @@ OCAML_SESSION_CMOFILES= \
 	stog_ocaml_session.cmo
 OCAML_SESSION_CMIFILES=$(OCAML_SESSION_CMOFILES:.cmo=.cmi)
 
-all: opt byte $(SERVER_JS)
+all: opt byte
 
 opt: $(LIB) $(LIB_CMXS) $(MAIN) $(SERVER) $(LATEX2STOG) \
 	plugins/plugin_example.cmxs $(PLUGINS_OPT) $(MK_STOG) $(ODOC)
@@ -172,6 +172,7 @@ server_files/$(SERVER_JS): stog_server_types.cmi stog_server_types.cmo stog_serv
 
 stog_server_files.ml: server_files/$(SERVER_JS)
 	ocaml-crunch --mode=plain -e js -o $@ server_files
+	$(RM) -r server_files
 
 $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 	$(OCAMLFIND) ocamlopt$(P) -a -o $@ $(LIB_CMXFILES)
@@ -315,6 +316,7 @@ uninstall-bin:
 
 #####
 clean:
+	$(RM) stog_server_files.ml
 	$(RM) $(MAIN) $(MAIN_BYTE) $(SERVER) $(SERVER_BYTE) *.cm* *.o *.a *.x *.annot
 	$(RM) $(MK_STOG) $(ML_STOG_BYTE) $(MK_STOG_OCAML)
 	$(RM) $(LATEX2STOG) $(LATEX2STOG_BYTE)
