@@ -43,7 +43,7 @@ let dom_node_by_path path =
     match Dom.nodeType node with
       Dom.Element e ->
         (
-         match Js.to_string (e##tagName) with
+         match String.lowercase (Js.to_string (e##tagName)) with
            "div" ->
              (
               let skip =
@@ -84,9 +84,10 @@ let dom_node_by_path path =
           else
             next node (Xdiff.Path_cdata (n-1))
       | Xdiff.Path_node (name, n, more) when node##nodeType = Dom.ELEMENT ->
-          let s_name = string_of_name name in
+          let s_name = String.lowercase (string_of_name name) in
           let node_name = Js.to_string node##nodeName in
           (*log ("name="^s_name^", nodeName="^node_name^", n="^(string_of_int n));*)
+          let node_name = String.lowercase node_name in
           if s_name = node_name then
             if n = 0 then
               match more with
