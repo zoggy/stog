@@ -4,7 +4,7 @@ open Stog_server_types
 
 module Xdiff = Xmldiff
 
-let status_box_id = "eris-stog-preview-status";;
+let status_box_id = "stog-server-preview-status";;
 let status_msg_id = status_box_id^"-message";;
 
 let log s = Firebug.console##log (Js.string s);;
@@ -20,13 +20,23 @@ let dom_of_xml =
       let n = doc##createTextNode (Js.string s) in
       (n :> Dom.node Js.t)
   | Xdiff.E (name, atts, subs) ->
-      let tag = string_of_name name in
-      let n = doc##createElement (Js.string tag) in
+      let n =
+        match name with
+          ("", tag) -> doc##createElement (Js.string tag)
+        | (uri, tag) -> doc##createElementNS (Js.string uri, Js.string tag)
+      in
       Xdiff.Nmap.iter
         (fun name v ->
-          let att = Js.string (string_of_name name) in
           let v = Js.string v in
-          ignore (n##setAttribute (att, v))
+           match name with
+             ("", att) -> ignore (n##setAttribute (Js.string att, v))
+           | (uri, att) ->
+               try
+                 ignore (Js.Unsafe.meth_call n "setAttributeNS"
+                  (Array.map Js.Unsafe.inject [| Js.string uri ; Js.string att ; v |]))
+                   (* FIXME: use setAttributeNS when will be available *)
+               with _ ->
+                   log ("could not add attribute "^(string_of_name name))
         )
         atts;
       let subs = List.map (map doc) subs in
@@ -145,19 +155,30 @@ let dom_of_xtmpl =
       let n = doc##createTextNode (Js.string s) in
       (n :> Dom.node Js.t)
   | Xtmpl.E (name, atts, subs) ->
-      let tag = string_of_name name in
-      let n = doc##createElement (Js.string tag) in
+      let n =
+        match name with
+          ("", tag) -> doc##createElement (Js.string tag)
+        | (uri, tag) ->
+            (*log ("createElementNS("^uri^", "^tag^")");*)
+            doc##createElementNS (Js.string uri, Js.string tag)
+      in
       let atts =
         try Xtmpl.string_of_xml_atts atts
         with _ ->
-            log ("problem with attributes of "^tag);
+            log ("problem with attributes of "^(string_of_name name));
             []
       in
       List.iter
         (fun (name, v) ->
-           let att = Js.string (string_of_name name) in
            let v = Js.string v in
-           ignore (n##setAttribute (att, v))
+           match name with
+             ("", att) -> ignore (n##setAttribute (Js.string att, v))
+           | (uri, att) ->
+               try ignore (Js.Unsafe.meth_call n "setAttributeNS"
+                  (Array.map Js.Unsafe.inject [| Js.string uri ; Js.string att ; v |]))
+                 (* FIXME: use setAttributeNS when will be available *)
+               with _ ->
+                   log ("could not add attribute "^(string_of_name name))
         )
         atts;
       let subs = List.map (map doc) subs in
@@ -190,7 +211,7 @@ let add_status_box () =
              width: 30px; height: 30px; ; border-color: red ; \
              border-width: 3px ; \
              border-style : solid ; \
-             background-color: black; opacity: 0.8 ;\
+             background-color: white; opacity: 0.8 ;\
              overflow: hidden ; " ;
 
              ("","onmouseover"),
@@ -202,7 +223,7 @@ let add_status_box () =
          in
          let node = dom_of_xml
            (Xdiff.E (("","div"), atts,
-             [ Xdiff.E (("","h2"), atts_of_list [("","style"), "color:white"], [ Xdiff.D "Status" ]) ;
+             [ Xdiff.E (("","h2"), atts_of_list [("","style"), "color:#333333"], [ Xdiff.D "Status" ]) ;
                Xdiff.E (("","pre"), atts_of_list [("","id"), status_msg_id], [ Xdiff.D "" ]) ;
              ] )
            )

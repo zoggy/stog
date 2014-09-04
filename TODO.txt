@@ -1,6 +1,6 @@
 Server:
 - detect needed server libraries at configuration time
-
+- handle also single stog files instead of whole directories (like stog does)
 
 Stog_info.compute should be a level fun in Base module
 

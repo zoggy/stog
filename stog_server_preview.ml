@@ -53,14 +53,24 @@ let rec preview_file stog = function
           let fname = Filename.concat stog.stog_dir (String.concat Filename.dir_sep path) in
           S.respond_file ~fname ()
         else
-          S.respond_file ~fname: "" ()
+          (
+           (* maybe this was a generated file in stog output directory *)
+           let fname = Filename.concat stog.stog_outdir (String.concat Filename.dir_sep path) in
+           prerr_endline ("fname="^fname);
+           S.respond_file ~fname ()
+          )
     | d :: q ->
         match
           try Some (Stog_types.Str_map.find d tree.dirs)
-          with Not_found -> None
+          with Not_found ->
+           None
         with
           Some tree -> iter tree q
-        | None -> S.respond_file ~fname: "" ()
+        | None ->
+            (* maybe this was a generated file in stog output directory *)
+             let fname = Filename.concat stog.stog_outdir (String.concat Filename.dir_sep path) in
+             prerr_endline ("fname="^fname);
+             S.respond_file ~fname ()
     in
     iter stog.stog_files path
 
