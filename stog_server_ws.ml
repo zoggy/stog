@@ -134,7 +134,13 @@ let send_update_message path op =
   push_message msg
 ;;
 
-let diff_cut (_,tag) _ _ = String.lowercase tag = "pre"
+let diff_cut =
+  let set = List.fold_left 
+    (fun set tag -> Stog_types.Str_set.add tag set)
+    Stog_types.Str_set.empty
+    [ "pre" ; "ul" ; "p" ]
+  in
+  fun (_,tag) _ _ -> Stog_types.Str_set.mem (String.lowercase tag) set
 
 let send_patch old_stog stog doc_id =
   let old_doc = Stog_types.doc old_stog doc_id in
