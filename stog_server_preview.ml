@@ -43,7 +43,8 @@ let rec preview_file stog = function
          None -> ""
        | Some s -> s
     in
-    S.respond_string ~status: `OK ~body ()
+    let headers = Cohttp.Header.init_with "Content-Type" "text/javascript" in
+    S.respond_string ~headers ~status: `OK ~body ()
   | path ->
     let rec iter tree = function
       [] -> S.respond_file ~fname: "" ()
@@ -67,8 +68,12 @@ let handle_preview http_url ws_url sock req body path =
   Stog_server_run.state () >>=
     function state ->
         match
-          try Some(Stog_types.doc_by_path state.stog (Stog_path.path path true))
-          with _ -> None
+          let s_path = "/" ^ (String.concat "/" path) in
+          let path = Stog_path.of_string s_path in
+          try Some(Stog_types.doc_by_path state.stog path)
+          with _  ->
+              try Some(Stog_types.doc_by_path state.stog (Stog_path.of_string (s_path^"/index.html")))
+              with _ -> None
         with
           Some (doc_id, doc) ->
             let body =
