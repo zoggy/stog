@@ -134,6 +134,8 @@ let send_update_message path op =
   push_message msg
 ;;
 
+let diff_cut (_,tag) _ _ = String.lowercase tag = "pre"
+
 let send_patch old_stog stog doc_id =
   let old_doc = Stog_types.doc old_stog doc_id in
   let new_doc = Stog_types.doc stog doc_id in
@@ -157,7 +159,7 @@ let send_patch old_stog stog doc_id =
     | Some xtmpl1, Some xtmpl2 -> (* xml1 <> xml2 *)
         let xml1 = Xmldiff.xml_of_string (Xtmpl.string_of_xmls xtmpl1) in
         let xml2 = Xmldiff.xml_of_string (Xtmpl.string_of_xmls xtmpl2) in
-        Lwt_preemptive.detach (Xmldiff.diff xml1) xml2 >>=
+        Lwt_preemptive.detach (Xmldiff.diff ~cut: diff_cut xml1) xml2 >>=
           (fun (_, patch) ->
              prerr_endline "patch computed";
              let op = Stog_server_types.Patch patch in

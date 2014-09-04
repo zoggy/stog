@@ -83,13 +83,14 @@ let handle_preview http_url ws_url sock req body path =
                   let doc_path = Stog_path.to_string doc.doc_path in
                   let title = Printf.sprintf "Loading preview of %s" doc_path in
                   let script_url = http_url^"/"^client_js in
-                  "<html><header><meta charset=\"utf-8\"><title>"^title^"</title>"^
+                  "<!DOCTYPE html><html><header><meta charset=\"utf-8\"/><title>"^title^"</title>"^
                   "<script type=\"text/javascript\">
                     stog_server = { url : '"^ws_url^"', doc : '"^doc_path^"' };
                   </script>"^
                   "<script src=\""^script_url^"\" type=\"text/javascript\"> </script>"^
-                  "<body><h1>"^title^"</h1></body></html>"
+                  "</header><body><h1>"^title^"</h1></body></html>"
             in
-            S.respond_string ~status:`OK ~body ()
+            let headers = Cohttp.Header.init_with "Content-Type" "text/html; charset=utf-8" in
+            S.respond_string ~headers ~status:`OK ~body ()
         | None -> preview_file state.stog path
 
