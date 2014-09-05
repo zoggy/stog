@@ -261,13 +261,13 @@ let options = [
     "<filter> only keep documents verifying the given condition" ;
 
     "--hackcmxs", Arg.Set Stog_dyn.hack_cmxs,
-    " when a package to load depends on .cmxa or .cmx file, try to build .cmxs.\n*** Server options ***\n\n";
+    " when a package to load depends on .cmxa or .cmx file, try to build .cmxs.\n\n  *** Server options ***";
 
     "--port", Arg.Set_int Stog_server_mode.port,
     "<p> set port to listen on (default is "^(string_of_int !Stog_server_mode.port)^")" ;
 
     "--host", Arg.Set_string Stog_server_mode.host,
-    "<host> set hostname to listen on (default is "^ !Stog_server_mode.host ^")" ;
+    "<host> set hostname to listen on (default is "^ !Stog_server_mode.host ^")\n" ;
   ];;
 
 let usage ?(with_options=true) ()=
