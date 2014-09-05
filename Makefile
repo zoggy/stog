@@ -87,7 +87,8 @@ LIB_CMXFILES= \
 	stog_html.cmx \
 	stog_blocks.cmx \
 	stog_plug.cmx \
-	stog_dyn.cmx
+	stog_dyn.cmx \
+	stog_server_mode.cmx
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)
 LIB_CMIFILES=$(LIB_CMXFILES:.cmx=.cmi)
@@ -103,16 +104,13 @@ LIB_SERVER_BYTE=$(LIB_SERVER:.cmxa=.cma)
 MAIN=stog
 MAIN_BYTE=$(MAIN).byte
 
-SERVER=$(MAIN)-server
-SERVER_BYTE=$(SERVER).byte
-
 LIB_SERVER_CMXFILES= \
 	stog_server_types.cmx \
 	stog_server_run.cmx \
 	stog_server_files.cmx \
 	stog_server_ws.cmx \
-	stog_server_preview.cmx
-
+	stog_server_preview.cmx \
+	stog_server_main.cmx
 
 LIB_SERVER_CMOFILES=$(LIB_SERVER_CMXFILES:.cmx=.cmo)
 LIB_SERVER_CMIFILES=$(LIB_SERVER_CMXFILES:.cmx=.cmi)
@@ -124,8 +122,6 @@ OCAML_SESSION=$(MAIN)-ocaml-session
 MK_STOG=mk-$(MAIN)
 MK_STOG_BYTE=mk-$(MAIN_BYTE)
 MK_STOG_OCAML=mk-$(OCAML_SESSION)
-MK_STOG_SERVER=mk-$(SERVER)
-MK_STOG_SERVER_BYTE=mk-$(SERVER_BYTE)
 
 LATEX2STOG=latex2stog
 LATEX2STOG_BYTE=latex2stog.byte
@@ -139,15 +135,14 @@ OCAML_SESSION_CMIFILES=$(OCAML_SESSION_CMOFILES:.cmo=.cmi)
 all: opt byte
 
 opt: $(LIB) $(LIB_CMXS) $(LIB_SERVER) $(LIB_SERVER_CMXS) \
-	$(MAIN) $(SERVER) $(LATEX2STOG) \
+	$(MAIN) $(LATEX2STOG) \
 	plugins/plugin_example.cmxs $(PLUGINS_OPT) \
-	$(MK_STOG) $(MK_STOG_SERVER) \
-	$(ODOC)
+	$(MK_STOG) $(ODOC)
 
 byte: $(LIB_BYTE) $(LIB_SERVER_BYTE) \
-	$(MAIN_BYTE) $(SERVER_BYTE) $(LATEX2STOG_BYTE) \
+	$(MAIN_BYTE) $(LATEX2STOG_BYTE) \
 	$(OCAML_SESSION) plugins/plugin_example.cmo $(PLUGINS_BYTE) \
-	$(MK_STOG_BYTE) $(MK_STOG_SERVER_BYTE) $(MK_STOG_OCAML) $(ODOC_BYTE)
+	$(MK_STOG_BYTE) $(MK_STOG_OCAML) $(ODOC_BYTE)
 
 $(MAIN): $(LIB) stog_main.cmx
 	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES) -verbose -linkall -linkpkg -o $@ $(COMPFLAGS) $^
@@ -155,14 +150,6 @@ $(MAIN): $(LIB) stog_main.cmx
 $(MAIN_BYTE): $(LIB_BYTE) stog_main.cmo
 	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) -linkall -linkpkg -o $@ $(COMPFLAGS) $^
 #	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $^
-
-$(SERVER): $(LIB) $(LIB_SERVER) stog_server_main.cmx
-	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES),$(SERVER_PACKAGES) \
-	-verbose -linkall -linkpkg -o $@ $(COMPFLAGS) $^
-
-$(SERVER_BYTE): $(LIB_BYTE) $(LIB_SERVER_BYTE) stog_server_main.cmo
-	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES),$(SERVER_PACKAGES) \
-	-linkall -linkpkg -o $@ $(COMPFLAGS) $^
 
 server_files/$(SERVER_JS): stog_server_types.cmi stog_server_types.cmo stog_server_client_js.ml
 	$(MKDIR) server_files
@@ -255,36 +242,6 @@ $(MK_STOG_OCAML): $(LIB) $(OCAML_SESSION_CMOFILES)
 	@chmod a-w $@
 	@echo done
 
-$(MK_STOG_SERVER): $(LIB)
-	@echo -n "Creating $@... "
-	@$(RM) $@
-	@echo "# Multi-shell script.  Works under Bourne Shell, MPW Shell, zsh." > $@
-	@echo "if : == x" >> $@
-	@echo "then # Bourne Shell or zsh" >> $@
-	@echo "  exec $(OCAMLFIND) ocamlopt -thread -package stog.server -linkpkg -linkall \"\$$@\" stog_server_main.cmx" >> $@
-	@echo "else #MPW Shell" >> $@
-	@echo "  exec $(OCAMLFIND) ocamlopt -thread -package stog.server -linkpkg -linkall {\"parameters\"} stog_server_main.cmx" >> $@
-	@echo "End # uppercase E because \"end\" is a keyword in zsh" >> $@
-	@echo "fi" >> $@
-	@chmod ugo+rx $@
-	@chmod a-w $@
-	@echo done
-
-$(MK_STOG_SERVER_BYTE): $(LIB)
-	@echo -n "Creating $@... "
-	@$(RM) $@
-	@echo "# Multi-shell script.  Works under Bourne Shell, MPW Shell, zsh." > $@
-	@echo "if : == x" >> $@
-	@echo "then # Bourne Shell or zsh" >> $@
-	@echo "  exec $(OCAMLFIND) ocamlc -thread -package stog.server -linkpkg -linkall \"\$$@\" stog_server_main.cmo" >> $@
-	@echo "else #MPW Shell" >> $@
-	@echo "  exec $(OCAMLFIND) ocamlc -thread -package stog.server -linkpkg -linkall {\"parameters\"} stog_server_main.cmo" >> $@
-	@echo "End # uppercase E because \"end\" is a keyword in zsh" >> $@
-	@echo "fi" >> $@
-	@chmod ugo+rx $@
-	@chmod a-w $@
-	@echo done
-
 
 ##########
 .PHONY: doc webdoc ocamldoc
@@ -338,9 +295,8 @@ install-share:
 	$(CP) -r share/modules $(SHARE_DIR)/
 
 install-bin:
-	$(CP) $(MAIN) $(MAIN_BYTE) $(SERVER) $(SERVER_BYTE) $(OCAML_SESSION) \
+	$(CP) $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
 	  $(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
-	  $(MK_STOG_SERVER) $(MK_STOG_SERVER_BYTE) \
 	  $(LATEX2STOG) $(LATEX2STOG_BYTE) \
 		`dirname \`which $(OCAMLC)\``/
 	$(CP) $(ODOC) $(ODOC_BYTE) `$(OCAMLFIND) ocamldoc -customdir`/
@@ -354,18 +310,16 @@ uninstall-share:
 	$(RM) -r $(SHARE_DIR)
 
 uninstall-bin:
-	for i in $(MAIN) $(MAIN_BYTE) $(SERVER) $(SERVER_BYTE) $(OCAML_SESSION) \
+	for i in $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
 		$(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
-		$(MK_STOG_SERVER) $(MK_STOG_SERVER_BYTE) \
 		$(LATEX2STOG) $(LATEX2STOG_BYTE) ; \
 		do $(RM) `dirname \`which $(OCAMLC)\``/$$i; done
 
 #####
 clean:
 	$(RM) stog_server_files.ml
-	$(RM) $(MAIN) $(MAIN_BYTE) $(SERVER) $(SERVER_BYTE) *.cm* *.o *.a *.x *.annot
-	$(RM) $(MK_STOG) $(ML_STOG_BYTE) \
-	$(MK_STOG_SERVER) $(MK_STOG_SERVER_BYTE) $(MK_STOG_OCAML)
+	$(RM) $(MAIN) $(MAIN_BYTE) *.cm* *.o *.a *.x *.annot
+	$(RM) $(MK_STOG) $(ML_STOG_BYTE) $(MK_STOG_OCAML)
 	$(RM) $(LATEX2STOG) $(LATEX2STOG_BYTE)
 	(cd plugins && $(RM) *.cm* *.o *.a *.x *.annot)
 

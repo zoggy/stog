@@ -186,17 +186,12 @@ let rec watch_for_change on_update on_error =
           ) >>= fun () -> watch_for_change on_update on_error
 ;;
 
-let watch ~base_url ~dir ~on_update ~on_error =
-  let stog = Stog_io.read_stog dir in
+let watch stog ~on_update ~on_error =
   Lwt.catch
-     (fun () -> Lwt_unix.mkdir (Filename.concat dir "stog-output") 0o750)
+     (fun () -> Lwt_unix.mkdir (Filename.concat (Sys.getcwd()) "stog-output") 0o750)
      (fun _ -> Lwt.return_unit)
   >>= fun () ->
-  let stog = { stog with
-      Stog_types.stog_base_url = (Stog_types.url_of_string base_url) ;
-      stog_outdir = "stog-output" ;
-    }
-  in
+  let stog = { stog with stog_outdir = "stog-output" } in
   let state = {
       stog ;
       stog_modules = [] ;

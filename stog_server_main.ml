@@ -73,7 +73,7 @@ let handler host port sock req body =
       in
       S.respond_string ~status:`OK ~body ()
 
-let start_server dir host port =
+let start_server host port =
   Lwt_io.write Lwt_io.stdout
     (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
   >>= fun _ ->
@@ -85,14 +85,24 @@ let start_server dir host port =
   S.create ~address:host ~port config
 
 
-let launch dir host port =
-  let base_url = http_url host port in
+let launch stog host port =
+  let stog =
+    let stog_base_url =
+      Stog_types.url_of_string (Printf.sprintf "http://%s:%d/preview" host port)
+    in
+    { stog with Stog_types.stog_base_url }
+  in
   let on_update = Stog_server_ws.send_patch in
   let on_error = Stog_server_ws.send_errors in
-  let _watcher = Stog_server_run.watch ~dir ~base_url ~on_update ~on_error in
+  let _watcher = Stog_server_run.watch stog ~on_update ~on_error in
   Stog_server_ws.run_server host (port+1) >>=
-    fun _ -> start_server dir host port
+    fun _ -> start_server host port
 
+let () =
+  let run stog host port = Lwt_unix.run (launch stog host port) in
+  Stog_server_mode.launch := Some run
+
+(*
 let port = ref 8080
 let host = ref "0.0.0.0"
 let root_dir = ref "."
@@ -143,4 +153,4 @@ let _ =
       in
       prerr_endline msg;
       exit 1
-
+*)

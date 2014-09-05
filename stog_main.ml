@@ -48,6 +48,9 @@ let only_doc = ref None;;
 
 let publish_only = ref None ;;
 
+type mode = Generate | Server
+let mode = ref Generate
+
 let debug = ref false;;
 
 let add_stog_def s =
@@ -105,7 +108,7 @@ let set_stog_options stog =
   stog
 ;;
 
-let generate_from_dirs dirs =
+let run_from_dirs dirs =
   try
     let stogs = List.map Stog_io.read_stog dirs in
     (*prerr_endline "directories read";*)
@@ -129,18 +132,24 @@ let generate_from_dirs dirs =
         None -> None
       | Some s -> Some [s]
     in
-    let default_style =
-      [ Xtmpl.xml_of_string ~add_main: false
-        "<link href=\"&lt;site-url/&gt;/style.css\" rel=\"stylesheet\" type=\"text/css\"/>"
-      ]
+    let def_style =
+      (("", Stog_tags.default_style), Xtmpl.atts_empty,
+       [ Xtmpl.xml_of_string ~add_main: false
+         "<link href=\"&lt;site-url/&gt;/style.css\" rel=\"stylesheet\" type=\"text/css\"/>"
+       ])
     in
-    Stog_engine.generate ~use_cache: !use_cache ?only_docs ~default_style stog modules
+    let stog = { stog with stog_defs = stog.stog_defs @ [ def_style ] } in
+    if Stog_server_mode.server_mode() then
+      Stog_server_mode.run_server stog
+    else
+      Stog_engine.generate ~use_cache: !use_cache ?only_docs stog modules
+
   with Stog_types.Path_trie.Already_present l ->
       let msg = "Path already present: "^(String.concat "/" l) in
       failwith msg
 ;;
 
-let generate_from_files files =
+let run_from_files files =
   try
     let dir = Sys.getcwd () in
     let load_doc file =
@@ -175,13 +184,21 @@ let generate_from_files files =
       )
         modules
     in
-    let default_style =
-      [ Xtmpl.xml_of_string ~add_main: false
-          "<style><include file=\"&lt;doc-type/&gt;-style.css\" raw=\"true\"/></style>"
-      ]
+    let stog =
+      let def_style =
+        (("", Stog_tags.default_style), Xtmpl.atts_empty,
+         [ Xtmpl.xml_of_string ~add_main: false
+           "<style><include file=\"&lt;doc-type/&gt;-style.css\" raw=\"true\"/></style>"
+         ])
+      in
+      { stog with stog_defs = stog.stog_defs @ [ def_style ] }
     in
     let stog = Stog_io.read_modules stog in
-    Stog_engine.generate ~use_cache: false ~gen_cache: false ~default_style stog modules
+    if Stog_server_mode.server_mode() then
+      Stog_server_mode.run_server stog
+    else
+      Stog_engine.generate ~use_cache: false ~gen_cache: false stog modules
+
   with Stog_types.Path_trie.Already_present l ->
       let msg = "Path already present: "^(String.concat "/" l) in
       failwith msg
@@ -244,7 +261,13 @@ let options = [
     "<filter> only keep documents verifying the given condition" ;
 
     "--hackcmxs", Arg.Set Stog_dyn.hack_cmxs,
-    " when a package to load depends on .cmxa or .cmx file, try to build .cmxs.";
+    " when a package to load depends on .cmxa or .cmx file, try to build .cmxs.\n*** Server options ***\n\n";
+
+    "--port", Arg.Set_int Stog_server_mode.port,
+    "<p> set port to listen on (default is "^(string_of_int !Stog_server_mode.port)^")" ;
+
+    "--host", Arg.Set_string Stog_server_mode.host,
+    "<host> set hostname to listen on (default is "^ !Stog_server_mode.host ^")" ;
   ];;
 
 let usage ?(with_options=true) ()=
@@ -284,8 +307,8 @@ let main () =
                  failwith (usage ~with_options: false ()))
             q;
           match k with
-            Unix.S_REG -> generate_from_files (h::q)
-          | Unix.S_DIR -> generate_from_dirs (h::q)
+            Unix.S_REG -> run_from_files (h::q)
+          | Unix.S_DIR -> run_from_dirs (h::q)
           | _ -> failwith ("Invalid file type for "^h)
     end;
     let err = Stog_msg.errors () in

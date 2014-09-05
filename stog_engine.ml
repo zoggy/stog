@@ -487,18 +487,13 @@ let run ?(use_cache=true) ?default_style state =
       stog.stog_dir
   in
   let env = Xtmpl.env_of_list
-    (
-     (("", Stog_tags.site_desc), (fun data _ _ _ -> (data, stog.stog_desc)))  ::
-     (("", Stog_tags.site_email), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_email ]))) ::
-     (("", Stog_tags.site_title), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_title ]))) ::
-     (("", Stog_tags.stog_dir), (fun data _ _ _ -> (data, [ Xtmpl.D dir ]))) ::
-     (("", Stog_tags.site_url), fun_site_url stog) ::
-       (match default_style with
-          None -> []
-        | Some xmls ->
-           [("", Stog_tags.default_style), (fun data _ _ _ -> (data, xmls))]
-       )
-    )
+    [
+     (("", Stog_tags.site_desc), (fun data _ _ _ -> (data, stog.stog_desc))) ;
+     (("", Stog_tags.site_email), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_email ]))) ;
+     (("", Stog_tags.site_title), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_title ]))) ;
+     (("", Stog_tags.stog_dir), (fun data _ _ _ -> (data, [ Xtmpl.D dir ]))) ;
+     (("", Stog_tags.site_url), fun_site_url stog) ;
+    ]
   in
   let env = env_of_used_mods ~env stog stog.stog_used_mods in
   let env = env_of_defs ~env stog.stog_defs in
