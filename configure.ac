@@ -53,6 +53,11 @@ if test "$datadir" = "\${prefix}/share" ; then
 fi
 SHARE_DIR=$datadir
 
+
+PACKAGES=xmlm,xtmpl,netstring,config-file,dynlink,unix,str,higlo.lexers
+OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
+SERVER_PACKAGES=lwt.unix,lwt.preemptive,xmldiff,websocket,cstruct,crunch
+
 #############################
 # substitutions to perform
 AC_SUBST(OCAMLC)
@@ -76,6 +81,9 @@ AC_SUBST(PACKAGE)
 AC_SUBST(SHARE_DIR)
 AC_SUBST(JS_OF_OCAML)
 
+AC_SUBST(PACKAGES)
+AC_SUBST(OCAML_SESSION_PACKAGES)
+AC_SUBST(SERVER_PACKAGES)
 
 # Finally create the master.Makefile.in
 ACFILES="master.Makefile META stog_config.ml stog_install.ml"

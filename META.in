@@ -1,6 +1,6 @@
 version = "@VERSION@"
 description = "Stog"
-requires = "str,unix,config-file,dynlink,xtmpl,netstring,xmlm,higlo.lexers"
+requires = "@PACKAGES@"
 archive(byte) = "stog.cma"
 archive(native) = "stog.cmxa"
 archive(plugin,byte) = "stog.cma"
@@ -60,4 +60,13 @@ package "rel-href" (
   archive(plugin,native) = "stog_rel_href.cmxs"
 )
 
-
+package "server" (
+  exists_if = "stog_server.cma"
+  version = "@VERSION@"
+  description = "Stog server"
+  requires = "stog,@SERVER_PACKAGES@"
+  archive(byte) = "stog_server.cma"
+  archive(native) = "stog_server.cmxa"
+  archive(plugin,byte) = "stog_server.cma"
+  archive(plugin,native) = "stog_server.cmxs"
+)

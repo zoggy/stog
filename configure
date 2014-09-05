@@ -584,6 +584,9 @@ PACKAGE_URL=
 ac_unique_file="master.Makefile.in"
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+SERVER_PACKAGES
+OCAML_SESSION_PACKAGES
+PACKAGES
 JS_OF_OCAML
 SHARE_DIR
 PACKAGE
@@ -1705,8 +1708,16 @@ if test "$datadir" = "\${prefix}/share" ; then
 fi
 SHARE_DIR=$datadir
 
+
+PACKAGES=xmlm,xtmpl,netstring,config-file,dynlink,unix,str,higlo.lexers
+OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
+SERVER_PACKAGES=lwt.unix,lwt.preemptive,xmldiff,websocket,cstruct,crunch
+
 #############################
 # substitutions to perform
+
+
+
 
 
 

@@ -114,6 +114,7 @@ let options = [
 
     "--stog-ocaml-session", Arg.Set_string Stog_ocaml.stog_ocaml_session,
     "<command> use <command> as stog-ocaml-session program";
+
   ]
 
 let _ =
