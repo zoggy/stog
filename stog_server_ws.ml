@@ -53,7 +53,7 @@ let push_message ?push (msg : Stog_server_types.server_message) =
     ("pushing message: "^
      (match msg with
         Stog_server_types.Update _ -> "Update"
-      | Stog_server_types.Errors (errs,warns) -> 
+      | Stog_server_types.Errors (errs,warns) ->
           String.concat "\n" ("Errors:" :: errs @ ["Warnings:"] @ warns)
      ));
   let marshalled = Marshal.to_string  msg [] in
@@ -135,10 +135,10 @@ let send_update_message path op =
 ;;
 
 let diff_cut =
-  let set = List.fold_left 
+  let set = List.fold_left
     (fun set tag -> Stog_types.Str_set.add tag set)
     Stog_types.Str_set.empty
-    [ "pre" ; "ul" ; "p" ]
+    [ "pre" ; "ul" ; "p" ; "svg"]
   in
   fun (_,tag) _ _ -> Stog_types.Str_set.mem (String.lowercase tag) set
 
