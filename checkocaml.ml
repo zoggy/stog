@@ -905,13 +905,36 @@ let _ = check_ocamlfind_package conf ~min_version: [1;2] "config-file";;
 let _ = check_ocamlfind_package conf ~min_version: [0;2] "higlo";;
 
 let _ =
-  let js_of_ocaml =
-    try ocaml_prog "js_of_ocaml"
-    with Program_not_found _ ->
-        prerr_endline "Cannot find js_of_ocaml";
-        exit 1
+  let checks =
+    [
+      (
+       try add_subst "JS_OF_OCAML" (ocaml_prog "js_of_ocaml"); true
+       with Program_not_found _ ->
+           prerr_endline "Cannot find js_of_ocaml";
+           false
+      );
+      (
+       try add_subst "OCAML_CRUNCH" (ocaml_prog "ocaml-crunch"); true
+       with Program_not_found _ ->
+           prerr_endline "Cannot find ocaml-crunch";
+           false
+      );
+      check_ocamlfind_package conf ~fail: false ~min_version: [2;4] "lwt.unix";
+      check_ocamlfind_package conf ~fail: false ~min_version: [2;4] "lwt.preemptive";
+      check_ocamlfind_package conf ~fail: false ~min_version: [0;2] "xmldiff";
+      check_ocamlfind_package conf ~fail: false ~min_version: [0;8;1] "websocket";
+      check_ocamlfind_package conf ~fail: false ~min_version: [0;3;1] "cstruct";
+      check_ocamlfind_package conf ~fail: false ~min_version: [1;1;0] "crunch";
+    ]
   in
-  add_subst "JS_OF_OCAML" js_of_ocaml
+  if List.fold_left (&&) true checks then
+    (
+     add_subst "SERVER" "stog-server";
+     add_subst "SERVER_BYTE" "stog-server.byte";
+     print_endline "stog.server package will be compiled and installed"
+    )
+  else
+    print_endline "stog.server package will NOT be available"
 ;;
 
 

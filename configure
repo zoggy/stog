@@ -584,9 +584,12 @@ PACKAGE_URL=
 ac_unique_file="master.Makefile.in"
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+SERVER_BYTE
+SERVER
 SERVER_PACKAGES
 OCAML_SESSION_PACKAGES
 PACKAGES
+OCAML_CRUNCH
 JS_OF_OCAML
 SHARE_DIR
 PACKAGE
@@ -1715,6 +1718,9 @@ SERVER_PACKAGES=lwt.unix,lwt.preemptive,xmldiff,websocket,cstruct,crunch
 
 #############################
 # substitutions to perform
+
+
+
 
 
 
