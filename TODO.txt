@@ -1,6 +1,3 @@
-Server:
-- detect needed server libraries at configuration time
-
 Stog_info.compute should be a level fun in Base module
 
 - function rules defined in docs:
