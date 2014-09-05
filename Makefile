@@ -104,6 +104,9 @@ LIB_SERVER_BYTE=$(LIB_SERVER:.cmxa=.cma)
 MAIN=stog
 MAIN_BYTE=$(MAIN).byte
 
+SERVER=stog-server
+SERVER_BYTE=$(SERVER).byte
+
 LIB_SERVER_CMXFILES= \
 	stog_server_types.cmx \
 	stog_server_run.cmx \
@@ -135,12 +138,12 @@ OCAML_SESSION_CMIFILES=$(OCAML_SESSION_CMOFILES:.cmo=.cmi)
 all: opt byte
 
 opt: $(LIB) $(LIB_CMXS) $(LIB_SERVER) $(LIB_SERVER_CMXS) \
-	$(MAIN) $(LATEX2STOG) \
+	$(MAIN) $(SERVER) $(LATEX2STOG) \
 	plugins/plugin_example.cmxs $(PLUGINS_OPT) \
 	$(MK_STOG) $(ODOC)
 
 byte: $(LIB_BYTE) $(LIB_SERVER_BYTE) \
-	$(MAIN_BYTE) $(LATEX2STOG_BYTE) \
+	$(MAIN_BYTE) $(SERVER_BYTE) $(LATEX2STOG_BYTE) \
 	$(OCAML_SESSION) plugins/plugin_example.cmo $(PLUGINS_BYTE) \
 	$(MK_STOG_BYTE) $(MK_STOG_OCAML) $(ODOC_BYTE)
 
@@ -149,6 +152,15 @@ $(MAIN): $(LIB) stog_main.cmx
 
 $(MAIN_BYTE): $(LIB_BYTE) stog_main.cmo
 	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) -linkall -linkpkg -o $@ $(COMPFLAGS) $^
+
+$(SERVER): $(LIB) $(LIB_SERVER) stog_main.cmx
+	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES),$(SERVER_PACKAGES) \
+	-verbose -linkall -linkpkg -o $@ $(COMPFLAGS) $^
+
+$(SERVER_BYTE): $(LIB_BYTE) $(LIB_SERVER_BYTE) stog_main.cmo
+	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES),$(SERVER_PACKAGES) \
+	-linkall -linkpkg -o $@ $(COMPFLAGS) $^
+
 #	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $^
 
 server_files/$(SERVER_JS): stog_server_types.cmi stog_server_types.cmo stog_server_client_js.ml
@@ -286,7 +298,6 @@ install-lib:
 		$(LIB_BYTE) $(LIB) $(LIB:.cmxa=.a) $(LIB_CMXS) stog_main.cm* stog_main.o \
 		$(LIB_SERVER_BYTE) $(LIB_SERVER) $(LIB_SERVER:.cmxa=.a) $(LIB_SERVER_CMXS) \
 		$(LIB_SERVER_CMXFILES:.cmx=.o) $(LIB_SERVER_CMXFILES) $(LIB_SERVER_CMIFILES) \
-		stog_server_main.cm* stog_server_main.o \
 		$(OCAML_SESSION_CMOFILES)
 
 install-share:
@@ -295,7 +306,7 @@ install-share:
 	$(CP) -r share/modules $(SHARE_DIR)/
 
 install-bin:
-	$(CP) $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
+	$(CP) $(MAIN) $(MAIN_BYTE) $(SERVER) $(SERVER_BYTE) $(OCAML_SESSION) \
 	  $(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
 	  $(LATEX2STOG) $(LATEX2STOG_BYTE) \
 		`dirname \`which $(OCAMLC)\``/
@@ -310,7 +321,7 @@ uninstall-share:
 	$(RM) -r $(SHARE_DIR)
 
 uninstall-bin:
-	for i in $(MAIN) $(MAIN_BYTE) $(OCAML_SESSION) \
+	for i in $(MAIN) $(MAIN_BYTE) $(SERVER) $(SERVER_BYTE) $(OCAML_SESSION) \
 		$(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
 		$(LATEX2STOG) $(LATEX2STOG_BYTE) ; \
 		do $(RM) `dirname \`which $(OCAMLC)\``/$$i; done
@@ -318,7 +329,8 @@ uninstall-bin:
 #####
 clean:
 	$(RM) stog_server_files.ml
-	$(RM) $(MAIN) $(MAIN_BYTE) *.cm* *.o *.a *.x *.annot
+	$(RM) *.cm* *.o *.a *.x *.annot
+	$(RM) $(MAIN) $(MAIN_BYTE) $(SERVER) $(SERVER_BYTE)
 	$(RM) $(MK_STOG) $(ML_STOG_BYTE) $(MK_STOG_OCAML)
 	$(RM) $(LATEX2STOG) $(LATEX2STOG_BYTE)
 	(cd plugins && $(RM) *.cm* *.o *.a *.x *.annot)
