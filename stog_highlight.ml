@@ -53,7 +53,8 @@ let higlo_classes =
     0 -> "hl kwa"
   | 1 -> "hl kwb"
   | 2 -> "hl kwc"
-  | _ -> "hl kwd"
+  | 3 -> "hl kwd"
+  | n -> "hl kw"^(string_of_int n)
   in
   let symbol _ = "sym" in
   {
