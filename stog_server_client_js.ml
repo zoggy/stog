@@ -16,10 +16,10 @@ let string_of_name = function
 
 let dom_of_xml =
   let rec map (doc : Dom_html.document Js.t) = function
-    Xdiff.D s ->
+    `D s ->
       let n = doc##createTextNode (Js.string s) in
       (n :> Dom.node Js.t)
-  | Xdiff.E (name, atts, subs) ->
+  | `E (name, atts, subs) ->
       let n =
         match name with
           ("", tag) -> doc##createElement (Js.string tag)
@@ -130,12 +130,12 @@ let apply_patch_operation (path, op) =
         let text = Dom_html.document##createTextNode (Js.string s) in
         ignore(parent##replaceChild ((text :> Dom.node Js.t), node))
     | Xdiff.PUpdateNode (name, atts) when node##nodeType = Dom.TEXT ->
-        let n = dom_of_xml (Xdiff.E(name,atts,[])) in
+        let n = dom_of_xml (`E(name,atts,[])) in
         let parent = parent node in
         ignore(parent##replaceChild (n, node))
     | Xdiff.PUpdateNode (name, atts) when node##nodeType = Dom.ELEMENT ->
         let parent = parent node in
-        let n = dom_of_xml (Xdiff.E(name,atts,[])) in
+        let n = dom_of_xml (`E(name,atts,[])) in
         let children = node##childNodes in
         for i=0 to children##length-1 do
           Js.Opt.iter (node##firstChild) (fun node -> Dom.appendChild n node) ;
@@ -222,9 +222,9 @@ let add_status_box () =
            ]
          in
          let node = dom_of_xml
-           (Xdiff.E (("","div"), atts,
-             [ Xdiff.E (("","h2"), atts_of_list [("","style"), "color:#333333"], [ Xdiff.D "Status" ]) ;
-               Xdiff.E (("","pre"), atts_of_list [("","id"), status_msg_id], [ Xdiff.D "" ]) ;
+           (`E (("","div"), atts,
+             [ `E (("","h2"), atts_of_list [("","style"), "color:#333333"], [ `D "Status" ]) ;
+               `E (("","pre"), atts_of_list [("","id"), status_msg_id], [ `D "" ]) ;
              ] )
            )
          in
