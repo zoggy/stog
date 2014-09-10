@@ -43,7 +43,7 @@ let empty_data = {
   }
 
 let random_id () =
-  Printf.sprintf "%0x-%0x-%0x-%0x"
+  Printf.sprintf "%04x-%04x-%04x-%04x"
     (Random.int 0xffff) (Random.int 0xffff)
     (Random.int 0xffff) (Random.int 0xffff)
 ;;
