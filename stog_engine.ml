@@ -508,7 +508,7 @@ let encode_for_url s =
     | 'A'..'Z' | 'a'..'z' | '0'..'9'
     | '_' | '-' | '.' | '!' | '*' | '+' | '/' ->
         Buffer.add_char b s.[i]
-    | c -> Printf.bprintf b "%%%0x" (Char.code c)
+    | c -> Printf.bprintf b "%%%02x" (Char.code c)
   done;
   Buffer.contents b
 ;;
