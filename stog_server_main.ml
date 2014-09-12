@@ -28,17 +28,10 @@
 
 (** *)
 
-
 open Stog_server_run
 
 module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
-
-(*  Cohttp.Connection.t ->
-      Cohttp.Request.t ->
-      Cohttp_lwt_body.t ->
-      (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t;
-*)
 
 let http_url host port = Printf.sprintf "http://%s:%d/preview" host port
 let ws_url host port = Printf.sprintf "ws://%s:%d/" host port
@@ -102,55 +95,3 @@ let () =
   let run stog host port = Lwt_unix.run (launch stog host port) in
   Stog_server_mode.launch := Some run
 
-(*
-let port = ref 8080
-let host = ref "0.0.0.0"
-let root_dir = ref "."
-
-
-let plugins = ref [];;
-let packages = ref [];;
-
-let options = [
-    "-p", Arg.Set_int port, "<p> set port to listen on" ;
-    "-h", Arg.Set_string host,"<host> set hostname to listen on" ;
-    "-d", Arg.Set_string root_dir, "<dir> set stog root directory to watch" ;
-
-    "--plugin", Arg.String (fun s -> plugins := !plugins @ [s]),
-    "<file> load plugin (ocaml object file)" ;
-
-    "--package", Arg.String (fun s -> packages := !packages @ [s]),
-    "<pkg[,pkg2[,...]]> load package (a plugin loaded with ocamlfind)";
-
-    "--stog-ocaml-session", Arg.Set_string Stog_ocaml.stog_ocaml_session,
-    "<command> use <command> as stog-ocaml-session program";
-
-  ]
-
-let _ =
-  try
-    Arg.parse options (fun _ -> ())
-      (Printf.sprintf "Usage: %s [options]\nwhere options are:" Sys.argv.(0));
-    let dir =
-      if Filename.is_relative !root_dir then
-        if !root_dir = Filename.current_dir_name then
-          Sys.getcwd()
-        else
-          Filename.concat (Sys.getcwd()) !root_dir
-      else
-        !root_dir
-    in
-    Stog_dyn.load_packages !packages;
-    Stog_dyn.check_files_have_extension !plugins;
-    Stog_dyn.load_files !plugins;
-    Lwt_unix.run (launch dir !host !port)
-  with
-  e ->
-      let msg =
-        match e with
-          Failure msg | Sys_error msg -> msg
-        | _ -> Printexc.to_string e
-      in
-      prerr_endline msg;
-      exit 1
-*)
