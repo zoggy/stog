@@ -225,7 +225,7 @@ let replace_in_string ~pat ~subs ~s =
 let string_of_file name =
   let chanin = open_in_bin name in
   let len = 1024 in
-  let s = String.create len in
+  let s = String.make len '\000' in
   let buf = Buffer.create len in
   let rec iter () =
     try
