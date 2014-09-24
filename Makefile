@@ -162,7 +162,7 @@ $(SERVER_BYTE): $(LIB_BYTE) $(LIB_SERVER_BYTE) stog_main.cmo
 server_files/$(SERVER_JS): stog_server_types.cmi stog_server_types.cmo stog_server_client_js.ml
 	$(MKDIR) server_files
 	$(OCAMLFIND) ocamlc -o $@.byte $(COMPFLAGS) \
-	-package js_of_ocaml,js_of_ocaml.syntax,xmldiff,xtmpl -syntax camlp4o -linkpkg \
+	-package js_of_ocaml,js_of_ocaml.syntax,xmldiff.js,xtmpl -syntax camlp4o -linkpkg \
 	stog_server_types.cmo stog_server_client_js.ml
 	$(JS_OF_OCAML) $@.byte -o $@
 

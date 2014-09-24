@@ -56,7 +56,7 @@ SHARE_DIR=$datadir
 
 PACKAGES=xmlm,xtmpl,netstring,config-file,dynlink,unix,str,higlo.lexers
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
-SERVER_PACKAGES=lwt.unix,lwt.preemptive,xmldiff,websocket,cstruct,crunch
+SERVER_PACKAGES=lwt.unix,lwt.preemptive,websocket,cstruct,crunch,xmldiff.js
 
 #############################
 # substitutions to perform
