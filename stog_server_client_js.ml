@@ -156,7 +156,7 @@ let update page_path (path,op) =
       _ when path <> page_path -> ()
     | Patch patch ->
         log "patch received";
-        Xdiffjs.apply_dom_patch skip_node patch ;
+        Xdiffjs.apply_dom_patch ~skip_node patch ;
         set_status_msg [Xtmpl.D "Patched !"]
     | Update_all xml ->
         set_page_content xml;
