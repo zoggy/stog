@@ -13,7 +13,7 @@
 <math:equation-label></math:equation-label>
 
 
-<figure id="" title="" href=""
+<math:figure id="" title="" href=""
 ><if href=""><block protect_="title,id"
   counter-name="figure" class="figure"
   label="&lt;math:figure-label/&gt;"
@@ -23,7 +23,7 @@
   <div class="title"><title/></div>
   <div class="contents"><contents/></div>
 </div></block>
-  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></figure>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></math:figure>
 
 
 <math:theorem id="" title="" href=""
@@ -134,7 +134,8 @@
   <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></math:remark>
 
 <math:proof id="" title="" href="" of=""
-><if href=""><block protect_="title,id"
+><env_ foo="&lt;contents/&gt;"
+><if href=""><block protect_="title,id,label,contents"
   with-contents="true"
   counter-name="proof" class="proof"
   label="&lt;math:proof-label/&gt;"
@@ -145,12 +146,33 @@
 <counter counter-name="proof"/><if title=""><if of=""><dummy_/><dummy_> (<doc href="&lt;of/&gt;"/>)</dummy_></if><dummy_>: <title/></dummy_></if></long-title-format>
 <short-title-format><label/> <counter counter-name="proof"/></short-title-format>
 <contents><div class="&lt;class/&gt;" id="&lt;id/&gt;">
-<!--<button href="#&lt;id/&gt;" data-toggle="collapse" class="btn btn-info proof">Proof.</button>
-<div class="collapse" id="&lt;id/&gt;">-->
+<button href="#&lt;id/&gt;__body" data-toggle="collapse" class="btn btn-info proof">Proof.</button>
+<div class="collapse" id="&lt;id/&gt;__body">
+  <div class="title"><title/></div>
+  <div class="contents"><foo/></div>
+</div></div></contents></block>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></env_></math:proof>
+<!--
+<math:proof id="" title="" href="" of=""
+><env_ foo="&lt;contents/&gt;"
+><if href=""><block protect_="title,id,contents,label"
+  with-contents="true"
+  counter-name="proof" class="proof"
+  label="&lt;math:proof-label/&gt;"
+  id="&lt;id/&gt;" title="&lt;title/&gt;"
+  of="&lt;of/&gt;"
+>
+<long-title-format><label/>
+<counter counter-name="proof"/><if title=""><if of=""><dummy_/><dummy_> (<doc href="&lt;of/&gt;"/>)</dummy_></if><dummy_>: <title/></dummy_></if></long-title-format>
+<short-title-format><label/> <counter counter-name="proof"/></short-title-format>
+<contents><div class="&lt;class/&gt;" id="&lt;id/&gt;">
+<button href="#&lt;id/&gt;__body" data-toggle="collapse" class="btn btn-info proof">Proof.</button>
+<div class="collapse" id="&lt;id/&gt;__body">
   <div class="title"><title/></div>
   <div class="contents"><contents/></div>
-</div><!--</div>--></contents></block>
-  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></math:proof>
+</div></div></contents></block>
+  <block doc-path="&lt;doc-path/&gt;" href="&lt;href/&gt;"/></if></env_></math:proof>
+-->
 
 <math:equation id="" title="" href=""
 ><env_ foo="&lt;contents/&gt;"
