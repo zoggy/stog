@@ -109,6 +109,7 @@ LIB_SERVER_CMXFILES= \
 	stog_server_run.cmx \
 	stog_server_files.cmx \
 	stog_server_ws.cmx \
+	stog_server_editor.cmx \
 	stog_server_preview.cmx \
 	stog_server_main.cmx
 

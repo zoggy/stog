@@ -119,10 +119,12 @@ let apply_patch_operation (path, op) =
     | Xdiff.PReplace tree ->
         let parent = parent node in
         ignore(parent##replaceChild (dom_of_xml tree, node))
-    | Xdiff.PInsertTree tree ->
+    | Xdiff.PInsert (tree, `FirstChild) ->
+        ignore(node##insertBefore (dom_of_xml tree, (node##firstChild)))
+    | Xdiff.PInsert (tree, `After) ->
         let parent = parent node in
         ignore(parent##insertBefore (dom_of_xml tree, (node##nextSibling)))
-    | Xdiff.PDeleteTree ->
+    | Xdiff.PDelete ->
         let parent = parent node in
         ignore(parent##removeChild(node))
     | Xdiff.PUpdateCData s ->
@@ -141,7 +143,16 @@ let apply_patch_operation (path, op) =
           Js.Opt.iter (node##firstChild) (fun node -> Dom.appendChild n node) ;
         done;
         ignore(parent##replaceChild (n, node))
-    | _ -> () (* TODO print message ? *)
+    | Xdiff.PUpdateNode _ -> assert false
+    | Xdiff.PMove (newpath, pos) ->
+        let parent_node = parent node in
+        let removed_node = parent_node##removeChild(node) in
+        let new_loc = dom_node_by_path newpath in
+        match pos with
+        | `FirstChild ->
+             ignore(new_loc##insertBefore (removed_node, (new_loc##firstChild)))
+        | `After ->  
+            ignore(new_loc##insertBefore (removed_node, (new_loc##nextSibling)))
   in
   let node = dom_node_by_path path in
   apply (node:>Dom.node Js.t) op

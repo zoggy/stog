@@ -124,11 +124,11 @@ let default_page_tempalte =
   found in templates directory, if any. Else use a builtin contents. *)
 let page stog =
   let xml =
-    try 
+    try
       let file = from_includes stog "page.tmpl" in
       Xtmpl.xml_of_file file
     with Template_file_not_found _-> default_page_tempalte
-       
+
   in
   (stog, xml)
 

@@ -44,6 +44,10 @@ let handler host port sock req body =
       let http_url = http_url host port in
       let ws_url = ws_url host (port+1) in
       Stog_server_preview.handle_preview http_url ws_url sock req body path
+  | "editor" :: path ->
+      let http_url = http_url host port in
+      let ws_url = ws_url host (port+1) in
+      Stog_server_editor.handle http_url ws_url sock req body path
   | ["status"] ->
      Stog_server_run.state () >>= fun state ->
         let b = Buffer.create 256 in

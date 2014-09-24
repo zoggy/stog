@@ -166,7 +166,7 @@ let send_patch old_stog stog doc_id =
         let xml1 = Xmldiff.xml_of_string (Xtmpl.string_of_xmls xtmpl1) in
         let xml2 = Xmldiff.xml_of_string (Xtmpl.string_of_xmls xtmpl2) in
         Lwt_preemptive.detach (Xmldiff.diff ~cut: diff_cut xml1) xml2 >>=
-          (fun (_, patch) ->
+          (fun patch ->
              prerr_endline "patch computed";
              let op = Stog_server_types.Patch patch in
              send_update_message path op;
