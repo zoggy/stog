@@ -884,7 +884,7 @@ let add_conf_variables c =
 
 (*/c==m=[OCaml_conf]=0.8=t==*)
 
-let ocaml_required = [3;12;0]
+let ocaml_required = [4;2;0]
 let conf = ocaml_conf ();;
 print_conf conf;;
 
@@ -899,10 +899,10 @@ let _ = !print "\n### checking required tools and libraries ###\n"
 
 
 let _ = check_ocamlfind_package conf ~min_version: [1;1] "xmlm";;
-let _ = check_ocamlfind_package conf ~min_version: [0;9] "xtmpl";;
+let _ = check_ocamlfind_package conf ~min_version: [0;10] "xtmpl";;
 let _ = check_ocamlfind_package conf ~min_version: [3;6] "netstring";;
 let _ = check_ocamlfind_package conf ~min_version: [1;2] "config-file";;
-let _ = check_ocamlfind_package conf ~min_version: [0;2] "higlo";;
+let _ = check_ocamlfind_package conf ~min_version: [0;4] "higlo";;
 
 let _ =
   let checks =
@@ -923,7 +923,7 @@ let _ =
       check_ocamlfind_package conf ~fail: false ~min_version: [2;4] "lwt.preemptive";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;3;0] "xmldiff";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;3;0] "xmldiff.js";
-      check_ocamlfind_package conf ~fail: false ~min_version: [0;8;1] "websocket";
+      check_ocamlfind_package conf ~fail: false ~min_version: [0;9] "websocket";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;3;1] "cstruct";
       check_ocamlfind_package conf ~fail: false ~min_version: [1;1;0] "crunch";
     ]

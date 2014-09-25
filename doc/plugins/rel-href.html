@@ -1,0 +1,21 @@
+<plugin
+title="Stog-rel-href"
+with-contents="true"
+>
+<contents>
+<p>
+By now, this plugin only adds a rewriting level to change URLs with fragments in
+<ixml>href</ixml> attributes of a document to keep only "#" followed by the fragment,
+when refering to the same document.
+</p>
+<p>For example, in a document whose final URL is <icode>http://foo.bar/buz.html</icode>,
+<icode>href</icode> attributes containing <icode>http://foo.bar/buz.html#frag</icode>
+with be changed to refer to only <icode>#frag</icode>. This prevents some browsers
+from reloading the whole page when following a link to another part of the document.
+</p>
+
+<p>Usage:</p>
+<command-line>$ stog --package stog.rel-href ...</command-line>
+
+</contents>
+</plugin>

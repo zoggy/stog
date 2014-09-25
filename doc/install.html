@@ -12,17 +12,43 @@ with-contents="true"
 <contents>
 <prepare-toc depth="2">
 <toc></toc>
+
+<section id="opam" title="Quick install with Opam">
+<p>
+The easiest way to install is to use  <ext-a href="http://opam.ocaml.org">OPAM</ext-a>.
+Install Opam, then, as a regular user, fetch and install an OCaml version and install Stog.
+The whole can be done with the following opam commands:
+</p>
+<command-line>
+$ opam init --comp=4.02.0
+$ opam update
+$ opam install stog
+</command-line>
+</section>
+
 <section id="deps" title="Dependencies">
 <p>
 To build Stog, you will need:
 </p>
 <ul>
-<li><ext-a href="http://caml.inria.fr/">OCaml >= 4.00.1</ext-a> installed,</li>
+<li><ext-a href="http://caml.inria.fr/">OCaml >= 4.02.0</ext-a>,</li>
 <li><ext-a href="http://config-file.forge.ocamlcore.org/">Config-file >= 1.2</ext-a>.</li>
 <li><ext-a href="http://erratique.ch/software/xmlm">Xmlm >= 1.1.0</ext-a>,</li>
 <li><ext-a href="http://projects.camlcity.org/projects/ocamlnet.html">OCamlnet >= 3.6</ext-a>.</li>
-<li><ext-a href="https://github.com/zoggy/xtmpl">Xtmpl >= 0.9</ext-a>,</li>
-<li><ext-a href="http://zoggy.github.io/higlo/">Higlo >= 0.3</ext-a>.</li>
+<li><ext-a href="https://github.com/zoggy/xtmpl">Xtmpl >= 0.10</ext-a>,</li>
+<li><ext-a href="http://zoggy.github.io/higlo/">Higlo >= 0.4</ext-a>.</li>
+</ul>
+<p>
+These additional libraries are required to compile and install
+the preview server:
+</p>
+<ul>
+<li><ext-a href="http://ocsigen.org/lwt">Lwt >= 2.4.5</ext-a>,</li>
+<li><ext-a href="http://ocsigen.org/js_of_ocaml">Js_of_ocaml >= 2.4.1</ext-a>,</li>
+<li><ext-a href="http://zoggy.github.io/xmldiff/">Xmldiff >= 0.3.0</ext-a>.</li>
+<li><ext-a href="https://github.com/vbmithr/ocaml-websocket">OCaml-Websocket >= 0.9</ext-a>.</li>
+<li><ext-a href="https://github.com/mirage/ocaml-cstruct">ocaml-cstruct >= 0.3.1</ext-a>,</li>
+<li><ext-a href="https://github.com/mirage/ocaml-crunch">caoml-crunch >= 1.1.0</ext-a>.</li>
 </ul>
 <p>
 You will need to have the following tools installed to use
@@ -37,25 +63,13 @@ LaTeX in your pages.</li>
 </ul>
 </section>
 
-<section id="quickdebian" title="Quick install with Opam">
-<p>
-The easiest way to install is to use  <ext-a href="http://opam.ocaml.org">OPAM</ext-a>.
-Install Opam, then, as a regular user, fetch and install an OCaml version and install Stog.
-The whole can be done with the following opam commands:
-</p>
-<command-line>
-$ opam init --comp=4.01
-$ opam update
-$ opam install stog
-</command-line>
-</section>
-
 <section id="download" title="From the sources">
 <p>Get the sources from git repository:</p>
 <command-line>$ git clone https://github.com/zoggy/stog.git</command-line>
 
 <p>Or pick one of the releases:</p>
 <ul>
+<release version="0.13.0"/>
 <release version="0.12.0"/>
 <release version="0.11.1"/>
 <release version="0.11.0"/>

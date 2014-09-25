@@ -65,12 +65,14 @@ function, possibly redefining pre-defined rules with the same names.
 <li><doc href="#list"/></li>
 <li><doc href="#ocaml"/></li>
 <li><doc href="#ocaml-eval"/></li>
+<li><doc href="#ocaml-printf"/></li>
 </ul>
 </right>
 <col4>
 <ul>
-<li><doc href="#ocaml-printf"/></li>
 <li><doc href="#previous"/></li>
+<li><doc href="#print-date"/></li>
+<li><doc href="#print-datetime"/></li>
 <li><doc href="#sep_"/></li>
 <li><doc href="#site-descriptionx"/></li>
 <li><doc href="#site-email"/></li>
@@ -551,6 +553,27 @@ blog posts: <post href="displaying-evaluated-ocaml-code"/> and <post href="ocaml
 <p>This rule returns a formatted string from the arguments.
 See the following blog post: <post href="ocaml-printf"/>.
 </p>
+</subsection>
+
+<subsection id="print-date" title="print-date">
+<p>This rules returns a human readable representation of the date given
+in the node. Example:
+</p>
+<hxml><![CDATA[<print-date>2014-09-25</print-date>]]></hxml>
+<p>will return <print-date>2014-09-25</print-date>.</p>
+<p>The rule handles the chosen language (see <doc href="running#multilang">command line options</doc>)
+and the <doc href="#doc-date">format attribute</doc> to format the output.</p>
+</subsection>
+
+
+<subsection id="print-datetime" title="print-datetime">
+<p>This rules returns a human readable representation of the date and time given
+in the node. Example:
+</p>
+<hxml><![CDATA[<print-datetime>2014-09-25 10:12:57</print-datetime>]]></hxml>
+<p>will return <print-datetime>2014-09-25 10:12:57</print-datetime>.</p>
+<p>The rule handles the chosen language (see <doc href="running#multilang">command line options</doc>)
+and the <doc href="#doc-date">format attribute</doc> to format the output.</p>
 </subsection>
 
 <subsection id="sep_" title="sep_">

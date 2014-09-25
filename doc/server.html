@@ -1,0 +1,64 @@
+<page title="Preview server"
+with-contents="true"
+navbar-doc="active"
+>
+<contents>
+<toc/>
+<section id="whatis" title="What is this ?">
+<p>
+The preview server watches Stog files and recomputes
+the documents when there is a change. This is useful to have
+a preview as you modify your web site or article.
+</p>
+</section>
+
+<section id="how" title="How does it work ?">
+<p>
+When launched, the server computes the documents a first time.
+It then handles HTTP connections. All documents are accessed
+under the path <icode>/preview/</icode>. For example, the <icode>/foo/bar.html</icode>
+document will be browsed, by default, at address
+<icode>http://localhost:8080/preview/foo/bar.html</icode>.
+</p>
+<p>
+When a browser queries a document preview, the server returns
+a simple page with some javascript code to load. This javascript code
+opens a websocket connection, by default to <icode>http://localhost:8081</icode>,
+and queries the document. The server sends the whole document preview and
+the javascript code fills the DOM with the document.
+</p>
+<p>
+When the source file is modified, the server recomputes
+the documents and sends a patch to the browser, through the websocket connection.
+The javascript code applies the patch to the DOM.
+</p>
+<p>
+Applying patches rather than reloading the whole document is better
+when some part of the document are changed by some other code
+(I'm looking at you, Mathjax). By now, this case is not fully handled yet,
+but this is work in progress. The javascript part of
+the <ext-a href="http://zoggy.github.io/xmldiff">Xmldiff</ext-a>
+library allows to specify some nodes to ignore when applying a patch.
+</p>
+</section>
+
+<section id="usage" title="Usage">
+<p>
+To run the server, simply run <icode>stog-server[.byte]</icode> instead of
+<icode>stog[.byte]</icode>, with the same parameters.
+</p>
+<p>
+You can use <icode>mk-stog[.byte]</icode> to create your own server. To do
+so, just use <icode>--package stog.server</icode> in addition to other packages.
+</p>
+<p>
+The <icode>--port</icode> and <icode>--host</icode> command line options can be
+used to specify the host and port to listen on. Default is <icode>localhost:8080</icode>.
+The websocket server listens to port + 1, by now. This will change when the Websocket
+library allows changing a HTTP connection to a websocket connection on demand
+(see <ext-a href="https://github.com/vbmithr/ocaml-websocket/issues/18">this issue</ext-a>).
+</p>
+</section>
+
+</contents>
+</page>

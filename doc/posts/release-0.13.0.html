@@ -1,0 +1,29 @@
+<post title="Stog 0.13.0"
+date="2014/09/25"
+topics="stog"
+keywords="release"
+published="true"
+>
+<p>
+Release 0.13.0 of stog is available from the <page href="/install"/> page.
+</p>
+<sep_/>
+<p>Changes:</p>
+<ul id="changes">
+<li><doc href="server">preview server</doc> (stog-server), using
+  <icode>xmldiff.js</icode> package and websockets,</li>
+<li>use Xtmpl 0.10 to unescape entities in attributes of final documents,</li>
+<li>new plugin <doc href="plugins/rel-href"/>,</li>
+<li>new rules <doc href="module_base#print-date"><rule>print-date</rule></doc>
+  and <doc href="module_base#print-datetime"><rule>print-datetime</rule></doc>,</li>
+<li>keep <icode>/index.html</icode> in urls when scheme is "<icode>file:</icode>",</li>
+<li>handle subtitle in article default template,</li>
+<li>improve latex translator,</li>
+<li>allow <ixml>use-parent-path="false"</ixml> in <doc href="module_base#cut"/>,
+  not to use parent path when forging new elements' path,</li>
+<li>improve provided templates and math module,</li>
+<li>various fixes,</li>
+<li>replace calls to deprecated functions,</li>
+<li>use safe-string (require OCaml &gt;= 4.02).</li>
+</ul>
+</post>

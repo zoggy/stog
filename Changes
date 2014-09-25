@@ -10,12 +10,13 @@ Next release:
 * <bibliography keywords="kwd1,.."> to include bibliography items
   having the required keywords associated in keywords fields
 * handle subtitle in article default template
-* replace calls for deprecated functions
 * improve latex translator
 * use-parent-path="false" in <cut-doc> not to use parent path when
   forging new elements' path
 * improve provided templates and math module
 * various fixes
+* replace calls for deprecated functions
+* use safe-string (require ocaml >= 4.02)
 
 Release 0.12.0:
 * fix: missing include in mk-stog-ocaml-session
