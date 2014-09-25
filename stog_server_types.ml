@@ -39,11 +39,13 @@ type server_message =
 
 let to_hex s =
   let len = String.length s in
-  let result = String.create (2 * len) in
+  let result = Bytes.create (2 * len) in
   for i = 0 to len - 1 do
-    String.blit (Printf.sprintf "%02x" (int_of_char s.[i])) 0 result (2*i) 2;
+    Bytes.blit_string
+      (Printf.sprintf "%02x" (int_of_char (String.get s i)))
+      0 result (2*i) 2;
   done;
-  result
+  Bytes.to_string result
 ;;
 
 let from_hex =
@@ -55,11 +57,11 @@ let from_hex =
     | _ -> raise (Invalid_argument "Digest.from_hex")
   in
   fun s ->
-    let byte i = digit s.[i] lsl 4 + digit s.[i+1] in
+    let byte i = digit (String.get s i) lsl 4 + digit (String.get s (i+1)) in
     let len = String.length s in
-    let result = String.create (len/2) in
+    let result = Bytes.create (len/2) in
     for i = 0 to (len / 2) - 1 do
-      result.[i] <- Char.chr (byte (2 * i));
+      Bytes.set result i (Char.chr (byte (2 * i)));
     done;
-    result
+    Bytes.to_string result
 ;;

@@ -33,7 +33,7 @@ PBYTE=#p -p a
 
 OF_FLAGS=-package $(PACKAGES),$(SERVER_PACKAGES)
 
-COMPFLAGS=-I +ocamldoc -annot -rectypes -g -thread  #-w +K
+COMPFLAGS=-I +ocamldoc -annot -rectypes -g -thread  -safe-string #-w +K
 OCAMLPP=
 
 PLUGINS_BYTE= \

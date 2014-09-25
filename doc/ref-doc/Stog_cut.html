@@ -13,9 +13,10 @@ Cutting documents into pieces. This function is associated to
 </div>
 <hr width="100%"/>
 
-<pre><span id="VALmk_path"><span class="keyword">val</span> mk_path</span> : <code class="type"><a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; string -&gt; string -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a></code></pre><div class="info ">
-<code class="code">mk_path path sep id</code> forges a new path using the given one,
-  the given separator and the given id.<br/>
+<pre><span id="VALmk_path"><span class="keyword">val</span> mk_path</span> : <code class="type">bool -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; string -&gt; string -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a></code></pre><div class="info ">
+<code class="code">mk_path use_parent_path path sep id</code> forges a new path using the given one
+  (if <code class="code">use_parent_path = true</code>), the given separator (if <code class="code">use_parent_path = true</code>)
+  and the given id.<br/>
 <b>Raises</b> <code>Failure</code> if the given <code class="code">path</code> has no extension.<br/>
 </div>
 

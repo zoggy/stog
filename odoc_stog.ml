@@ -221,11 +221,11 @@ let replace_in_string ~pat ~subs ~s =
   Buffer.contents b
 (*/c==v=[String.replace_in_string]=1.0====*)
 
-(*c==v=[File.string_of_file]=1.0====*)
+(*c==v=[File.string_of_file]=1.1====*)
 let string_of_file name =
   let chanin = open_in_bin name in
   let len = 1024 in
-  let s = String.make len '\000' in
+  let s = Bytes.create len in
   let buf = Buffer.create len in
   let rec iter () =
     try
@@ -234,7 +234,7 @@ let string_of_file name =
         ()
       else
         (
-         Buffer.add_substring buf s 0 n;
+         Buffer.add_subbytes buf s 0 n;
          iter ()
         )
     with
@@ -243,7 +243,7 @@ let string_of_file name =
   iter ();
   close_in chanin;
   Buffer.contents buf
-(*/c==v=[File.string_of_file]=1.0====*)
+(*/c==v=[File.string_of_file]=1.1====*)
 
 (*c==v=[File.file_of_string]=1.1====*)
 let file_of_string ~file s =
