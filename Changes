@@ -1,9 +1,21 @@
 Next release:
-* depend on Xtmpl 0.10
-* dump final files unescaping XML code in attributes
+* preview server (stog-server), using xmldiff.js and websockets
+* use xtmpl 0.10 to unescape entities in attributes of final documents
+* new plugin stog.rel-href
+* new rules <print-date> and <print-datetime>
+* keep /index.html in urls when scheme is "file:"
+* more powerful format specification in <cite>:
+  <cite begin="..." end="..." sep="..." format="..."/>
+  and also look for <cite-begin>, <cite-end> and <cite-sep> in environment
+* <bibliography keywords="kwd1,.."> to include bibliography items
+  having the required keywords associated in keywords fields
+* handle subtitle in article default template
+* replace calls for deprecated functions
+* improve latex translator
 * use-parent-path="false" in <cut-doc> not to use parent path when
   forging new elements' path
 * improve provided templates and math module
+* various fixes
 
 Release 0.12.0:
 * fix: missing include in mk-stog-ocaml-session
