@@ -1061,13 +1061,11 @@ and doc_list doc ?rss ?set stog env args _ =
               Xtmpl.opt_arg_cdata ~def: "rss-item.tmpl" args ("","alt-doc-in-list-tmpl")
             in
             let doc_path =
-              let s =
-                if Filename.is_relative path then
-                  (Stog_path.to_string (Stog_path.parent doc.doc_path))^"/"^path
-                else
-                  path
-              in
-              Stog_path.of_string s
+              if Filename.is_relative path then
+                Stog_path.append (Stog_path.parent doc.doc_path)
+                  (Stog_path.of_string path).Stog_path.path
+              else
+                (Stog_path.of_string path)
             in
             let doc_title =
               match Xtmpl.get_arg_cdata args ("", "alt-doc-title") with
@@ -1089,7 +1087,7 @@ and doc_list doc ?rss ?set stog env args _ =
             in
             let stog =
               try
-                let (doc_id, _) = Stog_types.doc_by_path stog doc_path in
+                let (doc_id, _) = Stog_types.doc_by_path stog doc.doc_path in
                 Stog_types.set_doc stog doc_id doc
               with _ ->
                   Stog_types.add_doc stog doc
