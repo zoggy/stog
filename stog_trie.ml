@@ -115,8 +115,8 @@ module Make (P : Map.OrderedType) =
                       else
                         Node (map, data :: d)
                   | _, _ ->
-                    let x = add ~backpath: (sym :: backpath) q data t2 in
-                    Node (Map.add sym x map, data_opt)
+                      let x = add ~backpath: (sym :: backpath) q data t2 in
+                      Node (Map.add sym x map, data_opt)
                 with
                   Not_found ->
                     Node (Map.add sym (Leaf (q, [data])) map, data_opt)
@@ -167,7 +167,9 @@ module Make (P : Map.OrderedType) =
     let to_string f t =
       let b = Buffer.create 256 in
       let rec iter margin = function
-        Leaf (p, _) -> Printf.bprintf b "%s[%s(leaf)]\n" margin (String.concat "/" (List.map f (List.rev p)))
+        Leaf (p, data) ->
+          Printf.bprintf b "%s[%s(leaf)]\n" margin
+            (String.concat "/" (List.map f (List.rev p)))
       | Node (map, opt) ->
           begin
             match opt with
