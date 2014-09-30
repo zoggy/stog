@@ -95,12 +95,12 @@ let run_stog ?docs state =
        Lwt.return state
     )
     (function
-         Stog_types.Path_trie.Already_present path ->
+     | Stog_types.Path_trie.Already_present path ->
          debug ("Doc path already present: "^(String.concat "/" path)) >>= fun () ->
-         Lwt.return state
+           Lwt.return state
      | e ->
          let state = { state with
-             stog_errors = state.stog_errors @ (List.rev ((Printexc.to_string e) :: !errors)) ;
+               stog_errors = state.stog_errors @ (List.rev ((Printexc.to_string e) :: !errors)) ;
              stog_warnings = List.rev !warnings ;
            }
          in
@@ -137,17 +137,22 @@ let rec watch_for_change on_update on_error =
                 Lwt.return (acc_dates, docs, stog)
               else
                 let doc =
-                  (** FIXME: Use a Lwt version of Stog_io.doc_of_file *)
-                  try Stog_io.doc_of_file stog file
-                  with
-                    e ->
-                      let msg =
-                        match e with
-                          Failure msg | Sys_error msg -> msg
-                        | _ -> Printexc.to_string e
-                      in
-                      read_errors := msg :: !read_errors ;
-                      doc
+                  match doc.doc_parent with
+                    Some _ ->
+                      (* doc coming from computation of another doc *)
+                      { doc with doc_out = None }
+                  | None ->
+                      (** FIXME: Use a Lwt version of Stog_io.doc_of_file *)
+                      try Stog_io.doc_of_file stog file
+                      with
+                        e ->
+                          let msg =
+                            match e with
+                              Failure msg | Sys_error msg -> msg
+                            | _ -> Printexc.to_string e
+                          in
+                          read_errors := msg :: !read_errors ;
+                          doc
                 in
                 Lwt.return
                   (
