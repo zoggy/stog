@@ -287,6 +287,7 @@ let doc_children stog =
 ;;
 
 let set_doc stog id doc =
+  (*prerr_endline (Printf.sprintf "set_doc %d => %s" (Obj.magic id) (Stog_path.to_string doc.doc_path));*)
   { stog with
     stog_docs = Stog_tmap.modify stog.stog_docs id doc }
 ;;
