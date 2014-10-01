@@ -86,7 +86,13 @@ let mk_doc path_sep doc_id (stog,doc) = function
     in
     let new_doc = Stog_io.fill_doc_from_atts_and_subs new_doc atts subs in
     let new_parent = { doc with doc_children = path :: doc.doc_children } in
-    (Stog_types.add_doc stog new_doc, new_parent)
+    let stog =
+      try
+        let (doc_id, _) = Stog_types.doc_by_path stog path in
+        Stog_types.set_doc stog doc_id new_doc
+      with _ -> Stog_types.add_doc stog new_doc
+    in
+    (stog, new_parent)
 ;;
 
 let f_multi_doc stog doc_id =
