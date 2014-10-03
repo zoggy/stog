@@ -104,6 +104,7 @@
       <span class="keyword">val</span> choose : t <span class="keywordsign">-&gt;</span> elt<br/>
       <span class="keyword">val</span> split : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t * bool * t<br/>
       <span class="keyword">val</span> find : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> elt<br/>
+      <span class="keyword">val</span> of_list : elt list <span class="keywordsign">-&gt;</span> t<br/>
     <span class="keyword">end</span><br/>
   <span class="keyword">type</span> doc = {<br/>
     doc_path : <span class="constructor">Stog_path</span>.path;<br/>
@@ -167,6 +168,7 @@
       <span class="keyword">val</span> choose : t <span class="keywordsign">-&gt;</span> elt<br/>
       <span class="keyword">val</span> split : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t * bool * t<br/>
       <span class="keyword">val</span> find : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> elt<br/>
+      <span class="keyword">val</span> of_list : elt list <span class="keywordsign">-&gt;</span> t<br/>
     <span class="keyword">end</span><br/>
   <span class="keyword">module</span> <span class="constructor">Int_map</span> :<br/>
     <span class="keyword">sig</span><br/>
@@ -227,6 +229,7 @@
       <span class="keyword">val</span> choose : t <span class="keywordsign">-&gt;</span> elt<br/>
       <span class="keyword">val</span> split : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t * bool * t<br/>
       <span class="keyword">val</span> find : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> elt<br/>
+      <span class="keyword">val</span> of_list : elt list <span class="keywordsign">-&gt;</span> t<br/>
     <span class="keyword">end</span><br/>
   <span class="keyword">type</span> edge_type = <span class="constructor">Date</span> <span class="keywordsign">|</span> <span class="constructor">Topic</span> <span class="keyword">of</span> string <span class="keywordsign">|</span> <span class="constructor">Keyword</span> <span class="keyword">of</span> string <span class="keywordsign">|</span> <span class="constructor">Ref</span><br/>
   <span class="keyword">module</span> <span class="constructor">Graph</span> :<br/>
@@ -303,6 +306,7 @@
       <span class="keyword">val</span> choose : t <span class="keywordsign">-&gt;</span> elt<br/>
       <span class="keyword">val</span> split : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t * bool * t<br/>
       <span class="keyword">val</span> find : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> elt<br/>
+      <span class="keyword">val</span> of_list : elt list <span class="keywordsign">-&gt;</span> t<br/>
     <span class="keyword">end</span><br/>
   <span class="keyword">type</span> stog_dependencies = <span class="constructor">Stog_types</span>.<span class="constructor">Depset</span>.t <span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t<br/>
   <span class="keyword">type</span> stog = {<br/>
@@ -391,7 +395,7 @@
 
 
 <div id="footer">
-<div class="generatedon">Generated on May 22, 2014 at 13h28</div>
+<div class="generatedon">Generated on October 3, 2014 at 7h35</div>
 </div>
 
 

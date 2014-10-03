@@ -99,11 +99,13 @@ function, possibly redefining pre-defined rules with the same names.
 <li><a href="https://zoggy.github.io/stog/module_base.html#list">list</a></li>
 <li><a href="https://zoggy.github.io/stog/module_base.html#ocaml">ocaml</a></li>
 <li><a href="https://zoggy.github.io/stog/module_base.html#ocaml-eval">ocaml-eval</a></li>
+<li><a href="https://zoggy.github.io/stog/module_base.html#ocaml-printf">ocaml-printf</a></li>
 </ul>
 </td><td class="n-columns column-3">
 <ul>
-<li><a href="https://zoggy.github.io/stog/module_base.html#ocaml-printf">ocaml-printf</a></li>
 <li><a href="https://zoggy.github.io/stog/module_base.html#previous">previous / next</a></li>
+<li><a href="https://zoggy.github.io/stog/module_base.html#print-date">print-date</a></li>
+<li><a href="https://zoggy.github.io/stog/module_base.html#print-datetime">print-datetime</a></li>
 <li><a href="https://zoggy.github.io/stog/module_base.html#sep_">sep_</a></li>
 <li><a href="https://zoggy.github.io/stog/module_base.html#site-descriptionx">site-description</a></li>
 <li><a href="https://zoggy.github.io/stog/module_base.html#site-email">site-email</a></li>
@@ -605,6 +607,27 @@ See the following blog post: <a href="https://zoggy.github.io/stog/posts/ocaml-p
 </p>
 </div>
 
+<div class="subsection"><div class="subsection-title" id="print-date">print-date</div>
+<p>This rules returns a human readable representation of the date given
+in the node. Example:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;print-date</span><span class="hl kwa">&gt;</span><span class="hl std">2014-09-25</span><span class="hl kwa">&lt;/print-date</span><span class="hl kwa">&gt;</span></pre>
+<p>will return September 25, 2014.</p>
+<p>The rule handles the chosen language (see <a href="https://zoggy.github.io/stog/running.html#multilang">command line options</a>)
+and the <a href="https://zoggy.github.io/stog/module_base.html#doc-date">format attribute</a> to format the output.</p>
+</div>
+
+
+<div class="subsection"><div class="subsection-title" id="print-datetime">print-datetime</div>
+<p>This rules returns a human readable representation of the date and time given
+in the node. Example:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;print-datetime</span><span class="hl kwa">&gt;</span><span class="hl std">2014-09-25 10:12:57</span><span class="hl kwa">&lt;/print-datetime</span><span class="hl kwa">&gt;</span></pre>
+<p>will return September 25, 2014 at 10h12.</p>
+<p>The rule handles the chosen language (see <a href="https://zoggy.github.io/stog/running.html#multilang">command line options</a>)
+and the <a href="https://zoggy.github.io/stog/module_base.html#doc-date">format attribute</a> to format the output.</p>
+</div>
+
 <div class="subsection"><div class="subsection-title" id="sep_">sep_</div>
 <p>
 <span class="icode"><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span></span> is the tag used to indicate the end of the introduction
@@ -835,7 +858,7 @@ This function closes the OCaml sessions previously opened with
 
 
 <div id="footer">
-<div class="generatedon">Generated on May 22, 2014 at 13h28</div>
+<div class="generatedon">Generated on October 3, 2014 at 7h35</div>
 </div>
 
 

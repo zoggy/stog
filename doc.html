@@ -47,14 +47,14 @@ executables are in your <span class="icode"><span class="hl std">PATH</span></sp
 <div class="section"><div class="section-title" id="ae7d-bb01-f4c0-5907">General considerations</div>
 All text is assumed to be UTF-8.
 </div>
-
-<div class="section"><div class="section-title" id="f07b-fa0e-319-5720">Topics</div>
+<div class="section"><div class="section-title" id="f07b-fa0e-0319-5720">Topics</div>
 <ul class="toc">
 <li><a href="https://zoggy.github.io/stog/5-minutes.html">Start using Stog in 5 minutes</a></li>
 <li><a href="https://zoggy.github.io/stog/overview.html">Overview</a></li>
 <li><a href="https://zoggy.github.io/stog/stog-documents.html">Stog documents</a></li>
 <li><a href="https://zoggy.github.io/stog/stog-main-document.html">Stog main document</a></li>
 <li><a href="https://zoggy.github.io/stog/running.html">Running Stog</a></li>
+<li><a href="https://zoggy.github.io/stog/server.html">Preview server</a></li>
 <li><a href="https://zoggy.github.io/stog/single-documents.html">Compiling single documents</a></li>
 <li><a href="https://zoggy.github.io/stog/engine.html">Evaluation and templating</a></li>
 <li><a href="https://zoggy.github.io/stog/atts-functions.html">Attributes and functions</a></li>
@@ -92,7 +92,6 @@ executables are in your </span><span class="hl kwa">&lt;icode</span><span class=
 </span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;General considerations&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 All text is assumed to be UTF-8.
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
-
 </span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Topics&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;toc&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;5-minutes&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -100,6 +99,7 @@ All text is assumed to be UTF-8.
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-documents&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-main-document&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;running&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;server&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;single-documents&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;engine&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;atts-functions&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -121,7 +121,7 @@ All text is assumed to be UTF-8.
 
 
 <div id="footer">
-<div class="generatedon">Generated on May 22, 2014 at 13h28</div>
+<div class="generatedon">Generated on October 3, 2014 at 7h35</div>
 </div>
 
 

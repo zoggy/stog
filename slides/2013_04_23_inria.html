@@ -97,7 +97,7 @@ Three steps:
 <ol>
 <li>Read configuration file <span class="icode"><span class="hl std">.stog/config</span></span> and directory tree:
 <pre class="code-ocaml"><span class="hl com">(* Regexps of files to ignore *)</span><span class="hl std">
-</span><span class="">ignored</span><span class="hl std"> = [</span><span class="hl str">&quot;.*\\.git&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*Makefile&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*tmpl$&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*less$&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*\\.chamo.*&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*/test.*&quot;</span><span class="hl std"> ; </span><span class="hl str">&quot;.*/log$&quot;</span><span class="hl std"> ; </span><span class="hl str">&quot;.*/slides/inria_code.*\\.xml&quot;</span><span class="hl std"> ]
+</span><span class="">ignored</span><span class="hl std"> = [ </span><span class="hl str">&quot;.*stog-output&quot;</span><span class="hl std"> ; </span><span class="hl str">&quot;.*\\.git&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*Makefile&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*tmpl$&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*less$&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*\\.chamo.*&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*/test.*&quot;</span><span class="hl std"> ; </span><span class="hl str">&quot;.*/log$&quot;</span><span class="hl std"> ; </span><span class="hl str">&quot;.*/slides/inria_code.*\\.xml&quot;</span><span class="hl std"> ]
 </span><span class="hl com">(* Regexps of files containing documents *)</span><span class="hl std">
 </span><span class="">documents</span><span class="hl std"> = [</span><span class="hl str">&quot;.*\\..xml$&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*\\.html$&quot;</span><span class="hl std">]
 </span><span class="hl com">(* Regexps of files matching 'documents' regexps but not containing documents
@@ -153,7 +153,6 @@ executables are in your </span><span class="hl kwa">&lt;icode</span><span class=
 </span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;General considerations&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 All text is assumed to be UTF-8.
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
-
 </span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Topics&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;toc&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;5-minutes&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -161,6 +160,7 @@ All text is assumed to be UTF-8.
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-documents&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-main-document&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;running&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;server&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;single-documents&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;engine&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;atts-functions&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -330,31 +330,31 @@ The template file <span class="icode"><span class="hl std">.stog/templates/doc-i
 <h1>Rewrite rules</h1>
 
 <p>
-An environment is a map associating tag names to rules. We note <img alt="$\Gamma(t) = f$" class="latex" src="https://zoggy.github.io/stog/_latex3.svg" title="$\Gamma(t) = f$"/>
-to say that a function <img alt="$f$" class="latex" src="https://zoggy.github.io/stog/_latex4.svg" title="$f$"/> is associated to the tag <img alt="$t$" class="latex" src="https://zoggy.github.io/stog/_latex5.svg" title="$t$"/> in the environment <img alt="$\Gamma$" class="latex" src="https://zoggy.github.io/stog/_latex6.svg" title="$\Gamma$"/>.
-If no function is associated to <img alt="$t$" class="latex" src="https://zoggy.github.io/stog/_latex5.svg" title="$t$"/>, then <img alt="$\Gamma(t) = \bot$" class="latex" src="https://zoggy.github.io/stog/_latex7.svg" title="$\Gamma(t) = \bot$"/>.
+An environment is a map associating tag names to rules. We note <img alt="$\Gamma(t) = f$" class="latex" src="https://zoggy.github.io/stog/_latex1.svg" title="$\Gamma(t) = f$"/>
+to say that a function <img alt="$f$" class="latex" src="https://zoggy.github.io/stog/_latex2.svg" title="$f$"/> is associated to the tag <img alt="$t$" class="latex" src="https://zoggy.github.io/stog/_latex3.svg" title="$t$"/> in the environment <img alt="$\Gamma$" class="latex" src="https://zoggy.github.io/stog/_latex4.svg" title="$\Gamma$"/>.
+If no function is associated to <img alt="$t$" class="latex" src="https://zoggy.github.io/stog/_latex3.svg" title="$t$"/>, then <img alt="$\Gamma(t) = \bot$" class="latex" src="https://zoggy.github.io/stog/_latex5.svg" title="$\Gamma(t) = \bot$"/>.
 </p>
 <p>
-A rule is a function <img alt="$$f$$" class="latex" src="https://zoggy.github.io/stog/_latex8.svg" title="$$f$$"/> taking in parameters: an environment <img alt="$$\Gamma$$" class="latex" src="https://zoggy.github.io/stog/_latex9.svg" title="$$\Gamma$$"/>, a list
-of XML node attributes <img alt="$$l_a$$" class="latex" src="https://zoggy.github.io/stog/_latex10.svg" title="$$l_a$$"/>, a list of XML (sub)nodes <img alt="$$l_{xml}$$" class="latex" src="https://zoggy.github.io/stog/_latex11.svg" title="$$l_{xml}$$"/>.
+A rule is a function <img alt="$$f$$" class="latex" src="https://zoggy.github.io/stog/_latex6.svg" title="$$f$$"/> taking in parameters: an environment <img alt="$$\Gamma$$" class="latex" src="https://zoggy.github.io/stog/_latex7.svg" title="$$\Gamma$$"/>, a list
+of XML node attributes <img alt="$$l_a$$" class="latex" src="https://zoggy.github.io/stog/_latex8.svg" title="$$l_a$$"/>, a list of XML (sub)nodes <img alt="$$l_{xml}$$" class="latex" src="https://zoggy.github.io/stog/_latex9.svg" title="$$l_{xml}$$"/>.
 A rule, when applied, returns a list of XML nodes.
 </p>
 <p>
-Let <img alt="$\mathcal{R}(\Gamma, n)$" class="latex" src="https://zoggy.github.io/stog/_latex12.svg" title="$\mathcal{R}(\Gamma, n)$"/> be the function applying an environment <img alt="$\Gamma$" class="latex" src="https://zoggy.github.io/stog/_latex6.svg" title="$\Gamma$"/>
-to an XML node <img alt="$n = (t, l_a, l_{xml})$" class="latex" src="https://zoggy.github.io/stog/_latex13.svg" title="$n = (t, l_a, l_{xml})$"/>. <img alt="$\mathcal{R}_l(\Gamma, l)$" class="latex" src="https://zoggy.github.io/stog/_latex14.svg" title="$\mathcal{R}_l(\Gamma, l)$"/> applies <img alt="$\mathcal{R}(\Gamma, x)$" class="latex" src="https://zoggy.github.io/stog/_latex15.svg" title="$\mathcal{R}(\Gamma, x)$"/>
-on each element <img alt="$x$" class="latex" src="https://zoggy.github.io/stog/_latex16.svg" title="$x$"/> of the list <img alt="$l$" class="latex" src="https://zoggy.github.io/stog/_latex17.svg" title="$l$"/>.
-The algorithm of <img alt="$\mathcal{R}$" class="latex" src="https://zoggy.github.io/stog/_latex18.svg" title="$\mathcal{R}$"/> is the following:
+Let <img alt="$\mathcal{R}(\Gamma, n)$" class="latex" src="https://zoggy.github.io/stog/_latex10.svg" title="$\mathcal{R}(\Gamma, n)$"/> be the function applying an environment <img alt="$\Gamma$" class="latex" src="https://zoggy.github.io/stog/_latex4.svg" title="$\Gamma$"/>
+to an XML node <img alt="$n = (t, l_a, l_{xml})$" class="latex" src="https://zoggy.github.io/stog/_latex11.svg" title="$n = (t, l_a, l_{xml})$"/>. <img alt="$\mathcal{R}_l(\Gamma, l)$" class="latex" src="https://zoggy.github.io/stog/_latex12.svg" title="$\mathcal{R}_l(\Gamma, l)$"/> applies <img alt="$\mathcal{R}(\Gamma, x)$" class="latex" src="https://zoggy.github.io/stog/_latex13.svg" title="$\mathcal{R}(\Gamma, x)$"/>
+on each element <img alt="$x$" class="latex" src="https://zoggy.github.io/stog/_latex14.svg" title="$x$"/> of the list <img alt="$l$" class="latex" src="https://zoggy.github.io/stog/_latex15.svg" title="$l$"/>.
+The algorithm of <img alt="$\mathcal{R}$" class="latex" src="https://zoggy.github.io/stog/_latex16.svg" title="$\mathcal{R}$"/> is the following:
 </p>
 <ol>
-<li>Apply <img alt="$\mathcal{R}$" class="latex" src="https://zoggy.github.io/stog/_latex18.svg" title="$\mathcal{R}$"/> on each attribute value, parsed as valid XML, to get a new list
-  of rewritten attributes <img alt="$l_a'$" class="latex" src="https://zoggy.github.io/stog/_latex19.svg" title="$l_a'$"/>,
+<li>Apply <img alt="$\mathcal{R}$" class="latex" src="https://zoggy.github.io/stog/_latex16.svg" title="$\mathcal{R}$"/> on each attribute value, parsed as valid XML, to get a new list
+  of rewritten attributes <img alt="$l_a'$" class="latex" src="https://zoggy.github.io/stog/_latex17.svg" title="$l_a'$"/>,
 </li>
 <li>
-If <img alt="$\Gamma(t) = \bot$" class="latex" src="https://zoggy.github.io/stog/_latex7.svg" title="$\Gamma(t) = \bot$"/>, then return [<img alt="$(t, l_a', \mathcal{R}_l(\Gamma, l_{xml}))$" class="latex" src="https://zoggy.github.io/stog/_latex20.svg" title="$(t, l_a', \mathcal{R}_l(\Gamma, l_{xml}))$"/>].<br/>
-Else, with <img alt="$\Gamma(t) = f$" class="latex" src="https://zoggy.github.io/stog/_latex3.svg" title="$\Gamma(t) = f$"/>, return <img alt="$f(\Gamma, l_a', l_{xml})$" class="latex" src="https://zoggy.github.io/stog/_latex21.svg" title="$f(\Gamma, l_a', l_{xml})$"/>.
+If <img alt="$\Gamma(t) = \bot$" class="latex" src="https://zoggy.github.io/stog/_latex5.svg" title="$\Gamma(t) = \bot$"/>, then return [<img alt="$(t, l_a', \mathcal{R}_l(\Gamma, l_{xml}))$" class="latex" src="https://zoggy.github.io/stog/_latex18.svg" title="$(t, l_a', \mathcal{R}_l(\Gamma, l_{xml}))$"/>].<br/>
+Else, with <img alt="$\Gamma(t) = f$" class="latex" src="https://zoggy.github.io/stog/_latex1.svg" title="$\Gamma(t) = f$"/>, return <img alt="$f(\Gamma, l_a', l_{xml})$" class="latex" src="https://zoggy.github.io/stog/_latex19.svg" title="$f(\Gamma, l_a', l_{xml})$"/>.
 </li>
 </ol>
-<p><img alt="$\mathcal{R}$" class="latex" src="https://zoggy.github.io/stog/_latex18.svg" title="$\mathcal{R}$"/> is called until a fixpoint is reached.</p>
+<p><img alt="$\mathcal{R}$" class="latex" src="https://zoggy.github.io/stog/_latex16.svg" title="$\mathcal{R}$"/> is called until a fixpoint is reached.</p>
 <p>
 This rewrite engine is implemented in the <span class="ext-a"><a href="http://zoggy.github.com/xtmpl/">Xtmpl</a></span> library.
 </p>
@@ -367,19 +367,19 @@ This rewrite engine is implemented in the <span class="ext-a"><a href="http://zo
 <h1>Rewrite rules (2)</h1>
 
 <p>
-When we define an element, we're defining an environment <img alt="$\Gamma$" class="latex" src="https://zoggy.github.io/stog/_latex6.svg" title="$\Gamma$"/>.
+When we define an element, we're defining an environment <img alt="$\Gamma$" class="latex" src="https://zoggy.github.io/stog/_latex4.svg" title="$\Gamma$"/>.
 </p>
 <p>Example: consider the following element:</p>
 <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">author</span><span class="hl std">=</span><span class="hl str">&quot;Maxence Guesdon&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Example page&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 This is the body of my page
 </span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
 <p>
-Here we defined an environment <img alt="$\Gamma$" class="latex" src="https://zoggy.github.io/stog/_latex6.svg" title="$\Gamma$"/> with the following rules:
+Here we defined an environment <img alt="$\Gamma$" class="latex" src="https://zoggy.github.io/stog/_latex4.svg" title="$\Gamma$"/> with the following rules:
 </p>
 <ul>
-<li><img alt="$\Gamma(&amp;quot;doc-title&amp;quot;) = f_1$" class="latex" src="https://zoggy.github.io/stog/_latex22.svg" title="$\Gamma(&amp;quot;doc-title&amp;quot;) = f_1$"/> with <img alt="$f_1(\_,\_,\_) =$" class="latex" src="https://zoggy.github.io/stog/_latex23.svg" title="$f_1(\_,\_,\_) =$"/> [ &quot;Example page&quot; ]</li>
-<li><img alt="$\Gamma(&amp;quot;author&amp;quot;) = f_2$" class="latex" src="https://zoggy.github.io/stog/_latex24.svg" title="$\Gamma(&amp;quot;author&amp;quot;) = f_2$"/> with <img alt="$f_2(\_,\_,\_) =$" class="latex" src="https://zoggy.github.io/stog/_latex25.svg" title="$f_2(\_,\_,\_) =$"/> [ &quot;Maxence Guesdon&quot; ]</li>
-<li><img alt="$\Gamma(&amp;quot;doc-body&amp;quot;) = f_3$" class="latex" src="https://zoggy.github.io/stog/_latex26.svg" title="$\Gamma(&amp;quot;doc-body&amp;quot;) = f_3$"/> with <img alt="$f_3(\_,\_,\_) =$" class="latex" src="https://zoggy.github.io/stog/_latex27.svg" title="$f_3(\_,\_,\_) =$"/> [ &quot;This is the body of the page&quot; ]</li>
+<li><img alt="$\Gamma(&quot;doc-title&quot;) = f_1$" class="latex" src="https://zoggy.github.io/stog/_latex20.svg" title="$\Gamma(&quot;doc-title&quot;) = f_1$"/> with <img alt="$f_1(\_,\_,\_) =$" class="latex" src="https://zoggy.github.io/stog/_latex21.svg" title="$f_1(\_,\_,\_) =$"/> [ &quot;Example page&quot; ]</li>
+<li><img alt="$\Gamma(&quot;author&quot;) = f_2$" class="latex" src="https://zoggy.github.io/stog/_latex22.svg" title="$\Gamma(&quot;author&quot;) = f_2$"/> with <img alt="$f_2(\_,\_,\_) =$" class="latex" src="https://zoggy.github.io/stog/_latex23.svg" title="$f_2(\_,\_,\_) =$"/> [ &quot;Maxence Guesdon&quot; ]</li>
+<li><img alt="$\Gamma(&quot;doc-body&quot;) = f_3$" class="latex" src="https://zoggy.github.io/stog/_latex24.svg" title="$\Gamma(&quot;doc-body&quot;) = f_3$"/> with <img alt="$f_3(\_,\_,\_) =$" class="latex" src="https://zoggy.github.io/stog/_latex25.svg" title="$f_3(\_,\_,\_) =$"/> [ &quot;This is the body of the page&quot; ]</li>
 </ul>
 <p>
 To <strong>compute</strong> the element's final XML, we apply this environment to the template
@@ -501,7 +501,7 @@ print_endline s;;
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
   <div class="span11">
-      <div><pre class="code-ocaml"><div></div><div class="ocaml-toplevel"></div><div></div><div class="ocaml-toplevel"></div><div></div><div class="ocaml-toplevel"></div><div></div><div class="ocaml-toplevel">This OCaml code was evaluated on 2014/04/22 at 13:28.
+      <div><pre class="code-ocaml"><div></div><div class="ocaml-toplevel"></div><div></div><div class="ocaml-toplevel"></div><div></div><div class="ocaml-toplevel"></div><div></div><div class="ocaml-toplevel">This OCaml code was evaluated on 2014/09/03 at 07:38.
 </div></pre></div>
   </div>
 </div>

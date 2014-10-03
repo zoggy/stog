@@ -38,76 +38,14 @@
 
 
 <div class="ocamldoc-page">
-<code class="code"><span class="keyword">sig</span><br/>
-  <span class="keyword">type</span> position =<br/>
-    <span class="constructor">Lexing</span>.position = {<br/>
-    pos_fname : string;<br/>
-    pos_lnum : int;<br/>
-    pos_bol : int;<br/>
-    pos_cnum : int;<br/>
-  }<br/>
-  <span class="keyword">val</span> dummy_pos : <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.position<br/>
-  <span class="keyword">type</span> lexbuf =<br/>
-    <span class="constructor">Lexing</span>.lexbuf = {<br/>
-    refill_buff : <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> unit;<br/>
-    <span class="keyword">mutable</span> lex_buffer : string;<br/>
-    <span class="keyword">mutable</span> lex_buffer_len : int;<br/>
-    <span class="keyword">mutable</span> lex_abs_pos : int;<br/>
-    <span class="keyword">mutable</span> lex_start_pos : int;<br/>
-    <span class="keyword">mutable</span> lex_curr_pos : int;<br/>
-    <span class="keyword">mutable</span> lex_last_pos : int;<br/>
-    <span class="keyword">mutable</span> lex_last_action : int;<br/>
-    <span class="keyword">mutable</span> lex_eof_reached : bool;<br/>
-    <span class="keyword">mutable</span> lex_mem : int array;<br/>
-    <span class="keyword">mutable</span> lex_start_p : <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.position;<br/>
-    <span class="keyword">mutable</span> lex_curr_p : <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.position;<br/>
-  }<br/>
-  <span class="keyword">val</span> from_channel : <span class="constructor">Pervasives</span>.in_channel <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf<br/>
-  <span class="keyword">val</span> from_string : string <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf<br/>
-  <span class="keyword">val</span> from_function : (string <span class="keywordsign">-&gt;</span> int <span class="keywordsign">-&gt;</span> int) <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf<br/>
-  <span class="keyword">val</span> lexeme : <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> string<br/>
-  <span class="keyword">val</span> lexeme_char : <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> int <span class="keywordsign">-&gt;</span> char<br/>
-  <span class="keyword">val</span> lexeme_start : <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> int<br/>
-  <span class="keyword">val</span> lexeme_end : <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> int<br/>
-  <span class="keyword">val</span> lexeme_start_p :<br/>
-    <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.position<br/>
-  <span class="keyword">val</span> lexeme_end_p :<br/>
-    <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.position<br/>
-  <span class="keyword">val</span> new_line : <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> unit<br/>
-  <span class="keyword">val</span> flush_input : <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> unit<br/>
-  <span class="keyword">val</span> sub_lexeme : <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> int <span class="keywordsign">-&gt;</span> int <span class="keywordsign">-&gt;</span> string<br/>
-  <span class="keyword">val</span> sub_lexeme_opt :<br/>
-    <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> int <span class="keywordsign">-&gt;</span> int <span class="keywordsign">-&gt;</span> string option<br/>
-  <span class="keyword">val</span> sub_lexeme_char : <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> int <span class="keywordsign">-&gt;</span> char<br/>
-  <span class="keyword">val</span> sub_lexeme_char_opt : <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> int <span class="keywordsign">-&gt;</span> char option<br/>
-  <span class="keyword">type</span> lex_tables =<br/>
-    <span class="constructor">Lexing</span>.lex_tables = {<br/>
-    lex_base : string;<br/>
-    lex_backtrk : string;<br/>
-    lex_default : string;<br/>
-    lex_trans : string;<br/>
-    lex_check : string;<br/>
-    lex_base_code : string;<br/>
-    lex_backtrk_code : string;<br/>
-    lex_default_code : string;<br/>
-    lex_trans_code : string;<br/>
-    lex_check_code : string;<br/>
-    lex_code : string;<br/>
-  }<br/>
-  <span class="keyword">val</span> engine :<br/>
-    <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lex_tables <span class="keywordsign">-&gt;</span><br/>
-    int <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> int<br/>
-  <span class="keyword">val</span> new_engine :<br/>
-    <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lex_tables <span class="keywordsign">-&gt;</span><br/>
-    int <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_filter_lexer</span>.<span class="constructor">L</span>.lexbuf <span class="keywordsign">-&gt;</span> int<br/>
-<span class="keyword">end</span></code></div>
+<code class="code">(<span class="keyword">module</span> <span class="constructor">Lexing</span>)</code></div>
 
 
 
 
 
 <div id="footer">
-<div class="generatedon">Generated on May 22, 2014 at 13h28</div>
+<div class="generatedon">Generated on October 3, 2014 at 7h35</div>
 </div>
 
 

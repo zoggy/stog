@@ -39,18 +39,42 @@
 
 
 
-<ul class="toc"><li class="toc-section"><a href="https://zoggy.github.io/stog/install.html#deps">Dependencies</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/install.html#quickdebian">Quick install with Opam</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/install.html#download">From the sources</a><ul class="toc"><li class="toc-subsection"><a href="https://zoggy.github.io/stog/install.html#compilation">Compilation</a></li></ul></li></ul>
+<ul class="toc"><li class="toc-section"><a href="https://zoggy.github.io/stog/install.html#opam">Quick install with Opam</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/install.html#deps">Dependencies</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/install.html#download">From the sources</a><ul class="toc"><li class="toc-subsection"><a href="https://zoggy.github.io/stog/install.html#compilation">Compilation</a></li></ul></li></ul>
+
+<div class="section"><div class="section-title" id="opam">Quick install with Opam</div>
+<p>
+The easiest way to install is to use  <span class="ext-a"><a href="http://opam.ocaml.org">OPAM</a></span>.
+Install Opam, then, as a regular user, fetch and install an OCaml version and install Stog.
+The whole can be done with the following opam commands:
+</p>
+<pre class="code-sh">$ opam init <span class="hl opt">--</span>comp<span class="hl opt">=</span><span class="hl num">4.02.0</span>
+$ opam update
+$ opam <span class="hl kwc">install</span> stog</pre>
+</div>
+
 <div class="section"><div class="section-title" id="deps">Dependencies</div>
 <p>
 To build Stog, you will need:
 </p>
 <ul>
-<li><span class="ext-a"><a href="http://caml.inria.fr/">OCaml &gt;= 4.00.1</a></span> installed,</li>
+<li><span class="ext-a"><a href="http://caml.inria.fr/">OCaml &gt;= 4.02.0</a></span>,</li>
 <li><span class="ext-a"><a href="http://config-file.forge.ocamlcore.org/">Config-file &gt;= 1.2</a></span>.</li>
 <li><span class="ext-a"><a href="http://erratique.ch/software/xmlm">Xmlm &gt;= 1.1.0</a></span>,</li>
 <li><span class="ext-a"><a href="http://projects.camlcity.org/projects/ocamlnet.html">OCamlnet &gt;= 3.6</a></span>.</li>
-<li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl &gt;= 0.9</a></span>,</li>
-<li><span class="ext-a"><a href="http://zoggy.github.io/higlo/">Higlo &gt;= 0.3</a></span>.</li>
+<li><span class="ext-a"><a href="https://github.com/zoggy/xtmpl">Xtmpl &gt;= 0.10</a></span>,</li>
+<li><span class="ext-a"><a href="http://zoggy.github.io/higlo/">Higlo &gt;= 0.4</a></span>.</li>
+</ul>
+<p>
+These additional libraries are required to compile and install
+the preview server:
+</p>
+<ul>
+<li><span class="ext-a"><a href="http://ocsigen.org/lwt">Lwt &gt;= 2.4.5</a></span>,</li>
+<li><span class="ext-a"><a href="http://ocsigen.org/js_of_ocaml">Js_of_ocaml &gt;= 2.4.1</a></span>,</li>
+<li><span class="ext-a"><a href="http://zoggy.github.io/xmldiff/">Xmldiff &gt;= 0.3.0</a></span>.</li>
+<li><span class="ext-a"><a href="https://github.com/vbmithr/ocaml-websocket">OCaml-Websocket &gt;= 0.9</a></span>.</li>
+<li><span class="ext-a"><a href="https://github.com/mirage/ocaml-cstruct">ocaml-cstruct &gt;= 0.3.1</a></span>,</li>
+<li><span class="ext-a"><a href="https://github.com/mirage/ocaml-crunch">caoml-crunch &gt;= 1.1.0</a></span>.</li>
 </ul>
 <p>
 You will need to have the following tools installed to use
@@ -65,23 +89,35 @@ LaTeX in your pages.</li>
 </ul>
 </div>
 
-<div class="section"><div class="section-title" id="quickdebian">Quick install with Opam</div>
-<p>
-The easiest way to install is to use  <span class="ext-a"><a href="http://opam.ocaml.org">OPAM</a></span>.
-Install Opam, then, as a regular user, fetch and install an OCaml version and install Stog.
-The whole can be done with the following opam commands:
-</p>
-<pre class="code-sh">$ opam init <span class="hl opt">--</span>comp<span class="hl opt">=</span><span class="hl num">4.01</span>
-$ opam update
-$ opam <span class="hl kwc">install</span> stog</pre>
-</div>
-
 <div class="section"><div class="section-title" id="download">From the sources</div>
 <p>Get the sources from git repository:</p>
 <pre class="code-sh">$ git clone https<span class="hl opt">://</span>github.com<span class="hl opt">/</span>zoggy<span class="hl opt">/</span>stog.git</pre>
 
 <p>Or pick one of the releases:</p>
 <ul>
+
+
+<li><a href="stog-0.13.0.tar.gz">0.13.0</a>
+<span class="date">[October 3, 2014]</span>
+<ul id="changes-0.13.0">
+<li><a href="https://zoggy.github.io/stog/server.html">preview server</a> (stog-server), using
+  <span class="icode"><span class="hl std">xmldiff.js</span></span> package and websockets,</li>
+<li>use Xtmpl 0.10 to unescape entities in attributes of final documents,</li>
+<li>new plugin <a href="https://zoggy.github.io/stog/plugins/rel-href.html">Stog-rel-href</a>,</li>
+<li>new rules <a href="https://zoggy.github.io/stog/module_base.html#print-date"><span class="icode"><span class="hl kwa">&lt;print-date</span><span class="hl kwa">&gt;</span></span></a>
+  and <a href="https://zoggy.github.io/stog/module_base.html#print-datetime"><span class="icode"><span class="hl kwa">&lt;print-datetime</span><span class="hl kwa">&gt;</span></span></a>,</li>
+<li>keep <span class="icode"><span class="hl std">/index.html</span></span> in urls when the site url scheme is &quot;<span class="icode"><span class="hl std">file:</span></span>&quot;,</li>
+<li>handle subtitle in article default template,</li>
+<li>improve latex translator,</li>
+<li>allow <span class="icode"><span class="hl std">use-parent-path=&quot;false&quot;</span></span> in <a href="https://zoggy.github.io/stog/module_base.html#cut">cut</a>,
+  not to use parent path when forging new elements' path,</li>
+<li>improve provided templates and math module,</li>
+<li>various fixes,</li>
+<li>replace calls to OCaml deprecated functions,</li>
+<li>use safe-string (require OCaml &gt;= 4.02).</li>
+</ul>
+</li>
+
 
 
 <li><a href="stog-0.12.0.tar.gz">0.12.0</a>
@@ -400,8 +436,10 @@ and <span class="icode"><span class="hl std">mk-stog-ocaml-session</span></span>
 <span class="icode"><span class="hl std">stog.asy</span></span>,
 <span class="icode"><span class="hl std">stog.disqus</span></span>,
 <span class="icode"><span class="hl std">stog.dot</span></span>,
-<span class="icode"><span class="hl std">stog.markdown</span></span> and
-<span class="icode"><span class="hl std">stog.multi-doc</span></span> plugins, with findlib.
+<span class="icode"><span class="hl std">stog.markdown</span></span>,
+<span class="icode"><span class="hl std">stog.multi-doc</span></span>,
+<span class="icode"><span class="hl std">stog.rel-href</span></span> and
+(eventually) <span class="icode"><span class="hl std">stog.server</span></span> plugins, with findlib.
 </p>
 </div>
 </div>
@@ -430,17 +468,43 @@ For information you can see the <a href="#pagesource"> source code of the page</
 </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;prepare-toc</span><span class="hl std"> </span><span class="">depth</span><span class="hl std">=</span><span class="hl str">&quot;2&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;toc</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/toc</span><span class="hl kwa">&gt;</span><span class="hl std">
+
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;opam&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Quick install with Opam&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+The easiest way to install is to use  </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://opam.ocaml.org&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OPAM</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.
+Install Opam, then, as a regular user, fetch and install an OCaml version and install Stog.
+The whole can be done with the following opam commands:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
+$ opam init --comp=4.02.0
+$ opam update
+$ opam install stog
+</span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
+
 </span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;deps&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Dependencies&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 To build Stog, you will need:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://caml.inria.fr/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml &gt;= 4.00.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> installed,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://caml.inria.fr/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml &gt;= 4.02.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://config-file.forge.ocamlcore.org/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Config-file &gt;= 1.2</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://erratique.ch/software/xmlm&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xmlm &gt;= 1.1.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://projects.camlcity.org/projects/ocamlnet.html&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCamlnet &gt;= 3.6</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xtmpl &gt;= 0.9</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://zoggy.github.io/higlo/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Higlo &gt;= 0.3</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xtmpl &gt;= 0.10</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://zoggy.github.io/higlo/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Higlo &gt;= 0.4</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+These additional libraries are required to compile and install
+the preview server:
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://ocsigen.org/lwt&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Lwt &gt;= 2.4.5</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://ocsigen.org/js_of_ocaml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Js_of_ocaml &gt;= 2.4.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://zoggy.github.io/xmldiff/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xmldiff &gt;= 0.3.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/vbmithr/ocaml-websocket&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml-Websocket &gt;= 0.9</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/mirage/ocaml-cstruct&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-cstruct &gt;= 0.3.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/mirage/ocaml-crunch&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">caoml-crunch &gt;= 1.1.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 You will need to have the following tools installed to use
@@ -455,25 +519,13 @@ LaTeX in your pages.</span><span class="hl kwa">&lt;/li</span><span class="hl kw
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;quickdebian&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Quick install with Opam&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-The easiest way to install is to use  </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://opam.ocaml.org&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OPAM</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.
-Install Opam, then, as a regular user, fetch and install an OCaml version and install Stog.
-The whole can be done with the following opam commands:
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
-$ opam init --comp=4.01
-$ opam update
-$ opam install stog
-</span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
-
 </span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;download&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;From the sources&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Get the sources from git repository:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span><span class="hl std">$ git clone https://github.com/zoggy/stog.git</span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
 
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Or pick one of the releases:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.13.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.12.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.11.1&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.11.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
@@ -503,8 +555,10 @@ and </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span>
 </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.asy</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
 </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.disqus</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
 </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.dot</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
-</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.markdown</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> and
-</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.multi-doc</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> plugins, with findlib.
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.markdown</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.multi-doc</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.rel-href</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> and
+(eventually) </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.server</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> plugins, with findlib.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/subsection</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -517,7 +571,7 @@ and </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span>
 
 
 <div id="footer">
-<div class="generatedon">Generated on May 22, 2014 at 13h28</div>
+<div class="generatedon">Generated on October 3, 2014 at 7h35</div>
 </div>
 
 

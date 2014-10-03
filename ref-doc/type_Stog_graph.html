@@ -130,89 +130,83 @@
         (<span class="constructor">Stog_graph</span>.<span class="constructor">S</span>.key * <span class="constructor">Stog_graph</span>.<span class="constructor">S</span>.edge_data * <span class="constructor">Stog_graph</span>.<span class="constructor">S</span>.key) list<br/>
     <span class="keyword">end</span><br/>
   <span class="keyword">module</span> <span class="constructor">Make</span> :<br/>
-    <span class="keyword">functor</span> (<span class="constructor">M</span> : <span class="constructor">GMap</span>) <span class="keywordsign">-&gt;</span><br/>
-      <span class="keyword">functor</span> (<span class="constructor">Edge</span> : <span class="constructor">Map</span>.<span class="constructor">OrderedType</span>) <span class="keywordsign">-&gt;</span><br/>
-        <span class="keyword">sig</span><br/>
-          <span class="keyword">type</span> key = <span class="constructor">M</span>.key<br/>
-          <span class="keyword">type</span> edge_data = <span class="constructor">Edge</span>.t<br/>
-          <span class="keyword">type</span> t<br/>
-          <span class="keyword">val</span> create : unit <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> marshal : t <span class="keywordsign">-&gt;</span> string<br/>
-          <span class="keyword">val</span> unmarshal : string <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> succ : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> (key * edge_data) list<br/>
-          <span class="keyword">val</span> pred : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> (key * edge_data) list<br/>
-          <span class="keyword">val</span> add : t <span class="keywordsign">-&gt;</span> key * key * edge_data <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> rem : t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> (edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> rem_all : t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> isolate : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> remove_node : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> pred_roots : ?ignore_deps:edge_data list <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> key list<br/>
-          <span class="keyword">val</span> succ_roots : t <span class="keywordsign">-&gt;</span> key list<br/>
-          <span class="keyword">val</span> recursive_succs :<br/>
-            t <span class="keywordsign">-&gt;</span> ?pred:(edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> key list<br/>
-          <span class="keyword">val</span> recursive_preds :<br/>
-            t <span class="keywordsign">-&gt;</span> ?pred:(edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> key list<br/>
-          <span class="keyword">val</span> reverse : t <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> fold_succ :<br/>
-            t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
-          <span class="keyword">val</span> fold_pred :<br/>
-            t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
-          <span class="keyword">val</span> iter_succ :<br/>
-            t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> unit<br/>
-          <span class="keyword">val</span> iter_pred :<br/>
-            t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> unit<br/>
-          <span class="keyword">val</span> dot_of_graph :<br/>
-            ?f_edge:(edge_data <span class="keywordsign">-&gt;</span> string * (string * string) list) <span class="keywordsign">-&gt;</span><br/>
-            f_node:(key <span class="keywordsign">-&gt;</span> string * string * (string * string) list) <span class="keywordsign">-&gt;</span><br/>
-            t <span class="keywordsign">-&gt;</span> string<br/>
-          <span class="keyword">val</span> nodes_by_pred_order : t <span class="keywordsign">-&gt;</span> key list<br/>
-          <span class="keyword">val</span> shortest_path :<br/>
-            t <span class="keywordsign">-&gt;</span><br/>
-            (t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> (float * edge_data) option) <span class="keywordsign">-&gt;</span><br/>
-            key * key <span class="keywordsign">-&gt;</span> (key * edge_data * key) list<br/>
-        <span class="keyword">end</span><br/>
+    <span class="keyword">functor</span> (<span class="constructor">M</span> : <span class="constructor">GMap</span>) (<span class="constructor">Edge</span> : <span class="constructor">Map</span>.<span class="constructor">OrderedType</span>) <span class="keywordsign">-&gt;</span><br/>
+      <span class="keyword">sig</span><br/>
+        <span class="keyword">type</span> key = <span class="constructor">M</span>.key<br/>
+        <span class="keyword">type</span> edge_data = <span class="constructor">Edge</span>.t<br/>
+        <span class="keyword">type</span> t<br/>
+        <span class="keyword">val</span> create : unit <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> marshal : t <span class="keywordsign">-&gt;</span> string<br/>
+        <span class="keyword">val</span> unmarshal : string <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> succ : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> (key * edge_data) list<br/>
+        <span class="keyword">val</span> pred : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> (key * edge_data) list<br/>
+        <span class="keyword">val</span> add : t <span class="keywordsign">-&gt;</span> key * key * edge_data <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> rem : t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> (edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> rem_all : t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> isolate : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> remove_node : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> pred_roots : ?ignore_deps:edge_data list <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> key list<br/>
+        <span class="keyword">val</span> succ_roots : t <span class="keywordsign">-&gt;</span> key list<br/>
+        <span class="keyword">val</span> recursive_succs :<br/>
+          t <span class="keywordsign">-&gt;</span> ?pred:(edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> key list<br/>
+        <span class="keyword">val</span> recursive_preds :<br/>
+          t <span class="keywordsign">-&gt;</span> ?pred:(edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> key list<br/>
+        <span class="keyword">val</span> reverse : t <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> fold_succ :<br/>
+          t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
+        <span class="keyword">val</span> fold_pred :<br/>
+          t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
+        <span class="keyword">val</span> iter_succ : t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> unit<br/>
+        <span class="keyword">val</span> iter_pred : t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> unit<br/>
+        <span class="keyword">val</span> dot_of_graph :<br/>
+          ?f_edge:(edge_data <span class="keywordsign">-&gt;</span> string * (string * string) list) <span class="keywordsign">-&gt;</span><br/>
+          f_node:(key <span class="keywordsign">-&gt;</span> string * string * (string * string) list) <span class="keywordsign">-&gt;</span><br/>
+          t <span class="keywordsign">-&gt;</span> string<br/>
+        <span class="keyword">val</span> nodes_by_pred_order : t <span class="keywordsign">-&gt;</span> key list<br/>
+        <span class="keyword">val</span> shortest_path :<br/>
+          t <span class="keywordsign">-&gt;</span><br/>
+          (t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> (float * edge_data) option) <span class="keywordsign">-&gt;</span><br/>
+          key * key <span class="keywordsign">-&gt;</span> (key * edge_data * key) list<br/>
+      <span class="keyword">end</span><br/>
   <span class="keyword">module</span> <span class="constructor">Make_with_map</span> :<br/>
-    <span class="keyword">functor</span> (<span class="constructor">P</span> : <span class="constructor">Map</span>.<span class="constructor">OrderedType</span>) <span class="keywordsign">-&gt;</span><br/>
-      <span class="keyword">functor</span> (<span class="constructor">Edge</span> : <span class="constructor">Map</span>.<span class="constructor">OrderedType</span>) <span class="keywordsign">-&gt;</span><br/>
-        <span class="keyword">sig</span><br/>
-          <span class="keyword">type</span> key = <span class="constructor">P</span>.t<br/>
-          <span class="keyword">type</span> edge_data = <span class="constructor">Edge</span>.t<br/>
-          <span class="keyword">type</span> t<br/>
-          <span class="keyword">val</span> create : unit <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> marshal : t <span class="keywordsign">-&gt;</span> string<br/>
-          <span class="keyword">val</span> unmarshal : string <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> succ : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> (key * edge_data) list<br/>
-          <span class="keyword">val</span> pred : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> (key * edge_data) list<br/>
-          <span class="keyword">val</span> add : t <span class="keywordsign">-&gt;</span> key * key * edge_data <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> rem : t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> (edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> rem_all : t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> isolate : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> remove_node : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> pred_roots : ?ignore_deps:edge_data list <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> key list<br/>
-          <span class="keyword">val</span> succ_roots : t <span class="keywordsign">-&gt;</span> key list<br/>
-          <span class="keyword">val</span> recursive_succs :<br/>
-            t <span class="keywordsign">-&gt;</span> ?pred:(edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> key list<br/>
-          <span class="keyword">val</span> recursive_preds :<br/>
-            t <span class="keywordsign">-&gt;</span> ?pred:(edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> key list<br/>
-          <span class="keyword">val</span> reverse : t <span class="keywordsign">-&gt;</span> t<br/>
-          <span class="keyword">val</span> fold_succ :<br/>
-            t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
-          <span class="keyword">val</span> fold_pred :<br/>
-            t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
-          <span class="keyword">val</span> iter_succ :<br/>
-            t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> unit<br/>
-          <span class="keyword">val</span> iter_pred :<br/>
-            t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> unit<br/>
-          <span class="keyword">val</span> dot_of_graph :<br/>
-            ?f_edge:(edge_data <span class="keywordsign">-&gt;</span> string * (string * string) list) <span class="keywordsign">-&gt;</span><br/>
-            f_node:(key <span class="keywordsign">-&gt;</span> string * string * (string * string) list) <span class="keywordsign">-&gt;</span><br/>
-            t <span class="keywordsign">-&gt;</span> string<br/>
-          <span class="keyword">val</span> nodes_by_pred_order : t <span class="keywordsign">-&gt;</span> key list<br/>
-          <span class="keyword">val</span> shortest_path :<br/>
-            t <span class="keywordsign">-&gt;</span><br/>
-            (t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> (float * edge_data) option) <span class="keywordsign">-&gt;</span><br/>
-            key * key <span class="keywordsign">-&gt;</span> (key * edge_data * key) list<br/>
-        <span class="keyword">end</span><br/>
+    <span class="keyword">functor</span> (<span class="constructor">P</span> : <span class="constructor">Map</span>.<span class="constructor">OrderedType</span>) (<span class="constructor">Edge</span> : <span class="constructor">Map</span>.<span class="constructor">OrderedType</span>) <span class="keywordsign">-&gt;</span><br/>
+      <span class="keyword">sig</span><br/>
+        <span class="keyword">type</span> key = <span class="constructor">P</span>.t<br/>
+        <span class="keyword">type</span> edge_data = <span class="constructor">Edge</span>.t<br/>
+        <span class="keyword">type</span> t<br/>
+        <span class="keyword">val</span> create : unit <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> marshal : t <span class="keywordsign">-&gt;</span> string<br/>
+        <span class="keyword">val</span> unmarshal : string <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> succ : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> (key * edge_data) list<br/>
+        <span class="keyword">val</span> pred : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> (key * edge_data) list<br/>
+        <span class="keyword">val</span> add : t <span class="keywordsign">-&gt;</span> key * key * edge_data <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> rem : t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> (edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> rem_all : t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> isolate : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> remove_node : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> pred_roots : ?ignore_deps:edge_data list <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> key list<br/>
+        <span class="keyword">val</span> succ_roots : t <span class="keywordsign">-&gt;</span> key list<br/>
+        <span class="keyword">val</span> recursive_succs :<br/>
+          t <span class="keywordsign">-&gt;</span> ?pred:(edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> key list<br/>
+        <span class="keyword">val</span> recursive_preds :<br/>
+          t <span class="keywordsign">-&gt;</span> ?pred:(edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> key list<br/>
+        <span class="keyword">val</span> reverse : t <span class="keywordsign">-&gt;</span> t<br/>
+        <span class="keyword">val</span> fold_succ :<br/>
+          t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
+        <span class="keyword">val</span> fold_pred :<br/>
+          t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
+        <span class="keyword">val</span> iter_succ : t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> unit<br/>
+        <span class="keyword">val</span> iter_pred : t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> unit<br/>
+        <span class="keyword">val</span> dot_of_graph :<br/>
+          ?f_edge:(edge_data <span class="keywordsign">-&gt;</span> string * (string * string) list) <span class="keywordsign">-&gt;</span><br/>
+          f_node:(key <span class="keywordsign">-&gt;</span> string * string * (string * string) list) <span class="keywordsign">-&gt;</span><br/>
+          t <span class="keywordsign">-&gt;</span> string<br/>
+        <span class="keyword">val</span> nodes_by_pred_order : t <span class="keywordsign">-&gt;</span> key list<br/>
+        <span class="keyword">val</span> shortest_path :<br/>
+          t <span class="keywordsign">-&gt;</span><br/>
+          (t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> (float * edge_data) option) <span class="keywordsign">-&gt;</span><br/>
+          key * key <span class="keywordsign">-&gt;</span> (key * edge_data * key) list<br/>
+      <span class="keyword">end</span><br/>
 <span class="keyword">end</span></code></div>
 
 
@@ -220,7 +214,7 @@
 
 
 <div id="footer">
-<div class="generatedon">Generated on May 22, 2014 at 13h28</div>
+<div class="generatedon">Generated on October 3, 2014 at 7h35</div>
 </div>
 
 

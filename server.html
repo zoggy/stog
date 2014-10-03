@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Preview server</title>
+<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+  <div class="page-title">Preview server</div>
+</div>
+
+
+
+
+<toc-contents></toc-contents>
+<div class="section"><div class="section-title" id="whatis">What is this ?</div>
+<p>
+The preview server watches Stog files and recomputes
+the documents when there is a change. This is useful to have
+a preview as you modify your web site or article.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="how">How does it work ?</div>
+<p>
+When launched, the server computes the documents a first time.
+It then handles HTTP connections. All documents are accessed
+under the path <span class="icode"><span class="hl std">/preview/</span></span>. For example, the <span class="icode"><span class="hl std">/foo/bar.html</span></span>
+document will be browsed, by default, at address
+<span class="icode"><span class="hl std">http://localhost:8080/preview/foo/bar.html</span></span>.
+</p>
+<p>
+When a browser queries a document preview, the server returns
+a simple page with some javascript code to load. This javascript code
+opens a websocket connection, by default to <span class="icode"><span class="hl std">http://localhost:8081</span></span>,
+and queries the document. The server sends the whole document preview and
+the javascript code fills the DOM with the document.
+</p>
+<p>
+When a source file is modified, the server recomputes
+the corresponding documents and sends a patch to the browser,
+through the websocket connection.
+The javascript code applies the patch to the DOM.
+</p>
+<p>
+Applying patches rather than reloading the whole document is better
+when some parts of the document are changed by some other code
+(I'm looking at you, Mathjax). By now, this case is not fully handled yet,
+but this is work in progress. The javascript part of
+the <span class="ext-a"><a href="http://zoggy.github.io/xmldiff">Xmldiff</a></span>
+library allows to specify some nodes to ignore when applying a patch.
+</p>
+<p class="alert alert-warning">
+By now, only documents which exist when the server is launched are
+watched for changes. This means that if you add a new document source file,
+you will have to restart the server.
+</p>
+</div>
+
+<div class="section"><div class="section-title" id="usage">Usage</div>
+<p>
+To run the server, simply run <span class="icode"><span class="hl std">stog-server[.byte]</span></span> instead of
+<span class="icode"><span class="hl std">stog[.byte]</span></span>, with the same parameters.
+</p>
+<p>
+You can use <span class="icode"><span class="hl std">mk-stog[.byte]</span></span> to create your own server. To do
+so, just use <span class="icode"><span class="hl std">--package stog.server</span></span> in addition to other packages.
+</p>
+<p>
+The <span class="icode"><span class="hl std">--port</span></span> and <span class="icode"><span class="hl std">--host</span></span> command line options can be
+used to specify the host and port to listen on. Default is <span class="icode"><span class="hl std">localhost:8080</span></span>.
+The websocket server listens to port + 1, by now. This will change when the Websocket
+library allows changing a HTTP connection to a websocket connection on demand
+(see <span class="ext-a"><a href="https://github.com/vbmithr/ocaml-websocket/issues/18">this issue</a></span>).
+</p>
+</div>
+
+
+
+
+
+
+<p class="alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Preview server&quot;</span><span class="hl std">
+</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;toc</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;whatis&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;What is this ?&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+The preview server watches Stog files and recomputes
+the documents when there is a change. This is useful to have
+a preview as you modify your web site or article.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
+
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;how&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;How does it work ?&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+When launched, the server computes the documents a first time.
+It then handles HTTP connections. All documents are accessed
+under the path </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">/preview/</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">. For example, the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">/foo/bar.html</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
+document will be browsed, by default, at address
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">http://localhost:8080/preview/foo/bar.html</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+When a browser queries a document preview, the server returns
+a simple page with some javascript code to load. This javascript code
+opens a websocket connection, by default to </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">http://localhost:8081</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
+and queries the document. The server sends the whole document preview and
+the javascript code fills the DOM with the document.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+When a source file is modified, the server recomputes
+the corresponding documents and sends a patch to the browser,
+through the websocket connection.
+The javascript code applies the patch to the DOM.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+Applying patches rather than reloading the whole document is better
+when some parts of the document are changed by some other code
+(I'm looking at you, Mathjax). By now, this case is not fully handled yet,
+but this is work in progress. The javascript part of
+the </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://zoggy.github.io/xmldiff&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xmldiff</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">
+library allows to specify some nodes to ignore when applying a patch.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;alert alert-warning&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+By now, only documents which exist when the server is launched are
+watched for changes. This means that if you add a new document source file,
+you will have to restart the server.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
+
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;usage&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Usage&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+To run the server, simply run </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog-server[.byte]</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> instead of
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog[.byte]</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, with the same parameters.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+You can use </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">mk-stog[.byte]</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> to create your own server. To do
+so, just use </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--package stog.server</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> in addition to other packages.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
+The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--port</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> and </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--host</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> command line options can be
+used to specify the host and port to listen on. Default is </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">localhost:8080</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
+The websocket server listens to port + 1, by now. This will change when the Websocket
+library allows changing a HTTP connection to a websocket connection on demand
+(see </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/vbmithr/ocaml-websocket/issues/18&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">this issue</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">).
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
+
+</span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
+</div>
+
+
+<div id="footer">
+<div class="generatedon">Generated on October 3, 2014 at 7h35</div>
+</div>
+
+
+
+</div> 
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog-rel-href</title>
+<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="&lt;navbar-doc/&gt;"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="active"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  <a href="https://zoggy.github.io/stog/plugins.html">Plugins</a>
+  
+  <div class="page-title">Stog-rel-href</div>
+</div>
+
+
+
+
+<p>
+By now, this plugin only adds a rewriting level to change URLs with fragments in
+<span class="icode"><span class="hl std">href</span></span> attributes of a document to keep only &quot;#&quot; followed by the fragment,
+when refering to the same document.
+</p>
+<p>For example, in a document whose final URL is <span class="icode"><span class="hl std">http://foo.bar/buz.html</span></span>,
+<span class="icode"><span class="hl std">href</span></span> attributes containing <span class="icode"><span class="hl std">http://foo.bar/buz.html#frag</span></span>
+with be changed to refer to only <span class="icode"><span class="hl std">#frag</span></span>. This prevents some browsers
+from reloading the whole page when following a link to another part of the document.
+</p>
+
+<p>Usage:</p>
+<pre class="code-sh">$ stog <span class="hl opt">--</span>package stog.rel<span class="hl opt">-</span>href ...</pre>
+
+
+
+
+
+
+
+<div id="footer">
+<div class="generatedon">Generated on October 3, 2014 at 7h35</div>
+</div>
+
+
+
+</div> 
+</body>
+</html>
