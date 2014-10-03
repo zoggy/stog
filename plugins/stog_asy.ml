@@ -103,6 +103,7 @@ let fun_asy stog env atts subs =
           (f, absf, false, fun () -> ())
     in
     let args = Xtmpl.opt_arg_cdata ~def: "" atts ("", "args") in
+    Stog_misc.safe_mkdir (Filename.dirname abs_outfile);
     let com = Printf.sprintf "asy -f %s %s -o %s %s"
       (Filename.quote typ)
         args (Filename.quote abs_outfile)

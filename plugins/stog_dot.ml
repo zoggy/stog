@@ -107,6 +107,7 @@ let fun_dot stog env atts subs =
           (f, absf, false, fun () -> ())
     in
     let args = Xtmpl.opt_arg_cdata ~def: "" atts ("", "args") in
+    Stog_misc.safe_mkdir (Filename.dirname abs_outfile);
     let com = Printf.sprintf "%s -T%s %s -o %s %s"
       (Filename.quote command) (Filename.quote typ)
         args (Filename.quote abs_outfile)
