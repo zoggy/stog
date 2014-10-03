@@ -30,6 +30,7 @@ include ../master.Makefile
 
 STOGDIR=..
 STOG=$(STOGDIR)/stog #--plugin ../plugins/plugin_example.cmxs --plugin ../plugins/stog_disqus.cmxs
+STOG_SERVER=$(STOGDIR)/stog-server
 #STOG=$(STOGDIR)/stog.byte --plugin ../plugins/plugin_example.cmo --plugin ../plugins/stog_disqus.cmo
 DEST_DIR=`pwd`/../doc-output
 BASE_URL_OPTION=
@@ -77,6 +78,9 @@ test:
 tree:
 	tree -I less | grep -v release | grep -v comment | grep -v ocaml\\. \
 	| grep -v gradient.png | grep -v search.png | grep -v left.png | grep -v right.png
+
+server:
+	$(STOG_SERVER) $(STOG_OPTIONS) .
 
 clean:
 	rm -fr .stog/cache

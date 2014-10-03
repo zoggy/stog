@@ -28,17 +28,23 @@ and queries the document. The server sends the whole document preview and
 the javascript code fills the DOM with the document.
 </p>
 <p>
-When the source file is modified, the server recomputes
-the documents and sends a patch to the browser, through the websocket connection.
+When a source file is modified, the server recomputes
+the corresponding documents and sends a patch to the browser,
+through the websocket connection.
 The javascript code applies the patch to the DOM.
 </p>
 <p>
 Applying patches rather than reloading the whole document is better
-when some part of the document are changed by some other code
+when some parts of the document are changed by some other code
 (I'm looking at you, Mathjax). By now, this case is not fully handled yet,
 but this is work in progress. The javascript part of
 the <ext-a href="http://zoggy.github.io/xmldiff">Xmldiff</ext-a>
 library allows to specify some nodes to ignore when applying a patch.
+</p>
+<p class="alert alert-warning">
+By now, only documents which exist when the server is launched are
+watched for changes. This means that if you add a new document source file,
+you will have to restart the server.
 </p>
 </section>
 

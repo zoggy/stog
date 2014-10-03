@@ -33,7 +33,11 @@ open Lwt;;
 module Xdiff = Xmldiff;;
 
 let sleep_duration = 2.0 ;;
-let debug s = Lwt_io.write Lwt_io.stderr s;;
+let debug =
+  match Sys.getenv "STOG_SERVER_DEBUG" with
+    "1" -> fun s -> Lwt_io.write Lwt_io.stderr s
+  | _ -> fun _ -> Lwt.return_unit
+  | exception _ -> fun _ -> Lwt.return_unit
 
 type state = {
   stog : stog ;
@@ -96,8 +100,9 @@ let run_stog ?docs state =
     )
     (function
      | Stog_types.Path_trie.Already_present path ->
-         debug ("Doc path already present: "^(String.concat "/" path)) >>= fun () ->
-           Lwt.return state
+         Stog_msg.error
+           ("Doc path already present: "^(String.concat "/" path)) ;
+         Lwt.return state
      | e ->
          let state = { state with
                stog_errors = state.stog_errors @ (List.rev ((Printexc.to_string e) :: !errors)) ;
