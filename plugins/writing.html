@@ -57,6 +57,17 @@ Stog-writing is <span class="ext-a"><a href="https://github.com/zoggy/stog-writi
 </p>
 <div class="subsection"><div class="subsection-title" id="releases">Releases</div>
 <ul>
+<li><a href="stog-writing-0.13.0.tar.gz">0.13.0</a> [2014/10/09]:
+  <ul>
+    <li>more powerful format specification in <span class="icode"><span class="hl kwa">&lt;cite</span><span class="hl kwa">&gt;</span></span>:
+  <span class="icode"><span class="hl kwa">&lt;cite</span><span class="hl std"> </span><span class="">begin</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">end</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">format</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></span>
+  and also look for <span class="icode"><span class="hl kwa">&lt;cite-begin</span><span class="hl kwa">&gt;</span></span>, <span class="icode"><span class="hl kwa">&lt;cite-end</span><span class="hl kwa">&gt;</span></span>
+  and <span class="icode"><span class="hl kwa">&lt;cite-sep</span><span class="hl kwa">&gt;</span></span> in environment,</li>
+  <li><span class="icode"><span class="hl kwa">&lt;bibliography</span><span class="hl std"> </span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">&quot;kwd1,..&quot;</span><span class="hl kwa">&gt;</span></span> to include bibliography items
+    having the required keywords associated in <span class="icode"><span class="hl std">keywords</span></span> fields
+  </li>
+  </ul>
+</li>
 <li><a href="stog-writing-0.12.0.tar.gz">0.12.0</a> [2014/05/16]:
   <ul>
     <li>Upgrade to Stog 0.12.0.</li>
@@ -217,17 +228,35 @@ of the entry as text for the reference link.
 <p>The default format is <span class="icode"><span class="hl std">[</span><span class="hl kwa">&lt;bib-entry-rank</span><span class="hl kwa">/&gt;</span><span class="hl std">]</span></span>.</p>
 <p>The rank is the position of the item in its bibliography.</p>
 <p>
+The characters used to enclose the reference text are '[' and ']' but
+can be changed:
+</p>
+<ul>
+<li>by using the <span class="icode"><span class="hl std">cite-begin</span></span> and <span class="icode"><span class="hl std">cite-end</span></span> attributes
+in the <span class="icode"><span class="hl kwa">&lt;cite</span><span class="hl kwa">&gt;</span></span> rule,</li>
+<li>or by defining <span class="icode"><span class="hl std">cite-begin</span></span> and <span class="icode"><span class="hl std">cite-end</span></span> in the
+environement (of the document or for the whole site).
+</li>
+</ul>
+<p>In case the <span class="icode"><span class="hl std">href</span></span> attribute contains several references,
+a separator is used between reference texts. By default it is &quot;,&quot; but it
+can be changed by using the <span class="icode"><span class="hl std">cite-sep</span></span> attribute in the <span class="icode"><span class="hl kwa">&lt;cite</span><span class="hl kwa">&gt;</span></span>
+rule, or by setting <span class="icode"><span class="hl std">cite-sep</span></span> in the environment.
+</p>
+<p>
 To include the complete list of entries of a bibliography, use the following node:
 </p>
 <pre class="code-xml"><span class="hl kwa">&lt;bibliography</span><span class="hl kwa">/&gt;</span></pre>
 <p>
 The attribute <span class="icode"><span class="hl std">name=&quot;...&quot;</span></span> can be used to specify the name of the bibliography to
-insert. Default name is &quot;default&quot;.
+insert. Default name is &quot;default&quot;. The attribute <span class="icode"><span class="hl std">keywords=...&quot;</span></span> allows to
+filter the entries according to the keywods they are associated to, using the
+<span class="icode"><span class="hl std">keywords</span></span> field in the <span class="icode"><span class="hl std">.bib</span></span> files.
 </p>
 <p>
 The <span class="icode"><span class="hl kwa">&lt;bibliography</span><span class="hl kwa">&gt;</span></span> node will reduced into the list of its entries,
-each entry being inserted using the <span class="icode"><span class="hl std">bib_entry.tmpl</span></span> template. You can use
-the <span class="icode"><span class="hl std">bib_entry.tmpl</span></span> file included as an example. You will have to place it in your stog
+each entry being inserted using the <span class="icode"><span class="hl std">bib-entry.tmpl</span></span> template. You can use
+the <span class="icode"><span class="hl std">bib-entry.tmpl</span></span> file included as an example. You will have to place it in your stog
 template directory.
 </p>
 </div>
@@ -239,7 +268,7 @@ template directory.
 
 
 <div id="footer">
-<div class="generatedon">Generated on October 3, 2014 at 10h05</div>
+<div class="generatedon">Generated on October 8, 2014 at 17h09</div>
 </div>
 
 
