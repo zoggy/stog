@@ -47,8 +47,6 @@ type state = {
   doc_dates : float Stog_path.Map.t ;
 }
 
-let current_state = ref (None : state option)
-
 let run_stog ?docs state =
   debug "Running stog\n" >>= fun _ ->
   let errors = ref [] in
@@ -117,11 +115,11 @@ let file_stat file =
     (fun () -> Lwt_unix.stat file >>= fun st -> Lwt.return (Some st))
     (fun _ -> Lwt.return None)
 
-let rec watch_for_change on_update on_error =
+let rec watch_for_change current_state on_update on_error =
   Lwt_unix.sleep sleep_duration >>= fun () ->
     debug "watch for changes... " >>= fun _ ->
     match !current_state with
-      None -> watch_for_change on_update on_error
+      None -> watch_for_change current_state on_update on_error
     | Some state ->
         let old_stog = state.stog in
         let doc_list = Stog_types.doc_list state.stog in
@@ -193,10 +191,10 @@ let rec watch_for_change on_update on_error =
                               [], [] -> Lwt.return_unit
                             | errors, warnings -> on_error ~errors ~warnings
                          )
-          ) >>= fun () -> watch_for_change on_update on_error
+          ) >>= fun () -> watch_for_change current_state on_update on_error
 ;;
 
-let watch stog ~on_update ~on_error =
+let watch stog current_state ~on_update ~on_error =
   Lwt.catch
      (fun () -> Lwt_unix.mkdir (Filename.concat (Sys.getcwd()) "stog-output") 0o750)
      (fun _ -> Lwt.return_unit)
@@ -224,10 +222,6 @@ let watch stog ~on_update ~on_error =
     }
   in
   current_state := Some state ;
-  watch_for_change on_update on_error
-
-let state () =
-  match !current_state with
-  | None -> Lwt.fail (Failure "No state yet!")
-  | Some s -> Lwt.return s
+  prerr_endline "state set";
+  watch_for_change current_state on_update on_error
 

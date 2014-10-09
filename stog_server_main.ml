@@ -36,41 +36,45 @@ let (>>=) = Lwt.bind
 let http_url host port = Printf.sprintf "http://%s:%d/preview" host port
 let ws_url host port = Printf.sprintf "ws://%s:%d/" host port
 
-let handler host port sock req body =
+let handler current_state host port sock req body =
   let uri = Cohttp.Request.uri req in
   let path = Stog_misc.split_string (Uri.path uri) ['/'] in
   match path with
     "preview" :: path ->
       let http_url = http_url host port in
       let ws_url = ws_url host (port+1) in
-      Stog_server_preview.handle_preview http_url ws_url sock req body path
+      Stog_server_preview.handle_preview http_url ws_url current_state sock req body path
   | "editor" :: path ->
       let http_url = http_url host port in
       let ws_url = ws_url host (port+1) in
-      Stog_server_editor.handle http_url ws_url sock req body path
+      Stog_server_editor.handle http_url ws_url current_state sock req body path
   | ["status"] ->
-     Stog_server_run.state () >>= fun state ->
-        let b = Buffer.create 256 in
-        let p = Buffer.add_string b in
-        p "<html><header><meta charset=\"utf-8\"><title>Stog-server : Status</title></header>";
-        p "<body>";
-        p "<h1>Status</h1>" ;
-        p "<h2>Errors</h2><ul>";
-        List.iter (fun s -> p ("<li>"^s^"</li>")) state.stog_errors ;
-        p "</ul>";
-        p "<h2>Warnings</h2><ul>";
-        List.iter (fun s -> p ("<li>"^s^"</li>")) state.stog_warnings ;
-        p "</ul>";
-        p "</body></html>";
-        let body = Buffer.contents b in
-        S.respond_string ~status: `OK ~body ()
+      begin
+        match !current_state with
+          None -> Lwt.fail (Failure "No state yet!")
+        | Some state ->
+            let b = Buffer.create 256 in
+            let p = Buffer.add_string b in
+            p "<html><header><meta charset=\"utf-8\"><title>Stog-server : Status</title></header>";
+            p "<body>";
+            p "<h1>Status</h1>" ;
+            p "<h2>Errors</h2><ul>";
+            List.iter (fun s -> p ("<li>"^s^"</li>")) state.stog_errors ;
+            p "</ul>";
+            p "<h2>Warnings</h2><ul>";
+            List.iter (fun s -> p ("<li>"^s^"</li>")) state.stog_warnings ;
+            p "</ul>";
+            p "</body></html>";
+            let body = Buffer.contents b in
+            S.respond_string ~status: `OK ~body ()
+      end
   | _ ->
       let body = Printf.sprintf "<html><header><title>Stog-server</title></header>
     <body>Hello world !</body></html>"
       in
       S.respond_string ~status:`OK ~body ()
 
-let start_server host port =
+let start_server current_state host port =
   Lwt_io.write Lwt_io.stdout
     (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
   >>= fun _ ->
@@ -78,7 +82,7 @@ let start_server host port =
     ignore(Lwt_io.write Lwt_io.stdout
       (Printf.sprintf "connection %s closed\n%!" (Cohttp.Connection.to_string id)))
   in
-  let config = { S.callback = handler host port; conn_closed } in
+  let config = { S.callback = handler current_state host port; conn_closed } in
   S.create ~address:host ~port config
 
 
@@ -89,11 +93,12 @@ let launch stog host port =
     in
     { stog with Stog_types.stog_base_url }
   in
+  let current_state = ref None in
   let on_update = Stog_server_ws.send_patch in
   let on_error = Stog_server_ws.send_errors in
-  let _watcher = Stog_server_run.watch stog ~on_update ~on_error in
-  Stog_server_ws.run_server host (port+1) >>=
-    fun _ -> start_server host port
+  let _watcher = Stog_server_run.watch stog current_state ~on_update ~on_error in
+  Stog_server_ws.run_server current_state host (port+1) >>=
+    fun _ -> start_server current_state host port
 
 let () =
   let run stog host port = Lwt_unix.run (launch stog host port) in

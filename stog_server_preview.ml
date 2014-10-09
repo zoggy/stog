@@ -74,9 +74,10 @@ let rec preview_file stog = function
     in
     iter stog.stog_files path
 
-let handle_preview http_url ws_url sock req body path =
-  Stog_server_run.state () >>=
-    function state ->
+let handle_preview http_url ws_url current_state sock req body path =
+  match !current_state with
+    None -> Lwt.fail (Failure "No state yet!")
+  | Some state ->
         match
           let s_path = "/" ^ (String.concat "/" path) in
           let path = Stog_path.of_string s_path in

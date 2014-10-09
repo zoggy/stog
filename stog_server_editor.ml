@@ -30,7 +30,7 @@
 
 module S = Cohttp_lwt_unix.Server
 
-let handle http_url ws_url sock req body path =
+let handle http_url ws_url current_state sock req body path =
   S.respond_string ~status: `OK ~body: "OK" ()
 
 
