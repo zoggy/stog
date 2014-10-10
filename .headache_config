@@ -8,6 +8,7 @@
 | ".*Makefile.*" -> frame open:"#"  line:"#" close:"#" width: 75
 | ".*configure$" -> frame open:"#"  line:"#" close:"#" width: 75
 | ".*configure\\.in" -> frame open:"#"  line:"#" close:"#" width: 75
+| ".*configure\\.ac" -> frame open:"#"  line:"#" close:"#" width: 75
 | ".*README.*"   -> frame open:"*"  line:"*" close:"*" width: 75
 | ".*LICENSE.*"  -> frame open:"*"  line:"*" close:"*" width: 75
 | ".*cam-mktop2.in" -> frame open:"#"  line:"#" close:"#" width: 75
