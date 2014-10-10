@@ -584,6 +584,8 @@ PACKAGE_URL=
 ac_unique_file="master.Makefile.in"
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+MSERVER_BYTE
+MSERVER
 SERVER_BYTE
 SERVER
 SERVER_PACKAGES
@@ -1719,6 +1721,8 @@ if test "$SERVER" = "" ; then SERVER_PACKAGES=""; fi
 
 #############################
 # substitutions to perform
+
+
 
 
 

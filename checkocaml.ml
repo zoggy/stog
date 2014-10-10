@@ -933,10 +933,12 @@ let _ =
     (
      add_subst "SERVER" "stog-server";
      add_subst "SERVER_BYTE" "stog-server.byte";
-     print_endline "stog.server package will be compiled and installed"
+     add_subst "MSERVER" "stog-multi-server";
+     add_subst "MSERVER_BYTE" "stog-multi-server.byte";
+     print_endline "stog.server and stog.multi-server packages will be compiled and installed"
     )
   else
-    print_endline "stog.server package will NOT be available"
+    print_endline "stog.server and stog.multi-server packages will NOT be available"
 ;;
 
 

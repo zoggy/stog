@@ -88,6 +88,8 @@ AC_SUBST(OCAML_SESSION_PACKAGES)
 AC_SUBST(SERVER_PACKAGES)
 AC_SUBST(SERVER)
 AC_SUBST(SERVER_BYTE)
+AC_SUBST(MSERVER)
+AC_SUBST(MSERVER_BYTE)
 
 # Finally create the master.Makefile.in
 ACFILES="master.Makefile META stog_config.ml stog_install.ml"

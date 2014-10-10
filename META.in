@@ -60,13 +60,35 @@ package "rel-href" (
   archive(plugin,native) = "stog_rel_href.cmxs"
 )
 
+package "serverlib" (
+  exists_if = "stog_serverlib.cma"
+  version = "@VERSION@"
+  description = "Stog server library"
+  requires = "stog,@SERVER_PACKAGES@"
+  archive(byte) = "stog_serverlib.cma"
+  archive(native) = "stog_serverlib.cmxa"
+  archive(plugin,byte) = "stog_serverlib.cma"
+  archive(plugin,native) = "stog_serverlib.cmxs"
+)
+
 package "server" (
   exists_if = "stog_server.cma"
   version = "@VERSION@"
-  description = "Stog server"
-  requires = "stog,@SERVER_PACKAGES@"
+  description = "Stog server plugin"
+  requires = "stog.serverlib"
   archive(byte) = "stog_server.cma"
   archive(native) = "stog_server.cmxa"
   archive(plugin,byte) = "stog_server.cma"
   archive(plugin,native) = "stog_server.cmxs"
+)
+
+package "multi-server" (
+  exists_if = "stog_multi_server.cma"
+  version = "@VERSION@"
+  description = "Stog multi server"
+  requires = "stog.serverlib"
+  archive(byte) = "stog_multi_server.cma"
+  archive(native) = "stog_multi_server.cmxa"
+  archive(plugin,byte) = "stog_multi_server.cma"
+  archive(plugin,native) = "stog_multi_server.cmxs"
 )

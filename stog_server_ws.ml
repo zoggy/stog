@@ -67,7 +67,7 @@ let push_message ?push (msg : Stog_server_types.server_message) =
         Lwt.return (push (Some msg))
 ;;
 
-let handle_messages current_state stream push =
+let handle_messages current_state base_path stream push =
   let f frame =
     match Websocket.Frame.opcode frame with
     | `Close ->
@@ -103,26 +103,26 @@ let handle_messages current_state stream push =
     (fun _ -> Lwt_stream.iter_s f stream)
     (fun _ -> Lwt.return_unit)
 
-let handle_con current_state uri (stream, push) =
+let handle_con current_state base_path uri (stream, push) =
   prerr_endline "new connection";
   active_cons := (stream, push) :: !active_cons ;
-  handle_messages current_state stream push
+  handle_messages current_state base_path stream push
 ;;
 
-let server current_state sockaddr =
+let server current_state base_path sockaddr =
   (*
   let rec echo_fun uri (stream, push) =
     Lwt_stream.next stream >>= fun frame ->
     Lwt.wrap (fun () -> push (Some frame)) >>= fun () ->
     echo_fun uri (stream, push) in
   *)
-  Websocket.establish_server sockaddr (handle_con current_state)
+  Websocket.establish_server sockaddr (handle_con current_state base_path)
 ;;
 
-let run_server current_state host port =
+let run_server current_state host port base_path =
   prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
   Lwt_io_ext.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
-    Lwt.return (server current_state sa)
+    Lwt.return (server current_state base_path sa)
 ;;
 
 let send_errors ~errors ~warnings =

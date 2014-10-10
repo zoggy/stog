@@ -97,12 +97,13 @@ LIB=stog.cmxa
 LIB_CMXS=$(LIB:.cmxa=.cmxs)
 LIB_BYTE=$(LIB:.cmxa=.cma)
 
-LIB_SERVER=stog_server.cmxa
-LIB_SERVER_CMXS=$(LIB_SERVER:.cmxa=.cmxs)
-LIB_SERVER_BYTE=$(LIB_SERVER:.cmxa=.cma)
 
 MAIN=stog
 MAIN_BYTE=$(MAIN).byte
+
+LIB_SERVER=stog_serverlib.cmxa
+LIB_SERVER_CMXS=$(LIB_SERVER:.cmxa=.cmxs)
+LIB_SERVER_BYTE=$(LIB_SERVER:.cmxa=.cma)
 
 LIB_SERVER_CMXFILES= \
 	stog_server_types.cmx \
@@ -111,10 +112,26 @@ LIB_SERVER_CMXFILES= \
 	stog_server_ws.cmx \
 	stog_server_editor.cmx \
 	stog_server_preview.cmx \
-	stog_server_main.cmx
+	stog_server_http.cmx
 
 LIB_SERVER_CMOFILES=$(LIB_SERVER_CMXFILES:.cmx=.cmo)
 LIB_SERVER_CMIFILES=$(LIB_SERVER_CMXFILES:.cmx=.cmi)
+
+PLUGIN_SERVER=stog_server.cmxa
+PLUGIN_SERVER_CMXS=$(PLUGIN_SERVER:.cmxa=.cmxs)
+PLUGIN_SERVER_BYTE=$(PLUGIN_SERVER:.cmxa=.cma)
+
+PLUGIN_SERVER_CMXFILES= stog_server_main.cmx
+PLUGIN_SERVER_CMOFILES=$(PLUGIN_SERVER_CMXFILES:.cmx=.cmo)
+PLUGIN_SERVER_CMIFILES=$(PLUGIN_SERVER_CMXFILES:.cmx=.cmi)
+
+PLUGIN_MSERVER=stog_multi_server.cmxa
+PLUGIN_MSERVER_CMXS=$(PLUGIN_MSERVER:.cmxa=.cmxs)
+PLUGIN_MSERVER_BYTE=$(PLUGIN_MSERVER:.cmxa=.cma)
+
+PLUGIN_MSERVER_CMXFILES= stog_server_multi.cmx
+PLUGIN_MSERVER_CMOFILES=$(PLUGIN_MSERVER_CMXFILES:.cmx=.cmo)
+PLUGIN_MSERVER_CMIFILES=$(PLUGIN_MSERVER_CMXFILES:.cmx=.cmi)
 
 SERVER_JS=stog_server_client.js
 
@@ -135,11 +152,11 @@ OCAML_SESSION_CMIFILES=$(OCAML_SESSION_CMOFILES:.cmo=.cmi)
 
 all: opt byte
 
-opt: $(LIB) $(LIB_CMXS) $(MAIN) $(SERVER) $(LATEX2STOG) \
+opt: $(LIB) $(LIB_CMXS) $(MAIN) $(SERVER) $(MSERVER) $(LATEX2STOG) \
 	plugins/plugin_example.cmxs $(PLUGINS_OPT) \
 	$(MK_STOG) $(ODOC)
 
-byte: $(LIB_BYTE) $(MAIN_BYTE) $(SERVER_BYTE) $(LATEX2STOG_BYTE) \
+byte: $(LIB_BYTE) $(MAIN_BYTE) $(SERVER_BYTE) $(MSERVER_BYTE) $(LATEX2STOG_BYTE) \
 	$(OCAML_SESSION) plugins/plugin_example.cmo $(PLUGINS_BYTE) \
 	$(MK_STOG_BYTE) $(MK_STOG_OCAML) $(ODOC_BYTE)
 
@@ -149,11 +166,21 @@ $(MAIN): $(LIB) stog_main.cmx
 $(MAIN_BYTE): $(LIB_BYTE) stog_main.cmo
 	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) -linkall -linkpkg -o $@ $(COMPFLAGS) $^
 
-$(SERVER): $(LIB) $(LIB_SERVER) $(LIB_SERVER_CMXS) stog_main.cmx
+$(SERVER): $(LIB) $(LIB_SERVER) $(LIB_SERVER_CMXS) $(PLUGIN_SERVER) $(PLUGIN_SERVER_CMXS) stog_main.cmx
 	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES),$(SERVER_PACKAGES) \
-	-verbose -linkall -linkpkg -o $@ $(COMPFLAGS) $(LIB) $(LIB_SERVER) stog_main.cmx
+	-verbose -linkall -linkpkg -o $@ $(COMPFLAGS) $(LIB) $(LIB_SERVER) \
+	$(PLUGIN_SERVER) stog_main.cmx
 
-$(SERVER_BYTE): $(LIB_BYTE) $(LIB_SERVER_BYTE) stog_main.cmo
+$(SERVER_BYTE): $(LIB_BYTE) $(LIB_SERVER_BYTE) $(PLUGIN_SERVER_BYTE) stog_main.cmo
+	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES),$(SERVER_PACKAGES) \
+	-linkall -linkpkg -o $@ $(COMPFLAGS) $^
+
+$(MSERVER): $(LIB) $(LIB_SERVER) $(LIB_SERVER_CMXS) $(PLUGIN_MSERVER) $(PLUGIN_MSERVER_CMXS) stog_main.cmx
+	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES),$(SERVER_PACKAGES) \
+	-verbose -linkall -linkpkg -o $@ $(COMPFLAGS) $(LIB) $(LIB_SERVER) \
+	$(PLUGIN_MSERVER) stog_main.cmx
+
+$(MSERVER_BYTE): $(LIB_BYTE) $(LIB_SERVER_BYTE) $(PLUGIN_MSERVER_BYTE) stog_main.cmo
 	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES),$(SERVER_PACKAGES) \
 	-linkall -linkpkg -o $@ $(COMPFLAGS) $^
 
@@ -170,6 +197,7 @@ stog_server_files.ml: server_files/$(SERVER_JS)
 	$(OCAML_CRUNCH) --mode=plain -e js -o $@ server_files
 	$(RM) -r server_files
 
+
 $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 	$(OCAMLFIND) ocamlopt$(P) -a -o $@ $(LIB_CMXFILES)
 
@@ -179,6 +207,7 @@ $(LIB_CMXS): $(LIB_CMIFILES) $(LIB_CMXFILES)
 $(LIB_BYTE): $(LIB_CMIFILES) $(LIB_CMOFILES)
 	$(OCAMLFIND) ocamlc$(PBYTE) -a -o $@ $(LIB_CMOFILES)
 
+
 $(LIB_SERVER): $(LIB) $(LIB_SERVER_CMIFILES) $(LIB_SERVER_CMXFILES)
 	$(OCAMLFIND) ocamlopt$(P) -a -o $@ $(LIB_SERVER_CMXFILES)
 
@@ -187,6 +216,27 @@ $(LIB_SERVER_CMXS): $(LIB) $(LIB_SERVER_CMIFILES) $(LIB_SERVER_CMXFILES)
 
 $(LIB_SERVER_BYTE): $(LIB_BYTE) $(LIB_SERVER_CMIFILES) $(LIB_SERVER_CMOFILES)
 	$(OCAMLFIND) ocamlc$(PBYTE) -a -o $@ $(LIB_SERVER_CMOFILES)
+
+
+$(PLUGIN_SERVER): $(LIB_SERVER) $(PLUGIN_SERVER_CMIFILES) $(PLUGIN_SERVER_CMXFILES)
+	$(OCAMLFIND) ocamlopt$(P) -a -o $@ $(PLUGIN_SERVER_CMXFILES)
+
+$(PLUGIN_SERVER_CMXS): $(LIB_SERVER) $(PLUGIN_SERVER_CMIFILES) $(PLUGIN_SERVER_CMXFILES)
+	$(OCAMLFIND) ocamlopt$(P) -shared -o $@ $(PLUGIN_SERVER_CMXFILES)
+
+$(PLUGIN_SERVER_BYTE): $(LIB_SERVER_BYTE) $(PLUGIN_SERVER_CMIFILES) $(PLUGIN_SERVER_CMOFILES)
+	$(OCAMLFIND) ocamlc$(PBYTE) -a -o $@ $(PLUGIN_SERVER_CMOFILES)
+
+
+$(PLUGIN_MSERVER): $(LIB_SERVER) $(PLUGIN_MSERVER_CMIFILES) $(PLUGIN_MSERVER_CMXFILES)
+	$(OCAMLFIND) ocamlopt$(P) -a -o $@ $(PLUGIN_MSERVER_CMXFILES)
+
+$(PLUGIN_MSERVER_CMXS): $(LIB_SERVER) $(PLUGIN_MSERVER_CMIFILES) $(PLUGIN_MSERVER_CMXFILES)
+	$(OCAMLFIND) ocamlopt$(P) -shared -o $@ $(PLUGIN_MSERVER_CMXFILES)
+
+$(PLUGIN_MSERVER_BYTE): $(LIB_SERVER_BYTE) $(PLUGIN_MSERVER_CMIFILES) $(PLUGIN_MSERVER_CMOFILES)
+	$(OCAMLFIND) ocamlc$(PBYTE) -a -o $@ $(PLUGIN_MSERVER_CMOFILES)
+
 
 $(OCAML_SESSION): $(OCAML_SESSION_CMIFILES) $(OCAML_SESSION_CMOFILES)
 	$(OCAMLFIND) ocamlc$(PBYTE) -package $(OCAML_SESSION_PACKAGES) -linkpkg -linkall -o $@ $(COMPFLAGS) $(OCAML_SESSION_CMOFILES)
@@ -293,9 +343,15 @@ install-lib:
 		$(LIB_CMIFILES) $(LIB_CMXFILES) $(LIB_CMXFILES:.cmx=.o) \
 		$(LIB_BYTE) $(LIB) $(LIB:.cmxa=.a) $(LIB_CMXS) stog_main.cm* stog_main.o \
 		`test -n "$(SERVER)" && echo $(LIB_SERVER) $(LIB_SERVER:.cmxa=.a) $(LIB_SERVER_CMXS) \
-		    $(LIB_SERVER_CMXFILES:.cmx=.o) $(LIB_SERVER_CMXFILES) ` \
-		`test -n "$(SERVER_BYTE)" && echo $(LIB_SERVER_BYTE)` \
-		`(test -n "$(SERVER)" || test -n "$(SERVER_BYTE)") && echo $(LIB_SERVER_CMIFILES)` \
+		    $(LIB_SERVER_CMXFILES:.cmx=.o) $(LIB_SERVER_CMXFILES) \
+		    $(PLUGIN_SERVER) $(PLUGIN_SERVER:.cmxa=.a) $(PLUGIN_SERVER_CMXS) \
+		    $(PLUGIN_SERVER_CMXFILES:.cmx=.o) $(PLUGIN_SERVER_CMXFILES) \
+		    $(PLUGIN_MSERVER) $(PLUGIN_MSERVER:.cmxa=.a) $(PLUGIN_MSERVER_CMXS) \
+		    $(PLUGIN_MSERVER_CMXFILES:.cmx=.o) $(PLUGIN_MSERVER_CMXFILES) ` \
+		`test -n "$(SERVER_BYTE)" && echo \
+			$(LIB_SERVER_BYTE) $(PLUGIN_SERVER_BYTE) $(PLUGIN_MSERVER_BYTE)` \
+		`(test -n "$(SERVER)" || test -n "$(SERVER_BYTE)") && echo \
+			$(LIB_SERVER_CMIFILES) $(PLUGIN_SERVER_CMIFILES) $(PLUGIN_MSERVER_CMIFILES) ` \
 		$(OCAML_SESSION_CMOFILES)
 
 install-share:

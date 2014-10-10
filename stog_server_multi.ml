@@ -28,12 +28,38 @@
 
 (** *)
 
-open Stog_server_run
-
+open Stog_types
 module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
 
-let start_server current_state host port base_path =
+type space =
+  { stog_state : Stog_server_run.state option ref ;
+    stog_auth : string ;
+  }
+
+let handler spaces host port sock req body =
+  let uri = Cohttp.Request.uri req in
+  let path = Stog_misc.split_string (Uri.path uri) ['/'] in
+  match path with
+  | id :: _ ->
+      begin
+        match Str_map.find id !spaces with
+          space ->
+            Stog_server_http.handler space.stog_state host port [id] sock req body
+        | exception Not_found ->
+            let body =
+              "<html><header><title>Stog-server</title></header>"^
+                "<body>Space "^id^" not found</body></html>"
+            in
+            S.respond_error ~status:`Not_found ~body ()
+      end
+  | _ ->
+      let body = Printf.sprintf "<html><header><title>Stog-server</title></header>
+    <body>Hello world !</body></html>"
+      in
+      S.respond_string ~status:`OK ~body ()
+
+let start_server spaces host port =
   Lwt_io.write Lwt_io.stdout
     (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
   >>= fun _ ->
@@ -41,32 +67,14 @@ let start_server current_state host port base_path =
     ignore(Lwt_io.write Lwt_io.stdout
       (Printf.sprintf "connection %s closed\n%!" (Cohttp.Connection.to_string id)))
   in
-  let config = 
-    { S.callback = Stog_server_http.handler current_state host port base_path; 
-      conn_closed ;
-    }
-  in
+  let config = { S.callback = handler spaces host port ; conn_closed } in
   S.create ~address:host ~port config
 
-
-let launch stog host port base_path =
-  let stog =
-    let stog_base_url =
-      let s = Printf.sprintf "http://%s:%d/%spreview"
-        host port (Stog_server_http.base_path_string base_path)
-      in
-      Stog_types.url_of_string s
-    in
-    { stog with Stog_types.stog_base_url }
-  in
-  let current_state = ref None in
-  let on_update = Stog_server_ws.send_patch in
-  let on_error = Stog_server_ws.send_errors in
-  let _watcher = Stog_server_run.watch stog current_state ~on_update ~on_error in
-  Stog_server_ws.run_server current_state host (port+1) base_path >>=
-    fun _ -> start_server current_state host port base_path
+let launch _stog host port =
+  let spaces = ref (Str_map.empty : space Str_map.t) in
+  start_server spaces host port
 
 let () =
-  let run stog host port = Lwt_unix.run (launch stog host port []) in
+  let run stog host port = Lwt_unix.run (launch stog host port) in
   Stog_server_mode.launch := Some run
 
