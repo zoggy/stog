@@ -459,6 +459,6 @@ $(PLUGINS_OPT): $(LIB)
 .PHONY: clean depend
 
 .depend depend:
-	$(OCAMLFIND) ocamldep stog*.ml stog*.mli > .depend
+	$(OCAMLFIND) ocamldep `ls stog*.ml stog*.mli | grep -v _js.ml` > .depend
 
 include .depend
