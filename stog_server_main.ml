@@ -33,6 +33,23 @@ open Stog_server_run
 module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
 
+let new_stog_session stog host port base_path =
+  let stog =
+    let stog_base_url =
+      let s = Printf.sprintf "http://%s:%d/%spreview"
+        host port (Stog_server_http.base_path_string base_path)
+      in
+      Stog_types.url_of_string s
+    in
+    { stog with Stog_types.stog_base_url }
+  in
+  let current_state = ref None in
+  let active_cons = ref [] in
+  let on_update = Stog_server_ws.send_patch active_cons in
+  let on_error = Stog_server_ws.send_errors active_cons in
+  let _watcher = Stog_server_run.watch stog current_state ~on_update ~on_error in
+  (current_state, active_cons)
+
 let start_server current_state host port base_path =
   Lwt_io.write Lwt_io.stdout
     (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
@@ -50,20 +67,7 @@ let start_server current_state host port base_path =
 
 
 let launch stog host port base_path =
-  let stog =
-    let stog_base_url =
-      let s = Printf.sprintf "http://%s:%d/%spreview"
-        host port (Stog_server_http.base_path_string base_path)
-      in
-      Stog_types.url_of_string s
-    in
-    { stog with Stog_types.stog_base_url }
-  in
-  let current_state = ref None in
-  let active_cons = ref [] in
-  let on_update = Stog_server_ws.send_patch active_cons in
-  let on_error = Stog_server_ws.send_errors active_cons in
-  let _watcher = Stog_server_run.watch stog current_state ~on_update ~on_error in
+  let (current_state, active_cons) = new_stog_session stog host port base_path in
   Stog_server_ws.run_server current_state active_cons host (port+1) base_path >>=
     fun _ -> start_server current_state host port base_path
 

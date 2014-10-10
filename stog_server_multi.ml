@@ -38,10 +38,23 @@ type space =
     space_auth : string ;
   }
 
+let add_stog_session host port dir =
+  assert false
+
 let handler spaces host port sock req body =
   let uri = Cohttp.Request.uri req in
   let path = Stog_misc.split_string (Uri.path uri) ['/'] in
   match path with
+  | ["sessions"] when req.S.Request.meth = `POST ->
+      S.respond_error ~status:`Not_found ~body: "not implemented yet" ()
+
+  | ["sessions"] when req.S.Request.meth = `GET ->
+      let body =
+        "<html><header><title>Stog-server</title></header>"^
+          "<body>List of sessions: not implemented yet</body></html>"
+      in
+      S.respond_string ~status:`OK ~body ()
+
   | id :: _ ->
       begin
         match Str_map.find id !spaces with
