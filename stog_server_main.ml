@@ -60,10 +60,11 @@ let launch stog host port base_path =
     { stog with Stog_types.stog_base_url }
   in
   let current_state = ref None in
-  let on_update = Stog_server_ws.send_patch in
-  let on_error = Stog_server_ws.send_errors in
+  let active_cons = ref [] in
+  let on_update = Stog_server_ws.send_patch active_cons in
+  let on_error = Stog_server_ws.send_errors active_cons in
   let _watcher = Stog_server_run.watch stog current_state ~on_update ~on_error in
-  Stog_server_ws.run_server current_state host (port+1) base_path >>=
+  Stog_server_ws.run_server current_state active_cons host (port+1) base_path >>=
     fun _ -> start_server current_state host port base_path
 
 let () =

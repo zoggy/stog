@@ -35,19 +35,18 @@ let (>>=) = Lwt.bind
 
 let rec wait_forever () = Lwt_unix.sleep 1000.0 >>= wait_forever
 
-let active_cons = ref [] ;;
-
-let push_message msg acc (stream, push) =
+let push_message active_cons msg (stream, push) =
   Lwt.catch
     (fun () ->
        push (Some msg);
        prerr_endline "msg pushed";
-       Lwt.return ((stream, push) :: acc)
+       active_cons := (stream, push) :: !active_cons ;
+       Lwt.return_unit
     )
-    (fun e -> prerr_endline ("push_message: "^(Printexc.to_string e)) ; Lwt.return acc)
+    (fun e -> prerr_endline ("push_message: "^(Printexc.to_string e)) ; Lwt.return_unit)
 ;;
 
-let push_message ?push (msg : Stog_server_types.server_message) =
+let push_message active_cons ?push (msg : Stog_server_types.server_message) =
   (*prerr_endline ("Number of active connections: "^(string_of_int (List.length !active_cons)));*)
   prerr_endline
     ("pushing message: "^
@@ -61,13 +60,14 @@ let push_message ?push (msg : Stog_server_types.server_message) =
   let msg = Websocket.Frame.of_string hex in
   match push with
     None ->
-      Lwt_list.fold_left_s (push_message msg) [] !active_cons >>=
-        fun l -> active_cons := l; Lwt.return_unit
+      let l = !active_cons in
+      active_cons := [] ;
+      Lwt_list.iter_s (push_message active_cons msg) l
   | Some push ->
         Lwt.return (push (Some msg))
 ;;
 
-let handle_messages current_state base_path stream push =
+let handle_messages current_state active_cons base_path stream push =
   let f frame =
     match Websocket.Frame.opcode frame with
     | `Close ->
@@ -92,7 +92,7 @@ let handle_messages current_state base_path stream push =
                   | Some [] -> Lwt.return_unit
                   | Some (tree :: _) ->
                       let msg = Stog_server_types.Update (path, (Stog_server_types.Update_all tree)) in
-                      push_message ~push msg
+                      push_message active_cons ~push msg
                 with e ->
                     Lwt.return_unit
           end
@@ -103,36 +103,36 @@ let handle_messages current_state base_path stream push =
     (fun _ -> Lwt_stream.iter_s f stream)
     (fun _ -> Lwt.return_unit)
 
-let handle_con current_state base_path uri (stream, push) =
+let handle_con current_state active_cons base_path uri (stream, push) =
   prerr_endline "new connection";
   active_cons := (stream, push) :: !active_cons ;
-  handle_messages current_state base_path stream push
+  handle_messages current_state active_cons base_path stream push
 ;;
 
-let server current_state base_path sockaddr =
+let server current_state active_cons base_path sockaddr =
   (*
   let rec echo_fun uri (stream, push) =
     Lwt_stream.next stream >>= fun frame ->
     Lwt.wrap (fun () -> push (Some frame)) >>= fun () ->
     echo_fun uri (stream, push) in
   *)
-  Websocket.establish_server sockaddr (handle_con current_state base_path)
+  Websocket.establish_server sockaddr (handle_con current_state active_cons base_path)
 ;;
 
-let run_server current_state host port base_path =
+let run_server current_state active_cons host port base_path =
   prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
   Lwt_io_ext.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
-    Lwt.return (server current_state base_path sa)
+    Lwt.return (server current_state active_cons base_path sa)
 ;;
 
-let send_errors ~errors ~warnings =
+let send_errors active_cons ~errors ~warnings =
   let msg = Stog_server_types.Errors (errors, warnings) in
-  push_message msg
+  push_message active_cons msg
 ;;
 
-let send_update_message path op =
+let send_update_message active_cons path op =
   let msg = Stog_server_types.Update (path, op) in
-  push_message msg
+  push_message active_cons msg
 ;;
 
 let diff_cut =
@@ -143,7 +143,7 @@ let diff_cut =
   in
   fun (_,tag) _ _ -> Stog_types.Str_set.mem (String.lowercase tag) set
 
-let send_patch old_stog stog doc_id =
+let send_patch active_cons old_stog stog doc_id =
   let old_doc = Stog_types.doc old_stog doc_id in
   let new_doc = Stog_types.doc stog doc_id in
   let path = Stog_path.to_string new_doc.doc_path in
@@ -157,10 +157,10 @@ let send_patch old_stog stog doc_id =
     | None, Some (t :: _) ->
         (*let s = Marshal.to_string t [] in*)
         let op = Stog_server_types.Update_all t in
-        send_update_message path op
+        send_update_message active_cons path op
     | Some _, None ->
         let op = Stog_server_types.Patch [] in
-        send_update_message path op
+        send_update_message active_cons path op
     | Some xtmpl1, Some xtmpl2 when xtmpl1 = xtmpl2 ->
         Lwt.return_unit
     | Some xtmpl1, Some xtmpl2 -> (* xml1 <> xml2 *)
@@ -170,7 +170,7 @@ let send_patch old_stog stog doc_id =
           (fun patch ->
              prerr_endline "patch computed";
              let op = Stog_server_types.Patch patch in
-             send_update_message path op;
+             send_update_message active_cons path op;
              (*let s = Marshal.to_string (List.hd xtmpl2) [] in
                 Ocsigen_messages.warning (Printf.sprintf "sending marshalled operation, size=%d" (String.length s));
                 send_update_message path

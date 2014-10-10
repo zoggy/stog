@@ -33,8 +33,9 @@ module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
 
 type space =
-  { stog_state : Stog_server_run.state option ref ;
-    stog_auth : string ;
+  { space_state : Stog_server_run.state option ref ;
+    space_ws_cons : (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit)) list ref ;
+    space_auth : string ;
   }
 
 let handler spaces host port sock req body =
@@ -45,7 +46,7 @@ let handler spaces host port sock req body =
       begin
         match Str_map.find id !spaces with
           space ->
-            Stog_server_http.handler space.stog_state host port [id] sock req body
+            Stog_server_http.handler space.space_state host port [id] sock req body
         | exception Not_found ->
             let body =
               "<html><header><title>Stog-server</title></header>"^
