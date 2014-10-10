@@ -1,4 +1,7 @@
 Next release:
+* use Ojs-base facilities to display messages in browser
+
+Release 0.13.0:
 * preview server (stog-server), using xmldiff.js and websockets
 * use xtmpl 0.10 to unescape entities in attributes of final documents
 * new plugin stog.rel-href
