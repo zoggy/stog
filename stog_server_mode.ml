@@ -30,10 +30,12 @@
 let port = ref 8080
 let host = ref "0.0.0.0"
 
-let launch = ref (None : (Stog_types.stog -> string -> int -> unit) option)
-let server_mode () = !launch <> None
+type server_mode = [
+    `Single of Stog_types.stog -> unit
+  | `Multi of unit -> unit
+  ]
+let server_mode = ref (None : server_mode option)
 
-let run_server stog =
-  match !launch with
-    None -> failwith "Server is not available"
-  | Some f -> f stog !host !port
+let set_single f = server_mode := Some (`Single (fun stog -> f stog !host !port))
+let set_multi f = server_mode := Some (`Multi (fun () -> f !host !port))
+  

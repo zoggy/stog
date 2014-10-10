@@ -41,8 +41,8 @@ let start_server current_state host port base_path =
     ignore(Lwt_io.write Lwt_io.stdout
       (Printf.sprintf "connection %s closed\n%!" (Cohttp.Connection.to_string id)))
   in
-  let config = 
-    { S.callback = Stog_server_http.handler current_state host port base_path; 
+  let config =
+    { S.callback = Stog_server_http.handler current_state host port base_path;
       conn_closed ;
     }
   in
@@ -68,5 +68,5 @@ let launch stog host port base_path =
 
 let () =
   let run stog host port = Lwt_unix.run (launch stog host port []) in
-  Stog_server_mode.launch := Some run
+  Stog_server_mode.set_single run
 

@@ -70,11 +70,11 @@ let start_server spaces host port =
   let config = { S.callback = handler spaces host port ; conn_closed } in
   S.create ~address:host ~port config
 
-let launch _stog host port =
+let launch host port =
   let spaces = ref (Str_map.empty : space Str_map.t) in
   start_server spaces host port
 
 let () =
-  let run stog host port = Lwt_unix.run (launch stog host port) in
-  Stog_server_mode.launch := Some run
+  let run host port = Lwt_unix.run (launch host port) in
+  Stog_server_mode.set_multi run
 

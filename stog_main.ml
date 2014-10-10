@@ -139,11 +139,10 @@ let run_from_dirs dirs =
        ])
     in
     let stog = { stog with stog_defs = stog.stog_defs @ [ def_style ] } in
-    if Stog_server_mode.server_mode() then
-      Stog_server_mode.run_server stog
-    else
-      Stog_engine.generate ~use_cache: !use_cache ?only_docs stog modules
-
+    match !Stog_server_mode.server_mode with
+      None -> Stog_engine.generate ~use_cache: !use_cache ?only_docs stog modules
+    | Some (`Single f) -> f stog
+    | _ -> assert false
   with Stog_types.Path_trie.Already_present l ->
       let msg = "Path already present: "^(String.concat "/" l) in
       failwith msg
@@ -194,11 +193,10 @@ let run_from_files files =
       { stog with stog_defs = stog.stog_defs @ [ def_style ] }
     in
     let stog = Stog_io.read_modules stog in
-    if Stog_server_mode.server_mode() then
-      Stog_server_mode.run_server stog
-    else
-      Stog_engine.generate ~use_cache: false ~gen_cache: false stog modules
-
+    match !Stog_server_mode.server_mode with
+      None -> Stog_engine.generate ~use_cache: false ~gen_cache: false stog modules
+    | Some (`Single f) -> f stog
+    | _ -> assert false
   with Stog_types.Path_trie.Already_present l ->
       let msg = "Path already present: "^(String.concat "/" l) in
       failwith msg
@@ -296,34 +294,37 @@ let main () =
         None -> ()
       | Some abbrev -> Stog_intl.set_default_lang abbrev
     end;
-    begin
-      match List.rev !remain with
-        [] -> failwith (usage ~with_options: false ())
-      | h :: q ->
-          let k = file_kind h in
-          List.iter
-            (fun f ->
-              if file_kind f <> k then
-                 failwith (usage ~with_options: false ()))
-            q;
-          match k with
-            Unix.S_REG -> run_from_files (h::q)
-          | Unix.S_DIR -> run_from_dirs (h::q)
-          | _ -> failwith ("Invalid file type for "^h)
-    end;
-    let err = Stog_msg.errors () in
-    let warn = Stog_msg.warnings () in
-    begin
-      match err, warn with
-        0, 0 -> ()
-      | _, _ ->
-          let msg = Printf.sprintf "%d error%s, %d warning%s"
-            err (if err > 1 then "s" else "")
-              warn (if warn > 1 then "s" else "")
-          in
-          prerr_endline msg;
-    end;
-    exit err
+    match !Stog_server_mode.server_mode with
+      Some (`Multi f) -> f ()
+    | _ ->
+        begin
+          match List.rev !remain with
+            [] -> failwith (usage ~with_options: false ())
+          | h :: q ->
+              let k = file_kind h in
+              List.iter
+                (fun f ->
+                   if file_kind f <> k then
+                     failwith (usage ~with_options: false ()))
+                q;
+              match k with
+                Unix.S_REG -> run_from_files (h::q)
+              | Unix.S_DIR -> run_from_dirs (h::q)
+              | _ -> failwith ("Invalid file type for "^h)
+        end;
+        let err = Stog_msg.errors () in
+        let warn = Stog_msg.warnings () in
+        begin
+          match err, warn with
+            0, 0 -> ()
+          | _, _ ->
+              let msg = Printf.sprintf "%d error%s, %d warning%s"
+                err (if err > 1 then "s" else "")
+                  warn (if warn > 1 then "s" else "")
+              in
+              prerr_endline msg;
+        end;
+        exit err
   with
     e when !debug -> raise e
   | Stog_engine.Cant_open_cache_file cache_file ->
