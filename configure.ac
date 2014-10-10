@@ -29,7 +29,7 @@
 # check for one particular file of the sources
 AC_INIT(master.Makefile.in)
 
-VERSION=0.13.0
+VERSION=0.14.0
 PACKAGE=stog
 
 # The root directory where we will compile
