@@ -5,8 +5,8 @@ open Stog_server_types
 module Xdiff = Xmldiff
 module Xdiffjs = Xmldiff_js
 
-let status_box_id = "stog-server-preview-status";;
-let status_msg_id = status_box_id^"-message";;
+let msg_box_id = "stog-server-preview-msgbox";;
+let preview_style_url = "/styles/preview.css";;
 
 let log s = Firebug.console##log (Js.string s);;
 
@@ -20,7 +20,7 @@ let skip_node node =
             let skip =
               Js.Opt.case (e##getAttribute (Js.string "id"))
                 (fun _ -> false)
-                (fun js -> Js.to_string js = status_box_id)
+                (fun js -> Js.to_string js = msg_box_id)
             in
             skip ||
               Js.Opt.case (e##getAttribute (Js.string "style"))
@@ -28,6 +28,12 @@ let skip_node node =
               (fun js ->
                  let s = Js.to_string js in
                  s <> "")
+           )
+       | "link" ->
+           (
+            Js.Opt.case (e##getAttribute (Js.string "href"))
+              (fun _ -> false)
+              (fun js -> Js.to_string js = preview_style_url)
            )
        | _ -> false
       )
@@ -75,56 +81,41 @@ let dom_of_xtmpl =
 ;;
 
 
-let add_status_box () =
+let add_msg_box () =
   let add () =
     let doc = Dom_html.document in
     let nodes = doc##getElementsByTagName (Js.string "body") in
     Js.Opt.iter (nodes##item(0))
       (fun body_node ->
-         let atts = Xdiff.atts_of_list
-           [ ("","id"), status_box_id ;
-
-             ("","style"),
-             "position: fixed ; top: 40px ; left: 5px; z-index: 1000 ; \
-             width: 30px; height: 30px; ; border-color: red ; \
-             border-width: 3px ; \
-             border-style : solid ; \
-             background-color: white; opacity: 0.8 ;\
-             overflow: hidden ; " ;
-
-             ("","onmouseover"),
-             "this.style.width = '80%'; this.style.height = '600px'; overflow: scroll ;" ;
-
-             ("","onmouseout"),
-             "this.style.width = '30px'; this.style.height = '30px'; overflow: hidden;" ;
+         let atts = Xdiff.atts_of_list [ ("","id"), msg_box_id ] in
+         let node = Xdiffjs.dom_of_xml (`E (("","div"), atts, [])) in
+         ignore(body_node##insertBefore(node, body_node##firstChild));
+      );
+    let nodes = doc##getElementsByTagName (Js.string "head") in
+    Js.Opt.iter (nodes##item(0))
+      (fun head_node ->
+         let atts = Xdiff.atts_of_list [
+             ("","href"), preview_style_url ;
+             ("","rel"), "stylesheet" ;
+             ("","type"), "text/css";
            ]
          in
-         let node = Xdiffjs.dom_of_xml
-           (`E (("","div"), atts,
-             [ `E (("","h2"), Xdiff.atts_of_list [("","style"), "color:#333333"], [ `D "Status" ]) ;
-               `E (("","pre"), Xdiff.atts_of_list [("","id"), status_msg_id], [ `D "" ]) ;
-             ] )
-           )
-         in
-         ignore(body_node##insertBefore(node, body_node##firstChild));
-      )
+         let node = Xdiffjs.dom_of_xml (`E (("","link"), atts, [])) in
+         ignore(head_node##insertBefore(node, head_node##firstChild));
+      );
   in
-  let doc = Dom_html.document##getElementById (Js.string status_box_id) in
+  let doc = Dom_html.document##getElementById (Js.string msg_box_id) in
   Js.Opt.case doc add (fun _ -> ())
 ;;
 
-let set_status_msg xmls =
-  let doc = Dom_html.document##getElementById (Js.string status_msg_id) in
-  Js.Opt.case doc (fun _ -> ())
-    (fun node ->
-       let children = node##childNodes in
-       for i = 0 to children##length - 1 do
-         Js.Opt.iter (node##firstChild) (fun child -> Dom.removeChild node child) ;
-       done;
-       let l = List.map dom_of_xtmpl xmls in
-       List.iter (Dom.appendChild node) l
-    )
+let display_msg xmls =
+  let nodes = List.map dom_of_xtmpl xmls in
+  Ojsmsg_js.display_message msg_box_id nodes
 ;;
+
+let display_error xmls =
+  let nodes = List.map dom_of_xtmpl xmls in
+  Ojsmsg_js.display_error msg_box_id nodes
 
 let set_page_content xml =
   log "set_page_content";
@@ -139,7 +130,7 @@ let set_page_content xml =
   let tree = dom_of_xtmpl xml in
   log "appending tree";
   Dom.appendChild doc tree;
-  add_status_box ();
+  add_msg_box ();
   log "done";
 ;;
 
@@ -157,10 +148,10 @@ let update page_path (path,op) =
     | Patch patch ->
         log "patch received";
         Xdiffjs.apply_dom_patch ~skip_node patch ;
-        set_status_msg [Xtmpl.D "Patched !"]
+        display_msg [Xtmpl.D "Page patched !"]
     | Update_all xml ->
         set_page_content xml;
-        set_status_msg [Xtmpl.D "Updated !"]
+        display_msg [Xtmpl.D "Page updated !"]
   with e ->
     log (Printexc.to_string e)
 ;;
@@ -176,7 +167,7 @@ let display_errors ~errors ~warnings =
        [ Xtmpl.D (String.concat "\n" warnings) ]) ;
     ]
   in
-  set_status_msg xmls
+  display_error xmls
 ;;
 
 let handle_server_message page_path = function

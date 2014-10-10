@@ -36,6 +36,37 @@ let (>>=) = Lwt.bind
 
 let client_js = "stog_server_client.js";;
 
+let default_css =
+  "#stog-server-preview-msgbox {
+    position: fixed; top: 10px; right: 10px;
+    z-index: 2000 ;
+   }
+
+  .ojs-msg {
+    padding: 0.5em 1em 0.5em 1em;
+    border-style: solid ;
+    border-width: 1px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+  }
+
+  .ojs-msg-info {
+    background: #d9edf7;
+    color: #3a87ad;
+    border-color: #c9dde7;
+  }
+  .ojs-msg-error {
+    background: #f2dede;
+    color: #b94a48;
+    border-color: #e2cece;
+  }
+  .ojs-msg-close {
+    float: right ;
+    margin-left: 1em;
+  }
+"
+
 let rec preview_file stog = function
   [file] when file = client_js ->
      let body =

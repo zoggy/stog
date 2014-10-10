@@ -926,6 +926,7 @@ let _ =
       check_ocamlfind_package conf ~fail: false ~min_version: [0;9] "websocket";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;3;1] "cstruct";
       check_ocamlfind_package conf ~fail: false ~min_version: [1;1;0] "crunch";
+      check_ocamlfind_package conf ~fail: false "ojs";
     ]
   in
   if List.fold_left (&&) true checks then

@@ -68,6 +68,13 @@ let handler current_state host port sock req body =
             let body = Buffer.contents b in
             S.respond_string ~status: `OK ~body ()
       end
+
+  | [ "styles" ; "preview.css" ] ->
+      let headers = Cohttp.Header.init_with "Content-Type" "text/css" in
+      S.respond_string ~headers ~status: `OK
+        ~body: Stog_server_preview.default_css
+        ()
+
   | _ ->
       let body = Printf.sprintf "<html><header><title>Stog-server</title></header>
     <body>Hello world !</body></html>"

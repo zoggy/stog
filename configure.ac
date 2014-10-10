@@ -56,7 +56,7 @@ SHARE_DIR=$datadir
 
 PACKAGES=xmlm,xtmpl,netstring,config-file,dynlink,unix,str,higlo.lexers
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
-SERVER_PACKAGES=lwt.unix,lwt.preemptive,websocket,cstruct,crunch,xmldiff.js
+SERVER_PACKAGES=lwt.unix,lwt.preemptive,websocket,cstruct,crunch,xmldiff.js,ojs.js
 if test "$SERVER" = "" ; then SERVER_PACKAGES=""; fi
 
 #############################
