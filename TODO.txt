@@ -11,3 +11,9 @@ latex:
 - cache <latex> evaluation
 
 
+Server:
+- handle mathjax:
+  - skip mathjax nodes
+  - when the dom has been patched, call
+      MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+  
