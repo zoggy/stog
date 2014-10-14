@@ -150,24 +150,31 @@ let send_patch active_cons old_stog stog doc_id =
 
   prerr_endline ("sending patch (if needed) for path="^path) ;
 
-    match old_doc.doc_out, new_doc.doc_out
-      (*Some [Xtmpl.xml_of_string ~add_main: false "<html><body>coucou</body></html>"] *)
-    with
-    | None, None -> Lwt.return_unit
-    | None, Some (t :: _) ->
-        (*let s = Marshal.to_string t [] in*)
-        let op = Stog_server_types.Update_all t in
-        send_update_message active_cons path op
-    | Some _, None ->
-        let op = Stog_server_types.Patch [] in
-        send_update_message active_cons path op
-    | Some xtmpl1, Some xtmpl2 when xtmpl1 = xtmpl2 ->
-        Lwt.return_unit
-    | Some xtmpl1, Some xtmpl2 -> (* xml1 <> xml2 *)
-        let xml1 = Xmldiff.xml_of_string (Xtmpl.string_of_xmls xtmpl1) in
-        let xml2 = Xmldiff.xml_of_string (Xtmpl.string_of_xmls xtmpl2) in
-        Lwt_preemptive.detach (Xmldiff.diff ~cut: diff_cut xml1) xml2 >>=
-          (fun patch ->
+  match old_doc.doc_out, new_doc.doc_out
+    (*Some [Xtmpl.xml_of_string ~add_main: false "<html><body>coucou</body></html>"] *)
+  with
+  | None, None -> Lwt.return_unit
+  | None, Some (t :: _) ->
+      (*let s = Marshal.to_string t [] in*)
+      let op = Stog_server_types.Update_all t in
+      send_update_message active_cons path op
+  | Some _, None ->
+      let op = Stog_server_types.Patch [] in
+      send_update_message active_cons path op
+  | Some xtmpl1, Some xtmpl2 when xtmpl1 = xtmpl2 ->
+      Lwt.return_unit
+  | Some xtmpl1, Some xtmpl2 -> (* xml1 <> xml2 *)
+      let xml1 = Xmldiff.xml_of_string (Xtmpl.string_of_xmls xtmpl1) in
+      let xml2 = Xmldiff.xml_of_string (Xtmpl.string_of_xmls xtmpl2) in
+      Lwt_preemptive.detach
+       (fun xml2 ->
+           try `Patch (Xmldiff.diff ~cut: diff_cut xml1 xml2)
+           with e -> `Error (Printexc.to_string e)
+        ) xml2 >>=
+        (function
+         | `Error msg ->
+             send_errors active_cons ~errors: [msg] ~warnings: []
+         | `Patch patch ->
              prerr_endline "patch computed";
              let op = Stog_server_types.Patch patch in
              send_update_message active_cons path op;
