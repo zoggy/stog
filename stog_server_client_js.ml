@@ -38,6 +38,21 @@ let preview_style_url = "/styles/preview.css";;
 
 let log s = Firebug.console##log (Js.string s);;
 
+let mathjax_active =
+  (* need to remember it mathjax was active, since in case of page
+     updatefrom a server message, mathjax typeset is not called.
+     It is called after the document is loaded, not when it changes. *)
+  let mathjax_was_active = ref false in
+  fun () ->
+    !mathjax_was_active ||
+      (
+       let doc = Dom_html.document##getElementById(Js.string "MathJax_Message") in
+       Js.Opt.case doc (fun _ -> false) (fun _ -> mathjax_was_active := true; true)
+      )
+
+let mathjax_typeset () =
+  Js.Unsafe.eval_string("MathJax.Hub.Queue([\"Typeset\",MathJax.Hub]);")
+
 let skip_node node =
   match Dom.nodeType node with
     Dom.Element e ->
@@ -48,7 +63,9 @@ let skip_node node =
             let skip =
               Js.Opt.case (e##getAttribute (Js.string "id"))
                 (fun _ -> false)
-                (fun js -> Js.to_string js = msg_box_id)
+                (fun js ->
+                  let s = Js.to_string js in
+                  s = msg_box_id || s = "MathJax_Message")
             in
             skip ||
               Js.Opt.case (e##getAttribute (Js.string "style"))
@@ -158,11 +175,11 @@ let set_page_content xml =
   let tree = dom_of_xtmpl xml in
   log "appending tree";
   Dom.appendChild doc tree;
+
+
   add_msg_box ();
   log "done";
 ;;
-
-
 
 let stop_updating ws_connection  =
   ws_connection##close()
@@ -176,9 +193,11 @@ let update page_path (path,op) =
     | Patch patch ->
         log "patch received";
         Xdiffjs.apply_dom_patch ~skip_node patch ;
+        if mathjax_active () then mathjax_typeset ();
         display_msg [Xtmpl.D "Page patched !"]
     | Update_all xml ->
         set_page_content xml;
+        if mathjax_active () then mathjax_typeset ();
         display_msg [Xtmpl.D "Page updated !"]
   with e ->
     log (Printexc.to_string e)

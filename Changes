@@ -1,5 +1,6 @@
 Next release:
 * use Ojs-base facilities to display messages in browser
+* fix Mathjax CDN URL in article template
 
 Release 0.13.0:
 * preview server (stog-server), using xmldiff.js and websockets
