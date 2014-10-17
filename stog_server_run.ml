@@ -209,7 +209,10 @@ let watch stog current_state ~on_update ~on_error =
     }
   in
   let time = Unix.time () in
-  run_stog state
+  Lwt.catch (fun () -> run_stog state)
+    (fun e ->
+       prerr_endline (Printexc.to_string e); Lwt.return state
+    )
   >>= fun state ->
   let docs = Stog_types.doc_list state.stog in
   let state =

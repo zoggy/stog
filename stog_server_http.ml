@@ -26,7 +26,7 @@ let path_after_base base path =
 
 let handler current_state host port base_path sock req body =
   let uri = Cohttp.Request.uri req in
-  let path = Stog_misc.split_string (Uri.path uri) ['/'] in
+  let path = Stog_misc.split_string (Uri.pct_decode (Uri.path uri)) ['/'] in
   let path = path_after_base base_path path in
   match path with
     "preview" :: path ->
