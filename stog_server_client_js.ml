@@ -204,16 +204,15 @@ let update page_path (path,op) =
 ;;
 
 let display_errors ~errors ~warnings =
-  let xmls =
-    [
-      Xtmpl.E (("","pre"),
-       Xtmpl.atts_of_list [("","class"), [Xtmpl.D "error"]],
-       [ Xtmpl.D (String.concat "\n" errors) ]) ;
-      Xtmpl.E (("","pre"),
-       Xtmpl.atts_of_list [("","class"), [Xtmpl.D "warning"]],
-       [ Xtmpl.D (String.concat "\n" warnings) ]) ;
-    ]
+  let block cls = function
+    [] -> []
+  | msgs ->
+      [Xtmpl.E (("","pre"),
+       Xtmpl.atts_of_list [("","class"), [Xtmpl.D cls]],
+       [ Xtmpl.D (String.concat "\n" msgs) ]) ;
+      ]
   in
+  let xmls = (block "error" errors) @ (block "warning" warnings) in
   display_error xmls
 ;;
 
