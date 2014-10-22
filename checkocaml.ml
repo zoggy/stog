@@ -30,7 +30,7 @@
 
 (* $Id$ *)
 
-(*c==m=[OCaml_conf]=0.8=t==*)
+(*c==m=[OCaml_conf]=0.10=t==*)
 
 
   open Sys
@@ -206,23 +206,25 @@ let testfile flags filename =
 ;;
 
 let buffer_size = 4096
-let string_from_descr fd =
-  let rec readfd accu =
-    let str = String.create buffer_size in
+    let string_from_descr fd =
+    let rec readfd accu =
+    let str = Bytes.make buffer_size '\000' in
     match restart_on_EINTR (read fd str 0) buffer_size with
-    | 0 -> String.concat ""  accu
+    | 0 -> String.concat""  accu
     | n ->
-        let str = if n < buffer_size then String.sub str 0 n else str in
-        readfd (str :: accu) in
-  readfd []
+        let str = if n < buffer_size then Bytes.sub str 0 n else str in
+        readfd (Bytes.to_string str :: accu)
+    in
+    readfd []
 ;;
 
 let descr_from_string str fd =
+  let str = Bytes.of_string str in
   let rec writefd offset left =
     if left > 0 then
       let n = restart_on_EINTR (single_write fd str offset) left in
       writefd (offset + n) (left - n) in
-  writefd 0 (String.length str)
+  writefd 0 (Bytes.length str)
 ;;
 
 let perm = 0o640;;
@@ -461,7 +463,7 @@ type ocaml_conf =
       ocamlmklib : string ;
       ocamlmktop : string ;
       ocamlprof : string ;
-      camlp4 : string;
+      camlp4 : string ;
       ocamlfind : string ;
       version_string : string ;
       version : version ;
@@ -606,7 +608,7 @@ let get_opt_conf conf =
    default is [false].
    @raise Program_not found if a required program cannot be found.
 *)
-let ocaml_conf ?(withopt=false) ?(ocamlfind=false) () =
+let ocaml_conf ?(withopt=false) ?(camlp4=false) ?(ocamlfind=false) () =
   let ocamlc = ocaml_prog "ocamlc" in
   let version_string = exec_and_get_first_line  ocamlc [| "-version" |] in
   let version = version_of_ocaml_version_string version_string in
@@ -625,7 +627,7 @@ let ocaml_conf ?(withopt=false) ?(ocamlfind=false) () =
     ocamlmklib = ocaml_prog "ocamlmklib" ;
     ocamlmktop = ocaml_prog "ocamlmktop" ;
     ocamlprof = ocaml_prog "ocamlprof" ;
-    camlp4 = ocaml_prog "camlp4" ;
+    camlp4 = ocaml_prog ~err: camlp4 "camlp4" ;
     ocamlfind = ocaml_prog ~err: ocamlfind "ocamlfind" ;
   } in
   check_conf_versions conf;
@@ -649,7 +651,8 @@ let print_conf c =
   !print (sp "library builder:            %s\n" c.ocamlmklib);
   !print (sp "toplevel builder:           %s\n" c.ocamlmktop);
   !print (sp "profiler:                   %s\n" c.ocamlprof);
-  !print (sp "camlp4:                     %s\n" c.camlp4);
+  (match c.camlp4 with "" -> () | s ->
+    !print (sp "camlp4:                     %s\n" s));
   (match c.ocamlfind with "" -> () | s ->
     !print (sp "ocamlfind:                  %s\n" s))
 
@@ -882,10 +885,10 @@ let add_conf_variables c =
    List.iter (fun (var,v) -> add_subst var v) l
 
 
-(*/c==m=[OCaml_conf]=0.8=t==*)
+(*/c==m=[OCaml_conf]=0.10=t==*)
 
 let ocaml_required = [4;2;0]
-let conf = ocaml_conf ();;
+let conf = ocaml_conf ~ocamlfind: true ~camlp4: true ();;
 print_conf conf;;
 
 let _ =
@@ -921,12 +924,12 @@ let _ =
       );
       check_ocamlfind_package conf ~fail: false ~min_version: [2;4] "lwt.unix";
       check_ocamlfind_package conf ~fail: false ~min_version: [2;4] "lwt.preemptive";
-      check_ocamlfind_package conf ~fail: false ~min_version: [0;3;0] "xmldiff";
-      check_ocamlfind_package conf ~fail: false ~min_version: [0;3;0] "xmldiff.js";
-      check_ocamlfind_package conf ~fail: false ~min_version: [0;9] "websocket";
+      check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff";
+      check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff.js";
+      check_ocamlfind_package conf ~fail: false ~min_version: [0;8;1] "websocket";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;3;1] "cstruct";
       check_ocamlfind_package conf ~fail: false ~min_version: [1;1;0] "crunch";
-      check_ocamlfind_package conf ~fail: false "ojs";
+      check_ocamlfind_package conf ~fail: false ~min_version: [0;1;0] "ojs";
     ]
   in
   if List.fold_left (&&) true checks then
