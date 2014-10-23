@@ -68,6 +68,7 @@ style:
 	mkdir -p $(DEST_DIR)
 	$(LESSC) less/style.less > $(DEST_DIR)/style.css
 	$(LESSC) less/slides.less > $(DEST_DIR)/slides.css
+	$(LESSC) less/video-style.less > $(DEST_DIR)/video-style.css
 
 #	cp -f *png tmpl/*png $(DEST_DIR)/
 #	cp -f *.svg $(DEST_DIR)/
@@ -84,3 +85,14 @@ server:
 
 clean:
 	rm -fr .stog/cache
+
+videos: video1
+
+video1: rasterize.js
+	for i in videos/v1*.html; do \
+		phantomjs rasterize.js ../doc-output/$$i videos/`basename $$i .html`.png "1024px*700px";	\
+	done
+
+rasterize.js:
+	wget "https://github.com/ariya/phantomjs/raw/master/examples/rasterize.js"
+	
