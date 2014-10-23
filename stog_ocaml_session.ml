@@ -152,6 +152,12 @@ let parse_options () =
 
       "-package", Arg.String option_package,
       "<pkg1[,pkg2[,...]]> add ocamlfind packages to the list of include directories" ;
+
+      "-w", Arg.String (Warnings.parse_options false),
+      "<list>  Enable or disable warnings according to <list>" ;
+
+      "-warn-error", Arg.String (Warnings.parse_options true),
+      "<list>  Enable or disable error status for warnings according to <list>" ;
     ]
     (fun _ -> ())
     usage
