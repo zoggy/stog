@@ -238,11 +238,13 @@ let ws_onmessage page_path _ event =
 let set_up_ws_connection path url =
   try
     log ("connecting with websocket to "^url);
-    (*let url = "ws://echo.websocket.org/" in*)
     let ws = jsnew WebSockets.webSocket(Js.string url) in
-    (*log "setting binary";
-    ws##binaryType <- Js.string "arraybuffer";*)
-    ws##onopen <- Dom.handler (fun _ -> ws##send (Js.string ("GET "^path)); Js._false);
+    ws##onopen <- Dom.handler
+      (fun _ ->
+         let msg = `Stog_msg (`Get path) in
+         let json = Stog_server_types.wsdata_of_client_msg msg in
+         ws##send (Js.string json); Js._false
+      );
     ws##onclose <- Dom.handler (fun _ -> log "WS now CLOSED"; Js._false);
     (*log "handler set up";
     (

@@ -28,14 +28,38 @@
 
 (** *)
 
+module J = Yojson.Safe
+
 type page_update =
   | Patch of Xmldiff.patch
   | Update_all of Xtmpl.tree
 
 type server_message =
-  Update of string * page_update (* path * operation *)
-| Errors of string list * string list (* errors * warnings *)
+  | Update of string * page_update (* path * operation *)
+  | Errors of string list * string list (* errors * warnings *)
 
+type client_msg = [
+    `Stog_msg of
+      [
+      | `Get of string (* path *)
+      | `Refresh
+      ]
+  ] [@@deriving Yojson]
+
+let wsdata_of_client_msg msg = J.to_string (client_msg_to_yojson msg)
+let client_msg_of_wsdata s =
+  try
+    let json = J.from_string s in
+    match client_msg_of_yojson json with
+      `Error s -> raise (Yojson.Json_error s)
+    | `Ok msg -> Some msg
+  with
+    Yojson.Json_error s ->
+      prerr_endline s;
+      None
+  | e ->
+      prerr_endline (Printexc.to_string e);
+      None
 
 let to_hex s =
   let len = String.length s in

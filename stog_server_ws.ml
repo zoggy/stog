@@ -31,6 +31,8 @@
 open Stog_types
 open Stog_server_types
 
+module J = Yojson.Safe
+
 let (>>=) = Lwt.bind
 
 let rec wait_forever () = Lwt_unix.sleep 1000.0 >>= wait_forever
@@ -67,6 +69,24 @@ let push_message active_cons ?push (msg : Stog_server_types.server_message) =
         Lwt.return (push (Some msg))
 ;;
 
+let handle_message  current_state active_cons base_path stream push msg =
+  match msg with
+    `Refresh -> Lwt.return_unit
+  | `Get path ->
+      match !current_state with
+        None -> Lwt.fail (Failure "No state yet!")
+      | Some state ->
+          try
+            let (_, doc) = Stog_types.doc_by_path state.Stog_server_run.stog (Stog_path.of_string path) in
+            match doc.Stog_types.doc_out with
+              None -> Lwt.return_unit
+            | Some [] -> Lwt.return_unit
+            | Some (tree :: _) ->
+                let msg = Stog_server_types.Update (path, (Stog_server_types.Update_all tree)) in
+                push_message active_cons ~push msg
+          with e ->
+              Lwt.return_unit
+
 let handle_messages current_state active_cons base_path stream push =
   let f frame =
     match Websocket.Frame.opcode frame with
@@ -77,27 +97,10 @@ let handle_messages current_state active_cons base_path stream push =
         Lwt.return_unit
     | _ ->
         let s = Websocket.Frame.content frame in
-        let len = String.length s in
-        prerr_endline ("GOT MESSAGE: "^s);
-        if len >= 4 && String.sub s 0 3 = "GET" then
-          begin
-            let path = String.sub s 4 (len - 4) in
-            match !current_state with
-              None -> Lwt.fail (Failure "No state yet!")
-            | Some state ->
-                try
-                  let (_, doc) = Stog_types.doc_by_path state.Stog_server_run.stog (Stog_path.of_string path) in
-                  match doc.Stog_types.doc_out with
-                    None -> Lwt.return_unit
-                  | Some [] -> Lwt.return_unit
-                  | Some (tree :: _) ->
-                      let msg = Stog_server_types.Update (path, (Stog_server_types.Update_all tree)) in
-                      push_message active_cons ~push msg
-                with e ->
-                    Lwt.return_unit
-          end
-        else
-          Lwt.return_unit
+        match Stog_server_types.client_msg_of_wsdata s with
+          None -> Lwt.return_unit
+        | Some (`Stog_msg msg) ->
+            handle_message current_state active_cons base_path stream push msg
   in
   Lwt.catch
     (fun _ -> Lwt_stream.iter_s f stream)
