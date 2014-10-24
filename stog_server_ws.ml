@@ -69,13 +69,17 @@ let push_message active_cons ?push (msg : Stog_server_types.server_message) =
         Lwt.return (push (Some msg))
 ;;
 
-let handle_message  current_state active_cons base_path stream push msg =
-  match msg with
-    `Refresh -> Lwt.return_unit
-  | `Get path ->
-      match !current_state with
-        None -> Lwt.fail (Failure "No state yet!")
-      | Some state ->
+let handle_message current_state active_cons base_path stream push msg =
+  match !current_state with
+    None -> Lwt.fail (Failure "No state yet!")
+  | Some state ->
+      match msg with
+      | `Refresh ->
+          begin
+            try (*Stog_server_run.refresh current_state *)Lwt.return_unit
+            with _ -> Lwt.return_unit
+          end
+      | `Get path ->
           try
             let (_, doc) = Stog_types.doc_by_path state.Stog_server_run.stog (Stog_path.of_string path) in
             match doc.Stog_types.doc_out with
@@ -91,7 +95,7 @@ let handle_messages current_state active_cons base_path stream push =
   let f frame =
     match Websocket.Frame.opcode frame with
     | `Close ->
-        prerr_endline (Printf.sprintf "A Close frame camed when there were %d connections" (List.length !active_cons));
+        prerr_endline (Printf.sprintf "A Close frame came when there were %d connections" (List.length !active_cons));
         active_cons := List.filter (fun (_,p) -> p != push) !active_cons ;
         prerr_endline (Printf.sprintf "Now I have only %d." (List.length !active_cons));
         Lwt.return_unit
