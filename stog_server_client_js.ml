@@ -67,7 +67,9 @@ let skip_node node =
                 (fun _ -> false)
                 (fun js ->
                   let s = Js.to_string js in
-                  s = msg_box_id || s = "MathJax_Message")
+                  s = msg_box_id ||
+                  s = action_box_id ||
+                  s = "MathJax_Message")
             in
             skip ||
               Js.Opt.case (e##getAttribute (Js.string "style"))
@@ -127,6 +129,16 @@ let dom_of_xtmpl =
     map doc t
 ;;
 
+
+let display_msg xmls =
+  let nodes = List.map dom_of_xtmpl xmls in
+  Ojsmsg_js.display_message msg_box_id nodes
+;;
+
+let display_error xmls =
+  let nodes = List.map dom_of_xtmpl xmls in
+  Ojsmsg_js.display_error msg_box_id nodes
+
 let add_action_box ws =
   let add () =
     let doc = Dom_html.document in
@@ -142,7 +154,8 @@ let add_action_box ws =
                 let msg = `Stog_msg `Refresh in
                 log "click on refresh";
                 let json = Stog_server_types.wsdata_of_client_msg msg in
-                ws##send (Js.string json)
+                ws##send (Js.string json);
+                display_msg [Xtmpl.D "Recomputing has been asked, please wait..."]
              ) ;
            ]
          in
@@ -186,15 +199,6 @@ let add_msg_box () =
   let doc = Dom_html.document##getElementById (Js.string msg_box_id) in
   Js.Opt.case doc add (fun _ -> ())
 ;;
-
-let display_msg xmls =
-  let nodes = List.map dom_of_xtmpl xmls in
-  Ojsmsg_js.display_message msg_box_id nodes
-;;
-
-let display_error xmls =
-  let nodes = List.map dom_of_xtmpl xmls in
-  Ojsmsg_js.display_error msg_box_id nodes
 
 let set_page_content ws xml =
   log "set_page_content";

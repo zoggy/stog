@@ -197,6 +197,25 @@ let rec watch_for_change current_state on_update on_error =
           ) >>= fun () -> watch_for_change current_state on_update on_error
 ;;
 
+let compute_all state =
+  let time = Unix.time () in
+  Lwt.catch (fun () -> run_stog state)
+    (fun e ->
+       prerr_endline (Printexc.to_string e); Lwt.return state
+    )
+    >>= fun state ->
+  let docs = Stog_types.doc_list state.stog in
+  let state =
+    { state with
+      doc_dates = List.fold_left
+        (fun acc (_, doc) ->
+           Stog_path.Map.add doc.doc_path time acc
+        )
+        state.doc_dates docs
+    }
+  in
+  Lwt.return state
+
 let watch stog current_state ~on_update ~on_error =
   Lwt.catch
      (fun () -> Lwt_unix.mkdir (Filename.concat (Sys.getcwd()) "stog-output") 0o750)
@@ -212,27 +231,13 @@ let watch stog current_state ~on_update ~on_error =
       busy = false ;
     }
   in
-  let time = Unix.time () in
-  Lwt.catch (fun () -> run_stog state)
-    (fun e ->
-       prerr_endline (Printexc.to_string e); Lwt.return state
-    )
-  >>= fun state ->
-  let docs = Stog_types.doc_list state.stog in
-  let state =
-    { state with
-      doc_dates = List.fold_left
-        (fun acc (_, doc) ->
-           Stog_path.Map.add doc.doc_path time acc
-        )
-        state.doc_dates docs
-    }
-  in
-  current_state := Some state ;
-  prerr_endline "state set";
-  watch_for_change current_state on_update on_error
+  compute_all state >>=
+    fun state ->
+      current_state := Some state ;
+      prerr_endline "state set";
+      watch_for_change current_state on_update on_error
 
-let refresh current_state on_error =
+let refresh current_state send_doc on_error =
   match !current_state with
     | None ->
         on_error ["No state yet"]
@@ -254,6 +259,7 @@ let refresh current_state on_error =
                 on_error [msg]
               end
           | stog ->
+              let stog = { stog with stog_base_url = state.stog.stog_base_url } in
               let state = { state with
                   stog ;
                   stog_errors = [];
@@ -262,6 +268,11 @@ let refresh current_state on_error =
                   busy = false ;
                 }
               in
-              current_state := Some state;
-              Lwt.return_unit
+              compute_all state
+                >>= fun state ->
+                  Lwt_list.iter_s (fun (_, doc) -> send_doc doc)
+                    (Stog_types.doc_list state.stog)
+                  >>= fun _  ->
+                  current_state := Some state;
+                  Lwt.return_unit
 

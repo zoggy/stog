@@ -72,6 +72,10 @@ let send_errors active_cons ~errors ~warnings =
   let msg = Stog_server_types.Errors (errors, warnings) in
   push_message active_cons msg
 
+let send_update_message active_cons path op =
+  let msg = Stog_server_types.Update (path, op) in
+  push_message active_cons msg
+
 let handle_message current_state active_cons base_path stream push msg =
   match !current_state with
     None -> Lwt.fail (Failure "No state yet!")
@@ -79,7 +83,14 @@ let handle_message current_state active_cons base_path stream push msg =
       match msg with
       | `Refresh ->
           begin
-            try Stog_server_run.refresh current_state
+            let send_doc doc =
+              match doc.doc_out with
+                None -> Lwt.return_unit
+              | Some (xml :: _) ->
+                  let path = Stog_path.to_string doc.doc_path in
+                  send_update_message active_cons path (Stog_server_types.Update_all xml)
+            in
+            try Stog_server_run.refresh current_state send_doc
               (fun errors -> send_errors active_cons ~errors ~warnings: [])
             with _ -> Lwt.return_unit
           end
@@ -134,11 +145,6 @@ let run_server current_state active_cons host port base_path =
   prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
   Lwt_io_ext.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
     Lwt.return (server current_state active_cons base_path sa)
-;;
-
-let send_update_message active_cons path op =
-  let msg = Stog_server_types.Update (path, op) in
-  push_message active_cons msg
 ;;
 
 let diff_cut =
