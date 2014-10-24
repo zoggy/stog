@@ -34,6 +34,8 @@ module Xdiff = Xmldiff
 module Xdiffjs = Xmldiff_js
 
 let msg_box_id = "stog-server-preview-msgbox";;
+let action_box_id = "stog-server-preview-actionbox";;
+let cls_button = "button";;
 let preview_style_url = "/styles/preview.css";;
 
 let log s = Firebug.console##log (Js.string s);;
@@ -125,6 +127,38 @@ let dom_of_xtmpl =
     map doc t
 ;;
 
+let add_action_box ws =
+  let add () =
+    let doc = Dom_html.document in
+    let nodes = doc##getElementsByTagName (Js.string "body") in
+    Js.Opt.iter (nodes##item(0))
+      (fun body_node ->
+         let atts = Xdiff.atts_of_list [ ("","id"), action_box_id ] in
+         let node = Xdiffjs.dom_of_xml (`E (("","div"), atts, [])) in
+         ignore(body_node##insertBefore(node, body_node##firstChild));
+         let buttons =
+           [ "↺",
+             (fun () ->
+                let msg = `Stog_msg `Refresh in
+                log "click on refresh";
+                let json = Stog_server_types.wsdata_of_client_msg msg in
+                ws##send (Js.string json)
+             ) ;
+           ]
+         in
+         let add_button (label, callback) =
+           let b = doc##createElement (Js.string "span") in
+           Ojs_js.node_set_class b (cls_button) ;
+           let t = doc##createTextNode (Js.string label) in
+           Ojs_js.set_onclick b (fun _ -> callback ());
+           Dom.appendChild node b ;
+           Dom.appendChild b t
+         in
+         List.iter add_button buttons
+      )
+  in
+  let doc = Dom_html.document##getElementById (Js.string action_box_id) in
+  Js.Opt.case doc add (fun _ -> ())
 
 let add_msg_box () =
   let add () =
@@ -162,7 +196,7 @@ let display_error xmls =
   let nodes = List.map dom_of_xtmpl xmls in
   Ojsmsg_js.display_error msg_box_id nodes
 
-let set_page_content xml =
+let set_page_content ws xml =
   log "set_page_content";
   let doc = Dom_html.document in
   let children = doc##childNodes in
@@ -178,6 +212,7 @@ let set_page_content xml =
 
 
   add_msg_box ();
+  add_action_box ws ;
   log "done";
 ;;
 
@@ -185,7 +220,7 @@ let stop_updating ws_connection  =
   ws_connection##close()
 ;;
 
-let update page_path (path,op) =
+let update ws page_path (path,op) =
   (*log (Printf.sprintf "receiving update for %s\npage_path=%s" path page_path);*)
   try
     match op with
@@ -196,7 +231,7 @@ let update page_path (path,op) =
         if mathjax_active () then mathjax_typeset ();
         display_msg [Xtmpl.D "Page patched !"]
     | Update_all xml ->
-        set_page_content xml;
+        set_page_content ws xml;
         if mathjax_active () then mathjax_typeset ();
         display_msg [Xtmpl.D "Page updated !"]
   with e ->
@@ -216,18 +251,18 @@ let display_errors ~errors ~warnings =
   display_error xmls
 ;;
 
-let handle_server_message page_path = function
-  Update (path, op) -> update page_path (path, op)
+let handle_server_message ws page_path = function
+  Update (path, op) -> update ws page_path (path, op)
 | Errors (errors, warnings) -> display_errors ~errors ~warnings
 ;;
 
-let ws_onmessage page_path _ event =
+let ws_onmessage ws page_path _ event =
   try
     log "message received on ws";
     let hex = Js.to_string event##data in
     let marshalled = Stog_server_types.from_hex hex in
     let (mes : Stog_server_types.server_message) = Marshal.from_string marshalled 0 in
-    handle_server_message page_path mes ;
+    handle_server_message ws page_path mes ;
     Js._false
   with
    e ->
@@ -255,7 +290,7 @@ let set_up_ws_connection path url =
         | WebSockets.CLOSED -> log "CLOSED"
     );
     *)
-    ws##onmessage <- Dom.full_handler (ws_onmessage path) ;
+    ws##onmessage <- Dom.full_handler (ws_onmessage ws path) ;
     Some ws
   with e ->
     log (Printexc.to_string e);

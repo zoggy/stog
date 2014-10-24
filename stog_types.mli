@@ -111,13 +111,14 @@ type stog = {
   stog_id_map : (Stog_path.path * string option) Str_map.t Stog_path.Map.t ;
   stog_levels : (string * int list) list Str_map.t ;
   stog_publish_only : Stog_filter_types.t option ;
+  stog_source : [`Dir | `File] ;
   }
 
 val url_of_string : string -> Neturl.url
 val string_of_url : Neturl.url -> string
 val url_concat : Neturl.url -> string -> Neturl.url
 
-val create_stog : string -> stog
+val create_stog : ?source: [`Dir | `File] -> string -> stog
 val stog_md5 : stog -> string
 
 val doc : stog -> doc Stog_tmap.key -> doc

@@ -161,6 +161,7 @@ type stog = {
   stog_id_map : (Stog_path.path * string option) Str_map.t Stog_path.Map.t ;
   stog_levels : (string * int list) list Str_map.t ;
   stog_publish_only : Stog_filter_types.t option ;
+  stog_source : [`Dir | `File] ;
 }
 
 let url_of_string s =
@@ -190,7 +191,7 @@ let url_concat uri s =
           raise e
 ;;
 
-let create_stog dir = {
+let create_stog ?(source=`Dir) dir = {
   stog_dir = dir ;
   stog_docs = Stog_tmap.create (make_doc ());
   stog_docs_by_path = Path_trie.empty ;
@@ -223,6 +224,7 @@ let create_stog dir = {
         (Stog_filter_types.Pred (("","published"), "false"),
          Stog_filter_types.Pred (("","published"), "0"))
        )) ;
+  stog_source = source ;
   }
 ;;
 

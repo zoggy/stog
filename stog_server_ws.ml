@@ -67,7 +67,10 @@ let push_message active_cons ?push (msg : Stog_server_types.server_message) =
       Lwt_list.iter_s (push_message active_cons msg) l
   | Some push ->
         Lwt.return (push (Some msg))
-;;
+
+let send_errors active_cons ~errors ~warnings =
+  let msg = Stog_server_types.Errors (errors, warnings) in
+  push_message active_cons msg
 
 let handle_message current_state active_cons base_path stream push msg =
   match !current_state with
@@ -76,7 +79,8 @@ let handle_message current_state active_cons base_path stream push msg =
       match msg with
       | `Refresh ->
           begin
-            try (*Stog_server_run.refresh current_state *)Lwt.return_unit
+            try Stog_server_run.refresh current_state
+              (fun errors -> send_errors active_cons ~errors ~warnings: [])
             with _ -> Lwt.return_unit
           end
       | `Get path ->
@@ -130,11 +134,6 @@ let run_server current_state active_cons host port base_path =
   prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
   Lwt_io_ext.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
     Lwt.return (server current_state active_cons base_path sa)
-;;
-
-let send_errors active_cons ~errors ~warnings =
-  let msg = Stog_server_types.Errors (errors, warnings) in
-  push_message active_cons msg
 ;;
 
 let send_update_message active_cons path op =

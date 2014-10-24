@@ -45,6 +45,7 @@ type state = {
   stog_errors : string list ;
   stog_warnings : string list ;
   doc_dates : float Stog_path.Map.t ;
+  busy : bool ;
 }
 
 let run_stog ?docs state =
@@ -120,6 +121,8 @@ let rec watch_for_change current_state on_update on_error =
     debug "watch for changes... " >>= fun _ ->
     match !current_state with
       None -> watch_for_change current_state on_update on_error
+    | Some state when state.busy ->
+        watch_for_change current_state on_update on_error
     | Some state ->
         let old_stog = state.stog in
         let doc_list = Stog_types.doc_list state.stog in
@@ -205,7 +208,8 @@ let watch stog current_state ~on_update ~on_error =
       stog_modules = [] ;
       stog_errors = [] ;
       stog_warnings = [] ;
-      doc_dates = Stog_path.Map.empty
+      doc_dates = Stog_path.Map.empty ;
+      busy = false ;
     }
   in
   let time = Unix.time () in
@@ -227,4 +231,37 @@ let watch stog current_state ~on_update ~on_error =
   current_state := Some state ;
   prerr_endline "state set";
   watch_for_change current_state on_update on_error
+
+let refresh current_state on_error =
+  match !current_state with
+    | None ->
+        on_error ["No state yet"]
+    | Some state when state.busy ->
+        on_error ["Come back later, I'm busy"]
+    | Some state ->
+      match state.stog.stog_source with
+      | `File -> Lwt.return_unit
+      | `Dir ->
+          current_state := Some { state with busy = true } ;
+          match Stog_io.read_stog state.stog.stog_dir with
+            exception e ->
+              begin
+                let msg = match e with
+                  | Failure msg | Sys_error msg -> msg
+                  | _ -> Printexc.to_string e
+                in
+                current_state := Some { state with busy = false };
+                on_error [msg]
+              end
+          | stog ->
+              let state = { state with
+                  stog ;
+                  stog_errors = [];
+                  stog_warnings = [] ;
+                  doc_dates = Stog_path.Map.empty ;
+                  busy = false ;
+                }
+              in
+              current_state := Some state;
+              Lwt.return_unit
 

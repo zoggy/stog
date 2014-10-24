@@ -39,8 +39,25 @@ let client_js = "stog_server_client.js";;
 let default_css =
   "#stog-server-preview-msgbox {
     position: fixed; top: 10px; right: 10px;
-    z-index: 2000 ;
+    z-index: 2001 ;
    }
+
+   #stog-server-preview-actionbox {
+    position: fixed; top: 10px; left: 10px;
+    z-index: 2000 ;
+    background: #d9edf7;
+   }
+
+  #stog-server-preview-actionbox .button {
+    font-size: 1.5em;
+    padding: 0.1em 0.1em 0.1em 0.1em;
+    border-style: solid ;
+    border-width: 1px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background: #d9edf7;
+  }
 
   .ojs-msg {
     padding: 0.5em 1em 0.5em 1em;
