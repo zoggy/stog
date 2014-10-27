@@ -86,13 +86,9 @@ server:
 clean:
 	rm -fr .stog/cache
 
-videos: video1
+.PHONY: videos
 
-video1: rasterize.js
-	for i in videos/v1*.html; do \
-		phantomjs rasterize.js ../doc-output/$$i videos/`basename $$i .html`.png "1024px*700px";	\
-	done
+videos:
+	cd videos && $(MAKE)
 
-rasterize.js:
-	wget "https://github.com/ariya/phantomjs/raw/master/examples/rasterize.js"
 	
