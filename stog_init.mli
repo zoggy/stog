@@ -26,73 +26,14 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Initializing stog structures and modules. *)
 
-open Stog_types
+val init_modules : Stog_types.stog -> (module Stog_engine.Module) list
 
-let init_modules stog =
-  let modules = Stog_engine.modules () in
-  List.map
-    (fun (name, f) ->
-       Stog_msg.verbose ~level: 2 ("Initializing module "^name);
-       f stog
-    )
-      modules
+val from_dirs :
+  ?set_fields:(Stog_types.stog -> Stog_types.stog) ->
+  string list -> Stog_types.stog
 
-let init_common ?(set_fields=fun stog -> stog) stogs =
-  let stog = Stog_types.merge_stogs stogs in
-  let stog = set_fields stog in
-  let stog = Stog_info.remove_not_published stog in
-  let stog = Stog_info.compute stog in
-  stog
-
-let from_dirs ?set_fields dirs =
-  let stogs = List.map Stog_io.read_stog dirs in
-  let stog = init_common ?set_fields stogs in
-  let def_style =
-    (("", Stog_tags.default_style), Xtmpl.atts_empty,
-     [ Xtmpl.xml_of_string ~add_main: false
-       "<link href=\"&lt;site-url/&gt;/style.css\" rel=\"stylesheet\" type=\"text/css\"/>"
-     ])
-  in
-  let stog = { stog with stog_defs = stog.stog_defs @ [ def_style ] } in
-  stog
-
-let from_files ?set_fields files =
-  let dir = Sys.getcwd () in
-  let load_doc file =
-    let file =
-      if Filename.is_relative file then
-        Filename.concat dir file
-      else
-        file
-    in
-    let dir = Filename.dirname file in
-    let stog = Stog_types.create_stog ~source: `File dir in
-    let stog = { stog with stog_tmpl_dirs = [dir] } in
-    let doc = Stog_io.doc_of_file stog file in
-    Stog_types.add_doc stog doc
-  in
-  let stogs = List.map load_doc files in
-  let remove_add_docs stog =
-    (* remove add-docs levels from base module *)
-    { stog with
-      stog_levels = Stog_types.Str_map.add
-        Stog_html.module_name ["add-docs", []] stog.stog_levels ;
-    }
-  in
-  let set_fields =
-    match set_fields with
-      None -> remove_add_docs
-    | Some f -> fun stog -> remove_add_docs (f stog)
-  in
-  let stog = init_common ~set_fields stogs in
-  let stog = Stog_io.read_modules stog in
-  let def_style =
-    (("", Stog_tags.default_style), Xtmpl.atts_empty,
-     [ Xtmpl.xml_of_string ~add_main: false
-       "<style><include file=\"&lt;doc-type/&gt;-style.css\" raw=\"true\"/></style>"
-     ])
-  in
-  let stog = { stog with stog_defs = stog.stog_defs @ [ def_style ] } in
-  stog
+val from_files :
+  ?set_fields:(Stog_types.stog -> Stog_types.stog) ->
+  string list -> Stog_types.stog

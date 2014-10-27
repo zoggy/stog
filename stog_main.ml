@@ -110,7 +110,8 @@ let set_stog_options stog =
 
 let run_from_dirs dirs =
   try
-    let (stog, modules) = Stog_init.from_dirs ~set_fields: set_stog_options dirs in
+    let stog = Stog_init.from_dirs ~set_fields: set_stog_options dirs in
+    let modules = Stog_init.init_modules stog in
     let only_docs =
       match !only_doc with
         None -> None
@@ -127,7 +128,8 @@ let run_from_dirs dirs =
 
 let run_from_files files =
   try
-    let (stog, modules) = Stog_init.from_files ~set_fields: set_stog_options files in
+    let stog = Stog_init.from_files ~set_fields: set_stog_options files in
+    let modules = Stog_init.init_modules stog in
     match !Stog_server_mode.server_mode with
       None -> Stog_engine.generate ~use_cache: false ~gen_cache: false stog modules
     | Some (`Single f) -> f stog

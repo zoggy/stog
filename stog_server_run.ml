@@ -61,14 +61,7 @@ let run_stog ?docs state =
          match docs, state.stog_modules with
            Some _, ((_ :: _) as l) -> l
          | None, _
-         | _, [] ->
-             let modules = Stog_engine.modules () in
-             List.map
-               (fun (name, f) ->
-                  Stog_msg.verbose ~level: 2 ("Initializing module "^name);
-                  f stog
-               )
-               modules
+         | _, [] -> Stog_init.init_modules stog
        in
        let stog =
          match docs with
