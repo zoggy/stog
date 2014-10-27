@@ -119,7 +119,9 @@ let run_from_dirs dirs =
     in
     match !Stog_server_mode.server_mode with
       None -> Stog_engine.generate ~use_cache: !use_cache ?only_docs stog modules
-    | Some (`Single f) -> f stog
+    | Some (`Single f) ->
+        let read_stog () = Stog_init.from_dirs ~set_fields: set_stog_options dirs in
+         f read_stog stog
     | _ -> assert false
   with Stog_types.Path_trie.Already_present l ->
       let msg = "Path already present: "^(String.concat "/" l) in
@@ -132,7 +134,9 @@ let run_from_files files =
     let modules = Stog_init.init_modules stog in
     match !Stog_server_mode.server_mode with
       None -> Stog_engine.generate ~use_cache: false ~gen_cache: false stog modules
-    | Some (`Single f) -> f stog
+    | Some (`Single f) ->
+        let read_stog () = Stog_init.from_files ~set_fields: set_stog_options files in
+        f read_stog stog
     | _ -> assert false
   with Stog_types.Path_trie.Already_present l ->
       let msg = "Path already present: "^(String.concat "/" l) in

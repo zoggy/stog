@@ -35,6 +35,7 @@ let (>>=) = Lwt.bind
 
 let new_stog_session stog host port base_path =
   let stog =
+    (* if modifying another field, update also Stog_server_run.refresh *)
     let stog_base_url =
       let s = Printf.sprintf "http://%s:%d/%spreview"
         host port (Stog_server_http.base_path_string base_path)
@@ -66,12 +67,12 @@ let start_server current_state host port base_path =
   S.create ~address:host ~port config
 
 
-let launch stog host port base_path =
+let launch read_stog stog host port base_path =
   let (current_state, active_cons) = new_stog_session stog host port base_path in
-  Stog_server_ws.run_server current_state active_cons host (port+1) base_path >>=
+  Stog_server_ws.run_server read_stog current_state active_cons host (port+1) base_path >>=
     fun _ -> start_server current_state host port base_path
 
 let () =
-  let run stog host port = Lwt_unix.run (launch stog host port []) in
+  let run read_stog stog host port = Lwt_unix.run (launch read_stog stog host port []) in
   Stog_server_mode.set_single run
 

@@ -76,7 +76,7 @@ let send_update_message active_cons path op =
   let msg = Stog_server_types.Update (path, op) in
   push_message active_cons msg
 
-let handle_message current_state active_cons base_path stream push msg =
+let handle_message read_stog current_state active_cons base_path stream push msg =
   match !current_state with
     None -> Lwt.fail (Failure "No state yet!")
   | Some state ->
@@ -90,7 +90,7 @@ let handle_message current_state active_cons base_path stream push msg =
                   let path = Stog_path.to_string doc.doc_path in
                   send_update_message active_cons path (Stog_server_types.Update_all xml)
             in
-            try Stog_server_run.refresh current_state send_doc
+            try Stog_server_run.refresh read_stog current_state send_doc
               (fun errors -> send_errors active_cons ~errors ~warnings: [])
             with _ -> Lwt.return_unit
           end
@@ -106,7 +106,7 @@ let handle_message current_state active_cons base_path stream push msg =
           with e ->
               Lwt.return_unit
 
-let handle_messages current_state active_cons base_path stream push =
+let handle_messages read_stog current_state active_cons base_path stream push =
   let f frame =
     match Websocket.Frame.opcode frame with
     | `Close ->
@@ -119,32 +119,32 @@ let handle_messages current_state active_cons base_path stream push =
         match Stog_server_types.client_msg_of_wsdata s with
           None -> Lwt.return_unit
         | Some (`Stog_msg msg) ->
-            handle_message current_state active_cons base_path stream push msg
+            handle_message read_stog current_state active_cons base_path stream push msg
   in
   Lwt.catch
     (fun _ -> Lwt_stream.iter_s f stream)
     (fun _ -> Lwt.return_unit)
 
-let handle_con current_state active_cons base_path uri (stream, push) =
+let handle_con read_stog current_state active_cons base_path uri (stream, push) =
   prerr_endline "new connection";
   active_cons := (stream, push) :: !active_cons ;
-  handle_messages current_state active_cons base_path stream push
+  handle_messages read_stog current_state active_cons base_path stream push
 ;;
 
-let server current_state active_cons base_path sockaddr =
+let server read_stog current_state active_cons base_path sockaddr =
   (*
   let rec echo_fun uri (stream, push) =
     Lwt_stream.next stream >>= fun frame ->
     Lwt.wrap (fun () -> push (Some frame)) >>= fun () ->
     echo_fun uri (stream, push) in
   *)
-  Websocket.establish_server sockaddr (handle_con current_state active_cons base_path)
+  Websocket.establish_server sockaddr (handle_con read_stog current_state active_cons base_path)
 ;;
 
-let run_server current_state active_cons host port base_path =
+let run_server read_stog current_state active_cons host port base_path =
   prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
   Lwt_io_ext.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
-    Lwt.return (server current_state active_cons base_path sa)
+    Lwt.return (server read_stog current_state active_cons base_path sa)
 ;;
 
 let diff_cut =

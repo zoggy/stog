@@ -230,7 +230,7 @@ let watch stog current_state ~on_update ~on_error =
       prerr_endline "state set";
       watch_for_change current_state on_update on_error
 
-let refresh current_state send_doc on_error =
+let refresh read_stog current_state send_doc on_error =
   match !current_state with
     | None ->
         on_error ["No state yet"]
@@ -241,7 +241,7 @@ let refresh current_state send_doc on_error =
       | `File -> Lwt.return_unit
       | `Dir ->
           current_state := Some { state with busy = true } ;
-          match Stog_io.read_stog state.stog.stog_dir with
+          match read_stog () with
             exception e ->
               begin
                 let msg = match e with
@@ -252,7 +252,11 @@ let refresh current_state send_doc on_error =
                 on_error [msg]
               end
           | stog ->
-              let stog = { stog with stog_base_url = state.stog.stog_base_url } in
+              let stog = { stog with
+                  stog_base_url = state.stog.stog_base_url ;
+                  stog_outdir = state.stog.stog_outdir ;
+                }
+              in
               let state = { state with
                   stog ;
                   stog_errors = [];
