@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<rss version="2.0">
+       <channel>
+         <title>Stog : demo</title>
+         <link>https://zoggy.github.io/stog</link>
+         <description>Static blog and web site generator</description>
+         <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>27 Oct 2014 15:18:27 +0000</lastBuildDate>
+         <generator>Stog</generator>
+         <div class="img"><img class="img" src="" width=""/><div class="legend"><url>https://zoggy.github.io/stog/logo.png</url>
+           <title>Stog</title><link>https://zoggy.github.io/stog</link>
+         </div></div>
+         <item>
+      <title>A demo video</title>
+      <link>https://zoggy.github.io/stog/posts/2014-10-27-video.html</link>
+      <description>
+&lt;p&gt;Here is a simple demo showing main Stog features.&lt;/p&gt;
+&lt;a href=&quot;https://zoggy.github.io/stog/posts/2014-10-27-video.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;https://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+      <pubDate>27 Oct 2014 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">https://zoggy.github.io/stog/posts/2014-10-27-video.html</guid>
+    </item>
+       </channel>
+     </rss>

@@ -47,7 +47,7 @@ The easiest way to install is to use  <span class="ext-a"><a href="http://opam.o
 Install Opam, then, as a regular user, fetch and install an OCaml version and install Stog.
 The whole can be done with the following opam commands:
 </p>
-<pre class="code-sh">$ opam init <span class="hl opt">--</span>comp<span class="hl opt">=</span><span class="hl num">4.02.0</span>
+<pre class="code-sh">$ opam init <span class="hl opt">--</span>comp<span class="hl opt">=</span><span class="hl num">4.02.1</span>
 $ opam update
 $ opam <span class="hl kwc">install</span> stog</pre>
 </div>
@@ -57,7 +57,7 @@ $ opam <span class="hl kwc">install</span> stog</pre>
 To build Stog, you will need:
 </p>
 <ul>
-<li><span class="ext-a"><a href="http://caml.inria.fr/">OCaml &gt;= 4.02.0</a></span>,</li>
+<li><span class="ext-a"><a href="http://caml.inria.fr/">OCaml &gt;= 4.02.1</a></span>,</li>
 <li><span class="ext-a"><a href="http://config-file.forge.ocamlcore.org/">Config-file &gt;= 1.2</a></span>.</li>
 <li><span class="ext-a"><a href="http://erratique.ch/software/xmlm">Xmlm &gt;= 1.1.0</a></span>,</li>
 <li><span class="ext-a"><a href="http://projects.camlcity.org/projects/ocamlnet.html">OCamlnet &gt;= 3.6</a></span>.</li>
@@ -71,10 +71,12 @@ the preview server:
 <ul>
 <li><span class="ext-a"><a href="http://ocsigen.org/lwt">Lwt &gt;= 2.4.5</a></span>,</li>
 <li><span class="ext-a"><a href="http://ocsigen.org/js_of_ocaml">Js_of_ocaml &gt;= 2.4.1</a></span>,</li>
-<li><span class="ext-a"><a href="http://zoggy.github.io/xmldiff/">Xmldiff &gt;= 0.3.0</a></span>.</li>
-<li><span class="ext-a"><a href="https://github.com/vbmithr/ocaml-websocket">OCaml-Websocket &gt;= 0.9</a></span>.</li>
+<li><span class="ext-a"><a href="https://zoggy.github.io/xmldiff/">Xmldiff &gt;= 0.5.0</a></span>.</li>
+<li><span class="ext-a"><a href="https://github.com/vbmithr/ocaml-websocket">OCaml-Websocket &gt;= 0.8.1</a></span>,</li>
+<li><span class="ext-a"><a href="https://zoggy.github.com/ojs-base">Ojs-base &gt;= 0.2.0</a></span>,</li>
+<li><span class="ext-a"><a href="https://github.com/whitequark/ppx_deriving_yojson/">Ppx-deriving-yojson &gt;= 2.0</a></span>,</li>
 <li><span class="ext-a"><a href="https://github.com/mirage/ocaml-cstruct">ocaml-cstruct &gt;= 0.3.1</a></span>,</li>
-<li><span class="ext-a"><a href="https://github.com/mirage/ocaml-crunch">caoml-crunch &gt;= 1.1.0</a></span>.</li>
+<li><span class="ext-a"><a href="https://github.com/mirage/ocaml-crunch">ocaml-crunch &gt;= 1.1.0</a></span>.</li>
 </ul>
 <p>
 You will need to have the following tools installed to use
@@ -95,6 +97,26 @@ LaTeX in your pages.</li>
 
 <p>Or pick one of the releases:</p>
 <ul>
+
+
+<li><a href="stog-0.14.0.tar.gz">0.14.0</a>
+<span class="date">[October 27, 2014]</span>
+<ul id="changes-0.14.0">
+<li><span class="icode"><span class="hl std">stog-ocaml-session</span></span> now handles options -w and -warn-error,</li>
+<li>fix Mathjax CDN URL in article template,</li>
+<li>provided article template and math module (<span class="icode"><span class="hl std">math.stm</span></span>) now use
+  <span class="icode"><span class="hl std">jquery.js</span></span> and <span class="icode"><span class="hl std">bootstrap-collapse.js</span></span> (for foldable proofs),</li>
+<li>preview server:
+  <ul><li>use <span class="ext-a"><a href="http://zoggy.github.io/ojs-base/">Ojs-base</a></span> facilities
+      to display messages in browser,</li>
+  <li>a &quot;recompute&quot; button on top-left corner allows the reload of all
+    files (useful when adding new files to the edited web site sources),</li>
+  <li>use <span class="ext-a"><a href="https://github.com/whitequark/ppx_deriving_yojson/">ppx_deriving_yojson</a></span> 2.0 (and so require ocaml 4.02.1).</li>
+  </ul>
+</li>
+</ul>
+</li>
+
 
 
 <li><a href="stog-0.13.0.tar.gz">0.13.0</a>
@@ -476,7 +498,7 @@ Install Opam, then, as a regular user, fetch and install an OCaml version and in
 The whole can be done with the following opam commands:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
-$ opam init --comp=4.02.0
+$ opam init --comp=4.02.1
 $ opam update
 $ opam install stog
 </span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -487,7 +509,7 @@ $ opam install stog
 To build Stog, you will need:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://caml.inria.fr/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml &gt;= 4.02.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://caml.inria.fr/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml &gt;= 4.02.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://config-file.forge.ocamlcore.org/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Config-file &gt;= 1.2</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://erratique.ch/software/xmlm&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xmlm &gt;= 1.1.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://projects.camlcity.org/projects/ocamlnet.html&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCamlnet &gt;= 3.6</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -501,10 +523,12 @@ the preview server:
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://ocsigen.org/lwt&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Lwt &gt;= 2.4.5</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://ocsigen.org/js_of_ocaml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Js_of_ocaml &gt;= 2.4.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://zoggy.github.io/xmldiff/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xmldiff &gt;= 0.3.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/vbmithr/ocaml-websocket&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml-Websocket &gt;= 0.9</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://zoggy.github.io/xmldiff/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xmldiff &gt;= 0.5.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/vbmithr/ocaml-websocket&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml-Websocket &gt;= 0.8.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://zoggy.github.com/ojs-base&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Ojs-base &gt;= 0.2.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/whitequark/ppx_deriving_yojson/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Ppx-deriving-yojson &gt;= 2.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/mirage/ocaml-cstruct&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-cstruct &gt;= 0.3.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/mirage/ocaml-crunch&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">caoml-crunch &gt;= 1.1.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/mirage/ocaml-crunch&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-crunch &gt;= 1.1.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 You will need to have the following tools installed to use
@@ -525,6 +549,7 @@ LaTeX in your pages.</span><span class="hl kwa">&lt;/li</span><span class="hl kw
 
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Or pick one of the releases:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.14.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.13.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.12.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.11.1&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
@@ -571,7 +596,7 @@ and </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span>
 
 
 <div id="footer">
-<div class="generatedon">Generated on October 8, 2014 at 17h08</div>
+<div class="generatedon">Generated on October 27, 2014 at 15h14</div>
 </div>
 
 
