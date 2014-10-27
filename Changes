@@ -1,7 +1,11 @@
-Next release:
-* use Ojs-base facilities to display messages in browser
-* fix Mathjax CDN URL in article template
+Release 0.14.0:
 * stog-ocaml-session handles options -w and -warn-error
+* preview server:
+  + use Ojs-base facilities to display messages in browser
+  + fix Mathjax CDN URL in article template
+  + a "recompute" button on top-left corner allows the reload of all
+    files (useful when adding new files to the edited web site sources)
+  + use ppx_deriving_yojson 2.0
 
 Release 0.13.0:
 * preview server (stog-server), using xmldiff.js and websockets
