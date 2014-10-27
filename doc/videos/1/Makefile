@@ -21,7 +21,7 @@ VIDEOS=v1-intro.mp4 \
 all: videos
 	$(RM) videos
 	for i in $(VIDEOS); do echo "file $$i" >> videos; done
-	ffmpeg  -auto_convert 1 -f concat -i videos  -y v1.mp4
+	ffmpeg  -auto_convert 1 -f concat -i videos -c copy -y v1.mp4
 
 .PHONY: videos
 
@@ -31,8 +31,8 @@ videos: $(VIDEOS)
 	phantomjs rasterize.js file://$(STOGOUT)/videos/1/$< $@ "1200px*700px"
 
 %.mp4: %.png
-	ffmpeg -loop 1 -i $< -t 8 -vf "fade=t=in:st=0.0:d=1.5, fade=t=out:st=5.5:d=1.5" \
-	-y -pix_fmt yuv420p $@
+	ffmpeg -loop 1 -i $< -t 8 -y -pix_fmt yuv420p $@
+	#-vf "fade=t=in:st=0.0:d=1.5, fade=t=out:st=5.5:d=1.5"
 
 rasterize.js:
 	wget "https://github.com/ariya/phantomjs/raw/master/examples/rasterize.js"
