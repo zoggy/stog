@@ -110,35 +110,12 @@ let set_stog_options stog =
 
 let run_from_dirs dirs =
   try
-    let stogs = List.map Stog_io.read_stog dirs in
-    (*prerr_endline "directories read";*)
-    let stog = Stog_types.merge_stogs stogs in
-    (*prerr_endline "directories merged";*)
-    let stog = set_stog_options stog in
-    let stog = Stog_info.remove_not_published stog in
-    (*prerr_endline "removed not published articles";*)
-    let stog = Stog_info.compute stog in
-    (*prerr_endline "graph computed";*)
-    let modules = Stog_engine.modules () in
-    let modules = List.map
-      (fun (name, f) ->
-         Stog_msg.verbose ~level: 2 ("Initializing module "^name);
-         f stog
-      )
-        modules
-    in
+    let (stog, modules) = Stog_init.from_dirs ~set_fields: set_stog_options dirs in
     let only_docs =
       match !only_doc with
         None -> None
       | Some s -> Some [s]
     in
-    let def_style =
-      (("", Stog_tags.default_style), Xtmpl.atts_empty,
-       [ Xtmpl.xml_of_string ~add_main: false
-         "<link href=\"&lt;site-url/&gt;/style.css\" rel=\"stylesheet\" type=\"text/css\"/>"
-       ])
-    in
-    let stog = { stog with stog_defs = stog.stog_defs @ [ def_style ] } in
     match !Stog_server_mode.server_mode with
       None -> Stog_engine.generate ~use_cache: !use_cache ?only_docs stog modules
     | Some (`Single f) -> f stog
@@ -150,49 +127,7 @@ let run_from_dirs dirs =
 
 let run_from_files files =
   try
-    let dir = Sys.getcwd () in
-    let load_doc file =
-      let file =
-        if Filename.is_relative file then
-          Filename.concat dir file
-        else
-          file
-      in
-      let dir = Filename.dirname file in
-      let stog = Stog_types.create_stog ~source: `File dir in
-      let stog = { stog with stog_tmpl_dirs = [dir] } in
-      let doc = Stog_io.doc_of_file stog file in
-      (*let doc = { doc with doc_src = file } in*)
-      Stog_types.add_doc stog doc
-    in
-    let stogs = List.map load_doc files in
-    let stog = Stog_types.merge_stogs stogs in
-    let stog = set_stog_options stog in
-    let stog = Stog_info.remove_not_published stog in
-    (* remove add-docs levels from base module *)
-    let stog = { stog with
-        stog_levels = Stog_types.Str_map.add
-          Stog_html.module_name ["add-docs", []] stog.stog_levels ;
-      }
-    in
-    let modules = Stog_engine.modules () in
-    let modules = List.map
-      (fun (name, f) ->
-         Stog_msg.verbose ~level: 2 ("Initializing module "^name);
-         f stog
-      )
-        modules
-    in
-    let stog =
-      let def_style =
-        (("", Stog_tags.default_style), Xtmpl.atts_empty,
-         [ Xtmpl.xml_of_string ~add_main: false
-           "<style><include file=\"&lt;doc-type/&gt;-style.css\" raw=\"true\"/></style>"
-         ])
-      in
-      { stog with stog_defs = stog.stog_defs @ [ def_style ] }
-    in
-    let stog = Stog_io.read_modules stog in
+    let (stog, modules) = Stog_init.from_files ~set_fields: set_stog_options files in
     match !Stog_server_mode.server_mode with
       None -> Stog_engine.generate ~use_cache: false ~gen_cache: false stog modules
     | Some (`Single f) -> f stog

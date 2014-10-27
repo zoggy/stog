@@ -28,64 +28,70 @@
 
 (** *)
 
-module J = Yojson.Safe
+open Stog_types
 
-type page_update =
-  | Patch of Xmldiff.patch
-  | Update_all of Xtmpl.tree
-
-type server_message =
-  | Update of string * page_update (* path * operation *)
-  | Errors of string list * string list (* errors * warnings *)
-
-type client_msg = [
-    `Stog_msg of
-      [
-      | `Get of string (* path *)
-      | `Refresh
-      ]
-  ] [@@deriving yojson]
-
-let wsdata_of_client_msg msg = J.to_string (client_msg_to_yojson msg)
-let client_msg_of_wsdata s =
-  try
-    let json = J.from_string s in
-    match client_msg_of_yojson json with
-      `Error s -> raise (Yojson.Json_error s)
-    | `Ok msg -> Some msg
-  with
-    Yojson.Json_error s ->
-      prerr_endline s;
-      None
-  | e ->
-      prerr_endline (Printexc.to_string e);
-      None
-
-let to_hex s =
-  let len = String.length s in
-  let result = Bytes.create (2 * len) in
-  for i = 0 to len - 1 do
-    Bytes.blit_string
-      (Printf.sprintf "%02x" (int_of_char (String.get s i)))
-      0 result (2*i) 2;
-  done;
-  Bytes.to_string result
-;;
-
-let from_hex =
-  let digit c =
-    match c with
-    | '0'..'9' -> Char.code c - Char.code '0'
-    | 'A'..'F' -> Char.code c - Char.code 'A' + 10
-    | 'a'..'f' -> Char.code c - Char.code 'a' + 10
-    | _ -> raise (Invalid_argument "Digest.from_hex")
+let init_common ?(set_fields=fun stog -> stog) stogs =
+  let stog = Stog_types.merge_stogs stogs in
+  let stog = set_fields stog in
+  let stog = Stog_info.remove_not_published stog in
+  let stog = Stog_info.compute stog in
+  let modules = Stog_engine.modules () in
+  let modules = List.map
+    (fun (name, f) ->
+       Stog_msg.verbose ~level: 2 ("Initializing module "^name);
+       f stog
+    )
+      modules
   in
-  fun s ->
-    let byte i = digit (String.get s i) lsl 4 + digit (String.get s (i+1)) in
-    let len = String.length s in
-    let result = Bytes.create (len/2) in
-    for i = 0 to (len / 2) - 1 do
-      Bytes.set result i (Char.chr (byte (2 * i)));
-    done;
-    Bytes.to_string result
-;;
+  (stog, modules)
+
+let from_dirs ?set_fields dirs =
+  let stogs = List.map Stog_io.read_stog dirs in
+  let (stog, modules) = init_common ?set_fields stogs in
+  let def_style =
+    (("", Stog_tags.default_style), Xtmpl.atts_empty,
+     [ Xtmpl.xml_of_string ~add_main: false
+       "<link href=\"&lt;site-url/&gt;/style.css\" rel=\"stylesheet\" type=\"text/css\"/>"
+     ])
+  in
+  let stog = { stog with stog_defs = stog.stog_defs @ [ def_style ] } in
+  (stog, modules)
+
+let from_files ?set_fields files =
+  let dir = Sys.getcwd () in
+  let load_doc file =
+    let file =
+      if Filename.is_relative file then
+        Filename.concat dir file
+      else
+        file
+    in
+    let dir = Filename.dirname file in
+    let stog = Stog_types.create_stog ~source: `File dir in
+    let stog = { stog with stog_tmpl_dirs = [dir] } in
+    let doc = Stog_io.doc_of_file stog file in
+    Stog_types.add_doc stog doc
+  in
+  let stogs = List.map load_doc files in
+  let remove_add_docs stog =
+    (* remove add-docs levels from base module *)
+    { stog with
+      stog_levels = Stog_types.Str_map.add
+        Stog_html.module_name ["add-docs", []] stog.stog_levels ;
+    }
+  in
+  let set_fields =
+    match set_fields with
+      None -> remove_add_docs
+    | Some f -> fun stog -> remove_add_docs (f stog)
+  in
+  let (stog, modules) = init_common ~set_fields stogs in
+  let stog = Stog_io.read_modules stog in
+  let def_style =
+    (("", Stog_tags.default_style), Xtmpl.atts_empty,
+     [ Xtmpl.xml_of_string ~add_main: false
+       "<style><include file=\"&lt;doc-type/&gt;-style.css\" raw=\"true\"/></style>"
+     ])
+  in
+  let stog = { stog with stog_defs = stog.stog_defs @ [ def_style ] } in
+  (stog, modules)

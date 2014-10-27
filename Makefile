@@ -88,6 +88,7 @@ LIB_CMXFILES= \
 	stog_blocks.cmx \
 	stog_plug.cmx \
 	stog_dyn.cmx \
+	stog_init.cmx \
 	stog_server_mode.cmx
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)
@@ -189,7 +190,7 @@ $(MSERVER_BYTE): $(LIB_BYTE) $(LIB_SERVER_BYTE) $(PLUGIN_MSERVER_BYTE) stog_main
 server_files/$(SERVER_JS): stog_server_types.cmi stog_server_types.cmo stog_server_client_js.ml
 	$(MKDIR) server_files
 	$(OCAMLFIND) ocamlc -o $@.byte $(COMPFLAGS) \
-	-package js_of_ocaml,js_of_ocaml.syntax,xmldiff.js,ojs.js,xtmpl,yojson -syntax camlp4o -linkpkg \
+	-package js_of_ocaml,js_of_ocaml.syntax,xmldiff.js,ojs.js,xtmpl,yojson,ppx_deriving_yojson -syntax camlp4o -linkpkg \
 	stog_server_types.cmo stog_server_client_js.ml
 	$(JS_OF_OCAML) $@.byte -o $@
 

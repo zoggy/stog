@@ -930,7 +930,7 @@ let _ =
       check_ocamlfind_package conf ~fail: false ~min_version: [0;3;1] "cstruct";
       check_ocamlfind_package conf ~fail: false ~min_version: [1;1;0] "crunch";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;1;0] "ojs";
-      check_ocamlfind_package conf ~fail: false ~min_version: [1;1] ~max_version: [1;1] "ppx_deriving_yojson";
+      check_ocamlfind_package conf ~fail: false ~min_version: [2;0] "ppx_deriving_yojson";
       check_ocamlfind_package conf ~fail: false ~min_version: [1;1;8] "yojson";
     ]
   in
