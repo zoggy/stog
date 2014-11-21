@@ -40,13 +40,14 @@ type account = {
   }
 type t = {
     accounts : account list ;
-    ssh_priv_key : string ;
+    ssh_priv_key : string option;
     git_repo_url : string ;
+    dir : string option ;
     editable_files : Str.regexp list ;
     not_editable_files : Str.regexp list ;
   }
 
-let read_config file =
+let read file =
   let group = new CF.group in
   let o_accounts = new CF.list_cp
     (CF.tuple4_wrappers CF.string_wrappers CF.string_wrappers CF.string_wrappers CF.string_wrappers)
@@ -68,7 +69,10 @@ let read_config file =
     "Regexps of files not to be able to edit"
   in
   if not (Sys.file_exists file) then
-     failwith (Printf.sprintf "Cannot file file %S" file);
+    begin
+     group#write file;
+     failwith (Printf.sprintf "Empty configuration file %S created, please edit it" file);
+    end;
 
   group#read file;
   let accounts = List.map
@@ -76,8 +80,9 @@ let read_config file =
     o_accounts#get
   in
   { accounts ;
-    ssh_priv_key = o_ssh#get ;
+    ssh_priv_key = (match o_ssh#get with "" -> None | s -> Some s);
     git_repo_url = o_git_repo#get ;
+    dir = (match o_ssh#get with "" -> None | s -> Some s);
     editable_files = List.map Str.regexp o_editable#get ;
     not_editable_files = List.map Str.regexp o_not_editable#get ;
   }

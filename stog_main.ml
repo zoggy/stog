@@ -237,7 +237,7 @@ let main () =
       | Some abbrev -> Stog_intl.set_default_lang abbrev
     end;
     match !Stog_server_mode.server_mode with
-      Some (`Multi f) -> f ()
+      Some (`Multi f) -> f (List.rev !remain)
     | _ ->
         begin
           match List.rev !remain with

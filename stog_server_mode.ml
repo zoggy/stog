@@ -33,10 +33,10 @@ let host = ref "0.0.0.0"
 
 type server_mode = [
     `Single of (unit -> Stog_types.stog) -> Stog_types.stog -> unit
-  | `Multi of unit -> unit
+  | `Multi of string list -> unit
   ]
 let server_mode = ref (None : server_mode option)
 
 let set_single f = server_mode := Some (`Single (fun read_stog stog -> f read_stog stog !host !port))
-let set_multi f = server_mode := Some (`Multi (fun () -> f !host !port))
+let set_multi f = server_mode := Some (`Multi (fun args -> f !host !port args))
   
