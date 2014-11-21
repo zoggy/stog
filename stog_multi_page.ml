@@ -29,8 +29,11 @@
 
 (** *)
 
+module S = Cohttp_lwt_unix.Server
 open Xtmpl
 let noatts = Xtmpl.atts_empty
+
+let path_sessions = ["sessions"]
 
 let page ~title contents =
   E (("","html"), noatts, [
@@ -44,5 +47,74 @@ let page ~title contents =
      ])
    ]
   )
+
+
+type form_new_session = {
+    login : string ;
+    passwd : string ;
+  }
+
+let form_new_session ?err app_url  =
+  let field ~id ~typ ~label ~placeholder =
+    E (("","div"), noatts, [
+       E (("","label"), Xtmpl.atts_of_list [ ("", "for"), [ D id ]],
+        [ D label ]) ;
+       E (("","input"),
+        Xtmpl.atts_of_list
+          [
+            ("","name"), [ D id ] ;
+            ("","type"), [ D typ ] ;
+            ("","placeholder"), [D placeholder] ;
+            ("","required"), [ D "required"] ;
+          ],
+          [])
+        ])
+  in
+  let action_url =
+    let url = List.fold_left Stog_types.url_concat app_url path_sessions in
+    Stog_types.string_of_url url
+  in
+  [E (("", "form"),
+     Xtmpl.atts_of_list
+     [ ("","id"), [ D "form-session"] ;
+         ("","action"), [ D action_url ] ;
+         ("","method"), [ D "POST" ] ;
+       ],
+     [ E (("","fieldset"), noatts, [
+          field ~id: "login" ~typ:"text" ~placeholder:"Your login" ~label: "Login:" ;
+          field ~id: "passwd" ~typ:"password" ~placeholder:"Your password" ~label: "Password:" ;
+        ] @
+        (match err with
+           None -> []
+         | Some msg ->
+             [E (("","div"), Xtmpl.atts_of_list
+                [ ("","class"), [D "alert alert-error"] ],
+                [ D msg]
+               )]
+        ) @
+          [ E (("","input"),
+             Xtmpl.atts_of_list [
+               ("","name"), [D "submit"] ;
+               ("","type"), [D "submit"] ;
+               ("","value"), [D "Open session"] ;
+             ],
+             []);
+        ])
+     ])]
+
+let read_form_new_session req body =
+  let params = Uri.query_of_encoded body in
+  (*List.iter
+    (fun (s,vals) -> prerr_endline (Printf.sprintf "%s=%s" s (String.concat "," vals)))
+    params;*)
+  match List.assoc "login" params with
+  | exception Not_found -> failwith "Missing login"
+  | [] | "" :: _ -> failwith "Missing login"
+  | login :: _ ->
+      match List.assoc "passwd" params with
+      | exception Not_found -> failwith "Missing password"
+      | [] | "" :: _ -> failwith "Missing password"
+      | passwd :: _ -> { login ; passwd }
+
 
 

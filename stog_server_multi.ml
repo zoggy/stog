@@ -30,6 +30,8 @@
 (** *)
 
 open Stog_types
+open Xtmpl
+open Stog_multi_config
 module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
 
@@ -42,14 +44,36 @@ type space =
 let add_stog_session host port dir =
   assert false
 
+let handle_new_session cfg spaces req body =
+  Cohttp_lwt_body.to_string body >>= fun body ->
+    match
+      let form = Stog_multi_page.read_form_new_session req body in
+(*      match List.find (fun acc -> acc.login = form.login) cgf.accounts with
+      | exception Not_found -> failwith "Invalid user/password"
+      | account ->
+          let pwd = String.lowercase Sha.form.password
+          if Sha.*)
+          assert false
+    with
+    | exception (Failure err) ->
+        let contents = Stog_multi_page.form_new_session ~err cfg.app_url in
+        let page = Stog_multi_page.page ~title: "New session" contents in
+        let body = Xtmpl.string_of_xml page in
+        S.respond_string ~status:`OK ~body ()
+    | form ->
+        let page = Stog_multi_page.page ~title: "New session" [D "ok"] in
+        let body = Xtmpl.string_of_xml page in
+        S.respond_string ~status:`OK ~body ()
+
+
 let handler cfg spaces host port sock req body =
   let uri = Cohttp.Request.uri req in
   let path = Stog_misc.split_string (Uri.path uri) ['/'] in
   match path with
-  | ["sessions"] when req.S.Request.meth = `POST ->
-      S.respond_error ~status:`Not_found ~body: "not implemented yet" ()
+  | p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `POST ->
+      handle_new_session cfg spaces req body
 
-  | ["sessions"] when req.S.Request.meth = `GET ->
+  | p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `GET ->
       let body =
         "<html><header><title>Stog-server</title></header>"^
           "<body>List of sessions: not implemented yet</body></html>"
@@ -69,9 +93,9 @@ let handler cfg spaces host port sock req body =
             S.respond_error ~status:`Not_found ~body ()
       end
   | _ ->
-      let body = Printf.sprintf "<html><header><title>Stog-server</title></header>
-    <body>Hello world !</body></html>"
-      in
+      let contents = Stog_multi_page.form_new_session cfg.app_url in
+      let page = Stog_multi_page.page ~title: "New session" contents in
+      let body = Xtmpl.string_of_xml page in
       S.respond_string ~status:`OK ~body ()
 
 let start_server cfg spaces host port =

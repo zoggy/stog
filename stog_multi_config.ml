@@ -45,6 +45,7 @@ type t = {
     dir : string option ;
     editable_files : Str.regexp list ;
     not_editable_files : Str.regexp list ;
+    app_url : Neturl.url ;
   }
 
 let read file =
@@ -68,6 +69,9 @@ let read file =
     ["not-editable-files"] []
     "Regexps of files not to be able to edit"
   in
+  let o_app_url = new CF.string_cp ~group
+    ["app-url"] "http://localhost:8080" "Application URL"
+  in
   if not (Sys.file_exists file) then
     begin
      group#write file;
@@ -85,5 +89,6 @@ let read file =
     dir = (match o_ssh#get with "" -> None | s -> Some s);
     editable_files = List.map Str.regexp o_editable#get ;
     not_editable_files = List.map Str.regexp o_not_editable#get ;
+    app_url = Stog_types.url_of_string o_app_url#get ;
   }
 ;;
