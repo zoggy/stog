@@ -29,80 +29,71 @@
 
 (** *)
 
-module CF = Config_file
+open Stog_multi_config
 
-type sha256 = string (* hexadecimal representation of SHA256 digest *)
-type account = {
-    login: string ;
-    name : string ;
-    email: string ;
-    passwd: sha256 ;
-  }
-type t = {
-    accounts : account list ;
-    ssh_priv_key : string ;
-    git_repo_url : string ;
-    dir : string ;
-    stog_dir : string option ;
-    editable_files : Str.regexp list ;
-    not_editable_files : Str.regexp list ;
-    app_url : Neturl.url ;
+type session =
+  { session_id : string ;
+    session_create_date : float ;
+    session_dir : string ;
+    session_stog_dir : string ;
+    session_state : Stog_server_run.state option ref ;
+    session_ws_cons : (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit)) list ref ;
+    session_auth : string ;
   }
 
-let read file =
-  let group = new CF.group in
-  let o_accounts = new CF.list_cp
-    (CF.tuple4_wrappers CF.string_wrappers CF.string_wrappers CF.string_wrappers CF.string_wrappers)
-      ~group
-      ["accounts"] [ ] "triples (login, name, email, sha256-hashed password)"
-  in
-  let o_dir = new CF.string_cp ~group
-    ["directory"] "" "Directory where to clone repositories"
-  in
-  let o_stog_dir = new CF.string_cp ~group
-    ["stog-directory"] "" "Optional subdirectory where to run stog in a clone"
-  in
-  let o_ssh = new CF.string_cp ~group
-    ["ssh-priv-key"] "" "Private SSH key to access repository"
-  in
-  let o_git_repo = new CF.string_cp ~group
-    ["repository-url"] "" "URL of git repository"
-  in
-  let o_editable = new CF.list_cp CF.string_wrappers ~group
-    ["editable-files"] []
-    "Regexps of files to be able to edit"
-  in
-  let o_not_editable = new CF.list_cp CF.string_wrappers ~group
-    ["not-editable-files"] []
-    "Regexps of files not to be able to edit"
-  in
-  let o_app_url = new CF.string_cp ~group
-    ["app-url"] "http://localhost:8080" "Application URL"
-  in
-  if not (Sys.file_exists file) then
-    begin
-     group#write file;
-     failwith (Printf.sprintf "Empty configuration file %S created, please edit it" file);
-    end;
+let () = Random.self_init ()
 
-  group#read file;
-  let accounts = List.map
-    (fun (login, name, email, passwd) -> { login ; name ; email ; passwd })
-    o_accounts#get
+let new_id () = Printf.sprintf "%04x-%04x-%04x-%04x"
+  (Random.int 0x10000) (Random.int 0x10000) (Random.int 0x10000) (Random.int 0x10000)
+let new_auth_cookie = new_id ()
+
+(*c==v=[Misc.try_finalize]=1.0====*)
+let try_finalize f x finally y =
+  let res =
+    try f x
+    with exn -> finally y; raise exn
   in
-  let dir =
-    match o_dir#get with
-      "" -> Sys.getcwd ()
-    | s when Filename.is_relative s -> Filename.concat (Sys.getcwd ()) s
-    | s -> s
+  finally y;
+  res
+(*/c==v=[Misc.try_finalize]=1.0====*)
+
+let run command =
+  match Sys.command command with
+    0 -> ()
+  | n -> failwith (Printf.sprintf "Command failed [%d]: %s" n command)
+
+let ssh_git cfg session command =
+  let key_file = Filename.concat session.session_dir "ssh.key" in
+  Stog_misc.file_of_string ~file: key_file cfg.ssh_priv_key;
+  let sub = Filename.quote
+    (Printf.sprintf "ssh-add %s; git %s" (Filename.quote key_file) command)
   in
-  { accounts ;
-    ssh_priv_key = o_ssh#get ;
-    git_repo_url = o_git_repo#get ;
-    dir ;
-    stog_dir = (match o_stog_dir#get with "" -> None | s -> Some s);
-    editable_files = List.map Str.regexp o_editable#get ;
-    not_editable_files = List.map Str.regexp o_not_editable#get ;
-    app_url = Stog_types.url_of_string o_app_url#get ;
-  }
-;;
+  let command = Printf.sprintf "ssh-agent bash -c %s" (Filename.quote sub) in
+  try_finalize run command Sys.remove key_file
+
+let git_clone cfg session =
+  let command = Printf.sprintf "clone %s %s"
+    (Filename.quote cfg.git_repo_url) (Filename.quote session.session_dir)
+  in
+  ssh_git cfg session command
+
+let create cfg account =
+  let session_id = new_id () in
+  let session_dir = Filename.concat cfg.dir session_id in
+  let session_stog_dir =
+    match cfg.stog_dir with
+    | None -> session_dir
+    | Some s -> Filename.concat session_dir s
+  in
+  let session = 
+    { session_id ;
+      session_create_date = Unix.time () ;
+      session_dir ;
+      session_stog_dir ;
+      session_state = ref None ;
+      session_ws_cons = ref [] ;
+      session_auth = new_auth_cookie ;
+    }
+  in
+  git_clone cfg session ;
+  session

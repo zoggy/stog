@@ -134,6 +134,7 @@ PLUGIN_MSERVER_BYTE=$(PLUGIN_MSERVER:.cmxa=.cma)
 PLUGIN_MSERVER_CMXFILES=\
 	stog_multi_config.cmx \
 	stog_multi_page.cmx \
+	stog_multi_session.cmx \
 	stog_server_multi.cmx
 PLUGIN_MSERVER_CMOFILES=$(PLUGIN_MSERVER_CMXFILES:.cmx=.cmo)
 PLUGIN_MSERVER_CMIFILES=$(PLUGIN_MSERVER_CMXFILES:.cmx=.cmi)

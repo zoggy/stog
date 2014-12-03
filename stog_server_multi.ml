@@ -32,28 +32,36 @@
 open Stog_types
 open Xtmpl
 open Stog_multi_config
+open Stog_multi_session
+
 module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
 
-type space =
-  { space_state : Stog_server_run.state option ref ;
-    space_ws_cons : (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit)) list ref ;
-    space_auth : string ;
-  }
+let sha256 s = String.lowercase (Sha256.to_hex (Sha256.string s))
 
-let add_stog_session host port dir =
+
+let create_session cfg sessions account =
+  let session = Stog_multi_session.create cfg account in
+  sessions := Stog_types.Str_map.add session.session_id session !sessions;
+  (* return cookie + url of editor and preview *)
   assert false
 
-let handle_new_session cfg spaces req body =
+let handle_new_session cfg sessions req body =
   Cohttp_lwt_body.to_string body >>= fun body ->
     match
       let form = Stog_multi_page.read_form_new_session req body in
-(*      match List.find (fun acc -> acc.login = form.login) cgf.accounts with
+      match
+        let account = List.find (fun acc -> acc.login = form.Stog_multi_page.login) cfg.accounts in
+        let pwd = sha256 form.Stog_multi_page.passwd in
+        if pwd = sha256 account.passwd then
+          account
+        else
+          raise Not_found
+      with
       | exception Not_found -> failwith "Invalid user/password"
       | account ->
-          let pwd = String.lowercase Sha.form.password
-          if Sha.*)
-          assert false
+          create_session cfg sessions account
+
     with
     | exception (Failure err) ->
         let contents = Stog_multi_page.form_new_session ~err cfg.app_url in
@@ -66,12 +74,12 @@ let handle_new_session cfg spaces req body =
         S.respond_string ~status:`OK ~body ()
 
 
-let handler cfg spaces host port sock req body =
+let handler cfg sessions host port sock req body =
   let uri = Cohttp.Request.uri req in
   let path = Stog_misc.split_string (Uri.path uri) ['/'] in
   match path with
   | p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `POST ->
-      handle_new_session cfg spaces req body
+      handle_new_session cfg sessions req body
 
   | p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `GET ->
       let body =
@@ -82,9 +90,9 @@ let handler cfg spaces host port sock req body =
 
   | id :: _ ->
       begin
-        match Str_map.find id !spaces with
-          space ->
-            Stog_server_http.handler space.space_state host port [id] sock req body
+        match Str_map.find id !sessions with
+          session ->
+            Stog_server_http.handler session.session_state host port [id] sock req body
         | exception Not_found ->
             let body =
               "<html><header><title>Stog-server</title></header>"^
@@ -98,7 +106,7 @@ let handler cfg spaces host port sock req body =
       let body = Xtmpl.string_of_xml page in
       S.respond_string ~status:`OK ~body ()
 
-let start_server cfg spaces host port =
+let start_server cfg sessions host port =
   Lwt_io.write Lwt_io.stdout
     (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
   >>= fun _ ->
@@ -106,7 +114,7 @@ let start_server cfg spaces host port =
     ignore(Lwt_io.write Lwt_io.stdout
       (Printf.sprintf "connection %s closed\n%!" (Cohttp.Connection.to_string id)))
   in
-  let config = { S.callback = handler cfg spaces host port ; conn_closed } in
+  let config = { S.callback = handler cfg sessions host port ; conn_closed } in
   S.create ~address:host ~port config
 
 let launch host port args =
@@ -115,8 +123,8 @@ let launch host port args =
       [] -> failwith "Please give a configuration file"
     | file :: _ -> Stog_multi_config.read file
   in
-  let spaces = ref (Str_map.empty : space Str_map.t) in
-  start_server cfg spaces host port
+  let sessions = ref (Str_map.empty : session Str_map.t) in
+  start_server cfg sessions host port
 
 let () =
   let run host port args = Lwt_unix.run (launch host port args) in
