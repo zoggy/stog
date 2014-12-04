@@ -138,8 +138,11 @@ let create cfg account =
   git_clone cfg session_dir ;
   let stog = read_stog session_stog_dir in
   let stog_base_url =
-    List.fold_left Stog_types.url_concat
-      cfg.app_url (Stog_multi_page.path_sessions @ [session_id ; "preview"])
+    let url =
+      List.fold_left Stog_types.url_concat
+        cfg.app_url (Stog_multi_page.path_sessions @ [session_id ; "preview" ])
+    in
+    Neturl.modify_url ~path: ((Neturl.url_path url)@[""]) url
   in
   let orig_branch = git_current_branch session_dir in
   let branch_name = git_create_branch session_dir account in
