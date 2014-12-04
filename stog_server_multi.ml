@@ -39,12 +39,10 @@ let (>>=) = Lwt.bind
 
 let sha256 s = String.lowercase (Sha256.to_hex (Sha256.string s))
 
-
 let create_session cfg sessions account =
   let session = Stog_multi_session.create cfg account in
   sessions := Stog_types.Str_map.add session.session_id session !sessions;
-  (* return cookie + url of editor and preview *)
-  assert false
+  session
 
 let handle_new_session cfg sessions req body =
   Cohttp_lwt_body.to_string body >>= fun body ->
@@ -52,32 +50,65 @@ let handle_new_session cfg sessions req body =
       let form = Stog_multi_page.read_form_new_session req body in
       match
         let account = List.find (fun acc -> acc.login = form.Stog_multi_page.login) cfg.accounts in
+        prerr_endline (Printf.sprintf "account found: %s\npasswd=%s" account.login account.passwd);
         let pwd = sha256 form.Stog_multi_page.passwd in
-        if pwd = sha256 account.passwd then
+        prerr_endline (Printf.sprintf "sha256(pwd)=%s" pwd);
+        if pwd = String.lowercase account.passwd then
           account
         else
           raise Not_found
       with
       | exception Not_found -> failwith "Invalid user/password"
-      | account ->
-          create_session cfg sessions account
-
+      | account -> create_session cfg sessions account
     with
     | exception (Failure err) ->
         let contents = Stog_multi_page.form_new_session ~err cfg.app_url in
         let page = Stog_multi_page.page ~title: "New session" contents in
         let body = Xtmpl.string_of_xml page in
         S.respond_string ~status:`OK ~body ()
-    | form ->
-        let page = Stog_multi_page.page ~title: "New session" [D "ok"] in
+    | session ->
+        let preview_url = Stog_types.string_of_url session.session_preview_url in
+          let contents =
+          [
+            Xtmpl.E (("","p"), Xtmpl.atts_empty, [
+               Xtmpl.D "Preview URL: ";
+               Xtmpl.E (("","a"),
+                Xtmpl.atts_of_list
+                  [("","href"), [ Xtmpl.D preview_url ]],
+                [Xtmpl.D preview_url]) ;
+             ])
+          ]
+        in
+        let title = Printf.sprintf "Session %s created" session.session_id in
+        let page = Stog_multi_page.page ~title contents in
         let body = Xtmpl.string_of_xml page in
         S.respond_string ~status:`OK ~body ()
 
+let req_path_from_app cfg req =
+  let app_path = Neturl.url_path cfg.app_url in
+  let req_uri = Cohttp.Request.uri req in
+  let req_path = Stog_misc.split_string (Uri.path req_uri) ['/'] in
+  let rec iter = function
+  | [], p -> p
+  | h1::q1, h2::q2 when h1 = h2 -> iter (q1, q2)
+  | _, _ ->
+      let msg = Printf.sprintf  "bad query path: %S is not under %S"
+        (Uri.to_string req_uri)
+        (Stog_types.string_of_url cfg.app_url)
+      in
+      failwith msg
+  in
+  iter (app_path, req_path)
 
 let handler cfg sessions host port sock req body =
-  let uri = Cohttp.Request.uri req in
-  let path = Stog_misc.split_string (Uri.path uri) ['/'] in
+  let path = req_path_from_app cfg req in
   match path with
+  | [] ->
+      let contents = Stog_multi_page.form_new_session cfg.app_url in
+      let page = Stog_multi_page.page ~title: "New session" contents in
+      let body = Xtmpl.string_of_xml page in
+      S.respond_string ~status:`OK ~body ()
+
   | p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `POST ->
       handle_new_session cfg sessions req body
 
@@ -88,23 +119,27 @@ let handler cfg sessions host port sock req body =
       in
       S.respond_string ~status:`OK ~body ()
 
-  | id :: _ ->
-      begin
-        match Str_map.find id !sessions with
-          session ->
-            Stog_server_http.handler session.session_state host port [id] sock req body
-        | exception Not_found ->
-            let body =
-              "<html><header><title>Stog-server</title></header>"^
-                "<body>Space "^id^" not found</body></html>"
-            in
-            S.respond_error ~status:`Not_found ~body ()
-      end
   | _ ->
-      let contents = Stog_multi_page.form_new_session cfg.app_url in
-      let page = Stog_multi_page.page ~title: "New session" contents in
-      let body = Xtmpl.string_of_xml page in
-      S.respond_string ~status:`OK ~body ()
+      match path with
+      | "sessions" :: id :: p when req.S.Request.meth = `GET ->
+          begin
+            match Str_map.find id !sessions with
+              session ->
+                let base_path = (Neturl.url_path cfg.app_url) @ Stog_multi_page.path_sessions @ [id] in
+                Stog_server_http.handler session.session_state host port base_path sock req body
+            | exception Not_found ->
+                let body =
+                  "<html><header><title>Stog-server</title></header>"^
+                    "<body>Space "^id^" not found</body></html>"
+                in
+                S.respond_error ~status:`Not_found ~body ()
+          end
+      | _ ->
+          let body =
+            "<html><header><title>Stog-server</title></header>"^
+              "<body>404 Not found</body></html>"
+          in
+          S.respond_error ~status:`Not_found ~body ()
 
 let start_server cfg sessions host port =
   Lwt_io.write Lwt_io.stdout
@@ -124,7 +159,8 @@ let launch host port args =
     | file :: _ -> Stog_multi_config.read file
   in
   let sessions = ref (Str_map.empty : session Str_map.t) in
-  start_server cfg sessions host port
+  Stog_multi_ws.run_server cfg sessions >>=
+  fun _ -> start_server cfg sessions host port
 
 let () =
   let run host port args = Lwt_unix.run (launch host port args) in

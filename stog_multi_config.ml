@@ -92,17 +92,31 @@ let read file =
   in
   let dir =
     match o_dir#get with
-      "" -> Sys.getcwd ()
+    | "" -> Sys.getcwd ()
     | s when Filename.is_relative s -> Filename.concat (Sys.getcwd ()) s
     | s -> s
   in
+  let ssh_priv_key =
+    let file = o_ssh#get in
+    if Filename.is_relative file then
+      Filename.concat (Sys.getcwd ()) file
+    else
+      file
+  in
+  let app_url = Stog_types.url_of_string o_app_url#get in
+  let app_url = Neturl.modify_url
+    ~path: (List.filter ((<>) "") (Neturl.url_path app_url))
+    app_url
+  in
+  prerr_endline "app_url path:";
+  List.iter prerr_endline (Neturl.url_path app_url);
   { accounts ;
-    ssh_priv_key = o_ssh#get ;
+    ssh_priv_key ;
     git_repo_url = o_git_repo#get ;
     dir ;
     stog_dir = (match o_stog_dir#get with "" -> None | s -> Some s);
     editable_files = List.map Str.regexp o_editable#get ;
     not_editable_files = List.map Str.regexp o_not_editable#get ;
-    app_url = Stog_types.url_of_string o_app_url#get ;
+    app_url ;
   }
 ;;

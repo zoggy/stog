@@ -104,9 +104,9 @@ let form_new_session ?err app_url  =
 
 let read_form_new_session req body =
   let params = Uri.query_of_encoded body in
-  (*List.iter
+  List.iter
     (fun (s,vals) -> prerr_endline (Printf.sprintf "%s=%s" s (String.concat "," vals)))
-    params;*)
+    params;
   match List.assoc "login" params with
   | exception Not_found -> failwith "Missing login"
   | [] | "" :: _ -> failwith "Missing login"

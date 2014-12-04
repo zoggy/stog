@@ -29,42 +29,48 @@
 
 (** *)
 
-open Stog_server_run
 
-module S = Cohttp_lwt_unix.Server
+open Stog_types
+open Stog_multi_config
+open Stog_multi_session
+
 let (>>=) = Lwt.bind
 
-let new_stog_session stog host port base_path =
-  let stog_base_url =
-    let s = Printf.sprintf "http://%s:%d/%spreview"
-      host port (Stog_server_http.base_path_string base_path)
-    in
-    Stog_types.url_of_string s
-  in
-  Stog_server_preview.new_stog_session stog stog_base_url
+let handle_con sessions base_path uri (stream, push) =
+  prerr_endline "new connection";
+  let path = Stog_misc.split_string (Uri.path uri) ['/'] in
+  match path with
+  | "sessions" :: id :: p ->
+      begin
+        match Str_map.find id !sessions with
+        | exception Not_found ->
+            failwith (Printf.sprintf "Invalid session %S" id)
+        | session ->
+            session.session_ws_cons := (stream, push) :: !(session.session_ws_cons) ;
+            let read_stog () = Stog_multi_session.read_stog session.session_stog_dir in
+            Stog_server_ws.handle_messages read_stog
+              session.session_state session.session_ws_cons (base_path @ [id])
+              stream push
+      end
+  | _ -> failwith "Invalid path"
 
-let start_server current_state host port base_path =
-  Lwt_io.write Lwt_io.stdout
-    (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
-  >>= fun _ ->
-  let conn_closed id () =
-    ignore(Lwt_io.write Lwt_io.stdout
-      (Printf.sprintf "connection %s closed\n%!" (Cohttp.Connection.to_string id)))
-  in
-  let config =
-    { S.callback = Stog_server_http.handler current_state host port base_path;
-      conn_closed ;
-    }
-  in
-  S.create ~address:host ~port config
+;;
 
+let server cfg sessions sockaddr =
+  (*
+  let rec echo_fun uri (stream, push) =
+    Lwt_stream.next stream >>= fun frame ->
+    Lwt.wrap (fun () -> push (Some frame)) >>= fun () ->
+    echo_fun uri (stream, push) in
+  *)
+  Websocket.establish_server sockaddr
+    (handle_con sessions (Neturl.url_path cfg.app_url))
+;;
 
-let launch read_stog stog host port base_path =
-  let (current_state, active_cons) = new_stog_session stog host port base_path in
-  Stog_server_ws.run_server read_stog current_state active_cons host (port+1) base_path >>=
-    fun _ -> start_server current_state host port base_path
-
-let () =
-  let run read_stog stog host port = Lwt_unix.run (launch read_stog stog host port []) in
-  Stog_server_mode.set_single run
-
+let run_server cfg sessions =
+  let host = Neturl.url_host cfg.app_url in
+  let port = Neturl.url_port cfg.app_url + 1 in
+  prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
+  Lwt_io_ext.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
+    Lwt.return (server cfg sessions sa)
+;;

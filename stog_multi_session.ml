@@ -39,6 +39,9 @@ type session =
     session_state : Stog_server_run.state option ref ;
     session_ws_cons : (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit)) list ref ;
     session_auth : string ;
+    session_orig_branch : string ;
+    session_branch : string ;
+    session_preview_url : Neturl.url ;
   }
 
 let () = Random.self_init ()
@@ -46,6 +49,10 @@ let () = Random.self_init ()
 let new_id () = Printf.sprintf "%04x-%04x-%04x-%04x"
   (Random.int 0x10000) (Random.int 0x10000) (Random.int 0x10000) (Random.int 0x10000)
 let new_auth_cookie = new_id ()
+
+let read_stog stog_dir =
+  let stog = Stog_init.from_dirs [stog_dir] in
+  { stog with Stog_types.stog_outdir = Filename.concat stog_dir "stog-output" }
 
 (*c==v=[Misc.try_finalize]=1.0====*)
 let try_finalize f x finally y =
@@ -62,20 +69,63 @@ let run command =
     0 -> ()
   | n -> failwith (Printf.sprintf "Command failed [%d]: %s" n command)
 
-let ssh_git cfg session command =
-  let key_file = Filename.concat session.session_dir "ssh.key" in
-  Stog_misc.file_of_string ~file: key_file cfg.ssh_priv_key;
+let ssh_git cfg ?dir command =
   let sub = Filename.quote
-    (Printf.sprintf "ssh-add %s; git %s" (Filename.quote key_file) command)
+    (Printf.sprintf "ssh-add %s; git %s" (Filename.quote cfg.ssh_priv_key) command)
   in
-  let command = Printf.sprintf "ssh-agent bash -c %s" (Filename.quote sub) in
-  try_finalize run command Sys.remove key_file
+  let command = Printf.sprintf "%s ssh-agent bash -c %s"
+    (match dir with
+       None -> ""
+     | Some d -> Printf.sprintf "cd %s &&" (Filename.quote d)
+    )
+      sub
+  in
+  run command
 
-let git_clone cfg session =
+let git_clone cfg session_dir =
   let command = Printf.sprintf "clone %s %s"
-    (Filename.quote cfg.git_repo_url) (Filename.quote session.session_dir)
+    (Filename.quote cfg.git_repo_url) (Filename.quote session_dir)
   in
-  ssh_git cfg session command
+  ssh_git cfg command
+
+let add_user_info session account =
+  let s = Printf.sprintf "\n[user]\n\tname = %s\n\temail = %s\n"
+    account.name account.email
+  in
+  let command = Printf.sprintf
+    "echo %s >> %s" (Filename.quote s)
+      (Filename.quote
+       (Filename.concat
+        (Filename.concat session.session_dir ".git") "config"))
+  in
+  run command
+
+let horodate () =
+  Unix.(
+   let t = localtime (time()) in
+   Printf.sprintf "%04d-%02d-%02d-%02dh%02dm%02ds"
+     (t.tm_year + 1900) (t.tm_mon + 1) t.tm_mday
+     t.tm_hour t.tm_min t.tm_sec
+  )
+let git_current_branch session_dir =
+  let command = Printf.sprintf
+    "cd %s && git rev-parse --abbrev-ref HEAD" (Filename.quote session_dir)
+  in
+  try
+    let stdin = Unix.open_process_in command in
+    let branch = input_line stdin in
+    ignore(Unix.close_process_in stdin);
+    branch
+  with
+    _ -> failwith (Printf.sprintf "Exec error: %s" command)
+
+let git_create_branch session_dir account =
+  let branch_name = Printf.sprintf "%s--%s" account.login (horodate()) in
+  let command = Printf.sprintf "cd %s && git checkout -b %s"
+    (Filename.quote session_dir) (Filename.quote branch_name)
+  in
+  run command;
+  branch_name
 
 let create cfg account =
   let session_id = new_id () in
@@ -85,15 +135,28 @@ let create cfg account =
     | None -> session_dir
     | Some s -> Filename.concat session_dir s
   in
-  let session = 
+  git_clone cfg session_dir ;
+  let stog = read_stog session_stog_dir in
+  let stog_base_url =
+    List.fold_left Stog_types.url_concat
+      cfg.app_url (Stog_multi_page.path_sessions @ [session_id ; "preview"])
+  in
+  let orig_branch = git_current_branch session_dir in
+  let branch_name = git_create_branch session_dir account in
+  let (state, cons) = Stog_server_preview.new_stog_session stog stog_base_url in
+  let session =
     { session_id ;
       session_create_date = Unix.time () ;
       session_dir ;
       session_stog_dir ;
-      session_state = ref None ;
-      session_ws_cons = ref [] ;
+      session_state = state ;
+      session_ws_cons = cons ;
       session_auth = new_auth_cookie ;
+      session_orig_branch = orig_branch ;
+      session_branch = branch_name ;
+      session_preview_url = stog_base_url ;
     }
   in
-  git_clone cfg session ;
+  add_user_info session account ;
+
   session
