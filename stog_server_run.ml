@@ -212,10 +212,9 @@ let compute_all state =
 
 let watch stog current_state ~on_update ~on_error =
   Lwt.catch
-     (fun () -> Lwt_unix.mkdir (Filename.concat (Sys.getcwd()) "stog-output") 0o750)
+     (fun () -> Lwt_unix.mkdir stog.stog_outdir 0o750)
      (fun _ -> Lwt.return_unit)
   >>= fun () ->
-  let stog = { stog with stog_outdir = "stog-output" } in
   let state = {
       stog ;
       stog_modules = [] ;

@@ -60,6 +60,11 @@ let start_server current_state host port base_path =
 
 
 let launch read_stog stog host port base_path =
+  let read_stog () =
+    let stog = read_stog () in
+    let stog = { stog with Stog_types.stog_outdir = "stog-output" } in
+    stog
+  in
   let (current_state, active_cons) = new_stog_session stog host port base_path in
   Stog_server_ws.run_server read_stog current_state active_cons host (port+1) base_path >>=
     fun _ -> start_server current_state host port base_path
