@@ -86,7 +86,8 @@ let handle_message read_stog current_state active_cons base_path stream push msg
           begin
             let send_doc doc =
               match doc.doc_out with
-                None -> Lwt.return_unit
+                None
+              | Some [] -> Lwt.return_unit
               | Some (xml :: _) ->
                   let path = Stog_path.to_string doc.doc_path in
                   send_update_message active_cons path (Stog_server_types.Update_all xml)
@@ -99,7 +100,7 @@ let handle_message read_stog current_state active_cons base_path stream push msg
           try
             let (_, doc) = Stog_types.doc_by_path state.Stog_server_run.stog (Stog_path.of_string path) in
             match doc.Stog_types.doc_out with
-              None -> Lwt.return_unit
+              None
             | Some [] -> Lwt.return_unit
             | Some (tree :: _) ->
                 let msg = Stog_server_types.Update (path, (Stog_server_types.Update_all tree)) in
