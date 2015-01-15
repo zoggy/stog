@@ -67,7 +67,7 @@ let handle_new_session cfg sessions req body =
         let body = Xtmpl.string_of_xml page in
         S.respond_string ~status:`OK ~body ()
     | session ->
-        let preview_url = Stog_types.string_of_url session.session_preview_url in
+        let preview_url = Stog_types.string_of_url session.session_stog.stog_preview_url in
           let contents =
           [
             Xtmpl.E (("","p"), Xtmpl.atts_empty, [
@@ -126,7 +126,7 @@ let handler cfg sessions host port sock req body =
             match Str_map.find id !sessions with
               session ->
                 let base_path = (Neturl.url_path cfg.app_url) @ Stog_multi_page.path_sessions @ [id] in
-                Stog_server_http.handler session.session_state host port base_path sock req body
+                Stog_server_http.handler session.session_stog.stog_state host port base_path sock req body
             | exception Not_found ->
                 let body =
                   "<html><header><title>Stog-server</title></header>"^

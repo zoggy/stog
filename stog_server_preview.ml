@@ -168,13 +168,11 @@ let handle_preview http_url ws_url current_state sock req body path =
           S.respond_string ~headers ~status:`OK ~body ()
       | None -> preview_file state.stog path
 
-let new_stog_session stog stog_base_url =
+let new_stog_session ?(current_state=ref None) ?(active_cons=ref []) stog stog_base_url =
   let stog =
     (* if modifying another field, update also Stog_server_run.refresh *)
     { stog with Stog_types.stog_base_url }
   in
-  let current_state = ref None in
-  let active_cons = ref [] in
   let on_update = Stog_server_ws.send_patch active_cons in
   let on_error = Stog_server_ws.send_errors active_cons in
   let _watcher = Stog_server_run.watch stog current_state ~on_update ~on_error in

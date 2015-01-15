@@ -31,18 +31,41 @@
 
 open Stog_multi_config
 
-type session =
-  { session_id : string ;
-    session_create_date : float ;
-    session_dir : string ;
-    session_stog_dir : string ;
-    session_state : Stog_server_run.state option ref ;
-    session_ws_cons : (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit)) list ref ;
-    session_auth : string ;
+type session_state =
+  | Loaded
+  | Live
+  | Stopped
+  | Error of string [@@deriving yojson]
+
+type stored =
+  { session_create_date : float ;
+    mutable session_state : session_state ;
     session_orig_branch : string ;
     session_branch : string ;
-    session_preview_url : Neturl.url ;
+    session_author : string ;
+  }  [@@deriving yojson]
+
+type stog_info = {
+    stog_dir : string ;
+    mutable stog_state : Stog_server_run.state option ref ;
+    mutable stog_ws_cons : (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit)) list ref ;
+    stog_preview_url : Neturl.url ;
   }
+
+type editor_info = {
+    editor_ws_cons : (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit)) list ref ;
+    editor_url : Neturl.url ;
+  }
+type session =
+  { session_id : string ;
+    session_dir : string ;
+    session_repo_dir : string ;
+    session_stored : stored ;
+    session_stog : stog_info ;
+    session_editor : editor_info ;
+  }
+
+let session_info_file session_dir = Filename.concat session_dir "index.json"
 
 let () = Random.self_init ()
 
@@ -82,9 +105,9 @@ let ssh_git cfg ?dir command =
   in
   run command
 
-let git_clone cfg session_dir =
+let git_clone cfg repo_dir =
   let command = Printf.sprintf "clone %s %s"
-    (Filename.quote cfg.git_repo_url) (Filename.quote session_dir)
+    (Filename.quote cfg.git_repo_url) (Filename.quote repo_dir)
   in
   ssh_git cfg command
 
@@ -96,7 +119,7 @@ let add_user_info session account =
     "echo %s >> %s" (Filename.quote s)
       (Filename.quote
        (Filename.concat
-        (Filename.concat session.session_dir ".git") "config"))
+        (Filename.concat session.session_repo_dir ".git") "config"))
   in
   run command
 
@@ -107,9 +130,9 @@ let horodate () =
      (t.tm_year + 1900) (t.tm_mon + 1) t.tm_mday
      t.tm_hour t.tm_min t.tm_sec
   )
-let git_current_branch session_dir =
+let git_current_branch repo_dir =
   let command = Printf.sprintf
-    "cd %s && git rev-parse --abbrev-ref HEAD" (Filename.quote session_dir)
+    "cd %s && git rev-parse --abbrev-ref HEAD" (Filename.quote repo_dir)
   in
   try
     let stdin = Unix.open_process_in command in
@@ -119,47 +142,95 @@ let git_current_branch session_dir =
   with
     _ -> failwith (Printf.sprintf "Exec error: %s" command)
 
-let git_create_branch session_dir account =
+let git_create_branch repo_dir account =
   let branch_name = Printf.sprintf "%s--%s" account.login (horodate()) in
   let command = Printf.sprintf "cd %s && git checkout -b %s"
-    (Filename.quote session_dir) (Filename.quote branch_name)
+    (Filename.quote repo_dir) (Filename.quote branch_name)
   in
   run command;
   branch_name
 
-let create cfg account =
-  let session_id = new_id () in
-  let session_dir = Filename.concat cfg.dir session_id in
-  let session_stog_dir =
-    match cfg.stog_dir with
-    | None -> session_dir
-    | Some s -> Filename.concat session_dir s
+let stog_info_of_repo_dir cfg session_id repo_dir =
+  let stog_dir =
+    match cfg.Stog_multi_config.stog_dir with
+    | None -> repo_dir
+    | Some s -> Filename.concat repo_dir s
   in
-  git_clone cfg session_dir ;
-  let stog = read_stog session_stog_dir in
-  let stog_base_url =
+  let base_url =
     let url =
       List.fold_left Stog_types.url_concat
         cfg.app_url (Stog_multi_page.path_sessions @ [session_id ; "preview" ])
     in
     Neturl.modify_url ~path: ((Neturl.url_path url)@[""]) url
   in
-  let orig_branch = git_current_branch session_dir in
-  let branch_name = git_create_branch session_dir account in
-  let (state, cons) = Stog_server_preview.new_stog_session stog stog_base_url in
-  let session =
-    { session_id ;
-      session_create_date = Unix.time () ;
-      session_dir ;
-      session_stog_dir ;
-      session_state = state ;
-      session_ws_cons = cons ;
-      session_auth = new_auth_cookie ;
+  { stog_dir ;
+    stog_state = ref None ;
+    stog_ws_cons = ref [] ;
+    stog_preview_url = base_url ;
+  }
+
+let editor_info_of_stog_info cfg session_id stog_info =
+  let url =
+    let url =
+      List.fold_left Stog_types.url_concat
+        cfg.app_url (Stog_multi_page.path_sessions @ [session_id ; "editor" ])
+    in
+    Neturl.modify_url ~path: ((Neturl.url_path url)@[""]) url
+  in
+  { editor_ws_cons = ref [] ;
+    editor_url = url ;
+  }
+
+let load cfg session_id =
+  let session_dir = Filename.concat cfg.dir session_id in
+  let _stored =
+    let file = session_info_file session_dir in
+    match Yojson.Safe.from_string (Stog_misc.string_of_file file) with
+    | exception Yojson.Json_error err ->
+        failwith (Printf.sprintf "File %S: %s" file err)
+    | json ->
+        match stored_of_yojson json with
+        | `Error s -> failwith (Printf.sprintf "File %S: %s" file s)
+        | `Ok x -> x
+  in
+  assert false
+
+let start_session session =
+  let stog = read_stog session.session_stog.stog_dir in
+  let (state, cons) = Stog_server_preview.new_stog_session
+    stog session.session_stog.stog_preview_url
+  in
+  session.session_stog.stog_state <- state ;
+  session.session_stog.stog_ws_cons <- cons
+
+let create cfg account =
+  let session_id = new_id () in
+  let session_dir = Filename.concat cfg.dir session_id in
+  let repo_dir = Filename.concat session_dir "repo" in
+  let stog_info = stog_info_of_repo_dir cfg session_id repo_dir in
+  let editor_info = editor_info_of_stog_info cfg session_id stog_info in
+
+  git_clone cfg repo_dir ;
+  let orig_branch = git_current_branch repo_dir in
+  let branch_name = git_create_branch repo_dir account in
+
+  let stored =
+    { session_create_date = Unix.time () ;
+      session_state = Loaded ;
       session_orig_branch = orig_branch ;
       session_branch = branch_name ;
-      session_preview_url = stog_base_url ;
+      session_author = account.login ;
+    }
+  in
+  let session =
+    { session_id ;
+      session_dir ;
+      session_repo_dir = repo_dir ;
+      session_stored = stored ;
+      session_stog = stog_info ;
+      session_editor = editor_info ;
     }
   in
   add_user_info session account ;
-
+  start_session session ;
   session

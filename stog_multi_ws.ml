@@ -46,10 +46,10 @@ let handle_con sessions base_path uri (stream, push) =
         | exception Not_found ->
             failwith (Printf.sprintf "Invalid session %S" id)
         | session ->
-            session.session_ws_cons := (stream, push) :: !(session.session_ws_cons) ;
-            let read_stog () = Stog_multi_session.read_stog session.session_stog_dir in
+            session.session_stog.stog_ws_cons := (stream, push) :: !(session.session_stog.stog_ws_cons) ;
+            let read_stog () = Stog_multi_session.read_stog session.session_stog.stog_dir in
             Stog_server_ws.handle_messages read_stog
-              session.session_state session.session_ws_cons (base_path @ [id])
+              session.session_stog.stog_state session.session_stog.stog_ws_cons (base_path @ [id])
               stream push
       end
   | _ -> failwith "Invalid path"
@@ -57,12 +57,6 @@ let handle_con sessions base_path uri (stream, push) =
 ;;
 
 let server cfg sessions sockaddr =
-  (*
-  let rec echo_fun uri (stream, push) =
-    Lwt_stream.next stream >>= fun frame ->
-    Lwt.wrap (fun () -> push (Some frame)) >>= fun () ->
-    echo_fun uri (stream, push) in
-  *)
   Websocket.establish_server sockaddr
     (handle_con sessions (Neturl.url_path cfg.app_url))
 ;;
