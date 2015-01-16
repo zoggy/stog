@@ -198,7 +198,7 @@ server_files/$(SERVER_JS): stog_server_types.cmi stog_server_types.cmo stog_serv
 	$(OCAMLFIND) ocamlc -o $@.byte $(COMPFLAGS) \
 	-package js_of_ocaml,js_of_ocaml.syntax,xmldiff.js,ojs.js,xtmpl,yojson,ppx_deriving_yojson -syntax camlp4o -linkpkg \
 	stog_server_types.cmo stog_server_client_js.ml
-	$(JS_OF_OCAML) nat.js $@.byte  -o $@
+	$(JS_OF_OCAML) +js_of_ocaml/nat.js $@.byte  -o $@
 
 stog_server_files.ml: server_files/$(SERVER_JS)
 	$(OCAML_CRUNCH) --mode=plain -e js -o $@ server_files

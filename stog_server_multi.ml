@@ -39,10 +39,24 @@ let (>>=) = Lwt.bind
 
 let sha256 s = String.lowercase (Sha256.to_hex (Sha256.string s))
 
+let add_session session sessions =
+  sessions := Stog_types.Str_map.add session.session_id session !sessions
+
 let create_session cfg sessions account =
   let session = Stog_multi_session.create cfg account in
-  sessions := Stog_types.Str_map.add session.session_id session !sessions;
+  add_session session sessions ;
   session
+
+let restart_previous_sessions cfg sessions =
+  List.iter
+    (fun session ->
+       try
+         prerr_endline ("restarting "^(session.session_id));
+         start_session session ;
+         add_session session sessions
+       with e -> prerr_endline (Printexc.to_string e)
+    )
+    (Stog_multi_session.load_previous_sessions cfg)
 
 let handle_new_session cfg sessions req body =
   Cohttp_lwt_body.to_string body >>= fun body ->
@@ -159,6 +173,7 @@ let launch host port args =
     | file :: _ -> Stog_multi_config.read file
   in
   let sessions = ref (Str_map.empty : session Str_map.t) in
+  restart_previous_sessions cfg sessions ;
   Stog_multi_ws.run_server cfg sessions >>=
   fun _ -> start_server cfg sessions host port
 

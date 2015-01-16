@@ -32,7 +32,6 @@
 open Stog_multi_config
 
 type session_state =
-  | Loaded
   | Live
   | Stopped
   | Error of string [@@deriving yojson]
@@ -66,6 +65,7 @@ type session =
   }
 
 let session_info_file session_dir = Filename.concat session_dir "index.json"
+let repo_dir_of_session_dir d = Filename.concat d "repo"
 
 let () = Random.self_init ()
 
@@ -183,7 +183,7 @@ let editor_info_of_stog_info cfg session_id stog_info =
 
 let load cfg session_id =
   let session_dir = Filename.concat cfg.dir session_id in
-  let _stored =
+  let stored =
     let file = session_info_file session_dir in
     match Yojson.Safe.from_string (Stog_misc.string_of_file file) with
     | exception Yojson.Json_error err ->
@@ -193,7 +193,24 @@ let load cfg session_id =
         | `Error s -> failwith (Printf.sprintf "File %S: %s" file s)
         | `Ok x -> x
   in
-  assert false
+  let repo_dir = repo_dir_of_session_dir session_dir in
+  let stog_info = stog_info_of_repo_dir cfg session_id repo_dir in
+  let editor_info = editor_info_of_stog_info cfg session_id stog_info in
+  let session =
+    { session_id ;
+      session_dir ;
+      session_repo_dir = repo_dir ;
+      session_stored = stored ;
+      session_stog = stog_info ;
+      session_editor = editor_info ;
+    }
+  in
+  session
+
+let store_stored session =
+  let file = session_info_file session.session_dir in
+  let json = stored_to_yojson session.session_stored in
+  Stog_misc.file_of_string ~file (Yojson.Safe.to_string json)
 
 let start_session session =
   let stog = read_stog session.session_stog.stog_dir in
@@ -206,7 +223,7 @@ let start_session session =
 let create cfg account =
   let session_id = new_id () in
   let session_dir = Filename.concat cfg.dir session_id in
-  let repo_dir = Filename.concat session_dir "repo" in
+  let repo_dir = repo_dir_of_session_dir session_dir in
   let stog_info = stog_info_of_repo_dir cfg session_id repo_dir in
   let editor_info = editor_info_of_stog_info cfg session_id stog_info in
 
@@ -216,7 +233,7 @@ let create cfg account =
 
   let stored =
     { session_create_date = Unix.time () ;
-      session_state = Loaded ;
+      session_state = Live ;
       session_orig_branch = orig_branch ;
       session_branch = branch_name ;
       session_author = account.login ;
@@ -232,5 +249,31 @@ let create cfg account =
     }
   in
   add_user_info session account ;
+  store_stored session ;
   start_session session ;
   session
+
+let load_previous_sessions cfg =
+  let dirs = Stog_find.(
+     find_list Ignore [cfg.dir]
+       [ Maxdepth 1 ; Type Unix.S_DIR ;
+         Predicate (fun s ->
+            s <> Filename.current_dir_name &&
+            s <> Filename.parent_dir_name &&
+            s <> cfg.dir)
+       ]
+    )
+  in
+  List.iter prerr_endline dirs;
+  let f acc dir =
+    let file = session_info_file dir in
+    if Sys.file_exists file then
+      match load cfg (Filename.basename dir) with
+      | session -> session :: acc
+      | exception Failure msg -> prerr_endline msg ; acc
+      | exception e -> prerr_endline (Printexc.to_string e); acc
+    else
+      acc
+  in
+  List.fold_left f [] dirs
+
