@@ -123,6 +123,9 @@ let handler cfg sessions host port sock req body =
       let body = Xtmpl.string_of_xml page in
       S.respond_string ~status:`OK ~body ()
 
+  | ["styles" ; s] when s = Stog_server_preview.default_css ->
+      Stog_server_preview.respond_default_css ()
+
   | p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `POST ->
       handle_new_session cfg sessions req body
 
@@ -135,18 +138,33 @@ let handler cfg sessions host port sock req body =
 
   | _ ->
       match path with
-      | "sessions" :: id :: p when req.S.Request.meth = `GET ->
+      | "sessions" :: session_id :: q when req.S.Request.meth = `GET ->
           begin
-            match Str_map.find id !sessions with
-              session ->
-                let base_path = (Neturl.url_path cfg.app_url) @ Stog_multi_page.path_sessions @ [id] in
-                Stog_server_http.handler session.session_stog.stog_state host port base_path sock req body
+            match Str_map.find session_id !sessions with
             | exception Not_found ->
-                let body =
-                  "<html><header><title>Stog-server</title></header>"^
-                    "<body>Space "^id^" not found</body></html>"
-                in
+                let body = Printf.sprintf "Session %S not found" session_id in
                 S.respond_error ~status:`Not_found ~body ()
+            | session ->
+                match q with
+                | ["styles" ; s] when s = Stog_server_preview.default_css ->
+                    Stog_server_preview.respond_default_css ()
+
+                | "preview" :: _ ->
+                    let base_path =
+                      (Neturl.url_path cfg.app_url) @
+                        Stog_multi_page.path_sessions @ [session_id]
+                    in
+                    Stog_server_http.handler session.session_stog.stog_state
+                      host port base_path sock req body
+
+                | "editor" :: p  ->
+                    let base_path =
+                      (Neturl.url_path cfg.app_url) @
+                        Stog_multi_page.path_sessions @ [session_id]
+                    in
+                    Stog_multi_ed.http_handler host port base_path session_id req body p
+
+                | _ -> S.respond_error ~status:`Not_found ~body:"" ()
           end
       | _ ->
           let body =

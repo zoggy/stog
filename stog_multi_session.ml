@@ -52,7 +52,7 @@ type stog_info = {
   }
 
 type editor_info = {
-    editor_ws_cons : (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit)) list ref ;
+    mutable editor_ws_cons : Stog_multi_ed.Server.connection_group ;
     editor_url : Neturl.url ;
   }
 type session =
@@ -177,7 +177,7 @@ let editor_info_of_stog_info cfg session_id stog_info =
     in
     Neturl.modify_url ~path: ((Neturl.url_path url)@[""]) url
   in
-  { editor_ws_cons = ref [] ;
+  { editor_ws_cons = new Stog_multi_ed.Server.connection_group ;
     editor_url = url ;
   }
 
@@ -218,7 +218,9 @@ let start_session session =
     stog session.session_stog.stog_preview_url
   in
   session.session_stog.stog_state <- state ;
-  session.session_stog.stog_ws_cons <- cons
+  session.session_stog.stog_ws_cons <- cons ;
+  session.session_editor.editor_ws_cons <-
+    Stog_multi_ed.init (Ojs_path.of_string session.session_stog.stog_dir)
 
 let create cfg account =
   let session_id = new_id () in

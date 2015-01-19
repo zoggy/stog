@@ -57,8 +57,11 @@ SHARE_DIR=$datadir
 
 PACKAGES=xmlm,xtmpl,netstring,config-file,dynlink,unix,str,higlo.lexers
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
-SERVER_PACKAGES=lwt.unix,lwt.preemptive,websocket,cstruct,crunch,xmldiff.js,yojson,ppx_deriving_yojson,ojs.js,sha
-if test "$SERVER" = "" ; then SERVER_PACKAGES=""; fi
+SERVER_PACKAGES=lwt.unix,lwt.preemptive,websocket,cstruct,crunch,xmldiff,yojson,ppx_deriving_yojson,ojs.server,sha
+SERVER_JS_PACKAGES=js_of_ocaml,js_of_ocaml.syntax,xmldiff.js,yojson,ppx_deriving_yojson,ojs.js,xtmpl
+MSERVER_PACKAGES=ojs.filetree.server,ojs.editor.server
+MSERVER_JS_PACKAGES=ojs.filetree.js,ojs.editor.js
+if test "$SERVER" = "" ; then SERVER_PACKAGES=""; MSERVER_PACKAGES="" ; fi
 
 #############################
 # substitutions to perform
@@ -87,6 +90,9 @@ AC_SUBST(OCAML_CRUNCH)
 AC_SUBST(PACKAGES)
 AC_SUBST(OCAML_SESSION_PACKAGES)
 AC_SUBST(SERVER_PACKAGES)
+AC_SUBST(SERVER_JS_PACKAGES)
+AC_SUBST(MSERVER_PACKAGES)
+AC_SUBST(MSERVER_JS_PACKAGES)
 AC_SUBST(SERVER)
 AC_SUBST(SERVER_BYTE)
 AC_SUBST(MSERVER)

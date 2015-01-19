@@ -37,7 +37,7 @@ module Xdiffjs = Xmldiff_js
 let msg_box_id = "stog-server-preview-msgbox";;
 let action_box_id = "stog-server-preview-actionbox";;
 let cls_button = "button";;
-let preview_style_url = "styles/preview.css";;
+let preview_style_url = "styles/stog-server-style.css";;
 
 let log s = Firebug.console##log (Js.string s);;
 

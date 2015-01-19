@@ -37,64 +37,35 @@ let (>>=) = Lwt.bind
 
 let client_js = "stog_server_client.js";;
 
-let default_css =
-  "#stog-server-preview-msgbox {
-    position: fixed; top: 10px; right: 10px;
-    z-index: 2001 ;
-   }
+let default_css = "stog-server-style.css" ;;
 
-   #stog-server-preview-actionbox {
-    position: fixed; top: 10px; left: 10px;
-    z-index: 2000 ;
-    background: #d9edf7;
-   }
+let respond_css body =
+  let headers = Cohttp.Header.init_with "Content-Type" "text/css" in
+  S.respond_string ~headers ~status: `OK ~body ()
 
-  #stog-server-preview-actionbox .button {
-    font-size: 1.5em;
-    padding: 0.1em 0.1em 0.1em 0.1em;
-    border-style: solid ;
-    border-width: 1px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    background: #d9edf7;
-  }
+let respond_js body =
+  let headers = Cohttp.Header.init_with "Content-Type" "text/javscript" in
+  S.respond_string ~headers ~status: `OK ~body ()
 
-  .ojs-msg {
-    padding: 0.5em 1em 0.5em 1em;
-    border-style: solid ;
-    border-width: 1px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-  }
+let respond_server_js file =
+  let body =
+    match Stog_server_files.read file with
+      None -> ""
+    | Some s -> s
+  in
+  respond_js body
 
-  .ojs-msg-info {
-    background: #d9edf7;
-    color: #3a87ad;
-    border-color: #c9dde7;
-  }
-  .ojs-msg-error {
-    background: #f2dede;
-    color: #b94a48;
-    border-color: #e2cece;
-  }
-  .ojs-msg-close {
-    float: right ;
-    margin-left: 1em;
-  }
-"
+let respond_default_css () =
+  let body =
+    match Stog_server_files.read default_css with
+      None -> ""
+    | Some s -> s
+  in
+  respond_css body
 
 let rec preview_file stog = function
-  [file] when file = client_js ->
-     let body =
-       match Stog_server_files.read client_js with
-         None -> ""
-       | Some s -> s
-    in
-    let headers = Cohttp.Header.init_with "Content-Type" "text/javascript" in
-    S.respond_string ~headers ~status: `OK ~body ()
-  | path ->
+| [file] when file = client_js -> respond_server_js file
+| path ->
     let rec iter tree = function
       [] -> S.respond_file ~fname: "" ()
     | [f] ->
@@ -168,7 +139,9 @@ let handle_preview http_url ws_url current_state sock req body path =
           S.respond_string ~headers ~status:`OK ~body ()
       | None -> preview_file state.stog path
 
-let new_stog_session ?(current_state=ref None) ?(active_cons=ref []) stog stog_base_url =
+let new_stog_session stog stog_base_url =
+  let active_cons = ref [] in
+  let current_state = ref None in
   let stog =
     (* if modifying another field, update also Stog_server_run.refresh *)
     { stog with Stog_types.stog_base_url }

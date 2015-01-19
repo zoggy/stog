@@ -1,0 +1,143 @@
+#stog-server-preview-msgbox {
+    position: fixed; top: 10px; right: 10px;
+    z-index: 2001 ;
+   }
+
+#stog-server-preview-actionbox {
+  position: fixed; top: 10px; left: 10px;
+  z-index: 2000 ;
+  background: #d9edf7;
+ }
+
+#stog-server-preview-actionbox .button {
+  font-size: 1.5em;
+  padding: 0.1em 0.1em 0.1em 0.1em;
+  border-style: solid ;
+  border-width: 1px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background: #d9edf7;
+}
+
+/*.ojs-msg {
+  padding: 0.5em 1em 0.5em 1em;
+  border-style: solid ;
+  border-width: 1px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.ojs-msg-info {
+  background: #d9edf7;
+  color: #3a87ad;
+  border-color: #c9dde7;
+}
+.ojs-msg-error {
+  background: #f2dede;
+  color: #b94a48;
+  border-color: #e2cece;
+}
+.ojs-msg-close {
+  float: right ;
+  margin-left: 1em;
+}
+*/
+
+#ft { position: absolute; top: 0px; left: 0px; width: 290px ;
+      overflow: scroll ; padding-right: 1em;
+      height: 100%;
+}
+
+#ojs-msg {
+  position: absolute; top: 10px; right: 10px;
+  z-index: 1000 ;
+}
+
+.ojsft-file-head > .ojs-button-bar {
+  display: none ;
+  }
+.ojsft-file-head:hover > .ojs-button-bar {
+  display: inline ;
+}
+
+.ojs-drag {
+  background-color: #aaaaff ;
+}
+
+.ojs-button-bar > .ojs-button {
+  font-size: 0.9em;
+  padding: 0.1em 0.1em 0.1em 0.1em;
+  margin-left: 0.1em;
+  background-color: #ccccff ;
+  -webkit-border-radius: 2px;
+     -moz-border-radius: 2px;
+          border-radius: 2px;
+}
+
+.ojs-msg {
+  padding: 0.5em 1em 0.5em 1em;
+  border-style: solid ;
+  border-width: 1px;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+
+}
+
+.ojs-msg-info {
+  background: #d9edf7;
+  color: #3a87ad;
+  border-color: #c9dde7;
+}
+
+.ojs-msg-error {
+  background: #f2dede;
+  color: #b94a48;
+  border-color: #e2cece;
+}
+.ojs-msg-close {
+  float: right ;
+  margin-left: 1em;
+}
+
+div.ojsft {
+  font-family: monospace;
+}
+div.ojsft-file { font-weight: normal; margin-left: 1em ; }
+
+.ojsft-dir {
+  font-weight: bold ;
+  margin-left: 1em ;
+}
+
+.ojsft-dir-subs {
+  margin-top: 0.1em;
+  margin-left: 0.2em;
+  padding-left: 0.2em;
+  border-style: solid ;
+  border-width: 0 0 0 1px ;
+  border-color: #888888 ;
+}
+.selected { background-color: #aaf; }
+.collapsed { display: none ; }
+.expanded { display: normal; }
+
+#bar {
+  position: absolute ;
+  top: 0px;
+  left: 310px;
+  height:40px;
+  padding-top: 5px;
+}
+#bar pre { }
+
+#ed {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  bottom: 0;
+  left: 310px;
+}
+

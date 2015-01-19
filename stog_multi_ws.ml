@@ -46,11 +46,15 @@ let handle_con sessions base_path uri (stream, push) =
         | exception Not_found ->
             failwith (Printf.sprintf "Invalid session %S" id)
         | session ->
-            session.session_stog.stog_ws_cons := (stream, push) :: !(session.session_stog.stog_ws_cons) ;
-            let read_stog () = Stog_multi_session.read_stog session.session_stog.stog_dir in
-            Stog_server_ws.handle_messages read_stog
-              session.session_stog.stog_state session.session_stog.stog_ws_cons (base_path @ [id])
-              stream push
+            match p with
+            | "editor" :: _ ->
+                session.session_editor.editor_ws_cons#add_connection stream push
+            | _ ->
+                session.session_stog.stog_ws_cons := (stream, push) :: !(session.session_stog.stog_ws_cons) ;
+                let read_stog () = Stog_multi_session.read_stog session.session_stog.stog_dir in
+                Stog_server_ws.handle_messages read_stog
+                  session.session_stog.stog_state session.session_stog.stog_ws_cons (base_path @ [id])
+                  stream push
       end
   | _ -> failwith "Invalid path"
 
