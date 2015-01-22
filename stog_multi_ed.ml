@@ -43,7 +43,15 @@ module Server = Ojs_server.Make(Server_P)
 module SFT = Ojsft_server.Make(Stog_multi_ed_types.FT)
 module SED = Ojsed_server.Make(Stog_multi_ed_types.ED)
 
-
+(*
+class myft broadcall broadcast ~id root =
+  object(self)
+    inherit SFT.filetree broadcall broadcast ~id root as super
+    method handle_message msg =
+      prerr_endline "message!";
+      super#handle_message msg
+  end
+*)
 let init root_dir =
   let connections = new Server.connection_group in
   let filetrees = new SFT.filetrees connections#broadcall connections#broadcast
