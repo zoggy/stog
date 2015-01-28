@@ -32,7 +32,7 @@ include master.Makefile
 P=#p -p
 PBYTE=#p -p a
 
-OF_FLAGS=-package $(PACKAGES),$(SERVER_PACKAGES)
+OF_FLAGS=-package $(SERVER_PACKAGES),$(PACKAGES)
 
 COMPFLAGS=-I +ocamldoc -annot -rectypes -g -thread  -safe-string #-w +K
 OCAMLPP=
@@ -489,3 +489,6 @@ $(PLUGINS_OPT): $(LIB)
 	$(OCAMLFIND) ocamldep `ls stog*.ml stog*.mli | grep -v _js.ml` > .depend
 
 include .depend
+
+stog_multi_page.cm*: templates/form_login.tmpl
+

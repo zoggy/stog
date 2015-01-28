@@ -1,0 +1,23 @@
+<form
+  method="&lt;method param_=&quot;true&quot;
+                     type_=&quot;Cohttp.Code.meth&quot;
+                     to_xml_=&quot;fun s -> [Xtmpl.D (Cohttp.Code.string_of_method s)]&quot;
+                     optional_=&quot;true&quot;
+          &gt;`POST&lt;/method&gt;"
+  action="&lt;action param_=&quot;true&quot;/&gt;"
+>
+<fieldset>
+<div>
+<label for="login">Login:</label>
+<input type="text" name="login" id="login" placeholder="Your login" mand_="true" required="required"/>
+</div>
+<div>
+<label for="password">Password:</label>
+<input type="password" name="password" id="password" placeholder="Your password" mand_="true" required="required"/>
+</div>
+<div class="alert alert-error">
+<error-msg type_="xmls" param_="true" optional_="true"/>
+</div>
+<input type="submit" name="submit" value="Login"/>
+</fieldset>
+</form>

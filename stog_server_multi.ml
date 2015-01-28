@@ -58,25 +58,36 @@ let restart_previous_sessions cfg sessions =
     )
     (Stog_multi_session.load_previous_sessions cfg)
 
+let action_form_login app_url =
+  let url = List.fold_left Stog_types.url_concat app_url 
+    Stog_multi_page.path_sessions
+  in
+  Stog_types.string_of_url url
+
 let handle_new_session cfg sessions req body =
   Cohttp_lwt_body.to_string body >>= fun body ->
+    let module F = Stog_multi_page.Form_login in
     match
-      let form = Stog_multi_page.read_form_new_session req body in
+      let (tmpl, form) = F.read_form (Stog_multi_page.param_of_body body) in
       match
-        let account = List.find (fun acc -> acc.login = form.Stog_multi_page.login) cfg.accounts in
+        let account = List.find (fun acc -> acc.login = form.F.login) cfg.accounts in
         prerr_endline (Printf.sprintf "account found: %s\npasswd=%s" account.login account.passwd);
-        let pwd = sha256 form.Stog_multi_page.passwd in
+        let pwd = sha256 form.F.password in
         prerr_endline (Printf.sprintf "sha256(pwd)=%s" pwd);
         if pwd = String.lowercase account.passwd then
           account
         else
           raise Not_found
       with
-      | exception Not_found -> failwith "Invalid user/password"
+      | exception Not_found -> raise (F.Error (tmpl, ["Invalid user/password"]))
       | account -> create_session cfg sessions account
     with
-    | exception (Failure err) ->
-        let contents = Stog_multi_page.form_new_session ~err cfg.app_url in
+    | exception (F.Error (tmpl, errors)) ->
+        let error_msg = List.map
+          (fun msg -> Xtmpl.E (("","div"), Xtmpl.atts_empty, [Xtmpl.D msg]))
+            errors
+        in
+        let contents = tmpl ~error_msg ~action: (action_form_login cfg.app_url) () in
         let page = Stog_multi_page.page ~title: "New session" contents in
         let body = Xtmpl.string_of_xml page in
         S.respond_string ~status:`OK ~body ()
@@ -118,7 +129,9 @@ let handler cfg sessions host port sock req body =
   let path = req_path_from_app cfg req in
   match path with
   | [] ->
-      let contents = Stog_multi_page.form_new_session cfg.app_url in
+      let contents = Stog_multi_page.Form_login.form
+        ~action: (action_form_login cfg.app_url) ()
+      in
       let page = Stog_multi_page.page ~title: "New session" contents in
       let body = Xtmpl.string_of_xml page in
       S.respond_string ~status:`OK ~body ()
