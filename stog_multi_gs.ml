@@ -29,36 +29,13 @@
 
 (** *)
 
-open Stog_multi_config
-module S = Cohttp_lwt_unix.Server
-open Xtmpl
+open Stog_types
+open Stog_multi_session
 
-let path_sessions = ["sessions"]
+type global_state = {
+  sessions : Stog_multi_session.session Str_map.t ref ;
+  logged : Stog_multi_config.account Str_map.t ref ;
+  }
 
-let page_tmpl = [%xtmpl "templates/multi_page.tmpl"]
-
-let app_name = "Stog-multi-server"
-
-let page cfg account_opt ~title body =
-  let topbar = [] in
-  let css_url =
-    let url = List.fold_left Stog_types.url_concat cfg.app_url
-      ["styles" ; Stog_server_preview.default_css ]
-    in
-    Stog_types.string_of_url url
-  in
-  let headers = [ Ojs_tmpl.link_css css_url ] in
-  page_tmpl ~app_name ~title ~headers ~topbar ~body ()
-
-module Form_login = [%ojs.form "templates/form_login.tmpl"]
-
-let param_of_body body =
-  let params = Uri.query_of_encoded body in
-  fun s ->
-    match List.assoc s params with
-    | exception Not_found -> None
-    | [] | "" :: _ -> None
-    | s :: _ -> Some s
-
-
-
+let add_session session sessions =
+  sessions := Stog_types.Str_map.add session.session_id session !sessions

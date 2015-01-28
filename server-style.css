@@ -141,3 +141,31 @@ div.ojsft-file { font-weight: normal; margin-left: 1em ; }
   left: 310px;
 }
 
+/* Multi server style */
+body {
+  background-color: #449900 ;
+  color: #333333 ;
+  font-family: "trebuchet ms", helvetica, sans-serif;
+  font-size: 1em;
+}
+
+#page {
+  width: 750px;
+  margin-left: auto ;
+  margin-right: auto ;
+  border-style: solid ;
+  border-width: 0 2px 2px 2px;
+  border-color: #333333 ;
+  background: #FEFEFE ;
+  padding: 0em 1em 1em 1em;
+}
+
+#login-form {
+  width: 400px ;
+}
+
+.page-title {
+  text-align: center ;
+  font-size: 2.3em;
+  margin-bottom: 1em;
+}

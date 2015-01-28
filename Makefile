@@ -136,6 +136,8 @@ PLUGIN_MSERVER_CMXFILES=\
 	stog_multi_ed_types.cmx \
 	stog_multi_ed.cmx \
 	stog_multi_session.cmx \
+	stog_multi_gs.cmx \
+	stog_multi_user.cmx \
 	stog_multi_ws.cmx \
 	stog_server_multi.cmx
 PLUGIN_MSERVER_CMOFILES=$(PLUGIN_MSERVER_CMXFILES:.cmx=.cmo)
@@ -490,5 +492,5 @@ $(PLUGINS_OPT): $(LIB)
 
 include .depend
 
-stog_multi_page.cm*: templates/form_login.tmpl
-
+stog_multi_page.cm*: templates/form_login.tmpl templates/multi_page.tmpl
+stog_multi_user.cm*: templates/multi_user_page.tmpl

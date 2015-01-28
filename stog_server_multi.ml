@@ -33,19 +33,12 @@ open Stog_types
 open Xtmpl
 open Stog_multi_config
 open Stog_multi_session
+open Stog_multi_gs
 
 module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
 
 let sha256 s = String.lowercase (Sha256.to_hex (Sha256.string s))
-
-let add_session session sessions =
-  sessions := Stog_types.Str_map.add session.session_id session !sessions
-
-let create_session cfg sessions account =
-  let session = Stog_multi_session.create cfg account in
-  add_session session sessions ;
-  session
 
 let restart_previous_sessions cfg sessions =
   List.iter
@@ -53,61 +46,65 @@ let restart_previous_sessions cfg sessions =
        try
          prerr_endline ("restarting "^(session.session_id));
          start_session session ;
-         add_session session sessions
+         Stog_multi_gs.add_session session sessions
        with e -> prerr_endline (Printexc.to_string e)
     )
     (Stog_multi_session.load_previous_sessions cfg)
 
+let add_logged gs user_token account =
+  gs.logged := Str_map.add user_token account !(gs.logged)
+
+let new_token () = Stog_multi_session.new_id ()
+let token_cookie = "STOGMULTILOGINTOKEN"
+
 let action_form_login app_url =
-  let url = List.fold_left Stog_types.url_concat app_url 
+  let url = List.fold_left Stog_types.url_concat app_url
     Stog_multi_page.path_sessions
   in
   Stog_types.string_of_url url
 
-let handle_new_session cfg sessions req body =
+let handle_login cfg gs req body =
   Cohttp_lwt_body.to_string body >>= fun body ->
-    let module F = Stog_multi_page.Form_login in
-    match
-      let (tmpl, form) = F.read_form (Stog_multi_page.param_of_body body) in
-      match
-        let account = List.find (fun acc -> acc.login = form.F.login) cfg.accounts in
-        prerr_endline (Printf.sprintf "account found: %s\npasswd=%s" account.login account.passwd);
-        let pwd = sha256 form.F.password in
-        prerr_endline (Printf.sprintf "sha256(pwd)=%s" pwd);
-        if pwd = String.lowercase account.passwd then
-          account
-        else
-          raise Not_found
-      with
-      | exception Not_found -> raise (F.Error (tmpl, ["Invalid user/password"]))
-      | account -> create_session cfg sessions account
+  let module F = Stog_multi_page.Form_login in
+  match
+    let (tmpl, form) = F.read_form (Stog_multi_page.param_of_body body) in
+    try
+      let account = List.find (fun acc -> acc.login = form.F.login) cfg.accounts in
+      prerr_endline (Printf.sprintf "account found: %s\npasswd=%s" account.login account.passwd);
+      let pwd = sha256 form.F.password in
+      prerr_endline (Printf.sprintf "sha256(pwd)=%s" pwd);
+      if pwd = String.lowercase account.passwd then
+        account
+      else
+        raise Not_found
     with
-    | exception (F.Error (tmpl, errors)) ->
-        let error_msg = List.map
-          (fun msg -> Xtmpl.E (("","div"), Xtmpl.atts_empty, [Xtmpl.D msg]))
-            errors
-        in
-        let contents = tmpl ~error_msg ~action: (action_form_login cfg.app_url) () in
-        let page = Stog_multi_page.page ~title: "New session" contents in
-        let body = Xtmpl.string_of_xml page in
-        S.respond_string ~status:`OK ~body ()
-    | session ->
-        let preview_url = Stog_types.string_of_url session.session_stog.stog_preview_url in
-          let contents =
-          [
-            Xtmpl.E (("","p"), Xtmpl.atts_empty, [
-               Xtmpl.D "Preview URL: ";
-               Xtmpl.E (("","a"),
-                Xtmpl.atts_of_list
-                  [("","href"), [ Xtmpl.D preview_url ]],
-                [Xtmpl.D preview_url]) ;
-             ])
-          ]
-        in
-        let title = Printf.sprintf "Session %s created" session.session_id in
-        let page = Stog_multi_page.page ~title contents in
-        let body = Xtmpl.string_of_xml page in
-        S.respond_string ~status:`OK ~body ()
+    | Not_found -> raise (F.Error (tmpl, ["Invalid user/password"]))
+  with
+  | exception (F.Error (tmpl, errors)) ->
+      let error_msg = List.map
+        (fun msg -> Xtmpl.E (("","div"), Xtmpl.atts_empty, [Xtmpl.D msg]))
+          errors
+      in
+      let contents = tmpl ~error_msg ~action: (action_form_login cfg.app_url) () in
+      let page = Stog_multi_page.page cfg None ~title: "Login" contents in
+      let body = Xtmpl.string_of_xmls page in
+      S.respond_string ~status:`OK ~body ()
+  | account ->
+      let token = new_token () in
+      add_logged gs token account;
+      let cookie = Cohttp.Cookie.Set_cookie_hdr.make
+          ~expiration: `Session
+          ~path: ("/"^(String.concat "/" (Neturl.url_path cfg.app_url)))
+          ~http_only: true
+          (token_cookie, token)
+      in
+      let page = Stog_multi_user.page cfg account gs in
+      let body = Xtmpl.string_of_xmls page in
+      let headers =
+        let (h,s) = Cohttp.Cookie.Set_cookie_hdr.serialize cookie in
+        Cohttp.Header.init_with h s
+      in
+      S.respond_string ~headers ~status:`OK ~body ()
 
 let req_path_from_app cfg req =
   let app_path = Neturl.url_path cfg.app_url in
@@ -125,22 +122,22 @@ let req_path_from_app cfg req =
   in
   iter (app_path, req_path)
 
-let handler cfg sessions host port sock req body =
+let handler cfg gs host port sock req body =
   let path = req_path_from_app cfg req in
   match path with
   | [] ->
       let contents = Stog_multi_page.Form_login.form
         ~action: (action_form_login cfg.app_url) ()
       in
-      let page = Stog_multi_page.page ~title: "New session" contents in
-      let body = Xtmpl.string_of_xml page in
+      let page = Stog_multi_page.page cfg None ~title: "Login" contents in
+      let body = Xtmpl.string_of_xmls page in
       S.respond_string ~status:`OK ~body ()
 
   | ["styles" ; s] when s = Stog_server_preview.default_css ->
       Stog_server_preview.respond_default_css ()
 
   | p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `POST ->
-      handle_new_session cfg sessions req body
+      handle_login cfg gs req body
 
   | p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `GET ->
       let body =
@@ -153,7 +150,7 @@ let handler cfg sessions host port sock req body =
       match path with
       | "sessions" :: session_id :: q when req.S.Request.meth = `GET ->
           begin
-            match Str_map.find session_id !sessions with
+            match Str_map.find session_id !(gs.sessions) with
             | exception Not_found ->
                 let body = Printf.sprintf "Session %S not found" session_id in
                 S.respond_error ~status:`Not_found ~body ()
@@ -186,7 +183,7 @@ let handler cfg sessions host port sock req body =
           in
           S.respond_error ~status:`Not_found ~body ()
 
-let start_server cfg sessions host port =
+let start_server cfg gs host port =
   Lwt_io.write Lwt_io.stdout
     (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
   >>= fun _ ->
@@ -194,7 +191,7 @@ let start_server cfg sessions host port =
     ignore(Lwt_io.write Lwt_io.stdout
       (Printf.sprintf "connection %s closed\n%!" (Cohttp.Connection.to_string id)))
   in
-  let config = { S.callback = handler cfg sessions host port ; conn_closed } in
+  let config = { S.callback = handler cfg gs host port ; conn_closed } in
   S.create ~address:host ~port config
 
 let launch host port args =
@@ -203,10 +200,14 @@ let launch host port args =
       [] -> failwith "Please give a configuration file"
     | file :: _ -> Stog_multi_config.read file
   in
-  let sessions = ref (Str_map.empty : session Str_map.t) in
-  restart_previous_sessions cfg sessions ;
-  Stog_multi_ws.run_server cfg sessions >>=
-  fun _ -> start_server cfg sessions host port
+  let gs = {
+    sessions = ref (Str_map.empty : session Str_map.t) ;
+    logged = ref (Str_map.empty : account Str_map.t) ;
+    }
+  in
+  restart_previous_sessions cfg gs.sessions ;
+  Stog_multi_ws.run_server cfg gs >>=
+  fun _ -> start_server cfg gs host port
 
 let () =
   let run host port args = Lwt_unix.run (launch host port args) in
