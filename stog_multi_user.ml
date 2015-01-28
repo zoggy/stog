@@ -37,17 +37,13 @@ let (>>=) = Lwt.bind
 
 let user_page_tmpl = [%xtmpl "templates/multi_user_page.tmpl"]
 
-let page cfg account gs =
-  let body = [] in
-  Stog_multi_page.page cfg (Some account) ~title: account.name body
-
 let create_session cfg sessions account =
   let session = Stog_multi_session.create cfg account in
   Stog_multi_gs.add_session session sessions ;
   session
 
-let string_of_date = Netdate.mk_mail_date  
-  
+let string_of_date = Netdate.mk_mail_date
+
 let session_list cfg gs user =
   let sessions =
     Str_map.fold
@@ -61,7 +57,7 @@ let session_list cfg gs user =
       []
   in
   let td x = Xtmpl.E(("","td"), Xtmpl.atts_empty, x) in
-  let tds_of_session s = 
+  let tds_of_session s =
     let preview_url = Stog_types.string_of_url s.session_stog.stog_preview_url in
     let editor_url = Stog_types.string_of_url s.session_editor.editor_url in
     let st = s.session_stored in
@@ -69,16 +65,28 @@ let session_list cfg gs user =
       td [Xtmpl.D (string_of_date st.session_create_date) ] ;
       td [Xtmpl.D st.session_orig_branch ] ;
       td [Xtmpl.D st.session_branch ] ;
-      td [Xtmpl.E (("","a"), Xtmpl.atts_one ("","href") [Xtmpl.D preview_url], [Xtmpl.D "preview"])] ; 
-      td [Xtmpl.E (("","a"), Xtmpl.atts_one ("","href") [Xtmpl.D editor_url], [Xtmpl.D "editor"])] ; 
-    ]      
+      td [Xtmpl.E (("","a"), Xtmpl.atts_one ("","href") [Xtmpl.D preview_url], [Xtmpl.D "preview"])] ;
+      td [Xtmpl.E (("","a"), Xtmpl.atts_one ("","href") [Xtmpl.D editor_url], [Xtmpl.D "editor"])] ;
+    ]
   in
   let trs = List.map
     (fun s -> Xtmpl.E (("","tr"), Xtmpl.atts_empty, tds_of_session s))
     sessions
   in
-  [ Xtmpl.E (("","table"), Xtmpl.atts_empty, trs) ]
-   
+  let headers =
+    let td s = td [ Xtmpl.D s] in
+    Xtmpl.E (("","tr"), Xtmpl.atts_empty,
+     [ td "Creation date" ; td "Origin branch" ; td "Current branch" ;
+       td "" ; td "" ;
+     ]
+    )
+  in
+  [ Xtmpl.E (("","table"), Xtmpl.atts_empty, headers :: trs) ]
+
+
+let page cfg gs user =
+  let body = session_list cfg gs user in
+  Stog_multi_page.page cfg (Some user) ~title: user.name body
 
 let handle_sessions_post cfg gs user req body =
   let session = create_session cfg gs.sessions user in

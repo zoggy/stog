@@ -63,6 +63,10 @@ let action_form_login app_url =
 
 let sha256 s = String.lowercase (Sha256.to_hex (Sha256.string s))
 
+let respond_page page =
+  let body = Xtmpl.string_of_xmls page in
+  S.respond_string ~status:`OK ~body ()
+
 let handle_login_post cfg gs req body =
   Cohttp_lwt_body.to_string body >>= fun body ->
   let module F = Stog_multi_page.Form_login in
@@ -87,8 +91,8 @@ let handle_login_post cfg gs req body =
       in
       let contents = tmpl ~error_msg ~action: (Stog_multi_page.url_login cfg) () in
       let page = Stog_multi_page.page cfg None ~title: "Login" contents in
-      let body = Xtmpl.string_of_xmls page in
-      S.respond_string ~status:`OK ~body ()
+      respond_page page
+
   | account ->
       let token = new_token () in
       add_logged gs token account;
@@ -98,7 +102,7 @@ let handle_login_post cfg gs req body =
           ~http_only: true
           (token_cookie, token)
       in
-      let page = Stog_multi_user.page cfg account gs in
+      let page = Stog_multi_user.page cfg gs account in
       let body = Xtmpl.string_of_xmls page in
       let headers =
         let (h,s) = Cohttp.Cookie.Set_cookie_hdr.serialize cookie in
@@ -106,12 +110,14 @@ let handle_login_post cfg gs req body =
       in
       S.respond_string ~headers ~status:`OK ~body ()
 
-let handle_login_get cfg =
-  let module F = Stog_multi_page.Form_login in
-  let contents = F.form ~action: (Stog_multi_page.url_login cfg) () in
-  let page = Stog_multi_page.page cfg None ~title: "Login" contents in
-  let body = Xtmpl.string_of_xmls page in
-  S.respond_string ~status:`OK ~body ()
+let handle_login_get cfg gs opt_user =
+  match opt_user with
+    Some user -> respond_page (Stog_multi_user.page cfg gs user)
+  | None ->
+      let module F = Stog_multi_page.Form_login in
+      let contents = F.form ~action: (Stog_multi_page.url_login cfg) () in
+      let page = Stog_multi_page.page cfg None ~title: "Login" contents in
+      respond_page page
 
 let req_path_from_app cfg req =
   let app_path = Neturl.url_path cfg.app_url in
@@ -145,9 +151,6 @@ let require_user cfg opt_user f =
       Lwt.return (Stog_multi_page.page cfg None ~title: "Error" ~error [])
   | Some user -> f user
 
-let respond_page page =
-  let body = Xtmpl.string_of_xmls page in
-  S.respond_string ~status:`OK ~body ()
 
 let handle_path cfg gs host port sock opt_user req body = function
 | [] ->
@@ -162,7 +165,7 @@ let handle_path cfg gs host port sock opt_user req body = function
     Stog_server_preview.respond_default_css ()
 
 | p when p = Stog_multi_page.path_login && req.S.Request.meth = `GET->
-    handle_login_get cfg
+    handle_login_get cfg gs opt_user
 
 | p when p = Stog_multi_page.path_login && req.S.Request.meth = `POST ->
     handle_login_post cfg gs req body
