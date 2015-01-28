@@ -38,8 +38,6 @@ open Stog_multi_gs
 module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
 
-let sha256 s = String.lowercase (Sha256.to_hex (Sha256.string s))
-
 let restart_previous_sessions cfg sessions =
   List.iter
     (fun session ->
@@ -63,7 +61,9 @@ let action_form_login app_url =
   in
   Stog_types.string_of_url url
 
-let handle_login cfg gs req body =
+let sha256 s = String.lowercase (Sha256.to_hex (Sha256.string s))
+
+let handle_login_post cfg gs req body =
   Cohttp_lwt_body.to_string body >>= fun body ->
   let module F = Stog_multi_page.Form_login in
   match
@@ -85,7 +85,7 @@ let handle_login cfg gs req body =
         (fun msg -> Xtmpl.E (("","div"), Xtmpl.atts_empty, [Xtmpl.D msg]))
           errors
       in
-      let contents = tmpl ~error_msg ~action: (action_form_login cfg.app_url) () in
+      let contents = tmpl ~error_msg ~action: (Stog_multi_page.url_login cfg) () in
       let page = Stog_multi_page.page cfg None ~title: "Login" contents in
       let body = Xtmpl.string_of_xmls page in
       S.respond_string ~status:`OK ~body ()
@@ -106,6 +106,13 @@ let handle_login cfg gs req body =
       in
       S.respond_string ~headers ~status:`OK ~body ()
 
+let handle_login_get cfg =
+  let module F = Stog_multi_page.Form_login in
+  let contents = F.form ~action: (Stog_multi_page.url_login cfg) () in
+  let page = Stog_multi_page.page cfg None ~title: "Login" contents in
+  let body = Xtmpl.string_of_xmls page in
+  S.respond_string ~status:`OK ~body ()
+
 let req_path_from_app cfg req =
   let app_path = Neturl.url_path cfg.app_url in
   let req_uri = Cohttp.Request.uri req in
@@ -122,66 +129,104 @@ let req_path_from_app cfg req =
   in
   iter (app_path, req_path)
 
+let get_opt_user gs req =
+  let h = Cohttp.Request.headers req in
+  let cookies = Cohttp.Cookie.Cookie_hdr.extract h in
+  try
+    let c = List.assoc token_cookie cookies in
+    Some (Str_map.find c !(gs.logged))
+  with Not_found ->
+    None
+
+let require_user cfg opt_user f =
+  match opt_user with
+    None ->
+      let error = `Msg "You must be connected. Please log in" in
+      Lwt.return (Stog_multi_page.page cfg None ~title: "Error" ~error [])
+  | Some user -> f user
+
+let respond_page page =
+  let body = Xtmpl.string_of_xmls page in
+  S.respond_string ~status:`OK ~body ()
+
+let handle_path cfg gs host port sock opt_user req body = function
+| [] ->
+    let contents = Stog_multi_page.Form_login.form
+      ~action: (Stog_multi_page.url_login cfg) ()
+    in
+    let page = Stog_multi_page.page cfg None ~title: "Login" contents in
+    let body = Xtmpl.string_of_xmls page in
+    S.respond_string ~status:`OK ~body ()
+
+| ["styles" ; s] when s = Stog_server_preview.default_css ->
+    Stog_server_preview.respond_default_css ()
+
+| p when p = Stog_multi_page.path_login && req.S.Request.meth = `GET->
+    handle_login_get cfg
+
+| p when p = Stog_multi_page.path_login && req.S.Request.meth = `POST ->
+    handle_login_post cfg gs req body
+
+| p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `GET ->
+    require_user cfg opt_user
+      (fun user -> Stog_multi_user.handle_sessions_get cfg gs user req body)
+      >>= respond_page
+
+| p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `POST ->
+    require_user cfg opt_user
+      (fun user -> Stog_multi_user.handle_sessions_post cfg gs user req body)
+      >>= respond_page
+
+| path ->
+    match path with
+    | "sessions" :: session_id :: q when req.S.Request.meth = `GET ->
+        begin
+          match Str_map.find session_id !(gs.sessions) with
+          | exception Not_found ->
+              let body = Printf.sprintf "Session %S not found" session_id in
+              S.respond_error ~status:`Not_found ~body ()
+          | session ->
+              match q with
+              | ["styles" ; s] when s = Stog_server_preview.default_css ->
+                  Stog_server_preview.respond_default_css ()
+
+              | "preview" :: _ ->
+                  let base_path =
+                    (Neturl.url_path cfg.app_url) @
+                      Stog_multi_page.path_sessions @ [session_id]
+                  in
+                  Stog_server_http.handler session.session_stog.stog_state
+                    host port base_path sock req body
+
+              | "editor" :: p  ->
+                  let base_path =
+                      (Neturl.url_path cfg.app_url) @
+                      Stog_multi_page.path_sessions @ [session_id]
+                  in
+                  Stog_multi_ed.http_handler host port base_path session_id req body p
+
+              | _ -> S.respond_error ~status:`Not_found ~body:"" ()
+        end
+    | _ ->
+        let body =
+          "<html><header><title>Stog-server</title></header>"^
+            "<body>404 Not found</body></html>"
+        in
+        S.respond_error ~status:`Not_found ~body ()
+
 let handler cfg gs host port sock req body =
   let path = req_path_from_app cfg req in
-  match path with
-  | [] ->
-      let contents = Stog_multi_page.Form_login.form
-        ~action: (action_form_login cfg.app_url) ()
-      in
-      let page = Stog_multi_page.page cfg None ~title: "Login" contents in
-      let body = Xtmpl.string_of_xmls page in
-      S.respond_string ~status:`OK ~body ()
-
-  | ["styles" ; s] when s = Stog_server_preview.default_css ->
-      Stog_server_preview.respond_default_css ()
-
-  | p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `POST ->
-      handle_login cfg gs req body
-
-  | p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `GET ->
-      let body =
-        "<html><header><title>Stog-server</title></header>"^
-          "<body>List of sessions: not implemented yet</body></html>"
-      in
-      S.respond_string ~status:`OK ~body ()
-
-  | _ ->
-      match path with
-      | "sessions" :: session_id :: q when req.S.Request.meth = `GET ->
-          begin
-            match Str_map.find session_id !(gs.sessions) with
-            | exception Not_found ->
-                let body = Printf.sprintf "Session %S not found" session_id in
-                S.respond_error ~status:`Not_found ~body ()
-            | session ->
-                match q with
-                | ["styles" ; s] when s = Stog_server_preview.default_css ->
-                    Stog_server_preview.respond_default_css ()
-
-                | "preview" :: _ ->
-                    let base_path =
-                      (Neturl.url_path cfg.app_url) @
-                        Stog_multi_page.path_sessions @ [session_id]
-                    in
-                    Stog_server_http.handler session.session_stog.stog_state
-                      host port base_path sock req body
-
-                | "editor" :: p  ->
-                    let base_path =
-                      (Neturl.url_path cfg.app_url) @
-                        Stog_multi_page.path_sessions @ [session_id]
-                    in
-                    Stog_multi_ed.http_handler host port base_path session_id req body p
-
-                | _ -> S.respond_error ~status:`Not_found ~body:"" ()
-          end
-      | _ ->
-          let body =
-            "<html><header><title>Stog-server</title></header>"^
-              "<body>404 Not found</body></html>"
-          in
-          S.respond_error ~status:`Not_found ~body ()
+  let opt_user = get_opt_user gs req in
+  Lwt.catch
+    (fun () -> handle_path cfg gs host port sock opt_user req body path)
+    (fun e ->
+       let msg =
+         match e with
+           Failure msg | Sys_error msg -> msg
+         | _ -> Printexc.to_string e
+       in
+       S.respond_error ~status: `Internal_server_error ~body: msg ()
+    )
 
 let start_server cfg gs host port =
   Lwt_io.write Lwt_io.stdout

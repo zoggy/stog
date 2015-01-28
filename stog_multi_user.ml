@@ -31,62 +31,36 @@
 
 open Stog_multi_config
 open Stog_multi_session
+open Stog_multi_gs
+let (>>=) = Lwt.bind
 
 let user_page_tmpl = [%xtmpl "templates/multi_user_page.tmpl"]
+
+let page cfg account gs =
+  let body = [] in
+  Stog_multi_page.page cfg (Some account) ~title: account.name body
 
 let create_session cfg sessions account =
   let session = Stog_multi_session.create cfg account in
   Stog_multi_gs.add_session session sessions ;
   session
 
-(*
-let handle_new_session cfg gs req body =
-  Cohttp_lwt_body.to_string body >>= fun body ->
-    let module F = Stog_multi_page.Form_login in
-    match
-      let (tmpl, form) = F.read_form (Stog_multi_page.param_of_body body) in
-      match
-        let account = List.find (fun acc -> acc.login = form.F.login) cfg.accounts in
-        prerr_endline (Printf.sprintf "account found: %s\npasswd=%s" account.login account.passwd);
-        let pwd = sha256 form.F.password in
-        prerr_endline (Printf.sprintf "sha256(pwd)=%s" pwd);
-        if pwd = String.lowercase account.passwd then
-          account
-        else
-          raise Not_found
-      with
-      | exception Not_found -> raise (F.Error (tmpl, ["Invalid user/password"]))
-      | account -> create_session cfg gs.sessions account
-    with
-    | exception (F.Error (tmpl, errors)) ->
-        let error_msg = List.map
-          (fun msg -> Xtmpl.E (("","div"), Xtmpl.atts_empty, [Xtmpl.D msg]))
-            errors
-        in
-        let contents = tmpl ~error_msg ~action: (action_form_login cfg.app_url) () in
-        let page = Stog_multi_page.page ~title: "New session" contents in
-        let body = Xtmpl.string_of_xml page in
-        S.respond_string ~status:`OK ~body ()
-    | session ->
-        let preview_url = Stog_types.string_of_url session.session_stog.stog_preview_url in
-          let contents =
-          [
-            Xtmpl.E (("","p"), Xtmpl.atts_empty, [
-               Xtmpl.D "Preview URL: ";
-               Xtmpl.E (("","a"),
-                Xtmpl.atts_of_list
-                  [("","href"), [ Xtmpl.D preview_url ]],
-                [Xtmpl.D preview_url]) ;
-             ])
-          ]
-        in
-        let title = Printf.sprintf "Session %s created" session.session_id in
-        let page = Stog_multi_page.page ~title contents in
-        let body = Xtmpl.string_of_xml page in
-        S.respond_string ~status:`OK ~body ()
+let handle_sessions_post cfg gs user req body =
+  let session = create_session cfg gs.sessions user in
+  let preview_url = Stog_types.string_of_url session.session_stog.stog_preview_url in
+  let contents =
+    [
+      Xtmpl.E (("","p"), Xtmpl.atts_empty, [
+         Xtmpl.D "Preview URL: ";
+         Xtmpl.E (("","a"),
+          Xtmpl.atts_of_list
+            [("","href"), [ Xtmpl.D preview_url ]],
+          [Xtmpl.D preview_url]) ;
+       ])
+    ]
+  in
+  let title = Printf.sprintf "Session %s created" session.session_id in
+  Lwt.return (Stog_multi_page.page cfg (Some user) ~title contents)
 
-*)
+let handle_sessions_get cfg gs user req body = Lwt.return []
 
-let page cfg account gs =
-  let body = [] in
-  Stog_multi_page.page cfg (Some account) ~title: account.name body

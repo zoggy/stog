@@ -33,22 +33,39 @@ open Stog_multi_config
 module S = Cohttp_lwt_unix.Server
 open Xtmpl
 
+let url_ cfg path =
+  let url = List.fold_left Stog_types.url_concat cfg.app_url path in
+  Stog_types.string_of_url url
+
+let path_login = ["login"]
 let path_sessions = ["sessions"]
+
+let url_login cfg = url_ cfg path_login
+let url_sessions cfg = url_ cfg path_sessions
 
 let page_tmpl = [%xtmpl "templates/multi_page.tmpl"]
 
 let app_name = "Stog-multi-server"
 
-let page cfg account_opt ~title body =
+let error_block xmls =
+  let atts = Xtmpl.atts_one ("","class") [Xtmpl.D "alert alert error"] in
+  [ Xtmpl.E (("","div"), atts, xmls) ]
+
+let page cfg account_opt ~title ?error body =
   let topbar = [] in
-  let css_url =
-    let url = List.fold_left Stog_types.url_concat cfg.app_url
-      ["styles" ; Stog_server_preview.default_css ]
-    in
-    Stog_types.string_of_url url
-  in
+  let css_url = url_ cfg ["styles" ; Stog_server_preview.default_css ] in
   let headers = [ Ojs_tmpl.link_css css_url ] in
-  page_tmpl ~app_name ~title ~headers ~topbar ~body ()
+  let page_error =
+    match error with
+      None -> None
+    | Some e ->
+        let xmls = match e with
+          | (`Msg str) -> [Xtmpl.D str]
+          | (`Block xmls) -> xmls
+        in
+        Some (error_block xmls)
+  in
+  page_tmpl ~app_name ~title ~headers ~topbar ?page_error ~body ()
 
 module Form_login = [%ojs.form "templates/form_login.tmpl"]
 
