@@ -35,12 +35,15 @@ val path_sessions : string list
 val url_login : Stog_multi_config.t -> string
 val url_sessions : Stog_multi_config.t -> string
 
+type block = [`Msg of string | `Block of Xtmpl.tree list]
+
 val page :
   Stog_multi_config.t ->
     Stog_multi_config.account option ->
     ?empty: bool ->
     title:string ->
-    ?error: [`Msg of string | `Block of Xtmpl.tree list] ->
+    ?error: block ->
+    ?message: block ->
     ?js: string list ->
     Xtmpl.tree list -> Xtmpl.tree list
 

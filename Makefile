@@ -488,10 +488,13 @@ $(PLUGINS_OPT): $(LIB)
 
 include .depend
 
-stog_multi_page.cm*: templates/form_login.tmpl \
+stog_multi_page.cm*: \
+	templates/form_login.tmpl \
 	templates/multi_page.tmpl \
 	templates/multi_page_body.tmpl
 
 stog_multi_ed.cm*: templates/multi_ed.tmpl
 
-stog_multi_user.cm*: templates/multi_user_page.tmpl
+stog_multi_user.cm*: \
+	templates/form_session.tmpl \
+	templates/multi_user_page.tmpl

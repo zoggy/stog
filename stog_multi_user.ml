@@ -42,7 +42,7 @@ let create_session cfg sessions account =
   Stog_multi_gs.add_session session sessions ;
   session
 
-let string_of_date = Netdate.mk_mail_date
+let string_of_date = Netdate.mk_date ~fmt: "%F %R"
 
 let session_list cfg gs user =
   let sessions =
@@ -74,38 +74,32 @@ let session_list cfg gs user =
     sessions
   in
   let headers =
-    let td s = td [ Xtmpl.D s] in
+    let th s = Xtmpl.E(("","th"), Xtmpl.atts_empty, [Xtmpl.D s]) in
     Xtmpl.E (("","tr"), Xtmpl.atts_empty,
-     [ td "Creation date" ; td "Origin branch" ; td "Current branch" ;
-       td "" ; td "" ;
+     [ th "Creation date" ; th "Origin branch" ; th "Current branch" ;
+       th "" ; th "" ;
      ]
     )
   in
-  [ Xtmpl.E (("","table"), Xtmpl.atts_empty, headers :: trs) ]
+  [ Xtmpl.E (("","table"), Xtmpl.atts_one ("","class") [Xtmpl.D "table"], headers :: trs) ]
 
 
-let page cfg gs user =
-  let body = session_list cfg gs user in
-  Stog_multi_page.page cfg (Some user) ~title: user.name body
+module Form_session = [%ojs.form "templates/form_session.tmpl"]
+
+let new_session_button cfg =
+  let action = Stog_multi_page.url_sessions cfg in
+  Form_session.form ~action ()
+
+let page cfg gs ?message user =
+  let sessions = session_list cfg gs user in
+  let sessions = (new_session_button cfg) @ sessions in
+  let body = user_page_tmpl ~name: user.name ~sessions () in
+  Stog_multi_page.page cfg (Some user) ~title: user.name ?message body
 
 let handle_sessions_post cfg gs user req body =
   let session = create_session cfg gs.sessions user in
-  let preview_url = Stog_types.string_of_url session.session_stog.stog_preview_url in
-  let contents =
-    [
-      Xtmpl.E (("","p"), Xtmpl.atts_empty, [
-         Xtmpl.D "Preview URL: ";
-         Xtmpl.E (("","a"),
-          Xtmpl.atts_of_list
-            [("","href"), [ Xtmpl.D preview_url ]],
-          [Xtmpl.D preview_url]) ;
-       ])
-    ]
-  in
-  let title = Printf.sprintf "Session %s created" session.session_id in
-  Lwt.return (Stog_multi_page.page cfg (Some user) ~title contents)
+  let message = `Msg (Printf.sprintf "Session %s created" session.session_id) in
+  Lwt.return (page cfg gs ~message user)
 
 let handle_sessions_get cfg gs user req body =
-  let contents = session_list cfg gs user in
-  let title = "Your sessions" in
-  Lwt.return (Stog_multi_page.page cfg (Some user) ~title contents)
+  Lwt.return (page cfg gs user)

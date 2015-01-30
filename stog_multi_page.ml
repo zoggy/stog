@@ -48,8 +48,20 @@ let page_body_tmpl = [%xtmpl "templates/multi_page_body.tmpl"]
 
 let app_name = "Stog-multi-server"
 
-let error_block xmls =
-  let atts = Xtmpl.atts_one ("","class") [Xtmpl.D "alert alert error"] in
+type block = [`Msg of string | `Block of Xtmpl.tree list]
+
+let xmls_of_block = function
+| (`Msg str) -> [Xtmpl.D str]
+| (`Block xmls) -> xmls
+
+let error_block b =
+  let xmls =  xmls_of_block b in
+  let atts = Xtmpl.atts_one ("","class") [Xtmpl.D "alert alert-error"] in
+  [ Xtmpl.E (("","div"), atts, xmls) ]
+
+let message_block b =
+  let xmls =  xmls_of_block b in
+  let atts = Xtmpl.atts_one ("","class") [Xtmpl.D "alert alert-info"] in
   [ Xtmpl.E (("","div"), atts, xmls) ]
 
 let mk_js_script code =
@@ -58,7 +70,7 @@ let mk_js_script code =
    [ Xtmpl.D code ]
   )
 
-let page cfg account_opt ?(empty=false) ~title ?error ?(js=[]) body =
+let page cfg account_opt ?(empty=false) ~title ?error ?message ?(js=[]) body =
   let topbar = [] in
   let css_url = url_ cfg ["styles" ; Stog_server_preview.default_css ] in
   let js = List.map mk_js_script js in
@@ -66,18 +78,18 @@ let page cfg account_opt ?(empty=false) ~title ?error ?(js=[]) body =
   let page_error =
     match error with
       None -> None
-    | Some e ->
-        let xmls = match e with
-          | (`Msg str) -> [Xtmpl.D str]
-          | (`Block xmls) -> xmls
-        in
-        Some (error_block xmls)
+    | Some e -> Some (error_block e)
+  in
+  let page_message =
+    match message with
+      None -> None
+    | Some e -> Some (message_block e)
   in
   let body =
     if empty then
       body
     else
-      page_body_tmpl ~title ~topbar ?page_error ~body ()
+      page_body_tmpl ~title ~topbar ?page_error ?page_message ~body ()
   in
   page_tmpl ~app_name ~title ~headers ~body ()
 
