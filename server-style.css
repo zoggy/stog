@@ -48,6 +48,7 @@
 #ft { position: absolute; top: 0px; left: 0px; width: 290px ;
       overflow: scroll ; padding-right: 1em;
       height: 100%;
+      /*background-color: white ;*/
 }
 
 #ojs-msg {
@@ -126,6 +127,7 @@ div.ojsft-file { font-weight: normal; margin-left: 1em ; }
 
 #bar {
   position: absolute ;
+  /*background-color: white ;*/
   top: 0px;
   left: 310px;
   height:40px;
@@ -141,12 +143,17 @@ div.ojsft-file { font-weight: normal; margin-left: 1em ; }
   left: 310px;
 }
 
+#background {
+  background-color: #449900 ;
+  height: 100%;
+}
 /* Multi server style */
 body {
-  background-color: #449900 ;
   color: #333333 ;
   font-family: "trebuchet ms", helvetica, sans-serif;
   font-size: 1em;
+  padding: 0;
+  margin: 0;
 }
 
 #page {

@@ -70,10 +70,16 @@ let on_select ti path =
 
 let onopen ws =
   ref_send := (fun msg -> Ojs_js.send_msg ws (wsdata_of_msg msg); Lwt.return_unit);
-  let tree = trees#setup_filetree ~msg_id: "ojs-msg" "ft" in
+  let tree = trees#setup_filetree
+    ~msg_id: Stog_multi_ed_types.ojs_msg_id
+    Stog_multi_ed_types.ft_id
+  in
   tree#set_on_select on_select;
   tree#set_on_deselect on_deselect;
-  ignore(editors#setup_editor ~msg_id: "ojs-msg" ~bar_id: "bar" "ed")
+  ignore(editors#setup_editor
+   ~msg_id: Stog_multi_ed_types.ojs_msg_id
+     ~bar_id: Stog_multi_ed_types.bar_id
+     Stog_multi_ed_types.ed_id)
 
 let onmessage ws msg =
   match msg with

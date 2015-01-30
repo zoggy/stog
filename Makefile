@@ -216,14 +216,10 @@ server_files/$(MSERVER_ED_JS): stog_multi_ed_types.cmi stog_multi_ed_types.cmo s
 server_files/stog-server-style.css: server-style.css
 	$(CP) $< $@
 
-server_files/stog-multi-ed.tmpl: stog-multi-ed.tmpl
-	$(CP) $< $@
-
 stog_server_files.ml: \
 		server_files/$(SERVER_JS) \
 		server_files/$(MSERVER_ED_JS) \
-		server_files/stog-server-style.css \
-		server_files/stog-multi-ed.tmpl
+		server_files/stog-server-style.css
 		$(OCAML_CRUNCH) --mode=plain -e js -e css -e tmpl -o $@ server_files
 
 $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
@@ -492,5 +488,10 @@ $(PLUGINS_OPT): $(LIB)
 
 include .depend
 
-stog_multi_page.cm*: templates/form_login.tmpl templates/multi_page.tmpl
+stog_multi_page.cm*: templates/form_login.tmpl \
+	templates/multi_page.tmpl \
+	templates/multi_page_body.tmpl
+
+stog_multi_ed.cm*: templates/multi_ed.tmpl
+
 stog_multi_user.cm*: templates/multi_user_page.tmpl

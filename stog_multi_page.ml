@@ -44,6 +44,7 @@ let url_login cfg = url_ cfg path_login
 let url_sessions cfg = url_ cfg path_sessions
 
 let page_tmpl = [%xtmpl "templates/multi_page.tmpl"]
+let page_body_tmpl = [%xtmpl "templates/multi_page_body.tmpl"]
 
 let app_name = "Stog-multi-server"
 
@@ -51,10 +52,17 @@ let error_block xmls =
   let atts = Xtmpl.atts_one ("","class") [Xtmpl.D "alert alert error"] in
   [ Xtmpl.E (("","div"), atts, xmls) ]
 
-let page cfg account_opt ~title ?error body =
+let mk_js_script code =
+  Xtmpl.E (("","script"),
+   Xtmpl.atts_one ("","type") [Xtmpl.D "text/javascript"],
+   [ Xtmpl.D code ]
+  )
+
+let page cfg account_opt ?(empty=false) ~title ?error ?(js=[]) body =
   let topbar = [] in
   let css_url = url_ cfg ["styles" ; Stog_server_preview.default_css ] in
-  let headers = [ Ojs_tmpl.link_css css_url ] in
+  let js = List.map mk_js_script js in
+  let headers = (Ojs_tmpl.link_css css_url) :: js in
   let page_error =
     match error with
       None -> None
@@ -65,7 +73,13 @@ let page cfg account_opt ~title ?error body =
         in
         Some (error_block xmls)
   in
-  page_tmpl ~app_name ~title ~headers ~topbar ?page_error ~body ()
+  let body =
+    if empty then
+      body
+    else
+      page_body_tmpl ~title ~topbar ?page_error ~body ()
+  in
+  page_tmpl ~app_name ~title ~headers ~body ()
 
 module Form_login = [%ojs.form "templates/form_login.tmpl"]
 

@@ -38,8 +38,10 @@ val url_sessions : Stog_multi_config.t -> string
 val page :
   Stog_multi_config.t ->
     Stog_multi_config.account option ->
+    ?empty: bool ->
     title:string ->
     ?error: [`Msg of string | `Block of Xtmpl.tree list] ->
+    ?js: string list ->
     Xtmpl.tree list -> Xtmpl.tree list
 
 module Form_login :

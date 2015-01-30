@@ -52,6 +52,8 @@ class myft broadcall broadcast ~id root =
       super#handle_message msg
   end
 *)
+
+
 let init root_dir =
   let connections = new Server.connection_group in
   let filetrees = new SFT.filetrees connections#broadcall connections#broadcast
@@ -60,8 +62,8 @@ let init root_dir =
   let editors = new SED.editors connections#broadcall connections#broadcast
     (new SED.editor)
   in
-  let _ft = filetrees#add_filetree "ft" root_dir in
-  let _ed = editors#add_editor "ed" root_dir in
+  let _ft = filetrees#add_filetree Stog_multi_ed_types.ft_id root_dir in
+  let _ed = editors#add_editor Stog_multi_ed_types.ed_id root_dir in
   let handle_message send_msg rpc msg =
     match msg with
     | Stog_multi_ed_types.ED.Editor _ -> editors#handle_message send_msg msg
@@ -78,36 +80,36 @@ let init root_dir =
   connections#set_handle_message handle_message;
   connections
 
-let page_template = "stog-multi-ed.tmpl"
+let body_tmpl = [%xtmpl "templates/multi_ed.tmpl"]
+let page cfg user ~ws_url ~title ~client_js_path =
+  let js = [ "stog_server = { wsUrl: '"^ws_url^"' } ;" ] in
+  let body = body_tmpl
+    ~client_js_path
+    ~ft_id: Stog_multi_ed_types.ft_id
+      ~ojs_msg_id: Stog_multi_ed_types.ojs_msg_id
+      ~bar_id: Stog_multi_ed_types.bar_id
+      ~ed_id: Stog_multi_ed_types.ed_id
+      ()
+  in
+  Stog_multi_page.page cfg user ~empty: true ~title ~js body
+
 let client_js = "stog_multi_ed.js"
 
-let editor_page host port base_path session_id =
-  let style_path = "/" ^ String.concat "/"
-    (base_path @ [ "styles" ; Stog_server_preview.default_css ])
-  in
+let editor_page cfg user host port base_path session_id =
   let client_js_path = "/" ^ String.concat "/"
     (base_path @ [ "editor" ; client_js ])
-  in
-  let tmpl = match Stog_server_files.read page_template with
-      None -> failwith (Printf.sprintf "Template %S unavailable" page_template)
-    | Some s -> Xtmpl.xml_of_string ~add_main: false s
   in
   (* FIXME: port number when we will be able to change an http connection into a websocket one
      manually *)
   let ws_url = Printf.sprintf "ws://%s:%d/%s/editor" host (port+1) (String.concat "/" base_path) in
-  let add = Xtmpl.env_add_att in
-  let env = Xtmpl.env_empty () in
-  let env = add "page-title" [Xtmpl.D (Printf.sprintf "Stog-server: session %S" session_id)] env in
-  let env = add "style-path" [Xtmpl.D style_path] env in
-  let env = add "client-js-path" [Xtmpl.D client_js_path] env in
-  let env = add "ws-url" [ Xtmpl.D ws_url ] env in
-  let (_, xmls) = Xtmpl.apply_to_xmls () env [tmpl] in
-  Xtmpl.string_of_xmls xmls
+  let title = Printf.sprintf "Session %S" session_id in
+  page cfg (Some user) ~ws_url ~title ~client_js_path
 
-let http_handler host port base_path session_id req body = function
+let http_handler cfg user host port base_path session_id req body = function
 | [s] when s = client_js -> Stog_server_preview.respond_server_js client_js
 | [] | [""] ->
-    let body = editor_page host port base_path session_id in
+    let body = editor_page cfg user host port base_path session_id in
+    let body = Xtmpl.string_of_xmls body in
     S.respond_string ~status: `OK ~body ()
 | _ ->
     S.respond_error ~status:`Not_found ~body: "" ()

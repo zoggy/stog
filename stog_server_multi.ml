@@ -148,7 +148,7 @@ let require_user cfg opt_user f =
   match opt_user with
     None ->
       let error = `Msg "You must be connected. Please log in" in
-      Lwt.return (Stog_multi_page.page cfg None ~title: "Error" ~error [])
+      respond_page (Stog_multi_page.page cfg None ~title: "Error" ~error [])
   | Some user -> f user
 
 
@@ -172,13 +172,13 @@ let handle_path cfg gs host port sock opt_user req body = function
 
 | p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `GET ->
     require_user cfg opt_user
-      (fun user -> Stog_multi_user.handle_sessions_get cfg gs user req body)
-      >>= respond_page
+      (fun user ->
+         Stog_multi_user.handle_sessions_get cfg gs user req body >>= respond_page)
 
 | p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `POST ->
     require_user cfg opt_user
-      (fun user -> Stog_multi_user.handle_sessions_post cfg gs user req body)
-      >>= respond_page
+      (fun user ->
+         Stog_multi_user.handle_sessions_post cfg gs user req body >>= respond_page)
 
 | path ->
     match path with
@@ -206,7 +206,10 @@ let handle_path cfg gs host port sock opt_user req body = function
                       (Neturl.url_path cfg.app_url) @
                       Stog_multi_page.path_sessions @ [session_id]
                   in
-                  Stog_multi_ed.http_handler host port base_path session_id req body p
+                  require_user cfg opt_user
+                    (fun user ->
+                       Stog_multi_ed.http_handler cfg user host port
+                         base_path session_id req body p)
 
               | _ -> S.respond_error ~status:`Not_found ~body:"" ()
         end

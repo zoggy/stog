@@ -40,3 +40,7 @@ let server_msg_of_yojson = App_msg.app_server_msg_of_yojson
 let client_msg_to_yojson = App_msg.app_client_msg_to_yojson
 let client_msg_of_yojson = App_msg.app_client_msg_of_yojson
 
+let ft_id = "ft"
+let ed_id = "ed"
+let ojs_msg_id = "ojs-msg"
+let bar_id = "bar"
