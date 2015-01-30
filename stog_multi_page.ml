@@ -39,9 +39,13 @@ let url_ cfg path =
 
 let path_login = ["login"]
 let path_sessions = ["sessions"]
+let path_session_push = path_sessions @ ["push"]
+let path_session_pull = path_sessions @ ["pull"]
 
 let url_login cfg = url_ cfg path_login
 let url_sessions cfg = url_ cfg path_sessions
+let url_session_push cfg = url_ cfg path_session_push
+let url_session_pull cfg = url_ cfg path_session_pull
 
 let page_tmpl = [%xtmpl "templates/multi_page.tmpl"]
 let page_body_tmpl = [%xtmpl "templates/multi_page_body.tmpl"]
@@ -63,6 +67,10 @@ let message_block b =
   let xmls =  xmls_of_block b in
   let atts = Xtmpl.atts_one ("","class") [Xtmpl.D "alert alert-info"] in
   [ Xtmpl.E (("","div"), atts, xmls) ]
+
+let br = Xtmpl.E (("","br"), Xtmpl.atts_empty, [])
+let nbsp = List.hd ([%xtmpl.string "&#xa0;"] ())
+let strong xmls = Xtmpl.E (("","strong"), Xtmpl.atts_empty, xmls)
 
 let mk_js_script code =
   Xtmpl.E (("","script"),

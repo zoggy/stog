@@ -497,4 +497,5 @@ stog_multi_ed.cm*: templates/multi_ed.tmpl
 
 stog_multi_user.cm*: \
 	templates/form_session.tmpl \
+	templates/form_push.tmpl \
 	templates/multi_user_page.tmpl

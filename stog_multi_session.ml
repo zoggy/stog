@@ -42,6 +42,7 @@ type stored =
     session_orig_branch : string ;
     session_branch : string ;
     session_author : string ;
+    session_repo_url : string ;
   }  [@@deriving yojson]
 
 type stog_info = {
@@ -239,6 +240,7 @@ let create cfg account =
       session_orig_branch = orig_branch ;
       session_branch = branch_name ;
       session_author = account.login ;
+      session_repo_url = cfg.git_repo_url ;
     }
   in
   let session =

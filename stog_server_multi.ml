@@ -85,9 +85,11 @@ let handle_login_post cfg gs req body =
     | Not_found -> raise (F.Error (tmpl, ["Invalid user/password"]))
   with
   | exception (F.Error (tmpl, errors)) ->
-      let error_msg = List.map
-        (fun msg -> Xtmpl.E (("","div"), Xtmpl.atts_empty, [Xtmpl.D msg]))
-          errors
+      let error_msg =
+        Stog_multi_page.error_block
+          (`Block (List.map
+            (fun msg -> Xtmpl.E (("","div"), Xtmpl.atts_empty, [Xtmpl.D msg]))
+              errors))
       in
       let contents = tmpl ~error_msg ~action: (Stog_multi_page.url_login cfg) () in
       let page = Stog_multi_page.page cfg None ~title: "Login" contents in
@@ -179,6 +181,15 @@ let handle_path cfg gs host port sock opt_user req body = function
     require_user cfg opt_user
       (fun user ->
          Stog_multi_user.handle_sessions_post cfg gs user req body >>= respond_page)
+
+| p when p = Stog_multi_page.path_session_push ->
+    require_user cfg opt_user
+      (fun user ->
+         (match req.S.Request.meth with
+            `POST -> Stog_multi_user.handle_session_push cfg gs user req body
+          | _ -> Stog_multi_user.handle_sessions_get cfg gs user req body
+         ) >>= respond_page
+      )
 
 | path ->
     match path with
