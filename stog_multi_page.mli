@@ -38,7 +38,7 @@ val path_session_pull : string list
 val url_login : Stog_multi_config.t -> string
 val url_sessions : Stog_multi_config.t -> string
 val url_session_push : Stog_multi_config.t -> string
-val url_session_push : Stog_multi_config.t -> string
+val url_session_pull : Stog_multi_config.t -> string
 
 type block = [`Msg of string | `Block of Xtmpl.tree list]
 
@@ -48,6 +48,7 @@ val message_block: block -> Xtmpl.tree list
 val br : Xtmpl.tree
 val nbsp : Xtmpl.tree
 val strong : Xtmpl.tree list -> Xtmpl.tree
+val pre : string -> Xtmpl.tree
 
 val page :
   Stog_multi_config.t ->

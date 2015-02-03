@@ -131,17 +131,35 @@ let horodate () =
      (t.tm_year + 1900) (t.tm_mon + 1) t.tm_mday
      t.tm_hour t.tm_min t.tm_sec
   )
-let git_current_branch repo_dir =
-  let command = Printf.sprintf
-    "cd %s && git rev-parse --abbrev-ref HEAD" (Filename.quote repo_dir)
+
+let remove_file file = try Sys.remove file with _ -> ()
+
+let in_git_repo repo_dir ?(merge_outputs=false) com =
+  let stdout = Filename.temp_file "stogserver" ".stdout" in
+  let stderr = Filename.temp_file "stogserver" ".stderr" in
+  let command = Printf.sprintf "cd %s && %s %s" (Filename.quote repo_dir)
+    com
+      (match merge_outputs with
+       | false -> Printf.sprintf "> %s 2> %s" (Filename.quote stdout) (Filename.quote stderr)
+       | true ->  Printf.sprintf "> %s 2>&1" (Filename.quote stdout)
+      )
   in
-  try
-    let stdin = Unix.open_process_in command in
-    let branch = input_line stdin in
-    ignore(Unix.close_process_in stdin);
-    branch
-  with
-    _ -> failwith (Printf.sprintf "Exec error: %s" command)
+  let result = Sys.command command in
+  let s_out = Stog_misc.string_of_file stdout in
+  let s_err = if merge_outputs then "" else Stog_misc.string_of_file stderr in
+  remove_file stdout ; remove_file stderr ;
+  match result with
+    0 -> `Ok (s_out, s_err)
+  | _ -> `Error (com, s_out, s_err)
+
+let git_current_branch repo_dir =
+  let git_com = "git rev-parse --abbrev-ref HEAD" in
+  match in_git_repo repo_dir git_com with
+  | `Error (com,_,err) -> failwith (com^"\n"^err)
+  | `Ok (s,_) ->
+      match Stog_misc.split_string s ['\n' ; '\r'] with
+        [] -> failwith ("No current branch returned by "^git_com)
+      | line :: _ -> line
 
 let git_create_branch repo_dir account =
   let branch_name = Printf.sprintf "%s--%s" account.login (horodate()) in
@@ -281,3 +299,52 @@ let load_previous_sessions cfg =
   in
   List.fold_left f [] dirs
 
+let git_has_local_changes repo_dir =
+  let git_com = "(git status --porcelain | (grep -v '??' || true))" in
+  match in_git_repo repo_dir ~merge_outputs: true git_com with
+  | `Error (com,msg,_) -> failwith (com^"\n"^msg)
+  | `Ok (msg,_) -> Stog_misc.strip_string msg <> ""
+
+let with_stash repo_dir f =
+  if git_has_local_changes repo_dir then
+    begin
+      match in_git_repo repo_dir ~merge_outputs: true "git stash" with
+      | `Error (com,msg,_) -> failwith (com^"\n"^msg)
+      | `Ok _ ->
+          let g () =
+            match in_git_repo repo_dir ~merge_outputs: true "git stash pop" with
+            | `Error (com,msg,_) -> failwith (com^"\n"^msg)
+            | `Ok _ -> ()
+          in
+          try_finalize f () g ()
+    end
+  else
+    f ()
+
+let rebase_from_origin cfg session =
+  let st = session.session_stored in
+  let ob = st.session_orig_branch in
+  let b = st.session_branch in
+  let repo_dir = session.session_repo_dir in
+  let f () =
+    let ob = Filename.quote ob in
+    let git_com = Printf.sprintf
+      "(git checkout %s && git pull origin %s)" ob ob
+    in
+    match in_git_repo repo_dir ~merge_outputs: true git_com with
+    | `Error (com,msg,_) -> failwith (com^"\n"^msg)
+    | `Ok _ -> ()
+  in
+  let checkout_branch () =
+    let git_com = Printf.sprintf "git checkout %s" (Filename.quote b) in
+    match in_git_repo repo_dir ~merge_outputs: true git_com with
+    | `Error (com,msg,_) -> failwith (com^"\n"^msg)
+    | `Ok _ -> ()
+  in
+  with_stash repo_dir (try_finalize f () checkout_branch);
+  let git_com = Printf.sprintf "git rebase %s" (Filename.quote ob) in
+  match in_git_repo repo_dir ~merge_outputs: true git_com with
+    `Error (com,msg,_) -> failwith (com^"\n"^msg)
+  | `Ok (msg,_) -> msg
+
+ 

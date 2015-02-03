@@ -191,6 +191,15 @@ let handle_path cfg gs host port sock opt_user req body = function
          ) >>= respond_page
       )
 
+| p when p = Stog_multi_page.path_session_pull ->
+    require_user cfg opt_user
+      (fun user ->
+         (match req.S.Request.meth with
+            `POST -> Stog_multi_user.handle_session_pull cfg gs user req body
+          | _ -> Stog_multi_user.handle_sessions_get cfg gs user req body
+         ) >>= respond_page
+      )
+
 | path ->
     match path with
     | "sessions" :: session_id :: q when req.S.Request.meth = `GET ->

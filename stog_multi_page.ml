@@ -71,6 +71,7 @@ let message_block b =
 let br = Xtmpl.E (("","br"), Xtmpl.atts_empty, [])
 let nbsp = List.hd ([%xtmpl.string "&#xa0;"] ())
 let strong xmls = Xtmpl.E (("","strong"), Xtmpl.atts_empty, xmls)
+let pre s = Xtmpl.E (("","pre"), Xtmpl.atts_empty, [Xtmpl.D s])
 
 let mk_js_script code =
   Xtmpl.E (("","script"),
