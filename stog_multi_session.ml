@@ -95,7 +95,7 @@ let run command =
 
 let ssh_git cfg ?dir command =
   let sub = Filename.quote
-    (Printf.sprintf "ssh-add %s; git %s" (Filename.quote cfg.ssh_priv_key) command)
+    (Printf.sprintf "ssh-add %s; %s" (Filename.quote cfg.ssh_priv_key) command)
   in
   let command = Printf.sprintf "%s ssh-agent bash -c %s"
     (match dir with
@@ -107,7 +107,7 @@ let ssh_git cfg ?dir command =
   run command
 
 let git_clone cfg repo_dir =
-  let command = Printf.sprintf "clone %s %s"
+  let command = Printf.sprintf "git clone %s %s"
     (Filename.quote cfg.git_repo_url) (Filename.quote repo_dir)
   in
   ssh_git cfg command
@@ -331,6 +331,7 @@ let rebase_from_origin cfg session =
     let git_com = Printf.sprintf
       "(git checkout %s && git pull origin %s)" ob ob
     in
+    (* FIXME: handle ssh; using ssh_git *)
     match in_git_repo repo_dir ~merge_outputs: true git_com with
     | `Error (com,msg,_) -> failwith (com^"\n"^msg)
     | `Ok _ -> ()

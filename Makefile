@@ -133,6 +133,8 @@ PLUGIN_MSERVER_BYTE=$(PLUGIN_MSERVER:.cmxa=.cma)
 PLUGIN_MSERVER_CMXFILES=\
 	stog_multi_config.cmx \
 	stog_multi_page.cmx \
+	stog_git_types.cmx \
+	stog_git_server.cmx \
 	stog_multi_ed_types.cmx \
 	stog_multi_ed.cmx \
 	stog_multi_session.cmx \
