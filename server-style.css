@@ -146,8 +146,8 @@ div.ojsft-file { font-weight: normal; margin-left: 1em ; }
 #git {
   position: absolute;
   top: 0px;
+  height: 40px;
   right: 0;
-  bottom: 0;
   left: 310px;
 }
 

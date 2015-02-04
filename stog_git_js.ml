@@ -44,6 +44,13 @@ let button ~parent_id ~id ~text ~cl =
   Dom.appendChild button text ;
   button
 
+let mk_pre str =
+  let doc = Dom_html.document in
+  let pre = doc##createElement (Js.string "pre") in
+  let text = doc##createTextNode(Js.string str) in
+  Dom.appendChild pre text ;
+  pre
+
 module Make(P:Stog_git_types.P) =
   struct
     class repo call (send : P.client_msg -> unit Lwt.t)
@@ -68,8 +75,8 @@ module Make(P:Stog_git_types.P) =
       method id : string = repo_id
       method msg_id = msg_id
 
-      method display_error msg = Ojsmsg_js.display_text_error msg_id msg
-      method display_message msg = Ojsmsg_js.display_text_message msg_id msg
+      method display_error msg = Ojsmsg_js.display_error msg_id [mk_pre msg]
+      method display_message msg = Ojsmsg_js.display_message msg_id [mk_pre msg]
 
       method simple_call : 'clt -> unit Lwt.t = fun msg ->
         call msg
