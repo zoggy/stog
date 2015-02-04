@@ -33,10 +33,37 @@
 open Ojs_js
 let (>>=) = Lwt.(>>=)
 
+let button ~parent_id ~id ~text ~cl =
+  let doc = Dom_html.document in
+  let parent = Ojs_js.node_by_id parent_id in
+  let button = doc##createElement(Js.string "button") in
+  let text = doc##createTextNode(Js.string text) in
+  button##setAttribute (Js.string "id", Js.string id) ;
+  button##setAttribute (Js.string "class", Js.string cl) ;
+  Dom.appendChild parent button ;
+  Dom.appendChild button text ;
+  button
+
 module Make(P:Stog_git_types.P) =
   struct
     class repo call (send : P.client_msg -> unit Lwt.t)
       ~msg_id repo_id =
+      let doc = Dom_html.document in
+      let repo_node = Ojs_js.node_by_id repo_id in
+      let bar_id = repo_id^"__bar" in
+      let bar = doc##createElement(Js.string "div") in
+      let _ =
+        bar##setAttribute (Js.string "id", Js.string bar_id) ;
+        bar##setAttribute (Js.string "class", Js.string "gitbox-bar");
+        Dom.appendChild repo_node bar
+      in
+      let commit_id = repo_id^"__commit" in
+      let pull_id = repo_id^"__pull" in
+      let push_id = repo_id^"__push" in
+      let btn_commit = button ~parent_id: bar_id ~id: commit_id ~text: "Commit" ~cl: "gitbox-button" in
+      let btn_pull = button ~parent_id: bar_id ~id: pull_id ~text: "Pull" ~cl: "gitbox-button" in
+      let btn_push = button ~parent_id: bar_id ~id: push_id ~text: "Push" ~cl: "gitbox-button" in
+
     object(self)
       method id : string = repo_id
       method msg_id = msg_id
@@ -56,7 +83,13 @@ module Make(P:Stog_git_types.P) =
 
       method commit =
         let paths, msg = ([], "Commit") in
-        self#simple_call (P.Commit (paths, msg))
+        let msg = P.Commit (paths, msg) in
+        self#simple_call msg
+
+
+      method pull =
+          let msg = P.Rebase_from_origin in
+          self#simple_call msg
 
       method handle_message (msg : 'srv) =
         try
@@ -73,8 +106,7 @@ module Make(P:Stog_git_types.P) =
             Js._false
 
       initializer
-        (*Ojs_js.set_onclick button (fun _ -> self#save);*)
-        ()
+        Ojs_js.set_onclick btn_pull (fun _ -> self#pull)
     end
 
     class repos

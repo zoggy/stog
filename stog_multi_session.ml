@@ -177,6 +177,7 @@ let create cfg account =
   Stog_git_server.clone ?sshkey: cfg.ssh_priv_key git ;
   let origin_branch = Stog_git_server.current_branch git in
   let git = { git with origin_branch } in
+  Stog_git_server.create_edit_branch git;
   Stog_git_server.set_user_info git ~name: account.name ~email: account.email ;
 
   let stored =

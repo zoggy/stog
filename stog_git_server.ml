@@ -188,8 +188,12 @@ module Make (P: Stog_git_types.P) =
       method handle_commit reply_msg paths msg =
         reply_msg (P.SError "Commit not implemented yet")
 
-      method handle_rebase_from_origin reply_msg =
-        reply_msg (P.SError "Rebase_from_origin not implemented yet")
+       method handle_rebase_from_origin reply_msg =
+            Lwt.catch
+              (fun () ->
+                 Lwt_preemptive.detach (rebase_from_origin ?sshkey) git >>= fun msg ->
+                   reply_msg (P.SOk msg))
+              (function Failure msg -> reply_msg (P.SError msg))
 
       method handle_message
             (send_msg : P.server_msg -> unit Lwt.t) (msg : P.client_msg) =
@@ -205,7 +209,7 @@ module Make (P: Stog_git_types.P) =
         | P.Rebase_from_origin ->
             self#handle_rebase_from_origin reply_msg
         | _ ->
-            reply_msg (P.SError "Unhandled message")
+            reply_msg (P.SError "Unhandled message in git repo")
       end
 
 class repos

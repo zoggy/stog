@@ -218,6 +218,11 @@ server_files/$(MSERVER_ED_JS): \
 	$(JS_OF_OCAML) +js_of_ocaml/nat.js $@.byte  -o $@
 	$(RM) server_files/*.byte
 
+stog_git_js.cmi stog_git_js.cmo: stog_git_js.ml
+	$(OCAMLFIND) ocamlc -c $(COMPFLAGS) \
+	-package $(SERVER_JS_PACKAGES),$(MSERVER_JS_PACKAGES) -syntax camlp4o \
+	$<
+
 server_files/stog-server-style.css: server-style.css
 	$(CP) $< $@
 

@@ -80,8 +80,15 @@ let init ?sshkey ~stog_dir ~git =
     | Server_P.Call (call_id, ((Stog_multi_ed_types.ED.Editor _) as msg)) ->
         let return msg = Server.Rpc.return rpc call_id msg in
         editors#handle_call return msg
+    | Server_P.Call (call_id, ((Stog_multi_ed_types.Git.Git _) as msg)) ->
+        let return msg = Server.Rpc.return rpc call_id msg in
+        git_repos#handle_call return msg
     | _ ->
-        failwith "Unhandled message"
+        let str = Printf.sprintf
+          "Unhandled message (Stog_multi_ed.handle_message): %s"
+          (Printexc.to_string (Obj.magic msg))
+        in
+        failwith str
   in
   connections#set_handle_message handle_message;
   connections
@@ -94,6 +101,7 @@ let page cfg user ~ws_url ~title ~client_js_path =
     ~ft_id: Stog_multi_ed_types.ft_id
       ~ojs_msg_id: Stog_multi_ed_types.ojs_msg_id
       ~bar_id: Stog_multi_ed_types.bar_id
+      ~git_id: Stog_multi_ed_types.gitrepo_id
       ~ed_id: Stog_multi_ed_types.ed_id
       ()
   in
