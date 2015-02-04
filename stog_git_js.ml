@@ -89,7 +89,7 @@ module Make(P:Stog_git_types.P) =
           )
 
       method commit =
-        let paths, msg = ([], "Commit") in
+        let paths, msg = ([], "Update through stog-multiserver") in
         let msg = P.Commit (paths, msg) in
         self#simple_call msg
 
@@ -113,7 +113,8 @@ module Make(P:Stog_git_types.P) =
             Js._false
 
       initializer
-        Ojs_js.set_onclick btn_pull (fun _ -> self#pull)
+        Ojs_js.set_onclick btn_commit (fun _ -> self#commit) ;
+        Ojs_js.set_onclick btn_pull (fun _ -> self#pull) ;
     end
 
     class repos

@@ -131,6 +131,7 @@ let has_local_changes git =
   | `Ok (msg,_) -> Stog_misc.strip_string msg <> ""
 
 
+(*
 let with_stash git f =
   if has_local_changes git then
     begin
@@ -146,11 +147,12 @@ let with_stash git f =
     end
   else
     f ()
+*)
 
 let rebase_from_origin ?sshkey git =
   let ob = git.origin_branch in
   let b = git.edit_branch in
-  let f () =
+  let pull_origin () =
     let ob = Filename.quote ob in
     let git_com = Printf.sprintf
       "(git checkout %s && git pull origin %s)" ob ob
@@ -160,16 +162,29 @@ let rebase_from_origin ?sshkey git =
     | `Error (com,msg,_) -> failwith (com^"\n"^msg)
     | `Ok _ -> ()
   in
-  let checkout_branch () =
+  let checkout_edit_branch () =
     let git_com = Printf.sprintf "git checkout %s" (Filename.quote b) in
     match in_git_repo git ~merge_outputs: true git_com with
     | `Error (com,msg,_) -> failwith (com^"\n"^msg)
     | `Ok _ -> ()
   in
-  with_stash git (try_finalize f () checkout_branch);
+  try_finalize pull_origin () checkout_edit_branch ();
   let git_com = Printf.sprintf "git rebase %s" (Filename.quote ob) in
   match in_git_repo git ~merge_outputs: true git_com with
     `Error (com,msg,_) -> failwith (com^"\n"^msg)
+  | `Ok (msg,_) -> msg
+
+let commit git paths msg =
+  let args =
+    match paths with
+      [] -> "-a"
+    | _ ->
+        String.concat " "
+          (List.map (fun p -> Filename.quote (Ojs_path.to_string p)) paths)
+  in
+  let git_com = Printf.sprintf "git commit -m%s %s" (Filename.quote msg) args in
+  match in_git_repo git ~merge_outputs: true git_com with
+    `Error (_,msg,_) -> failwith (git_com^"\n"^msg)
   | `Ok (msg,_) -> msg
 
 module Make (P: Stog_git_types.P) =
@@ -186,7 +201,11 @@ module Make (P: Stog_git_types.P) =
         reply_msg (P.SStatus [])
 
       method handle_commit reply_msg paths msg =
-        reply_msg (P.SError "Commit not implemented yet")
+        Lwt.catch
+              (fun () ->
+                 Lwt_preemptive.detach (commit git paths) msg >>= fun msg ->
+                   reply_msg (P.SOk msg))
+              (function Failure msg -> reply_msg (P.SError msg))
 
        method handle_rebase_from_origin reply_msg =
             Lwt.catch
