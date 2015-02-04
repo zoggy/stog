@@ -45,16 +45,6 @@ let create_session cfg sessions account =
 
 let string_of_date = Netdate.mk_date ~fmt: "%F %R"
 
-module Form_push = [%ojs.form "templates/form_push.tmpl"]
-let form_push cfg session =
-  let action = Stog_multi_page.url_session_push cfg in
-  Form_push.form ~action ~session: session.session_id ()
-
-module Form_pull = [%ojs.form "templates/form_pull.tmpl"]
-let form_pull cfg session =
-  let action = Stog_multi_page.url_session_pull cfg in
-  Form_pull.form ~action ~session: session.session_id ()
-
 let session_list cfg gs user =
   let sessions =
     Str_map.fold
@@ -82,9 +72,7 @@ let session_list cfg gs user =
         Stog_multi_page.br ;
         Xtmpl.E (("","a"), Xtmpl.atts_one ("","href") [Xtmpl.D preview_url], [Xtmpl.D "preview"]) ; nbsp ;
         Xtmpl.E (("","a"), Xtmpl.atts_one ("","href") [Xtmpl.D editor_url], [Xtmpl.D "editor"]) ; nbsp
-        ] @
-        form_push cfg s @ [nbsp] @
-        form_pull cfg s
+        ]
       )
     ]
   in
@@ -123,35 +111,4 @@ let handle_sessions_post cfg gs user req body =
 let handle_sessions_get cfg gs user req body =
   Lwt.return (page cfg gs user)
 
-let handle_session_push cfg gs user req body =
-  let module F = Form_push in
-  Lwt.return (page cfg gs user)
-(*    let (tmpl, form) = F.read_form (Stog_multi_page.param_of_body body) in*)
-
-let handle_session_pull cfg gs user req body =
-  Cohttp_lwt_body.to_string body >>= fun body ->
-  let module F = Form_pull in
-  try
-    match F.read_form (Stog_multi_page.param_of_body body) with
-    | exception (F.Error (_tmpl, errors)) ->
-        failwith (String.concat " " errors)
-    | (_,form) ->
-        let session_id = form.F.session in
-        match Str_map.find session_id !(gs.sessions) with
-        | exception Not_found ->
-            failwith (Printf.sprintf "Session %S not found" session_id)
-        | session ->
-            if session.session_stored.session_author <> user.login then
-              failwith ("You are not authorized to pull in this session.");
-            match Stog_multi_session.rebase_from_origin cfg session with
-            | exception Failure msg ->
-                let error = `Block [Stog_multi_page.pre msg] in
-                Lwt.return (page cfg gs ~error user)
-            | output ->
-                let message = `Block [Stog_multi_page.pre output] in
-                Lwt.return (page cfg gs ~message user)
-  with
-    e ->
-      let msg = match e with Failure msg -> msg | _ -> Printexc.to_string e in
-      Lwt.return (page cfg gs ~error: (`Msg msg) user)
     

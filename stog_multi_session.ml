@@ -76,52 +76,6 @@ let read_stog stog_dir =
   let stog = Stog_init.from_dirs [stog_dir] in
   { stog with Stog_types.stog_outdir = Filename.concat stog_dir "stog-output" }
 
-(*c==v=[Misc.try_finalize]=1.0====*)
-let try_finalize f x finally y =
-  let res =
-    try f x
-    with exn -> finally y; raise exn
-  in
-  finally y;
-  res
-(*/c==v=[Misc.try_finalize]=1.0====*)
-
-let run command =
-  match Sys.command command with
-    0 -> ()
-  | n -> failwith (Printf.sprintf "Command failed [%d]: %s" n command)
-
-let ssh_git cfg ?dir command =
-  let sub = Filename.quote
-    (Printf.sprintf "ssh-add %s; %s" (Filename.quote cfg.ssh_priv_key) command)
-  in
-  let command = Printf.sprintf "%s ssh-agent bash -c %s"
-    (match dir with
-       None -> ""
-     | Some d -> Printf.sprintf "cd %s &&" (Filename.quote d)
-    )
-      sub
-  in
-  run command
-
-let git_clone cfg repo_dir =
-  let command = Printf.sprintf "git clone %s %s"
-    (Filename.quote cfg.git_repo_url) (Filename.quote (Ojs_path.to_string repo_dir))
-  in
-  ssh_git cfg command
-
-let add_user_info session account =
-  let s = Printf.sprintf "\n[user]\n\tname = %s\n\temail = %s\n"
-    account.name account.email
-  in
-  let config_file = Ojs_path.append
-    session.session_stored.session_git.repo_dir [".git" ; "config"] in
-  let command = Printf.sprintf
-    "echo %s >> %s" (Filename.quote s)
-      (Filename.quote (Ojs_path.to_string config_file))
-  in
-  run command
-
 let horodate () =
   Unix.(
    let t = localtime (time()) in
@@ -130,43 +84,7 @@ let horodate () =
      t.tm_hour t.tm_min t.tm_sec
   )
 
-let remove_file file = try Sys.remove file with _ -> ()
-
-let in_git_repo repo_dir ?(merge_outputs=false) com =
-  let stdout = Filename.temp_file "stogserver" ".stdout" in
-  let stderr = Filename.temp_file "stogserver" ".stderr" in
-  let command = Printf.sprintf "cd %s && %s %s" 
-    (Filename.quote (Ojs_path.to_string repo_dir))
-    com
-      (match merge_outputs with
-       | false -> Printf.sprintf "> %s 2> %s" (Filename.quote stdout) (Filename.quote stderr)
-       | true ->  Printf.sprintf "> %s 2>&1" (Filename.quote stdout)
-      )
-  in
-  let result = Sys.command command in
-  let s_out = Stog_misc.string_of_file stdout in
-  let s_err = if merge_outputs then "" else Stog_misc.string_of_file stderr in
-  remove_file stdout ; remove_file stderr ;
-  match result with
-    0 -> `Ok (s_out, s_err)
-  | _ -> `Error (com, s_out, s_err)
-
-let git_current_branch repo_dir =
-  let git_com = "git rev-parse --abbrev-ref HEAD" in
-  match in_git_repo repo_dir git_com with
-  | `Error (com,_,err) -> failwith (com^"\n"^err)
-  | `Ok (s,_) ->
-      match Stog_misc.split_string s ['\n' ; '\r'] with
-        [] -> failwith ("No current branch returned by "^git_com)
-      | line :: _ -> line
-
-let git_create_branch repo_dir account =
-  let branch_name = Printf.sprintf "%s--%s" account.login (horodate()) in
-  let command = Printf.sprintf "cd %s && git checkout -b %s"
-    (Filename.quote (Ojs_path.to_string repo_dir)) (Filename.quote branch_name)
-  in
-  run command;
-  branch_name
+let mk_edit_branch_name login = Printf.sprintf "%s--%s" login (horodate())
 
 let stog_info_of_repo_dir cfg session_id repo_dir =
   let repo_dir = Ojs_path.to_string repo_dir in
@@ -230,7 +148,7 @@ let store_stored session =
   let json = stored_to_yojson session.session_stored in
   Stog_misc.file_of_string ~file (Yojson.Safe.to_string json)
 
-let start_session session =
+let start_session ?sshkey session =
   let stog = read_stog session.session_stog.stog_dir in
   let (state, cons) = Stog_server_preview.new_stog_session
     stog session.session_stog.stog_preview_url
@@ -238,7 +156,10 @@ let start_session session =
   session.session_stog.stog_state <- state ;
   session.session_stog.stog_ws_cons <- cons ;
   session.session_editor.editor_ws_cons <-
-    Stog_multi_ed.init (Ojs_path.of_string session.session_stog.stog_dir)
+    Stog_multi_ed.init
+      ?sshkey
+      ~stog_dir: (Ojs_path.of_string session.session_stog.stog_dir)
+      ~git: session.session_stored.session_git
 
 let create cfg account =
   let session_id = new_id () in
@@ -247,19 +168,22 @@ let create cfg account =
   let stog_info = stog_info_of_repo_dir cfg session_id repo_dir in
   let editor_info = editor_info_of_stog_info cfg session_id stog_info in
 
-  git_clone cfg repo_dir ;
-  let origin_branch = git_current_branch repo_dir in
-  let edit_branch = git_create_branch repo_dir account in
-  let git_repo = Stog_git_server.git_repo
+  let edit_branch = mk_edit_branch_name account.login in
+  let git = Stog_git_server.git_repo
     ~dir: repo_dir
     ~origin_url: cfg.git_repo_url
-    ~origin_branch ~edit_branch
+    ~origin_branch: "" ~edit_branch
   in
+  Stog_git_server.clone ?sshkey: cfg.ssh_priv_key git ;
+  let origin_branch = Stog_git_server.current_branch git in
+  let git = { git with origin_branch } in
+  Stog_git_server.set_user_info git ~name: account.name ~email: account.email ;
+
   let stored =
     { session_create_date = Unix.time () ;
       session_state = Live ;
       session_author = account.login ;
-      session_git = git_repo ;
+      session_git = git ;
     }
   in
   let session =
@@ -270,9 +194,8 @@ let create cfg account =
       session_editor = editor_info ;
     }
   in
-  add_user_info session account ;
   store_stored session ;
-  start_session session ;
+  start_session ?sshkey:cfg.ssh_priv_key session ;
   session
 
 let load_previous_sessions cfg =
@@ -299,54 +222,5 @@ let load_previous_sessions cfg =
   in
   List.fold_left f [] dirs
 
-let git_has_local_changes repo_dir =
-  let git_com = "(git status --porcelain | (grep -v '??' || true))" in
-  match in_git_repo repo_dir ~merge_outputs: true git_com with
-  | `Error (com,msg,_) -> failwith (com^"\n"^msg)
-  | `Ok (msg,_) -> Stog_misc.strip_string msg <> ""
-
-let with_stash repo_dir f =
-  if git_has_local_changes repo_dir then
-    begin
-      match in_git_repo repo_dir ~merge_outputs: true "git stash" with
-      | `Error (com,msg,_) -> failwith (com^"\n"^msg)
-      | `Ok _ ->
-          let g () =
-            match in_git_repo repo_dir ~merge_outputs: true "git stash pop" with
-            | `Error (com,msg,_) -> failwith (com^"\n"^msg)
-            | `Ok _ -> ()
-          in
-          try_finalize f () g ()
-    end
-  else
-    f ()
-
-let rebase_from_origin cfg session =
-  let st = session.session_stored in
-  let git = st.session_git in
-  let ob = git.origin_branch in
-  let b = git.edit_branch in
-  let repo_dir = git.repo_dir in
-  let f () =
-    let ob = Filename.quote ob in
-    let git_com = Printf.sprintf
-      "(git checkout %s && git pull origin %s)" ob ob
-    in
-    (* FIXME: handle ssh; using ssh_git *)
-    match in_git_repo repo_dir ~merge_outputs: true git_com with
-    | `Error (com,msg,_) -> failwith (com^"\n"^msg)
-    | `Ok _ -> ()
-  in
-  let checkout_branch () =
-    let git_com = Printf.sprintf "git checkout %s" (Filename.quote b) in
-    match in_git_repo repo_dir ~merge_outputs: true git_com with
-    | `Error (com,msg,_) -> failwith (com^"\n"^msg)
-    | `Ok _ -> ()
-  in
-  with_stash repo_dir (try_finalize f () checkout_branch);
-  let git_com = Printf.sprintf "git rebase %s" (Filename.quote ob) in
-  match in_git_repo repo_dir ~merge_outputs: true git_com with
-    `Error (com,msg,_) -> failwith (com^"\n"^msg)
-  | `Ok (msg,_) -> msg
 
  

@@ -48,6 +48,7 @@ module Base =
     type client_msg +=
       | Commit of path list * string
       | Status
+      | Rebase_from_origin
       [@@deriving yojson]
   end
 

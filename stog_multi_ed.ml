@@ -42,6 +42,7 @@ module Server_P = struct
 module Server = Ojs_server.Make(Server_P)
 module SFT = Ojsft_server.Make(Stog_multi_ed_types.FT)
 module SED = Ojsed_server.Make(Stog_multi_ed_types.ED)
+module Git = Stog_git_server.Make(Stog_multi_ed_types.Git)
 
 (*
 class myft broadcall broadcast ~id root =
@@ -54,7 +55,7 @@ class myft broadcall broadcast ~id root =
 *)
 
 
-let init root_dir =
+let init ?sshkey ~stog_dir ~git =
   let connections = new Server.connection_group in
   let filetrees = new SFT.filetrees connections#broadcall connections#broadcast
     (new SFT.filetree)
@@ -62,12 +63,17 @@ let init root_dir =
   let editors = new SED.editors connections#broadcall connections#broadcast
     (new SED.editor)
   in
-  let _ft = filetrees#add_filetree Stog_multi_ed_types.ft_id root_dir in
-  let _ed = editors#add_editor Stog_multi_ed_types.ed_id root_dir in
+  let git_repos = new Git.repos connections#broadcall connections#broadcast
+    (new Git.repo)
+  in
+  let _ft = filetrees#add_filetree Stog_multi_ed_types.ft_id stog_dir in
+  let _ed = editors#add_editor Stog_multi_ed_types.ed_id stog_dir in
+  let _repo = git_repos#add_repo ~id: Stog_multi_ed_types.gitrepo_id ?sshkey git in
   let handle_message send_msg rpc msg =
     match msg with
     | Stog_multi_ed_types.ED.Editor _ -> editors#handle_message send_msg msg
-    | Stog_multi_ed_types.FT.Filetree _ -> filetrees#handle_message  send_msg msg
+    | Stog_multi_ed_types.FT.Filetree _ -> filetrees#handle_message send_msg msg
+    | Stog_multi_ed_types.Git.Git _ -> git_repos#handle_message send_msg msg
     | Server_P.Call (call_id, ((Stog_multi_ed_types.FT.Filetree _) as msg))->
         let return msg = Server.Rpc.return rpc call_id msg in
         filetrees#handle_call return msg

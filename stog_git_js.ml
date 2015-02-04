@@ -36,7 +36,7 @@ let (>>=) = Lwt.(>>=)
 module Make(P:Stog_git_types.P) =
   struct
     class repo call (send : P.client_msg -> unit Lwt.t)
-      ~bar_id ~msg_id repo_id =
+      ~msg_id repo_id =
     object(self)
       method id : string = repo_id
       method msg_id = msg_id
@@ -82,7 +82,7 @@ module Make(P:Stog_git_types.P) =
         (send : P.app_client_msg -> unit Lwt.t)
         (spawn : (P.client_msg -> (P.server_msg -> unit Lwt.t) -> unit Lwt.t) ->
          (P.client_msg -> unit Lwt.t) ->
-           bar_id: string -> msg_id: string -> string -> repo) =
+           msg_id: string -> string -> repo) =
         object(self)
           val mutable repos = (SMap.empty : repo SMap.t)
 
@@ -97,7 +97,7 @@ module Make(P:Stog_git_types.P) =
             | Some (id, msg) -> (self#get_repo id)#handle_message msg
             | None -> Js._false
 
-          method setup_repo ~bar_id ~msg_id repo_id =
+          method setup_repo ~msg_id repo_id =
             let send msg = send (P.pack_client_msg repo_id msg) in
             let call msg cb =
               let cb msg =
@@ -107,7 +107,7 @@ module Make(P:Stog_git_types.P) =
               in
               call (P.pack_client_msg repo_id msg) cb
             in
-            let repo = spawn call send ~bar_id ~msg_id repo_id in
+            let repo = spawn call send ~msg_id repo_id in
             repos <- SMap.add repo_id repo repos
         end
 end

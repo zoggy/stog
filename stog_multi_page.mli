@@ -32,13 +32,9 @@
 val url_ : Stog_multi_config.t -> string list -> string
 val path_login : string list
 val path_sessions : string list
-val path_session_push : string list
-val path_session_pull : string list
 
 val url_login : Stog_multi_config.t -> string
 val url_sessions : Stog_multi_config.t -> string
-val url_session_push : Stog_multi_config.t -> string
-val url_session_pull : Stog_multi_config.t -> string
 
 type block = [`Msg of string | `Block of Xtmpl.tree list]
 

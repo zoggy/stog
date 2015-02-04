@@ -40,7 +40,7 @@ type account = {
   }
 type t = {
     accounts : account list ;
-    ssh_priv_key : string ;
+    ssh_priv_key : string option;
     git_repo_url : string ;
     dir : string ;
     stog_dir : string option ;
@@ -98,10 +98,16 @@ let read file =
   in
   let ssh_priv_key =
     let file = o_ssh#get in
-    if Filename.is_relative file then
-      Filename.concat (Sys.getcwd ()) file
-    else
-      file
+    match file with
+      "" -> None
+    | _ ->
+        let f =
+          if Filename.is_relative file then
+            Filename.concat (Sys.getcwd ()) file
+          else
+            file
+        in
+        Some f
   in
   let app_url = Stog_types.url_of_string o_app_url#get in
   let app_url = Neturl.modify_url

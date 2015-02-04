@@ -45,3 +45,5 @@ let ft_id = "ft"
 let ed_id = "ed"
 let ojs_msg_id = "ojs-msg"
 let bar_id = "bar"
+let gitrepo_id = "git"
+

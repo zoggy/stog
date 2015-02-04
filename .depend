@@ -46,8 +46,8 @@ stog_find.cmx : stog_find.cmi
 stog_find.cmi :
 stog_git.cmo :
 stog_git.cmx :
-stog_git_server.cmo : stog_git_types.cmo
-stog_git_server.cmx : stog_git_types.cmx
+stog_git_server.cmo : stog_misc.cmi stog_git_types.cmo
+stog_git_server.cmx : stog_misc.cmx stog_git_types.cmx
 stog_git_types.cmo :
 stog_git_types.cmx :
 stog_graph.cmo : stog_graph.cmi
@@ -138,14 +138,18 @@ stog_multi_page.cmx : stog_types.cmx stog_server_preview.cmx \
 stog_multi_page.cmi : stog_multi_config.cmo
 stog_multi_session.cmo : stog_types.cmi stog_server_run.cmo \
     stog_server_preview.cmo stog_multi_page.cmi stog_multi_ed.cmo \
-    stog_multi_config.cmo stog_misc.cmi stog_init.cmi stog_find.cmi
+    stog_multi_config.cmo stog_misc.cmi stog_init.cmi stog_git_server.cmo \
+    stog_find.cmi
 stog_multi_session.cmx : stog_types.cmx stog_server_run.cmx \
     stog_server_preview.cmx stog_multi_page.cmx stog_multi_ed.cmx \
-    stog_multi_config.cmx stog_misc.cmx stog_init.cmx stog_find.cmx
+    stog_multi_config.cmx stog_misc.cmx stog_init.cmx stog_git_server.cmx \
+    stog_find.cmx
 stog_multi_user.cmo : stog_types.cmi stog_multi_session.cmo \
-    stog_multi_page.cmi stog_multi_gs.cmo stog_multi_config.cmo
+    stog_multi_page.cmi stog_multi_gs.cmo stog_multi_config.cmo \
+    stog_git_server.cmo
 stog_multi_user.cmx : stog_types.cmx stog_multi_session.cmx \
-    stog_multi_page.cmx stog_multi_gs.cmx stog_multi_config.cmx
+    stog_multi_page.cmx stog_multi_gs.cmx stog_multi_config.cmx \
+    stog_git_server.cmx
 stog_multi_ws.cmo : stog_types.cmi stog_server_ws.cmo stog_multi_session.cmo \
     stog_multi_gs.cmo stog_multi_config.cmo stog_misc.cmi
 stog_multi_ws.cmx : stog_types.cmx stog_server_ws.cmx stog_multi_session.cmx \

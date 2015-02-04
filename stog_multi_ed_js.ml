@@ -49,6 +49,7 @@ module Git = Stog_git_js.Make(Stog_multi_ed_types.Git)
 
 let trees = new FT.trees call send (new FT.tree);;
 let editors = new ED.editors call send (new ED.editor);;
+let repos = new Git.repos call send (new Git.repo);;
 
 let on_deselect ti path = ()
 
@@ -77,6 +78,10 @@ let onopen ws =
   in
   tree#set_on_select on_select;
   tree#set_on_deselect on_deselect;
+  let _repo = repos#setup_repo
+    ~msg_id: Stog_multi_ed_types.ojs_msg_id
+      Stog_multi_ed_types.gitrepo_id
+  in
   ignore(editors#setup_editor
    ~msg_id: Stog_multi_ed_types.ojs_msg_id
      ~bar_id: Stog_multi_ed_types.bar_id
@@ -86,6 +91,7 @@ let onmessage ws msg =
   match msg with
   | Stog_multi_ed_types.FT.SFiletree _ -> trees#handle_message msg
   | Stog_multi_ed_types.ED.SEditor _  -> editors#handle_message msg
+  | Stog_multi_ed_types.Git.SGit _  -> repos#handle_message msg
   | Rpc_base.SReturn (call_id, msg) -> Rpc.on_return rpc_handler call_id msg; Js._false
   | _ -> failwith "Unhandled message"
 
