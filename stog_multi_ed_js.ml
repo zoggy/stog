@@ -45,6 +45,7 @@ let call = Rpc.call rpc_handler
 
 module FT = Ojsft_js.Make(Stog_multi_ed_types.FT)
 module ED = Ojsed_js.Make(Stog_multi_ed_types.ED)
+module Git = Stog_git_js.Make(Stog_multi_ed_types.Git)
 
 let trees = new FT.trees call send (new FT.tree);;
 let editors = new ED.editors call send (new ED.editor);;

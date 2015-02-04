@@ -31,6 +31,16 @@
 
 open Ojs_server
 
+type git_repo = {
+  repo_dir : Ojs_path.t ;
+  origin_url : string ;
+  origin_branch : string ;
+  edit_branch : string ;
+  } [@@deriving yojson]
+
+let git_repo ~origin_url ~origin_branch ~edit_branch ~dir =
+  { repo_dir = dir ; origin_url ; origin_branch ; edit_branch }
+
 module Make (P: Stog_git_types.P) =
   struct
     class repo

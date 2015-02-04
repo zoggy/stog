@@ -38,7 +38,7 @@ module Make(P:Stog_git_types.P) =
     class repo call (send : P.client_msg -> unit Lwt.t)
       ~bar_id ~msg_id repo_id =
     object(self)
-      method id = ed_id
+      method id : string = repo_id
       method msg_id = msg_id
 
       method display_error msg = Ojsmsg_js.display_text_error msg_id msg
@@ -84,10 +84,10 @@ module Make(P:Stog_git_types.P) =
          (P.client_msg -> unit Lwt.t) ->
            bar_id: string -> msg_id: string -> string -> repo) =
         object(self)
-          val mutable repos = (SMap.empty : editor SMap.t)
+          val mutable repos = (SMap.empty : repo SMap.t)
 
           method get_repo id =
-            try SMap.find id repo
+            try SMap.find id repos
             with Not_found -> failwith (Printf.sprintf "Invalid repository id %S" id)
 
           method get_msg_id id = (self#get_repo id)#msg_id
@@ -98,7 +98,7 @@ module Make(P:Stog_git_types.P) =
             | None -> Js._false
 
           method setup_repo ~bar_id ~msg_id repo_id =
-            let send msg = send (P.pack_client_msg ed_id msg) in
+            let send msg = send (P.pack_client_msg repo_id msg) in
             let call msg cb =
               let cb msg =
                 match P.unpack_server_msg msg with

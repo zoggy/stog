@@ -207,11 +207,14 @@ server_files/$(SERVER_JS): stog_server_types.cmi stog_server_types.cmo stog_serv
 	$(JS_OF_OCAML) +js_of_ocaml/nat.js $@.byte  -o $@
 	$(RM) server_files/*.byte
 
-server_files/$(MSERVER_ED_JS): stog_multi_ed_types.cmi stog_multi_ed_types.cmo stog_multi_ed_js.ml
+server_files/$(MSERVER_ED_JS): \
+	stog_git_types.cmi stog_git_types.cmo \
+	stog_git_js.cmi stog_git_js.cmo \
+	stog_multi_ed_types.cmi stog_multi_ed_types.cmo stog_multi_ed_js.ml
 	$(MKDIR) server_files
 	$(OCAMLFIND) ocamlc -o $@.byte $(COMPFLAGS) \
 	-package $(SERVER_JS_PACKAGES),$(MSERVER_JS_PACKAGES) -syntax camlp4o -linkpkg \
-	stog_multi_ed_types.cmo stog_multi_ed_js.ml
+	stog_git_types.cmo stog_git_js.cmo stog_multi_ed_types.cmo stog_multi_ed_js.ml
 	$(JS_OF_OCAML) +js_of_ocaml/nat.js $@.byte  -o $@
 	$(RM) server_files/*.byte
 

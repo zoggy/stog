@@ -30,6 +30,7 @@
 (** *)
 
 open Stog_multi_config
+open Stog_git_server
 
 type session_state =
   | Live
@@ -39,10 +40,8 @@ type session_state =
 type stored =
   { session_create_date : float ;
     mutable session_state : session_state ;
-    session_orig_branch : string ;
-    session_branch : string ;
     session_author : string ;
-    session_repo_url : string ;
+    session_git : Stog_git_server.git_repo ;
   }  [@@deriving yojson]
 
 type stog_info = {
@@ -59,14 +58,13 @@ type editor_info = {
 type session =
   { session_id : string ;
     session_dir : string ;
-    session_repo_dir : string ;
     session_stored : stored ;
     session_stog : stog_info ;
     session_editor : editor_info ;
   }
 
 let session_info_file session_dir = Filename.concat session_dir "index.json"
-let repo_dir_of_session_dir d = Filename.concat d "repo"
+let repo_dir_of_session_dir d = Ojs_path.append (Ojs_path.of_string d) ["repo"]
 
 let () = Random.self_init ()
 
@@ -108,7 +106,7 @@ let ssh_git cfg ?dir command =
 
 let git_clone cfg repo_dir =
   let command = Printf.sprintf "git clone %s %s"
-    (Filename.quote cfg.git_repo_url) (Filename.quote repo_dir)
+    (Filename.quote cfg.git_repo_url) (Filename.quote (Ojs_path.to_string repo_dir))
   in
   ssh_git cfg command
 
@@ -116,11 +114,11 @@ let add_user_info session account =
   let s = Printf.sprintf "\n[user]\n\tname = %s\n\temail = %s\n"
     account.name account.email
   in
+  let config_file = Ojs_path.append
+    session.session_stored.session_git.repo_dir [".git" ; "config"] in
   let command = Printf.sprintf
     "echo %s >> %s" (Filename.quote s)
-      (Filename.quote
-       (Filename.concat
-        (Filename.concat session.session_repo_dir ".git") "config"))
+      (Filename.quote (Ojs_path.to_string config_file))
   in
   run command
 
@@ -137,7 +135,8 @@ let remove_file file = try Sys.remove file with _ -> ()
 let in_git_repo repo_dir ?(merge_outputs=false) com =
   let stdout = Filename.temp_file "stogserver" ".stdout" in
   let stderr = Filename.temp_file "stogserver" ".stderr" in
-  let command = Printf.sprintf "cd %s && %s %s" (Filename.quote repo_dir)
+  let command = Printf.sprintf "cd %s && %s %s" 
+    (Filename.quote (Ojs_path.to_string repo_dir))
     com
       (match merge_outputs with
        | false -> Printf.sprintf "> %s 2> %s" (Filename.quote stdout) (Filename.quote stderr)
@@ -164,12 +163,13 @@ let git_current_branch repo_dir =
 let git_create_branch repo_dir account =
   let branch_name = Printf.sprintf "%s--%s" account.login (horodate()) in
   let command = Printf.sprintf "cd %s && git checkout -b %s"
-    (Filename.quote repo_dir) (Filename.quote branch_name)
+    (Filename.quote (Ojs_path.to_string repo_dir)) (Filename.quote branch_name)
   in
   run command;
   branch_name
 
 let stog_info_of_repo_dir cfg session_id repo_dir =
+  let repo_dir = Ojs_path.to_string repo_dir in
   let stog_dir =
     match cfg.Stog_multi_config.stog_dir with
     | None -> repo_dir
@@ -218,7 +218,6 @@ let load cfg session_id =
   let session =
     { session_id ;
       session_dir ;
-      session_repo_dir = repo_dir ;
       session_stored = stored ;
       session_stog = stog_info ;
       session_editor = editor_info ;
@@ -249,22 +248,23 @@ let create cfg account =
   let editor_info = editor_info_of_stog_info cfg session_id stog_info in
 
   git_clone cfg repo_dir ;
-  let orig_branch = git_current_branch repo_dir in
-  let branch_name = git_create_branch repo_dir account in
-
+  let origin_branch = git_current_branch repo_dir in
+  let edit_branch = git_create_branch repo_dir account in
+  let git_repo = Stog_git_server.git_repo
+    ~dir: repo_dir
+    ~origin_url: cfg.git_repo_url
+    ~origin_branch ~edit_branch
+  in
   let stored =
     { session_create_date = Unix.time () ;
       session_state = Live ;
-      session_orig_branch = orig_branch ;
-      session_branch = branch_name ;
       session_author = account.login ;
-      session_repo_url = cfg.git_repo_url ;
+      session_git = git_repo ;
     }
   in
   let session =
     { session_id ;
       session_dir ;
-      session_repo_dir = repo_dir ;
       session_stored = stored ;
       session_stog = stog_info ;
       session_editor = editor_info ;
@@ -323,9 +323,10 @@ let with_stash repo_dir f =
 
 let rebase_from_origin cfg session =
   let st = session.session_stored in
-  let ob = st.session_orig_branch in
-  let b = st.session_branch in
-  let repo_dir = session.session_repo_dir in
+  let git = st.session_git in
+  let ob = git.origin_branch in
+  let b = git.edit_branch in
+  let repo_dir = git.repo_dir in
   let f () =
     let ob = Filename.quote ob in
     let git_com = Printf.sprintf

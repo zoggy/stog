@@ -31,6 +31,7 @@
 
 open Stog_types
 open Stog_multi_config
+open Stog_git_server
 open Stog_multi_session
 open Stog_multi_gs
 let (>>=) = Lwt.bind
@@ -74,10 +75,10 @@ let session_list cfg gs user =
     let st = s.session_stored in
     [
       td [Xtmpl.D (string_of_date st.session_create_date) ] ;
-      td [Xtmpl.D st.session_repo_url ; Stog_multi_page.br ;
-          Xtmpl.D ("{ " ^ st.session_orig_branch ^ " }") ] ;
+      td [Xtmpl.D st.session_git.origin_url ; Stog_multi_page.br ;
+          Xtmpl.D ("{ " ^ st.session_git.origin_branch ^ " }") ] ;
       td ([
-        Xtmpl.D st.session_branch ;
+        Xtmpl.D st.session_git.edit_branch ;
         Stog_multi_page.br ;
         Xtmpl.E (("","a"), Xtmpl.atts_one ("","href") [Xtmpl.D preview_url], [Xtmpl.D "preview"]) ; nbsp ;
         Xtmpl.E (("","a"), Xtmpl.atts_one ("","href") [Xtmpl.D editor_url], [Xtmpl.D "editor"]) ; nbsp

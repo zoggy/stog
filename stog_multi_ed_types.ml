@@ -33,6 +33,7 @@ module App_msg = Ojs_types.Make_app_msg()
 
 module FT = Ojsft_types.Default_P(App_msg)
 module ED = Ojsed_types.Default_P(App_msg)
+module Git = Stog_git_types.Default_P(App_msg)
 
 let server_msg_to_yojson = App_msg.app_server_msg_to_yojson
 let server_msg_of_yojson = App_msg.app_server_msg_of_yojson
