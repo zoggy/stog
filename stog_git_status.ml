@@ -27,66 +27,64 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Parsing [git status --procelain -z] output.
 
+  See {{:http://git-scm.com/docs/git-status}Git status documentation} . *)
 
-(** All paths should relative to repository root. *)
-type path = Ojs_path.t [@@deriving yojson]
+open Stog_git_types
 
-(** [`B] is for space (blank), [`Q] for '?', [`I] for '!' (ignored files). *)
-type status = [`B | `M | `A | `D | `R | `C | `U | `Q | `I]
-  [@@deriving yojson]
+let char_of_status : Stog_git_types.status -> char = function
+| `B -> ' '
+| `M -> 'M'
+| `A -> 'A'
+| `D -> 'D'
+| `R -> 'R'
+| `C -> 'C'
+| `U -> 'U'
+| `Q -> '?'
+| `I -> '!'
 
-(** As the output of git status --porcelain -z:
-  {[ [status][status] to from }] *)
-type path_status = status * status * Ojs_path.t * Ojs_path.t option
+let status_of_char : char -> Stog_git_types.status = function
+  ' ' -> `B
+| 'M' -> `M
+| 'A' -> `A
+| 'D' -> `D
+| 'R' -> `R
+| 'C' -> `C
+| 'U' -> `U
+| '?' -> `Q
+| '!' -> `I
+| c -> failwith (Printf.sprintf "Invalid status character %c" c)
 
-module Base =
-  struct
-    type server_msg = .. [@@deriving yojson]
-    type server_msg +=
-      | SError of string
-      | SOk of string
-      | SStatus of (path * status) list
-      [@@deriving yojson]
+let parse_line str =
+  try
+    assert (String.get str 2 = ' ');
+    let p1 = String.index_from str 2 '\000' in
+    let file1 = Ojs_path.of_string (String.sub str 3 (p1 - 3)) in
+    let file2 =
+      let p = p1 + 1 in
+      match String.index_from str p '\000' with
+      | exception Not_found -> None
+      | p2 ->
+          let f = String.sub str p (p2 - p) in
+          Some (Ojs_path.of_string f)
+    in
+    (status_of_char (String.get str 0),
+     status_of_char (String.get str 1),
+     file1,
+     file2)
+  with
+    _ -> failwith ("Invalid line:\n"^str)
 
-    type client_msg = .. [@@deriving yojson]
-    type client_msg +=
-      | Commit of path list * string
-      | Status
-      | Rebase_from_origin
-      [@@deriving yojson]
-  end
+let parse str =
+  let lines = Stog_misc.split_string str ['\n' ; '\r'] in
+  List.map parse_line lines
 
-module Make_base() = struct include Base end
+let is_unmerged (s1, s2, _, _) =
+  match s1, s2 with
+  | `U, _
+  | _, `U
+  | `A, `A
+  | `D, `D -> true
+  | _ -> false
 
-module type P =
-  sig
-    type app_server_msg = .. [@@deriving yojson]
-    type app_client_msg = .. [@@deriving yojson]
-
-    include (module type of Base)
-
-    val pack_server_msg : string -> server_msg -> app_server_msg
-    val unpack_server_msg : app_server_msg -> (string * server_msg) option
-
-    val pack_client_msg : string -> client_msg -> app_client_msg
-    val unpack_client_msg : app_client_msg -> (string * client_msg) option
-  end
-
-module Default_P(App:Ojs_types.App_msg) =
-  struct
-    type app_server_msg = App.app_server_msg = .. [@@deriving yojson]
-    type app_client_msg = App.app_client_msg = .. [@@deriving yojson]
-
-    include (Make_base())
-
-    type app_server_msg += SGit of string * server_msg [@@deriving yojson]
-    type app_client_msg += Git of string * client_msg [@@deriving yojson]
-
-    let pack_server_msg id msg = SGit (id, msg)
-    let unpack_server_msg = function SGit (id,msg) -> Some (id,msg) | _ -> None
-
-    let pack_client_msg id msg = Git (id, msg)
-    let unpack_client_msg = function Git (id,msg) -> Some (id,msg) | _ -> None
-  end

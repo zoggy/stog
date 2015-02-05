@@ -134,6 +134,7 @@ PLUGIN_MSERVER_CMXFILES=\
 	stog_multi_config.cmx \
 	stog_multi_page.cmx \
 	stog_git_types.cmx \
+	stog_git_status.cmx \
 	stog_git_server.cmx \
 	stog_multi_ed_types.cmx \
 	stog_multi_ed.cmx \

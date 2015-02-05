@@ -76,7 +76,7 @@ module Make(P:Stog_git_types.P) =
       method msg_id = msg_id
 
       method display_error msg = Ojsmsg_js.display_error msg_id [mk_pre msg]
-      method display_message msg = Ojsmsg_js.display_message msg_id [mk_pre msg]
+      method display_message msg = Ojsmsg_js.display_message ~timeout: 0. msg_id [mk_pre msg]
 
       method simple_call : 'clt -> unit Lwt.t = fun msg ->
         call msg
@@ -93,10 +93,13 @@ module Make(P:Stog_git_types.P) =
         let msg = P.Commit (paths, msg) in
         self#simple_call msg
 
-
       method pull =
           let msg = P.Rebase_from_origin in
           self#simple_call msg
+
+      method push = ()
+          (*let msg = P.Push in
+          self#simple_call msg*)
 
       method handle_message (msg : 'srv) =
         try
@@ -115,6 +118,7 @@ module Make(P:Stog_git_types.P) =
       initializer
         Ojs_js.set_onclick btn_commit (fun _ -> self#commit) ;
         Ojs_js.set_onclick btn_pull (fun _ -> self#pull) ;
+        Ojs_js.set_onclick btn_push (fun _ -> self#push) ;
     end
 
     class repos
