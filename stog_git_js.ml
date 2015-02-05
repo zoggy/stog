@@ -97,9 +97,9 @@ module Make(P:Stog_git_types.P) =
           let msg = P.Rebase_from_origin in
           self#simple_call msg
 
-      method push = ()
-          (*let msg = P.Push in
-          self#simple_call msg*)
+      method push =
+          let msg = P.Push in
+          self#simple_call msg
 
       method handle_message (msg : 'srv) =
         try

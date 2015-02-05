@@ -55,6 +55,7 @@ module Base =
       | Commit of path list * string
       | Status
       | Rebase_from_origin
+      | Push
       [@@deriving yojson]
   end
 

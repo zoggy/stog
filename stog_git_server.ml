@@ -166,9 +166,33 @@ let in_rebase git =
     `Error (_,_,_) -> false
   | `Ok (_,_) -> true
 
+let pull_in_origin ?sshkey git =
+  let ob = git.origin_branch in
+  let b = git.edit_branch in
+  let pull_origin () =
+    let ob = Filename.quote ob in
+    let git_com = Printf.sprintf
+      "(git checkout %s && git pull origin %s)" ob ob
+    in
+    let git_com = with_sshkey_opt sshkey git_com in
+        match in_git_repo git ~merge_outputs: true git_com with
+    | `Error (com,msg,_) -> failwith (com^"\n"^msg)
+    | `Ok _ -> ()
+  in
+  let checkout_edit_branch () =
+    let git_com = Printf.sprintf "git checkout %s" (Filename.quote b) in
+    match in_git_repo git ~merge_outputs: true git_com with
+    | `Error (com,msg,_) -> failwith (com^"\n"^msg)
+    | `Ok _ -> ()
+  in
+  try_finalize pull_origin () checkout_edit_branch ()
+
 let rebase_from_origin ?sshkey git =
   let st = status git in
-  match List.exists Stog_git_status.is_unmerged st, in_rebase git with
+  match
+    List.exists Stog_git_status.is_unmerged st || has_local_changes git,
+    in_rebase git
+  with
   | true, _ ->
       begin
         let git_com = "git rebase --continue" in
@@ -181,33 +205,60 @@ let rebase_from_origin ?sshkey git =
         let git_com = "git rebase --skip" in
         match in_git_repo git ~merge_outputs: true git_com with
           `Error (com,msg,_) -> failwith (com^"\n"^msg)
+        | `Ok ("",_) -> "Rebase skipped"
         | `Ok (msg,_) -> msg
       end
   | false, false ->
-      let ob = git.origin_branch in
-      let b = git.edit_branch in
-      let pull_origin () =
-        let ob = Filename.quote ob in
-        let git_com = Printf.sprintf
-          "(git checkout %s && git pull origin %s)" ob ob
-        in
-        let git_com = with_sshkey_opt sshkey git_com in
-        match in_git_repo git ~merge_outputs: true git_com with
-        | `Error (com,msg,_) -> failwith (com^"\n"^msg)
-        | `Ok _ -> ()
-      in
-      let checkout_edit_branch () =
-        let git_com = Printf.sprintf "git checkout %s" (Filename.quote b) in
-        match in_git_repo git ~merge_outputs: true git_com with
-        | `Error (com,msg,_) -> failwith (com^"\n"^msg)
-        | `Ok _ -> ()
-      in
-      try_finalize pull_origin () checkout_edit_branch ();
-      let git_com = Printf.sprintf "git rebase %s" (Filename.quote ob) in
+      pull_in_origin ?sshkey git ;
+      let git_com = Printf.sprintf "git rebase %s" (Filename.quote git.origin_branch) in
       match in_git_repo git ~merge_outputs: true git_com with
         `Error (com,msg,_) -> failwith (com^"\n"^msg)
       | `Ok (msg,_) -> msg
 
+let differs_from_origin git =
+  let git_com = Printf.sprintf "git diff %s" (Filename.quote git.origin_branch) in
+  match in_git_repo git ~merge_outputs: true git_com with
+    `Error _ -> false
+  | `Ok (msg,_) -> Stog_misc.strip_string msg <> ""
+
+let merge_in_origin git =
+  if has_local_changes git then
+    failwith "There are local changes. Please commit first.";
+  let git_com = Printf.sprintf
+    "git checkout %s && git merge %s && git checkout %s"
+      (Filename.quote git.origin_branch)
+      (Filename.quote git.edit_branch)
+      (Filename.quote git.edit_branch)
+  in
+  match in_git_repo git ~merge_outputs: true git_com with
+    `Error (_,msg,_) -> failwith (git_com^"\n"^msg)
+  | `Ok (msg,_) -> msg
+
+let push_origin ?sshkey git =
+  let com = Printf.sprintf
+    "git checkout %s && git push origin %s && git checkout %s"
+      (Filename.quote git.origin_branch)
+      (Filename.quote git.origin_branch)
+      (Filename.quote git.edit_branch)
+  in
+  let git_com = with_sshkey_opt sshkey com in
+  match in_git_repo git ~merge_outputs: true git_com with
+    `Error (_,msg,_) -> failwith (com^"\n"^msg)
+  | `Ok (msg,_) -> msg
+
+let push ?sshkey git =
+  if has_local_changes git then
+    failwith "There are local changes. Please commit first.";
+  let st = status git in
+  if List.exists Stog_git_status.is_unmerged st || in_rebase git then
+    failwith "You're currently merge files. Please finish merging first (use commit and pull)." ;
+  let rebase_msg = rebase_from_origin ?sshkey git in
+  let merge_msg = merge_in_origin git in
+  let push_msg =
+    try push_origin ?sshkey git
+    with Failure msg -> failwith (rebase_msg^"\n\n"^merge_msg^"\n\n"^msg)
+  in
+  rebase_msg^"\n"^merge_msg^"\n"^push_msg
 
 let commit git paths msg =
   let st = status git in
@@ -234,6 +285,7 @@ let commit git paths msg =
   in
   match in_git_repo git ~merge_outputs: true git_com with
     `Error (_,msg,_) -> failwith (git_com^"\n"^msg)
+  | `Ok("",_) -> "Done"
   | `Ok (msg,_) -> msg
 
 module Make (P: Stog_git_types.P) =
@@ -246,22 +298,27 @@ module Make (P: Stog_git_types.P) =
       method git = (git : git_repo)
       method sshkey = (sshkey : string option)
 
+      method git_action reply_msg f =
+            Lwt.catch
+              (fun () ->
+                 Lwt_preemptive.detach f () >>= fun msg ->
+                   reply_msg (P.SOk msg))
+              (function
+               | Failure msg -> reply_msg (P.SError msg)
+               | e -> reply_msg (P.SError (Printexc.to_string e))
+              )
+
       method handle_get_status reply_msg =
         reply_msg (P.SStatus [])
 
       method handle_commit reply_msg paths msg =
-        Lwt.catch
-              (fun () ->
-                 Lwt_preemptive.detach (commit git paths) msg >>= fun msg ->
-                   reply_msg (P.SOk msg))
-              (function Failure msg -> reply_msg (P.SError msg))
+        self#git_action reply_msg (fun () -> commit git paths msg)
 
-       method handle_rebase_from_origin reply_msg =
-            Lwt.catch
-              (fun () ->
-                 Lwt_preemptive.detach (rebase_from_origin ?sshkey) git >>= fun msg ->
-                   reply_msg (P.SOk msg))
-              (function Failure msg -> reply_msg (P.SError msg))
+      method handle_rebase_from_origin reply_msg =
+        self#git_action reply_msg (fun () -> rebase_from_origin ?sshkey git)
+
+      method handle_push reply_msg =
+        self#git_action reply_msg (fun () -> push ?sshkey git)
 
       method handle_message
             (send_msg : P.server_msg -> unit Lwt.t) (msg : P.client_msg) =
@@ -276,6 +333,8 @@ module Make (P: Stog_git_types.P) =
             self#handle_commit reply_msg paths msg
         | P.Rebase_from_origin ->
             self#handle_rebase_from_origin reply_msg
+        | P.Push ->
+            self#handle_push reply_msg
         | _ ->
             reply_msg (P.SError "Unhandled message in git repo")
       end
