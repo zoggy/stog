@@ -189,31 +189,32 @@ let pull_in_origin ?sshkey git =
 
 let rebase_from_origin ?sshkey git =
   let st = status git in
-  match
-    List.exists Stog_git_status.is_unmerged st || has_local_changes git,
-    in_rebase git
-  with
-  | true, _ ->
+  match in_rebase git with
+  | false ->
       begin
-        let git_com = "git rebase --continue" in
+        pull_in_origin ?sshkey git ;
+        let git_com = Printf.sprintf "git rebase %s" (Filename.quote git.origin_branch) in
         match in_git_repo git ~merge_outputs: true git_com with
           `Error (com,msg,_) -> failwith (com^"\n"^msg)
         | `Ok (msg,_) -> msg
       end
-  | false, true ->
-      begin
-        let git_com = "git rebase --skip" in
-        match in_git_repo git ~merge_outputs: true git_com with
-          `Error (com,msg,_) -> failwith (com^"\n"^msg)
-        | `Ok ("",_) -> "Rebase skipped"
-        | `Ok (msg,_) -> msg
-      end
-  | false, false ->
-      pull_in_origin ?sshkey git ;
-      let git_com = Printf.sprintf "git rebase %s" (Filename.quote git.origin_branch) in
-      match in_git_repo git ~merge_outputs: true git_com with
-        `Error (com,msg,_) -> failwith (com^"\n"^msg)
-      | `Ok (msg,_) -> msg
+  | true ->
+      match List.exists Stog_git_status.is_unmerged st || has_local_changes git with
+      | true ->
+          begin
+            let git_com = "git rebase --continue" in
+            match in_git_repo git ~merge_outputs: true git_com with
+              `Error (com,msg,_) -> failwith (com^"\n"^msg)
+            | `Ok (msg,_) -> msg
+          end
+      | false ->
+          begin
+            let git_com = "git rebase --skip" in
+            match in_git_repo git ~merge_outputs: true git_com with
+              `Error (com,msg,_) -> failwith (com^"\n"^msg)
+            | `Ok ("",_) -> "Rebase skipped"
+            | `Ok (msg,_) -> msg
+          end
 
 let differs_from_origin git =
   let git_com = Printf.sprintf "git diff %s" (Filename.quote git.origin_branch) in
@@ -263,8 +264,8 @@ let push ?sshkey git =
 let commit git paths msg =
   let st = status git in
   let git_com =
-    match List.filter Stog_git_status.is_unmerged st with
-    | [] ->
+    match in_rebase git with
+    | false ->
         let args =
           match paths with
             [] -> "-a"
@@ -273,15 +274,18 @@ let commit git paths msg =
                 (List.map (fun p -> Filename.quote (Ojs_path.to_string p)) paths)
         in
         Printf.sprintf "git commit -m%s %s" (Filename.quote msg) args
-    | unmerged ->
-        begin
-          let args =
-            String.concat " "
-              (List.map (fun (_,_,p,_) -> Filename.quote (Ojs_path.to_string p))
-               unmerged)
-          in
-          Printf.sprintf "git add %s" args
-        end
+    | true ->
+        match List.filter Stog_git_status.is_unmerged st with
+        | [] -> "echo 'Nothing to be done'"
+        | unmerged ->
+            begin
+              let args =
+                String.concat " "
+                  (List.map (fun (_,_,p,_) -> Filename.quote (Ojs_path.to_string p))
+                   unmerged)
+              in
+              Printf.sprintf "git add %s" args
+            end
   in
   match in_git_repo git ~merge_outputs: true git_com with
     `Error (_,msg,_) -> failwith (git_com^"\n"^msg)
