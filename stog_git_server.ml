@@ -266,14 +266,18 @@ let commit git paths msg =
   let git_com =
     match in_rebase git with
     | false ->
-        let args =
+        let (add, args) =
           match paths with
-            [] -> "-a"
+            [] -> (false, "-a")
           | _ ->
-              String.concat " "
-                (List.map (fun p -> Filename.quote (Ojs_path.to_string p)) paths)
+              (true,
+               String.concat " "
+                 (List.map (fun p -> Filename.quote (Ojs_path.to_string p)) paths)
+              )
         in
-        Printf.sprintf "git commit -m%s %s" (Filename.quote msg) args
+        Printf.sprintf "%sgit commit -m%s %s"
+          (if add then Printf.sprintf "git add %s &&" args else "")
+          (Filename.quote msg) args
     | true ->
         match List.filter Stog_git_status.is_unmerged st with
         | [] -> "echo 'Nothing to be done'"
@@ -313,7 +317,7 @@ module Make (P: Stog_git_types.P) =
               )
 
       method handle_get_status reply_msg =
-        reply_msg (P.SStatus [])
+        reply_msg (P.SStatus (status git))
 
       method handle_commit reply_msg paths msg =
         self#git_action reply_msg (fun () -> commit git paths msg)

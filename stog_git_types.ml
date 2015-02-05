@@ -39,7 +39,7 @@ type status = [`B | `M | `A | `D | `R | `C | `U | `Q | `I]
 
 (** As the output of git status --porcelain -z:
   {[ [status][status] to from }] *)
-type path_status = status * status * Ojs_path.t * Ojs_path.t option
+type path_status = status * status * Ojs_path.t * Ojs_path.t option [@@deriving yojson]
 
 module Base =
   struct
@@ -47,7 +47,7 @@ module Base =
     type server_msg +=
       | SError of string
       | SOk of string
-      | SStatus of (path * status) list
+      | SStatus of path_status list
       [@@deriving yojson]
 
     type client_msg = .. [@@deriving yojson]

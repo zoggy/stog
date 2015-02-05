@@ -143,14 +143,36 @@ div.ojsft-file { font-weight: normal; margin-left: 1em ; }
   left: 310px;
 }
 
+
 #git {
   position: absolute;
   top: 0px;
-  height: 40px;
+  /*height: 40px;*/
   right: 0;
   left: 310px;
+  z-index: 100 ;
 }
 
+.git-status-box {
+
+}
+
+.git-status-box-content {
+  background-color: #ababef ;
+  border-style: solid ;
+  border-width: 1px;
+  border-color: #333333 ;
+  overflow: auto ;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  padding: 0.5em;
+  display: inline-block ;
+}
+
+.hidden {
+  display: none ;
+}
 #background {
   background-color: #449900 ;
   height: 100%;

@@ -51,8 +51,96 @@ let mk_pre str =
   Dom.appendChild pre text ;
   pre
 
+let string_of_status_path (s1, s2, p1, p2) =
+  Printf.sprintf "%c%c %s%s"
+    (Stog_git_status.char_of_status s1)
+    (Stog_git_status.char_of_status s2)
+    (Ojs_path.to_string p1)
+    (match p2 with
+     | None -> ""
+     | Some p -> " "^(Ojs_path.to_string p)
+    )
+
+let mk_status_check init id f_set st =
+  let doc = Dom_html.document in
+  let div = doc##createElement (Js.string "div") in
+  let check = Dom_html.createInput ~_type: (Js.string "checkbox") doc in
+  check##setAttribute (Js.string "name", Js.string id) ;
+  check##checked <- Js.bool init ;
+  ignore(Dom_html.addEventListener check
+   Dom_html.Event.change
+     (Dom.handler (fun e -> f_set (Js.to_bool check##checked); Js.bool true))
+     (Js.bool true));
+  let text = doc##createTextNode(Js.string (string_of_status_path st)) in
+  Dom.appendChild div check ;
+  Dom.appendChild div text ;
+  div
+
+
+
 module Make(P:Stog_git_types.P) =
   struct
+    let display_status_box simple_call status_box_id paths =
+      let doc = Dom_html.document in
+      let paths = Array.of_list paths in
+      let checked = Array.map (fun _ -> true) paths in
+      let box = Ojs_js.node_by_id status_box_id in
+      Ojs_js.clear_children box ;
+      let div = doc##createElement(Js.string "div") in
+      Ojs_js.node_set_class div "git-status-box-content" ;
+      Dom.appendChild box div ;
+      let btn_close =
+        let id = Printf.sprintf "%s__close" status_box_id in
+        button ~parent_id: status_box_id ~id ~text: "Close" ~cl: "git-bar-button"
+      in
+      Dom.appendChild div btn_close ;
+      let f_close _ = Ojs_js.node_set_class box "hidden" in
+      Ojs_js.set_onclick btn_close f_close ;
+
+      Array.iteri
+        (fun i st ->
+           let id = Printf.sprintf "%s__check%d" status_box_id i in
+           let check_div = mk_status_check (Array.get checked i) id
+             (fun b -> Array.set checked i b) st
+           in
+           Dom.appendChild div check_div ;
+        ) paths;
+
+      begin
+        match paths with
+        | [| |] -> ()
+        | _ ->
+            let div_text =
+              let text = doc##createTextNode (Js.string "Comment:") in
+              let div = doc##createElement (Js.string "div") in
+              Dom.appendChild div text ;
+              div
+            in
+            let textarea =
+              let id = Printf.sprintf "%s__comment" status_box_id in
+              Dom_html.createTextarea ~name: (Js.string id) doc
+            in
+            let btn_commit =
+              let id = Printf.sprintf "%s__commit" status_box_id in
+              button ~parent_id: status_box_id ~id ~text: "Commit" ~cl: "bit-bar-button"
+            in
+            Dom.appendChild div div_text ;
+            Dom.appendChild div textarea ;
+            Dom.appendChild div btn_commit ;
+            let f_commit _ =
+              let commited = ref [] in
+              Array.iteri
+                (fun i (_,_,p,_) -> if checked.(i) then commited := p :: !commited)
+                paths;
+              let msg = P.Commit (!commited, Js.to_string textarea##value) in
+              simple_call msg ;
+              f_close ()
+            in
+            Ojs_js.set_onclick btn_commit f_commit
+      end;
+      Ojs_js.node_unset_class box "hidden" ;
+      Lwt.return_unit
+
     class repo call (send : P.client_msg -> unit Lwt.t)
       ~msg_id repo_id =
       let doc = Dom_html.document in
@@ -67,9 +155,17 @@ module Make(P:Stog_git_types.P) =
       let commit_id = repo_id^"__commit" in
       let pull_id = repo_id^"__pull" in
       let push_id = repo_id^"__push" in
-      let btn_commit = button ~parent_id: bar_id ~id: commit_id ~text: "Commit" ~cl: "gitbox-button" in
-      let btn_pull = button ~parent_id: bar_id ~id: pull_id ~text: "Pull" ~cl: "gitbox-button" in
-      let btn_push = button ~parent_id: bar_id ~id: push_id ~text: "Push" ~cl: "gitbox-button" in
+      let btn_status = button ~parent_id: bar_id ~id: commit_id ~text: "Status/commit" ~cl: "git-bar-button" in
+      let btn_pull = button ~parent_id: bar_id ~id: pull_id ~text: "Pull" ~cl: "git-bar-button" in
+      let btn_push = button ~parent_id: bar_id ~id: push_id ~text: "Push" ~cl: "git-bar-button" in
+      let status_box_id = repo_id^"__status" in
+      let status_box = doc##createElement(Js.string "div") in
+      let () =
+        status_box##setAttribute (Js.string "id", Js.string status_box_id) ;
+        Ojs_js.node_set_class status_box "git-status-box";
+        Ojs_js.node_set_class status_box "hidden" ;
+        Dom.appendChild bar status_box
+      in
 
     object(self)
       method id : string = repo_id
@@ -88,10 +184,12 @@ module Make(P:Stog_git_types.P) =
              )
           )
 
-      method commit =
-        let paths, msg = ([], "Update through stog-multiserver") in
-        let msg = P.Commit (paths, msg) in
-        self#simple_call msg
+      method status_commit =
+        let f = function
+          P.SStatus l -> display_status_box self#simple_call status_box_id l
+          | _ -> Lwt.return_unit
+        in
+        call P.Status f
 
       method pull =
           let msg = P.Rebase_from_origin in
@@ -116,7 +214,7 @@ module Make(P:Stog_git_types.P) =
             Js._false
 
       initializer
-        Ojs_js.set_onclick btn_commit (fun _ -> self#commit) ;
+        Ojs_js.set_onclick btn_status (fun _ -> self#status_commit) ;
         Ojs_js.set_onclick btn_pull (fun _ -> self#pull) ;
         Ojs_js.set_onclick btn_push (fun _ -> self#push) ;
     end

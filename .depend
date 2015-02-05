@@ -44,10 +44,10 @@ stog_filter_types.cmi :
 stog_find.cmo : stog_find.cmi
 stog_find.cmx : stog_find.cmi
 stog_find.cmi :
-stog_git_server.cmo : stog_misc.cmi stog_git_types.cmo
-stog_git_server.cmx : stog_misc.cmx stog_git_types.cmx
-stog_git_status.cmo : stog_misc.cmi stog_git_types.cmo stog_git_status.cmo
-stog_git_status.cmx : stog_misc.cmx stog_git_types.cmx stog_git_status.cmx
+stog_git_server.cmo : stog_misc.cmi stog_git_types.cmo stog_git_status.cmo
+stog_git_server.cmx : stog_misc.cmx stog_git_types.cmx stog_git_status.cmx
+stog_git_status.cmo : stog_git_types.cmo
+stog_git_status.cmx : stog_git_types.cmx
 stog_git_types.cmo :
 stog_git_types.cmx :
 stog_graph.cmo : stog_graph.cmi

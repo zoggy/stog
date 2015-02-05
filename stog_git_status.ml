@@ -56,29 +56,74 @@ let status_of_char : char -> Stog_git_types.status = function
 | '!' -> `I
 | c -> failwith (Printf.sprintf "Invalid status character %c" c)
 
-let parse_line str =
-  try
-    assert (String.get str 2 = ' ');
-    let p1 = String.index_from str 2 '\000' in
-    let file1 = Ojs_path.of_string (String.sub str 3 (p1 - 3)) in
-    let file2 =
-      let p = p1 + 1 in
-      match String.index_from str p '\000' with
-      | exception Not_found -> None
-      | p2 ->
-          let f = String.sub str p (p2 - p) in
-          Some (Ojs_path.of_string f)
-    in
-    (status_of_char (String.get str 0),
-     status_of_char (String.get str 1),
-     file1,
-     file2)
-  with
-    _ -> failwith ("Invalid line:\n"^str)
+let is_status_char c = try ignore(status_of_char c); true with _ -> false
 
-let parse str =
-  let lines = Stog_misc.split_string str ['\n' ; '\r'] in
-  List.map parse_line lines
+let rec parse_line str acc p =
+  let next =
+    try
+      let len = String.length str in
+      if len > p + 2 then
+        begin
+          assert (String.get str (p+2) = ' ');
+          let p1 = String.index_from str (p+2) '\000' in
+          (*prerr_endline (Printf.sprintf "p=%d (%c), p1=%d (%c)" p str.[p] p1 str.[p1]);*)
+          let file1 = Ojs_path.of_string (String.sub str (p+3) (p1 - (p + 3))) in
+          let (file2, p_next) =
+            let p = p1 + 1 in
+            let p_space =
+              try
+                (* look from space from p+2 to avoid space status char which can
+                   be after the \000 char at p-1 *)
+                let q =
+                  if len > p+2
+                  then String.index_from str (p+2) ' '
+                  else raise Not_found
+                in
+                (*prerr_endline (Printf.sprintf "q=%d" q);*)
+                if is_status_char (String.get str (q-2)) &&
+                  is_status_char (String.get str (q-1))
+                then
+                  q - 2
+                else
+                  len
+              with
+                Not_found -> len
+            in
+            let p_zero =
+              try
+                if len > p
+                then String.index_from str p '\000'
+                else raise Not_found
+              with Not_found -> len
+            in
+            (*prerr_endline (Printf.sprintf "p_space = %d, p_zero = %d" p_space p_zero);*)
+            if p_space < p_zero then (* no second filename *)
+              (None, p)
+            else
+              begin
+                let f = String.sub str p (p_zero - p) in
+                let f = if f = "" then None else Some (Ojs_path.of_string f) in
+                (f, p_zero + 1)
+              end
+          in
+          let st =
+            (status_of_char (String.get str p),
+             status_of_char (String.get str (p+1)),
+             file1,
+             file2)
+          in
+          Some (st :: acc, p_next)
+        end
+      else
+        None
+    with
+    | _ -> failwith ("Invalid line:\n"^str)
+  in
+  match next with
+    None -> List.rev acc
+  | Some (acc, p) -> parse_line str acc p
+
+let parse str = parse_line str [] 0
 
 let is_unmerged (s1, s2, _, _) =
   match s1, s2 with
