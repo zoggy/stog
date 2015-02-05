@@ -313,32 +313,3 @@ let http_url = Js.to_string stog_server##httpUrl
 let path = Js.to_string stog_server##doc
 
 let _ = set_up_ws_connection ~path ~ws_url ~http_url
-(*
-let launch_client_page ws_host ws_port path =
-  Stog_server_common.call_caml (Get_doc path)
-  >>=
-    (fun ret ->
-       match ret with
-       | Error s ->
-           let xml = Xtmpl.E
-             (("","html"),Xtmpl.Name_map.empty,
-              [ Xtmpl.E (("","body"),Xtmpl.Name_map.empty,
-                 [ Xtmpl.E (("","pre"), Xtmpl.Name_map.empty, [ Xtmpl.D s ])
-                 ])
-              ])
-           in
-           set_page_content xml;
-           Lwt.return_none
-       | Elt_body s ->
-           let (xml : Xtmpl.tree) = Marshal.from_string s 0 in
-           set_page_content xml;
-           if WebSockets.is_supported () then
-              set_up_ws_connection path ws_host ws_port
-           else
-             (
-              log "websockets not supported by this browser";
-              Lwt.return_none
-             )
-    )
-;;
-*)
