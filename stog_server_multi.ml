@@ -36,6 +36,7 @@ open Stog_multi_session
 open Stog_multi_gs
 
 module S = Cohttp_lwt_unix.Server
+module Request = Cohttp.Request
 let (>>=) = Lwt.bind
 
 let restart_previous_sessions cfg sessions =
@@ -166,25 +167,25 @@ let handle_path cfg gs host port sock opt_user req body = function
 | ["styles" ; s] when s = Stog_server_preview.default_css ->
     Stog_server_preview.respond_default_css ()
 
-| p when p = Stog_multi_page.path_login && req.S.Request.meth = `GET->
+| p when p = Stog_multi_page.path_login && req.Request.meth = `GET->
     handle_login_get cfg gs opt_user
 
-| p when p = Stog_multi_page.path_login && req.S.Request.meth = `POST ->
+| p when p = Stog_multi_page.path_login && req.Request.meth = `POST ->
     handle_login_post cfg gs req body
 
-| p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `GET ->
+| p when p = Stog_multi_page.path_sessions && req.Request.meth = `GET ->
     require_user cfg opt_user
       (fun user ->
          Stog_multi_user.handle_sessions_get cfg gs user req body >>= respond_page)
 
-| p when p = Stog_multi_page.path_sessions && req.S.Request.meth = `POST ->
+| p when p = Stog_multi_page.path_sessions && req.Request.meth = `POST ->
     require_user cfg opt_user
       (fun user ->
          Stog_multi_user.handle_sessions_post cfg gs user req body >>= respond_page)
 
 | path ->
     match path with
-    | "sessions" :: session_id :: q when req.S.Request.meth = `GET ->
+    | "sessions" :: session_id :: q when req.Request.meth = `GET ->
         begin
           match Str_map.find session_id !(gs.sessions) with
           | exception Not_found ->
@@ -240,12 +241,19 @@ let start_server cfg gs host port =
   Lwt_io.write Lwt_io.stdout
     (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
   >>= fun _ ->
-  let conn_closed id () =
+  let conn_closed (_,id) =
     ignore(Lwt_io.write Lwt_io.stdout
       (Printf.sprintf "connection %s closed\n%!" (Cohttp.Connection.to_string id)))
   in
-  let config = { S.callback = handler cfg gs host port ; conn_closed } in
-  S.create ~address:host ~port config
+  let config = S.make
+    ~callback: (handler cfg gs host port)
+    ~conn_closed ()
+  in
+  Conduit_lwt_unix.init ~src:host () >>=
+  fun ctx ->
+      let ctx = Cohttp_lwt_unix_net.init ~ctx () in
+      let mode = `TCP (`Port port) in
+      S.create ~ctx ~mode config
 
 let launch host port args =
   let cfg =
