@@ -223,6 +223,7 @@ let file_kind file =
       failwith (Printf.sprintf "%s: %s %s" (Unix.error_message e) s1 s2)
 ;;
 
+
 let main () =
   let remain = ref [] in
   Arg.parse (Arg.align options) (fun s -> remain := s :: !remain) (usage()) ;

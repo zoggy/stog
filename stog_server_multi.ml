@@ -44,7 +44,7 @@ let restart_previous_sessions cfg sessions =
     (fun session ->
        try
          prerr_endline ("restarting "^(session.session_id));
-         start_session session ;
+         Stog_multi_session.start_session session ;
          Stog_multi_gs.add_session session sessions
        with e -> prerr_endline (Printexc.to_string e)
     )
@@ -271,6 +271,6 @@ let launch host port args =
   fun _ -> start_server cfg gs host port
 
 let () =
-  let run host port args = Lwt_unix.run (launch host port args) in
+  let run host port args = Lwt_main.run (launch host port args) in
   Stog_server_mode.set_multi run
 

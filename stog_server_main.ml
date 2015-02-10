@@ -74,6 +74,6 @@ let launch read_stog stog host port base_path =
     fun _ -> start_server current_state host port base_path
 
 let () =
-  let run read_stog stog host port = Lwt_unix.run (launch read_stog stog host port []) in
+  let run read_stog stog host port = Lwt_main.run (launch read_stog stog host port []) in
   Stog_server_mode.set_single run
 

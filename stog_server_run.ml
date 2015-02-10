@@ -111,7 +111,15 @@ let file_stat file =
     (fun _ -> Lwt.return None)
 
 let rec watch_for_change current_state on_update on_error =
-  Lwt_unix.sleep sleep_duration >>= fun () ->
+  Lwt.catch
+  (fun () ->
+    debug (Printf.sprintf "Thread for %s "
+       (match !current_state with
+         None -> "??"
+       | Some st -> st.stog.stog_dir))
+     >>= fun () ->
+    debug (Printf.sprintf "sleeping for %.2f\n" sleep_duration) >>= fun () ->
+    Lwt_unix.sleep sleep_duration >>= fun () ->
     debug "watch for changes... " >>= fun _ ->
     match !current_state with
       None -> watch_for_change current_state on_update on_error
@@ -189,6 +197,11 @@ let rec watch_for_change current_state on_update on_error =
                             | errors, warnings -> on_error ~errors ~warnings
                          )
           ) >>= fun () -> watch_for_change current_state on_update on_error
+    )
+    (fun e ->
+       prerr_endline (Printf.sprintf "watch_for_changes: %s" (Printexc.to_string e));
+       watch_for_change current_state on_update on_error
+    )
 ;;
 
 let compute_all state =
