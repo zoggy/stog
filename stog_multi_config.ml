@@ -47,6 +47,7 @@ type t = {
     editable_files : Str.regexp list ;
     not_editable_files : Str.regexp list ;
     app_url : Neturl.url ;
+    css_file : string option ;
   }
 
 let read file =
@@ -78,6 +79,9 @@ let read file =
   in
   let o_app_url = new CF.string_cp ~group
     ["app-url"] "http://localhost:8080" "Application URL"
+  in
+  let o_css_file = new CF.option_cp CF.string_wrappers ~group
+    ["css-file"] None "File to serve as default CSS file"
   in
   if not (Sys.file_exists file) then
     begin
@@ -124,5 +128,6 @@ let read file =
     editable_files = List.map Str.regexp o_editable#get ;
     not_editable_files = List.map Str.regexp o_not_editable#get ;
     app_url ;
+    css_file = o_css_file#get ;
   }
 ;;

@@ -165,7 +165,16 @@ let handle_path cfg gs host port sock opt_user req body = function
     S.respond_string ~status:`OK ~body ()
 
 | ["styles" ; s] when s = Stog_server_preview.default_css ->
-    Stog_server_preview.respond_default_css ()
+    begin
+      match cfg.css_file with
+      | None -> Stog_server_preview.respond_default_css ()
+      | Some file ->
+          let body =
+            try Stog_misc.string_of_file file
+            with _ -> ""
+          in
+          Stog_server_preview.respond_css body
+    end
 
 | p when p = Stog_multi_page.path_login && req.Request.meth = `GET->
     handle_login_get cfg gs opt_user

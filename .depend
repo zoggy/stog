@@ -180,6 +180,8 @@ stog_plug.cmo : stog_types.cmi stog_msg.cmi stog_intl.cmi stog_html.cmi \
 stog_plug.cmx : stog_types.cmx stog_msg.cmx stog_intl.cmx stog_html.cmx \
     stog_deps.cmx stog_config.cmx stog_blocks.cmx stog_plug.cmi
 stog_plug.cmi : stog_types.cmi stog_intl.cmi
+stog_server_files.cmo :
+stog_server_files.cmx :
 stog_server_http.cmo : stog_types.cmi stog_server_run.cmo \
     stog_server_preview.cmo stog_misc.cmi
 stog_server_http.cmx : stog_types.cmx stog_server_run.cmx \
@@ -199,9 +201,9 @@ stog_server_multi.cmx : stog_types.cmx stog_server_preview.cmx \
     stog_multi_user.cmx stog_multi_session.cmx stog_multi_page.cmx \
     stog_multi_gs.cmx stog_multi_ed.cmx stog_multi_config.cmx stog_misc.cmx
 stog_server_preview.cmo : stog_types.cmi stog_server_ws.cmo \
-    stog_server_run.cmo stog_path.cmi
+    stog_server_run.cmo stog_server_files.cmo stog_path.cmi
 stog_server_preview.cmx : stog_types.cmx stog_server_ws.cmx \
-    stog_server_run.cmx stog_path.cmx
+    stog_server_run.cmx stog_server_files.cmx stog_path.cmx
 stog_server_run.cmo : stog_types.cmi stog_path.cmi stog_msg.cmi stog_io.cmi \
     stog_init.cmi stog_info.cmi stog_engine.cmi
 stog_server_run.cmx : stog_types.cmx stog_path.cmx stog_msg.cmx stog_io.cmx \

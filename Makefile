@@ -201,7 +201,6 @@ $(MSERVER_BYTE): $(LIB_BYTE) $(LIB_SERVER_BYTE) $(PLUGIN_MSERVER_BYTE) stog_main
 #	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $^
 
 server_files/$(SERVER_JS): stog_server_types.cmi stog_server_types.cmo stog_server_client_js.ml
-	$(MKDIR) server_files
 	$(OCAMLFIND) ocamlc -o $@.byte $(COMPFLAGS) \
 	-package $(SERVER_JS_PACKAGES) -syntax camlp4o -linkpkg \
 	stog_server_types.cmo stog_server_client_js.ml
@@ -214,7 +213,6 @@ server_files/$(MSERVER_ED_JS): \
 	stog_git_status.cmi stog_git_status.cmo \
 	stog_git_js.cmi stog_git_js.cmo \
 	stog_multi_ed_types.cmi stog_multi_ed_types.cmo stog_multi_ed_js.ml
-	$(MKDIR) server_files
 	$(OCAMLFIND) ocamlc -o $@.byte $(COMPFLAGS) \
 	-package $(SERVER_JS_PACKAGES),$(MSERVER_JS_PACKAGES) -syntax camlp4o -linkpkg \
 	stog_misc.cmo stog_git_status.cmo stog_git_types.cmo stog_git_js.cmo \
@@ -227,8 +225,8 @@ stog_git_js.cmi stog_git_js.cmo: stog_git_js.ml
 	-package $(SERVER_JS_PACKAGES),$(MSERVER_JS_PACKAGES) -syntax camlp4o \
 	$<
 
-server_files/stog-server-style.css: server-style.css
-	$(CP) $< $@
+stog-server-style.css:
+	lessc doc/less/server.less | cleancss -o server_files/$@
 
 stog_server_files.ml: \
 		server_files/$(SERVER_JS) \
@@ -426,7 +424,7 @@ clean:
 	$(RM) $(MK_STOG) $(ML_STOG_BYTE) $(MK_STOG_OCAML)
 	$(RM) $(LATEX2STOG) $(LATEX2STOG_BYTE)
 	(cd plugins && $(RM) *.cm* *.o *.a *.x *.annot)
-	$(RM) -r server_files
+
 
 distclean: clean
 	$(RM) master.Makefile stog_config.ml stog_install.ml META
