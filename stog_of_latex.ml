@@ -327,19 +327,19 @@ let tokenize =
 
 (*type tex_eval = eval_tokens -> token list -> (tree list * token list)*)
 
-let rec get_args com eval_tokens n = function
+let rec get_atts com eval_tokens n = function
     [] when n > 0 ->
       let msg = "Command \\"^com^": missing argument" in
       failwith msg
   | ((Tex_blank _) :: q) as l ->
      begin
-       match get_args com eval_tokens n q with
+       match get_atts com eval_tokens n q with
          [], _ -> ([], l)
        | x -> x
      end
   | h :: q when n > 0 ->
     let h = eval_tokens [h] in
-    let (next, q2) = get_args com eval_tokens (n-1) q in
+    let (next, q2) = get_atts com eval_tokens (n-1) q in
     (h :: next, q2)
   | l -> ([], l)
 ;;
@@ -615,7 +615,7 @@ let gen_tabular eval tokens =
 
 let mk_one_arg_fun name tag =
   fun eval tokens ->
-    let (arg, rest) = get_args name eval 1 tokens in
+    let (arg, rest) = get_atts name eval 1 tokens in
     ([Block (block tag (List.hd arg))], rest)
 ;;
 
@@ -633,7 +633,7 @@ let mk_const_fun n res =
     0 -> (fun name eval tokens -> (res, tokens))
   | _ ->
     (fun name eval tokens ->
-      let (_, rest) = get_args name eval n tokens in
+      let (_, rest) = get_atts name eval n tokens in
       (res, rest)
     )
 ;;
@@ -660,7 +660,7 @@ let fun_hspace = mk_const_fun 1 [Block (block ("","span") [Source nbsp])]
 let fun_numprint com = mk_one_arg_fun com ("","span");;
 
 let fun_scalebox com eval tokens =
-  let (args,rest) = get_args com eval 2 tokens in
+  let (args,rest) = get_atts com eval 2 tokens in
   match args with
     [_ ; a] -> (a, rest)
   | _ -> assert false
@@ -676,7 +676,7 @@ let file_extension filename =
 
 let fun_includegraphics params com eval tokens =
   let f com () eval tokens =
-    let (arg, rest) = get_args com eval 1 tokens in
+    let (arg, rest) = get_atts com eval 1 tokens in
     let file = params.ext_file_prefix^(string_tree (List.hd arg)) in
     let file =
       match file_extension file with
@@ -699,7 +699,7 @@ let fun_includegraphics params com eval tokens =
 
 
 let fun_ref com eval tokens =
-  let (arg, rest) = get_args com eval 1 tokens in
+  let (arg, rest) = get_atts com eval 1 tokens in
   let label = "#"^(string_tree (List.hd arg)) in
   let atts = Xtmpl.atts_one ("", "href") [Xtmpl.D label] in
   ([Block (block ~atts ("", Stog_tags.doc) [])], rest)
@@ -711,7 +711,7 @@ let fun_cite com (eval : token list -> tree list) tokens =
     match arg with
       [ Tex_block ('[',b) ] ->
         let b = eval b in
-        let (arg, rest) = get_args com eval 1 rest in
+        let (arg, rest) = get_atts com eval 1 rest in
         (Some b, arg, rest)
     | _ -> (None, [eval arg], rest)
   in
@@ -735,7 +735,7 @@ let fun_section com eval tokens =
   let (arg, rest) =
     let (opt, rest) = get_token_args com 1 tokens in
     match opt with
-      [ Tex_block ('[',_) ] -> get_args com eval 1 rest
+      [ Tex_block ('[',_) ] -> get_atts com eval 1 rest
     | _ -> ([eval opt], rest)
   in
   let tag = (*remove_end_star*) com in
@@ -761,7 +761,7 @@ let search_end_ com eval tokens =
   let rec iter acc = function
     [] -> None
   | ((Tex_command "end") as x) :: q ->
-    let (arg,rest) = get_args "end" eval 1 q in
+    let (arg,rest) = get_atts "end" eval 1 q in
     let s = string_tree (List.hd arg) in
     if s = com then
       (
@@ -782,7 +782,7 @@ let gen_asy_file =
 ;;
 
 let fun_begin params com eval tokens =
-  let (arg, rest) = get_args com eval 1 tokens in
+  let (arg, rest) = get_atts com eval 1 tokens in
   let (title, rest) =
     let (opt, rest2) = get_token_args com 1 rest in
     match opt with
@@ -850,19 +850,19 @@ let fun_begin params com eval tokens =
 ;;
 
 let fun_end com eval tokens =
-  let (arg, rest) = get_args com eval 1 tokens in
+  let (arg, rest) = get_atts com eval 1 tokens in
   let env = string_tree (List.hd arg) in
   ([Block (block ("end", env) [])], rest)
 ;;
 
 let fun_label com eval tokens =
-  let (arg, rest) = get_args com eval 1 tokens in
+  let (arg, rest) = get_atts com eval 1 tokens in
   let id = string_tree (List.hd arg) in
   ([Block (block ~id ("", "label") [])], rest)
 ;;
 
 let fun_footnote com eval tokens =
-  let (arg, rest) = get_args com eval 1 tokens in
+  let (arg, rest) = get_atts com eval 1 tokens in
   ([Block (block ("", "note") (List.hd arg))], rest)
 ;;
 

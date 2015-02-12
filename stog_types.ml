@@ -437,7 +437,7 @@ let find_block_by_id =
     match xml with
       Xtmpl.D _ -> raise Not_found
     | Xtmpl.E (_, atts, subs) ->
-        match Xtmpl.get_arg_cdata atts ("","id") with
+        match Xtmpl.get_att_cdata atts ("","id") with
           Some s when s = id -> raise (Block_found xml)
         | _ -> find_in_list id subs
   in

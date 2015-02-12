@@ -145,7 +145,7 @@ let code_of_subs =
 
 let get_packages stog env args =
   let (stog, s) =
-    match Xtmpl.get_arg_cdata args ("","packages") with
+    match Xtmpl.get_att_cdata args ("","packages") with
       Some s -> (stog, s)
     | None ->
         let (stog, xmls) = Stog_engine.get_in_args_or_env stog env args ("","latex-packages") in
@@ -160,7 +160,7 @@ let get_packages stog env args =
 let fun_latex stog env args subs =
   let code = code_of_subs subs in
   let (stog, packages) = get_packages stog env args in
-  let showcode = Xtmpl.opt_arg_cdata args ("", "showcode") = "true" in
+  let showcode = Xtmpl.opt_att_cdata args ("", "showcode") = "true" in
   let (stog, defs, def_files) = get_latex_defs stog env in
   let (stog, scale) =
     let (stog, xmls) = Stog_engine.get_in_env stog env ("", "latex-svg-scale") in

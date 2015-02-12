@@ -32,6 +32,7 @@
 open Stog_multi_config
 module S = Cohttp_lwt_unix.Server
 open Xtmpl
+module H = Xtmpl_xhtml
 
 let url_ cfg path =
   let url = List.fold_left Stog_types.url_concat cfg.app_url path in
@@ -64,16 +65,10 @@ let message_block b =
   let atts = Xtmpl.atts_one ("","class") [Xtmpl.D "alert alert-info"] in
   [ Xtmpl.E (("","div"), atts, xmls) ]
 
-let br = Xtmpl.E (("","br"), Xtmpl.atts_empty, [])
 let nbsp = List.hd ([%xtmpl.string "&#xa0;"] ())
-let strong xmls = Xtmpl.E (("","strong"), Xtmpl.atts_empty, xmls)
-let pre s = Xtmpl.E (("","pre"), Xtmpl.atts_empty, [Xtmpl.D s])
 
 let mk_js_script code =
-  Xtmpl.E (("","script"),
-   Xtmpl.atts_one ("","type") [Xtmpl.D "text/javascript"],
-   [ Xtmpl.D code ]
-  )
+  H.script ~type_: "text/javascript" [ Xtmpl.D code ]
 
 let page cfg account_opt ?(empty=false) ~title ?error ?message ?(js=[]) body =
   let topbar = [] in

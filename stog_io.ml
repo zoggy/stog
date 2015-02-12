@@ -95,7 +95,7 @@ let read_module stog file =
     Xtmpl.D _ -> assert false
   | Xtmpl.E (tag, atts, subs) ->
       let mod_requires =
-        match Xtmpl.get_arg_cdata atts ("","requires") with
+        match Xtmpl.get_att_cdata atts ("","requires") with
           None -> Stog_types.Str_set.empty
         | Some s -> module_requires_of_string s
       in
@@ -244,12 +244,12 @@ let fill_doc_from_nodes =
 
 let fill_doc_from_atts_and_subs doc atts subs =
   let doc =
-    match Xtmpl.get_arg_cdata atts ("","path") with
+    match Xtmpl.get_att_cdata atts ("","path") with
       None -> doc
     | Some s -> { doc with doc_path = Stog_path.of_string s }
   in
   let doc = fill_doc_from_atts atts doc in
-  match Xtmpl.get_arg_cdata atts ("", "with-contents") with
+  match Xtmpl.get_att_cdata atts ("", "with-contents") with
     Some s when bool_of_string s ->
       (* arguments are also passed in sub nodes, and contents is in
          subnode "contents" *)

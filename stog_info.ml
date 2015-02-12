@@ -162,7 +162,7 @@ let add_refs_in_graph stog = stog
 (* FIXME: have to compute it differently now
   let g = ref stog.stog_graph in
   let f_ref id env args body =
-      match Xtmpl.get_arg args ("", "id") with
+      match Xtmpl.get_att args ("", "id") with
       None ->
         []
     | Some path ->

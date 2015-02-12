@@ -113,7 +113,7 @@ let fun_counter (stog, data) env atts subs =
     (String.concat "\n" (List.map (fun (s, v) -> Printf.sprintf "%S, %S" s v) atts))
     (Xtmpl.string_of_env env));
 *)
-  match Xtmpl.get_arg_cdata atts ("", "counter-name") with
+  match Xtmpl.get_att_cdata atts ("", "counter-name") with
     None -> ((stog, data), subs)
   | Some name ->
       let ((stog, data), path) = Stog_html.get_path (stog, data) env in
@@ -126,7 +126,7 @@ let fun_doc_href ?typ src_doc href (stog, data) env args subs =
   let src_path_s = Stog_path.to_string src_doc.doc_path in
   let report_error msg = Stog_msg.error ~info: "Stog_html.fun_doc_href" msg in
   let quotes =
-    match Xtmpl.get_arg_cdata args ("", "quotes") with
+    match Xtmpl.get_att_cdata args ("", "quotes") with
       None -> false
     | Some s -> Stog_io.bool_of_string s
   in
@@ -152,7 +152,7 @@ let fun_doc_href ?typ src_doc href (stog, data) env args subs =
                   let id_map = Smap.find path data.blocks in
                   try
                     let (short, long) = Smap.find id id_map in
-                    match Xtmpl.get_arg_cdata args ("", "long") with
+                    match Xtmpl.get_att_cdata args ("", "long") with
                       Some "true" -> long
                     | _ -> short
                   with Not_found ->
@@ -197,7 +197,7 @@ let fun_doc_href ?typ src_doc href (stog, data) env args subs =
 
 let fun_doc ?typ src_doc (stog, data) env args subs =
   let href =
-    match Xtmpl.get_arg_cdata args ("", "href") with
+    match Xtmpl.get_att_cdata args ("", "href") with
       None ->
         let msg = Printf.sprintf "Missing href for <%s>"
           (match typ with None -> "doc" | Some s -> s)
@@ -256,7 +256,7 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
   let ((stog,data), counter_name) =
     let (pref, name) = cls in
     let ((stog,data), xmls) =
-      match Xtmpl.get_arg args ("","counter") with
+      match Xtmpl.get_att args ("","counter") with
       | Some x -> ((stog, data), x)
       | None ->
           Stog_html.get_in_env (stog,data) env (pref, (Stog_html.concat_name cls)^"-counter")
@@ -413,28 +413,28 @@ let read_block_from_subs stog doc =
 
 let read_block stog doc args subs =
   let with_contents =
-    match Xtmpl.get_arg_cdata args ("", "with-contents") with
+    match Xtmpl.get_att_cdata args ("", "with-contents") with
       Some "true" -> true
     | None | Some _ -> false
   in
   let blk_id =
-    match Xtmpl.get_arg_cdata args ("", "id") with
+    match Xtmpl.get_att_cdata args ("", "id") with
       Some id -> id
     | None -> random_id ()
   in
-  let blk_label = Xtmpl.get_arg args ("", "label") in
-  let blk_class = Xtmpl.get_arg_cdata args ("", "class") in
+  let blk_label = Xtmpl.get_att args ("", "label") in
+  let blk_class = Xtmpl.get_att_cdata args ("", "class") in
   let blk_title =
-    match Xtmpl.get_arg args ("", "title") with
+    match Xtmpl.get_att args ("", "title") with
       None -> [ Xtmpl.D " " ]
     | Some l -> l
   in
-  let blk_cpt_name = Xtmpl.get_arg_cdata args ("", "counter-name") in
+  let blk_cpt_name = Xtmpl.get_att_cdata args ("", "counter-name") in
   let xml_title = Xtmpl.E (("", "title"), Xtmpl.atts_empty, []) in
   let xml_label =  Xtmpl.E (("", "label"), Xtmpl.atts_empty, []) in
   let xml_cpt s = Xtmpl.E (("", "counter"), Xtmpl.atts_one ("", "counter-name") [Xtmpl.D s], []) in
   let blk_long_f =
-    match Xtmpl.get_arg args ("", "long-title-format") with
+    match Xtmpl.get_att args ("", "long-title-format") with
       None ->
         (xml_label ::
          (match blk_cpt_name with
@@ -445,7 +445,7 @@ let read_block stog doc args subs =
     | Some xmls -> xmls
   in
   let blk_short_f =
-    match Xtmpl.get_arg args ("", "short-title-format") with
+    match Xtmpl.get_att args ("", "short-title-format") with
       None ->
         begin
           match blk_label, blk_cpt_name with
@@ -468,10 +468,10 @@ let read_block stog doc args subs =
 ;;
 
 let fun_block1 (stog, data) env args subs =
-  match Xtmpl.get_arg_cdata args ("", "href") with
+  match Xtmpl.get_att_cdata args ("", "href") with
     Some s when s <> "" ->
       begin
-        match Xtmpl.get_arg_cdata args ("", Stog_tags.doc_path) with
+        match Xtmpl.get_att_cdata args ("", Stog_tags.doc_path) with
           Some _ -> raise Xtmpl.No_change
         | None ->
             let ((stog, data), path) = Stog_html.get_path (stog, data) env in
@@ -494,19 +494,19 @@ let fun_block1 (stog, data) env args subs =
           None -> data
         | Some name -> fst (bump_counter data path name)
       in
-      let env = Xtmpl.env_add_att "id" [Xtmpl.D block.blk_id] env in
-      let env = Xtmpl.env_add "title" (fun acc _ _ _ -> (acc, block.blk_title)) env in
-      let env = Xtmpl.env_add "label"
+      let env = Xtmpl.env_add_xml "id" [Xtmpl.D block.blk_id] env in
+      let env = Xtmpl.env_add_cb "title" (fun acc _ _ _ -> (acc, block.blk_title)) env in
+      let env = Xtmpl.env_add_cb "label"
         (fun acc _ _ _ ->
            match block.blk_label with
              None -> (acc, [])
            | Some xml -> (acc, xml)
         ) env
       in
-      let env = Xtmpl.env_add_att "class"
+      let env = Xtmpl.env_add_xml "class"
         [Xtmpl.D (Stog_misc.string_of_opt block.blk_class)] env
       in
-      let env = Xtmpl.env_add_att "counter-name"
+      let env = Xtmpl.env_add_xml "counter-name"
         [Xtmpl.D (Stog_misc.string_of_opt block.blk_cpt_name)] env
       in
       let ((stog, data), long) =
@@ -518,21 +518,21 @@ let fun_block1 (stog, data) env args subs =
          ((stog, data), Xtmpl.E (("", Xtmpl.tag_main), Xtmpl.atts_empty, xmls))
       in
       let data = add_block ~path ~id: block.blk_id ~short ~long data in
-      let env = Xtmpl.env_add "title" (fun acc _ _ _ -> (acc, [long])) env in
+      let env = Xtmpl.env_add_cb "title" (fun acc _ _ _ -> (acc, [long])) env in
       Xtmpl.apply_to_xmls (stog, data) env block.blk_body
 ;;
 
 let fun_block2 (stog, data) env atts subs =
-  match Xtmpl.get_arg_cdata atts ("", "href") with
+  match Xtmpl.get_att_cdata atts ("", "href") with
     None -> ((stog, data), subs)
   | Some href ->
-      let path = match Xtmpl.get_arg_cdata atts ("", Stog_tags.doc_path) with
+      let path = match Xtmpl.get_att_cdata atts ("", Stog_tags.doc_path) with
           None -> assert false
         | Some path -> path
       in
       let url = Printf.sprintf "%s#%s" path href in
       let quotes =
-        match Xtmpl.get_arg_cdata atts ("", "quotes") with
+        match Xtmpl.get_att_cdata atts ("", "quotes") with
           None -> "false"
         | Some s -> s
       in
@@ -552,7 +552,7 @@ let gather_existing_ids =
     Xtmpl.D _ -> set
   | Xtmpl.E (tag, atts, subs) ->
       let set =
-        match Xtmpl.get_arg_cdata atts ("", "id") with
+        match Xtmpl.get_att_cdata atts ("", "id") with
           None
         | Some "" -> set
         | Some id ->

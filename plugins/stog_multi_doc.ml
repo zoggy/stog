@@ -42,7 +42,7 @@ let mk_doc path_sep doc_id (stog,doc) = function
   Xtmpl.D _ -> (stog,doc)
 | Xtmpl.E (("","contents"), atts, subs) ->
     begin
-      match Xtmpl.get_arg_cdata atts ("","type") with
+      match Xtmpl.get_att_cdata atts ("","type") with
         None ->
           let msg = "Missing type attribute in <contents> in "^
             (Stog_path.to_string doc.doc_path)
@@ -65,10 +65,10 @@ let mk_doc path_sep doc_id (stog,doc) = function
     end
 | Xtmpl.E ((_,typ),atts,subs) ->
     let path =
-      match Xtmpl.get_arg_cdata atts ("","path") with
+      match Xtmpl.get_att_cdata atts ("","path") with
         Some path -> Stog_path.of_string path
       | None ->
-          match Xtmpl.get_arg_cdata atts ("","id") with
+          match Xtmpl.get_att_cdata atts ("","id") with
             None ->
               let msg = "No id and no path attributes for an element in "^
                 (Stog_path.to_string doc.doc_path)

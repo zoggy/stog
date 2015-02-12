@@ -58,7 +58,7 @@ http://johnmacfarlane.net/pandoc/ ):
 *)
 
 let maybe_arg args key ~default =
-  match Xtmpl.get_arg_cdata args key with
+  match Xtmpl.get_att_cdata args key with
     | None -> default
     | Some v -> v
 

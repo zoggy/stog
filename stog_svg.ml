@@ -34,13 +34,13 @@ let prefix_ids =
     (Xtmpl.D _) as t -> t
   | Xtmpl.E (tag, atts, subs) ->
       let atts =
-       match Xtmpl.get_arg_cdata atts ("","id") with
+       match Xtmpl.get_att_cdata atts ("","id") with
          None -> atts
        | Some s ->
             Xtmpl.atts_replace ("","id") [ Xtmpl.D (p^s) ] atts
       in
       let atts =
-        match Xtmpl.get_arg_cdata atts ("http://www.w3.org/1999/xlink","href") with
+        match Xtmpl.get_att_cdata atts ("http://www.w3.org/1999/xlink","href") with
          None -> atts
        | Some s ->
             let len = String.length s in
@@ -61,7 +61,7 @@ let rec prefix_svg_ids prefix = function
 ;;
 
 let fun_prefix_svg_ids stog env atts subs =
-  match Xtmpl.get_arg_cdata atts ("","prefix") with
+  match Xtmpl.get_att_cdata atts ("","prefix") with
     None -> (stog, subs)
   | Some prefix -> (stog, List.map (prefix_svg_ids prefix) subs)
 ;;

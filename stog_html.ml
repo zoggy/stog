@@ -128,16 +128,16 @@ let include_file stog doc ?id ~raw ~depend file args subs =
 ;;
 
 let fun_include_ name doc stog env args subs =
-  let raw = Xtmpl.opt_arg_cdata ~def: "false" args ("", "raw") = "true" in
-  let subsonly = Xtmpl.opt_arg_cdata ~def: "false" args ("", "subs-only") = "true" in
-  let id = Xtmpl.get_arg args ("", "id") in
-  let depend = Xtmpl.opt_arg_cdata args ~def: "true" ("", "depend") <> "false" in
-  match Xtmpl.get_arg_cdata args ("", "file") with
+  let raw = Xtmpl.opt_att_cdata ~def: "false" args ("", "raw") = "true" in
+  let subsonly = Xtmpl.opt_att_cdata ~def: "false" args ("", "subs-only") = "true" in
+  let id = Xtmpl.get_att args ("", "id") in
+  let depend = Xtmpl.opt_att_cdata args ~def: "true" ("", "depend") <> "false" in
+  match Xtmpl.get_att_cdata args ("", "file") with
   | Some file ->
       let (stog, xml) = include_file stog doc ?id ~raw ~depend file args subs in
       (stog, xml)
   | None ->
-      match Xtmpl.get_arg_cdata args ("", "href") with
+      match Xtmpl.get_att_cdata args ("", "href") with
         Some href -> include_href name stog doc ?id ~raw ~subsonly ~depend href env
       | None ->
           failwith ("Missing 'file' or 'href' argument for <"^name^"> rule")
@@ -152,10 +152,10 @@ let fun_inc doc stog env args subs =
 ;;
 
 let fun_image acc _env args legend =
-  let width = Xtmpl.opt_arg args ("", "width") in
-  let src = Xtmpl.opt_arg args ("", "src") in
+  let width = Xtmpl.opt_att args ("", "width") in
+  let src = Xtmpl.opt_att args ("", "src") in
   let cls = Printf.sprintf "img%s"
-    (match Xtmpl.get_arg_cdata args ("", "float") with
+    (match Xtmpl.get_att_cdata args ("", "float") with
       Some s ->
          begin
            match s with
@@ -168,7 +168,7 @@ let fun_image acc _env args legend =
   in
   let cls = [ Xtmpl.D cls ] in
   let cls =
-    match Xtmpl.get_arg args ("", "class") with
+    match Xtmpl.get_att args ("", "class") with
       None -> cls
     | Some c -> c @ [Xtmpl.D " "] @ cls
   in
@@ -194,7 +194,7 @@ let fun_image acc _env args legend =
 ;;
 
 let fun_list acc env args subs =
-  let sep = Xtmpl.opt_arg args ("", "sep") in
+  let sep = Xtmpl.opt_att args ("", "sep") in
   let sep = List.rev sep in
   let rec iter acc = function
     [] -> List.rev acc
@@ -295,12 +295,12 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
     match lang with
       None ->
         (
-         match Xtmpl.get_arg_cdata args ("", "lang-file") with
+         match Xtmpl.get_att_cdata args ("", "lang-file") with
            None ->
-             let lang = Xtmpl.opt_arg_cdata args ~def: "txt" ("", "lang") in
+             let lang = Xtmpl.opt_att_cdata args ~def: "txt" ("", "lang") in
              (lang, None)
          | Some f ->
-             let lang = Xtmpl.opt_arg_cdata args ~def: "" ("", "lang") in
+             let lang = Xtmpl.opt_att_cdata args ~def: "" ("", "lang") in
              let opts = Printf.sprintf "--config-file=%s" f in
              (lang, Some opts)
         )
@@ -328,7 +328,7 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
   let code = Stog_misc.strip_blank_lines code in
   let xmls = Stog_highlight.highlight ~lang ?opts code in
   let atts =
-    match Xtmpl.get_arg_cdata args ("","id") with
+    match Xtmpl.get_att_cdata args ("","id") with
       None -> Xtmpl.atts_empty
     | Some id -> Xtmpl.atts_one ("","id") [Xtmpl.D id]
   in
@@ -528,19 +528,19 @@ type toc = Toc of string option * Xtmpl.tree list * Xmlm.name * toc list (* name
 
 let fun_prepare_toc tags stog env args subs =
   let depth =
-    match Xtmpl.get_arg_cdata args ("", "depth") with
+    match Xtmpl.get_att_cdata args ("", "depth") with
       None -> max_int
     | Some s -> int_of_string s
   in
   let show_noids =
-    Xtmpl.opt_arg_cdata args ~def: "false" ("", "show-without-ids") <> "false"
+    Xtmpl.opt_att_cdata args ~def: "false" ("", "show-without-ids") <> "false"
   in
   let rec iter d acc = function
   | Xtmpl.D _ -> acc
   | Xtmpl.E (tag, atts, subs) when List.mem tag tags ->
       begin
-        match Xtmpl.get_arg_cdata atts ("", "id"),
-          Xtmpl.get_arg atts ("", "title")
+        match Xtmpl.get_att_cdata atts ("", "id"),
+          Xtmpl.get_att atts ("", "title")
         with
           None, None
         | Some _, None ->
@@ -624,7 +624,7 @@ let fun_error_ stog env args subs =
 
 let fun_doc_navpath doc stog env args subs =
   let root =
-    match Xtmpl.get_arg_cdata args ("", "with-root") with
+    match Xtmpl.get_att_cdata args ("", "with-root") with
       None -> None
     | Some root_path ->
         let root_path = Stog_path.of_string root_path in
@@ -710,7 +710,7 @@ let intro_of_doc stog doc =
 ;;
 
 let html_of_topics doc stog env args _ =
-  let sep = Xtmpl.opt_arg args ~def: [Xtmpl.D ", "] ("", "sep") in
+  let sep = Xtmpl.opt_att args ~def: [Xtmpl.D ", "] ("", "sep") in
   let (stog, tmpl) = Stog_tmpl.get_template stog ~doc Stog_tmpl.topic "topic.tmpl" in
   let f stog w =
     let env = Xtmpl.env_of_list ~env
@@ -736,7 +736,7 @@ let html_of_topics doc stog env args _ =
 ;;
 
 let html_of_keywords doc stog env args _ =
-  let sep = Xtmpl.opt_arg args ~def: [Xtmpl.D ", "] ("", "sep") in
+  let sep = Xtmpl.opt_att args ~def: [Xtmpl.D ", "] ("", "sep") in
   let (stog, tmpl) = Stog_tmpl.get_template stog ~doc Stog_tmpl.keyword "keyword.tmpl" in
   let f stog w =
     let env = Xtmpl.env_of_list ~env
@@ -860,7 +860,7 @@ and generate_rss_feed_file stog ?title link docs file =
 
 let format_date d f stog args =
   let s =
-    match Xtmpl.get_arg_cdata args ("","format") with
+    match Xtmpl.get_att_cdata args ("","format") with
       None -> f stog.stog_lang d
     | Some fmt -> Netdate.format ~fmt d
   in
@@ -918,7 +918,7 @@ let rec build_base_rules stog doc_id =
   let f_intro doc stog _ _ _ = (stog, intro_of_doc stog doc) in
   let mk f stog env atts subs =
     let doc =
-      match Xtmpl.get_arg_cdata atts ("", Stog_tags.doc_path) with
+      match Xtmpl.get_att_cdata atts ("", Stog_tags.doc_path) with
         None -> Stog_types.doc stog doc_id
       | Some path ->
           let (_, doc) = Stog_types.doc_by_path
@@ -1017,7 +1017,7 @@ and doc_list doc ?rss ?set stog env args _ =
   in
   let (stog, tmpl) =
     let file =
-      match Xtmpl.get_arg_cdata args ("", "tmpl") with
+      match Xtmpl.get_att_cdata args ("", "tmpl") with
         None ->  "doc-in-list.tmpl"
       | Some s -> s
     in
@@ -1047,19 +1047,19 @@ and doc_list doc ?rss ?set stog env args _ =
       Some link -> (stog, Some link)
     | None ->
         let alt_doc_path =
-          match Xtmpl.get_arg_cdata args ("", "rss") with
+          match Xtmpl.get_att_cdata args ("", "rss") with
             Some path -> Some path
           | None ->
-              match Xtmpl.get_arg_cdata args ("", "alt-doc-path") with
+              match Xtmpl.get_att_cdata args ("", "alt-doc-path") with
                 Some path -> Some path
               | None -> None
         in
         match alt_doc_path with
           None -> (stog, None)
         | Some path ->
-            let alt_doc_type = Xtmpl.opt_arg_cdata ~def: "rss" args ("","alt-doc-type") in
+            let alt_doc_type = Xtmpl.opt_att_cdata ~def: "rss" args ("","alt-doc-type") in
             let alt_doc_in_list_tmpl =
-              Xtmpl.opt_arg_cdata ~def: "rss-item.tmpl" args ("","alt-doc-in-list-tmpl")
+              Xtmpl.opt_att_cdata ~def: "rss-item.tmpl" args ("","alt-doc-in-list-tmpl")
             in
             let doc_path =
               if Filename.is_relative path then
@@ -1069,7 +1069,7 @@ and doc_list doc ?rss ?set stog env args _ =
                 (Stog_path.of_string path)
             in
             let doc_title =
-              match Xtmpl.get_arg_cdata args ("", "alt-doc-title") with
+              match Xtmpl.get_att_cdata args ("", "alt-doc-title") with
                 None -> doc.doc_title
               | Some t -> t
             in

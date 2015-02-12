@@ -326,21 +326,21 @@ let concat_toplevel_outputs output =
 
 let fun_eval stog env args code =
   try
-    let exc = Xtmpl.opt_arg_cdata args ~def: "true" ("", "error-exc") = "true" in
-    let toplevel = Xtmpl.opt_arg_cdata args ~def: "false" ("", "toplevel") = "true" in
-    let show_code = Xtmpl.opt_arg_cdata args ~def: "true" ("", "show-code") <> "false" in
-    let show_stdout = Xtmpl.opt_arg_cdata args
+    let exc = Xtmpl.opt_att_cdata args ~def: "true" ("", "error-exc") = "true" in
+    let toplevel = Xtmpl.opt_att_cdata args ~def: "false" ("", "toplevel") = "true" in
+    let show_code = Xtmpl.opt_att_cdata args ~def: "true" ("", "show-code") <> "false" in
+    let show_stdout = Xtmpl.opt_att_cdata args
       ~def: (if toplevel then "true" else "false") ("", "show-stdout") <> "false"
     in
-    let highlight_locs = Xtmpl.opt_arg_cdata args
+    let highlight_locs = Xtmpl.opt_att_cdata args
       ~def: "true" ("","highlight-locs") <> "false"
     in
-    let print_locs = Xtmpl.opt_arg_cdata args
+    let print_locs = Xtmpl.opt_att_cdata args
       ~def: (if highlight_locs then "false" else "true") ("","print-locs") <> "false"
     in
-    let in_xml_block = Xtmpl.opt_arg_cdata args ~def: "true" ("", "in-xml-block") <> "false" in
-    let session_name = Xtmpl.get_arg_cdata args ("", "session") in
-    let id_opt = Xtmpl.opt_arg_cdata args ("", "id") in
+    let in_xml_block = Xtmpl.opt_att_cdata args ~def: "true" ("", "in-xml-block") <> "false" in
+    let session_name = Xtmpl.get_att_cdata args ("", "session") in
+    let id_opt = Xtmpl.opt_att_cdata args ("", "id") in
     let atts = Xtmpl.atts_of_list
       (match id_opt with "" -> [] | id -> [("","id"), [Xtmpl.D id]])
     in
@@ -442,7 +442,7 @@ let fun_eval stog env args code =
 
 let fun_printf stog env args subs =
   let code = concat_code subs in
-  let format = Xtmpl.opt_arg_cdata args ~def: "%s" ("", "format") in
+  let format = Xtmpl.opt_att_cdata args ~def: "%s" ("", "format") in
   let code = "Printf.printf \""^format^"\" "^code^"; flush Pervasives.stdout;;" in
   let args = Xtmpl.atts_of_list ~atts: args
     [ ("","show-stdout"), [Xtmpl.D "true"] ;

@@ -427,7 +427,7 @@ let rec make_fun (name, params, body) acc =
   let f data env atts subs =
     let vars = Xtmpl.Name_map.fold
       (fun param default acc ->
-         match Xtmpl.get_arg atts param with
+         match Xtmpl.get_att atts param with
            None -> (param, Xtmpl.atts_empty, default) :: acc
          | Some v -> (param, Xtmpl.atts_empty, v) :: acc
       )
@@ -440,7 +440,7 @@ let rec make_fun (name, params, body) acc =
         true, [] -> (data, subs)
       | _ -> raise Xtmpl.No_change
     in
-    let env = Xtmpl.env_add "contents" f env in
+    let env = Xtmpl.env_add_cb "contents" f env in
     Xtmpl.apply_to_xmls data env body
   in
   (name, f) :: acc
@@ -690,7 +690,7 @@ let opt_in_env data env (prefix, s) =
 ;;
 
 let get_in_args_or_env data env args s =
-  match Xtmpl.get_arg args s with
+  match Xtmpl.get_att args s with
     None -> get_in_env data env s
   | Some xmls -> (data, xmls)
 ;;
@@ -739,7 +739,7 @@ let get_languages data env =
 let env_add_lang_rules data env stog doc =
   match stog.stog_lang with
     None ->
-      (data, Xtmpl.env_add Stog_tags.langswitch (fun data _ _ _ -> (data, [])) env)
+      (data, Xtmpl.env_add_cb Stog_tags.langswitch (fun data _ _ _ -> (data, [])) env)
   | Some lang ->
       let (data, languages) = get_languages data env in
       let map_lang lang =
@@ -761,7 +761,7 @@ let env_add_lang_rules data env stog doc =
         let languages = List.filter ((<>) lang) languages in
         (data, List.map map_lang languages)
       in
-      let env = Xtmpl.env_add Stog_tags.langswitch f env in
+      let env = Xtmpl.env_add_cb Stog_tags.langswitch f env in
       let to_remove = List.filter ((<>) lang) languages in
       let f_keep acc _env _args subs = (acc, subs) in
       let f_remove acc _env _args _subs = (acc, []) in
