@@ -187,6 +187,14 @@ let pull_in_origin ?sshkey git =
   in
   try_finalize pull_origin () checkout_edit_branch ()
 
+let diff_fetch_orig git =
+  let git_com = "git diff  --name-only FETCH_HEAD..ORIG_HEAD" in
+  match in_git_repo git ~merge_outputs: true git_com with
+    `Error (com,msg,_) -> failwith (git_com^"\n"^msg)
+  | `Ok (msg,_) ->
+      let lines = Stog_misc.split_string msg ['\n' ; '\r'] in
+      List.map Ojs_path.of_string lines
+
 let rebase_from_origin ?sshkey git =
   let st = status git in
   match in_rebase git with
@@ -196,7 +204,7 @@ let rebase_from_origin ?sshkey git =
         let git_com = Printf.sprintf "git rebase %s" (Filename.quote git.origin_branch) in
         match in_git_repo git ~merge_outputs: true git_com with
           `Error (com,msg,_) -> failwith (com^"\n"^msg)
-        | `Ok (msg,_) -> msg
+        | `Ok (msg,_) -> (msg, diff_fetch_orig git)
       end
   | true ->
       match List.exists Stog_git_status.is_unmerged st || has_local_changes git with
@@ -205,15 +213,15 @@ let rebase_from_origin ?sshkey git =
             let git_com = "git rebase --continue" in
             match in_git_repo git ~merge_outputs: true git_com with
               `Error (com,msg,_) -> failwith (com^"\n"^msg)
-            | `Ok (msg,_) -> msg
+            | `Ok (msg,_) -> (msg, diff_fetch_orig git)
           end
       | false ->
           begin
             let git_com = "git rebase --skip" in
             match in_git_repo git ~merge_outputs: true git_com with
               `Error (com,msg,_) -> failwith (com^"\n"^msg)
-            | `Ok ("",_) -> "Rebase skipped"
-            | `Ok (msg,_) -> msg
+            | `Ok ("",_) -> ("Rebase skipped", [])
+            | `Ok (msg,_) -> (msg, [])
           end
 
 let differs_from_origin git =
@@ -253,7 +261,7 @@ let push ?sshkey git =
   let st = status git in
   if List.exists Stog_git_status.is_unmerged st || in_rebase git then
     failwith "You're currently merge files. Please finish merging first (use commit and pull)." ;
-  let rebase_msg = rebase_from_origin ?sshkey git in
+  let (rebase_msg, modified_files) = rebase_from_origin ?sshkey git in
   let merge_msg = merge_in_origin git in
   let push_msg =
     try push_origin ?sshkey git
@@ -323,7 +331,18 @@ module Make (P: Stog_git_types.P) =
         self#git_action reply_msg (fun () -> commit git paths msg)
 
       method handle_rebase_from_origin reply_msg =
-        self#git_action reply_msg (fun () -> rebase_from_origin ?sshkey git)
+        self#git_action reply_msg
+              (fun () -> 
+                 let (msg, files) = rebase_from_origin ?sshkey git in
+                 let msg_f = match files with
+                     [] -> ""
+                   | _ ->
+                     Printf.sprintf "\nThe following files were modified:\n- %s"  
+                       (String.concat "\n -" (List.map Ojs_path.to_string files))
+                 in
+                 Printf.sprintf "%s%s" msg msg_f
+              )
+                 
 
       method handle_push reply_msg =
         self#git_action reply_msg (fun () -> push ?sshkey git)

@@ -76,7 +76,9 @@ let mk_status_check init id f_set st =
   Dom.appendChild div text ;
   div
 
-
+class type editor = object
+    method changed_files : Ojs_path.t list
+  end
 
 module Make(P:Stog_git_types.P) =
   struct
@@ -142,7 +144,7 @@ module Make(P:Stog_git_types.P) =
       Lwt.return_unit
 
     class repo call (send : P.client_msg -> unit Lwt.t)
-      ~msg_id repo_id =
+      ~msg_id editor repo_id =
       let doc = Dom_html.document in
       let repo_node = Ojs_js.node_by_id repo_id in
       let bar_id = repo_id^"__bar" in
@@ -192,8 +194,16 @@ module Make(P:Stog_git_types.P) =
         call P.Status f
 
       method pull =
-          let msg = P.Rebase_from_origin in
-          self#simple_call msg
+          match editor#changed_files with
+            [] ->
+              let msg = P.Rebase_from_origin in
+              self#simple_call msg
+          | paths ->
+              let msg = Printf.sprintf
+                "The following files are unsaved, please save them before pulling:\n- %s"
+                  (String.concat "\n- " (List.map Ojs_path.to_string paths))
+              in
+              Lwt.return (self#display_error msg)
 
       method push =
           let msg = P.Push in
@@ -224,7 +234,7 @@ module Make(P:Stog_git_types.P) =
         (send : P.app_client_msg -> unit Lwt.t)
         (spawn : (P.client_msg -> (P.server_msg -> unit Lwt.t) -> unit Lwt.t) ->
          (P.client_msg -> unit Lwt.t) ->
-           msg_id: string -> string -> repo) =
+           msg_id: string -> editor -> string -> repo) =
         object(self)
           val mutable repos = (SMap.empty : repo SMap.t)
 
@@ -239,7 +249,7 @@ module Make(P:Stog_git_types.P) =
             | Some (id, msg) -> (self#get_repo id)#handle_message msg
             | None -> Js._false
 
-          method setup_repo ~msg_id repo_id =
+          method setup_repo ~msg_id editor repo_id =
             let send msg = send (P.pack_client_msg repo_id msg) in
             let call msg cb =
               let cb msg =
@@ -249,7 +259,7 @@ module Make(P:Stog_git_types.P) =
               in
               call (P.pack_client_msg repo_id msg) cb
             in
-            let repo = spawn call send ~msg_id repo_id in
+            let repo = spawn call send ~msg_id editor repo_id in
             repos <- SMap.add repo_id repo repos
         end
 end

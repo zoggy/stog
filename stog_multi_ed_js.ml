@@ -78,14 +78,17 @@ let onopen ws =
   in
   tree#set_on_select on_select;
   tree#set_on_deselect on_deselect;
+  let editor =
+    editors#setup_editor
+      ~msg_id: Stog_multi_ed_types.ojs_msg_id
+      ~bar_id: Stog_multi_ed_types.bar_id
+      Stog_multi_ed_types.ed_id
+  in
   let _repo = repos#setup_repo
-    ~msg_id: Stog_multi_ed_types.ojs_msg_id
+    ~msg_id: Stog_multi_ed_types.ojs_msg_id (editor :> Stog_git_js.editor)
       Stog_multi_ed_types.gitrepo_id
   in
-  ignore(editors#setup_editor
-   ~msg_id: Stog_multi_ed_types.ojs_msg_id
-     ~bar_id: Stog_multi_ed_types.bar_id
-     Stog_multi_ed_types.ed_id)
+  ()
 
 let onmessage ws msg =
   match msg with
