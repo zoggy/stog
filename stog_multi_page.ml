@@ -31,7 +31,6 @@
 
 open Stog_multi_config
 module S = Cohttp_lwt_unix.Server
-open Xtmpl
 module H = Xtmpl_xhtml
 
 let url_ cfg path =
