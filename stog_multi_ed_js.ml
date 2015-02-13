@@ -53,22 +53,9 @@ let repos = new Git.repos call send (new Git.repo);;
 
 let on_deselect ti path = ()
 
-let on_select ti path =
+let on_select editor ti path =
   Ojs_js.log "select !";
-  ignore
-    (call (Stog_multi_ed_types.ED.pack_client_msg "ed"
-      (Stog_multi_ed_types.ED.Get_file_contents path)
-     )
-     (fun msg ->
-        match Stog_multi_ed_types.ED.unpack_server_msg msg with
-        | Some (id, msg) ->
-            Ojs_js.log "got a response!";
-            ignore(editors#handle_message (Stog_multi_ed_types.ED.SEditor (id, msg)));
-            Lwt.return_unit
-        | None ->
-            Ojs_js.log "select: ignored response";
-            Lwt.return_unit)
-    )
+  ignore(editor#edit_file path)
 
 let onopen ws =
   ref_send := (fun msg -> Ojs_js.send_msg ws (wsdata_of_msg msg); Lwt.return_unit);
@@ -76,8 +63,6 @@ let onopen ws =
     ~msg_id: Stog_multi_ed_types.ojs_msg_id
     Stog_multi_ed_types.ft_id
   in
-  tree#set_on_select on_select;
-  tree#set_on_deselect on_deselect;
   let editor =
     editors#setup_editor
       ~msg_id: Stog_multi_ed_types.ojs_msg_id
@@ -88,7 +73,8 @@ let onopen ws =
     ~msg_id: Stog_multi_ed_types.ojs_msg_id (editor :> Stog_git_js.editor)
       Stog_multi_ed_types.gitrepo_id
   in
-  ()
+  tree#set_on_select (on_select editor) ;
+  tree#set_on_deselect on_deselect
 
 let onmessage ws msg =
   match msg with
