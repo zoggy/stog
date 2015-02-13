@@ -53,9 +53,10 @@ let repos = new Git.repos call send (new Git.repo);;
 
 let on_deselect ti path = ()
 
-let on_select editor ti path =
-  Ojs_js.log "select !";
-  ignore(editor#edit_file path)
+let on_select (editor : ED.editor) ti kind path =
+  match kind with
+    `Dir -> ()
+  | `File mime -> ignore(editor#edit_file ~mime path)
 
 let onopen ws =
   ref_send := (fun msg -> Ojs_js.send_msg ws (wsdata_of_msg msg); Lwt.return_unit);
