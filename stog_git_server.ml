@@ -96,9 +96,9 @@ let clone ?sshkey git =
     (Filename.quote git.origin_url) (Filename.quote (Ojs_path.to_string git.repo_dir))
   in
   let com = with_sshkey_opt sshkey command in
-  match run com with
-  | `Error (_,err) -> failwith (Printf.sprintf "Error while cloning %s:\n%s" git.origin_url err)
-  | `Ok _ -> ()
+  match%lwt Lwt_preemptive.detach run com with
+  | `Error (_,err) -> Lwt.fail_with (Printf.sprintf "Error while cloning %s:\n%s" git.origin_url err)
+  | `Ok _ -> Lwt.return_unit
 
 let set_user_info git ~name ~email =
   let com =
@@ -124,8 +124,6 @@ let create_edit_branch git =
   | `Error (_,_,err) -> failwith (com^"\n"^err)
   | `Ok _ -> ()
 
-
-
 let status git =
   let git_com = "git status --porcelain -z" in
   match in_git_repo git git_com with
@@ -141,24 +139,6 @@ let has_local_changes git =
     | _ -> true
   in
   List.filter pred st <> []
-
-(*
-let with_stash git f =
-  if has_local_changes git then
-    begin
-      match in_git_repo git ~merge_outputs: true "git stash" with
-      | `Error (com,msg,_) -> failwith (com^"\n"^msg)
-      | `Ok _ ->
-          let g () =
-            match in_git_repo git ~merge_outputs: true "git stash pop" with
-            | `Error (com,msg,_) -> failwith (com^"\n"^msg)
-            | `Ok _ -> ()
-          in
-          try_finalize f () g ()
-    end
-  else
-    f ()
-*)
 
 let in_rebase git =
   let git_com = "ls `git rev-parse --git-dir` | grep rebase" in
@@ -263,11 +243,11 @@ let push ?sshkey git =
     failwith "You're currently merge files. Please finish merging first (use commit and pull)." ;
   let (rebase_msg, modified_files) = rebase_from_origin ?sshkey git in
   let merge_msg = merge_in_origin git in
-  let push_msg =
-    try push_origin ?sshkey git
-    with Failure msg -> failwith (rebase_msg^"\n\n"^merge_msg^"\n\n"^msg)
-  in
-  rebase_msg^"\n"^merge_msg^"\n"^push_msg
+  try
+    let push_msg = push_origin ?sshkey git in
+    Printf.sprintf "%s\n%s\n%s" rebase_msg merge_msg push_msg
+  with Failure msg ->
+      failwith (Printf.sprintf "%s\n\n%s\n\n%s" rebase_msg merge_msg msg)
 
 let commit git paths msg =
   let st = status git in
@@ -332,17 +312,17 @@ module Make (P: Stog_git_types.P) =
 
       method handle_rebase_from_origin reply_msg =
         self#git_action reply_msg
-              (fun () -> 
+              (fun () ->
                  let (msg, files) = rebase_from_origin ?sshkey git in
                  let msg_f = match files with
                      [] -> ""
                    | _ ->
-                     Printf.sprintf "\nThe following files were modified:\n- %s"  
+                     Printf.sprintf "\nThe following files were modified:\n- %s"
                        (String.concat "\n -" (List.map Ojs_path.to_string files))
                  in
                  Printf.sprintf "%s%s" msg msg_f
               )
-                 
+
 
       method handle_push reply_msg =
         self#git_action reply_msg (fun () -> push ?sshkey git)

@@ -57,7 +57,7 @@ SHARE_DIR=$datadir
 
 PACKAGES=xmlm,xtmpl,netstring,config-file,dynlink,unix,str,higlo.lexers
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
-SERVER_PACKAGES=lwt.unix,lwt.preemptive,websocket,cstruct,crunch,xmldiff,yojson,ppx_deriving_yojson,ojs.server,sha
+SERVER_PACKAGES=lwt.unix,lwt.preemptive,lwt.ppx,websocket,cstruct,crunch,xmldiff,yojson,ppx_deriving_yojson,ojs.server,sha
 SERVER_JS_PACKAGES=js_of_ocaml,js_of_ocaml.syntax,xmldiff.js,yojson,ppx_deriving_yojson,ojs.js,xtmpl
 MSERVER_PACKAGES=ojs.filetree.server,ojs.editor.server
 MSERVER_JS_PACKAGES=ojs.filetree.js,ojs.editor.js

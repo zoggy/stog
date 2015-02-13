@@ -29,6 +29,7 @@
 
 (** *)
 
+open Lwt.Infix
 open Stog_multi_config
 open Stog_git_server
 
@@ -174,7 +175,7 @@ let create cfg account =
     ~origin_url: cfg.git_repo_url
     ~origin_branch: "" ~edit_branch
   in
-  Stog_git_server.clone ?sshkey: cfg.ssh_priv_key git ;
+  Stog_git_server.clone ?sshkey: cfg.ssh_priv_key git >>= fun () ->
   let origin_branch = Stog_git_server.current_branch git in
   let git = { git with origin_branch } in
   Stog_git_server.create_edit_branch git;
@@ -197,7 +198,7 @@ let create cfg account =
   in
   store_stored session ;
   start_session ?sshkey:cfg.ssh_priv_key session ;
-  session
+  Lwt.return session
 
 let load_previous_sessions cfg =
   let dirs = Stog_find.(

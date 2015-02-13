@@ -40,9 +40,9 @@ module H = Xtmpl_xhtml
 let user_page_tmpl = [%xtmpl "templates/multi_user_page.tmpl"]
 
 let create_session cfg sessions account =
-  let session = Stog_multi_session.create cfg account in
+  let%lwt session = Stog_multi_session.create cfg account in
   Stog_multi_gs.add_session session sessions ;
-  session
+  Lwt.return session
 
 let string_of_date = Netdate.mk_date ~fmt: "%F %R"
 
@@ -105,7 +105,7 @@ let page cfg gs ?message ?error user =
   Stog_multi_page.page cfg (Some user) ~title: user.name ?message ?error body
 
 let handle_sessions_post cfg gs user req body =
-  let session = create_session cfg gs.sessions user in
+  let%lwt session = create_session cfg gs.sessions user in
   let message = `Msg (Printf.sprintf "Session %s created" session.session_id) in
   Lwt.return (page cfg gs ~message user)
 
