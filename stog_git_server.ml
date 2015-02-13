@@ -128,7 +128,7 @@ let status git =
   let git_com = "git status --porcelain -z" in
   match in_git_repo git git_com with
   | `Error (_,msg,_) -> failwith (git_com^"\n"^msg)
-  | `Ok (str,_) ->  Stog_git_status.parse str
+  | `Ok (str,_) -> Stog_git_status.parse str
 
 let has_local_changes git =
   let st = status git in
@@ -154,8 +154,8 @@ let pull_in_origin ?sshkey git =
     let git_com = Printf.sprintf
       "(git checkout %s && git pull origin %s)" ob ob
     in
-    let git_com = with_sshkey_opt sshkey git_com in
-        match in_git_repo git ~merge_outputs: true git_com with
+    let ssh_com = with_sshkey_opt sshkey git_com in
+    match in_git_repo git ~merge_outputs: true ssh_com with
     | `Error (com,msg,_) -> failwith (com^"\n"^msg)
     | `Ok _ -> ()
   in
@@ -293,19 +293,29 @@ module Make (P: Stog_git_types.P) =
       method id = (id : string)
       method git = (git : git_repo)
       method sshkey = (sshkey : string option)
+      val git_mutex = Lwt_mutex.create ()
+
+      method do_git :
+         'a . git_repo -> (git_repo -> 'a Lwt.t) -> 'a Lwt.t = 
+         fun git f ->
+         Lwt_mutex.with_lock git_mutex (fun () -> f git)
 
       method git_action reply_msg f =
-            Lwt.catch
-              (fun () ->
-                 Lwt_preemptive.detach f () >>= fun msg ->
-                   reply_msg (P.SOk msg))
-              (function
-               | Failure msg -> reply_msg (P.SError msg)
-               | e -> reply_msg (P.SError (Printexc.to_string e))
-              )
+         self#do_git git
+           (fun _ ->
+              Lwt.catch
+                (fun () ->
+                  Lwt_preemptive.detach f () >>= fun msg ->
+                    reply_msg (P.SOk msg))
+                (function
+                 | Failure msg -> reply_msg (P.SError msg)
+                 | e -> reply_msg (P.SError (Printexc.to_string e))
+                 )
+            )
 
       method handle_get_status reply_msg =
-        reply_msg (P.SStatus (status git))
+        let%lwt st = self#do_git git (Lwt_preemptive.detach status) in
+        reply_msg (P.SStatus st)
 
       method handle_commit reply_msg paths msg =
         self#git_action reply_msg (fun () -> commit git paths msg)

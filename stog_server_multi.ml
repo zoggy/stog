@@ -44,7 +44,7 @@ let restart_previous_sessions cfg sessions =
     (fun session ->
        try
          prerr_endline ("restarting "^(session.session_id));
-         Stog_multi_session.start_session session ;
+         Stog_multi_session.start_session ?sshkey: cfg.ssh_priv_key session ;
          Stog_multi_gs.add_session session sessions
        with e -> prerr_endline (Printexc.to_string e)
     )
