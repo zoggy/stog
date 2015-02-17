@@ -27,86 +27,11 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Parsing git status porcelain output. *)
 
-type path = Ojs_path.t [@@deriving yojson]
+val char_of_status : Stog_git_types.status -> char
+val status_of_char : char -> Stog_git_types.status
+val is_status_char : char -> bool
 
-type status = [`B | `M | `A | `D | `R | `C | `U | `Q | `I]
-  [@@deriving yojson]
-
-type path_status = status * status * Ojs_path.t * Ojs_path.t option [@@deriving yojson]
-
-module type B =
-  sig
-    type server_msg = .. [@@deriving yojson]
-    type server_msg +=
-      | SError of string
-      | SOk of string
-      | SStatus of path_status list
-
-    type client_msg = .. [@@deriving yojson]
-    type client_msg +=
-      | Commit of path list * string
-      | Status
-      | Rebase_from_origin
-      | Push
-  end
-
-module Base : B =
-  struct
-    type server_msg = .. [@@deriving yojson]
-    type server_msg +=
-      | SError of string
-      | SOk of string
-      | SStatus of path_status list
-      [@@deriving yojson]
-
-    type client_msg = .. [@@deriving yojson]
-    type client_msg +=
-      | Commit of path list * string
-      | Status
-      | Rebase_from_origin
-      | Push
-      [@@deriving yojson]
-  end
-
-module Make_base() = struct include Base end
-
-module type P =
-  sig
-    type app_server_msg = .. [@@deriving yojson]
-    type app_client_msg = .. [@@deriving yojson]
-
-    include B
-
-    val pack_server_msg : string -> server_msg -> app_server_msg
-    val unpack_server_msg : app_server_msg -> (string * server_msg) option
-
-    val pack_client_msg : string -> client_msg -> app_client_msg
-    val unpack_client_msg : app_client_msg -> (string * client_msg) option
-  end
-
-
-module type S = sig
-    include P
-
-    type app_server_msg += SGit of string * server_msg
-    type app_client_msg += Git of string * client_msg
- end
-
-module Default_P(App:Ojs_types.App_msg) =
-  struct
-    type app_server_msg = App.app_server_msg = .. [@@deriving yojson]
-    type app_client_msg = App.app_client_msg = .. [@@deriving yojson]
-
-    include (Make_base())
-
-    type app_server_msg += SGit of string * server_msg [@@deriving yojson]
-    type app_client_msg += Git of string * client_msg [@@deriving yojson]
-
-    let pack_server_msg id msg = SGit (id, msg)
-    let unpack_server_msg = function SGit (id,msg) -> Some (id,msg) | _ -> None
-
-    let pack_client_msg id msg = Git (id, msg)
-    let unpack_client_msg = function Git (id,msg) -> Some (id,msg) | _ -> None
-  end
+val parse : string -> Stog_git_types.path_status list
+val is_unmerged : Stog_git_types.path_status -> bool

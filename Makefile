@@ -220,7 +220,12 @@ server_files/$(MSERVER_ED_JS): \
 	$(JS_OF_OCAML) +js_of_ocaml/nat.js $@.byte  -o $@
 	$(RM) server_files/*.byte
 
-stog_git_js.cmi stog_git_js.cmo: stog_git_js.ml
+stog_git_js.cmi: stog_git_js.mli
+	$(OCAMLFIND) ocamlc -c $(COMPFLAGS) \
+	-package $(SERVER_JS_PACKAGES),$(MSERVER_JS_PACKAGES) -syntax camlp4o \
+	$<
+
+stog_git_js.cmo: stog_git_js.ml
 	$(OCAMLFIND) ocamlc -c $(COMPFLAGS) \
 	-package $(SERVER_JS_PACKAGES),$(MSERVER_JS_PACKAGES) -syntax camlp4o \
 	$<
@@ -496,7 +501,8 @@ $(PLUGINS_OPT): $(LIB)
 .PHONY: clean depend
 
 .depend depend:
-	$(OCAMLFIND) ocamldep `ls stog*.ml stog*.mli | grep -v _js.ml` > .depend
+	$(OCAMLFIND) ocamldep -package lwt.ppx,ppx_deriving_yojson,js_of_ocaml.syntax -syntax camlp4o \
+	`ls stog*.ml stog*.mli ` > .depend
 
 include .depend
 
