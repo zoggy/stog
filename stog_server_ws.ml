@@ -145,9 +145,16 @@ let server read_stog current_state active_cons base_path sockaddr =
   Websocket.establish_server sockaddr (handle_con read_stog current_state active_cons base_path)
 ;;
 
+let sockaddr_of_dns node service =
+  let open Lwt_unix in
+  (getaddrinfo node service [AI_FAMILY(PF_INET); AI_SOCKTYPE(SOCK_STREAM)] >>= function
+  | h::t -> Lwt.return h
+  | []   -> Lwt.fail Not_found)
+  >>= fun ai -> Lwt.return ai.ai_addr
+
 let run_server read_stog current_state active_cons host port base_path =
   prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
-  Lwt_io_ext.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
+  sockaddr_of_dns host (string_of_int port) >>= fun sa ->
     Lwt.return (server read_stog current_state active_cons base_path sa)
 ;;
 

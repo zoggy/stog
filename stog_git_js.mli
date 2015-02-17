@@ -27,49 +27,47 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Browser client code for git operations on server. *)
 
+class type editor = object method changed_files : Ojs_path.t list end
 
-open Stog_types
-open Stog_multi_config
-open Stog_multi_session
-open Stog_multi_gs
-
-let (>>=) = Lwt.bind
-
-let handle_con gs base_path uri (stream, push) =
-  prerr_endline "new connection";
-  let path = Stog_misc.split_string (Uri.path uri) ['/'] in
-  match path with
-  | "sessions" :: id :: p ->
-      begin
-        match Str_map.find id !(gs.sessions) with
-        | exception Not_found ->
-            failwith (Printf.sprintf "Invalid session %S" id)
-        | session ->
-            match p with
-            | "editor" :: _ ->
-                session.session_editor.editor_ws_cons#add_connection stream push
-            | _ ->
-                session.session_stog.stog_ws_cons := (stream, push) :: !(session.session_stog.stog_ws_cons) ;
-                let read_stog () = Stog_multi_session.read_stog session.session_stog.stog_dir in
-                Stog_server_ws.handle_messages read_stog
-                  session.session_stog.stog_state session.session_stog.stog_ws_cons (base_path @ [id])
-                  stream push
-      end
-  | _ -> failwith "Invalid path"
-
-;;
-
-let server cfg gs sockaddr =
-  Websocket.establish_server sockaddr
-    (handle_con gs (Neturl.url_path cfg.app_url))
-;;
-
-let run_server cfg gs =
-  let host = Neturl.url_host cfg.app_url in
-  let port = Neturl.url_port cfg.app_url + 1 in
-  prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
-  Stog_server_ws.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
-    Lwt.return (server cfg gs sa)
-;;
+module Make :
+  functor (P : Stog_git_types.P) ->
+    sig
+      val display_status_box :
+        (P.client_msg -> 'a) ->
+        string ->
+        (Stog_git_types.status * Stog_git_types.status *
+         Stog_git_types.path * Ojs_path.t option)
+        list -> unit Lwt.t
+      class repo :
+        (P.client_msg -> (P.server_msg -> unit Lwt.t) -> unit Lwt.t) ->
+        (P.client_msg -> unit Lwt.t) ->
+        msg_id:string ->
+        < changed_files : Ojs_path.t list; .. > ->
+        string ->
+        object
+          method display_error : string -> unit
+          method display_message : string -> unit
+          method handle_message : P.server_msg -> bool Js.t
+          method id : string
+          method msg_id : string
+          method pull : unit Lwt.t
+          method push : unit Lwt.t
+          method simple_call : P.client_msg -> unit Lwt.t
+          method status_commit : unit Lwt.t
+        end
+      class repos :
+        (P.app_client_msg -> (P.app_server_msg -> unit Lwt.t) -> unit Lwt.t) ->
+        (P.app_client_msg -> unit Lwt.t) ->
+        ((P.client_msg -> (P.server_msg -> unit Lwt.t) -> unit Lwt.t) ->
+         (P.client_msg -> unit Lwt.t) ->
+         msg_id:string -> editor -> string -> repo) ->
+        object
+          method get_msg_id : Ojs_js.SMap.key -> string
+          method get_repo : Ojs_js.SMap.key -> repo
+          method handle_message : P.app_server_msg -> bool Js.t
+          method setup_repo :
+            msg_id:string -> editor -> Ojs_js.SMap.key -> unit
+        end
+    end
