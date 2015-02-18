@@ -230,9 +230,10 @@ stog_server_run.cmo : stog_types.cmi stog_path.cmi stog_msg.cmi stog_io.cmi \
 stog_server_run.cmx : stog_types.cmx stog_path.cmx stog_msg.cmx stog_io.cmx \
     stog_init.cmx stog_info.cmx stog_engine.cmx stog_server_run.cmi
 stog_server_run.cmi : stog_types.cmi stog_path.cmi stog_engine.cmi
-stog_server_types.cmo :
-stog_server_types.cmx :
-stog_server_ws.cmo : stog_types.cmi stog_server_types.cmo \
+stog_server_types.cmo : stog_server_types.cmi
+stog_server_types.cmx : stog_server_types.cmi
+stog_server_types.cmi :
+stog_server_ws.cmo : stog_types.cmi stog_server_types.cmi \
     stog_server_run.cmi stog_path.cmi
 stog_server_ws.cmx : stog_types.cmx stog_server_types.cmx \
     stog_server_run.cmx stog_path.cmx
