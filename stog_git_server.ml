@@ -30,6 +30,7 @@
 (** *)
 
 open Ojs_server
+open Lwt.Infix
 
 type git_repo = {
   repo_dir : Ojs_path.t ;
@@ -296,7 +297,7 @@ module Make (P: Stog_git_types.P) =
       val git_mutex = Lwt_mutex.create ()
 
       method do_git :
-         'a . git_repo -> (git_repo -> 'a Lwt.t) -> 'a Lwt.t = 
+         'a . git_repo -> (git_repo -> 'a Lwt.t) -> 'a Lwt.t =
          fun git f ->
          Lwt_mutex.with_lock git_mutex (fun () -> f git)
 
