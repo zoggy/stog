@@ -200,7 +200,8 @@ $(MSERVER_BYTE): $(LIB_BYTE) $(LIB_SERVER_BYTE) $(PLUGIN_MSERVER_BYTE) stog_main
 
 #	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $^
 
-server_files/$(SERVER_JS): stog_server_types.cmi stog_server_types.cmo stog_server_client_js.ml
+server_files/$(SERVER_JS): stog_server_types.cmi stog_server_types.cmo \
+	stog_server_client_js.cmi stog_server_client_js.ml
 	$(OCAMLFIND) ocamlc -o $@.byte $(COMPFLAGS) \
 	-package $(SERVER_JS_PACKAGES) -syntax camlp4o -linkpkg \
 	stog_server_types.cmo stog_server_client_js.ml
@@ -212,7 +213,8 @@ server_files/$(MSERVER_ED_JS): \
 	stog_git_types.cmi stog_git_types.cmo \
 	stog_git_status.cmi stog_git_status.cmo \
 	stog_git_js.cmi stog_git_js.cmo \
-	stog_multi_ed_types.cmi stog_multi_ed_types.cmo stog_multi_ed_js.ml
+	stog_multi_ed_types.cmi stog_multi_ed_types.cmo \
+	stog_multi_ed_js.cmi stog_multi_ed_js.ml
 	$(OCAMLFIND) ocamlc -o $@.byte $(COMPFLAGS) \
 	-package $(SERVER_JS_PACKAGES),$(MSERVER_JS_PACKAGES) -syntax camlp4o -linkpkg \
 	stog_misc.cmo stog_git_status.cmo stog_git_types.cmo stog_git_js.cmo \
