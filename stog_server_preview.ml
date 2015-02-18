@@ -94,7 +94,7 @@ let rec preview_file stog = function
     in
     iter stog.stog_files path
 
-let handle_preview http_url ws_url current_state sock req body path =
+let handle_preview http_url ws_url current_state req path =
   match !current_state with
     None -> Lwt.fail (Failure "No state yet!")
   | Some state ->

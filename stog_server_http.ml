@@ -27,7 +27,7 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(* *)
+(** *)
 
 open Stog_types
 open Stog_server_run
@@ -52,7 +52,7 @@ let path_after_base base path =
   in
   iter (base, path)
 
-let handler current_state host port base_path sock req body =
+let handler current_state host port base_path req =
   let uri = Cohttp.Request.uri req in
   let path = Stog_misc.split_string (Uri.pct_decode (Uri.path uri)) ['/'] in
   let path = path_after_base base_path path in
@@ -63,7 +63,7 @@ let handler current_state host port base_path sock req body =
   | "preview" :: path ->
       let http_url = http_url host port base_path in
       let ws_url = ws_url host (port+1) base_path in
-      Stog_server_preview.handle_preview http_url ws_url current_state sock req body path
+      Stog_server_preview.handle_preview http_url ws_url current_state req path
 
   | ["status"] ->
       begin

@@ -211,7 +211,7 @@ let handle_path cfg gs host port sock opt_user req body = function
                       Stog_multi_page.path_sessions @ [session_id]
                   in
                   Stog_server_http.handler session.session_stog.stog_state
-                    host port base_path sock req body
+                    host port base_path req
 
               | "editor" :: p  ->
                   let base_path =

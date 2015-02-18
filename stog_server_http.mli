@@ -27,54 +27,28 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** HTTP connexion handler for preview server *)
 
-open Stog_server_run
+(** {[
+  base_path string [] = ""
+  base_path_string l = (String.concat "/" p)^"/"
+]} *)
+val base_path_string : string list -> string
 
-module S = Cohttp_lwt_unix.Server
-let (>>=) = Lwt.bind
+(** [http_url host port path] forges the corresponding URL. *)
+val http_url : string -> int -> string list -> string
 
-let new_stog_session stog host port base_path =
-  let stog_base_url =
-    let s = Printf.sprintf "http://%s:%d/%spreview"
-      host port (Stog_server_http.base_path_string base_path)
-    in
-    Stog_types.url_of_string s
-  in
-  Stog_server_preview.new_stog_session stog stog_base_url
+(** [ws_url host port path] forges the corresponding websocket URL. *)
+val ws_url : string -> int -> string list -> string
 
-let start_server current_state host port base_path =
-  Lwt_io.write Lwt_io.stdout
-    (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
-  >>= fun _ ->
-  let conn_closed (_,id) =
-    ignore(Lwt_io.write Lwt_io.stdout
-      (Printf.sprintf "connection %s closed\n%!" (Cohttp.Connection.to_string id)))
-  in
-  let config = S.make
-    ~callback: (fun sock req body ->
-       Stog_server_http.handler current_state host port base_path req)
-    ~conn_closed
-    ()
-  in
-  Conduit_lwt_unix.init ~src:host () >>=
-  fun ctx ->
-      let ctx = Cohttp_lwt_unix_net.init ~ctx () in
-      let mode = `TCP (`Port port) in
-      S.create ~ctx ~mode config
-
-
-let launch read_stog stog host port base_path =
-  let read_stog () =
-    let stog = read_stog () in
-    let stog = { stog with Stog_types.stog_outdir = "stog-output" } in
-    stog
-  in
-  let (current_state, active_cons) = new_stog_session stog host port base_path in
-  Stog_server_ws.run_server read_stog current_state active_cons host (port+1) base_path >>=
-    fun _ -> start_server current_state host port base_path
-
-let () =
-  let run read_stog stog host port = Lwt_main.run (launch read_stog stog host port []) in
-  Stog_server_mode.set_single run
-
+(** [handler current_state host port base_path req body] handles
+  a HTTP query [req]. [current_state] is a reference to current stog state.
+  [host], [port] and [base_path] are used to forge urls to refer
+  to the service. *)
+val handler :
+  Stog_server_run.state option ref ->
+  string ->
+  int ->
+  string list ->
+  Cohttp.Request.t ->
+  (Stog_server_preview.S.Response.t * Cohttp_lwt_body.t) Lwt.t

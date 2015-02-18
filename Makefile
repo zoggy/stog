@@ -501,8 +501,8 @@ $(PLUGINS_OPT): $(LIB)
 .PHONY: clean depend
 
 .depend depend:
-	$(OCAMLFIND) ocamldep -package lwt.ppx,ppx_deriving_yojson,js_of_ocaml.syntax -syntax camlp4o \
-	`ls stog*.ml stog*.mli ` > .depend
+	$(OCAMLFIND) ocamldep -package lwt.ppx,ppx_deriving_yojson \
+	`ls stog*.ml stog*.mli | grep -v -E '_js.ml$$' ` > .depend
 
 include .depend
 
