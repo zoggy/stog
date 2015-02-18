@@ -31,24 +31,24 @@
 
 module CF = Config_file
 
-type sha256 = string (* hexadecimal representation of SHA256 digest *)
-type account = {
+  type sha256 = string (* hexadecimal representation of SHA256 digest *)
+  type account = {
     login: string ;
     name : string ;
     email: string ;
     passwd: sha256 ;
   }
-type t = {
-    accounts : account list ;
-    ssh_priv_key : string option;
-    git_repo_url : string ;
-    dir : string ;
-    stog_dir : string option ;
-    editable_files : Str.regexp list ;
-    not_editable_files : Str.regexp list ;
-    app_url : Neturl.url ;
-    css_file : string option ;
-  }
+    type t = {
+      accounts : account list ;
+      ssh_priv_key : string option;
+      git_repo_url : string ;
+      dir : string ;
+      stog_dir : string option ;
+      editable_files : Str.regexp list ;
+      not_editable_files : Str.regexp list ;
+      app_url : Neturl.url ;
+      css_file : string option ;
+    }
 
 let read file =
   let group = new CF.group in
@@ -71,11 +71,11 @@ let read file =
   in
   let o_editable = new CF.list_cp CF.string_wrappers ~group
     ["editable-files"] []
-    "Regexps of files to be able to edit"
+      "Regexps of files to be able to edit"
   in
   let o_not_editable = new CF.list_cp CF.string_wrappers ~group
     ["not-editable-files"] []
-    "Regexps of files not to be able to edit"
+      "Regexps of files not to be able to edit"
   in
   let o_app_url = new CF.string_cp ~group
     ["app-url"] "http://localhost:8080" "Application URL"
@@ -85,49 +85,58 @@ let read file =
   in
   if not (Sys.file_exists file) then
     begin
-     group#write file;
-     failwith (Printf.sprintf "Empty configuration file %S created, please edit it" file);
+      group#write file;
+      failwith (Printf.sprintf "Empty configuration file %S created, please edit it" file);
     end;
 
-  group#read file;
-  let accounts = List.map
-    (fun (login, name, email, passwd) -> { login ; name ; email ; passwd })
-    o_accounts#get
-  in
-  let dir =
-    match o_dir#get with
-    | "" -> Sys.getcwd ()
-    | s when Filename.is_relative s -> Filename.concat (Sys.getcwd ()) s
-    | s -> s
-  in
-  let ssh_priv_key =
-    let file = o_ssh#get in
-    match file with
-      "" -> None
-    | _ ->
-        let f =
-          if Filename.is_relative file then
-            Filename.concat (Sys.getcwd ()) file
-          else
-            file
-        in
+  try
+    group#read file;
+    let accounts = List.map
+      (fun (login, name, email, passwd) -> { login ; name ; email ; passwd })
+        o_accounts#get
+    in
+    let dir =
+      match o_dir#get with
+      | "" -> Sys.getcwd ()
+      | s when Filename.is_relative s -> Filename.concat (Sys.getcwd ()) s
+      | s -> s
+    in
+    let ssh_priv_key =
+      let file = o_ssh#get in
+      match file with
+        "" -> None
+      | _ ->
+          let f =
+            if Filename.is_relative file then
+              Filename.concat (Sys.getcwd ()) file
+            else
+              file
+          in
         Some f
-  in
-  let app_url = Stog_types.url_of_string o_app_url#get in
-  let app_url = Neturl.modify_url
-    ~path: (List.filter ((<>) "") (Neturl.url_path app_url))
-    app_url
-  in
-  prerr_endline "app_url path:";
-  List.iter prerr_endline (Neturl.url_path app_url);
-  { accounts ;
-    ssh_priv_key ;
-    git_repo_url = o_git_repo#get ;
-    dir ;
-    stog_dir = (match o_stog_dir#get with "" -> None | s -> Some s);
-    editable_files = List.map Str.regexp o_editable#get ;
-    not_editable_files = List.map Str.regexp o_not_editable#get ;
-    app_url ;
-    css_file = o_css_file#get ;
-  }
+    in
+    let app_url = Stog_types.url_of_string o_app_url#get in
+    let app_url = Neturl.modify_url
+      ~path: (List.filter ((<>) "") (Neturl.url_path app_url))
+        app_url
+    in
+    prerr_endline "app_url path:";
+    List.iter prerr_endline (Neturl.url_path app_url);
+    { accounts ;
+      ssh_priv_key ;
+      git_repo_url = o_git_repo#get ;
+      dir ;
+      stog_dir = (match o_stog_dir#get with "" -> None | s -> Some s);
+      editable_files = List.map Str.regexp o_editable#get ;
+      not_editable_files = List.map Str.regexp o_not_editable#get ;
+      app_url ;
+      css_file = o_css_file#get ;
+    }
+  with
+    e ->
+      let msg =
+        match e with
+          Sys_error s -> s
+        | e -> Printexc.to_string e
+      in
+      failwith msg
 ;;
