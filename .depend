@@ -158,7 +158,7 @@ stog_multi_user.cmx : stog_types.cmx stog_multi_session.cmx \
     stog_git_server.cmx stog_multi_user.cmi
 stog_multi_user.cmi : stog_multi_page.cmi stog_multi_gs.cmi \
     stog_multi_config.cmi
-stog_multi_ws.cmo : stog_types.cmi stog_server_ws.cmo stog_multi_session.cmi \
+stog_multi_ws.cmo : stog_types.cmi stog_server_ws.cmi stog_multi_session.cmi \
     stog_multi_gs.cmi stog_multi_config.cmi stog_misc.cmi stog_multi_ws.cmi
 stog_multi_ws.cmx : stog_types.cmx stog_server_ws.cmx stog_multi_session.cmx \
     stog_multi_gs.cmx stog_multi_config.cmx stog_misc.cmx stog_multi_ws.cmi
@@ -197,7 +197,7 @@ stog_server_http.cmo : stog_types.cmi stog_server_run.cmi \
 stog_server_http.cmx : stog_types.cmx stog_server_run.cmx \
     stog_server_preview.cmx stog_misc.cmx stog_server_http.cmi
 stog_server_http.cmi : stog_server_run.cmi stog_server_preview.cmi
-stog_server_main.cmo : stog_types.cmi stog_server_ws.cmo stog_server_run.cmi \
+stog_server_main.cmo : stog_types.cmi stog_server_ws.cmi stog_server_run.cmi \
     stog_server_preview.cmi stog_server_mode.cmi stog_server_http.cmi \
     stog_server_main.cmi
 stog_server_main.cmx : stog_types.cmx stog_server_ws.cmx stog_server_run.cmx \
@@ -218,7 +218,7 @@ stog_server_multi.cmx : stog_types.cmx stog_server_preview.cmx \
     stog_multi_gs.cmx stog_multi_ed.cmx stog_multi_config.cmx stog_misc.cmx \
     stog_server_multi.cmi
 stog_server_multi.cmi :
-stog_server_preview.cmo : stog_types.cmi stog_server_ws.cmo \
+stog_server_preview.cmo : stog_types.cmi stog_server_ws.cmi \
     stog_server_run.cmi stog_server_files.cmi stog_path.cmi \
     stog_server_preview.cmi
 stog_server_preview.cmx : stog_types.cmx stog_server_ws.cmx \
@@ -234,9 +234,10 @@ stog_server_types.cmo : stog_server_types.cmi
 stog_server_types.cmx : stog_server_types.cmi
 stog_server_types.cmi :
 stog_server_ws.cmo : stog_types.cmi stog_server_types.cmi \
-    stog_server_run.cmi stog_path.cmi
+    stog_server_run.cmi stog_path.cmi stog_server_ws.cmi
 stog_server_ws.cmx : stog_types.cmx stog_server_types.cmx \
-    stog_server_run.cmx stog_path.cmx
+    stog_server_run.cmx stog_path.cmx stog_server_ws.cmi
+stog_server_ws.cmi : stog_types.cmi stog_tmap.cmi stog_server_run.cmi
 stog_svg.cmo : stog_svg.cmi
 stog_svg.cmx : stog_svg.cmi
 stog_svg.cmi :
