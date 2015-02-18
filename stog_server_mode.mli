@@ -27,17 +27,26 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Registering a server *)
 
-let port = ref 8080
-let host = ref "0.0.0.0"
+(** Default port, modified by command line option *)
+val port : int ref
 
-type server_mode = [
-    `Single of (unit -> Stog_types.stog) -> Stog_types.stog -> unit
-  | `Multi of string list -> unit
-  ]
-let server_mode = ref (None : server_mode option)
+(** Default host, modified by command line option *)
+val host : string ref
 
-let set_single f = server_mode := Some (`Single (fun read_stog stog -> f read_stog stog !host !port))
-let set_multi f = server_mode := Some (`Multi (fun args -> f !host !port args))
-  
+(** Multi server: handling users, sessions with editor and preview for each session.
+
+  Single: Simple preview server.
+*)
+type server_mode =
+    [ `Multi of string list -> unit
+    | `Single of (unit -> Stog_types.stog) -> Stog_types.stog -> unit ]
+
+val server_mode : server_mode option ref
+
+val set_single :
+  ((unit -> Stog_types.stog) -> Stog_types.stog -> string -> int -> unit) ->
+  unit
+
+val set_multi : (string -> int -> string list -> unit) -> unit
