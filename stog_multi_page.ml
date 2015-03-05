@@ -69,7 +69,7 @@ let nbsp = List.hd ([%xtmpl.string "&#xa0;"] ())
 let mk_js_script code =
   H.script ~type_: "text/javascript" [ Xtmpl.D code ]
 
-let page cfg account_opt ?(empty=false) ~title ?error ?message ?(js=[]) body =
+let page cfg account_opt ?(empty=false) ?error  ?(js=[]) ?message ~title body =
   let topbar = [] in
   let css_url = url_ cfg ["styles" ; Stog_server_preview.default_css ] in
   let js = List.map mk_js_script js in

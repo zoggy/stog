@@ -47,36 +47,40 @@ val page :
   Stog_multi_config.t ->
     Stog_multi_config.account option ->
     ?empty: bool ->
-    title:string ->
     ?error: block ->
-    ?message: block ->
     ?js: string list ->
+    ?message: block ->
+    title:string ->
     Xtmpl.tree list -> Xtmpl.tree list
 
 module Form_login :
   sig
     type form =
         ?env:unit Xtmpl.env ->
-        ?submit:string ->
-        ?password:string ->
-        ?meth:Cohttp.Code.meth ->
-        ?login:string ->
+        ?action:string ->
         ?error_msg:Xtmpl.tree list ->
-        ?action:string -> unit -> Xtmpl.tree list
+        ?login:string ->
+        ?meth:Cohttp.Code.meth ->
+        ?password:string ->
+        ?submit:string ->
+        unit -> Xtmpl.tree list
     type template =
         ?env:unit Xtmpl.env ->
-        ?meth:Cohttp.Code.meth ->
+        ?action:string ->
         ?error_msg:Xtmpl.tree list ->
-        ?action:string -> unit -> Xtmpl.tree list
+        ?meth:Cohttp.Code.meth ->
+        unit -> Xtmpl.tree list
     exception Error of (template * string list)
     type t = { submit : string option; password : string; login : string; }
     val form :
       ?env:unit Xtmpl.env ->
-      ?submit:string ->
-      ?password:string ->
-      ?meth:Cohttp.Code.meth ->
+      ?action:string ->
+      ?error_msg:Xtmpl.tree list ->
       ?login:string ->
-      ?error_msg:Xtmpl.tree list -> ?action:string -> unit -> Xtmpl.tree list
+      ?meth:Cohttp.Code.meth ->
+      ?password:string ->
+      ?submit:string ->
+      unit -> Xtmpl.tree list
     val read_form : (string -> string option) -> template * t
   end
 

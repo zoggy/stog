@@ -89,55 +89,14 @@ let skip_node http_url node =
       )
   | _ -> false
 
-let dom_of_xtmpl =
-  let rec map (doc : Dom_html.document Js.t) = function(*(t : Dom_html.element Js.t) = function*)
-    Xtmpl.D s ->
-      let n = doc##createTextNode (Js.string s) in
-      (n :> Dom.node Js.t)
-  | Xtmpl.E (name, atts, subs) ->
-      let n =
-        match name with
-          ("", tag) -> doc##createElement (Js.string tag)
-        | (uri, tag) ->
-            (*log ("createElementNS("^uri^", "^tag^")");*)
-            doc##createElementNS (Js.string uri, Js.string tag)
-      in
-      let atts =
-        try Xtmpl.string_of_xml_atts atts
-        with _ ->
-            log ("problem with attributes of "^(Xdiff.string_of_name name));
-            []
-      in
-      List.iter
-        (fun (name, v) ->
-           let v = Js.string v in
-           match name with
-             ("", att) -> ignore (n##setAttribute (Js.string att, v))
-           | (uri, att) ->
-               try ignore (Js.Unsafe.meth_call n "setAttributeNS"
-                  (Array.map Js.Unsafe.inject [| Js.string uri ; Js.string att ; v |]))
-                 (* FIXME: use setAttributeNS when will be available *)
-               with _ ->
-                   log ("could not add attribute "^(Xdiff.string_of_name name))
-        )
-        atts;
-      let subs = List.map (map doc) subs in
-      List.iter (Dom.appendChild n) subs;
-      (n :> Dom.node Js.t)
-  in
-  fun t ->
-    let doc = Dom_html.document in
-    map doc t
-;;
-
 
 let display_msg xmls =
-  let nodes = List.map dom_of_xtmpl xmls in
+  let nodes = List.map Xtmpl_js.dom_of_xtmpl xmls in
   Ojsmsg_js.display_message msg_box_id nodes
 ;;
 
 let display_error xmls =
-  let nodes = List.map dom_of_xtmpl xmls in
+  let nodes = List.map Xtmpl_js.dom_of_xtmpl xmls in
   Ojsmsg_js.display_error msg_box_id nodes
 
 let add_action_box ws http_url =
@@ -211,7 +170,7 @@ let set_page_content ws http_url xml =
     (*Js.Opt.iter (children##item (i)) (fun node -> Dom.removeChild doc node) (* (children##item (i))*)*)
   done;
   log "building tree";
-  let tree = dom_of_xtmpl xml in
+  let tree = Xtmpl_js.dom_of_xtmpl xml in
   log "appending tree";
   Dom.appendChild doc tree;
 
