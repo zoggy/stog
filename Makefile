@@ -43,6 +43,7 @@ PLUGINS_BYTE= \
 	plugins/stog_dot.cmo \
 	plugins/stog_markdown.cmo \
 	plugins/stog_multi_doc.cmo \
+	plugins/stog_nocaml.cmo \
 	plugins/stog_rel_href.cmo \
 	plugins/plugin_example.cmo
 PLUGINS_OPT=$(PLUGINS_BYTE:.cmo=.cmxs)
