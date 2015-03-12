@@ -102,7 +102,7 @@ let handle_login_post cfg gs req body =
       add_logged gs token account;
       let cookie = Cohttp.Cookie.Set_cookie_hdr.make
           ~expiration: `Session
-          ~path: ("/"^(String.concat "/" (Neturl.url_path cfg.http_url.pub)))
+          ~path: ("/"^(String.concat "/" (Neturl.url_path cfg.http_url.priv)))
           ~http_only: true
           (token_cookie, token)
       in
@@ -124,7 +124,7 @@ let handle_login_get cfg gs opt_user =
       respond_page page
 
 let req_path_from_app cfg req =
-  let app_path = Neturl.url_path cfg.http_url.priv in
+  let app_path = Stog_types.url_path cfg.http_url.priv in
   let req_uri = Cohttp.Request.uri req in
   let req_path = Stog_misc.split_string (Uri.path req_uri) ['/'] in
   let rec iter = function
@@ -208,7 +208,7 @@ let handle_path cfg gs ~http_url ~ws_url sock opt_user req body = function
 
               | "preview" :: _ ->
                   let base_path =
-                    (Neturl.url_path cfg.http_url.priv) @
+                    (Stog_types.url_path cfg.http_url.priv) @
                       Stog_multi_page.path_sessions @ [session_id]
                   in
                   Stog_server_http.handler session.session_stog.stog_state
@@ -273,6 +273,13 @@ let launch ~http_url ~ws_url args =
       [] -> failwith "Please give a configuration file"
     | file :: _ -> Stog_multi_config.read file
   in
+  prerr_endline
+    (Printf.sprintf
+     "http_url = %S\npublic_http_url = %S\nws_url = %S\npublic_ws_url = %S"
+     (Stog_types.string_of_url cfg.http_url.priv)
+     (Stog_types.string_of_url cfg.http_url.pub)
+     (Stog_types.string_of_url cfg.ws_url.priv)
+     (Stog_types.string_of_url cfg.ws_url.pub));
   let gs = {
     sessions = ref (Str_map.empty : session Str_map.t) ;
     logged = ref (Str_map.empty : account Str_map.t) ;
@@ -280,7 +287,7 @@ let launch ~http_url ~ws_url args =
   in
   restart_previous_sessions cfg gs.sessions ;
   Stog_multi_ws.run_server cfg gs >>=
-  fun _ -> start_server cfg gs ~http_url ~ws_url
+  fun _ -> start_server cfg gs ~http_url: cfg.http_url ~ws_url: cfg.ws_url
 
 let () =
   let run ~http_url ~ws_url args = Lwt_main.run (launch ~http_url ~ws_url args) in

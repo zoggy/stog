@@ -514,53 +514,42 @@ let encode_for_url s =
   Buffer.contents b
 ;;
 
-let doc_dst f_concat ?(encode=true) stog base doc =
+let doc_dst_path stog doc =
   let path =
     match doc.doc_path.Stog_path.path with
       [] -> failwith "Invalid path: []"
-    | h :: q -> List.fold_left f_concat h q
+    | p -> p
   in
-  let path =
-    if doc.doc_lang_dep then
-      begin
-        let ext_pref =
-          match stog.stog_lang with
-            None -> ""
-          | Some lang -> "."^lang
-        in
-        Printf.sprintf "%s%s" path ext_pref
-      end
-    else
-      path
-  in
-  let dst = if encode then encode_for_url path else path in
-  f_concat base dst
+  if doc.doc_lang_dep then
+    match stog.stog_lang with
+      None -> path
+    | Some lang ->
+        match List.rev path with
+          h :: q -> List.rev ((h^"."^lang) :: q)
+        | _ -> assert false
+  else
+    path
+
+let doc_dst (*?(encode=true)*) stog doc =
+  let path = doc_dst_path stog doc in
+  (*let dst = if encode then List.map encode_for_url path else path in*)
+  Stog_types.url_append stog.stog_base_url path
 ;;
 
 let doc_dst_file stog doc =
-  doc_dst ~encode: false Filename.concat stog stog.stog_outdir doc;;
-
+  let path = doc_dst_path stog doc in
+  List.fold_left Filename.concat stog.stog_outdir path
 
 let doc_url stog doc =
-  let url = doc_dst (fun a b -> a^"/"^b) stog
-    (Stog_types.string_of_url stog.stog_base_url) doc
-  in
-  let len = String.length url in
-  (* if url starts with "file", do not eventually remove "/index.html" *)
-  let url =
-    if len >= 5 && (String.lowercase (String.sub url 0 5)) = "file:" then
-      url
-    else
-      begin
-        let s = "/index.html" in
-        let len_s = String.length s in
-        if len >= len_s && String.sub url (len - len_s) len_s = s then
-          (String.sub url 0 (len-len_s))^"/"
-        else
-          url
-      end
-  in
-  url_of_string url
+  let url_path = doc_dst_path stog doc in
+  let url = Stog_types.url_append stog.stog_base_url url_path in
+  match String.lowercase (Neturl.url_scheme url) with
+    "file" -> url
+  | _ ->
+      let p = Stog_types.url_path url in
+      match List.rev p with
+      | "index.html" :: q -> Stog_types.url_with_path url (List.rev ("" :: q))
+      | _ -> url
 ;;
 
 let output_doc ~gen_cache state doc =

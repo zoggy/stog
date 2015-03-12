@@ -35,9 +35,7 @@ module S = Cohttp_lwt_unix.Server
 module H = Xtmpl_xhtml
 
 let url_ cfg path =
-  let url = List.fold_left Stog_types.url_concat
-    cfg.http_url.pub path
-  in
+  let url = Stog_types.url_append cfg.http_url.pub path in
   Stog_types.string_of_url url
 
 let path_login = ["login"]

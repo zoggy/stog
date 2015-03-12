@@ -210,7 +210,7 @@ let url_concat uri s =
 let url_path url =
   match Neturl.url_path url with
     "" :: q -> q
-  | l -> l
+  | x -> x
 
 let url_with_path url path =
   (* to be compliant with Neturl, path must begin with "" *)
@@ -222,7 +222,13 @@ let url_with_path url path =
   Neturl.modify_url ~path url
 
 let url_append uri path =
-  let path = (url_path uri) @ path in
+  let p0 =
+    let p = url_path uri in
+    match List.rev p with
+    | "" :: q -> List.rev q
+    | _ -> p
+  in
+  let path = p0 @ path in
   url_with_path uri path
 
 let url_remove_ending_slash url =
