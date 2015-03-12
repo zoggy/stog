@@ -59,11 +59,11 @@ val handle_messages :
   or port number. *)
 val sockaddr_of_dns : string -> string -> Lwt_unix.sockaddr Lwt.t
 
-(** [read_stog current_state active_cons host port base_path] creates a server
+(** [read_stog current_state active_cons ws_url base_path] creates a server
   for previewing the documents in the current state. *)
 val run_server :
   (unit -> Stog_types.stog) ->
   Stog_server_run.state option ref ->
   (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit)) list ref ->
-    string -> int -> string list -> Websocket.server Lwt.t
+    Stog_types.url_config -> string list -> Websocket.server Lwt.t
 

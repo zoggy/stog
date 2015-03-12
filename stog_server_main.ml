@@ -30,20 +30,18 @@
 (** *)
 
 open Stog_server_run
+open Stog_types
 
 module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
 
-let new_stog_session stog host port base_path =
-  let stog_base_url =
-    let s = Printf.sprintf "http://%s:%d/%spreview"
-      host port (Stog_server_http.base_path_string base_path)
-    in
-    Stog_types.url_of_string s
-  in
+let new_stog_session stog ~http_url base_path =
+  let stog_base_url = Stog_server_http.preview_url http_url base_path in
   Stog_server_preview.new_stog_session stog stog_base_url
 
-let start_server current_state host port base_path =
+let start_server current_state ~http_url ~ws_url base_path =
+  let host = Neturl.url_host http_url.priv in
+  let port = Neturl.url_port http_url.priv in
   Lwt_io.write Lwt_io.stdout
     (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
   >>= fun _ ->
@@ -53,7 +51,7 @@ let start_server current_state host port base_path =
   in
   let config = S.make
     ~callback: (fun sock req body ->
-       Stog_server_http.handler current_state host port base_path req)
+       Stog_server_http.handler current_state ~http_url ~ws_url base_path req)
     ~conn_closed
     ()
   in
@@ -64,17 +62,19 @@ let start_server current_state host port base_path =
       S.create ~ctx ~mode config
 
 
-let launch read_stog stog host port base_path =
+let launch read_stog stog ~http_url ~ws_url base_path =
   let read_stog () =
     let stog = read_stog () in
     let stog = { stog with Stog_types.stog_outdir = "stog-output" } in
     stog
   in
-  let (current_state, active_cons) = new_stog_session stog host port base_path in
-  Stog_server_ws.run_server read_stog current_state active_cons host (port+1) base_path >>=
-    fun _ -> start_server current_state host port base_path
+  let (current_state, active_cons) = new_stog_session stog ~http_url base_path in
+  Stog_server_ws.run_server read_stog current_state active_cons ws_url base_path >>=
+    fun _ -> start_server current_state ~http_url ~ws_url base_path
 
 let () =
-  let run read_stog stog host port = Lwt_main.run (launch read_stog stog host port []) in
+  let run read_stog stog ~http_url ~ws_url =
+    Lwt_main.run (launch read_stog stog ~http_url ~ws_url [])
+  in
   Stog_server_mode.set_single run
 

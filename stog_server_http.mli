@@ -29,17 +29,9 @@
 
 (** HTTP connexion handler for preview server *)
 
-(** {[
-  base_path string [] = ""
-  base_path_string l = (String.concat "/" p)^"/"
-]} *)
-val base_path_string : string list -> string
-
-(** [http_url host port path] forges the corresponding URL. *)
-val http_url : string -> int -> string list -> string
-
-(** [ws_url host port path] forges the corresponding websocket URL. *)
-val ws_url : string -> int -> string list -> string
+(** [preview_url http_cfg path] forges the preview URL using the
+  pub part of [http_cfg]. *)
+val preview_url : Stog_types.url_config -> string list -> Stog_types.url
 
 (** [handler current_state host port base_path req body] handles
   a HTTP query [req]. [current_state] is a reference to current stog state.
@@ -47,8 +39,8 @@ val ws_url : string -> int -> string list -> string
   to the service. *)
 val handler :
   Stog_server_run.state option ref ->
-  string ->
-  int ->
+  http_url: Stog_types.url_config ->
+  ws_url: Stog_types.url_config ->
   string list ->
   Cohttp.Request.t ->
   (Stog_server_preview.S.Response.t * Cohttp_lwt_body.t) Lwt.t

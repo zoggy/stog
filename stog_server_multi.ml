@@ -32,6 +32,7 @@
 open Stog_types
 open Xtmpl
 open Stog_multi_config
+open Stog_server_types
 open Stog_multi_session
 open Stog_multi_gs
 
@@ -101,7 +102,7 @@ let handle_login_post cfg gs req body =
       add_logged gs token account;
       let cookie = Cohttp.Cookie.Set_cookie_hdr.make
           ~expiration: `Session
-          ~path: ("/"^(String.concat "/" (Neturl.url_path cfg.app_url)))
+          ~path: ("/"^(String.concat "/" (Neturl.url_path cfg.http_url.pub)))
           ~http_only: true
           (token_cookie, token)
       in
@@ -123,7 +124,7 @@ let handle_login_get cfg gs opt_user =
       respond_page page
 
 let req_path_from_app cfg req =
-  let app_path = Neturl.url_path cfg.app_url in
+  let app_path = Neturl.url_path cfg.http_url.priv in
   let req_uri = Cohttp.Request.uri req in
   let req_path = Stog_misc.split_string (Uri.path req_uri) ['/'] in
   let rec iter = function
@@ -132,7 +133,7 @@ let req_path_from_app cfg req =
   | _, _ ->
       let msg = Printf.sprintf  "bad query path: %S is not under %S"
         (Uri.to_string req_uri)
-        (Stog_types.string_of_url cfg.app_url)
+        (Stog_types.string_of_url cfg.http_url.priv)
       in
       failwith msg
   in
@@ -155,7 +156,7 @@ let require_user cfg opt_user f =
   | Some user -> f user
 
 
-let handle_path cfg gs host port sock opt_user req body = function
+let handle_path cfg gs ~http_url ~ws_url sock opt_user req body = function
 | [] ->
     let contents = Stog_multi_page.Form_login.form
       ~action: (Stog_multi_page.url_login cfg) ()
@@ -207,20 +208,20 @@ let handle_path cfg gs host port sock opt_user req body = function
 
               | "preview" :: _ ->
                   let base_path =
-                    (Neturl.url_path cfg.app_url) @
+                    (Neturl.url_path cfg.http_url.priv) @
                       Stog_multi_page.path_sessions @ [session_id]
                   in
                   Stog_server_http.handler session.session_stog.stog_state
-                    host port base_path req
+                    ~http_url ~ws_url base_path req
 
               | "editor" :: p  ->
                   let base_path =
-                      (Neturl.url_path cfg.app_url) @
+                      (Neturl.url_path cfg.http_url.priv) @
                       Stog_multi_page.path_sessions @ [session_id]
                   in
                   require_user cfg opt_user
                     (fun user ->
-                       Stog_multi_ed.http_handler cfg user host port
+                       Stog_multi_ed.http_handler cfg user ~http_url ~ws_url
                          base_path session_id req body p)
 
               | _ -> S.respond_error ~status:`Not_found ~body:"" ()
@@ -232,11 +233,11 @@ let handle_path cfg gs host port sock opt_user req body = function
         in
         S.respond_error ~status:`Not_found ~body ()
 
-let handler cfg gs host port sock req body =
+let handler cfg gs ~http_url ~ws_url sock req body =
   let path = req_path_from_app cfg req in
   let opt_user = get_opt_user gs req in
   Lwt.catch
-    (fun () -> handle_path cfg gs host port sock opt_user req body path)
+    (fun () -> handle_path cfg gs ~http_url ~ws_url sock opt_user req body path)
     (fun e ->
        let msg =
          match e with
@@ -246,7 +247,9 @@ let handler cfg gs host port sock req body =
        S.respond_error ~status: `Internal_server_error ~body: msg ()
     )
 
-let start_server cfg gs host port =
+let start_server cfg gs ~http_url ~ws_url =
+  let host = Neturl.url_host http_url.Stog_types.priv in
+  let port = Neturl.url_port http_url.Stog_types.priv in
   Lwt_io.write Lwt_io.stdout
     (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
   >>= fun _ ->
@@ -255,7 +258,7 @@ let start_server cfg gs host port =
       (Printf.sprintf "connection %s closed\n%!" (Cohttp.Connection.to_string id)))
   in
   let config = S.make
-    ~callback: (handler cfg gs host port)
+    ~callback: (handler cfg gs ~http_url ~ws_url)
     ~conn_closed ()
   in
   Conduit_lwt_unix.init ~src:host () >>=
@@ -264,7 +267,7 @@ let start_server cfg gs host port =
       let mode = `TCP (`Port port) in
       S.create ~ctx ~mode config
 
-let launch host port args =
+let launch ~http_url ~ws_url args =
   let cfg =
     match args with
       [] -> failwith "Please give a configuration file"
@@ -277,9 +280,9 @@ let launch host port args =
   in
   restart_previous_sessions cfg gs.sessions ;
   Stog_multi_ws.run_server cfg gs >>=
-  fun _ -> start_server cfg gs host port
+  fun _ -> start_server cfg gs ~http_url ~ws_url
 
 let () =
-  let run host port args = Lwt_main.run (launch host port args) in
+  let run ~http_url ~ws_url args = Lwt_main.run (launch ~http_url ~ws_url args) in
   Stog_server_mode.set_multi run
 

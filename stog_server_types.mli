@@ -29,7 +29,6 @@
 
 (** Types for preview server *)
 
-
 type page_update = Patch of Xmldiff.patch | Update_all of Xtmpl.tree
 
 type server_message =

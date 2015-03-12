@@ -37,17 +37,19 @@ type account = {
   passwd : sha256;
 }
 type t = {
-  accounts : account list;
-  ssh_priv_key : string option;
-  git_repo_url : string;
-  dir : string;
-  stog_dir : string option;
-  editable_files : Str.regexp list;
-  not_editable_files : Str.regexp list;
-  app_url : Neturl.url;
-  css_file : string option;
-}
+    accounts : account list;
+    ssh_priv_key : string option;
+    git_repo_url : string;
+    dir : string;
+    stog_dir : string option;
+    editable_files : Str.regexp list;
+    not_editable_files : Str.regexp list;
+    http_url : Stog_types.url_config ;
+    ws_url : Stog_types.url_config ;
+    css_file : string option;
+  }
 
 (** Read the given configuration file.
   @raise Failure in case of error. *)
 val read : string -> t
+

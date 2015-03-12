@@ -30,25 +30,27 @@
 (** *)
 
 module CF = Config_file
+open Stog_types
 
-  type sha256 = string (* hexadecimal representation of SHA256 digest *)
-  type account = {
+type sha256 = string (* hexadecimal representation of SHA256 digest *)
+type account = {
     login: string ;
     name : string ;
     email: string ;
     passwd: sha256 ;
   }
-    type t = {
-      accounts : account list ;
-      ssh_priv_key : string option;
-      git_repo_url : string ;
-      dir : string ;
-      stog_dir : string option ;
-      editable_files : Str.regexp list ;
-      not_editable_files : Str.regexp list ;
-      app_url : Neturl.url ;
-      css_file : string option ;
-    }
+type t = {
+    accounts : account list ;
+    ssh_priv_key : string option;
+    git_repo_url : string ;
+    dir : string ;
+    stog_dir : string option ;
+    editable_files : Str.regexp list ;
+    not_editable_files : Str.regexp list ;
+    http_url : Stog_types.url_config ;
+    ws_url : Stog_types.url_config ;
+    css_file : string option ;
+  }
 
 let read file =
   let group = new CF.group in
@@ -77,8 +79,17 @@ let read file =
     ["not-editable-files"] []
       "Regexps of files not to be able to edit"
   in
-  let o_app_url = new CF.string_cp ~group
-    ["app-url"] "http://localhost:8080" "Application URL"
+  let o_http_url = new CF.string_cp ~group
+    ["http-url"] "http://localhost:8080" "URL of HTTP server"
+  in
+  let o_ws_url = new CF.string_cp ~group
+    ["ws-url"] "http://localhost:8081" "URL of websocket server"
+  in
+  let o_public_http_url = new CF.option_cp CF.string_wrappers ~group
+    ["public-http-url"] None "Public URL of HTTP server"
+  in
+  let o_public_ws_url = new CF.option_cp CF.string_wrappers ~group
+    ["public-ws-url"] None "Public URL of websocket server"
   in
   let o_css_file = new CF.option_cp CF.string_wrappers ~group
     ["css-file"] None "File to serve as default CSS file"
@@ -114,13 +125,24 @@ let read file =
           in
         Some f
     in
-    let app_url = Stog_types.url_of_string o_app_url#get in
-    let app_url = Neturl.modify_url
-      ~path: (List.filter ((<>) "") (Neturl.url_path app_url))
-        app_url
+    let map_url str =
+      let url = Stog_types.url_of_string str in
+      Stog_types.url_remove_ending_slash url
     in
-    prerr_endline "app_url path:";
-    List.iter prerr_endline (Neturl.url_path app_url);
+    let http_url = map_url o_http_url#get in
+    let ws_url = map_url o_ws_url#get in
+    let public_http_url =
+      match o_public_http_url#get with
+        None -> http_url
+      | Some u -> map_url u
+    in
+    let public_ws_url =
+      match o_public_ws_url#get with
+        None -> ws_url
+      | Some u -> map_url u
+    in
+    (*prerr_endline "app_url path:";
+    List.iter prerr_endline (Stog_types.url_path app_url);*)
     { accounts ;
       ssh_priv_key ;
       git_repo_url = o_git_repo#get ;
@@ -128,14 +150,15 @@ let read file =
       stog_dir = (match o_stog_dir#get with "" -> None | s -> Some s);
       editable_files = List.map Str.regexp o_editable#get ;
       not_editable_files = List.map Str.regexp o_not_editable#get ;
-      app_url ;
+      http_url = { pub = public_http_url ; priv = http_url } ;
+      ws_url = { pub = public_ws_url ; priv = ws_url } ;
       css_file = o_css_file#get ;
     }
   with
     e ->
       let msg =
         match e with
-          Sys_error s -> s
+          Sys_error s | Failure s -> s
         | e -> Printexc.to_string e
       in
       failwith msg

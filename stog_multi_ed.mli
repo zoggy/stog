@@ -44,8 +44,8 @@ val init :
 val http_handler :
   Stog_multi_config.t ->
   Stog_multi_config.account ->
-  string ->
-  int ->
+  http_url: Stog_types.url_config ->
+  ws_url: Stog_types.url_config ->
   string list ->
   string ->
   'a ->

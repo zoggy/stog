@@ -63,12 +63,12 @@ let handle_con gs base_path uri (stream, push) =
 
 let server cfg gs sockaddr =
   Websocket.establish_server sockaddr
-    (handle_con gs (Neturl.url_path cfg.app_url))
+    (handle_con gs (Neturl.url_path cfg.ws_url.pub))
 ;;
 
 let run_server cfg gs =
-  let host = Neturl.url_host cfg.app_url in
-  let port = Neturl.url_port cfg.app_url + 1 in
+  let host = Neturl.url_host cfg.ws_url.priv in
+  let port = Neturl.url_port cfg.ws_url.priv in
   prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
   Stog_server_ws.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
     Lwt.return (server cfg gs sa)

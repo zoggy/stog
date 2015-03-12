@@ -29,11 +29,17 @@
 
 (** Registering a server *)
 
-(** Default port, modified by command line option *)
-val port : int ref
+(** Default URL, modified by command line option *)
+val http_url : string ref
 
-(** Default host, modified by command line option *)
-val host : string ref
+(** Default websocket URL, modified by command line option *)
+val ws_url : string ref
+
+(** Optional public HTTP URL, modified by command line option *)
+val pub_http_url : string option ref
+
+(** Optional public websocket URL, modified by command line option *)
+val pub_ws_url : string option ref
 
 (** Multi server: handling users, sessions with editor and preview for each session.
 
@@ -46,7 +52,11 @@ type server_mode =
 val server_mode : server_mode option ref
 
 val set_single :
-  ((unit -> Stog_types.stog) -> Stog_types.stog -> string -> int -> unit) ->
+  ((unit -> Stog_types.stog) -> Stog_types.stog ->
+   http_url: Stog_types.url_config ->
+     ws_url: Stog_types.url_config -> unit) ->
   unit
 
-val set_multi : (string -> int -> string list -> unit) -> unit
+val set_multi :
+  (http_url: Stog_types.url_config ->
+   ws_url: Stog_types.url_config -> string list -> unit) -> unit

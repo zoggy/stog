@@ -31,6 +31,7 @@
 
 open Lwt.Infix
 open Stog_multi_config
+open Stog_types
 open Stog_git_server
 
 type session_state =
@@ -97,7 +98,8 @@ let stog_info_of_repo_dir cfg session_id repo_dir =
   let base_url =
     let url =
       List.fold_left Stog_types.url_concat
-        cfg.app_url (Stog_multi_page.path_sessions @ [session_id ; "preview" ])
+        cfg.http_url.pub
+        (Stog_multi_page.path_sessions @ [session_id ; "preview" ])
     in
     Neturl.modify_url ~path: ((Neturl.url_path url)@[""]) url
   in
@@ -111,7 +113,8 @@ let editor_info_of_stog_info cfg session_id stog_info =
   let url =
     let url =
       List.fold_left Stog_types.url_concat
-        cfg.app_url (Stog_multi_page.path_sessions @ [session_id ; "editor" ])
+        cfg.http_url.pub
+        (Stog_multi_page.path_sessions @ [session_id ; "editor" ])
     in
     Neturl.modify_url ~path: ((Neturl.url_path url)@[""]) url
   in

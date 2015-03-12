@@ -31,6 +31,7 @@
 
 module S = Cohttp_lwt_unix.Server
 open Stog_types
+open Stog_server_types
 open Stog_server_run
 
 let (>>=) = Lwt.bind
@@ -94,7 +95,7 @@ let rec preview_file stog = function
     in
     iter stog.stog_files path
 
-let handle_preview http_url ws_url current_state req path =
+let handle_preview ~http_url ~ws_url current_state req path =
   match !current_state with
     None -> Lwt.fail (Failure "No state yet!")
   | Some state ->
@@ -118,21 +119,24 @@ let handle_preview http_url ws_url current_state req path =
             | Some xmls ->
                 let doc_path = Stog_path.to_string doc.doc_path in
                 let title = Printf.sprintf "Loading preview of %s" doc_path in
-                let script_url = http_url^"/"^client_js in
+                let script_url = Stog_types.url_append http_url.pub [client_js] in
                 let http_root_url =
-                  let url = Stog_types.url_of_string http_url in
                   let path =
-                    match List.rev (Neturl.url_path url) with
+                    match List.rev (Stog_types.url_path http_url.pub) with
                       _ :: q -> List.rev q
                     | [] -> []
                   in
-                  Stog_types.string_of_url (Neturl.modify_url ~path url)
+                  let url = Stog_types.url_with_path http_url.pub path in
+                  Stog_types.string_of_url url
                 in
                 "<!DOCTYPE html><html><header><meta charset=\"utf-8\"/><title>"^title^"</title>"^
                 "<script type=\"text/javascript\">
-                  stog_server = { wsUrl: '"^ws_url^"', doc: '"^doc_path^"', httpUrl: '"^http_root_url^"' };
+                  stog_server = {
+                    wsUrl: '"^(Stog_types.string_of_url ws_url.pub)^"',
+                    doc: '"^doc_path^"', httpUrl: '"^http_root_url^"' };
                 </script>"^
-                "<script src=\""^script_url^"\" type=\"text/javascript\"> </script>"^
+                "<script src=\""^(Stog_types.string_of_url script_url)^"\"
+                         type=\"text/javascript\"> </script>"^
                 "</header><body><h1>"^title^"</h1></body></html>"
           in
           let headers = Cohttp.Header.init_with "Content-Type" "text/html; charset=utf-8" in

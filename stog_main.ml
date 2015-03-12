@@ -203,11 +203,19 @@ let options = [
     "--hackcmxs", Arg.Set Stog_dyn.hack_cmxs,
     " when a package to load depends on .cmxa or .cmx file, try to build .cmxs.\n\n  *** Server options ***";
 
-    "--port", Arg.Set_int Stog_server_mode.port,
-    "<p> set port to listen on (default is "^(string_of_int !Stog_server_mode.port)^")" ;
+    "--http", Arg.Set_string Stog_server_mode.http_url,
+    "<url> set url of server, used to know port and host to listen on\n\t\t"^
+    "(default is "^(!Stog_server_mode.http_url)^")" ;
 
-    "--host", Arg.Set_string Stog_server_mode.host,
-    "<host> set hostname to listen on (default is "^ !Stog_server_mode.host ^")\n" ;
+    "--ws", Arg.Set_string Stog_server_mode.ws_url,
+    "<url> set websocket url of server, used to know port and host to listen on\n\t\t"^
+    "(default is "^(!Stog_server_mode.ws_url)^")" ;
+
+    "--pub-http", Arg.String (fun s -> Stog_server_mode.pub_http_url := Some s),
+    "<url> set public url of server (default is same as --http)" ;
+
+    "--pub-ws", Arg.String (fun s -> Stog_server_mode.pub_ws_url := Some s),
+    "<url> set public url of websocket server (default is same as --ws)" ;
   ];;
 
 let usage ?(with_options=true) ()=

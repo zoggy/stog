@@ -94,10 +94,11 @@ let init ?sshkey ~stog_dir ~git =
   connections
 
 let body_tmpl = [%xtmpl "templates/multi_ed.tmpl"]
-let page cfg user ~ws_url ~title ~client_js_path =
-  let js = [ "stog_server = { wsUrl: '"^ws_url^"' } ;" ] in
+let page cfg user ~ws_url ~title ~client_js_url =
+  let client_js_url = Stog_types.string_of_url client_js_url in
+  let js = [ "stog_server = { wsUrl: '"^(Stog_types.string_of_url ws_url)^"' } ;" ] in
   let body = body_tmpl
-    ~client_js_path
+    ~client_js_url
     ~ft_id: Stog_multi_ed_types.ft_id
       ~ojs_msg_id: Stog_multi_ed_types.ojs_msg_id
       ~bar_id: Stog_multi_ed_types.bar_id
@@ -109,20 +110,19 @@ let page cfg user ~ws_url ~title ~client_js_path =
 
 let client_js = "stog_multi_ed.js"
 
-let editor_page cfg user host port base_path session_id =
-  let client_js_path = "/" ^ String.concat "/"
-    (base_path @ [ "editor" ; client_js ])
-  in
-  (* FIXME: port number when we will be able to change an http connection into a websocket one
-     manually *)
-  let ws_url = Printf.sprintf "ws://%s:%d/%s/editor" host (port+1) (String.concat "/" base_path) in
+let editor_page cfg user ~http_url ~ws_url base_path session_id =
+  let client_js_path = base_path @ [ "editor" ; client_js ] in
+  (* FIXME: port number when we will be able to change an
+    http connection into a websocket one manually *)
+  let client_js_url = Stog_types.url_append http_url.Stog_types.pub client_js_path in
+  let ws_url = Stog_types.url_append ws_url.Stog_types.pub (base_path @ ["editor"]) in
   let title = Printf.sprintf "Session %S" session_id in
-  page cfg (Some user) ~ws_url ~title ~client_js_path
+  page cfg (Some user) ~ws_url ~title ~client_js_url
 
-let http_handler cfg user host port base_path session_id req body = function
+let http_handler cfg user ~http_url ~ws_url base_path session_id req body = function
 | [s] when s = client_js -> Stog_server_preview.respond_server_js client_js
 | [] | [""] ->
-    let body = editor_page cfg user host port base_path session_id in
+    let body = editor_page cfg user ~http_url ~ws_url base_path session_id in
     let body = Xtmpl.string_of_xmls body in
     S.respond_string ~status: `OK ~body ()
 | _ ->

@@ -47,12 +47,12 @@ val respond_server_js : string -> (S.Response.t * Cohttp_lwt_body.t) Lwt.t
 (** Respond the default server CSS file *)
 val respond_default_css : unit -> (S.Response.t * Cohttp_lwt_body.t) Lwt.t
 
-(** [handle_preview http_url ws_url current_state req path] respond the
+(** [handle_preview http_url ws_url current_state req path] responds the
   preview page, which contains a reference to client javascript code
   which, when loaded, will ask for stog document with path [path]. *)
 val handle_preview :
-  string ->
-  string ->
+  http_url: Stog_types.url_config ->
+  ws_url: Stog_types.url_config ->
   Stog_server_run.state option ref ->
   Cohttp.Request.t ->
   string list -> (S.Response.t * Cohttp_lwt_body.t) Lwt.t
