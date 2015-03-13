@@ -29,21 +29,74 @@
 
 (** *)
 
-let () = ignore(GMain.Main.init());;
 
+let msg_of_wsdata = Ojs_js.mk_msg_of_wsdata Stog_multi_ed_types.server_msg_of_yojson
+let wsdata_of_msg msg =
+  Yojson.Safe.to_string (Stog_multi_ed_types.client_msg_to_yojson msg)
 
-let options = [];;
+let ref_send = ref ((fun _ -> Lwt.return_unit) : Stog_multi_ed_types.App_msg.app_client_msg -> unit Lwt.t)
+let send msg = !ref_send msg
 
-let main () =
-  let dirs = ref [] in
-  Arg.parse options
-  (fun s -> dirs := s :: ! dirs)
-  (Printf.sprintf "Usage: %s [options] [directories]\n where options are:" Sys.argv.(0));
-  let dirs = match !dirs with [] -> [Filename.current_dir_name] | _ -> List.rev !dirs in
-  let stogs = List.map Stog_io.read_stog dirs in
-  let w = new Stog_gui_main.main_window stogs in
-  w#window#show();
-  GMain.Main.main ()
-;;
+module Rpc_base = Ojs_rpc.Base(Stog_multi_ed_types.App_msg)
+module Rpc = Ojs_rpc.Make_client(Rpc_base)
+let rpc_handler = Rpc.rpc_handler send
 
-Stog_misc.safe_main main;;
+let call = Rpc.call rpc_handler
+
+module FT = Ojsft_js.Make(Stog_multi_ed_types.FT)
+module ED = Ojsed_js.Make(Stog_multi_ed_types.ED)
+module Git = Stog_git_js.Make(Stog_multi_ed_types.Git)
+
+let trees = new FT.trees call send (new FT.tree);;
+let editors = new ED.editors call send (new ED.editor);;
+let repos = new Git.repos call send (new Git.repo);;
+
+let on_deselect ti path = ()
+
+let on_select (editor : ED.editor) ti kind path =
+  match kind with
+    `Dir -> ()
+  | `File mime -> ignore(editor#edit_file ~mime path)
+
+let onopen ws =
+  ref_send := (fun msg -> Ojs_js.send_msg ws (wsdata_of_msg msg); Lwt.return_unit);
+  let tree = trees#setup_filetree
+    ~msg_id: Stog_multi_ed_types.ojs_msg_id
+    Stog_multi_ed_types.ft_id
+  in
+  let editor =
+    editors#setup_editor
+      ~msg_id: Stog_multi_ed_types.ojs_msg_id
+      ~bar_id: Stog_multi_ed_types.bar_id
+      Stog_multi_ed_types.ed_id
+  in
+  let _repo = repos#setup_repo
+    ~msg_id: Stog_multi_ed_types.ojs_msg_id (editor :> Stog_git_js.editor)
+      Stog_multi_ed_types.gitrepo_id
+  in
+  tree#set_on_select (on_select editor) ;
+  tree#set_on_deselect on_deselect
+
+let onmessage ws msg =
+  match msg with
+  | Stog_multi_ed_types.FT.SFiletree _ -> trees#handle_message msg
+  | Stog_multi_ed_types.ED.SEditor _  -> editors#handle_message msg
+  | Stog_multi_ed_types.Git.SGit _  -> repos#handle_message msg
+  | Rpc_base.SReturn (call_id, msg) -> Rpc.on_return rpc_handler call_id msg; Js._false
+  | _ -> failwith "Unhandled message"
+
+let set_up_ws_connection ~ws_url =
+  try
+    Some (Ojs_js.setup_ws ws_url msg_of_wsdata ~onopen ~onmessage)
+  with e ->
+      Ojs_js.log (Printexc.to_string e);
+      None
+
+let stog_server =
+  (Js.Unsafe.variable "stog_server" :>
+   < wsUrl : Js.js_string Js.t Js.prop ;
+   > Js.t )
+
+let ws_url = Js.to_string stog_server##wsUrl
+
+let _ = set_up_ws_connection ~ws_url

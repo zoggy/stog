@@ -29,4 +29,5 @@ master.Makefile
 ocaml_config.sh
 stog_config.ml
 stog_install.ml
-
+server_files/*.byte
+server_files/*.js

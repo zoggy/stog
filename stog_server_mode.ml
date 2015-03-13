@@ -27,16 +27,47 @@
 (*                                                                               *)
 (*********************************************************************************)
 
+(** *)
 
-let port = ref 8080
-let host = ref "0.0.0.0"
+open Stog_types
+
+let http_url = ref "http://localhost:8080/"
+let ws_url = ref "ws://localhost:8081/"
+
+let pub_http_url = ref None
+let pub_ws_url = ref None
+
+let mk_urls () =
+  let url = Stog_types.url_of_string in
+  let http_url =
+    { pub = (match !pub_http_url with None -> url !http_url | Some s -> url s) ;
+      priv = url !http_url ;
+    }
+  in
+  let ws_url =
+    { pub = (match !pub_ws_url with None -> url !ws_url | Some s -> url s) ;
+      priv = url !ws_url ;
+    }
+  in
+  (http_url, ws_url)
 
 type server_mode = [
     `Single of (unit -> Stog_types.stog) -> Stog_types.stog -> unit
-  | `Multi of unit -> unit
+  | `Multi of string list -> unit
   ]
 let server_mode = ref (None : server_mode option)
 
-let set_single f = server_mode := Some (`Single (fun read_stog stog -> f read_stog stog !host !port))
-let set_multi f = server_mode := Some (`Multi (fun () -> f !host !port))
+let set_single f =
+  let g read_stog stog =
+    let (http_url, ws_url) = mk_urls () in
+    f read_stog stog ~http_url ~ws_url
+  in
+  server_mode := Some (`Single g)
+
+let set_multi f =
+  let g args =
+    let (http_url, ws_url) = mk_urls () in
+    f ~http_url ~ws_url args
+  in
+  server_mode := Some (`Multi g)
   

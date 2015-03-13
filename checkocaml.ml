@@ -925,6 +925,7 @@ let _ =
       );
       check_ocamlfind_package conf ~fail: false ~min_version: [2;4] "lwt.unix";
       check_ocamlfind_package conf ~fail: false ~min_version: [2;4] "lwt.preemptive";
+      check_ocamlfind_package conf ~fail: false ~min_version: [0;11] "xtmpl";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff.js";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;8;1] "websocket";
@@ -933,6 +934,7 @@ let _ =
       check_ocamlfind_package conf ~fail: false ~min_version: [0;1;0] "ojs";
       check_ocamlfind_package conf ~fail: false ~min_version: [2;0] "ppx_deriving_yojson";
       check_ocamlfind_package conf ~fail: false ~min_version: [1;1;8] "yojson";
+      check_ocamlfind_package conf ~fail: false ~min_version: [1;9] "sha";
     ]
   in
   if List.fold_left (&&) true checks then

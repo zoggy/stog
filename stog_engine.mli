@@ -88,9 +88,6 @@ val generate :
     ?only_docs:string list -> Stog_types.stog ->
     (module Module) list -> unit
 
-val doc_dst : (string -> string -> string) ->
-  ?encode:bool -> Stog_types.stog -> string -> Stog_types.doc -> string
-
 (** Build the final file where the given document will be generated. *)
 val doc_dst_file : Stog_types.stog -> Stog_types.doc -> string
 

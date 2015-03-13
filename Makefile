@@ -32,7 +32,7 @@ include master.Makefile
 P=#p -p
 PBYTE=#p -p a
 
-OF_FLAGS=-package $(PACKAGES),$(SERVER_PACKAGES)
+OF_FLAGS=-package $(SERVER_PACKAGES),$(PACKAGES)
 
 COMPFLAGS=-I +ocamldoc -annot -rectypes -g -thread  -safe-string #-w +K
 OCAMLPP=
@@ -43,6 +43,7 @@ PLUGINS_BYTE= \
 	plugins/stog_dot.cmo \
 	plugins/stog_markdown.cmo \
 	plugins/stog_multi_doc.cmo \
+	plugins/stog_nocaml.cmo \
 	plugins/stog_rel_href.cmo \
 	plugins/plugin_example.cmo
 PLUGINS_OPT=$(PLUGINS_BYTE:.cmo=.cmxs)
@@ -112,7 +113,6 @@ LIB_SERVER_CMXFILES= \
 	stog_server_run.cmx \
 	stog_server_files.cmx \
 	stog_server_ws.cmx \
-	stog_server_editor.cmx \
 	stog_server_preview.cmx \
 	stog_server_http.cmx
 
@@ -131,11 +131,24 @@ PLUGIN_MSERVER=stog_multi_server.cmxa
 PLUGIN_MSERVER_CMXS=$(PLUGIN_MSERVER:.cmxa=.cmxs)
 PLUGIN_MSERVER_BYTE=$(PLUGIN_MSERVER:.cmxa=.cma)
 
-PLUGIN_MSERVER_CMXFILES= stog_server_multi.cmx
+PLUGIN_MSERVER_CMXFILES=\
+	stog_multi_config.cmx \
+	stog_multi_page.cmx \
+	stog_git_types.cmx \
+	stog_git_status.cmx \
+	stog_git_server.cmx \
+	stog_multi_ed_types.cmx \
+	stog_multi_ed.cmx \
+	stog_multi_session.cmx \
+	stog_multi_gs.cmx \
+	stog_multi_user.cmx \
+	stog_multi_ws.cmx \
+	stog_server_multi.cmx
 PLUGIN_MSERVER_CMOFILES=$(PLUGIN_MSERVER_CMXFILES:.cmx=.cmo)
 PLUGIN_MSERVER_CMIFILES=$(PLUGIN_MSERVER_CMXFILES:.cmx=.cmi)
 
 SERVER_JS=stog_server_client.js
+MSERVER_ED_JS=stog_multi_ed.js
 
 OCAML_SESSION=$(MAIN)-ocaml-session
 
@@ -178,27 +191,56 @@ $(SERVER_BYTE): $(LIB_BYTE) $(LIB_SERVER_BYTE) $(PLUGIN_SERVER_BYTE) stog_main.c
 	-linkall -linkpkg -o $@ $(COMPFLAGS) $^
 
 $(MSERVER): $(LIB) $(LIB_SERVER) $(LIB_SERVER_CMXS) $(PLUGIN_MSERVER) $(PLUGIN_MSERVER_CMXS) stog_main.cmx
-	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES),$(SERVER_PACKAGES) \
+	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES),$(SERVER_PACKAGES),$(MSERVER_PACKAGES) \
 	-verbose -linkall -linkpkg -o $@ $(COMPFLAGS) $(LIB) $(LIB_SERVER) \
 	$(PLUGIN_MSERVER) stog_main.cmx
 
 $(MSERVER_BYTE): $(LIB_BYTE) $(LIB_SERVER_BYTE) $(PLUGIN_MSERVER_BYTE) stog_main.cmo
-	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES),$(SERVER_PACKAGES) \
+	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES),$(SERVER_PACKAGES),$(MSERVER_PACKAGES) \
 	-linkall -linkpkg -o $@ $(COMPFLAGS) $^
 
 #	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $^
 
-server_files/$(SERVER_JS): stog_server_types.cmi stog_server_types.cmo stog_server_client_js.ml
-	$(MKDIR) server_files
+server_files/$(SERVER_JS): stog_server_types.cmi stog_server_types.cmo \
+	stog_server_client_js.cmi stog_server_client_js.ml
 	$(OCAMLFIND) ocamlc -o $@.byte $(COMPFLAGS) \
-	-package js_of_ocaml,js_of_ocaml.syntax,xmldiff.js,ojs.js,xtmpl,yojson,ppx_deriving_yojson -syntax camlp4o -linkpkg \
+	-package $(SERVER_JS_PACKAGES) -syntax camlp4o -linkpkg \
 	stog_server_types.cmo stog_server_client_js.ml
-	$(JS_OF_OCAML) $@.byte -o $@
+	$(JS_OF_OCAML) +js_of_ocaml/nat.js $@.byte  -o $@
+	$(RM) server_files/*.byte
 
-stog_server_files.ml: server_files/$(SERVER_JS)
-	$(OCAML_CRUNCH) --mode=plain -e js -o $@ server_files
-	$(RM) -r server_files
+server_files/$(MSERVER_ED_JS): \
+	stog_misc.cmi stog_misc.cmo \
+	stog_git_types.cmi stog_git_types.cmo \
+	stog_git_status.cmi stog_git_status.cmo \
+	stog_git_js.cmi stog_git_js.cmo \
+	stog_multi_ed_types.cmi stog_multi_ed_types.cmo \
+	stog_multi_ed_js.cmi stog_multi_ed_js.ml
+	$(OCAMLFIND) ocamlc -o $@.byte $(COMPFLAGS) \
+	-package $(SERVER_JS_PACKAGES),$(MSERVER_JS_PACKAGES) -syntax camlp4o -linkpkg \
+	stog_misc.cmo stog_git_status.cmo stog_git_types.cmo stog_git_js.cmo \
+	stog_multi_ed_types.cmo stog_multi_ed_js.ml
+	$(JS_OF_OCAML) +js_of_ocaml/nat.js $@.byte  -o $@
+	$(RM) server_files/*.byte
 
+stog_git_js.cmi: stog_git_js.mli
+	$(OCAMLFIND) ocamlc -c $(COMPFLAGS) \
+	-package $(SERVER_JS_PACKAGES),$(MSERVER_JS_PACKAGES) -syntax camlp4o \
+	$<
+
+stog_git_js.cmo: stog_git_js.ml
+	$(OCAMLFIND) ocamlc -c $(COMPFLAGS) \
+	-package $(SERVER_JS_PACKAGES),$(MSERVER_JS_PACKAGES) -syntax camlp4o \
+	$<
+
+stog-server-style.css:
+	lessc doc/less/server.less | cleancss -o server_files/$@
+
+stog_server_files.ml: \
+		server_files/$(SERVER_JS) \
+		server_files/$(MSERVER_ED_JS) \
+		server_files/stog-server-style.css
+		$(OCAML_CRUNCH) --mode=plain -e js -e css -e tmpl -o $@ server_files
 
 $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 	$(OCAMLFIND) ocamlopt$(P) -a -o $@ $(LIB_CMXFILES)
@@ -391,6 +433,7 @@ clean:
 	$(RM) $(LATEX2STOG) $(LATEX2STOG_BYTE)
 	(cd plugins && $(RM) *.cm* *.o *.a *.x *.annot)
 
+
 distclean: clean
 	$(RM) master.Makefile stog_config.ml stog_install.ml META
 	$(RM) -fr config.status autom4te.cache config.log ocaml_config.sh
@@ -461,6 +504,18 @@ $(PLUGINS_OPT): $(LIB)
 .PHONY: clean depend
 
 .depend depend:
-	$(OCAMLFIND) ocamldep `ls stog*.ml stog*.mli | grep -v _js.ml` > .depend
+	$(OCAMLFIND) ocamldep -package lwt.ppx,ppx_deriving_yojson \
+	`ls stog*.ml stog*.mli | grep -v -E '_js.ml$$' ` > .depend
 
 include .depend
+
+stog_multi_page.cm*: \
+	templates/form_login.tmpl \
+	templates/multi_page.tmpl \
+	templates/multi_page_body.tmpl
+
+stog_multi_ed.cm*: templates/multi_ed.tmpl
+
+stog_multi_user.cm*: \
+	templates/form_session.tmpl \
+	templates/multi_user_page.tmpl

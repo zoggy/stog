@@ -27,22 +27,17 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(* *)
+(** *)
 
 open Stog_types
+open Stog_server_types
 open Stog_server_run
 module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
 
-let base_path_string = function
-  [] -> ""
-| p -> (String.concat "/" p)^"/"
-
-let http_url host port base_path =
-  Printf.sprintf "http://%s:%d/%spreview" host port (base_path_string base_path)
-
-let ws_url host port base_path =
-  Printf.sprintf "ws://%s:%d/%s" host port (String.concat "/" base_path)
+let preview_url http_url base_path =
+  let url = Stog_types.url_append http_url.pub base_path in
+  Stog_types.url_append url ["preview"]
 
 let path_after_base base path =
   let rec iter = function
@@ -52,19 +47,23 @@ let path_after_base base path =
   in
   iter (base, path)
 
-let handler current_state host port base_path sock req body =
+let handler current_state ~http_url ~ws_url base_path req =
   let uri = Cohttp.Request.uri req in
   let path = Stog_misc.split_string (Uri.pct_decode (Uri.path uri)) ['/'] in
   let path = path_after_base base_path path in
   match path with
-    "preview" :: path ->
-      let http_url = http_url host port base_path in
-      let ws_url = ws_url host (port+1) base_path in
-      Stog_server_preview.handle_preview http_url ws_url current_state sock req body path
-  | "editor" :: path ->
-      let http_url = http_url host port base_path in
-      let ws_url = ws_url host (port+1) base_path in
-      Stog_server_editor.handle http_url ws_url current_state sock req body path
+  | [ "styles" ; file ] when file = Stog_server_preview.default_css ->
+      Stog_server_preview.respond_default_css ()
+
+  | "preview" :: path ->
+      let http_url =
+        { http_url with pub = preview_url http_url base_path }
+      in
+      let ws_url =
+        { ws_url with pub = preview_url ws_url base_path }
+      in
+      Stog_server_preview.handle_preview http_url ws_url current_state req path
+
   | ["status"] ->
       begin
         match !current_state with
@@ -85,12 +84,6 @@ let handler current_state host port base_path sock req body =
             let body = Buffer.contents b in
             S.respond_string ~status: `OK ~body ()
       end
-
-  | [ "styles" ; "preview.css" ] ->
-      let headers = Cohttp.Header.init_with "Content-Type" "text/css" in
-      S.respond_string ~headers ~status: `OK
-        ~body: Stog_server_preview.default_css
-        ()
 
   | _ ->
       let body = Printf.sprintf "<html><header><title>Stog-server</title></header>

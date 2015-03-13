@@ -1,0 +1,278 @@
+@import "bootstrap.less";
+
+/* preview server */
+#stog-server-preview-msgbox {
+    position: fixed; top: 10px; right: 10px;
+    z-index: 2001 ;
+   }
+
+#stog-server-preview-actionbox {
+  position: fixed; top: 10px; left: 10px;
+  z-index: 2000 ;
+  background: #d9edf7;
+ }
+
+#stog-server-preview-actionbox .button {
+  font-size: 1.5em;
+  padding: 0.1em 0.1em 0.1em 0.1em;
+  border-style: solid ;
+  border-width: 1px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background: #d9edf7;
+}
+
+/* popup messages */
+
+#ojs-msg {
+  position: absolute; /*top: 10px; right: 10px;*/
+  left: 10px;
+  bottom: 10px;
+  z-index: 1000 ;
+}
+
+.ojs-msg {
+  padding: 0.5em 1em 0.5em 1em;
+  border-style: solid ;
+  border-width: 1px;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+
+}
+
+.ojs-msg-info {
+  background: #d9edf7;
+  color: #3a87ad;
+  border-color: #c9dde7;
+}
+
+.ojs-msg-error {
+  background: #f2dede;
+  color: #b94a48;
+  border-color: #e2cece;
+}
+.ojs-msg-close {
+  float: right ;
+  margin-left: 1em;
+}
+
+
+/* multi server */
+
+.rounded-box {
+  padding: 0 3px 2px;
+  border: 1px solid @navbarBackground;
+  display: block;
+  .border-radius(4px);
+  background-color: lighten(@navbarBackground,70);
+}
+
+/* editor */
+@editorBackgroundColor: #98CCFA;
+@editorPageMargin: 10px;
+@editorComponentMargin: 5px;
+
+@editorTitleBarHeight: 20px;
+@editorTitleFontSize: 1.5em;
+
+@editorTreeWidth: 290px - @editorPageMargin ;
+@editorTreeBackgroundColor: white ;
+
+@editorBarBackgroundColor: @editorBackgroundColor ;
+@editorBarHeight: 34px;
+
+@editorFilenameBackgroundColor: #efefef ;
+
+#editor-page {
+  line-height: 1.2em ;
+  width: 100% ;
+  height: 100% ;
+  background-color: @editorBackgroundColor ;
+}
+
+#editor-page > #title {
+  position: absolute ;
+  top: @editorPageMargin ;
+  left: @editorPageMargin ;
+  right: @editorPageMargin ;
+  height: @editorTitleBarHeight ;
+  font-size: @editorTitleFontSize ;
+}
+
+#ft {
+  .rounded-box ;
+  position: absolute;
+  top: @editorPageMargin + @editorTitleBarHeight + @editorComponentMargin ;
+  left: @editorPageMargin;
+  width: @editorTreeWidth - @editorComponentMargin;
+  bottom: @editorPageMargin ;
+  overflow: auto ;
+  background-color: @editorTreeBackgroundColor ;
+}
+#editor-bar {
+  position: absolute;
+  top: @editorPageMargin + @editorTitleBarHeight + @editorComponentMargin ;
+  left: @editorPageMargin + @editorTreeWidth + @editorComponentMargin ;
+  right: @editorPageMargin ;
+  height: @editorBarHeight ;
+  background-color: @editorBarBackgroundColor ;
+  z-index: 100 ;
+}
+#bar {
+  display: inline-block ;
+  }
+#bar button { margin-right: @editorComponentMargin ; }
+#ed__filename {
+  .rounded-box ;
+  display: inline ;
+  background-color: @editorFilenameBackgroundColor ;
+}
+#ed__filename:empty {
+  display: none ;
+}
+#git {
+  position: fixed;
+  right: @editorPageMargin ;
+  display: inline-block;
+}
+#editor-bar button {
+  .btn ; .btn-success ;
+  margin-left: @editorComponentMargin ;
+}
+
+.ojsft-file-head > .ojs-button-bar {
+  display: none ;
+  }
+.ojsft-file-head:hover > .ojs-button-bar {
+  display: inline ;
+}
+
+.ojs-drag {
+  background-color: #aaaaff ;
+}
+
+.ojs-button-bar > .ojs-button {
+  font-size: 0.9em;
+  padding: 0.1em 0.1em 0.1em 0.1em;
+  margin-left: 0.1em;
+  background-color: #ccccff ;
+  -webkit-border-radius: 2px;
+     -moz-border-radius: 2px;
+          border-radius: 2px;
+}
+
+div.ojsft {
+  font-family: monospace;
+}
+div.ojsft-file { font-weight: normal; margin-left: 1em ; }
+
+.ojsft-dir {
+  font-weight: bold ;
+  margin-left: 1em ;
+}
+
+.ojsft-dir-subs {
+  margin-top: 0.1em;
+  margin-left: 0.2em;
+  padding-left: 0.2em;
+  border-style: solid ;
+  border-width: 0 0 0 1px ;
+  border-color: #888888 ;
+}
+.selected { background-color: #aaf; }
+.collapsed { display: none ; }
+.expanded { display: normal; }
+
+#ed {
+  .rounded-box ;
+  position: absolute;
+  top: @editorPageMargin + @editorBarHeight + @editorComponentMargin
+   + @editorTitleBarHeight + @editorComponentMargin ;
+  right: @editorPageMargin ;
+  bottom: @editorPageMargin ;
+  left: @editorPageMargin + @editorTreeWidth + @editorComponentMargin;
+}
+#editor-bar  #git__status__close {
+  margin-bottom: 0.5em;
+}
+
+.git-status-box-content {
+  .alert ;
+  .alert-danger ;
+  overflow: auto ;
+  padding: 0.5em;
+  display: inline-block ;
+
+  input {
+    vertical-align: center ;
+    margin-bottom: 0.5em;
+  }
+}
+/* end of editor style */
+
+.hidden {
+  display: none ;
+}
+#background {
+  background-color: #449900 ;
+  height: 100%;
+}
+
+/* Multi server style */
+
+body {
+  color: #333333 ;
+  font-family: "trebuchet ms", helvetica, sans-serif;
+  font-size: 1em;
+  padding: 0;
+  margin: 0;
+}
+
+#page {
+  width: 750px;
+  margin-left: auto ;
+  margin-right: auto ;
+  border-style: solid ;
+  border-width: 0 2px 2px 2px;
+  border-color: #333333 ;
+  background: #FEFEFE ;
+  padding: 0em 1em 1em 1em;
+}
+
+#login-form {
+  width: 400px ;
+}
+
+.page-title {
+  text-align: center ;
+  font-size: 2.3em;
+  margin-bottom: 1em;
+}
+
+.table {
+  /*border-collapse: collapse;*/
+  border-spacing: 0;
+}
+
+.table th {
+    font-weight: bold;
+  }
+
+.table th,
+.table td {
+  padding: 8px;
+  line-height: 1.5em;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid #333333 ;
+ }
+
+.alert pre, .ojs-msg pre {
+  border-width: 0;
+  background-color: transparent ;
+  color: inherit ;
+}
+
+.inline { display: inline ; }

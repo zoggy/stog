@@ -54,18 +54,18 @@ type links = {
 }
 
 let cutpoint_of_atts doc atts =
-  let typ = Xtmpl.opt_arg_cdata atts ~def: doc.doc_type ("","type") in
+  let typ = Xtmpl.opt_att_cdata atts ~def: doc.doc_type ("","type") in
   let tag =
-    match Xtmpl.get_arg_cdata atts ("","tag") with
+    match Xtmpl.get_att_cdata atts ("","tag") with
       None -> failwith "Missing 'tag' attribute for <cut-doc> node"
     | Some s ->
         match Stog_misc.split_string s [':'] with
           [] | [_] -> ("", s)
         | h :: q -> (h, String.concat ":" q)
   in
-  let sep = Xtmpl.opt_arg_cdata atts ~def: "-" ("", Stog_tags.path_sep) in
-  let insert_link = not (Xtmpl.opt_arg_cdata atts ~def: "true" ("","insert-link") = "false") in
-  let use_parent_path = not (Xtmpl.opt_arg_cdata atts ~def: "true" ("","use-parent-path") = "false") in
+  let sep = Xtmpl.opt_att_cdata atts ~def: "-" ("", Stog_tags.path_sep) in
+  let insert_link = not (Xtmpl.opt_att_cdata atts ~def: "true" ("","insert-link") = "false") in
+  let use_parent_path = not (Xtmpl.opt_att_cdata atts ~def: "true" ("","use-parent-path") = "false") in
   { cut_tag = tag ; cut_doc_type = typ ;
     cut_path_sep = sep ; cut_insert_link = insert_link ;
     cut_use_parent_path = use_parent_path ;
@@ -150,7 +150,7 @@ let cut_docs =
       Xtmpl.D _ -> set
     | Xtmpl.E (tag, atts, subs) ->
         let set =
-          match Xtmpl.get_arg_cdata atts ("", "id") with
+          match Xtmpl.get_att_cdata atts ("", "id") with
             None
           | Some "" -> set
           | Some id -> Sset.add id set
@@ -171,7 +171,7 @@ let cut_docs =
   in
   let set_id_map stog path atts new_path with_id =
     if path <> new_path then
-      match Xtmpl.get_arg_cdata atts ("","id") with
+      match Xtmpl.get_att_cdata atts ("","id") with
         None -> stog
       | Some id ->
           let new_id = if with_id then Some id else None in
@@ -205,14 +205,14 @@ let cut_docs =
         | Some cp ->
             try
               let title =
-                match Xtmpl.get_arg_cdata atts ("","title") with
+                match Xtmpl.get_att_cdata atts ("","title") with
                   None ->
                     Stog_msg.warning ("Missing title on cutpoint; not cutting node "^(string_of_tag tag));
                     raise Not_found
                 | Some s -> s
               in
               let id =
-                match Xtmpl.get_arg_cdata atts ("","id") with
+                match Xtmpl.get_att_cdata atts ("","id") with
                   None ->
                     Stog_msg.warning ("Missing id on cutpoint; not cutting node "^(string_of_tag tag));
                     raise Not_found

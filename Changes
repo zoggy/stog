@@ -1,3 +1,8 @@
+Next release:
+* Multiserver
+* require libev (by now)
+* require Xtmpl >= 0.11
+
 Release 0.14.0:
 * stog-ocaml-session handles options -w and -warn-error
 * fix Mathjax CDN URL in article template

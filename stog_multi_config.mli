@@ -27,11 +27,29 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** *)
+(** Configuration of multi server. *)
 
-module S = Cohttp_lwt_unix.Server
+type sha256 = string
+type account = {
+  login : string;
+  name : string;
+  email : string;
+  passwd : sha256;
+}
+type t = {
+    accounts : account list;
+    ssh_priv_key : string option;
+    git_repo_url : string;
+    dir : string;
+    stog_dir : string option;
+    editable_files : Str.regexp list;
+    not_editable_files : Str.regexp list;
+    http_url : Stog_types.url_config ;
+    ws_url : Stog_types.url_config ;
+    css_file : string option;
+  }
 
-let handle http_url ws_url current_state sock req body path =
-  S.respond_string ~status: `OK ~body: "OK" ()
-
+(** Read the given configuration file.
+  @raise Failure in case of error. *)
+val read : string -> t
 

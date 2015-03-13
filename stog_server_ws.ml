@@ -60,7 +60,7 @@ let push_message active_cons ?push (msg : Stog_server_types.server_message) =
      ));
   let marshalled = Marshal.to_string  msg [] in
   let hex = Stog_server_types.to_hex marshalled in
-  let msg = Websocket.Frame.of_string hex in
+  let msg = Websocket.Frame.of_string ~content: hex () in
   match push with
     None ->
       let l = !active_cons in
@@ -86,7 +86,8 @@ let handle_message read_stog current_state active_cons base_path stream push msg
           begin
             let send_doc doc =
               match doc.doc_out with
-                None -> Lwt.return_unit
+                None
+              | Some [] -> Lwt.return_unit
               | Some (xml :: _) ->
                   let path = Stog_path.to_string doc.doc_path in
                   send_update_message active_cons path (Stog_server_types.Update_all xml)
@@ -99,7 +100,7 @@ let handle_message read_stog current_state active_cons base_path stream push msg
           try
             let (_, doc) = Stog_types.doc_by_path state.Stog_server_run.stog (Stog_path.of_string path) in
             match doc.Stog_types.doc_out with
-              None -> Lwt.return_unit
+              None
             | Some [] -> Lwt.return_unit
             | Some (tree :: _) ->
                 let msg = Stog_server_types.Update (path, (Stog_server_types.Update_all tree)) in
@@ -110,17 +111,19 @@ let handle_message read_stog current_state active_cons base_path stream push msg
 let handle_messages read_stog current_state active_cons base_path stream push =
   let f frame =
     match Websocket.Frame.opcode frame with
-    | `Close ->
+    | Websocket.Frame.Opcode.Close ->
         prerr_endline (Printf.sprintf "A Close frame came when there were %d connections" (List.length !active_cons));
         active_cons := List.filter (fun (_,p) -> p != push) !active_cons ;
         prerr_endline (Printf.sprintf "Now I have only %d." (List.length !active_cons));
         Lwt.return_unit
     | _ ->
-        let s = Websocket.Frame.content frame in
-        match Stog_server_types.client_msg_of_wsdata s with
-          None -> Lwt.return_unit
-        | Some (`Stog_msg msg) ->
-            handle_message read_stog current_state active_cons base_path stream push msg
+        match Websocket.Frame.content frame with
+        | None -> Lwt.return_unit
+        | Some s ->
+            match Stog_server_types.client_msg_of_wsdata s with
+              None -> Lwt.return_unit
+            | Some (`Stog_msg msg) ->
+                handle_message read_stog current_state active_cons base_path stream push msg
   in
   Lwt.catch
     (fun _ -> Lwt_stream.iter_s f stream)
@@ -142,9 +145,18 @@ let server read_stog current_state active_cons base_path sockaddr =
   Websocket.establish_server sockaddr (handle_con read_stog current_state active_cons base_path)
 ;;
 
-let run_server read_stog current_state active_cons host port base_path =
+let sockaddr_of_dns node service =
+  let open Lwt_unix in
+  (getaddrinfo node service [AI_FAMILY(PF_INET); AI_SOCKTYPE(SOCK_STREAM)] >>= function
+  | h::t -> Lwt.return h
+  | []   -> Lwt.fail Not_found)
+  >>= fun ai -> Lwt.return ai.ai_addr
+
+let run_server read_stog current_state active_cons ws_url base_path =
+  let host = Neturl.url_host ws_url.priv in
+  let port = Neturl.url_port ws_url.priv in
   prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
-  Lwt_io_ext.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
+  sockaddr_of_dns host (string_of_int port) >>= fun sa ->
     Lwt.return (server read_stog current_state active_cons base_path sa)
 ;;
 

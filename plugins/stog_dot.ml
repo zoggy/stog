@@ -72,11 +72,11 @@ let fun_dot stog env atts subs =
   let (stog, path) = Stog_engine.get_path stog env in
   let (_, doc) = Stog_types.doc_by_path stog path in
   let doc_dir = Filename.dirname doc.Stog_types.doc_src in
-  let command = Xtmpl.opt_arg_cdata ~def: "dot" atts ("","command") in
-  let typ = Xtmpl.opt_arg_cdata ~def: "svg" atts ("", "type") in
-  let id_prefix = Xtmpl.get_arg_cdata atts ("","prefix-svg-ids") in
+  let command = Xtmpl.opt_att_cdata ~def: "dot" atts ("","command") in
+  let typ = Xtmpl.opt_att_cdata ~def: "svg" atts ("", "type") in
+  let id_prefix = Xtmpl.get_att_cdata atts ("","prefix-svg-ids") in
   let (stog, infile, finalize_src) =
-    match Xtmpl.get_arg_cdata atts ("","src") with
+    match Xtmpl.get_att_cdata atts ("","src") with
       None ->
         let f = Filename.temp_file "stog" ".dot" in
         Stog_misc.file_of_string ~file: f code ;
@@ -92,7 +92,7 @@ let fun_dot stog env atts subs =
   in
   try
     let (outfile, abs_outfile, inc, finalize_outfile) =
-      match Xtmpl.get_arg_cdata atts ("","outfile") with
+      match Xtmpl.get_att_cdata atts ("","outfile") with
         None ->
           if typ <> "svg" then
             failwith "<dot>: please specify outfile attribute if file type is not 'svg'";
@@ -106,7 +106,7 @@ let fun_dot stog env atts subs =
           in
           (f, absf, false, fun () -> ())
     in
-    let args = Xtmpl.opt_arg_cdata ~def: "" atts ("", "args") in
+    let args = Xtmpl.opt_att_cdata ~def: "" atts ("", "args") in
     Stog_misc.safe_mkdir (Filename.dirname abs_outfile);
     let com = Printf.sprintf "%s -T%s %s -o %s %s"
       (Filename.quote command) (Filename.quote typ)

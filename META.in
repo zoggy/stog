@@ -51,6 +51,15 @@ package "multi-doc" (
   archive(plugin,native) = "stog_multi_doc.cmxs"
 )
 
+package "nocaml" (
+  version = "@VERSION@"
+  description = "Stog plugin to prevent evaluation of ocaml code"
+  archive(byte) = "stog_nocaml.cmo"
+  archive(native) = "stog_nocaml.cmx"
+  archive(plugin,byte) = "stog_nocaml.cmo"
+  archive(plugin,native) = "stog_nocaml.cmxs"
+)
+
 package "rel-href" (
   version = "@VERSION@"
   description = "Stog relative href plugin"
