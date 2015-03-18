@@ -7,10 +7,36 @@
 </div>
 <h1>Module <a href="type_Stog_server_mode.html">Stog_server_mode</a></h1>
 
-<pre><span class="keyword">module</span> Stog_server_mode: <code class="code">sig</code> <a href="Stog_server_mode.html">..</a> <code class="code">end</code></pre><hr width="100%"/>
+<pre><span class="keyword">module</span> Stog_server_mode: <code class="code">sig</code> <a href="Stog_server_mode.html">..</a> <code class="code">end</code></pre><div class="info module top">
+Registering a server<br/>
+</div>
+<hr width="100%"/>
 
-<pre><span id="VALport"><span class="keyword">val</span> port</span> : <code class="type">int Pervasives.ref</code></pre>
-<pre><span id="VALhost"><span class="keyword">val</span> host</span> : <code class="type">string Pervasives.ref</code></pre>
-<pre><span id="VALlaunch"><span class="keyword">val</span> launch</span> : <code class="type">(<a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; string -&gt; int -&gt; unit) option Pervasives.ref</code></pre>
-<pre><span id="VALserver_mode"><span class="keyword">val</span> server_mode</span> : <code class="type">unit -&gt; bool</code></pre>
-<pre><span id="VALrun_server"><span class="keyword">val</span> run_server</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; unit</code></pre></div></contents></ocamldoc>
+<pre><span id="VALhttp_url"><span class="keyword">val</span> http_url</span> : <code class="type">string Pervasives.ref</code></pre><div class="info ">
+Default URL, modified by command line option<br/>
+</div>
+
+<pre><span id="VALws_url"><span class="keyword">val</span> ws_url</span> : <code class="type">string Pervasives.ref</code></pre><div class="info ">
+Default websocket URL, modified by command line option<br/>
+</div>
+
+<pre><span id="VALpub_http_url"><span class="keyword">val</span> pub_http_url</span> : <code class="type">string option Pervasives.ref</code></pre><div class="info ">
+Optional public HTTP URL, modified by command line option<br/>
+</div>
+
+<pre><span id="VALpub_ws_url"><span class="keyword">val</span> pub_ws_url</span> : <code class="type">string option Pervasives.ref</code></pre><div class="info ">
+Optional public websocket URL, modified by command line option<br/>
+</div>
+
+<pre><span id="TYPEserver_mode"><span class="keyword">type</span> server_mode</span> = <code class="type">server_mode</code> </pre>
+<div class="info ">
+Multi server: handling users, sessions with editor and preview for each session.
+<div class="vertical-space"> </div>
+
+  Single: Simple preview server.<br/>
+</div>
+
+
+<pre><span id="VALserver_mode"><span class="keyword">val</span> server_mode</span> : <code class="type"><a href="Stog_server_mode.html#TYPEserver_mode">server_mode</a> option Pervasives.ref</code></pre>
+<pre><span id="VALset_single"><span class="keyword">val</span> set_single</span> : <code class="type">((unit -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a>) -&gt;<br/>        <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>        http_url:<a href="Stog_url.html#TYPEurl_config">Stog_url.url_config</a> -&gt; ws_url:<a href="Stog_url.html#TYPEurl_config">Stog_url.url_config</a> -&gt; unit) -&gt;<br/>       unit</code></pre>
+<pre><span id="VALset_multi"><span class="keyword">val</span> set_multi</span> : <code class="type">(http_url:<a href="Stog_url.html#TYPEurl_config">Stog_url.url_config</a> -&gt;<br/>        ws_url:<a href="Stog_url.html#TYPEurl_config">Stog_url.url_config</a> -&gt; string list -&gt; unit) -&gt;<br/>       unit</code></pre></div></contents></ocamldoc>

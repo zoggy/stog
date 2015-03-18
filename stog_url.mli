@@ -48,7 +48,7 @@ val remove :
     ?query:bool -> ?fragment:bool ->
     ?other:bool -> t -> t
 
-(** {2 Accessing parts of URLs. Raise [Failure] if the requested part is not defined. *)
+(** {2 Accessing parts of URLs} Raise [Failure] if the requested part is not defined. *)
 
 val scheme: t -> string
 val port : t -> int
