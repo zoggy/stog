@@ -29,6 +29,7 @@
 
 (** *)
 
+open Stog_url
 open Stog_types
 open Stog_multi_config
 open Stog_git_server
@@ -61,8 +62,8 @@ let session_list cfg gs user =
   let td x = Xtmpl.E(("","td"), Xtmpl.atts_empty, x) in
   let nbsp = Stog_multi_page.nbsp in
   let tds_of_session s =
-    let preview_url = Stog_types.string_of_url s.session_stog.stog_preview_url in
-    let editor_url = Stog_types.string_of_url s.session_editor.editor_url in
+    let preview_url = Stog_url.to_string s.session_stog.stog_preview_url in
+    let editor_url = Stog_url.to_string s.session_editor.editor_url in
     let st = s.session_stored in
     [
       td [Xtmpl.D (string_of_date st.session_create_date) ] ;

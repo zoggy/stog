@@ -27,43 +27,30 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Handling websocket connections in preview server *)
+(** URLs. *)
 
-(** A never-ending function *)
-val wait_forever : unit -> 'a Lwt.t
+type t
+type url_config = { pub : t; priv : t }
 
-(** Send errors and warnings to a list of client connections. *)
-val send_errors :
-  ('a * (Websocket.Frame.t option -> 'b)) list ref ->
-  errors:string list -> warnings:string list -> unit Lwt.t
+val of_string : string -> t
+val to_string : t -> string
+val concat : t -> string -> t
+val append : t -> string list -> t
+val path : t -> string list
+val with_path : t -> string list -> t
+val remove_ending_slash : t -> t
+val with_fragment : t -> string -> t
+val remove :
+  ?scheme:bool -> ?user:bool ->
+    ?user_param:bool -> ?password:bool ->
+    ?host:bool -> ?port:bool ->
+    ?path:bool -> ?param:bool ->
+    ?query:bool -> ?fragment:bool ->
+    ?other:bool -> t -> t
 
-(** [send_patchs  active_cons old_stog stog doc_id] sends, to
-  the current list of client connections, a patch from the
-  differences in the document [doc_id] between [old_stog] and [stog].*)
-val send_patch :
-  ('a * (Websocket.Frame.t option -> 'b)) list ref ->
-  Stog_types.stog ->
-  Stog_types.stog -> Stog_types.doc Stog_tmap.key -> unit Lwt.t
+(** {2 Accessing parts of URLs. Raise [Failure] if the requested part is not defined. *)
 
-(** [handle_messages read_stog current_state active_cons base_path stream push]
-  handle client messages on websocket [(stream, push)]. *)
-val handle_messages :
-  (unit -> Stog_types.stog) ->
-  Stog_server_run.state option ref ->
-  ('a * (Websocket.Frame.t option -> unit)) list ref ->
-  string list ->
-  Websocket.Frame.t Lwt_stream.t ->
-  (Websocket.Frame.t option -> unit) -> unit Lwt.t
-
-(** [sockaddr_of_dns host port] create an address from the given host and service name
-  or port number. *)
-val sockaddr_of_dns : string -> string -> Lwt_unix.sockaddr Lwt.t
-
-(** [read_stog current_state active_cons ws_url base_path] creates a server
-  for previewing the documents in the current state. *)
-val run_server :
-  (unit -> Stog_types.stog) ->
-  Stog_server_run.state option ref ->
-  (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit)) list ref ->
-    Stog_url.url_config -> string list -> Websocket.server Lwt.t
+val scheme: t -> string
+val port : t -> int
+val host : t -> string
 

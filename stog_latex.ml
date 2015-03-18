@@ -177,12 +177,12 @@ let fun_latex stog env args subs =
   let svg = Filename.basename
     (make_svg stog.Stog_types.stog_outdir ~packages ?scale ~def_files ~defs code)
   in
-  let url = Stog_types.url_concat stog.Stog_types.stog_base_url svg in
+  let url = Stog_url.concat stog.Stog_types.stog_base_url svg in
   let xmls =
     (Xtmpl.E (("","img"),
       Xtmpl.atts_of_list
         [ ("", "class"), [Xtmpl.D "latex"] ;
-          ("", "src"), [Xtmpl.D (Stog_types.string_of_url url) ] ;
+          ("", "src"), [Xtmpl.D (Stog_url.to_string url) ] ;
           ("", "alt"), [Xtmpl.D code] ;
           ("", "title"), [Xtmpl.D code]
         ],

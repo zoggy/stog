@@ -29,6 +29,7 @@
 
 (** *)
 
+open Stog_url
 open Stog_types
 open Stog_server_types
 open Stog_server_run
@@ -36,8 +37,8 @@ module S = Cohttp_lwt_unix.Server
 let (>>=) = Lwt.bind
 
 let preview_url http_url base_path =
-  let url = Stog_types.url_append http_url.pub base_path in
-  Stog_types.url_append url ["preview"]
+  let url = Stog_url.append http_url.pub base_path in
+  Stog_url.append url ["preview"]
 
 let path_after_base base path =
   let rec iter = function

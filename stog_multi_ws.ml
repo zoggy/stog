@@ -30,7 +30,7 @@
 (** *)
 
 
-open Stog_types
+open Stog_url
 open Stog_multi_config
 open Stog_multi_session
 open Stog_multi_gs
@@ -43,7 +43,7 @@ let handle_con gs base_path uri (stream, push) =
   match path with
   | "sessions" :: id :: p ->
       begin
-        match Str_map.find id !(gs.sessions) with
+        match Stog_types.Str_map.find id !(gs.sessions) with
         | exception Not_found ->
             failwith (Printf.sprintf "Invalid session %S" id)
         | session ->
@@ -63,12 +63,12 @@ let handle_con gs base_path uri (stream, push) =
 
 let server cfg gs sockaddr =
   Websocket.establish_server sockaddr
-    (handle_con gs (Neturl.url_path cfg.ws_url.pub))
+    (handle_con gs (Stog_url.path cfg.ws_url.pub))
 ;;
 
 let run_server cfg gs =
-  let host = Neturl.url_host cfg.ws_url.priv in
-  let port = Neturl.url_port cfg.ws_url.priv in
+  let host = Stog_url.host cfg.ws_url.priv in
+  let port = Stog_url.port cfg.ws_url.priv in
   prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
   Stog_server_ws.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
     Lwt.return (server cfg gs sa)

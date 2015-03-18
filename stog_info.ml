@@ -280,7 +280,7 @@ let dot_of_graph f_href stog =
     (Printf.sprintf "id%d" (Stog_tmap.int id),
      doc.doc_title,
      ["shape", "rect"; "color", col; "fontcolor", col;
-       "href", Stog_types.string_of_url href])
+       "href", Stog_url.to_string href])
   in
   Stog_types.Graph.dot_of_graph ~f_edge ~f_node g
 ;;

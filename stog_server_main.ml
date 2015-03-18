@@ -30,6 +30,7 @@
 (** *)
 
 open Stog_server_run
+open Stog_url
 open Stog_types
 
 module S = Cohttp_lwt_unix.Server
@@ -40,8 +41,8 @@ let new_stog_session stog ~http_url base_path =
   Stog_server_preview.new_stog_session stog stog_base_url
 
 let start_server current_state ~http_url ~ws_url base_path =
-  let host = Neturl.url_host http_url.priv in
-  let port = Neturl.url_port http_url.priv in
+  let host = Stog_url.host http_url.priv in
+  let port = Stog_url.port http_url.priv in
   Lwt_io.write Lwt_io.stdout
     (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
   >>= fun _ ->

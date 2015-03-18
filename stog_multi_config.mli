@@ -44,8 +44,8 @@ type t = {
     stog_dir : string option;
     editable_files : Str.regexp list;
     not_editable_files : Str.regexp list;
-    http_url : Stog_types.url_config ;
-    ws_url : Stog_types.url_config ;
+    http_url : Stog_url.url_config ;
+    ws_url : Stog_url.url_config ;
     css_file : string option;
   }
 

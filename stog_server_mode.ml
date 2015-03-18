@@ -29,7 +29,7 @@
 
 (** *)
 
-open Stog_types
+open Stog_url
 
 let http_url = ref "http://localhost:8080/"
 let ws_url = ref "ws://localhost:8081/"
@@ -38,7 +38,7 @@ let pub_http_url = ref None
 let pub_ws_url = ref None
 
 let mk_urls () =
-  let url = Stog_types.url_of_string in
+  let url = Stog_url.of_string in
   let http_url =
     { pub = (match !pub_http_url with None -> url !http_url | Some s -> url s) ;
       priv = url !http_url ;

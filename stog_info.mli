@@ -43,7 +43,7 @@ val pred_by_date :
 (** Get graphviz code from the given stog structure, to create
   a graph showing edges between (clickable) documents; the edges are
   annotated by the topic and keywords. *)
-val dot_of_graph : (Stog_types.doc -> Neturl.url) -> Stog_types.stog -> string
+val dot_of_graph : (Stog_types.doc -> Stog_url.t) -> Stog_types.stog -> string
 
 (** Keep in the stog structure only the documents matching the
   {!Stog_types.stog.stog_publish_only} filter, if any. *)

@@ -69,7 +69,7 @@ val concat_name : ?sep: string -> (string * string) -> string
 (** Build an url from the given path.
   This is used for documents created on the fly, like by-word or by-month index. *)
 val url_of_path :
-  Stog_types.stog -> Stog_path.path -> Neturl.url
+  Stog_types.stog -> Stog_path.path -> Stog_url.t
 
 (*
 (** Generate a RSS file from the given list of documents. The final RSS
@@ -88,7 +88,7 @@ val build_base_rules : Stog_types.stog ->
   if provided an additional environment, argument and children nodes. *)
 val doc_list :
   Stog_types.doc ->
-  ?rss:Neturl.url ->
+  ?rss:Stog_url.t ->
   ?set:Stog_types.Doc_set.t -> Stog_types.stog Xtmpl.callback
 
 val get_sectionning_tags : Stog_types.stog -> Stog_types.doc -> Xtmpl.name list

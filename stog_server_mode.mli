@@ -53,10 +53,10 @@ val server_mode : server_mode option ref
 
 val set_single :
   ((unit -> Stog_types.stog) -> Stog_types.stog ->
-   http_url: Stog_types.url_config ->
-     ws_url: Stog_types.url_config -> unit) ->
+   http_url: Stog_url.url_config ->
+     ws_url: Stog_url.url_config -> unit) ->
   unit
 
 val set_multi :
-  (http_url: Stog_types.url_config ->
-   ws_url: Stog_types.url_config -> string list -> unit) -> unit
+  (http_url: Stog_url.url_config ->
+   ws_url: Stog_url.url_config -> string list -> unit) -> unit

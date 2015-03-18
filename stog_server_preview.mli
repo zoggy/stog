@@ -51,8 +51,8 @@ val respond_default_css : unit -> (S.Response.t * Cohttp_lwt_body.t) Lwt.t
   preview page, which contains a reference to client javascript code
   which, when loaded, will ask for stog document with path [path]. *)
 val handle_preview :
-  http_url: Stog_types.url_config ->
-  ws_url: Stog_types.url_config ->
+  http_url: Stog_url.url_config ->
+  ws_url: Stog_url.url_config ->
   Stog_server_run.state option ref ->
   Cohttp.Request.t ->
   string list -> (S.Response.t * Cohttp_lwt_body.t) Lwt.t
@@ -61,6 +61,6 @@ val handle_preview :
   and a fresh connection list reference. *)
 val new_stog_session :
   Stog_types.stog ->
-  Neturl.url ->
+  Stog_url.t ->
   Stog_server_run.state option ref *
   ('a * (Websocket.Frame.t option -> 'b)) list ref

@@ -30,13 +30,13 @@
 (** *)
 
 open Stog_multi_config
-open Stog_types
+open Stog_url
 module S = Cohttp_lwt_unix.Server
 module H = Xtmpl_xhtml
 
 let url_ cfg path =
-  let url = Stog_types.url_append cfg.http_url.pub path in
-  Stog_types.string_of_url url
+  let url = Stog_url.append cfg.http_url.pub path in
+  Stog_url.to_string url
 
 let path_login = ["login"]
 let path_sessions = ["sessions"]

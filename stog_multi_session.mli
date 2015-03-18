@@ -44,12 +44,12 @@ type stog_info = {
   mutable stog_ws_cons :
     (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit))
     list ref;
-  stog_preview_url : Neturl.url;
+  stog_preview_url : Stog_url.t ;
 }
 
 type editor_info = {
   mutable editor_ws_cons : Stog_multi_ed.Server.connection_group;
-  editor_url : Neturl.url;
+  editor_url : Stog_url.t ;
 }
 
 type session = {

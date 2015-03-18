@@ -75,7 +75,7 @@ let set_stog_options stog =
             stog.stog_outdir
         in
         let url = "file://" ^ d in
-        let url = Stog_types.url_of_string url in
+        let url = Stog_url.of_string url in
         { stog with Stog_types.stog_base_url = url }
     | Some s, false -> { stog with Stog_types.stog_base_url = s }
     | Some _, true ->
@@ -157,7 +157,7 @@ let options = [
     "-d", Arg.Set_string output_dir,
     "<dir> set output directory instead of "^ !output_dir ;
 
-    "--site-url", Arg.String (fun s -> site_url := Some (Stog_types.url_of_string s)),
+    "--site-url", Arg.String (fun s -> site_url := Some (Stog_url.of_string s)),
     "<s> use <s> as site url instead of the one specified in the input stog" ;
 
     "--local", Arg.Set local,

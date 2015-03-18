@@ -44,15 +44,13 @@ let rec rewrite_href url = function
              begin
                let url2 =
                  try
-                   let href_url = Stog_types.url_of_string href in
-                   let url2 = Neturl.remove_from_url
+                   let href_url = Stog_url.of_string href in
+                   let url2 = Stog_url.remove
                      ~query: true ~fragment: true href_url
                    in
-                   Some (Neturl.string_of_url url2)
+                   Some (Stog_url.to_string url2)
                  with
-                   Failure _
-                 | Neturl.Malformed_URL ->
-                     None
+                   Failure _ -> None
                in
                match url2 with
                  None -> v
@@ -81,7 +79,7 @@ let rewrite_doc stog doc =
       None -> doc.doc_body
     | Some b -> b
   in
-  let url = Neturl.string_of_url (Stog_engine.doc_url stog doc) in
+  let url = Stog_url.to_string (Stog_engine.doc_url stog doc) in
   let xmls = List.map (rewrite_href url) xmls in
   { doc with doc_out = Some xmls }
 ;;

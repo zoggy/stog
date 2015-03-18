@@ -134,12 +134,6 @@ module Depset =
 
 type stog_dependencies = Depset.t Str_map.t;;
 
-type url = Neturl.url
-type url_config = {
-  pub : url ;
-  priv : url ;
-  }
-
 type stog = {
   stog_dir : string ;
   stog_docs : (doc, doc) Stog_tmap.t ;
@@ -154,7 +148,7 @@ type stog = {
   stog_docs_by_kw : Doc_set.t Str_map.t ;
   stog_docs_by_topic : Doc_set.t Str_map.t ;
   stog_archives : Doc_set.t Int_map.t Int_map.t ; (* year -> month -> article set *)
-  stog_base_url : url ;
+  stog_base_url : Stog_url.t ;
   stog_email : string ;
   stog_rss_length : int ;
   stog_lang : string option ;
@@ -171,74 +165,7 @@ type stog = {
   stog_source : [`Dir | `File] ;
 }
 
-(* register ws and wss url syntaxes, using http syntax *)
-let () =
-  let http_url_syntax =
-    try Hashtbl.find Neturl.common_url_syntax "http"
-    with Not_found -> failwith "No http syntax registered in Neturl !"
-  in
-  Hashtbl.add Neturl.common_url_syntax "ws" http_url_syntax ;
-  Hashtbl.add Neturl.common_url_syntax "wss" http_url_syntax
 
-let url_of_string s =
-  try Neturl.parse_url ~enable_fragment: true ~accept_8bits: true s
-  with Neturl.Malformed_URL ->
-    failwith (Printf.sprintf "Malformed URL %S" s)
-;;
-let string_of_url = Neturl.string_of_url;;
-
-let url_concat uri s =
-  match s with
-    "" -> uri
-  | _ ->
-      let uri_path = Neturl.url_path uri in
-      let path =
-        (* make sure to consider uri_path to have a path *)
-        match uri_path with
-          [] -> ("" :: [s])
-        | _ -> uri_path @ [s]
-      in
-      try Neturl.modify_url ~path uri
-      with e ->
-          prerr_endline
-            (Printf.sprintf "url_concat: uri=%s url_path=%s, s=%s"
-             (string_of_url uri)
-               (String.concat "/" (Neturl.url_path uri)) s);
-          raise e
-;;
-
-let url_path url =
-  match Neturl.url_path url with
-    "" :: q -> q
-  | x -> x
-
-let url_with_path url path =
-  (* to be compliant with Neturl, path must begin with "" *)
-  let path =
-    match path with
-    | "" :: _ -> path
-    | _ -> "" :: path
-  in
-  Neturl.modify_url ~path url
-
-let url_append uri path =
-  let p0 =
-    let p = url_path uri in
-    match List.rev p with
-    | "" :: q -> List.rev q
-    | _ -> p
-  in
-  let path = p0 @ path in
-  url_with_path uri path
-
-let url_remove_ending_slash url =
-  try
-    match List.rev (Neturl.url_path url) with
-    | [""] -> url
-    | "" :: q -> Neturl.modify_url ~path: (List.rev q) url
-    | _ -> url
-  with Neturl.Malformed_URL ->
-      failwith (Printf.sprintf "Could not modify path of %S"  (string_of_url url))
 
 let create_stog ?(source=`Dir) dir = {
   stog_dir = dir ;
@@ -253,7 +180,7 @@ let create_stog ?(source=`Dir) dir = {
   stog_docs_by_kw = Str_map.empty ;
   stog_docs_by_topic = Str_map.empty ;
   stog_archives = Int_map.empty ;
-  stog_base_url = url_of_string "http://yoursite.net" ;
+  stog_base_url = Stog_url.of_string "http://yoursite.net" ;
   stog_email = "foo@bar.com" ;
   stog_rss_length = 10 ;
   stog_defs = [] ;

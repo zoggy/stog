@@ -31,7 +31,7 @@
 
 (** [preview_url http_cfg path] forges the preview URL using the
   pub part of [http_cfg]. *)
-val preview_url : Stog_types.url_config -> string list -> Stog_types.url
+val preview_url : Stog_url.url_config -> string list -> Stog_url.t
 
 (** [handler current_state host port base_path req body] handles
   a HTTP query [req]. [current_state] is a reference to current stog state.
@@ -39,8 +39,8 @@ val preview_url : Stog_types.url_config -> string list -> Stog_types.url
   to the service. *)
 val handler :
   Stog_server_run.state option ref ->
-  http_url: Stog_types.url_config ->
-  ws_url: Stog_types.url_config ->
+  http_url: Stog_url.url_config ->
+  ws_url: Stog_url.url_config ->
   string list ->
   Cohttp.Request.t ->
   (Stog_server_preview.S.Response.t * Cohttp_lwt_body.t) Lwt.t
