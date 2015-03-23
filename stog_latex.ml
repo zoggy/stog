@@ -91,6 +91,8 @@ let make_svg outdir ?(packages=[]) ?(scale=1.1) ?(def_files=[]) ?defs latex_code
   try Hashtbl.find cache latex_code
   with Not_found ->
       let tex = Filename.temp_file "stog" ".tex" in
+      let tex_aux = Filename.chop_extension tex ^ ".aux" in
+      let tex_log = Filename.chop_extension tex ^ ".log" in
       let code = Printf.sprintf
         "\\documentclass[12pt]{article}
 %s
@@ -119,12 +121,13 @@ let make_svg outdir ?(packages=[]) ?(scale=1.1) ?(def_files=[]) ?defs latex_code
       match Sys.command command with
         0 ->
           List.iter (fun f -> try Sys.remove f with _ -> ())
-            [ tex ; dvi ; log ];
+            [ tex ; tex_aux ; tex_log ; dvi ; log ];
           Hashtbl.add cache latex_code svg;
           svg
       | n ->
           let log = Stog_misc.string_of_file log in
-          (try Sys.remove log with _ -> ());
+          List.iter (fun f -> try Sys.remove f with _ -> ())
+            [ tex_aux ; tex_log ; log ];
           failwith
             (Printf.sprintf "Command failed [%d]: %s\n=== log ===\n%s\n=== tex code ===\n%s"
              n command log latex_code)
