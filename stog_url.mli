@@ -54,3 +54,7 @@ val scheme: t -> string
 val port : t -> int
 val host : t -> string
 
+val of_neturl : Neturl.url -> t
+val to_neturl : t -> Neturl.url
+
+

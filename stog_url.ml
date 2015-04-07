@@ -42,6 +42,9 @@ let () =
   Hashtbl.add Neturl.common_url_syntax "ws" http_url_syntax ;
   Hashtbl.add Neturl.common_url_syntax "wss" http_url_syntax
 
+let to_neturl t = t
+let of_neturl t = t
+
 let of_string s =
   try Neturl.parse_url ~enable_fragment: true ~accept_8bits: true s
   with Neturl.Malformed_URL ->
