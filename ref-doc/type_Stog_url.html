@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog library reference documentation : Stog_url</title>
+<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
+<code class="code"><span class="keyword">sig</span><br/>
+  <span class="keyword">type</span> t<br/>
+  <span class="keyword">type</span> url_config = { pub : <span class="constructor">Stog_url</span>.t; priv : <span class="constructor">Stog_url</span>.t; }<br/>
+  <span class="keyword">val</span> of_string : string <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.t<br/>
+  <span class="keyword">val</span> to_string : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> concat : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.t<br/>
+  <span class="keyword">val</span> append : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> string list <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.t<br/>
+  <span class="keyword">val</span> path : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> string list<br/>
+  <span class="keyword">val</span> with_path : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> string list <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.t<br/>
+  <span class="keyword">val</span> remove_ending_slash : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.t<br/>
+  <span class="keyword">val</span> with_fragment : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.t<br/>
+  <span class="keyword">val</span> remove :<br/>
+    ?scheme:bool <span class="keywordsign">-&gt;</span><br/>
+    ?user:bool <span class="keywordsign">-&gt;</span><br/>
+    ?user_param:bool <span class="keywordsign">-&gt;</span><br/>
+    ?password:bool <span class="keywordsign">-&gt;</span><br/>
+    ?host:bool <span class="keywordsign">-&gt;</span><br/>
+    ?port:bool <span class="keywordsign">-&gt;</span><br/>
+    ?path:bool <span class="keywordsign">-&gt;</span><br/>
+    ?param:bool <span class="keywordsign">-&gt;</span><br/>
+    ?query:bool <span class="keywordsign">-&gt;</span> ?fragment:bool <span class="keywordsign">-&gt;</span> ?other:bool <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.t<br/>
+  <span class="keyword">val</span> scheme : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> port : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> int<br/>
+  <span class="keyword">val</span> host : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> string<br/>
+  <span class="keyword">val</span> of_neturl : <span class="constructor">Neturl</span>.url <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.t<br/>
+  <span class="keyword">val</span> to_neturl : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> <span class="constructor">Neturl</span>.url<br/>
+<span class="keyword">end</span></code></div>
+
+
+
+
+
+<div id="footer">
+<div class="generatedon">Generated on April 9, 2015 at 10h18</div>
+</div>
+
+
+
+</div> 
+</body>
+</html>

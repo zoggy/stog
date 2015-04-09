@@ -60,7 +60,7 @@ Here is an example:
 
 </span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">fun_list</span><span class="hl std"> </span><span class="">stog</span><span class="hl std"> </span><span class="">env</span><span class="hl std"> </span><span class="">args</span><span class="hl std"> </span><span class="">subs</span><span class="hl std"> =
   </span><span class="hl com">(* get the optional sep attribute ... *)</span><span class="hl std">
-  </span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">sep</span><span class="hl std"> = </span><span class="hl kwc">Xtmpl</span><span class="hl std">.</span><span class="">opt_arg</span><span class="hl std"> </span><span class="">args</span><span class="hl std"> (</span><span class="hl str">&quot;&quot;</span><span class="hl std">, </span><span class="hl str">&quot;sep&quot;</span><span class="hl std">) </span><span class="hl kwa">in</span><span class="hl std">
+  </span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">sep</span><span class="hl std"> = </span><span class="hl kwc">Xtmpl</span><span class="hl std">.</span><span class="">opt_att</span><span class="hl std"> </span><span class="">args</span><span class="hl std"> (</span><span class="hl str">&quot;&quot;</span><span class="hl std">, </span><span class="hl str">&quot;sep&quot;</span><span class="hl std">) </span><span class="hl kwa">in</span><span class="hl std">
   </span><span class="hl com">(* reverse the separator, for final list will be reversed *)</span><span class="hl std">
   </span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">sep</span><span class="hl std"> = </span><span class="hl kwc">List</span><span class="hl std">.</span><span class="">rev</span><span class="hl std"> </span><span class="">sep</span><span class="hl std"> </span><span class="hl kwa">in</span><span class="hl std">
   </span><span class="hl com">(* then insert the separator between all children of the node *)</span><span class="hl std">
@@ -255,7 +255,7 @@ The Cache module to provide is very simple; have a look at the
 
 
 <div id="footer">
-<div class="generatedon">Generated on October 28, 2014 at 16h17</div>
+<div class="generatedon">Generated on April 9, 2015 at 10h18</div>
 </div>
 
 

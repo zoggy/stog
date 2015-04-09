@@ -38,14 +38,30 @@
 
 
 <div class="ocamldoc-page">
-<code class="code"><span class="keyword">sig</span>  <span class="keyword">end</span></code></div>
+<code class="code"><span class="keyword">sig</span><br/>
+  <span class="keyword">val</span> http_url : string <span class="constructor">Pervasives</span>.ref<br/>
+  <span class="keyword">val</span> ws_url : string <span class="constructor">Pervasives</span>.ref<br/>
+  <span class="keyword">val</span> pub_http_url : string option <span class="constructor">Pervasives</span>.ref<br/>
+  <span class="keyword">val</span> pub_ws_url : string option <span class="constructor">Pervasives</span>.ref<br/>
+  <span class="keyword">type</span> server_mode = server_mode<br/>
+  <span class="keyword">val</span> server_mode : <span class="constructor">Stog_server_mode</span>.server_mode option <span class="constructor">Pervasives</span>.ref<br/>
+  <span class="keyword">val</span> set_single :<br/>
+    ((unit <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog) <span class="keywordsign">-&gt;</span><br/>
+     <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span><br/>
+     http_url:<span class="constructor">Stog_url</span>.url_config <span class="keywordsign">-&gt;</span> ws_url:<span class="constructor">Stog_url</span>.url_config <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span><br/>
+    unit<br/>
+  <span class="keyword">val</span> set_multi :<br/>
+    (http_url:<span class="constructor">Stog_url</span>.url_config <span class="keywordsign">-&gt;</span><br/>
+     ws_url:<span class="constructor">Stog_url</span>.url_config <span class="keywordsign">-&gt;</span> string list <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span><br/>
+    unit<br/>
+<span class="keyword">end</span></code></div>
 
 
 
 
 
 <div id="footer">
-<div class="generatedon">Generated on October 28, 2014 at 16h17</div>
+<div class="generatedon">Generated on April 9, 2015 at 10h18</div>
 </div>
 
 

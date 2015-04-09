@@ -324,7 +324,7 @@
     stog_docs_by_topic : <span class="constructor">Stog_types</span>.<span class="constructor">Doc_set</span>.t <span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t;<br/>
     stog_archives :<br/>
       <span class="constructor">Stog_types</span>.<span class="constructor">Doc_set</span>.t <span class="constructor">Stog_types</span>.<span class="constructor">Int_map</span>.t <span class="constructor">Stog_types</span>.<span class="constructor">Int_map</span>.t;<br/>
-    stog_base_url : <span class="constructor">Neturl</span>.url;<br/>
+    stog_base_url : <span class="constructor">Stog_url</span>.t;<br/>
     stog_email : string;<br/>
     stog_rss_length : int;<br/>
     stog_lang : string option;<br/>
@@ -339,11 +339,9 @@
       (<span class="constructor">Stog_path</span>.path * string option) <span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t <span class="constructor">Stog_path</span>.<span class="constructor">Map</span>.t;<br/>
     stog_levels : (string * int list) list <span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t;<br/>
     stog_publish_only : <span class="constructor">Stog_filter_types</span>.t option;<br/>
+    stog_source : [ <span class="keywordsign">`</span><span class="constructor">Dir</span> <span class="keywordsign">|</span> <span class="keywordsign">`</span><span class="constructor">File</span> ];<br/>
   }<br/>
-  <span class="keyword">val</span> url_of_string : string <span class="keywordsign">-&gt;</span> <span class="constructor">Neturl</span>.url<br/>
-  <span class="keyword">val</span> string_of_url : <span class="constructor">Neturl</span>.url <span class="keywordsign">-&gt;</span> string<br/>
-  <span class="keyword">val</span> url_concat : <span class="constructor">Neturl</span>.url <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> <span class="constructor">Neturl</span>.url<br/>
-  <span class="keyword">val</span> create_stog : string <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog<br/>
+  <span class="keyword">val</span> create_stog : ?source:[ <span class="keywordsign">`</span><span class="constructor">Dir</span> <span class="keywordsign">|</span> <span class="keywordsign">`</span><span class="constructor">File</span> ] <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog<br/>
   <span class="keyword">val</span> stog_md5 : <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> string<br/>
   <span class="keyword">val</span> doc : <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.doc <span class="constructor">Stog_tmap</span>.key <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.doc<br/>
   <span class="keyword">val</span> docs_by_path :<br/>
@@ -395,7 +393,7 @@
 
 
 <div id="footer">
-<div class="generatedon">Generated on October 28, 2014 at 16h17</div>
+<div class="generatedon">Generated on April 9, 2015 at 10h18</div>
 </div>
 
 
