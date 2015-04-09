@@ -92,7 +92,7 @@ val generate :
 val doc_dst_file : Stog_types.stog -> Stog_types.doc -> string
 
 (** Build the final url of the given document. *)
-val doc_url : Stog_types.stog -> Stog_types.doc -> Neturl.url
+val doc_url : Stog_types.stog -> Stog_types.doc -> Stog_url.t
 
 val env_of_defs : ?env:'a Xtmpl.env -> Stog_types.def list -> 'a Xtmpl.env
 val env_of_used_mods : Stog_types.stog ->

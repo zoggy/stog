@@ -186,10 +186,10 @@ let fun_doc_href ?typ src_doc href (stog, data) env args subs =
         let url = Stog_engine.doc_url stog doc in
         match id with
           None -> url
-        | Some id -> Neturl.modify_url ~fragment: id url
+        | Some id -> Stog_url.with_fragment url id
       in
       let xml = Xtmpl.E (("", "a"),
-         Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_types.string_of_url href)],
+         Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_url.to_string href)],
          text)
       in
       ((stog, data), [ xml ])

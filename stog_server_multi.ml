@@ -29,7 +29,7 @@
 
 (** *)
 
-open Stog_types
+open Stog_url
 open Xtmpl
 open Stog_multi_config
 open Stog_server_types
@@ -52,16 +52,16 @@ let restart_previous_sessions cfg sessions =
     (Stog_multi_session.load_previous_sessions cfg)
 
 let add_logged gs user_token account =
-  gs.logged := Str_map.add user_token account !(gs.logged)
+  gs.logged := Stog_types.Str_map.add user_token account !(gs.logged)
 
 let new_token () = Stog_multi_session.new_id ()
 let token_cookie = "STOGMULTILOGINTOKEN"
 
 let action_form_login app_url =
-  let url = List.fold_left Stog_types.url_concat app_url
+  let url = List.fold_left Stog_url.concat app_url
     Stog_multi_page.path_sessions
   in
-  Stog_types.string_of_url url
+  Stog_url.to_string url
 
 let sha256 s = String.lowercase (Sha256.to_hex (Sha256.string s))
 
@@ -100,9 +100,13 @@ let handle_login_post cfg gs req body =
   | account ->
       let token = new_token () in
       add_logged gs token account;
-      let cookie = Cohttp.Cookie.Set_cookie_hdr.make
+      let cookie = 
+        let path = 
+          ("/"^(String.concat "/" (Stog_url.path cfg.http_url.priv)))
+        in
+        Cohttp.Cookie.Set_cookie_hdr.make
           ~expiration: `Session
-          ~path: ("/"^(String.concat "/" (Neturl.url_path cfg.http_url.priv)))
+          ~path
           ~http_only: true
           (token_cookie, token)
       in
@@ -124,7 +128,7 @@ let handle_login_get cfg gs opt_user =
       respond_page page
 
 let req_path_from_app cfg req =
-  let app_path = Stog_types.url_path cfg.http_url.priv in
+  let app_path = Stog_url.path cfg.http_url.priv in
   let req_uri = Cohttp.Request.uri req in
   let req_path = Stog_misc.split_string (Uri.path req_uri) ['/'] in
   let rec iter = function
@@ -133,7 +137,7 @@ let req_path_from_app cfg req =
   | _, _ ->
       let msg = Printf.sprintf  "bad query path: %S is not under %S"
         (Uri.to_string req_uri)
-        (Stog_types.string_of_url cfg.http_url.priv)
+        (Stog_url.to_string cfg.http_url.priv)
       in
       failwith msg
   in
@@ -144,7 +148,7 @@ let get_opt_user gs req =
   let cookies = Cohttp.Cookie.Cookie_hdr.extract h in
   try
     let c = List.assoc token_cookie cookies in
-    Some (Str_map.find c !(gs.logged))
+    Some (Stog_types.Str_map.find c !(gs.logged))
   with Not_found ->
     None
 
@@ -197,7 +201,7 @@ let handle_path cfg gs ~http_url ~ws_url sock opt_user req body = function
     match path with
     | "sessions" :: session_id :: q when req.Request.meth = `GET ->
         begin
-          match Str_map.find session_id !(gs.sessions) with
+          match Stog_types.Str_map.find session_id !(gs.sessions) with
           | exception Not_found ->
               let body = Printf.sprintf "Session %S not found" session_id in
               S.respond_error ~status:`Not_found ~body ()
@@ -208,7 +212,7 @@ let handle_path cfg gs ~http_url ~ws_url sock opt_user req body = function
 
               | "preview" :: _ ->
                   let base_path =
-                    (Stog_types.url_path cfg.http_url.priv) @
+                    (Stog_url.path cfg.http_url.priv) @
                       Stog_multi_page.path_sessions @ [session_id]
                   in
                   Stog_server_http.handler session.session_stog.stog_state
@@ -216,7 +220,7 @@ let handle_path cfg gs ~http_url ~ws_url sock opt_user req body = function
 
               | "editor" :: p  ->
                   let base_path =
-                      (Neturl.url_path cfg.http_url.priv) @
+                      (Stog_url.path cfg.http_url.priv) @
                       Stog_multi_page.path_sessions @ [session_id]
                   in
                   require_user cfg opt_user
@@ -248,8 +252,8 @@ let handler cfg gs ~http_url ~ws_url sock req body =
     )
 
 let start_server cfg gs ~http_url ~ws_url =
-  let host = Neturl.url_host http_url.Stog_types.priv in
-  let port = Neturl.url_port http_url.Stog_types.priv in
+  let host = Stog_url.host http_url.priv in
+  let port = Stog_url.port http_url.priv in
   Lwt_io.write Lwt_io.stdout
     (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
   >>= fun _ ->
@@ -276,13 +280,13 @@ let launch ~http_url ~ws_url args =
   prerr_endline
     (Printf.sprintf
      "http_url = %S\npublic_http_url = %S\nws_url = %S\npublic_ws_url = %S"
-     (Stog_types.string_of_url cfg.http_url.priv)
-     (Stog_types.string_of_url cfg.http_url.pub)
-     (Stog_types.string_of_url cfg.ws_url.priv)
-     (Stog_types.string_of_url cfg.ws_url.pub));
+     (Stog_url.to_string cfg.http_url.priv)
+     (Stog_url.to_string cfg.http_url.pub)
+     (Stog_url.to_string cfg.ws_url.priv)
+     (Stog_url.to_string cfg.ws_url.pub));
   let gs = {
-    sessions = ref (Str_map.empty : session Str_map.t) ;
-    logged = ref (Str_map.empty : account Str_map.t) ;
+    sessions = ref (Stog_types.Str_map.empty : session Stog_types.Str_map.t) ;
+    logged = ref (Stog_types.Str_map.empty : account Stog_types.Str_map.t) ;
     }
   in
   restart_previous_sessions cfg gs.sessions ;

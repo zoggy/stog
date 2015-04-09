@@ -84,12 +84,6 @@ type 'a dependency = File of string | Doc of 'a;;
 module Depset : Set.S with type elt = string dependency;;
 type stog_dependencies = Depset.t Str_map.t;;
 
-type url = Neturl.url
-type url_config = {
-  pub : url ;
-  priv : url ;
-  }
-
 type stog = {
   stog_dir : string;
   stog_docs : (doc, doc) Stog_tmap.t;
@@ -104,7 +98,7 @@ type stog = {
   stog_docs_by_kw : Doc_set.t Str_map.t;
   stog_docs_by_topic : Doc_set.t Str_map.t;
   stog_archives : Doc_set.t Int_map.t Int_map.t;
-  stog_base_url : url ;
+  stog_base_url : Stog_url.t ;
   stog_email : string;
   stog_rss_length : int;
   stog_lang : string option;
@@ -120,14 +114,6 @@ type stog = {
   stog_publish_only : Stog_filter_types.t option ;
   stog_source : [`Dir | `File] ;
   }
-
-val url_of_string : string -> Neturl.url
-val string_of_url : Neturl.url -> string
-val url_concat : Neturl.url -> string -> Neturl.url
-val url_append : Neturl.url -> string list -> Neturl.url
-val url_path : Neturl.url -> string list
-val url_with_path : Neturl.url -> string list -> Neturl.url
-val url_remove_ending_slash : Neturl.url -> Neturl.url
 
 val create_stog : ?source: [`Dir | `File] -> string -> stog
 val stog_md5 : stog -> string

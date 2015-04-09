@@ -31,7 +31,7 @@
 
 open Lwt.Infix
 open Stog_multi_config
-open Stog_types
+open Stog_url
 open Stog_git_server
 
 type session_state =
@@ -50,12 +50,12 @@ type stog_info = {
     stog_dir : string ;
     mutable stog_state : Stog_server_run.state option ref ;
     mutable stog_ws_cons : (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit)) list ref ;
-    stog_preview_url : Neturl.url ;
+    stog_preview_url : Stog_url.t ;
   }
 
 type editor_info = {
     mutable editor_ws_cons : Stog_multi_ed.Server.connection_group ;
-    editor_url : Neturl.url ;
+    editor_url : Stog_url.t ;
   }
 type session =
   { session_id : string ;
@@ -97,11 +97,12 @@ let stog_info_of_repo_dir cfg session_id repo_dir =
   in
   let base_url =
     let url =
-      List.fold_left Stog_types.url_concat
+      List.fold_left Stog_url.concat
         cfg.http_url.pub
         (Stog_multi_page.path_sessions @ [session_id ; "preview" ])
     in
-    Neturl.modify_url ~path: ((Neturl.url_path url)@[""]) url
+    let path = (Stog_url.path url) @ [""] in
+    Stog_url.with_path url path
   in
   { stog_dir ;
     stog_state = ref None ;
@@ -112,11 +113,12 @@ let stog_info_of_repo_dir cfg session_id repo_dir =
 let editor_info_of_stog_info cfg session_id stog_info =
   let url =
     let url =
-      List.fold_left Stog_types.url_concat
+      List.fold_left Stog_url.concat
         cfg.http_url.pub
         (Stog_multi_page.path_sessions @ [session_id ; "editor" ])
     in
-    Neturl.modify_url ~path: ((Neturl.url_path url)@[""]) url
+    let path = (Stog_url.path url) @ [""] in
+    Stog_url.with_path url path
   in
   { editor_ws_cons = new Stog_multi_ed.Server.connection_group ;
     editor_url = url ;

@@ -1,9 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <ocamldoc with-contents="true">
 <title>Stog library reference documentation : Stog_html</title><contents><div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_highlight.html" title="Stog_highlight">Previous</a>
+<div class="navbar"><a class="pre" href="Stog_html5.html" title="Stog_html5">Previous</a>
 &#160;<a class="up" href="index.html" title="Index">Up</a>
-&#160;<a class="post" href="Stog_html5.html" title="Stog_html5">Next</a>
+&#160;<a class="post" href="Stog_info.html" title="Stog_info">Next</a>
 </div>
 <h1>Module <a href="type_Stog_html.html">Stog_html</a></h1>
 
@@ -38,7 +38,7 @@ Escape html code in the given string: change <code class="code">&amp;</code> to 
 </div>
 
 <pre><span id="VALconcat_name"><span class="keyword">val</span> concat_name</span> : <code class="type">?sep:string -&gt; string * string -&gt; string</code></pre>
-<pre><span id="VALurl_of_path"><span class="keyword">val</span> url_of_path</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; Neturl.url</code></pre><div class="info ">
+<pre><span id="VALurl_of_path"><span class="keyword">val</span> url_of_path</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; <a href="Stog_url.html#TYPEt">Stog_url.t</a></code></pre><div class="info ">
 Build an url from the given path.
   This is used for documents created on the fly, like by-word or by-month index.<br/>
 </div>
@@ -48,7 +48,7 @@ Build the base rules, using the default ones and the base rules register
   by plugins.<br/>
 </div>
 
-<pre><span id="VALdoc_list"><span class="keyword">val</span> doc_list</span> : <code class="type"><a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       ?rss:Neturl.url -&gt;<br/>       ?set:Stog_types.Doc_set.t -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.callback</code></pre><div class="info ">
+<pre><span id="VALdoc_list"><span class="keyword">val</span> doc_list</span> : <code class="type"><a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       ?rss:<a href="Stog_url.html#TYPEt">Stog_url.t</a> -&gt;<br/>       ?set:Stog_types.Doc_set.t -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.callback</code></pre><div class="info ">
 The calllback to insert a list of documents. Can be called directly
   if provided an additional environment, argument and children nodes.<br/>
 </div>

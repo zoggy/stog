@@ -30,7 +30,7 @@
 (** *)
 
 module CF = Config_file
-open Stog_types
+open Stog_url
 
 type sha256 = string (* hexadecimal representation of SHA256 digest *)
 type account = {
@@ -47,8 +47,8 @@ type t = {
     stog_dir : string option ;
     editable_files : Str.regexp list ;
     not_editable_files : Str.regexp list ;
-    http_url : Stog_types.url_config ;
-    ws_url : Stog_types.url_config ;
+    http_url : Stog_url.url_config ;
+    ws_url : Stog_url.url_config ;
     css_file : string option ;
   }
 
@@ -83,7 +83,7 @@ let read file =
     ["http-url"] "http://localhost:8080" "URL of HTTP server"
   in
   let o_ws_url = new CF.string_cp ~group
-    ["ws-url"] "http://localhost:8081" "URL of websocket server"
+    ["ws-url"] "ws://localhost:8081" "URL of websocket server"
   in
   let o_public_http_url = new CF.option_cp CF.string_wrappers ~group
     ["public-http-url"] None "Public URL of HTTP server"
@@ -126,8 +126,8 @@ let read file =
         Some f
     in
     let map_url str =
-      let url = Stog_types.url_of_string str in
-      Stog_types.url_remove_ending_slash url
+      let url = Stog_url.of_string str in
+      Stog_url.remove_ending_slash url
     in
     let http_url = map_url o_http_url#get in
     let ws_url = map_url o_ws_url#get in

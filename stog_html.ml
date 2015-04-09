@@ -273,7 +273,7 @@ let fun_archive_tree stog _env _atts _subs =
     let month_str = Stog_intl.get_month stog.stog_lang month in
     Xtmpl.E (("", "li"), Xtmpl.atts_empty, [
        Xtmpl.E (("", "a"),
-        Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_types.string_of_url href)],
+        Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_url.to_string href)],
         [ Xtmpl.D month_str ]
        ) ;
        Xtmpl.D (Printf.sprintf "(%d)" (Stog_types.Doc_set.cardinal set))
@@ -375,8 +375,8 @@ let fun_graph =
     let png_name = "site-graph.png" in
     let small_png_name = "small-"^png_name in
     let svg_file = (Filename.chop_extension png_name) ^ ".svg" in
-    let src = Stog_types.url_concat stog.stog_base_url svg_file in
-    let small_src = Stog_types.url_concat stog.stog_base_url small_png_name in
+    let src = Stog_url.concat stog.stog_base_url svg_file in
+    let small_src = Stog_url.concat stog.stog_base_url small_png_name in
     begin
       match !generated with
         true -> ()
@@ -411,11 +411,11 @@ let fun_graph =
     end;
     let xmls = [
         Xtmpl.E (("", "a"),
-         Xtmpl.atts_one ("", "href") [ Xtmpl.D (Stog_types.string_of_url src)],
+         Xtmpl.atts_one ("", "href") [ Xtmpl.D (Stog_url.to_string src)],
          [
            Xtmpl.E (("", "img"),
             Xtmpl.atts_of_list
-              [("", "src"), [ Xtmpl.D (Stog_types.string_of_url small_src)] ; ("", "alt"), [Xtmpl.D "Graph"]],
+              [("", "src"), [ Xtmpl.D (Stog_url.to_string small_src)] ; ("", "alt"), [Xtmpl.D "Graph"]],
             [])
          ])
       ]
@@ -691,12 +691,12 @@ let intro_of_doc stog doc =
   try
     let xml = iter [] doc.doc_body in
     let next_url_s =
-      Stog_types.string_of_url (Stog_types.url_concat stog.stog_base_url "next.png")
+      Stog_url.to_string (Stog_url.concat stog.stog_base_url "next.png")
     in
     xml @
     [
       Xtmpl.E (("", "a"),
-         Xtmpl.atts_one ("", "href") [ Xtmpl.D (Stog_types.string_of_url (Stog_engine.doc_url stog doc))],
+         Xtmpl.atts_one ("", "href") [ Xtmpl.D (Stog_url.to_string (Stog_engine.doc_url stog doc))],
          [ Xtmpl.E (("", "img"),
             Xtmpl.atts_of_list
               [ ("", "src"), [ Xtmpl.D next_url_s ] ;
@@ -724,7 +724,7 @@ let html_of_topics doc stog env args _ =
          let (stog, xmls) = f stog w in
          let href = url_of_path stog (topic_index_path w) in
          let xml = Xtmpl.E (("", "a"),
-            Xtmpl.atts_one ("", "href") [ Xtmpl.D (Stog_types.string_of_url href) ],
+            Xtmpl.atts_one ("", "href") [ Xtmpl.D (Stog_url.to_string href) ],
             xmls)
          in
          (stog, [xml] :: acc)
@@ -750,7 +750,7 @@ let html_of_keywords doc stog env args _ =
          let (stog, xmls) = f stog w in
          let href = url_of_path stog (keyword_index_path w) in
          let xml = Xtmpl.E (("", "a"),
-            Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_types.string_of_url href)],
+            Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_url.to_string href)],
             xmls)
          in
          (stog, [xml] :: acc)
@@ -910,7 +910,7 @@ let rec build_base_rules stog doc_id =
     (acc, [ Xtmpl.xml_of_string doc.doc_title ])
   in
   let f_url doc stog _ _ _ =
-    (stog,[ Xtmpl.D (Stog_types.string_of_url (Stog_engine.doc_url stog doc)) ])
+    (stog,[ Xtmpl.D (Stog_url.to_string (Stog_engine.doc_url stog doc)) ])
   in
   let f_body doc acc _ _ _ = (acc, doc.doc_body) in
   let f_type doc acc _ _ _ = (acc, [Xtmpl.D doc.doc_type]) in
@@ -932,7 +932,7 @@ let rec build_base_rules stog doc_id =
     let html_link stog doc =
       let href = Stog_engine.doc_url stog doc in
       [ Xtmpl.E (("", "a"),
-         Xtmpl.atts_one ("","href") [Xtmpl.D (Stog_types.string_of_url href)],
+         Xtmpl.atts_one ("","href") [Xtmpl.D (Stog_url.to_string href)],
          [ Xtmpl.xml_of_string doc.doc_title ]) ]
     in
     let try_link key search stog _ _ _ =
@@ -1103,7 +1103,8 @@ and doc_list doc ?rss ?set stog env args _ =
         (Xtmpl.E (("", "div"),
           Xtmpl.atts_one ("", "class") [Xtmpl.D "rss-button"],
           [
-            Xtmpl.E (("", "a"), Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_types.string_of_url link)],
+            Xtmpl.E (("", "a"), Xtmpl.atts_one ("", "href") 
+             [Xtmpl.D (Stog_url.to_string link)],
              [
                Xtmpl.E (("", "img"),
                 Xtmpl.atts_of_list [("", "src"), [Xtmpl.D "rss.png"] ; ("", "alt"), [Xtmpl.D "Rss feed"]],

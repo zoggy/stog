@@ -31,6 +31,7 @@
 
 module S = Cohttp_lwt_unix.Server
 module J = Yojson.Safe
+open Stog_url
 
 let (>>=) = Lwt.bind
 
@@ -95,8 +96,8 @@ let init ?sshkey ~stog_dir ~git =
 
 let body_tmpl = [%xtmpl "templates/multi_ed.tmpl"]
 let page cfg user ~ws_url ~title ~client_js_url =
-  let client_js_url = Stog_types.string_of_url client_js_url in
-  let js = [ "stog_server = { wsUrl: '"^(Stog_types.string_of_url ws_url)^"' } ;" ] in
+  let client_js_url = Stog_url.to_string client_js_url in
+  let js = [ "stog_server = { wsUrl: '"^(Stog_url.to_string ws_url)^"' } ;" ] in
   let body = body_tmpl
     ~client_js_url
     ~ft_id: Stog_multi_ed_types.ft_id
@@ -114,8 +115,8 @@ let editor_page cfg user ~http_url ~ws_url base_path session_id =
   let client_js_path = base_path @ [ "editor" ; client_js ] in
   (* FIXME: port number when we will be able to change an
     http connection into a websocket one manually *)
-  let client_js_url = Stog_types.url_append http_url.Stog_types.pub client_js_path in
-  let ws_url = Stog_types.url_append ws_url.Stog_types.pub (base_path @ ["editor"]) in
+  let client_js_url = Stog_url.append http_url.pub client_js_path in
+  let ws_url = Stog_url.append ws_url.pub (base_path @ ["editor"]) in
   let title = Printf.sprintf "Session %S" session_id in
   page cfg (Some user) ~ws_url ~title ~client_js_url
 

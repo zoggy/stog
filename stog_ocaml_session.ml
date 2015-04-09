@@ -195,7 +195,10 @@ let main () =
   close_out oc_result
 ;;
 
-try main ()
+try
+  main ();
+  List.iter (fun f -> try Sys.remove f with _ -> ())
+    [ stderr_file ; stdout_file ; log_file ]
 with
   Sys_error s | Failure s ->
     prerr_endline s;

@@ -30,6 +30,7 @@
 (** *)
 
 open Stog_types
+open Stog_url
 open Stog_server_types
 
 module J = Yojson.Safe
@@ -153,8 +154,8 @@ let sockaddr_of_dns node service =
   >>= fun ai -> Lwt.return ai.ai_addr
 
 let run_server read_stog current_state active_cons ws_url base_path =
-  let host = Neturl.url_host ws_url.priv in
-  let port = Neturl.url_port ws_url.priv in
+  let host = Stog_url.host ws_url.priv in
+  let port = Stog_url.port ws_url.priv in
   prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
   sockaddr_of_dns host (string_of_int port) >>= fun sa ->
     Lwt.return (server read_stog current_state active_cons base_path sa)

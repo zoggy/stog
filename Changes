@@ -1,4 +1,7 @@
 Next release:
+* New module Stog_url
+* --host and --port options are replaced by
+  --http, --ws, --public-http and --public-ws
 * Multiserver
 * require libev (by now)
 * require Xtmpl >= 0.11

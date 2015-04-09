@@ -476,7 +476,7 @@ let env_of_used_mods stog ?(env=Xtmpl.env_empty()) mods =
 ;;
 
 let fun_site_url stog data _env _ _ =
-  (data, [ Xtmpl.D (Stog_types.string_of_url stog.stog_base_url) ])
+  (data, [ Xtmpl.D (Stog_url.to_string stog.stog_base_url) ])
 ;;
 
 let run ?(use_cache=true) ?default_style state =
@@ -533,7 +533,7 @@ let doc_dst_path stog doc =
 let doc_dst (*?(encode=true)*) stog doc =
   let path = doc_dst_path stog doc in
   (*let dst = if encode then List.map encode_for_url path else path in*)
-  Stog_types.url_append stog.stog_base_url path
+  Stog_url.append stog.stog_base_url path
 ;;
 
 let doc_dst_file stog doc =
@@ -542,13 +542,13 @@ let doc_dst_file stog doc =
 
 let doc_url stog doc =
   let url_path = doc_dst_path stog doc in
-  let url = Stog_types.url_append stog.stog_base_url url_path in
-  match String.lowercase (Neturl.url_scheme url) with
+  let url = Stog_url.append stog.stog_base_url url_path in
+  match String.lowercase (Stog_url.scheme url) with
     "file" -> url
   | _ ->
-      let p = Stog_types.url_path url in
+      let p = Stog_url.path url in
       match List.rev p with
-      | "index.html" :: q -> Stog_types.url_with_path url (List.rev ("" :: q))
+      | "index.html" :: q -> Stog_url.with_path url (List.rev ("" :: q))
       | _ -> url
 ;;
 
@@ -733,13 +733,13 @@ let env_add_lang_rules data env stog doc =
       let (data, languages) = get_languages data env in
       let map_lang lang =
         let url = doc_url { stog with stog_lang = Some lang } doc in
-        let img_url = Stog_types.url_concat stog.stog_base_url (lang^".png") in
+        let img_url = Stog_url.concat stog.stog_base_url (lang^".png") in
         Xtmpl.E (("", "a"),
-         Xtmpl.atts_of_list [("", "href"), [ Xtmpl.D (Stog_types.string_of_url url) ]],
+         Xtmpl.atts_of_list [("", "href"), [ Xtmpl.D (Stog_url.to_string url) ]],
          [
            Xtmpl.E (("", "img"),
             Xtmpl.atts_of_list
-              [ ("", "src"), [ Xtmpl.D (Stog_types.string_of_url img_url) ] ;
+              [ ("", "src"), [ Xtmpl.D (Stog_url.to_string img_url) ] ;
                 ("", "title"), [ Xtmpl.D lang ] ;
                 ("", "alt"), [ Xtmpl.D lang]
               ],

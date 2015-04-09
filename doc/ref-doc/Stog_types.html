@@ -3,7 +3,8 @@
 <title>Stog library reference documentation : Stog_types</title><contents><div class="ocamldoc-page">
 <div class="navbar"><a class="pre" href="Stog_trie.html" title="Stog_trie">Previous</a>
 &#160;<a class="up" href="index.html" title="Index">Up</a>
-&#160;</div>
+&#160;<a class="post" href="Stog_url.html" title="Stog_url">Next</a>
+</div>
 <h1>Module <a href="type_Stog_types.html">Stog_types</a></h1>
 
 <pre><span class="keyword">module</span> Stog_types: <code class="code">sig</code> <a href="Stog_types.html">..</a> <code class="code">end</code></pre><div class="info module top">
@@ -344,7 +345,7 @@ whether a file must be generated for each language<br/>
 <td align="left" valign="top" >
 <code>&#160;&#160;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTstog.stog_base_url">stog_base_url</span>&#160;: <code class="type">Neturl.url</code>;</code></td>
+<code><span id="TYPEELTstog.stog_base_url">stog_base_url</span>&#160;: <code class="type"><a href="Stog_url.html#TYPEt">Stog_url.t</a></code>;</code></td>
 
 </tr>
 <tr>
@@ -437,15 +438,19 @@ whether a file must be generated for each language<br/>
 <td align="left" valign="top" >
 <code><span id="TYPEELTstog.stog_publish_only">stog_publish_only</span>&#160;: <code class="type"><a href="Stog_filter_types.html#TYPEt">Stog_filter_types.t</a> option</code>;</code></td>
 
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&#160;&#160;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTstog.stog_source">stog_source</span>&#160;: <code class="type">[ `Dir | `File ]</code>;</code></td>
+
 </tr></table>
 }
 
 
 
-<pre><span id="VALurl_of_string"><span class="keyword">val</span> url_of_string</span> : <code class="type">string -&gt; Neturl.url</code></pre>
-<pre><span id="VALstring_of_url"><span class="keyword">val</span> string_of_url</span> : <code class="type">Neturl.url -&gt; string</code></pre>
-<pre><span id="VALurl_concat"><span class="keyword">val</span> url_concat</span> : <code class="type">Neturl.url -&gt; string -&gt; Neturl.url</code></pre>
-<pre><span id="VALcreate_stog"><span class="keyword">val</span> create_stog</span> : <code class="type">string -&gt; <a href="Stog_types.html#TYPEstog">stog</a></code></pre>
+<pre><span id="VALcreate_stog"><span class="keyword">val</span> create_stog</span> : <code class="type">?source:[ `Dir | `File ] -&gt; string -&gt; <a href="Stog_types.html#TYPEstog">stog</a></code></pre>
 <pre><span id="VALstog_md5"><span class="keyword">val</span> stog_md5</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt; string</code></pre>
 <pre><span id="VALdoc"><span class="keyword">val</span> doc</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt; <a href="Stog_types.html#TYPEdoc">doc</a> Stog_tmap.key -&gt; <a href="Stog_types.html#TYPEdoc">doc</a></code></pre>
 <pre><span id="VALdocs_by_path"><span class="keyword">val</span> docs_by_path</span> : <code class="type">?typ:string -&gt;<br/>       <a href="Stog_types.html#TYPEstog">stog</a> -&gt;<br/>       <a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; (<a href="Stog_types.html#TYPEdoc_id">doc_id</a> * <a href="Stog_types.html#TYPEdoc">doc</a>) list</code></pre>
