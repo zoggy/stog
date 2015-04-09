@@ -83,7 +83,7 @@ let read file =
     ["http-url"] "http://localhost:8080" "URL of HTTP server"
   in
   let o_ws_url = new CF.string_cp ~group
-    ["ws-url"] "http://localhost:8081" "URL of websocket server"
+    ["ws-url"] "ws://localhost:8081" "URL of websocket server"
   in
   let o_public_http_url = new CF.option_cp CF.string_wrappers ~group
     ["public-http-url"] None "Public URL of HTTP server"
