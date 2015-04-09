@@ -52,18 +52,27 @@ let of_string s =
 ;;
 let to_string = Neturl.string_of_url;;
 
+let path url =
+  match Neturl.url_path url with
+    "" :: q -> q
+  | x -> x
+
+let with_path url path =
+  (* to be compliant with Neturl, path must begin with "" *)
+  let path =
+    match path with
+    | "" :: _ -> path
+    | _ -> "" :: path
+  in
+  Neturl.modify_url ~path url
+
 let concat uri s =
   match s with
     "" -> uri
   | _ ->
-      let uri_path = Neturl.url_path uri in
-      let path =
-        (* make sure to consider uri_path to have a path *)
-        match uri_path with
-          [] -> ("" :: [s])
-        | _ -> uri_path @ [s]
-      in
-      try Neturl.modify_url ~path uri
+      let uri_path = path uri in
+      let path = uri_path @ [s] in
+      try with_path uri path
       with e ->
           prerr_endline
             (Printf.sprintf "url_concat: uri=%s url_path=%s, s=%s"
@@ -90,19 +99,6 @@ let port t =
 
 let host = field "host" Neturl.url_host
 
-let path url =
-  match Neturl.url_path url with
-    "" :: q -> q
-  | x -> x
-
-let with_path url path =
-  (* to be compliant with Neturl, path must begin with "" *)
-  let path =
-    match path with
-    | "" :: _ -> path
-    | _ -> "" :: path
-  in
-  Neturl.modify_url ~path url
 
 let with_fragment t fragment = Neturl.modify_url ~fragment t
 
