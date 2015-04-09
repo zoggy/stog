@@ -273,10 +273,11 @@ let path = Js.to_string stog_server##doc
 
 let rec remove_ending_slash s =
   let len = String.length s in
-  if len > 0 && String.get s (len-1) = '/' then 
+  if len > 0 && String.get s (len-1) = '/' then
     remove_ending_slash (String.sub s 0 (len - 1))
   else
     s
+
 let http_url = remove_ending_slash http_url
 let ws_url = remove_ending_slash ws_url
 let _ = set_up_ws_connection ~path ~ws_url ~http_url
