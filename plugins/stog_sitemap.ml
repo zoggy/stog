@@ -44,11 +44,11 @@ let load_config _ (stog,data) _ =
   let default =
     let default =
       Stog_types.Str_map.fold
-        (fun s (b,freq,prio) acc ->
-          let b = if b then "true" else "false" in
-          let freq = Stog_misc.string_of_opt freq in
+        (fun typ (b,freq,prio) acc ->
+           let b = if b then "true" else "false" in
+           let freq = Stog_misc.string_of_opt freq in
            let prio = Stog_misc.string_of_opt prio in
-           (s, (b, freq, prio)) :: acc) data.default_by_type []
+           (typ, (b, freq, prio)) :: acc) data.default_by_type []
     in
     new CF.list_cp
       (CF.tuple2_wrappers CF.string_wrappers
@@ -117,7 +117,7 @@ let generate =
   let f_doc stog data doc_id doc acc =
     let (default_in, default_freq, default_prio) =
       try Stog_types.Str_map.find doc.doc_type data.default_by_type
-      with Not_found -> (true, None, None)
+      with Not_found -> (true, Some "always", Some "0.5")
     in
     match
       match Stog_types.get_def doc.doc_defs ("","in-sitemap") with
@@ -166,7 +166,7 @@ let default_levels =
     ]
 
 let default_data  =
-  { out_file = "sitemap.xml" ; 
+  { out_file = "sitemap.xml" ;
     default_by_type = Stog_types.Str_map.empty ;
   }
 
