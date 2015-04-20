@@ -110,7 +110,7 @@ let gen_sitemap stog data entries =
       Xtmpl.node ("","urlset") ~atts (List.map f_entry entries)
   in
   let xml = Xtmpl.string_of_xml ~xml_atts: false body in
-  let file = Filename.concat stog.stog_dir data.out_file in
+  let file = Filename.concat stog.stog_outdir data.out_file in
   Stog_misc.file_of_string ~file xml
 
 let generate =
