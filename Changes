@@ -1,4 +1,5 @@
 Next release:
+* New stog.sitemap plugin
 * New module Stog_url
 * --host and --port options are replaced by
   --http, --ws, --public-http and --public-ws
