@@ -69,6 +69,15 @@ package "rel-href" (
   archive(plugin,native) = "stog_rel_href.cmxs"
 )
 
+package "sitemap" (
+  version = "@VERSION@"
+  description = "Stog plugin to generate sitemap file"
+  archive(byte) = "stog_sitemap.cmo"
+  archive(native) = "stog_sitemap.cmx"
+  archive(plugin,byte) = "stog_sitemap.cmo"
+  archive(plugin,native) = "stog_sitemap.cmxs"
+)
+
 package "serverlib" (
   exists_if = "stog_serverlib.cma"
   version = "@VERSION@"

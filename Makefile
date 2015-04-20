@@ -45,6 +45,7 @@ PLUGINS_BYTE= \
 	plugins/stog_multi_doc.cmo \
 	plugins/stog_nocaml.cmo \
 	plugins/stog_rel_href.cmo \
+	plugins/stog_sitemap.cmo \
 	plugins/plugin_example.cmo
 PLUGINS_OPT=$(PLUGINS_BYTE:.cmo=.cmxs)
 
