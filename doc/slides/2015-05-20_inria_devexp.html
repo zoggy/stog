@@ -1,0 +1,214 @@
+<slideshow title="Stog"
+subtitle="Un générateur statique de (site|blog|documentation|article|cours|...) pour le web"
+date="2015/05/20"
+author="Maxence Guesdon"
+affiliation="INRIA Saclay-Île-de-France"
+duration="15"
+with-contents="true"
+latex-svg-scale="2.0"
+>
+<lx foo=""><latex defer_="1" package="{amsmath,amssym}">$<contents/>$</latex></lx>
+<slide title="" id="" class="">
+<div class="slide &lt;class/&gt;" id="&lt;id/&gt;">
+<h1><title/></h1>
+<contents/>
+</div>
+</slide>
+
+<showeval codefile="">
+<div class="centered">
+<div class="row">
+  <div class="span10">
+    <hxml defer_="1"><include raw="true" defer_="1" file="&lt;codefile/&gt;"/></hxml>
+  </div>
+</div>
+<div class="row">
+  <div class="span1 showeval-arrow">&#x21b3;</div>
+  <div class="span12" title="&lt;include defer_=&quot;1&quot; file=&quot;&amp;lt;codefile/&amp;gt;&quot;/&gt;">
+      <div><include defer_="1" file="&lt;codefile/&gt;"/></div>
+  </div>
+</div>
+</div>
+</showeval>
+
+<contents>
+<sep_/>
+
+<slide title="Historique">
+<ul>
+<li>Débuté en août 2011, pour mes besoins personnels (site web + blog),</li>
+<li>Amélioré et enrichi pour mes besoins professionnels: cours OCaml,
+  documentation de logiciel, sites web,</li>
+<li>
+Environ 19000 lignes d'OCaml,</li>
+<li>
+Développement hébergé sur Github:
+</li>
+<ul>
+<li>code: <ext-a href="http://www.github.com/zoggy/stog">http://www.github.com/zoggy/stog</ext-a></li>
+<li>website+doc: <ext-a href="http://zoggy.github.io/stog">http://zoggy.github.io/stog</ext-a></li>
+</ul>
+<li>
+Quelques sites générés avec Stog:
+<ul>
+  <li><ext-a href="http://gallium.inria.fr/blog/">Blog de l'EPI Gallium</ext-a>,</li>
+  <li><ext-a href="http://form-ocaml.forge.ocamlcore.org/">Introduction au langage OCaml</ext-a>,</li>
+  <li><ext-a href="http://zoggy.github.io/vlmc-suffix-trie/articles/uncommon-suffix-tries.html">Un article de maths</ext-a>,</li>
+  <li>Sites web de logiciels: <ext-a href="http://zoggy.github.io/chamo/">Chamo</ext-a>,
+                     <ext-a href="http://zoggy.github.io/genet/">Genet</ext-a>,
+                     <ext-a href="http://zoggy.github.io/erssical">Erssical</ext-a>,</li>
+  <li>Le <ext-a href="https://sed.saclay.inria.fr/">site du SED Saclay</ext-a>.</li>
+</ul>
+</li>
+</ul>
+</slide>
+
+<slide title="Ce que je voulais">
+<ul>
+<li>un site statique: facile à déployer (rsync | ftp | git push | ...),
+    moins de problèmes de sécurité,</li>
+<li>gestion de billets de blog, avec dates, thèmes, mots-clés et fils RSS associés,</li>
+<li>contenu dynamique pour les commentaires (&#x21D2; avec Disqus),</li>
+<li>pas de nouvelle syntaxe,</li>
+<li>possibilité d'utiliser des tags "sémantiques" de mon choix (e.g. <icode>&lt;exercice&gt;</icode>),</li>
+<li>éviter la duplication de code &#x21D2; définir ses propres commandes, inclure des
+  morceaux d'une page dans une autre, </li>
+<li>possibilité d'utiliser tout HTML 5 ou tout XML en général, pas seulement un sous-ensemble permis par un langage intermédiaire,</li>
+<li>vérifier les liens internes,</li>
+<li>afficher du code OCaml et le résultat de son évaluation,</li>
+<li>supporter plusieurs langues (fr, en, ..),</li>
+<li>possibilité d'ajouter des fonctionnalités avec des greffons.</li>
+</ul>
+</slide>
+
+<slide title="Comment ça marche">
+<p>
+Trois étapes:
+</p>
+<ol>
+<li>Lecture du fichier de configuration <icode>.stog/config</icode> et de l'arborescence source:
+<hcode lang="ocaml" defer_="1"><include raw="true" file="../.stog/config"/></hcode>
+</li>
+<li>Calcul des documents,</li>
+<li>Copie des autres fichiers, i.e. fichiers non ignorés et qui ne sont pas des documents. </li>
+</ol>
+</slide>
+
+<slide title="Etape 2: Calcul des documents">
+<div class="center centered">
+ <img src="how_it_works.svg" width="800px" alt="Calcul des documents"/>
+</div>
+</slide>
+
+<slide title="Etape 3: Copie des autres fichiers">
+<div class="center centered">
+ <img src="how_it_works2.svg" width="800px" alt="Copie des autres fichiers"/>
+</div>
+</slide>
+
+<slide title="Exemple de document">
+<p>Exemple: fichier <icode>doc.html</icode> du site web de Stog:
+</p>
+<hcode lang="xml" defer_="1">
+<include raw="true" file="../doc.html"/>
+</hcode>
+</slide>
+
+<slide title="Gabarits (1)">
+<p>
+Les gabarits sont des fichiers XML classiques, dont certains nœuds seront
+réécrits (<rule>doc-body</rule>, <rule>site-title</rule>, ...) selon
+les valeurs données dans chaque document source.
+</p>
+<p>Les gabarits sont dans le répertoire <icode>.stog/templates/</icode>.</p>
+<p>On peut utiliser un gabarit de trois façons:</p>
+<ul>
+<li>le type (le nœud racine) d'un document indique le gabarit à utiliser:
+  <hxml><page title="...">...</page></hxml>
+  <hxml><post title="...">...</post></hxml>
+  <icode>page</icode> entraîne l'utilisation du fichier <icode>.stog/template/page.tmpl</icode>
+  comme gabarit pour le document (et <icode>post.tmpl</icode> pour <icode>post</icode>, etc.).
+</li>
+<li>en le référençant dans l'attribut <ixml>file</ixml> d'un nœud
+  <ixml><![CDATA[<include file="..."/>]]></ixml>,</li>
+<li>en utilisant des règles utilisant elles-mêmes des gabarits.</li>
+</ul>
+</slide>
+
+<slide title="Gabarits (2): Exemple">
+<p>
+Le fichier de gabarit <icode>.stog/templates/page.tmpl</icode>:
+</p>
+<hxml><include file="page.tmpl" raw="true"/></hxml>
+</slide>
+
+<slide title="Calcul des documents">
+<p>
+Quand on écrit un document, on définit un environnement utilisé
+pour évaluer un gabarit.
+</p>
+<p>Un environnement consiste en des règles de réécriture d'un nœud XML
+vers une liste d'arbres XML insérés à la place du nœud.
+</p>
+<p>On itère jusqu'à un point fixe.</p>
+<p>Des niveaux (0, 10, 20, ...) permettent d'ordonner des ensembles de règles
+  de réécriture.</p>
+<p>Des greffons permettent d'ajouter des règles, à différents niveaux.</p>
+<p>On peut définir de nouvelles règles (&#8776; fonctions) globales à tout
+  le site ou locales à un document (équivalent de <icode>\newcommand</icode> en <latex>\LaTeX</latex>).</p>
+</slide>
+
+<slide title="Exemples de réécritures">
+<showeval codefile="./2015-05-20_code1.xml"/>
+<showeval codefile="./2015-05-20_code2.xml"/>
+<showeval codefile="./2015-05-20_code3.xml"/>
+<showeval codefile="./2015-05-20_code4.xml"/>
+<showeval codefile="./2015-05-20_code5.xml"/>
+</slide>
+
+<slide title="Moult fonctionnalités">
+<p>Tout plein d'autres règles et fonctionnalités dans Stog:</p>
+<ul>
+<li>table des matières,</li>
+<li>définition d'environnements (&#8776; <icode>\newenvironment</icode> de <latex>\LaTeX</latex>,
+avec compteurs, etc.),</li>
+<li>structure conditionnelle avec <rule>if</rule>,</li>
+<li>possibilité d'utiliser Stog sur un seul fichier (pour un article, ...),</li>
+<li>système de modules pour grouper des définitions,</li>
+<li>serveur de prévisualisation,</li>
+<li>en cours: édition et prévisualisation en ligne (à la sharelatex),</li>
+<li>...</li>
+</ul>
+</slide>
+
+<slide title="Greffons existants">
+<p>
+Plusieurs greffons disponibles:
+</p>
+<ul>
+<li><doc href="plugins/markdown"/>, <doc href="plugins/asy"/>,
+ <doc href="plugins/dot"/>, <doc href="plugins/multi-doc"/>,</li>
+<li><doc href="plugins/writing"/>: ajout de bibliographies, notes de bas de page, identifiants automatiques pour les paragraphes,</li>
+<li><doc href="plugins/rdf"/>:   génération de graphes RDF associés aux documents.</li>
+</ul>
+<p>
+Les deux derniers visent à permettre l'écriture d'articles scientifiques
+avec des annotations sémantiques comme:
+</p>
+<ul>
+<li>"ce bloc est une preuve de cette proposition",</li>
+<li>"cette preuve utilise ce théorème",</li>
+<li>...</li>
+</ul>
+<div class="center centered">
+<img src="example_rdf2.svg" alt="Exemple de graphe RDF" />
+</div>
+</slide>
+
+<slide title="C'est la fin">
+<h2>Merci de votre attention !</h2>
+<h2>Questions ?</h2>
+</slide>
+
+</contents>
+</slideshow>
