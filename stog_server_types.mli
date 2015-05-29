@@ -37,11 +37,9 @@ type server_message =
 
 type client_msg = [ `Stog_msg of [ `Get of string | `Refresh ] ] [@@deriving yojson]
 
-val wsdata_of_client_msg :
-  [< `Stog_msg of [< `Get of string | `Refresh ] ] -> string
+val wsdata_of_client_msg : client_msg -> string
 
-val client_msg_of_wsdata :
-  string -> [> `Stog_msg of [> `Get of string | `Refresh ] ] option
+val client_msg_of_wsdata : string -> client_msg option
 
 val to_hex : string -> string
 val from_hex : string -> string
