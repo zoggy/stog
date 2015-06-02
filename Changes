@@ -1,4 +1,5 @@
 Next release:
+* stog-ocaml-session: handle -ppx option
 * New stog.sitemap plugin
 * New module Stog_url
 * --host and --port options are replaced by

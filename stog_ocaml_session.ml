@@ -53,8 +53,16 @@ let remove_empty_filename =
   Str.global_replace re "L"
 ;;
 
+let apply_ppx phrase =
+  match phrase with
+  | Parsetree.Ptop_dir _ -> phrase
+  | Parsetree.Ptop_def str ->
+      log "applying ppx";
+      let str = Pparse.apply_rewriters_str ~tool_name: Sys.argv.(0) str in
+      Parsetree.Ptop_def str
 
 let eval_ocaml_phrase phrase =
+  prerr_endline (Printf.sprintf "all_ppx=%s" (String.concat ", " !Clflags.all_ppx));
   try
     let lexbuf = Lexing.from_string phrase in
     let fd_err = Unix.openfile stderr_file
@@ -71,6 +79,7 @@ let eval_ocaml_phrase phrase =
     log ("executing phrase: " ^ phrase);
     let phrase = !Toploop.parse_toplevel_phrase lexbuf in
     log "phrase parsed";
+    let phrase = apply_ppx phrase in
     let ok = Toploop.execute_phrase true Format.str_formatter phrase in
     let output =
       { topout = Format.flush_str_formatter () ;
@@ -150,6 +159,9 @@ let parse_options () =
     [
       "-I", Arg.String add_directory,
       "<dir> add <dir> to the list of include directories" ;
+
+      "-ppx", Arg.String (fun ppx -> Clflags.all_ppx := !Clflags.all_ppx @ [ppx]),
+      "<command>  Pipe abstract syntax trees through preprocessor <command>" ;
 
       "-package", Arg.String option_package,
       "<pkg1[,pkg2[,...]]> add ocamlfind packages to the list of include directories" ;
