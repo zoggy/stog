@@ -62,7 +62,6 @@ let apply_ppx phrase =
       Parsetree.Ptop_def str
 
 let eval_ocaml_phrase phrase =
-  prerr_endline (Printf.sprintf "all_ppx=%s" (String.concat ", " !Clflags.all_ppx));
   try
     let lexbuf = Lexing.from_string phrase in
     let fd_err = Unix.openfile stderr_file
