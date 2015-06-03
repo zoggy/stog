@@ -1,4 +1,6 @@
 Next release:
+* <doc-intro> does not include "next" link with image; it is now
+  in the default doc-in-list template
 * stog-ocaml-session: handle -ppx option
 * New stog.sitemap plugin
 * New module Stog_url

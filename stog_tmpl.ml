@@ -159,14 +159,18 @@ let by_month stog =
 
 let doc_in_list stog =
   let xml = parse
-  "<div itemprop=\"blogPosts\" itemscope=\"\" itemtype=\"http://schema.org/BlogPosting\" class=\"doc-item\">
-     <div class=\"doc-item-title\">
-       <link itemprop=\"url\" href=\"&lt;doc-url/&gt;\"/>
-       <doc href=\"&lt;doc-path/&gt;\"/>
+  {|<div itemprop="blogPosts" itemscope="" itemtype="http://schema.org/BlogPosting" class="doc-item">
+     <div class="doc-item-title">
+       <link itemprop="url" href="&lt;doc-url/&gt;"/>
+       <doc href="&lt;doc-path/&gt;"/>
      </div>
-     <div class=\"date\"><doc-date/></div>
-     <div itemprop=\"headline\" class=\"doc-intro\"><doc-intro/></div>
-  </div>"
+     <div class="date"><doc-date/></div>
+     <div itemprop="headline" class="doc-intro">
+       <doc-intro/>
+       <a href="&lt;doc-url/&gt;"><img alt="read more" src="&lt;site-url/&gt;/next.png"/></a>
+     </div>
+  </div>
+  |}
   in
   (stog, xml)
 ;;

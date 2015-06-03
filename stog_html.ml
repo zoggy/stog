@@ -690,21 +690,7 @@ let intro_of_doc stog doc =
   in
   try
     let xml = iter [] doc.doc_body in
-    let next_url_s =
-      Stog_url.to_string (Stog_url.concat stog.stog_base_url "next.png")
-    in
-    xml @
-    [
-      Xtmpl.E (("", "a"),
-         Xtmpl.atts_one ("", "href") [ Xtmpl.D (Stog_url.to_string (Stog_engine.doc_url stog doc))],
-         [ Xtmpl.E (("", "img"),
-            Xtmpl.atts_of_list
-              [ ("", "src"), [ Xtmpl.D next_url_s ] ;
-                ("", "alt"), [ Xtmpl.D "next"]
-              ],
-            [])]
-        )
-    ]
+    xml
   with
     Not_found -> doc.doc_body
 ;;
@@ -1103,7 +1089,7 @@ and doc_list doc ?rss ?set stog env args _ =
         (Xtmpl.E (("", "div"),
           Xtmpl.atts_one ("", "class") [Xtmpl.D "rss-button"],
           [
-            Xtmpl.E (("", "a"), Xtmpl.atts_one ("", "href") 
+            Xtmpl.E (("", "a"), Xtmpl.atts_one ("", "href")
              [Xtmpl.D (Stog_url.to_string link)],
              [
                Xtmpl.E (("", "img"),
