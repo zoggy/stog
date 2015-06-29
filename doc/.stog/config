@@ -4,5 +4,6 @@ ignore: [ ".*stog-output" , ".*\\.git", ".*Makefile", ".*tmpl$", ".*less$", ".*\
 documents: [".*\\..xml$", ".*\\.html$"],
 
 "not-documents" : [],
-"follow-symlinks" : false
+"follow-symlinks" : false,
+levels: []
 }

@@ -1,4 +1,7 @@
 Next release:
+* upgrade to websocket version XX
+* use Ocf (0.3.0) instead of config-file; as a consequence, configuration
+  files must be translated to JSON syntax.
 * <doc-intro> does not include "next" link with image; it is now
   in the default doc-in-list template
 * stog-ocaml-session: handle -ppx option
