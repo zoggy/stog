@@ -77,15 +77,14 @@ let cache_dir dir = Filename.concat (config_dir dir) "cache";;
 let modules_dir dir = Filename.concat (config_dir dir) "modules";;
 
 let group () =
-  let g = Ocf.group in
   let option_t = Ocf.option t_wrapper default_t in
-  let g = Ocf.add g [] option_t in
+  let g = Ocf.as_group option_t in
   (g, option_t)
 
 let read_config dir =
   let (group, t) = group () in
   let cfg_dir = config_dir dir in
-  let cfg_file = config_file cfg_dir in
+  let cfg_file = config_file dir in
   if not (Sys.file_exists cfg_dir) then
     begin
       Stog_msg.warning
@@ -101,8 +100,3 @@ let read_config dir =
     with
       Ocf.Error e -> failwith (Ocf.string_of_error e)
 ;;
-
-
-
-
-    

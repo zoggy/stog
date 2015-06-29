@@ -94,9 +94,8 @@ type t = {
   } [@@ocf]
 
 let group () =
-  let g = Ocf.group in
   let option_t = Ocf.option t_wrapper default_t in
-  let g = Ocf.add g [] option_t in
+  let g = Ocf.as_group option_t in
   (g, option_t)
 
 let read file =

@@ -52,7 +52,8 @@ type sitemap_data =
         Stog_types.Str_map.fold
           Stog_types.Str_map.add
           Stog_types.Str_map.empty
-          info_wrapper] ;
+          info_wrapper]
+        [@ocf.label "default-by-type"];
       out_file : string
         [@ocf.wrapper W.string]
         [@ocf.label "out-file"]
@@ -60,13 +61,12 @@ type sitemap_data =
     } [@@ocf]
 
 let group data =
-  let g = Ocf.group in
   let w = sitemap_data_wrapper
     ~default_by_type: data.default_by_type
       ~out_file: data.out_file
   in
   let option_t = Ocf.option w data in
-  let g = Ocf.add g [] option_t in
+  let g = Ocf.as_group option_t in
   (g, option_t)
 
 let load_config _ (stog,data) _ =
@@ -118,7 +118,7 @@ let generate =
   let f_doc stog data doc_id doc acc =
     let default =
       try Stog_types.Str_map.find doc.doc_type data.default_by_type
-      with Not_found -> 
+      with Not_found ->
           { in_sitemap = true ;
             frequency = Some "always" ;
             priority = Some "0.5" ;

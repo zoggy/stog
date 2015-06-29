@@ -1,11 +1,14 @@
-(* pairs (doc type, (true|false,
-   ""|always|hourly|daily|weekly|monthly|yearly|never, 0..1.0) telling
-   whether default is to generate documents of the given type in the sitemap,
-   the default change frequency and priority. *)
-"in-sitemap" =
-  [(rss, (false, "", "")); (page, (true, daily, "0.5"));
-   (post, (true, daily, "0.8")); ("by-month", (false, "", ""));
-   ("by-topic", (false, "", "")); ("by-keyword", (false, "", ""));
-   (ocamldoc, (false, "", "")); (plugin, (true, daily, "0.5"))]
-(* file where to generate the sitemap *)
-out_file = "sitemap.xml"
+{
+  "default-by-type": {
+    rss: { "in-sitemap": false},
+    page: { "in-sitemap": true, frequency: "daily", priority: "0.5"},
+    post: { "in-sitemap": true, frequency: "daily", priority: "0.8"},
+    "by-month": { "in-sitemap": false},
+    "by-topic": { "in-sitemap": false},
+    "by-keyword": { "in-sitemap": false},
+    "ocamldoc": { "in-sitemap": false},
+    "plugin": { "in-sitemap": true, frequency: "daily", priority: "0.5"}
+  },
+  "out-file": "file where to generate the sitemap",
+  "out-file": "sitemap.xml"
+}

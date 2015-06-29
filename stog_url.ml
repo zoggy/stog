@@ -134,8 +134,8 @@ let remove ?scheme ?user ?user_param ?password
 let wrapper = W.string_ to_string of_string
 
 let url_config_wrapper =
-  let to_j c =
-    `Assoc ["url", wrapper.W.to_json c.priv ;
+  let to_j ?with_doc c =
+    `Assoc ["url", wrapper.W.to_json ?with_doc c.priv ;
             "public-url", wrapper.W.to_json c.pub ]
   in
   let from_j ?def = function
