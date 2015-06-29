@@ -56,6 +56,7 @@ type t =
        [@ocf Ocf.Wrapper.list Ocf.Wrapper.string,
              [ ]
         ]
+        [@ocf.label "not-documents"]
         [@ocf.doc "Regexps of files matching 'documents' regexps but not containing documents"] ;
     (** list of regexps for file matching documents rules but not being  documents *)
 
