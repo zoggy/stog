@@ -10,8 +10,7 @@ Next release:
 * --host and --port options are replaced by
   --http, --ws, --public-http and --public-ws
 * Multiserver
-* require libev (by now)
-* require Xtmpl >= 0.11
+* require Xtmpl >= 0.12
 
 Release 0.14.0:
 * stog-ocaml-session handles options -w and -warn-error
