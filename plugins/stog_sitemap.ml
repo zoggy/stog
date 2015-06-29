@@ -33,50 +33,51 @@ open Stog_types;;
 let module_name = "sitemap";;
 let rc_file stog = Stog_plug.plugin_config_file stog module_name;;
 
+module W = Ocf.Wrapper
+type info =
+  {
+    in_sitemap : bool [@ocf W.bool, true]
+        [@ocf.label "in-sitemap"] ;
+    frequency : string option
+        [@ocf W.option W.string, None]
+        [@ocf.doc "\"\"|always|hourly|daily|weekly|monthly|yearly|never"];
+    priority : string option
+        [@ocf W.option W.string, None]
+        [@ocf.doc "0..1.0"] ;
+  } [@@ocf]
+
 type sitemap_data =
-  { default_by_type : (bool * string option * string option) Stog_types.Str_map.t ;
-    out_file : string ;
-  }
+    { default_by_type : info Stog_types.Str_map.t
+      [@ocf.wrapper W.string_map
+        Stog_types.Str_map.fold
+          Stog_types.Str_map.add
+          Stog_types.Str_map.empty
+          info_wrapper] ;
+      out_file : string
+        [@ocf.wrapper W.string]
+        [@ocf.label "out-file"]
+        [@ocf.doc "file where to generate the sitemap"];
+    } [@@ocf]
+
+let group data =
+  let g = Ocf.group in
+  let w = sitemap_data_wrapper
+    ~default_by_type: data.default_by_type
+      ~out_file: data.out_file
+  in
+  let option_t = Ocf.option w data in
+  let g = Ocf.add g [] option_t in
+  (g, option_t)
 
 let load_config _ (stog,data) _ =
-  let module CF = Config_file in
-  let group = new CF.group in
-  let default =
-    let default =
-      Stog_types.Str_map.fold
-        (fun typ (b,freq,prio) acc ->
-           let b = if b then "true" else "false" in
-           let freq = Stog_misc.string_of_opt freq in
-           let prio = Stog_misc.string_of_opt prio in
-           (typ, (b, freq, prio)) :: acc) data.default_by_type []
-    in
-    new CF.list_cp
-      (CF.tuple2_wrappers CF.string_wrappers
-       (CF.tuple3_wrappers CF.string_wrappers
-        CF.string_wrappers CF.string_wrappers)
-      ) ~group
-      ["in-sitemap"] default
-      "pairs (doc type, (true|false, \"\"|always|hourly|daily|weekly|monthly|yearly|never, 0..1.0) telling whether default is to generate documents of the given type in the sitemap, the default change frequency and priority."
-  in
-  let out_path = new CF.string_cp ~group ["out_file"] data.out_file
-    "file where to generate the sitemap"
-  in
+  let (group, t) = group data in
   let rc_file = rc_file stog in
-  group#read rc_file;
-  group#write rc_file;
-
-  let default_by_type =
-    let f acc (typ, (b, freq, prio)) =
-      Stog_types.Str_map.add typ
-        (b <> "false",
-         Stog_misc.opt_of_string freq,
-         Stog_misc.opt_of_string prio)
-        acc
-    in
-    List.fold_left f Stog_types.Str_map.empty default#get
-  in
-  let data = { out_file = out_path#get ; default_by_type } in
-  (stog, data)
+  if not (Sys.file_exists rc_file) then Ocf.to_file group rc_file ;
+  try
+    Ocf.from_file group rc_file;
+    (stog, Ocf.get t)
+  with
+  | Ocf.Error e -> failwith (Ocf.string_of_error e)
 ;;
 
 type url_entry = {
@@ -115,13 +116,17 @@ let gen_sitemap stog data entries =
 
 let generate =
   let f_doc stog data doc_id doc acc =
-    let (default_in, default_freq, default_prio) =
+    let default =
       try Stog_types.Str_map.find doc.doc_type data.default_by_type
-      with Not_found -> (true, Some "always", Some "0.5")
+      with Not_found -> 
+          { in_sitemap = true ;
+            frequency = Some "always" ;
+            priority = Some "0.5" ;
+          }
     in
     match
       match Stog_types.get_def doc.doc_defs ("","in-sitemap") with
-        None -> default_in
+        None -> default.in_sitemap
       | Some (_, [Xtmpl.D "false"]) -> false
       | _ -> true
     with
@@ -131,12 +136,12 @@ let generate =
         let url_freq =
           match Stog_types.get_def doc.doc_defs ("","sitemap-frequency") with
           | Some (_, [Xtmpl.D s]) -> Stog_misc.opt_of_string s
-          | _ -> default_freq
+          | _ -> default.frequency
         in
         let url_prio =
           match Stog_types.get_def doc.doc_defs ("","sitemap-priority") with
           | Some (_, [Xtmpl.D s]) -> Stog_misc.opt_of_string s
-          | _ -> default_prio
+          | _ -> default.priority
         in
         { url_loc = Stog_engine.doc_url stog doc ;
           url_lastmod ; url_freq ; url_prio ;

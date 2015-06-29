@@ -42,8 +42,8 @@ type t = {
     git_repo_url : string;
     dir : string;
     stog_dir : string option;
-    editable_files : Str.regexp list;
-    not_editable_files : Str.regexp list;
+    editable_files : string list;
+    not_editable_files : string list;
     http_url : Stog_url.url_config ;
     ws_url : Stog_url.url_config ;
     css_file : string option;

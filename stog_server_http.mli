@@ -43,4 +43,4 @@ val handler :
   ws_url: Stog_url.url_config ->
   string list ->
   Cohttp.Request.t ->
-  (Stog_server_preview.S.Response.t * Cohttp_lwt_body.t) Lwt.t
+  (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t

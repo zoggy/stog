@@ -49,7 +49,7 @@ type stored =
 type stog_info = {
     stog_dir : string ;
     mutable stog_state : Stog_server_run.state option ref ;
-    mutable stog_ws_cons : (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit)) list ref ;
+    mutable stog_ws_cons : (Websocket_lwt.Frame.t Lwt_stream.t * (Websocket_lwt.Frame.t -> unit Lwt.t)) list ref ;
     stog_preview_url : Stog_url.t ;
   }
 

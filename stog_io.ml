@@ -374,8 +374,8 @@ let read_stog dir =
   let stog = read_modules stog in
   let stog =
     let levels = List.fold_left
-      (fun map (name, levels) ->
-         Stog_types.Str_map.add name levels map)
+      (fun map { Stog_config.module_name; levels } ->
+         Stog_types.Str_map.add module_name levels map)
         stog.stog_levels cfg.Stog_config.levels
     in
     { stog with stog_levels = levels }

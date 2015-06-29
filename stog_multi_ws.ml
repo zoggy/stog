@@ -37,8 +37,10 @@ open Stog_multi_gs
 
 let (>>=) = Lwt.bind
 
-let handle_con gs base_path uri (stream, push) =
+let handle_con gs base_path _id req recv push =
   prerr_endline "new connection";
+  let stream = Websocket_lwt.mk_frame_stream recv in
+  let uri = Cohttp.Request.uri req in
   let path = Stog_misc.split_string (Uri.path uri) ['/'] in
   match path with
   | "sessions" :: id :: p ->
@@ -62,14 +64,22 @@ let handle_con gs base_path uri (stream, push) =
 ;;
 
 let server cfg gs sockaddr =
-  Websocket.establish_server sockaddr
-    (handle_con gs (Stog_url.path cfg.ws_url.pub))
+  Websocket_lwt.establish_standard_server
+
 ;;
 
 let run_server cfg gs =
   let host = Stog_url.host cfg.ws_url.priv in
   let port = Stog_url.port cfg.ws_url.priv in
-  prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
-  Stog_server_ws.sockaddr_of_dns host (string_of_int port) >>= fun sa ->
-    Lwt.return (server cfg gs sa)
+  prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));  
+  (* set scheme to http to be resolved correctly *)
+  let uri =
+    let u = Uri.of_string (Stog_url.to_string cfg.ws_url.priv) in
+    Uri.with_scheme u (Some "http")
+  in
+  Resolver_lwt.resolve_uri ~uri Resolver_lwt_unix.system >>= fun endp ->
+  let ctx = Conduit_lwt_unix.default_ctx in
+  Conduit_lwt_unix.endp_to_server ~ctx endp >>= fun server ->
+  let handler = handle_con gs (Stog_url.path cfg.ws_url.pub) in
+  Websocket_lwt.establish_standard_server ~ctx ~mode: server handler
 ;;

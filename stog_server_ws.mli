@@ -34,14 +34,14 @@ val wait_forever : unit -> 'a Lwt.t
 
 (** Send errors and warnings to a list of client connections. *)
 val send_errors :
-  ('a * (Websocket.Frame.t option -> 'b)) list ref ->
+  ('a * (Websocket_lwt.Frame.t-> unit Lwt.t)) list ref ->
   errors:string list -> warnings:string list -> unit Lwt.t
 
 (** [send_patchs  active_cons old_stog stog doc_id] sends, to
   the current list of client connections, a patch from the
   differences in the document [doc_id] between [old_stog] and [stog].*)
 val send_patch :
-  ('a * (Websocket.Frame.t option -> 'b)) list ref ->
+  ('a * (Websocket_lwt.Frame.t -> unit Lwt.t)) list ref ->
   Stog_types.stog ->
   Stog_types.stog -> Stog_types.doc Stog_tmap.key -> unit Lwt.t
 
@@ -50,20 +50,16 @@ val send_patch :
 val handle_messages :
   (unit -> Stog_types.stog) ->
   Stog_server_run.state option ref ->
-  ('a * (Websocket.Frame.t option -> unit)) list ref ->
+  ('a * (Websocket_lwt.Frame.t-> unit Lwt.t)) list ref ->
   string list ->
-  Websocket.Frame.t Lwt_stream.t ->
-  (Websocket.Frame.t option -> unit) -> unit Lwt.t
-
-(** [sockaddr_of_dns host port] create an address from the given host and service name
-  or port number. *)
-val sockaddr_of_dns : string -> string -> Lwt_unix.sockaddr Lwt.t
+  Websocket_lwt.Frame.t Lwt_stream.t ->
+  (Websocket_lwt.Frame.t -> unit Lwt.t) -> unit Lwt.t
 
 (** [read_stog current_state active_cons ws_url base_path] creates a server
   for previewing the documents in the current state. *)
 val run_server :
   (unit -> Stog_types.stog) ->
   Stog_server_run.state option ref ->
-  (Websocket.Frame.t Lwt_stream.t * (Websocket.Frame.t option -> unit)) list ref ->
-    Stog_url.url_config -> string list -> Websocket.server Lwt.t
+  (Websocket_lwt.Frame.t Lwt_stream.t * (Websocket_lwt.Frame.t -> unit Lwt.t)) list ref ->
+    Stog_url.url_config -> string list -> unit Lwt.t
 

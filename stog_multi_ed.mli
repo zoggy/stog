@@ -50,4 +50,4 @@ val http_handler :
   string ->
   'a ->
   'b ->
-  string list -> (Stog_server_preview.S.Response.t * Cohttp_lwt_body.t) Lwt.t
+  string list -> (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t

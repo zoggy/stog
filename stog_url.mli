@@ -30,7 +30,12 @@
 (** URLs. *)
 
 type t
-type url_config = { pub : t; priv : t }
+
+val wrapper : t Ocf.wrapper
+
+type url_config = { pub : t ; priv : t }
+val url_config_wrapper : url_config Ocf.wrapper
+val default_url_config : t -> url_config
 
 val of_string : string -> t
 val to_string : t -> string

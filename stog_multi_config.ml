@@ -29,133 +29,118 @@
 
 (** *)
 
-module CF = Config_file
 open Stog_url
 
+module W = Ocf.Wrapper
+
 type sha256 = string (* hexadecimal representation of SHA256 digest *)
+
 type account = {
-    login: string ;
-    name : string ;
-    email: string ;
-    passwd: sha256 ;
-  }
+    login: string [@ocf W.string, ""];
+    name : string [@ocf W.string, ""];
+    email: string [@ocf W.string, ""];
+    passwd: sha256 [@ocf W.string, ""];
+  } [@@ocf]
+
 type t = {
-    accounts : account list ;
-    ssh_priv_key : string option;
-    git_repo_url : string ;
-    dir : string ;
-    stog_dir : string option ;
-    editable_files : Str.regexp list ;
-    not_editable_files : Str.regexp list ;
-    http_url : Stog_url.url_config ;
-    ws_url : Stog_url.url_config ;
-    css_file : string option ;
-  }
+    accounts : account list [@ocf W.list account_wrapper, []] ;
+
+    ssh_priv_key : string option
+        [@ocf W.option W.string, None]
+        [@ocf.label "ssh-priv-key"]
+        [@ocf.doc "Private SSH key to access repository"] ;
+
+    git_repo_url : string
+        [@ocf W.string, ""]
+        [@ocf.label "repository-url"]
+        [@ocf.doc "URL of git repository"];
+
+    dir : string
+        [@ocf W.string, ""]
+        [@ocf.label "directory"]
+        [@ocf.doc "Directory where to clone repositories"] ;
+
+    stog_dir : string option
+        [@ocf W.option W.string, None]
+        [@ocf.label "stog-directory"]
+        [@ocf.doc "Optional subdirectory where to run stog in a clone"];
+
+    editable_files : string list
+        [@ocf W.list W.string, [] ]
+        [@ocf.label "editable-files"]
+        [@ocf.doc "Regexps of files to be able to edit"];
+
+    not_editable_files : string list
+        [@ocf W.list W.string, [] ]
+        [@ocf.label "not-editable-files"]
+        [@ocf.doc "Regexps of files not to be able to edit"];
+
+    http_url : Stog_url.url_config
+      [@ocf Stog_url.url_config_wrapper,
+        Stog_url.default_url_config (Stog_url.of_string "http://localhost:8080")]
+        [@ocf.label "http-server"]
+        [@ocf.doc "URL of HTTP server"];
+
+    ws_url : Stog_url.url_config
+      [@ocf Stog_url.url_config_wrapper,
+          Stog_url.default_url_config (Stog_url.of_string "ws://localhost:8081")]
+        [@ocf.label "ws-server"]
+        [@ocf.doc "URL of websocket server"];
+
+    css_file : string option
+        [@ocf W.option W.string, None]
+        [@ocf.label "css-file"]
+        [@ocf.doc "File to serve as default CSS file"] ;
+  } [@@ocf]
+
+let group () =
+  let g = Ocf.group in
+  let option_t = Ocf.option t_wrapper default_t in
+  let g = Ocf.add g [] option_t in
+  (g, option_t)
 
 let read file =
-  let group = new CF.group in
-  let o_accounts = new CF.list_cp
-    (CF.tuple4_wrappers CF.string_wrappers CF.string_wrappers CF.string_wrappers CF.string_wrappers)
-      ~group
-      ["accounts"] [ ] "triples (login, name, email, sha256-hashed password)"
-  in
-  let o_dir = new CF.string_cp ~group
-    ["directory"] "" "Directory where to clone repositories"
-  in
-  let o_stog_dir = new CF.string_cp ~group
-    ["stog-directory"] "" "Optional subdirectory where to run stog in a clone"
-  in
-  let o_ssh = new CF.string_cp ~group
-    ["ssh-priv-key"] "" "Private SSH key to access repository"
-  in
-  let o_git_repo = new CF.string_cp ~group
-    ["repository-url"] "" "URL of git repository"
-  in
-  let o_editable = new CF.list_cp CF.string_wrappers ~group
-    ["editable-files"] []
-      "Regexps of files to be able to edit"
-  in
-  let o_not_editable = new CF.list_cp CF.string_wrappers ~group
-    ["not-editable-files"] []
-      "Regexps of files not to be able to edit"
-  in
-  let o_http_url = new CF.string_cp ~group
-    ["http-url"] "http://localhost:8080" "URL of HTTP server"
-  in
-  let o_ws_url = new CF.string_cp ~group
-    ["ws-url"] "ws://localhost:8081" "URL of websocket server"
-  in
-  let o_public_http_url = new CF.option_cp CF.string_wrappers ~group
-    ["public-http-url"] None "Public URL of HTTP server"
-  in
-  let o_public_ws_url = new CF.option_cp CF.string_wrappers ~group
-    ["public-ws-url"] None "Public URL of websocket server"
-  in
-  let o_css_file = new CF.option_cp CF.string_wrappers ~group
-    ["css-file"] None "File to serve as default CSS file"
-  in
+  let (group, t) = group () in
   if not (Sys.file_exists file) then
     begin
-      group#write file;
+      Ocf.to_file group file;
       failwith (Printf.sprintf "Empty configuration file %S created, please edit it" file);
     end;
-
   try
-    group#read file;
-    let accounts = List.map
-      (fun (login, name, email, passwd) -> { login ; name ; email ; passwd })
-        o_accounts#get
+    Ocf.from_file group file ;
+    let t = Ocf.get t in
+    let t =
+      let dir =
+        match t.dir with
+        | "" -> Sys.getcwd ()
+        | s when Filename.is_relative s -> Filename.concat (Sys.getcwd ()) s
+        | s -> s
+      in
+      { t with dir }
     in
-    let dir =
-      match o_dir#get with
-      | "" -> Sys.getcwd ()
-      | s when Filename.is_relative s -> Filename.concat (Sys.getcwd ()) s
-      | s -> s
-    in
-    let ssh_priv_key =
-      let file = o_ssh#get in
-      match file with
-        "" -> None
-      | _ ->
+    let t =
+      match t.ssh_priv_key with
+      | None -> t
+      | Some file ->
           let f =
             if Filename.is_relative file then
               Filename.concat (Sys.getcwd ()) file
             else
               file
           in
-        Some f
+          { t with ssh_priv_key = Some f }
     in
-    let map_url str =
-      let url = Stog_url.of_string str in
-      Stog_url.remove_ending_slash url
+    let map_url c =
+      { pub = Stog_url.remove_ending_slash c.Stog_url.pub ;
+        priv = Stog_url.remove_ending_slash c.Stog_url.priv ;
+      }
     in
-    let http_url = map_url o_http_url#get in
-    let ws_url = map_url o_ws_url#get in
-    let public_http_url =
-      match o_public_http_url#get with
-        None -> http_url
-      | Some u -> map_url u
-    in
-    let public_ws_url =
-      match o_public_ws_url#get with
-        None -> ws_url
-      | Some u -> map_url u
-    in
-    (*prerr_endline "app_url path:";
-    List.iter prerr_endline (Stog_types.url_path app_url);*)
-    { accounts ;
-      ssh_priv_key ;
-      git_repo_url = o_git_repo#get ;
-      dir ;
-      stog_dir = (match o_stog_dir#get with "" -> None | s -> Some s);
-      editable_files = List.map Str.regexp o_editable#get ;
-      not_editable_files = List.map Str.regexp o_not_editable#get ;
-      http_url = { pub = public_http_url ; priv = http_url } ;
-      ws_url = { pub = public_ws_url ; priv = ws_url } ;
-      css_file = o_css_file#get ;
-    }
+    let t = { t with http_url = map_url t.http_url } in
+    let t = { t with ws_url = map_url t.ws_url } in
+    t
   with
-    e ->
+    Ocf.Error e -> failwith (Ocf.string_of_error e)
+  | e ->
       let msg =
         match e with
           Sys_error s | Failure s -> s

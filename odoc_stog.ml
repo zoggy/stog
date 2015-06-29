@@ -43,14 +43,14 @@ module Find = struct
     open Unix
 
     type filter =
-	Maxdepth of int
+      Maxdepth of int
       | Type of Unix.file_kind
       | Follow
       | Regexp of Str.regexp
       | Atime of interval
       | Predicate of (string -> bool)
     and interval =
-	Le of int | Eq of int | Ge of int
+      Le of int | Eq of int | Ge of int
 
     type mode =
       | Ignore
@@ -82,7 +82,7 @@ module Find = struct
     let ignore_handler _ = ()
     let failure_handler (e,b,c) = raise (Hide (Unix_error (e, b, c)))
     let handler = function
-	Stderr -> stderr_handler
+      Stderr -> stderr_handler
       | Ignore -> ignore_handler
       | Failure -> failure_handler
       | Custom h -> pathe_exn h

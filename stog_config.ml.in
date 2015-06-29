@@ -1,3 +1,4 @@
+#2 "stog_config.ml.in"
 (*********************************************************************************)
 (*                Stog                                                           *)
 (*                                                                               *)
@@ -28,17 +29,46 @@
 
 (** *)
 
-type t =
-  { ignored : string list ; (** list of regexps of filenames to ignore *)
-    documents : string list ; (** list of regexps for document files *)
-    not_documents : string list ;
-    (** list of regexps for file matching documents rules but not being  documents *)
-    follow_symlinks : bool ;
-    levels : (string * (string * int list) list) list ;
-  }
-;;
+let str_int_list_wrapper =
+  Ocf.Wrapper.(list (pair string (list int)))
 
-module CF = Config_file;;
+type module_levels = {
+  module_name : string  [@ocf Ocf.Wrapper.string, ""][@ocf.label "module"];
+  levels : (string * int list) list [@ocf str_int_list_wrapper, []];
+  } [@@ocf]
+
+type t =
+  { ignored : string list
+      [@ocf Ocf.Wrapper.list Ocf.Wrapper.string,
+            [".*\\.git" ; ".*Makefile" ; ".*tmpl$" ; ".*/stog-output"]
+      ]
+      [@ocf.doc "Regexps of files to ignore"] ;
+    (** list of regexps of filenames to ignore *)
+
+    documents : string list
+       [@ocf Ocf.Wrapper.list Ocf.Wrapper.string,
+         [ ".*\\.xml$" ; ".*\\.html$" ]
+       ]
+       [@ocf.doc "Regexps of files containing documents"] ;
+    (** list of regexps for document files *)
+
+    not_documents : string list
+       [@ocf Ocf.Wrapper.list Ocf.Wrapper.string,
+             [ ]
+        ]
+        [@ocf.doc "Regexps of files matching 'documents' regexps but not containing documents"] ;
+    (** list of regexps for file matching documents rules but not being  documents *)
+
+    follow_symlinks : bool
+       [@ocf Ocf.Wrapper.bool, false]
+       [@ocf.doc "follow symlinks when bulding source file and directory tree"];
+
+    levels : module_levels list
+      [@ocf Ocf.Wrapper.list module_levels_wrapper, []]
+      [@ocf.doc  "Run levels of modules, for example:
+      [ { module: \"html\", levels: [ (\"base\", [ 0 ; 61 ]) ] ) ]} " ];
+  } [@@ocf]
+;;
 
 let config_dir dir = Filename.concat dir ".stog";;
 let config_file dir = Filename.concat (config_dir dir) "config";;
@@ -46,43 +76,30 @@ let tmpl_dir dir = Filename.concat (config_dir dir) "templates";;
 let cache_dir dir = Filename.concat (config_dir dir) "cache";;
 let modules_dir dir = Filename.concat (config_dir dir) "modules";;
 
+let group () =
+  let g = Ocf.group in
+  let option_t = Ocf.option t_wrapper default_t in
+  let g = Ocf.add g [] option_t in
+  (g, option_t)
+
 let read_config dir =
-  let rc_file = config_file dir in
-  let group = new CF.group in
-  let o_ignored = new CF.list_cp CF.string_wrappers ~group
-    ["ignored"] [ ".*\\.git" ; ".*Makefile" ; ".*tmpl$" ] "Regexps of files to ignore"
-  in
-  let o_docs = new CF.list_cp CF.string_wrappers ~group
-    ["documents"] [ ".*\\.xml$" ; ".*\\.html$" ] "Regexps of files containing documents"
-  in
-  let o_not_docs = new CF.list_cp CF.string_wrappers ~group
-    ["not-documents"] [ ]
-    "Regexps of files matching 'documents' regexps but not containing documents"
-  in
-  let follow_symlinks = new CF.bool_cp ~group ["follow-symlinks"] false
-    "follow symlinks when bulding source file and directory tree"
-  in
-  let levels = new CF.list_cp
-    (CF.tuple2_wrappers CF.string_wrappers
-     (CF.list_wrappers (CF.tuple2_wrappers CF.string_wrappers (CF.list_wrappers CF.int_wrappers))))
-     ~group ["levels"] []
-     "Run levels of modules, for example:
-      [ (\"html\", [ (\"base\", [ 0 ; 61 ]) ] ) ]"
-  in
+  let (group, t) = group () in
   let cfg_dir = config_dir dir in
+  let cfg_file = config_file cfg_dir in
   if not (Sys.file_exists cfg_dir) then
     begin
       Stog_msg.warning
         (Printf.sprintf "Creating non-existent configuration directory %S" cfg_dir);
       Stog_misc.safe_mkdir cfg_dir;
-    end;
-  group#read rc_file;
-  { ignored = o_ignored#get ;
-    documents = o_docs#get ;
-    not_documents = o_not_docs#get ;
-    follow_symlinks = follow_symlinks#get ;
-    levels = levels#get ;
-  }
+      Ocf.to_file group cfg_file ;
+      Ocf.get t
+    end
+  else
+    try
+      Ocf.from_file group cfg_file;
+      Ocf.get t
+    with
+      Ocf.Error e -> failwith (Ocf.string_of_error e)
 ;;
 
 

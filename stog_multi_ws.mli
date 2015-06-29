@@ -31,4 +31,4 @@
 
 val run_server :
   Stog_multi_config.t ->
-  Stog_multi_gs.global_state -> Websocket.server Lwt.t
+  Stog_multi_gs.global_state -> unit Lwt.t

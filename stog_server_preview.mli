@@ -38,14 +38,14 @@ val client_js : string
 val default_css : string
 
 (** Respond the given string with CSS mime-type. *)
-val respond_css : string -> (S.Response.t * Cohttp_lwt_body.t) Lwt.t
+val respond_css : string -> (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t
 
 (** Respond the content of the given javascript file, looked up in
   server embedded files. *)
-val respond_server_js : string -> (S.Response.t * Cohttp_lwt_body.t) Lwt.t
+val respond_server_js : string -> (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t
 
 (** Respond the default server CSS file *)
-val respond_default_css : unit -> (S.Response.t * Cohttp_lwt_body.t) Lwt.t
+val respond_default_css : unit -> (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t
 
 (** [handle_preview http_url ws_url current_state req path] responds the
   preview page, which contains a reference to client javascript code
@@ -55,7 +55,7 @@ val handle_preview :
   ws_url: Stog_url.url_config ->
   Stog_server_run.state option ref ->
   Cohttp.Request.t ->
-  string list -> (S.Response.t * Cohttp_lwt_body.t) Lwt.t
+  string list -> (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t
 
 (** [new_stog_session stog stog_base_url] returns a fresh stog state reference
   and a fresh connection list reference. *)
@@ -63,4 +63,4 @@ val new_stog_session :
   Stog_types.stog ->
   Stog_url.t ->
   Stog_server_run.state option ref *
-  ('a * (Websocket.Frame.t option -> 'b)) list ref
+  ('a * (Websocket_lwt.Frame.t -> unit Lwt.t)) list ref

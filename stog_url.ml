@@ -31,7 +31,9 @@
 
 type t = Neturl.url
 
-type url_config = { pub : t ; priv : t }
+module W = Ocf.Wrapper
+
+type url_config = { pub : t; priv: t }
 
 (* register ws and wss url syntaxes, using http syntax *)
 let () =
@@ -128,3 +130,30 @@ let remove ?scheme ?user ?user_param ?password
         ?host ?port ?path ?param ?query ?fragment ?other t
     with Neturl.Malformed_URL ->
         failwith (Printf.sprintf "Malformed_URL: %s" (to_string t))
+
+let wrapper = W.string_ to_string of_string
+
+let url_config_wrapper =
+  let to_j c =
+    `Assoc ["url", wrapper.W.to_json c.priv ;
+            "public-url", wrapper.W.to_json c.pub ]
+  in
+  let from_j ?def = function
+    (`Assoc l) as json ->
+      begin
+        match try Some (List.assoc "url" l) with Not_found -> None with
+          None -> Ocf.invalid_value json
+        | Some priv ->
+            let priv = wrapper.W.from_json priv in
+            let pub =
+              try wrapper.W.from_json (List.assoc "public-url" l)
+              with Not_found -> priv
+            in
+            { pub ; priv }
+      end
+  | json ->
+      let priv = wrapper.W.from_json json in
+      { pub = priv ; priv }
+  in
+  W.make to_j from_j
+let default_url_config url = { pub = url ; priv = url }

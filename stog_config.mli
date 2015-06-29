@@ -29,13 +29,19 @@
 
 (** Reading stog config. *)
 
+
+type module_levels = {
+  module_name : string ;
+  levels : (string * int list) list ;
+  } [@@ocf]
+
 (** Contents of [.stog/config] file. *)
 type t = {
     ignored : string list;
     documents : string list;
     not_documents : string list;
     follow_symlinks : bool ;
-    levels : (string * (string * int list) list) list ;
+    levels : module_levels list ;
   }
 
 (** [config_dir dir] returns the stog configuration directory in the given directory. *)
