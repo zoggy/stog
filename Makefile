@@ -41,6 +41,7 @@ PLUGINS_BYTE= \
 	plugins/stog_asy.cmo \
 	plugins/stog_disqus.cmo \
 	plugins/stog_dot.cmo \
+	plugins/stog_extern.cmo \
 	plugins/stog_markdown.cmo \
 	plugins/stog_multi_doc.cmo \
 	plugins/stog_nocaml.cmo \

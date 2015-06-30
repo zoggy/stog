@@ -36,8 +36,8 @@ STOG_SERVER=$(STOGDIR)/stog-server
 DEST_DIR=`pwd`/../doc-output
 BASE_URL_OPTION=
 STOG_OPTIONS=\
-  --plugin ../plugins/stog_dot.cmxs \
 	--plugin ../plugins/stog_asy.cmxs \
+  --plugin ../plugins/stog_dot.cmxs \
 	--plugin ../plugins/stog_markdown.cmxs \
 	--plugin ../plugins/stog_multi_doc.cmxs \
 	--plugin ../plugins/stog_disqus.cmxs \

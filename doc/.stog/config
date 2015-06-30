@@ -8,5 +8,7 @@
   documents: [".*\\..xml$", ".*\\.html$"],
   "not-documents" : [],
   "follow-symlinks" : false,
-  levels: []
+  levels: [
+    { module: "extern", levels: [("cat", [1000])] }
+  ]
 }

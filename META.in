@@ -42,6 +42,15 @@ package "dot" (
   archive(plugin,native) = "stog_dot.cmxs"
 )
 
+package "extern" (
+  version = "@VERSION@"
+  description = "Stog extern plugin"
+  archive(byte) = "stog_extern.cmo"
+  archive(native) = "stog_extern.cmx"
+  archive(plugin,byte) = "stog_extern.cmo"
+  archive(plugin,native) = "stog_extern.cmxs"
+)
+
 package "multi-doc" (
   version = "@VERSION@"
   description = "Stog multi-document plugin"
