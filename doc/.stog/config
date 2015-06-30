@@ -1,9 +1,12 @@
 {
-ignore: [ ".*stog-output" , ".*\\.git", ".*Makefile", ".*tmpl$", ".*less$", ".*\\.chamo.*", ".*/test.*" , ".*/log$" , ".*/slides/inria_code.*\\.xml" ],
-
-documents: [".*\\..xml$", ".*\\.html$"],
-
-"not-documents" : [],
-"follow-symlinks" : false,
-levels: []
+  ignore: [ ".*stog-output" , ".*\\.git",
+            ".*Makefile", ".*tmpl$", ".*less$",
+            ".*\\.chamo.*", ".*/test.*" ,
+            ".*/log$",
+            ".*/slides/inria_code.*\\.xml"
+          ],
+  documents: [".*\\..xml$", ".*\\.html$"],
+  "not-documents" : [],
+  "follow-symlinks" : false,
+  levels: []
 }
