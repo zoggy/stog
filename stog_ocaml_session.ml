@@ -158,7 +158,10 @@ let parse_options () =
     [
       "-I", Arg.String add_directory,
       "<dir> add <dir> to the list of include directories" ;
-
+(*
+      "-pp", Arg.String (fun pp -> Clflags.preprocessor := Some pp),
+      "<command>  Pipe sources through preprocessor <command>" ;
+*)
       "-ppx", Arg.String (fun ppx -> Clflags.all_ppx := !Clflags.all_ppx @ [ppx]),
       "<command>  Pipe abstract syntax trees through preprocessor <command>" ;
 
