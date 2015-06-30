@@ -68,7 +68,8 @@ plugins/rdf_fig.svg: plugins/rdf_fig.dot
 
 style:
 	mkdir -p $(DEST_DIR)
-	$(LESSC) less/style.less > $(DEST_DIR)/style.css
+	$(LESSC) less/style.less > style.css
+	$(CP) style.css $(DEST_DIR)/style.css
 	$(LESSC) less/slides.less > $(DEST_DIR)/slides.css
 	$(LESSC) less/video-style.less > $(DEST_DIR)/video-style.css
 
