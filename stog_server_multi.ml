@@ -100,8 +100,8 @@ let handle_login_post cfg gs req body =
   | account ->
       let token = new_token () in
       add_logged gs token account;
-      let cookie = 
-        let path = 
+      let cookie =
+        let path =
           ("/"^(String.concat "/" (Stog_url.path cfg.http_url.priv)))
         in
         Cohttp.Cookie.Set_cookie_hdr.make
@@ -290,8 +290,8 @@ let launch ~http_url ~ws_url args =
     }
   in
   restart_previous_sessions cfg gs.sessions ;
-  Stog_multi_ws.run_server cfg gs >>=
-  fun _ -> start_server cfg gs ~http_url: cfg.http_url ~ws_url: cfg.ws_url
+  let _ws_server = Stog_multi_ws.run_server cfg gs in
+  start_server cfg gs ~http_url: cfg.http_url ~ws_url: cfg.ws_url
 
 let () =
   let run ~http_url ~ws_url args = Lwt_main.run (launch ~http_url ~ws_url args) in

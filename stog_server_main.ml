@@ -70,8 +70,10 @@ let launch read_stog stog ~http_url ~ws_url base_path =
     stog
   in
   let (current_state, active_cons) = new_stog_session stog ~http_url base_path in
-  Stog_server_ws.run_server read_stog current_state active_cons ws_url base_path >>=
-    fun _ -> start_server current_state ~http_url ~ws_url base_path
+  let _ws_server =
+    Stog_server_ws.run_server read_stog current_state active_cons ws_url base_path
+  in
+  start_server current_state ~http_url ~ws_url base_path
 
 let () =
   let run read_stog stog ~http_url ~ws_url =

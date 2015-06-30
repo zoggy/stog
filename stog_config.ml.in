@@ -62,6 +62,7 @@ type t =
 
     follow_symlinks : bool
        [@ocf Ocf.Wrapper.bool, false]
+       [@ocf.label "follow-symlinks"]
        [@ocf.doc "follow symlinks when bulding source file and directory tree"];
 
     levels : module_levels list
