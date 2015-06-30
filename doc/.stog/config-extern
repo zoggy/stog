@@ -1,7 +1,5 @@
-{ "actions": [
-   { name:"cat",
-     types: ["post"],
-     command: "(tidy -utf8 -asxml 2>/dev/null ; if `test \"$?\" = \"1\"`; then echo; fi)"
-   }
+{
+  actions: [
+    { name: "my-action", types: ["post", "page"], command: "cat" }
   ]
 }

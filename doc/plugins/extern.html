@@ -1,0 +1,37 @@
+<plugin title="Stog-extern">
+<p>This plugin allows to use external commands to modify documents during their
+computation.
+</p>
+
+<p>Usage:</p>
+<command-line>$ stog --package stog.extern ... </command-line>
+
+<p><em>Actions</em> are defined in the <code>.stog/config-extern</code>
+configuration file. Each action
+has a name and associates a list of document types and a command.
+Here is an example of such a file:</p>
+<hcode lang="json" defer_="1"><include file="../.stog/config-extern"/></hcode>
+<p>
+The dummy example above defines a new action <code>my-action</code>, with
+a command <code>cat</code> that will be applied on documents of type
+<code>post</code> or <code>page</code>. For each document matching the
+type condition, the command will be given on stdin the current XML content
+of the document and must output the result (valid XML) on stdout.
+</p>
+<p>
+We also have to indicate when this action will take place. This is done
+in the <code>.stog/config</code> file, in variable <code>levels</code>:
+</p>
+<hcode lang="json">
+{
+  ...
+  levels: [
+    { module: "extern", levels: [("my-action", [1000])] }
+  ]
+}
+</hcode>
+<p>Here, <code>my-action</code> will be applied at level 1000. The same
+action can be applied in various levels. And of course, several actions can
+be defined, with different commands and applied to different types of documents.
+</p>
+</plugin>

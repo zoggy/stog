@@ -9,6 +9,6 @@
   "not-documents" : [],
   "follow-symlinks" : false,
   levels: [
-    { module: "extern", levels: [("cat", [1000])] }
+    { module: "extern", levels: [("my-action", [1000])] }
   ]
 }
