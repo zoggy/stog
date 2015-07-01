@@ -1,7 +1,7 @@
 (*********************************************************************************)
 (*                Stog                                                           *)
 (*                                                                               *)
-(*    Copyright (C) 2012-2014 INRIA All rights reserved.                         *)
+(*    Copyright (C) 2012-2015 INRIA All rights reserved.                         *)
 (*    Author: Maxence Guesdon, INRIA Saclay                                      *)
 (*                                                                               *)
 (*    This program is free software; you can redistribute it and/or modify       *)
