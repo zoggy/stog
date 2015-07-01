@@ -49,24 +49,11 @@ let respond_js body =
   let headers = Cohttp.Header.init_with "Content-Type" "text/javscript" in
   S.respond_string ~headers ~status: `OK ~body ()
 
-let respond_server_js file =
-  let body =
-    match Stog_server_files.read file with
-      None -> ""
-    | Some s -> s
-  in
-  respond_js body
-
-let respond_default_css () =
-  let body =
-    match Stog_server_files.read default_css with
-      None -> ""
-    | Some s -> s
-  in
-  respond_css body
+let respond_server_client_js = respond_js Stog_server_files.server_client_js
+let respond_default_css = respond_css Stog_server_files.server_style_css
 
 let rec preview_file stog = function
-| [file] when file = client_js -> respond_server_js file
+| [file] when file = client_js -> respond_server_client_js
 | path ->
     let rec iter tree = function
       [] -> S.respond_file ~fname: "" ()

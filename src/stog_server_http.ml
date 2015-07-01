@@ -54,7 +54,7 @@ let handler current_state ~http_url ~ws_url base_path req =
   let path = path_after_base base_path path in
   match path with
   | [ "styles" ; file ] when file = Stog_server_preview.default_css ->
-      Stog_server_preview.respond_default_css ()
+      Stog_server_preview.respond_default_css
 
   | "preview" :: path ->
       let http_url =

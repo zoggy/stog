@@ -121,7 +121,8 @@ let editor_page cfg user ~http_url ~ws_url base_path session_id =
   page cfg (Some user) ~ws_url ~title ~client_js_url
 
 let http_handler cfg user ~http_url ~ws_url base_path session_id req body = function
-| [s] when s = client_js -> Stog_server_preview.respond_server_js client_js
+| [s] when s = client_js ->
+    Stog_server_preview.respond_js Stog_server_files.multi_ed_js
 | [] | [""] ->
     let body = editor_page cfg user ~http_url ~ws_url base_path session_id in
     let body = Xtmpl.string_of_xmls body in

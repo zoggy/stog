@@ -594,7 +594,6 @@ SERVER_JS_PACKAGES
 SERVER_PACKAGES
 OCAML_SESSION_PACKAGES
 PACKAGES
-OCAML_CRUNCH
 JS_OF_OCAML
 SHARE_DIR
 PACKAGE
@@ -1719,7 +1718,7 @@ SHARE_DIR=$datadir
 
 PACKAGES=xmlm,xtmpl,netstring,ocf,ocf.ppx,dynlink,unix,str,higlo.lexers
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
-SERVER_PACKAGES=lwt.unix,lwt.preemptive,lwt.ppx,websocket,cstruct,crunch,xmldiff,yojson,ppx_deriving_yojson,ojs.server,sha
+SERVER_PACKAGES=ppx_blob,lwt.unix,lwt.preemptive,lwt.ppx,websocket,cstruct,xmldiff,yojson,ppx_deriving_yojson,ojs.server,sha
 SERVER_JS_PACKAGES=js_of_ocaml,js_of_ocaml.syntax,xmldiff.js,yojson,ppx_deriving_yojson,ojs.js,xtmpl.js
 MSERVER_PACKAGES=ojs.filetree.server,ojs.editor.server
 MSERVER_JS_PACKAGES=ojs.filetree.js,ojs.editor.js
@@ -1759,9 +1758,8 @@ if test "$SERVER" = "" ; then SERVER_PACKAGES=""; MSERVER_PACKAGES="" ; fi
 
 
 
-
 # Finally create the master.Makefile.in
-ACFILES="master.Makefile META stog_config.ml stog_install.ml"
+ACFILES="master.Makefile src/META src/stog_config.ml src/stog_install.ml"
 ac_config_files="$ac_config_files $ACFILES"
 
 cat >confcache <<\_ACEOF
@@ -2920,9 +2918,9 @@ $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
 
 chmod a-w master.Makefile
-chmod a-w META
-chmod a-w stog_config.ml
-chmod a-w stog_install.ml
+chmod a-w src/META
+chmod a-w src/stog_config.ml
+chmod a-w src/stog_install.ml
 
 echo "
 ### Results of configuration ###

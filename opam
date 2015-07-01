@@ -36,7 +36,7 @@ depopts: [
   "lwt" { >= "2.4.5" }
   "websocket" { >= "0.8.1" }
   "cstruct" { >= "0.3.1" }
-  "crunch" { >= "1.1.0" }
+  "ppx_blob" { >= "0.1" }
   "ojs-base" { >= "0.3" }
 ]
 

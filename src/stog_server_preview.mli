@@ -37,15 +37,18 @@ val client_js : string
 (** The default server CSS file in files embedded in server *)
 val default_css : string
 
+(** Respond the given string with javascript mime-type. *)
+val respond_js : string -> (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t
+
 (** Respond the given string with CSS mime-type. *)
 val respond_css : string -> (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t
 
 (** Respond the content of the given javascript file, looked up in
   server embedded files. *)
-val respond_server_js : string -> (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t
+val respond_server_client_js : (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t
 
 (** Respond the default server CSS file *)
-val respond_default_css : unit -> (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t
+val respond_default_css : (Cohttp.Response.t * Cohttp_lwt_body.t) Lwt.t
 
 (** [handle_preview http_url ws_url current_state req path] responds the
   preview page, which contains a reference to client javascript code

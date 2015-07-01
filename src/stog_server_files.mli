@@ -27,7 +27,8 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Access to embedded ("crunched") files *)
+(** Access to embedded files *)
 
-val size : string -> int64 option
-val read : string -> string option
+val server_client_js : string
+val multi_ed_js : string
+val server_style_css : string

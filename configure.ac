@@ -57,7 +57,7 @@ SHARE_DIR=$datadir
 
 PACKAGES=xmlm,xtmpl,netstring,ocf,ocf.ppx,dynlink,unix,str,higlo.lexers
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
-SERVER_PACKAGES=lwt.unix,lwt.preemptive,lwt.ppx,websocket,cstruct,crunch,xmldiff,yojson,ppx_deriving_yojson,ojs.server,sha
+SERVER_PACKAGES=ppx_blob,lwt.unix,lwt.preemptive,lwt.ppx,websocket,cstruct,xmldiff,yojson,ppx_deriving_yojson,ojs.server,sha
 SERVER_JS_PACKAGES=js_of_ocaml,js_of_ocaml.syntax,xmldiff.js,yojson,ppx_deriving_yojson,ojs.js,xtmpl.js
 MSERVER_PACKAGES=ojs.filetree.server,ojs.editor.server
 MSERVER_JS_PACKAGES=ojs.filetree.js,ojs.editor.js
@@ -85,7 +85,6 @@ AC_SUBST(VERSION)
 AC_SUBST(PACKAGE)
 AC_SUBST(SHARE_DIR)
 AC_SUBST(JS_OF_OCAML)
-AC_SUBST(OCAML_CRUNCH)
 
 AC_SUBST(PACKAGES)
 AC_SUBST(OCAML_SESSION_PACKAGES)
@@ -99,12 +98,12 @@ AC_SUBST(MSERVER)
 AC_SUBST(MSERVER_BYTE)
 
 # Finally create the master.Makefile.in
-ACFILES="master.Makefile META stog_config.ml stog_install.ml"
+ACFILES="master.Makefile src/META src/stog_config.ml src/stog_install.ml"
 AC_OUTPUT($ACFILES)
 chmod a-w master.Makefile
-chmod a-w META
-chmod a-w stog_config.ml
-chmod a-w stog_install.ml
+chmod a-w src/META
+chmod a-w src/stog_config.ml
+chmod a-w src/stog_install.ml
 
 echo "
 ### Results of configuration ###

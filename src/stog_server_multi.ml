@@ -172,7 +172,7 @@ let handle_path cfg gs ~http_url ~ws_url sock opt_user req body = function
 | ["styles" ; s] when s = Stog_server_preview.default_css ->
     begin
       match cfg.css_file with
-      | None -> Stog_server_preview.respond_default_css ()
+      | None -> Stog_server_preview.respond_default_css
       | Some file ->
           let body =
             try Stog_misc.string_of_file file
@@ -208,7 +208,7 @@ let handle_path cfg gs ~http_url ~ws_url sock opt_user req body = function
           | session ->
               match q with
               | ["styles" ; s] when s = Stog_server_preview.default_css ->
-                  Stog_server_preview.respond_default_css ()
+                  Stog_server_preview.respond_default_css
 
               | "preview" :: _ ->
                   let base_path =
