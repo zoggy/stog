@@ -1,4 +1,5 @@
 Next release:
+* Use ppx_blob instead of ocaml-crunch
 * New stog.extern plugin
 * upgrade to websocket version XX
 * use Ocf (0.3.0) instead of config-file; as a consequence, configuration
