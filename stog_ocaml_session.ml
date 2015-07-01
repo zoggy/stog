@@ -29,16 +29,16 @@
 
 open Stog_ocaml_types;;
 
-let _ = Toploop.set_paths ();;
-let _ = Toploop.initialize_toplevel_env();;
-let _ =
-  match Hashtbl.find Toploop.directive_table "rectypes" with
-    Toploop.Directive_none f -> f ()
-  | _ -> assert false;;
-let _ = Toploop.max_printer_steps := 20;;
-
-
-
+(* must be done after parsing options, for example -safe-string *)
+let init_toplevel () =
+  Toploop.set_paths ();
+  Toploop.initialize_toplevel_env();
+  let _ =
+    match Hashtbl.find Toploop.directive_table "rectypes" with
+      Toploop.Directive_none f -> f ()
+    | _ -> assert false
+  in
+  Toploop.max_printer_steps := 20
 
 (*let _ = Location.input_name := "";;*)
 let stderr_file = Filename.temp_file "stogocamlsession" "err";;
@@ -158,6 +158,9 @@ let parse_options () =
     [
       "-I", Arg.String add_directory,
       "<dir> add <dir> to the list of include directories" ;
+
+      "-safe-string", Arg.Clear Clflags.unsafe_string, " Make strings immutable" ;
+      "-unsafe-string", Arg.Set Clflags.unsafe_string, " Make strings mutable (default)" ;
 (*
       "-pp", Arg.String (fun pp -> Clflags.preprocessor := Some pp),
       "<command>  Pipe sources through preprocessor <command>" ;
@@ -180,6 +183,7 @@ let parse_options () =
 
 let main () =
   parse_options ();
+  init_toplevel ();
   let ic_input = Unix.in_channel_of_descr (Unix.dup Unix.stdin) in
   let oc_result = Unix.out_channel_of_descr (Unix.dup Unix.stdout) in
   let old_stderr = Unix.dup Unix.stderr in

@@ -5,7 +5,7 @@ Next release:
   files must be translated to JSON syntax.
 * <doc-intro> does not include "next" link with image; it is now
   in the default doc-in-list template
-* stog-ocaml-session: handle -ppx option
+* stog-ocaml-session: handle new options: -ppx, -safe-string, -unsafe-string
 * New stog.sitemap plugin
 * New module Stog_url
 * --host and --port options are replaced by
