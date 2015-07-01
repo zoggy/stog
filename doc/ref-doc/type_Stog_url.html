@@ -1,7 +1,10 @@
 <ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_url</title><contents><div class="ocamldoc-page">
 <code class="code"><span class="keyword">sig</span><br/>
 &#160;&#160;<span class="keyword">type</span>&#160;t<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;wrapper&#160;:&#160;<span class="constructor">Stog_url</span>.t&#160;<span class="constructor">Ocf</span>.wrapper<br/>
 &#160;&#160;<span class="keyword">type</span>&#160;url_config&#160;=&#160;{&#160;pub&#160;:&#160;<span class="constructor">Stog_url</span>.t;&#160;priv&#160;:&#160;<span class="constructor">Stog_url</span>.t;&#160;}<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;url_config_wrapper&#160;:&#160;<span class="constructor">Stog_url</span>.url_config&#160;<span class="constructor">Ocf</span>.wrapper<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;default_url_config&#160;:&#160;<span class="constructor">Stog_url</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_url</span>.url_config<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;of_string&#160;:&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_url</span>.t<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;to_string&#160;:&#160;<span class="constructor">Stog_url</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;string<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;concat&#160;:&#160;<span class="constructor">Stog_url</span>.t&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_url</span>.t<br/>
