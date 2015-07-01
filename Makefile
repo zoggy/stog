@@ -74,6 +74,11 @@ depend: dummy
 
 dummy:
 
+# Web site:
+###########
+website:
+	(cd doc && $(MAKE) DEST_DIR=`pwd`/../../stog-pages)
+
 # archive :
 ###########
 archive:
@@ -113,6 +118,9 @@ install-lib: dummy
 install-bin: dummy
 	cd src && $(MAKE) install-bin
 install-share: dummy
+	$(MKDIR) $(SHARE_DIR)
+	$(CP) -r share/templates $(SHARE_DIR)/
+	$(CP) -r share/modules $(SHARE_DIR)/
 	cd src && $(MAKE) install-share
 
 uninstall: dummy

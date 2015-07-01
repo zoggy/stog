@@ -29,19 +29,19 @@
 
 include ../master.Makefile
 
-STOGDIR=..
+STOGDIR=../src
 STOG=$(STOGDIR)/stog #--plugin ../plugins/plugin_example.cmxs --plugin ../plugins/stog_disqus.cmxs
 STOG_SERVER=$(STOGDIR)/stog-server
 #STOG=$(STOGDIR)/stog.byte --plugin ../plugins/plugin_example.cmo --plugin ../plugins/stog_disqus.cmo
 DEST_DIR=`pwd`/../doc-output
 BASE_URL_OPTION=
 STOG_OPTIONS=\
-	--plugin ../plugins/stog_asy.cmxs \
-  --plugin ../plugins/stog_dot.cmxs \
-	--plugin ../plugins/stog_markdown.cmxs \
-	--plugin ../plugins/stog_multi_doc.cmxs \
-	--plugin ../plugins/stog_disqus.cmxs \
-	--plugin ../plugins/stog_sitemap.cmxs \
+	--plugin ../src/plugins/stog_asy.cmxs \
+  --plugin ../src/plugins/stog_dot.cmxs \
+	--plugin ../src/plugins/stog_markdown.cmxs \
+	--plugin ../src/plugins/stog_multi_doc.cmxs \
+	--plugin ../src/plugins/stog_disqus.cmxs \
+	--plugin ../src/plugins/stog_sitemap.cmxs \
 	-d $(DEST_DIR) --depcut $(BASE_URL_OPTION) $(MORE_OPTS) #-v -v -v -v -v
 LESSC=lessc
 

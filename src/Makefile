@@ -299,8 +299,8 @@ $(LATEX2STOG_BYTE): $(LIB_BYTE) latex2stog.cmo
 	$(OCAMLFIND) ocamlc$(P) -o $@ -package $(PACKAGES) -linkall -linkpkg $^
 
 default-styles:
-	lessc doc/less/default-page.less | cleancss -o share/templates/page-style.css
-	lessc doc/less/default-article.less | cleancss -o share/templates/article-style.css
+	lessc ../doc/less/default-page.less | cleancss -o share/templates/page-style.css
+	lessc ../doc/less/default-article.less | cleancss -o share/templates/article-style.css
 
 # mk scripts
 $(MK_STOG): $(LIB)
@@ -350,7 +350,7 @@ $(MK_STOG_OCAML): $(LIB) $(OCAML_SESSION_CMOFILES)
 
 
 ##########
-.PHONY: doc webdoc ocamldoc
+.PHONY: doc ocamldoc
 
 SOURCE_FILES=`ls $(LIB_CMXFILES:.cmx=.ml) $(LIB_CMXFILES:.cmx=.mli) 2>/dev/null | grep -v stog_filter_parser.mli`
 ocamldoc:
@@ -365,18 +365,11 @@ depocamldoc:
 	-rectypes -d ocamldoc -g odoc_depgraph.cmxs -t "Stog" \
 	$(SOURCE_FILES)	-width 700 -height 700
 
-doc:
-	rm -fr doc-output/
-	(cd doc && $(MAKE) test)
-
-webdoc:
-	(cd doc && $(MAKE) DEST_DIR=`pwd`/../../stog-pages)
-
 docstog: $(ODOC)
-	$(MKDIR) doc/ref-doc
-	rm -fr doc/ref-doc/*html
+	$(MKDIR) ../doc/ref-doc
+	rm -fr ../doc/ref-doc/*html
 	OCAMLFIND_COMMANDS="ocamldoc=ocamldoc.opt" \
-	ocamldoc.opt -rectypes `$(OCAMLFIND) query -i-format $(PKGS) -r` -d doc/ref-doc \
+	ocamldoc.opt -rectypes `$(OCAMLFIND) query -i-format $(PKGS) -r` -d ../doc/ref-doc \
 	-t "Stog library reference documentation" -short-functors \
 	-g odoc_depgraph.cmxs -g ./$(ODOC) -width 700 -height 700 -dot-reduce \
 	-dot-options '-Nfontsize=40. -Granksep=0.1 -Earrowsize=3.0 -Ecolor="#444444" ' \
@@ -403,9 +396,6 @@ install-lib:
 		$(OCAML_SESSION_CMOFILES)
 
 install-share:
-	$(MKDIR) $(SHARE_DIR)
-	$(CP) -r share/templates $(SHARE_DIR)/
-	$(CP) -r share/modules $(SHARE_DIR)/
 
 install-bin:
 	$(CP) $(MAIN) $(MAIN_BYTE) $(SERVER) $(SERVER_BYTE) $(OCAML_SESSION) \
