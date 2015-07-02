@@ -1,9 +1,10 @@
 {
-  ignore: [ ".*stog-output" , ".*\\.git",
+  ignored: [ ".*stog-output" , ".*\\.git",
             ".*Makefile", ".*tmpl$", ".*less$",
             ".*\\.chamo.*", ".*/test.*" ,
             ".*/log$",
-            ".*/slides/inria_code.*\\.xml"
+            ".*/slides/inria_code.*\\.xml",
+            ".*/examples$"
           ],
   documents: [".*\\..xml$", ".*\\.html$"],
   "not-documents" : [],

@@ -60,7 +60,7 @@ site: style plugins/rdf_fig.svg
 		--tmpl $(ROOT)/share/templates\
 		--mods $(ROOT)/share/modules \
 		--site-url https://zoggy.github.io/stog \
-		$(ROOT)/examples/article-example.html
+		examples/article-example.html
 	$(STOG) $(STOG_OPTIONS) .
 
 plugins/rdf_fig.svg: plugins/rdf_fig.dot
