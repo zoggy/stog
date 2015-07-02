@@ -102,7 +102,7 @@ LIB_BYTE=$(LIB:.cmxa=.cma)
 MAIN=stog
 MAIN_BYTE=$(MAIN).byte
 
-TMPL_CMXFILES=
+TMPL_CMXFILES=stog_gen_tmpl.cmx
 TMPL_CMOFILES=$(TMPL_CMXFILES:.cmx=.cmo)
 TMPL_CMIFILES=$(TMPL_CMXFILES:.cmx=.cmi)
 
@@ -172,11 +172,11 @@ OCAML_SESSION_CMIFILES=$(OCAML_SESSION_CMOFILES:.cmo=.cmi)
 
 all: opt byte
 
-opt: $(LIB) $(LIB_CMXS) $(MAIN) $(SERVER) $(MSERVER) $(LATEX2STOG) \
+opt: $(LIB) $(LIB_CMXS) $(MAIN) $(TMPL) $(SERVER) $(MSERVER) $(LATEX2STOG) \
 	plugins/plugin_example.cmxs $(PLUGINS_OPT) \
 	$(MK_STOG) $(ODOC)
 
-byte: $(LIB_BYTE) $(MAIN_BYTE) $(SERVER_BYTE) $(MSERVER_BYTE) $(LATEX2STOG_BYTE) \
+byte: $(LIB_BYTE) $(MAIN_BYTE) $(TMPL_BYTE) $(SERVER_BYTE) $(MSERVER_BYTE) $(LATEX2STOG_BYTE) \
 	$(OCAML_SESSION) plugins/plugin_example.cmo $(PLUGINS_BYTE) \
 	$(MK_STOG_BYTE) $(MK_STOG_OCAML) $(ODOC_BYTE)
 
@@ -185,6 +185,14 @@ $(MAIN): $(LIB) stog_main.cmx
 
 $(MAIN_BYTE): $(LIB_BYTE) stog_main.cmo
 	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) -linkall -linkpkg -o $@ $(COMPFLAGS) $^
+
+$(TMPL): $(LIB) $(TMPL_CMIFILES) $(TMPL_CMXFILES)
+	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES) -verbose \
+	-linkall -linkpkg -o $@ $(COMPFLAGS) $(LIB) $(TMPL_CMXFILES)
+
+$(TMPL_BYTE): $(LIB_BYTE)  $(TMPL_CMIFILES) $(TMPL_CMOFILES)
+	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES) \
+	-linkall -linkpkg -o $@ $(COMPFLAGS) $(LIB_BYTE) $(TMPL_CMOFILES)
 
 $(SERVER): $(LIB) $(LIB_SERVER) $(LIB_SERVER_CMXS) $(PLUGIN_SERVER) $(PLUGIN_SERVER_CMXS) stog_main.cmx
 	$(OCAMLFIND) ocamlopt$(P) -package $(PACKAGES),$(SERVER_PACKAGES) \
@@ -377,6 +385,15 @@ docstog: $(ODOC) dump.odoc
 	-g odoc_depgraph.cmxs -g ./$(ODOC) -width 700 -height 700 -dot-reduce \
 	-dot-options '-Nfontsize=40. -Granksep=0.1 -Earrowsize=3.0 -Ecolor="#444444" '
 
+
+########
+test-gen: $(TMPL)
+	$(RM) -r testdir
+	$(MKDIR) testdir
+	./$(TMPL) -d testdir
+	(cd testdir ; make test)
+	@echo "generation and compilation of test site was ok, check file:///tmp/index.html"
+
 ##########
 install: install-lib install-share install-bin
 
@@ -400,7 +417,8 @@ install-lib:
 install-share:
 
 install-bin:
-	$(CP) $(MAIN) $(MAIN_BYTE) $(SERVER) $(SERVER_BYTE) $(OCAML_SESSION) \
+	$(CP) $(MAIN) $(MAIN_BYTE) $(TMPL) $(TMPL_BYTE) \
+		$(SERVER) $(SERVER_BYTE) $(OCAML_SESSION) \
 	  $(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
 	  $(LATEX2STOG) $(LATEX2STOG_BYTE) \
 		`dirname \`which $(OCAMLC)\``/
@@ -424,9 +442,11 @@ uninstall-bin:
 clean:
 	$(RM) *.cm* *.o *.a *.x *.annot
 	$(RM) $(GENERATED_FILES) stog_filter_parser.output
-	$(RM) $(MAIN) $(MAIN_BYTE) $(SERVER) $(SERVER_BYTE)
+	$(RM) $(MAIN) $(MAIN_BYTE) $(TMPL) $(TMPL_BYTE)
+	$(RM) $(SERVER) $(SERVER_BYTE) $(MSERVER) $(MSERVER_BYTE)
 	$(RM) $(MK_STOG) $(ML_STOG_BYTE) $(MK_STOG_OCAML)
 	$(RM) $(LATEX2STOG) $(LATEX2STOG_BYTE)
+	$(RM) -r testdir .sass-cache
 	(cd plugins && $(RM) *.cm* *.o *.a *.x *.annot)
 
 #############
@@ -487,3 +507,10 @@ stog_multi_ed.cm*: templates/multi_ed.tmpl
 stog_multi_user.cm*: \
 	templates/form_session.tmpl \
 	templates/multi_user_page.tmpl
+
+TMPL_FILES:=$(shell find tmpl -name "*html") $(shell find tmpl -name "*png") tmpl/Makefile tmpl/style.css
+stog_gen_tmpl.cmx: $(TMPL_FILES)
+stog_gen_tmpl.cmo: $(TMPL_FILES)
+
+style:
+	sass sass/style.scss > tmpl/style.css

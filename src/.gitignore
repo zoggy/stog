@@ -9,6 +9,7 @@ ocamldoc
 stog
 stog-server
 stog-multi-server
+stog-tmpl
 mk-stog*
 latex2stog
 stog_filter_parser.mli

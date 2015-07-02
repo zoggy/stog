@@ -1,0 +1,33 @@
+/* from https://gist.github.com/moyarich/3260638 */
+
+@function get-one($target,$default){
+ $one:$default;
+ @if not unitless($target){
+    //find out the unit of measurement being used
+    @if (unit($target) == "px"){$one:1px;}
+    @elseif (unit($target) == "em"){$one:1em;}
+    @elseif (unit($target) == "%"){$one:1%;}
+    @return $one ;
+  }
+ @else
+    {@return $one;}
+}
+
+@function remove-unit($target){
+  @if not unitless($target){
+    $one: get-one($target,1) ;
+    // dividing by the same unit forces sass to return a value with no unit
+    @return $target / $one ;
+  }
+  @else
+    {@return $target;}
+}
+
+@function div($num,$denum){
+
+  $num_: remove-unit($num);
+  $denum_: remove-unit($denum);
+  $one: get-one($num,get-one($denum,1)) ;
+  $v : $num_ / $denum_ ;
+  @return $v * $one ;
+}

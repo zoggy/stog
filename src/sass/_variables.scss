@@ -1,0 +1,77 @@
+/* variables */
+
+$page-max-width:  800px;
+$sans-font-family:        Verdana,"Helvetica Neue", Helvetica, Arial, sans-serif;
+$base-font-size:          14px;
+$base-font-family:        $sans-font-family;
+$fixed_font-family:       "Lucida Console", Monospace ;
+$line-height-factor:      1.5 ;
+$base-line-height:        $base-font-size * $line-height-factor ;
+$decrease-font-size-factor: 0.889 ;
+
+$base-text-color: #333;
+$date-color: lighten($base-text-color, 25);
+$code-background: #eeeeee ;
+$code-color: $base-text-color;
+
+$warning-text:             #c09853;
+$warning-background:       #fcf8e3;
+$warning-border:           $warning-background * 0.95 ;
+
+$error-text:               #b94a48;
+$error-background:         #f2dede;
+$error-border:             $error-background * 0.95 ;
+
+$success-text:             #468847;
+$success-background:       #dff0d8;
+$success-border:           $success-background * 0.95 ;
+
+$info-text:                #3a87ad;
+$info-background:          #d9edf7;
+$info-border:              $info-background * 0.95 ;
+
+$base-border-radius:      4px;
+$border-radius-large:     6px;
+$border-radius-Small:     3px;
+
+/* Modular Scale from http://modularscale.com/scale/?px1=14&px2=&ra1=1.125&ra2=0
+        ----------------------
+        14px @ 1:1.125
+        ----------------------*/
+$site-title-font-size: 2.027em;
+
+$page-title-font-size: 1.802em;
+$page-title-line-height: div($line-height-factor, $page-title-font-size) ;
+$page-title-margin-bottom: $page-title-line-height ;
+
+$section-title-font-size: 1.602em;
+$section-title-line-height: div($line-height-factor, $section-title-font-size);
+$section-title-margin-bottom: $section-title-line-height;
+$section-margin-top: 1.5em;
+
+$subsection-title-font-size: 1.424em;
+$subsection-title-line-height: div($line-height-factor, $subsection-title-font-size);
+$subsection-title-margin-bottom: $subsection-title-line-height;
+$subsection-margin-top: 1.5em;
+
+$subsubsection-title-font-size: 1.266em;
+$subsubsection-title-line-height: div($line-height-factor, $subsubsection-title-font-size);
+$subsubsection-title-margin-bottom: $subsubsection-title-line-height;
+$subsubsection-margin-top: 1.5em;
+
+$navbar-height: 2.5em;
+$navbar-background: #c22 ;
+$navbar-background-dark: #900;
+$navbar-foreground: #fee ;
+$navbar-active-tab-background: #b11 ;
+$navbar-active-tab-background-dark: #800 ;
+$navbar-inner-side-padding: 20px;
+
+$link-color: $navbar-background ;
+$link-color-visited: $navbar-background-dark ;
+
+$box-border-color: $navbar-background;
+$box-background: darken(#fff, 10);
+
+$ext-link-image: 'extlink.png' ;
+

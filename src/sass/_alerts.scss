@@ -1,0 +1,37 @@
+/* alerts */
+
+.alert {
+  padding: 8px 35px 8px 14px;
+  margin: 0.5em ;
+  margin-bottom: $base-line-height;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+  background-color: $warning-background;
+  border: 1px solid $warning-border;
+  @include border-radius($base-border-radius);
+}
+
+.aler-warning {
+  @extend .alert ;
+}
+
+.alert-success {
+  @extend .alert ;
+  background-color: $success-background;
+  border-color: $success-border;
+  color: $success-text;
+}
+
+.alert-danger,
+.alert-error {
+  @extend .alert ;
+  background-color: $error-background;
+  border-color: $error-border;
+  color: $error-text;
+}
+
+.alert-info {
+  @extend .alert ;
+  background-color: $info-background;
+  border-color: $info-border;
+  color: $info-text;
+}

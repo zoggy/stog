@@ -1,0 +1,67 @@
+p {
+  font-size: $base-font-size ;
+  line-height: $base-line-height ;
+  margin-bottom: $base-line-height ;
+}
+
+a {
+  color: $link-color ;
+  text-decoration: none ;
+}
+a:visited {
+  color: $link-color-visited ;
+}
+
+ul.toc {
+  margin-left: 0;
+  padding-left: 1em;
+}
+
+ul {
+  margin-left: 0;
+  padding-left: 2em;
+}
+
+.date {
+  font-size: 0.9em ;
+  color: $date-color;
+}
+
+p + ul {
+  margin-top: - ($base-line-height / 2) ;
+}
+pre {
+  font-family: $fixed-font-family ;
+  @include border-radius(3px);
+  padding-left: 0.5em;
+  border-width: 0 0 0 2px;
+  border-color: darken($code-background, 25) ;
+  border-style: solid ;
+  color: $code-color ;
+  background-color: $code-background ;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.5em;
+}
+code, span.icode {
+  font-family: $fixed-font-family ;
+  @include border-radius(3px);
+  color: $code-color ;
+  background-color: $code-background ;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.rss-button { float: right ; }
+.ext-a {
+  padding-right: 12px;
+  background-image: url($ext-link-image);
+  background-repeat: no-repeat ;
+  background-position: right ;
+}
+
+.notes {
+  font-size: 90%;
+}
+
+
+

@@ -1,0 +1,6 @@
+<module name="software">
+<sw-page href="" quotes=""><doc type="sw-page" href="&lt;href/&gt;" quotes="&lt;quotes/&gt;"><contents/></doc></sw-page>
+
+<sw-post href="" quotes=""><doc type="sw-page" href="&lt;href/&gt;" quotes="&lt;quotes/&gt;"><contents/></doc></sw-post>
+
+</module>

@@ -1,0 +1,36 @@
+/* Common partial files */
+
+@import "funs";
+@import "reset";
+@import "variables";
+@import "mixins";
+@import "alerts";
+@import "sectionning";
+@import "typeset";
+@import "navbar";
+@import "highlight";
+
+body {
+ font-family: $base-font-family ;
+ font-size: $base-font-size ;
+ color: $base-text-color;
+ margin-left: 1em;
+ margin-right: 1em;
+ margin-bottom: 1em;
+}
+
+.ocamldoc-page {
+  .navbar {
+    background: transparent ;
+    margin-top: -1.5em;
+    height: auto ;
+    margin-bottom: 0.5em;
+  }
+  > div + br { display: none ; }
+  > .section-title { margin-top: 1em; }
+  > .subsection-title { margin-top: 1em; }
+  > .subsubsection-title { margin-top: 1em; }
+/*  br { height: 0 ; line-height: 0; display: none }*/
+  @import "ocamldoc";
+
+}

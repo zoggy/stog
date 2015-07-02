@@ -1,0 +1,62 @@
+<sw-page title="Download and installation"
+navbar-download="active"
+with-contents="true"
+>
+<release version="">
+<if version=""><error_>&lt;release&gt;: missing version</error_></if>
+<li><a href="&lt;sw-name param_=&quot;true&quot;/&gt;-&lt;version/&gt;.tar.gz"><version/></a>
+<span class="date">[<doc-date doc-path="release-&lt;version/&gt;"/>]</span>
+<late-inc href="release-&lt;version/&gt;#changes" id="changes-&lt;version/&gt;"/>
+</li>
+</release>
+<contents>
+<prepare-toc depth="2">
+<toc></toc>
+
+<section id="opam" title="Quick install with Opam">
+<p>
+The easiest way to install is to use <ext-a href="http://opam.ocaml.org">OPAM</ext-a>.
+Install Opam, then, as a regular user, fetch and install an OCaml version and install
+<sw-name/>.
+The whole can be done with the following opam commands:
+</p>
+<command-line>
+$ opam init --comp=4.02.1
+$ opam update
+$ opam install <sw-name/>
+</command-line>
+</section>
+
+<section id="deps" title="Dependencies">
+<p>
+To build <sw-name/>, you will need:
+</p>
+<ul>
+<li><ext-a href="http://caml.inria.fr/">OCaml >= 4.02.1</ext-a>,</li>
+<li>...</li>
+</ul>
+</section>
+
+<section id="download" title="From the sources">
+<p>Get the sources from git repository:</p>
+<command-line>$ git clone ...</command-line>
+
+<p>Or pick one of the releases:</p>
+<ul>
+<release version="0.1.0"/>
+</ul>
+
+<subsection id="compilation" title="Compilation">
+<p>
+Just type
+</p>
+<command-line>$ ./configure &amp;&amp; make &amp;&amp; make install</command-line>
+<p>
+This will install ...
+</p>
+</subsection>
+</section>
+
+</prepare-toc>
+</contents>
+</sw-page>

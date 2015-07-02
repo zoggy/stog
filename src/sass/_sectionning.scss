@@ -1,0 +1,66 @@
+
+.page-title {
+  font-size: $page-title-font-size ;
+  line-height: $page-title-line-height ;
+  margin-bottom: $page-title-margin-bottom ;
+  text-align: center ;
+  margin-top: $page-title-margin-bottom / 2 ;
+}
+
+
+.section, .doc-item {
+  margin-top: $section-margin-top ;
+}
+
+.section-title, .doc-item-title {
+  font-size: $section-title-font-size ;
+  line-height: $section-title-line-height ;
+  margin-bottom: $section-title-margin-bottom ;
+}
+
+.doc-item-title {
+  margin-bottom: 0.5em;
+}
+.subsection {
+  margin-top: $subsection-margin-top ;
+}
+
+.subsection-title {
+  font-size: $subsection-title-font-size ;
+  line-height: $subsection-title-line-height ;
+  margin-bottom: $subsection-title-margin-bottom ;
+}
+
+.subsubsection {
+  margin-top: $subsubsection-margin-top ;
+}
+
+.subsubsection-title {
+  font-size: $subsubsection-title-font-size ;
+  line-height: $subsubsection-title-line-height ;
+  margin-bottom: $subsubsection-title-margin-bottom ;
+}
+
+.doc-intro {
+ display: inline;
+ padding-left: 2em;
+}
+.doc-intro p {
+  display: inline ;
+}
+div.doc-keywords {
+   @include rounded-box($box-border-color, $box-background) ;
+   font-size: 0.9em;
+   margin-left: 1em;
+   margin-right: 1em;
+}
+div.bloc-keywords {
+  padding: 4px;
+  color: lighten($base-text-color, 25) ;
+}
+
+div.keywords {
+  font-style: italic ;
+  display: inline ;
+}
+
