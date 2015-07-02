@@ -287,7 +287,7 @@ div.ocaml-exc {
 }
 
 .ocamldoc-page {
-  font-size: 1em * @decreaseFontSizeFactor ;
+  font-size: 1em ;
   line-height: @baseLineHeight * @decreaseFontSizeFactor * @decreaseFontSizeFactor /** @decreaseFontSizeFactor * @decreaseFontSizeFactor */;
 }
 
@@ -295,7 +295,7 @@ div.ocaml-exc {
 .ocamldoc-page {
   @import "ocamldoc.less";
   code {
-    font-size: 1em;
+    font-size: 1em * @decreaseFontSizeFactor ;;
     border-width: 0;
     background-color: transparent ;
     color: @textColor ;
@@ -303,7 +303,7 @@ div.ocaml-exc {
   }
   .code { background-color: transparent ; font-weight: bold ;}
   pre {
-    font-size: 1em;
+    font-size: 1em * @decreaseFontSizeFactor ;;
     padding : 8pt 0 2pt 0;
     border-width: 0;
     background-color: transparent ;
@@ -313,7 +313,7 @@ div.ocaml-exc {
     font-weight: bold ;
   }
   .info, .param_info {
-     font-size : 1em  / @decreaseFontSizeFactor ;
+     font-size : 1em ;
      color: lighten(@textColor,15);
      }
   td.typefieldcomment { font-size: 1em; }
@@ -368,4 +368,34 @@ div.float-right {
 
 img.latex {
   vertical-align: text-top;
+}
+
+div.doc-block {
+  .rounded-box ();
+  padding: 0;
+  background-color: transparent;
+  border-color: @infoBorder ;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+
+  div.title {
+  .rounded-box();
+   padding: 0.3em 0.5em 0.3em 0.5em;
+   background-color: @infoBackground ;
+   border-color: @infoBorder ;
+   color: @infoText ;
+   border-width: 0 0 1px 0;
+   border-style: solid;
+   font-weight: bold;
+  }
+  div.contents {
+    padding: 0.5em;
+
+  }
+}
+
+.doccode {
+  font-size: 0.9em;
 }

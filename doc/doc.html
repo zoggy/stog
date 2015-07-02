@@ -1,37 +1,59 @@
 <page title="Documentation"
 navbar-doc="active"
+with-contents="true"
 >
+<bloc title="">
+<div class="doc-block">
+<div class="title"><title/></div>
+<div class="contents"><contents/></div>
+</div>
+</bloc>
+<contents>
 <div class="alert alert-warning">
 We assume Stog was correctly installed (see <page href="/install"/>)
-and the <icode>stog</icode> and <icode>stog-ocaml-session</icode>
-executables are in your <icode>PATH</icode>.
-</div>
-
-<section title="General considerations">
+and the <icode>stog</icode>, <icode>stog-server</icode>, <icode>stog-tmpl</icode>
+and <icode>stog-ocaml-session</icode> executables are in your <icode>PATH</icode>.
 All text is assumed to be UTF-8.
-</section>
-<section title="Topics">
+</div>
+<n-columns>
+<column>
+<bloc title="Getting started">
 <ul class="toc">
 <li><page href="5-minutes"/></li>
 <li><page href="overview"/></li>
+<li><page href="engine"/></li>
 <li><page href="stog-documents"/></li>
 <li><page href="stog-main-document"/></li>
-<li><page href="running"/></li>
-<li><page href="server"/></li>
-<li><page href="single-documents"/></li>
-<li><page href="engine"/></li>
 <li><page href="atts-functions"/></li>
+<li><page href="single-documents"/></li>
+</ul>
+</bloc>
+</column>
+<column>
+<bloc title="Tools">
+<ul>
+<li><page href="server"/></li>
+<li><page href="stog-tmpl"/></li>
+<li><page href="latex2stog"/></li>
+<li><page href="odoc"/></li>
+</ul>
+</bloc>
+</column>
+<column>
+<bloc title="Reference">
+<ul>
+<li><page href="running"/></li>
 <li><page href="funs"/></li>
 <li><page href="writing_plugins"/></li>
-<li><page href="odoc"/></li>
-<li><page href="latex2stog"/></li>
 <li><a href="&lt;site-url/&gt;/ref-doc/index.html">Library reference documentation</a></li>
 </ul>
-</section>
-
+</bloc>
+</column>
+</n-columns>
 <section title="Presentations">
 <ul>
 <li>2013/04/23: <doc href="slides/2013_04_23_inria">Talk about Stog at INRIA</doc>.</li>
 </ul>
 </section>
+</contents>
 </page>

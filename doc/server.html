@@ -10,6 +10,9 @@ The preview server watches Stog files and recomputes
 the documents when there is a change. This is useful to have
 a preview as you modify your web site or article.
 </p>
+<p>Have a look at stog server in action on a video
+<doc href="2014-10-27-video.html">here</doc>.
+</p>
 </section>
 
 <section id="how" title="How does it work ?">
@@ -44,7 +47,7 @@ library allows to specify some nodes to ignore when applying a patch.
 <p class="alert alert-warning">
 By now, only documents which exist when the server is launched are
 watched for changes. This means that if you add a new document source file,
-you will have to restart the server.
+you have to click on the ↺ button at the top of the preview page.
 </p>
 </section>
 
@@ -58,11 +61,15 @@ You can use <icode>mk-stog[.byte]</icode> to create your own server. To do
 so, just use <icode>--package stog.server</icode> in addition to other packages.
 </p>
 <p>
-The <icode>--port</icode> and <icode>--host</icode> command line options can be
-used to specify the host and port to listen on. Default is <icode>localhost:8080</icode>.
-The websocket server listens to port + 1, by now. This will change when the Websocket
-library allows changing a HTTP connection to a websocket connection on demand
-(see <ext-a href="https://github.com/vbmithr/ocaml-websocket/issues/18">this issue</ext-a>).
+The <icode>--http</icode> and <icode>--ws</icode> command line options can be
+used to specify a url defining the host and port to listen on, for the HTTP
+and websocket servers respectively. Defaults are <icode>http://localhost:8080</icode>
+and <icode>ws://localhost:8081</icode>.
+</p>
+<p>If the server must be run behind a proxy, you must also give the
+<icode>--pub-http</icode> and <icode>--pub-ws</icode> options to indicate
+the "public" base urls, i.e. the ones that the proxy will handle to send
+queries to the server.
 </p>
 </section>
 
