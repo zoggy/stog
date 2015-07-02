@@ -111,7 +111,7 @@ noheaders: dummy
 # installation
 #################
 
-install: dummy
+install: install-share
 	cd src && $(MAKE) install
 install-lib: dummy
 	cd src && $(MAKE) install-lib
@@ -121,7 +121,6 @@ install-share: dummy
 	$(MKDIR) $(SHARE_DIR)
 	$(CP) -r share/templates $(SHARE_DIR)/
 	$(CP) -r share/modules $(SHARE_DIR)/
-	cd src && $(MAKE) install-share
 
 uninstall: dummy
 	cd src && $(MAKE) uninstall

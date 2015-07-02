@@ -371,10 +371,11 @@ doc: dump.odoc
 	$(OCAMLFIND) ocamldoc -load dump.odoc -sort -d ocamldoc -html -t "Stog"
 
 PKGS := $(shell echo $(PACKAGES) | sed -e "s/,/ /g")
-depocamldoc: dump.odoc
+docdep: dump.odoc
 	$(MKDIR) ocamldoc
 	$(OCAMLDOC) -load $< -d ocamldoc -g odoc_depgraph.cmxs -t "Stog" \
-	-width 700 -height 700
+	-width 700 -height 700	\
+	-dot-options '-Nfontsize=60. -Granksep=0.1 -Earrowsize=3.0 -Ecolor="#444444" '
 
 docstog: $(ODOC) dump.odoc
 	$(MKDIR) ../doc/ref-doc
@@ -387,12 +388,12 @@ docstog: $(ODOC) dump.odoc
 
 
 ########
-test-gen: $(TMPL)
+test-tmpl: $(TMPL)
 	$(RM) -r testdir
 	$(MKDIR) testdir
-	./$(TMPL) -d testdir
+	./$(TMPL) -d testdir --sw-name "mysoftware"
 	(cd testdir ; make test)
-	@echo "generation and compilation of test site was ok, check file:///tmp/index.html"
+	@echo "Generation and compilation of test site was ok, check file:///tmp/index.html"
 
 ##########
 install: install-lib install-share install-bin
