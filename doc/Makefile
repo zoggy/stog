@@ -54,7 +54,7 @@ build:
 	rm -f $(DEST_DIR)/*/*html
 	$(MAKE) site
 
-site: style plugins/rdf_fig.svg
+site: stog-tmpl-usage.txt stog-tmpl-tree.txt style plugins/rdf_fig.svg
 	$(MKDIR) $(DEST_DIR) $(DEST_DIR)/plugins
 	$(STOG) -d $(DEST_DIR) \
 		--tmpl $(ROOT)/share/templates\
@@ -65,6 +65,14 @@ site: style plugins/rdf_fig.svg
 
 plugins/rdf_fig.svg: plugins/rdf_fig.dot
 	dot -Tsvg -o $@ $<
+
+stog-tmpl-usage.txt:
+	../src/stog-tmpl --help > $@
+stog-tmpl-tree.txt:
+	$(MKDIR)  stog-tmpl-tree
+	../src/stog-tmpl -d stog-tmpl-tree -t software --site-title Foobar --sw-name foobar
+	tree stog-tmpl-tree | head -n -2 > $@
+	$(RM) -fr stog-tmpl-tree
 
 style:
 	mkdir -p $(DEST_DIR)

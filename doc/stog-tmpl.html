@@ -1,0 +1,34 @@
+<page title="Stog-tmpl"
+>
+<p><code>stog-tmpl</code> is a command-line utility to generate
+website skeletons.
+</p>
+<command-line defer_="1"><include raw="true" file="./stog-tmpl-usage.txt"/></command-line>
+<p>In the example below, we create a skeleton for the website of a software.
+The web site title will be "Foobar", and the software name is "foobar":
+</p>
+<command-line>
+mkdir tmp
+stog-tmpl \
+  -d tmp # output to tmp instead of current directory \
+  -t software # use the software template (which is the default) \
+  --site-title Foobar # set website title \
+  --sw-name foobar # set software name
+</command-line>
+<p>
+This result in the following tree of files:
+</p>
+<hcode defer_="1"><include file="./stog-tmpl-tree.txt" raw="true"/></hcode>
+<p>
+The generated <code>Makefile</code> defines various targets, including:
+</p>
+<dl>
+<dt><code>site</code></dt>
+<dd>compile the site</dd>
+<dt><code>test</code></dt>
+<dd>compile the site in test mode, i.e. using the destination directory as base url</dd>
+<dt><code>server</code></dt>
+<dd>run a local server on <code>http://localhost:8080/preview/index.html</code>
+to give a live preview of the website while you edit the source files.</dd>
+</dl>
+</page>

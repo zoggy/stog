@@ -391,7 +391,7 @@ docstog: $(ODOC) dump.odoc
 test-tmpl: $(TMPL)
 	$(RM) -r testdir
 	$(MKDIR) testdir
-	./$(TMPL) -d testdir --sw-name "mysoftware"
+	./$(TMPL) -d testdir --site-title Foobar --sw-name "foobar"
 	(cd testdir ; make test)
 	@echo "Generation and compilation of test site was ok, check file:///tmp/index.html"
 

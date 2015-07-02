@@ -13,7 +13,6 @@ tags: ["publication" "web" "blog"]
 
 build: [
   ["./configure" "--prefix" prefix]
-  [make "stog_filter_parser.mli"]
   [make "all"]
 ]
 
@@ -34,8 +33,7 @@ depopts: [
   "js_of_ocaml" { >= "2.5"}
   "xmldiff" { >= "0.5.0" }
   "lwt" { >= "2.4.5" }
-  "websocket" { >= "0.8.1" }
-  "cstruct" { >= "0.3.1" }
+  "websocket" { >= "2.0" }
   "ppx_blob" { >= "0.1" }
   "ojs-base" { >= "0.3" }
 ]

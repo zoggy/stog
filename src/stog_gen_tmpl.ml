@@ -48,7 +48,7 @@ let software_files options =
     `Xml (download ~sw_name ()), "download.html" ;
     `Text extlink, "extlink.png" ;
     `Xml (first_post ()), "posts/first-post.html" ;
-    `Xml (sw_index ~sw_name ()), "index.html" ;
+    `Xml (sw_index ~site_title ~sw_name ()), "index.html" ;
     `Text makefile, "Makefile" ;
     `Text next, "next.png" ;
     `Xml (release_0_1_0 ~sw_name ()), "posts/release-0.1.0.html" ;

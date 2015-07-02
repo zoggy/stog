@@ -1,5 +1,6 @@
 stog-ocaml-session
 ocamldoc
+dump.odoc
 .chamo*
 *.cm*
 *.o
@@ -23,4 +24,6 @@ stog_config.ml
 stog_install.ml
 stog_server_client.js
 stog_multi_ed.js
+testdir
+
 

@@ -16,7 +16,7 @@ site: stog
 
 ocamldoc:
 	rm -f refdoc/*html ref-doc/style.css
-	(cd .. && make docstog)
+	(cd ../src && make docstog)
 
 test:
 	$(MAKE) BASE_URL_OPTION="--local" site
