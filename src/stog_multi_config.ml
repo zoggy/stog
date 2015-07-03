@@ -47,12 +47,11 @@ type t = {
 
     ssh_priv_key : string option
         [@ocf W.option W.string, None]
-        [@ocf.label "ssh-priv-key"]
         [@ocf.doc "Private SSH key to access repository"] ;
 
     git_repo_url : string
         [@ocf W.string, ""]
-        [@ocf.label "repository-url"]
+        [@ocf.label "repository_url"]
         [@ocf.doc "URL of git repository"];
 
     dir : string
@@ -62,34 +61,31 @@ type t = {
 
     stog_dir : string option
         [@ocf W.option W.string, None]
-        [@ocf.label "stog-directory"]
+        [@ocf.label "stog_directory"]
         [@ocf.doc "Optional subdirectory where to run stog in a clone"];
 
     editable_files : string list
         [@ocf W.list W.string, [] ]
-        [@ocf.label "editable-files"]
         [@ocf.doc "Regexps of files to be able to edit"];
 
     not_editable_files : string list
         [@ocf W.list W.string, [] ]
-        [@ocf.label "not-editable-files"]
         [@ocf.doc "Regexps of files not to be able to edit"];
 
     http_url : Stog_url.url_config
       [@ocf Stog_url.url_config_wrapper,
         Stog_url.default_url_config (Stog_url.of_string "http://localhost:8080")]
-        [@ocf.label "http-server"]
+        [@ocf.label "http_server"]
         [@ocf.doc "URL of HTTP server"];
 
     ws_url : Stog_url.url_config
       [@ocf Stog_url.url_config_wrapper,
           Stog_url.default_url_config (Stog_url.of_string "ws://localhost:8081")]
-        [@ocf.label "ws-server"]
+        [@ocf.label "ws_server"]
         [@ocf.doc "URL of websocket server"];
 
     css_file : string option
         [@ocf W.option W.string, None]
-        [@ocf.label "css-file"]
         [@ocf.doc "File to serve as default CSS file"] ;
   } [@@ocf]
 

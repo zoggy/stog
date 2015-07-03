@@ -1,5 +1,5 @@
 {
-  "default-by-type": {
+  default_by_type: {
     rss: { "in-sitemap": false},
     page: { "in-sitemap": true, frequency: "daily", priority: "0.5"},
     post: { "in-sitemap": true, frequency: "daily", priority: "0.8"},
@@ -9,6 +9,6 @@
     "ocamldoc": { "in-sitemap": false},
     "plugin": { "in-sitemap": true, frequency: "daily", priority: "0.5"}
   },
-  "out-file": "file where to generate the sitemap",
-  "out-file": "sitemap.xml"
+  out_file: "file where to generate the sitemap",
+  out_file: "sitemap.xml"
 }

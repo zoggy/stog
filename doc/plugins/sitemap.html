@@ -16,4 +16,15 @@ in the sitemap, and their associated change frequency and priority.
 </p>
 <p>Here is an example of such a file:</p>
 <hcode lang="json" defer_="1"><include file="../.stog/config-sitemap"/></hcode>
+<p>Moreover, each document can define the following values to change the
+default behaviour to this document:
+</p>
+<hxml><![CDATA[<page title="..."
+in-sitemap="true"
+sitemap-frequency="hourly"
+sitemap-priority="0.9"
+...
+>
+...
+</page>]]></hxml>
 </plugin>

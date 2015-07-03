@@ -37,8 +37,7 @@ let rc_file stog = Stog_plug.plugin_config_file stog module_name;;
 module W = Ocf.Wrapper
 type info =
   {
-    in_sitemap : bool [@ocf W.bool, true]
-        [@ocf.label "in-sitemap"] ;
+    in_sitemap : bool [@ocf W.bool, true] ;
     frequency : string option
         [@ocf W.option W.string, None]
         [@ocf.doc "\"\"|always|hourly|daily|weekly|monthly|yearly|never"];
@@ -53,11 +52,9 @@ type sitemap_data =
         Stog_types.Str_map.fold
           Stog_types.Str_map.add
           Stog_types.Str_map.empty
-          info_wrapper]
-        [@ocf.label "default-by-type"];
+          info_wrapper] ;
       out_file : string
         [@ocf.wrapper W.string]
-        [@ocf.label "out-file"]
         [@ocf.doc "file where to generate the sitemap"];
     } [@@ocf]
 

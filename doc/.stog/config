@@ -7,8 +7,8 @@
             ".*/examples$"
           ],
   documents: [".*\\..xml$", ".*\\.html$"],
-  "not-documents" : [],
-  "follow-symlinks" : false,
+  not_documents : [],
+  follow_symlinks : false,
   levels: [
     { module: "extern", levels: [("my-action", [1000])] }
   ]
