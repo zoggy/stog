@@ -39,7 +39,7 @@ type account = {
     login: string [@ocf W.string, ""];
     name : string [@ocf W.string, ""];
     email: string [@ocf W.string, ""];
-    passwd: sha256 [@ocf W.string, ""];
+    passwd: sha256 [@ocf W.string, ""] [@ocf.label "password"];
   } [@@ocf]
 
 type t = {

@@ -136,7 +136,7 @@ let wrapper = W.string_ to_string of_string
 let url_config_wrapper =
   let to_j ?with_doc c =
     `Assoc ["url", wrapper.W.to_json ?with_doc c.priv ;
-            "public-url", wrapper.W.to_json c.pub ]
+            "public_url", wrapper.W.to_json c.pub ]
   in
   let from_j ?def = function
     (`Assoc l) as json ->
@@ -146,7 +146,7 @@ let url_config_wrapper =
         | Some priv ->
             let priv = wrapper.W.from_json priv in
             let pub =
-              try wrapper.W.from_json (List.assoc "public-url" l)
+              try wrapper.W.from_json (List.assoc "public_url" l)
               with Not_found -> priv
             in
             { pub ; priv }
