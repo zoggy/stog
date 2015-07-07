@@ -9,7 +9,7 @@ doc: ["http://zoggy.github.io/stog/doc.html"]
 dev-repo: "https://github.com/zoggy/stog.git"
 bug-reports: "https://github.com/zoggy/stog/issues"
 
-tags: ["publication" "web" "blog"]
+tags: ["publication" "xml" "documentation" "blog" "web" "website"]
 
 build: [
   ["./configure" "--prefix" prefix]
@@ -28,13 +28,13 @@ depends: [
   "ocf" {>= "0.3.0"}
   "ocamlnet" {>= "3.6"}
   "higlo" { >= "0.4" }
+  "pp_blob" { >= "0.1" }
 ]
 depopts: [
   "js_of_ocaml" { >= "2.5"}
   "xmldiff" { >= "0.5.0" }
   "lwt" { >= "2.4.5" }
-  "websocket" { >= "2.0" }
-  "ppx_blob" { >= "0.1" }
+  "websocket" { >= "2.1" }
   "ojs-base" { >= "0.3" }
 ]
 
