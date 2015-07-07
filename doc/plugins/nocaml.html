@@ -1,0 +1,17 @@
+<plugin
+title="Stog-nocaml"
+with-contents="true"
+>
+<contents>
+<p>This plugin overwrites predefined rewrite rules to
+<span id="desc"> prevent OCaml code from being evaluated during
+the compilation of documents</span>.
+When this plugin is loaded,
+<rule>ocaml-printf</rule> and <rule>ocaml-eval</rule> rules behave as
+the <rule>ocaml</rule> rule, i.e. it only syntactically highlights
+ the given code.
+</p>
+<p>Usage:</p>
+<command-line>$ stog --package stog.nocaml ...</command-line>
+</contents>
+</plugin>
