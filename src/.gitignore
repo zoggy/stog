@@ -18,7 +18,6 @@ stog_filter_parser.ml
 stog_filter_parser.output
 stog_filter_lexer.mli
 stog_filter_lexer.ml
-stog_server_files.ml
 META
 stog_config.ml
 stog_install.ml
