@@ -97,7 +97,8 @@ let mk_options () =
   let sw_name = match !sw_name with None -> !site_title | Some s -> s in
   { site_title = !site_title ; sw_name }
 
-let usage = Printf.sprintf "Usage: %s [options]\nwhere options are:" Sys.argv.(0)
+let usage = Printf.sprintf "Usage: %s [options]\nwhere options are:"
+  (Filename.basename Sys.argv.(0))
 
 let main () =
   Arg.parse cl_options (fun _ -> ()) usage;

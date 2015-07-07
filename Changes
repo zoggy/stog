@@ -2,6 +2,7 @@ Next release:
 * new tool stog-tmpl to generates website skeletons
 * use ppx_blob instead of ocaml-crunch
 * new stog.extern plugin
+* new stog.nocaml plugin
 * upgrade to websocket version XX
 * use Ocf (0.3.0) instead of config-file; as a consequence, configuration
   files must be translated to JSON syntax.
