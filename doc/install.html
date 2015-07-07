@@ -52,6 +52,12 @@ the preview server:
 <li><ext-a href="https://github.com/whitequark/ppx_deriving_yojson/">Ppx-deriving-yojson >= 2.0</ext-a>.</li>
 </ul>
 <p>
+To force the compilation of the stog server, you can use this commande line:
+<command-line>
+$ opam install lwt js_of_ocaml xmldiff websocket ojs-base ppx_deriving_yojson stog
+</command-line>
+</p>
+<p>
 You will need to have the following tools installed to use
 some functions:
 </p>
@@ -105,6 +111,7 @@ and <icode>mk-stog-ocaml-session</icode> in the same directory as
 <icode>stog.dot</icode>,
 <icode>stog.markdown</icode>,
 <icode>stog.multi-doc</icode>,
+<icode>stog.nocaml</icode>,
 <icode>stog.rel-href</icode>,
 <icode>stog.sitemap</icode>
 plugins with findlib,
