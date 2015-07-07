@@ -47,7 +47,9 @@ Release 0.15.0 of stog is available from the <a href="https://zoggy.github.io/st
 
 <p>Changes:</p>
 <ul id="changes">
-<li>require <span class="ext-a"><a href="https://zoggy.github.io/xtmpl/posts/xtmpl-0.12.html">Xtmpl</a></span> &gt;= 0.12,</li>
+<li>require <span class="ext-a"><a href="https://zoggy.github.io/xtmpl/posts/xtmpl-0.12.html">Xtmpl</a></span> &gt;= 0.12
+ and <span class="ext-a"><a href="https://github.com/vbmithr/ocaml-websocket">OCaml-Websocket</a></span> &gt;= 2.1,
+</li>
 <li><code>--host</code> and <code>--port</code> options are replaced by
   <code>--http</code>, <code>--ws</code>, <code>--public-http</code>
   and <code>--public-ws</code>, which accept urls as values. The <code>--public-...</code>
@@ -63,7 +65,6 @@ Release 0.15.0 of stog is available from the <a href="https://zoggy.github.io/st
   <span class="ext-a"><a href="http://config-file.forge.ocamlcore.org/">Config-file</a></span>; as a
   consequence, previous <a href="https://zoggy.github.io/stog/overview.html#config-file">configuration files</a>
   must be translated to JSON syntax,</li>
-<li>upgrade to websocket 2.1,</li>
 <li>new tool <a href="https://zoggy.github.io/stog/stog-tmpl.html">Stog-tmpl</a> to generate web site skeletons,</li>
 <li>new multiserver, with online editor.</li>
 </ul>
@@ -118,7 +119,9 @@ Release 0.15.0 of stog is available from the </span><span class="hl kwa">&lt;pag
 </span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Changes:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;changes&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">require </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://zoggy.github.io/xtmpl/posts/xtmpl-0.12.html&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xtmpl</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> </span><span class="hl kwb">&amp;gt;</span><span class="hl std">= 0.12,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">require </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://zoggy.github.io/xtmpl/posts/xtmpl-0.12.html&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xtmpl</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> </span><span class="hl kwb">&amp;gt;</span><span class="hl std">= 0.12
+ and </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/vbmithr/ocaml-websocket&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml-Websocket</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> </span><span class="hl kwb">&amp;gt;</span><span class="hl std">= 2.1,
+</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--host</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> and </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--port</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> options are replaced by
   </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--http</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--ws</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--public-http</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">
   and </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--public-ws</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">, which accept urls as values. The </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--public-...</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -134,7 +137,6 @@ Release 0.15.0 of stog is available from the </span><span class="hl kwa">&lt;pag
   </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://config-file.forge.ocamlcore.org/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Config-file</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">; as a
   consequence, previous </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;overview#config-file&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">configuration files</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">
   must be translated to JSON syntax,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">upgrade to websocket 2.1,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">new tool </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-tmpl&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> to generate web site skeletons,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">new multiserver, with online editor.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -143,7 +145,7 @@ Release 0.15.0 of stog is available from the </span><span class="hl kwa">&lt;pag
 </div>
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h10</div>
+<div class="generatedon">Generated on July 7, 2015 at 13h13</div>
 </div>
 
 
