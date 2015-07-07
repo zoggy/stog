@@ -41,51 +41,60 @@ of the stog sources.
 <p>
 The default scheme can be changed, using the <code>levels</code>
 option in the <code>.stog/config</code> file.
-This option contains a list of pairs of the following form:
+This option contains a list of associations of the following form:
 </p>
-<ocaml>("module-name",
-  [ ("fun1", [ l1 ; l2 ; ...]) ;
-    ("fun2", [ l3 ; l4 ; ...]) ;
+<hcode lang="json">[
+  { module: "module-name",
+    levels: [ ("fun1", [ l1 ; l2 ; ...]),
+              ("fun2", [ l3 ; l4 ; ...])
+            ]
+  },
     ... ;
-  ])</ocaml>
+]</hcode>
 <p>
 The list is used to set the levels a function is associated to in a
 given module. The default scheme could be expressed with:
 </p>
-<ocaml>levels = [
-  ("html",
-    [ ("base", [ 0 ; 61 ]) ;
-      ("add-docs", [ 30 ]) ;
-      ("toc", [ 50 ]) ;
-      ("cut", [ 60 ]) ;
-      ("inc", [ 160 ]) ;
-      ("clean", [ 500 ]) ;
-    ]) ;
-  ("blocks",
-    [ ("init", [ 0 ]) ;
-      ("base", [ 61 ]) ;
-      ("sectionning", [ 100 ]) ;
-      ("gather-ids", [ 120 ]) ;
-      ("doc", [ 150 ]) ;
-    ]) ;
- ]
-</ocaml>
+<hcode lang="json">levels: [
+  { module: "html",
+    levels: [
+      ("base", [ 0, 61 ]),
+      ("add-docs", [ 30 ]),
+      ("toc", [ 50 ]),
+      ("cut", [ 60 ]),
+      ("inc", [ 160 ]),
+      ("clean", [ 500 ]),
+    ]
+  },
+  { module: "blocks",
+    levels: [
+      ("init", [ 0 ]),
+      ("base", [ 61 ]),
+      ("sectionning", [ 100 ]),
+      ("gather-ids", [ 120 ]),
+      ("doc", [ 150 ]),
+    ]
+  }
+]
+</hcode>
 <p>It is possible to change only the levels of some functions.
 In the example below, the <doc href="module_base#inc"/> function
-of module <doc href="module_base">Base</doc> will not be called,
+of module <doc href="module_base">Base</doc> will not be called
 (as it is associated to an empty list of levels)
 and the <doc href="module_base#base"/> function of the same module
 will be associated to levels 2 and 230, while the rest of the scheme
 remains unchanged:
 </p>
-<ocaml>
-levels = [
-  ("html",
-    [ ("base", [ 2 ; 230 ]) ;
-      ("inc", [ ]) ;
-    ]) ;
- ]
-</ocaml>
+<hcode lang="json">
+levels: [
+  { module: "html",
+    levels: [
+      ("base", [ 2, 230 ]),
+      ("inc", [ ]),
+    ]
+  }
+]
+</hcode>
 <p>
 Each module can associate only one function to a given level:
 for a level and a module, the last associated function hides the
