@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog-extern</title>
+<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="&lt;navbar-doc/&gt;"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="active"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  <a href="https://zoggy.github.io/stog/plugins.html">Plugins</a>
+  
+  <div class="page-title">Stog-extern</div>
+</div>
+
+
+
+
+<p>This plugin allows to
+<span id="desc">use external commands to modify documents during their computation</span>
+</p>
+
+<p>Usage:</p>
+<pre class="code-sh">$ stog <span class="hl opt">--</span>package stog.extern ...</pre>
+
+<p><em>Actions</em> are defined in the <code>.stog/config-extern</code>
+configuration file. Each action
+has a name and associates a list of document types and a command.
+Here is an example of such a file:</p>
+<pre class="code-json"><span class="sym">{</span><span class="hl std">
+  </span><span class="hl kwb">actions</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
+    </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">name</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;my-action&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl kwb">types</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl str">&quot;post&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;page&quot;</span><span class="sym">]</span><span class="sym">,</span><span class="hl std"> </span><span class="hl kwb">command</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;cat&quot;</span><span class="hl std"> </span><span class="sym">}</span><span class="hl std">
+  </span><span class="sym">]</span><span class="hl std">
+</span><span class="sym">}</span><span class="hl std">
+</span></pre>
+<p>
+The dummy example above defines a new action <code>my-action</code>, with
+a command <code>cat</code> that will be applied on documents of type
+<code>post</code> or <code>page</code>. For each document matching the
+type condition, the command will be given on stdin the current XML content
+of the document and must output the result (valid XML) on stdout.
+</p>
+<p>
+We also have to indicate when this action will take place. This is done
+in the <code>.stog/config</code> file, in variable <code>levels</code>:
+</p>
+<pre class="code-json"><span class="sym">{</span><span class="hl std">
+  ...
+  </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
+    </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;extern&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">(</span><span class="hl str">&quot;my-action&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl num">1000</span><span class="sym">]</span><span class="hl std">)</span><span class="sym">]</span><span class="hl std"> </span><span class="sym">}</span><span class="hl std">
+  </span><span class="sym">]</span><span class="hl std">
+</span><span class="sym">}</span><span class="hl std">
+</span></pre>
+<p>Here, <code>my-action</code> will be applied at level 1000. The same
+action can be applied in various levels. And of course, several actions can
+be defined, with different commands and applied to different types of documents.
+</p>
+
+
+
+
+
+
+<div id="footer">
+<div class="generatedon">Generated on July 7, 2015 at 12h38</div>
+</div>
+
+
+
+</div> 
+</body>
+</html>

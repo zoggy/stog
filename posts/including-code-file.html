@@ -45,18 +45,47 @@
 </p>
 
 <p>
-If you want to include and highlight for example the <span class="icode"><span class="hl std">../plugins/stog_disqus.ml</span></span> file
+If you want to include and highlight for example the <span class="icode"><span class="hl std">../src/plugins/stog_disqus.ml</span></span> file
 relative to your project directory, you can try
-<pre class="code-xml"><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../src/plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span></pre>
 but this will only result in
 <pre class="code-ocaml"><span class="hl std">&lt;</span><span class="hl kwa">include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../../plugins/stog_disqus.ml&quot;</span><span class="hl std">/&gt;</span></pre>
 </p>
 <p>This is because <span class="icode"><span class="hl std">&lt;hcode...&gt;</span></span> is evaluated immediately, displaying
 its children nodes. What you need is to defer the evaluation of <span class="icode"><span class="hl std">&lt;hcode...&gt;</span></span>,
 using the special <span class="icode"><span class="hl std">defer_</span></span> attribute:
-<pre class="code-xml"><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../src/plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span></pre>
 This will give the expected result:
-<pre class="code-ocaml"><span class="hl kwa">open</span><span class="hl std"> </span><span class="hl kwc">Stog_types</span><span class="hl std">;;
+<pre class="code-ocaml"><span class="hl com">(*********************************************************************************)
+(*                Stog                                                           *)</span><span class="hl std">
+</span><span class="hl com">(*                                                                               *)</span><span class="hl std">
+</span><span class="hl com">(*    Copyright (C) 2012-2015 INRIA All rights reserved.                         *)</span><span class="hl std">
+</span><span class="hl com">(*    Author: Maxence Guesdon, INRIA Saclay                                      *)</span><span class="hl std">
+</span><span class="hl com">(*                                                                               *)</span><span class="hl std">
+</span><span class="hl com">(*    This program is free software; you can redistribute it and/or modify       *)</span><span class="hl std">
+</span><span class="hl com">(*    it under the terms of the GNU General Public License as                    *)</span><span class="hl std">
+</span><span class="hl com">(*    published by the Free Software Foundation, version 3 of the License.       *)</span><span class="hl std">
+</span><span class="hl com">(*                                                                               *)</span><span class="hl std">
+</span><span class="hl com">(*    This program is distributed in the hope that it will be useful,            *)</span><span class="hl std">
+</span><span class="hl com">(*    but WITHOUT ANY WARRANTY; without even the implied warranty of             *)</span><span class="hl std">
+</span><span class="hl com">(*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the               *)</span><span class="hl std">
+</span><span class="hl com">(*    GNU General Public License for more details.                               *)</span><span class="hl std">
+</span><span class="hl com">(*                                                                               *)</span><span class="hl std">
+</span><span class="hl com">(*    You should have received a copy of the GNU General Public                  *)</span><span class="hl std">
+</span><span class="hl com">(*    License along with this program; if not, write to the Free Software        *)</span><span class="hl std">
+</span><span class="hl com">(*    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA                   *)</span><span class="hl std">
+</span><span class="hl com">(*    02111-1307  USA                                                            *)</span><span class="hl std">
+</span><span class="hl com">(*                                                                               *)</span><span class="hl std">
+</span><span class="hl com">(*    As a special exception, you have permission to link this program           *)</span><span class="hl std">
+</span><span class="hl com">(*    with the OCaml compiler and distribute executables, as long as you         *)</span><span class="hl std">
+</span><span class="hl com">(*    follow the requirements of the GNU GPL in regard to all of the             *)</span><span class="hl std">
+</span><span class="hl com">(*    software in the executable aside from the OCaml compiler.                  *)</span><span class="hl std">
+</span><span class="hl com">(*                                                                               *)</span><span class="hl std">
+</span><span class="hl com">(*    Contact: Maxence.Guesdon@inria.fr                                          *)</span><span class="hl std">
+</span><span class="hl com">(*                                                                               *)</span><span class="hl std">
+(*********************************************************************************)
+
+</span><span class="hl kwa">open</span><span class="hl std"> </span><span class="hl kwc">Stog_types</span><span class="hl std">;;
 
 </span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">fun_comments</span><span class="hl std"> </span><span class="">stog</span><span class="hl std"> </span><span class="">env</span><span class="hl std"> </span><span class="">args</span><span class="hl std"> </span><span class="">subs</span><span class="hl std"> =
   </span><span class="hl kwa">let</span><span class="hl std"> (</span><span class="">stog</span><span class="hl std">, </span><span class="">path</span><span class="hl std">) = </span><span class="hl kwc">Stog_engine</span><span class="hl std">.</span><span class="">get_path</span><span class="hl std"> </span><span class="">stog</span><span class="hl std"> </span><span class="">env</span><span class="hl std"> </span><span class="hl kwa">in</span><span class="hl std">
@@ -112,7 +141,7 @@ and it now highlights its children, that is the contents of the included file.
 
 
 
-<p class="alert alert-info">
+<p class="doccode alert alert-info">
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
@@ -126,18 +155,18 @@ For information you can see the <a href="#pagesource"> source code of the page</
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-If you want to include and highlight for example the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">../plugins/stog_disqus.ml</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file
+If you want to include and highlight for example the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">../src/plugins/stog_disqus.ml</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file
 relative to your project directory, you can try
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../src/plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 but this will only result in
 </span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">This is because </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">hcode...</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is evaluated immediately, displaying
 its children nodes. What you need is to defer the evaluation of </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">hcode...</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
 using the special </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">defer_</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute:
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../src/plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 This will give the expected result:
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../../plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../../src/plugins/stog_disqus.ml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">defer_</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute is decremented each time the node should be evaluated.
@@ -152,7 +181,7 @@ and it now highlights its children, that is the contents of the included file.
 </div>
 
 <div id="footer">
-<div class="generatedon">Generated on May 19, 2015 at 20h45</div>
+<div class="generatedon">Generated on July 7, 2015 at 12h38</div>
 </div>
 
 

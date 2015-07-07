@@ -5,7 +5,7 @@
          <link>https://zoggy.github.io/stog</link>
          <description>Static blog and web site generator</description>
          <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
-         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>19 May 2015 20:45:23 +0000</lastBuildDate>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>07 Jul 2015 12:38:51 +0000</lastBuildDate>
          <generator>Stog</generator>
          <div class="img"><img class="img" src="" width=""/><div class="legend"><url>https://zoggy.github.io/stog/logo.png</url>
            <title>Stog</title><link>https://zoggy.github.io/stog</link>
@@ -19,7 +19,7 @@ Since &lt;a href=&quot;https://zoggy.github.io/stog/posts/release-0.10.0.html&qu
 can be used to access the content of computed OCaml values, as
 strings.
 &lt;/p&gt;
-&lt;a href=&quot;https://zoggy.github.io/stog/posts/ocaml-printf.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;https://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+</description>
       <pubDate>16 Jan 2014 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/ocaml-printf.html</guid>
     </item><item>
@@ -37,7 +37,7 @@ embed the OCaml toplevel, only available as bytecode. As a consequence,
 only the bytecode version of Stog could evaluate OCaml code using the
 internal toplevel.
 &lt;/p&gt;
-&lt;a href=&quot;https://zoggy.github.io/stog/posts/ocaml-sessions.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;https://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+</description>
       <pubDate>21 Nov 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/ocaml-sessions.html</guid>
     </item><item>
@@ -46,7 +46,7 @@ internal toplevel.
       <description>
 &lt;p&gt;How to highlight a file inserted with &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;lt;include&lt;/span&gt;&lt;span class=&quot;hl std&quot;&gt; ...&lt;/span&gt;&lt;span class=&quot;hl kwa&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt; ?
 &lt;/p&gt;
-&lt;a href=&quot;https://zoggy.github.io/stog/posts/including-code-file.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;https://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+</description>
       <pubDate>13 Mar 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/including-code-file.html</guid>
     </item><item>
@@ -59,7 +59,7 @@ offers the &lt;span class=&quot;icode&quot;&gt;&lt;span class=&quot;hl kwa&quot;
 function to evaluate code and display the result. This is nice to provide
 verified code examples on your pages.
 &lt;/p&gt;
-&lt;a href=&quot;https://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;https://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+</description>
       <pubDate>11 Mar 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html</guid>
     </item>

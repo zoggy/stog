@@ -49,6 +49,25 @@ Reading stog config.<br/>
 </div>
 <hr width="100%"/>
 
+<pre><code><span id="TYPEmodule_levels"><span class="keyword">type</span> module_levels</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTmodule_levels.module_name">module_name</span> : <code class="type">string</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTmodule_levels.levels">levels</span> : <code class="type">(string * int list) list</code>;</code></td>
+
+</tr></table>
+}
+
+
+
 <pre><code><span id="TYPEt"><span class="keyword">type</span> t</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top">
@@ -91,7 +110,7 @@ list of regexps for file matching documents rules but not being  documents<br/>
 <td align="left" valign="top">
 <code>  </code></td>
 <td align="left" valign="top">
-<code><span id="TYPEELTt.levels">levels</span> : <code class="type">(string * (string * int list) list) list</code>;</code></td>
+<code><span id="TYPEELTt.levels">levels</span> : <code class="type"><a href="Stog_config.html#TYPEmodule_levels">module_levels</a> list</code>;</code></td>
 
 </tr></table>
 }
@@ -136,7 +155,7 @@ Contents of <code class="code">.stog/config</code> file.<br/>
 
 
 <div id="footer">
-<div class="generatedon">Generated on May 19, 2015 at 20h45</div>
+<div class="generatedon">Generated on July 7, 2015 at 12h38</div>
 </div>
 
 

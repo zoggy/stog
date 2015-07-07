@@ -206,7 +206,7 @@ textarea {
 }
 body {
   margin: 0;
-  font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Roboto Condensed", verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 34px;
   line-height: 51px;
   color: #333333;
@@ -811,7 +811,7 @@ address {
 code,
 pre {
   padding: 0 3px 2px;
-  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+  font-family: "Lucida console", Monospace, Monaco, Menlo, Consolas, "Courier New", monospace;
   font-size: 32px;
   color: #333333;
   -webkit-border-radius: 3px;
@@ -893,7 +893,7 @@ input,
 button,
 select,
 textarea {
-  font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Roboto Condensed", verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 label {
   display: block;
@@ -3823,7 +3823,7 @@ input[type="submit"].btn.btn-mini {
 .navbar-search .search-query {
   margin-bottom: 0;
   padding: 4px 14px;
-  font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Roboto Condensed", verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   font-weight: normal;
   line-height: 1;
@@ -5631,7 +5631,7 @@ table.eqnarray .equation .title {
   font-size: 80% ;
 }
 body {
-  font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Roboto Condensed", verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 34px;
   background-color: #eeeeff;
   line-height: 51px;
@@ -5709,8 +5709,13 @@ p {
 ul {
   margin-bottom: 1.5em;
 }
-p + ul {
+p + ul,
+p + dl {
   margin-top: -1.5em;
+}
+dd {
+  line-height: 1em;
+  margin-bottom: 0.5em;
 }
 .rss-button {
   float: right;
@@ -5796,7 +5801,7 @@ span.icode {
   .border-radius(3px);
 */
 
-  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+  font-family: "Lucida console", Monospace, Monaco, Menlo, Consolas, "Courier New", monospace;
   font-size: 32px;
   color: #333333;
   -webkit-border-radius: 3px;
@@ -5912,7 +5917,7 @@ div.ocaml-exc div.stderr {
   text-align: center ;
 }
 .ocamldoc-page {
-  font-size: 0.889em;
+  font-size: 1em ;
   line-height: 40.306371px /** @decreaseFontSizeFactor * @decreaseFontSizeFactor */;
 }
 .ocamldoc-page {
@@ -6117,7 +6122,7 @@ div.ocaml-exc div.stderr {
   padding-left: 0;
 }
 .ocamldoc-page code {
-  font-size: 1em;
+  font-size: 0.889em;
   border-width: 0;
   background-color: transparent ;
   color: #333333;
@@ -6128,7 +6133,7 @@ div.ocaml-exc div.stderr {
   font-weight: bold ;
 }
 .ocamldoc-page pre {
-  font-size: 1em;
+  font-size: 0.889em;
   padding: 8pt 0 2pt 0;
   border-width: 0;
   background-color: transparent ;
@@ -6139,7 +6144,7 @@ div.ocaml-exc div.stderr {
 }
 .ocamldoc-page .info,
 .ocamldoc-page .param_info {
-  font-size: 1.124859392575928em;
+  font-size: 1em ;
   color: #595959;
 }
 .ocamldoc-page td.typefieldcomment {
@@ -6201,6 +6206,44 @@ div.float-right {
 }
 img.latex {
   vertical-align: text-top;
+}
+div.doc-block {
+  padding: 0 3px 2px;
+  border: 1px solid #006f00;
+  display: block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #d5ffd5;
+  padding: 0;
+  background-color: transparent;
+  border-color: #bce8f1;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+}
+div.doc-block div.title {
+  padding: 0 3px 2px;
+  border: 1px solid #006f00;
+  display: block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #d5ffd5;
+  padding: 0.3em 0.5em 0.3em 0.5em;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #3a87ad;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  font-weight: bold;
+}
+div.doc-block div.contents {
+  padding: 0.5em;
+}
+.doccode {
+  font-size: 0.9em;
 }
 .page-title {
   clear: both ;
@@ -6330,7 +6373,7 @@ body {
   border-style: solid ;
   margin: 1em;
   height: 600px;
-  font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Roboto Condensed", verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 34px;
   line-height: 51px;
 }

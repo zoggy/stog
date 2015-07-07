@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog-sitemap</title>
+<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="&lt;navbar-doc/&gt;"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="active"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  <a href="https://zoggy.github.io/stog/plugins.html">Plugins</a>
+  
+  <div class="page-title">Stog-sitemap</div>
+</div>
+
+
+
+
+<p>This is a plugin to <span id="desc">generate a
+<span class="ext-a"><a href="https://en.wikipedia.org/wiki/Sitemaps">Sitemap</a></span> for
+a web site</span> compiled with Stog.
+</p>
+<p>Usage:</p>
+<pre class="code-sh">$ stog <span class="hl opt">--</span>package stog.sitemap ...</pre>
+
+<p>
+By default, this plugin generates a <code>sitemap.xml</code> file in
+the target directory. You can edit <code>.stog/config-sitemap</code>
+to change the destination file and set which types of documents appear
+in the sitemap, and their associated change frequency and priority.
+</p>
+<p>Here is an example of such a file:</p>
+<pre class="code-json"><span class="sym">{</span><span class="hl std">
+  </span><span class="hl kwb">default_by_type</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">{</span><span class="hl std">
+    </span><span class="hl kwb">rss</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">&quot;in-sitemap&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="hl num">false</span><span class="sym">}</span><span class="sym">,</span><span class="hl std">
+    </span><span class="hl kwb">page</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">&quot;in-sitemap&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="hl num">true</span><span class="sym">,</span><span class="hl std"> </span><span class="hl kwb">frequency</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;daily&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl kwb">priority</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;0.5&quot;</span><span class="sym">}</span><span class="sym">,</span><span class="hl std">
+    </span><span class="hl kwb">post</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">&quot;in-sitemap&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="hl num">true</span><span class="sym">,</span><span class="hl std"> </span><span class="hl kwb">frequency</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;daily&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl kwb">priority</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;0.8&quot;</span><span class="sym">}</span><span class="sym">,</span><span class="hl std">
+    </span><span class="hl kwb">&quot;by-month&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">&quot;in-sitemap&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="hl num">false</span><span class="sym">}</span><span class="sym">,</span><span class="hl std">
+    </span><span class="hl kwb">&quot;by-topic&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">&quot;in-sitemap&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="hl num">false</span><span class="sym">}</span><span class="sym">,</span><span class="hl std">
+    </span><span class="hl kwb">&quot;by-keyword&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">&quot;in-sitemap&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="hl num">false</span><span class="sym">}</span><span class="sym">,</span><span class="hl std">
+    </span><span class="hl kwb">&quot;ocamldoc&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">&quot;in-sitemap&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="hl num">false</span><span class="sym">}</span><span class="sym">,</span><span class="hl std">
+    </span><span class="hl kwb">&quot;plugin&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">&quot;in-sitemap&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="hl num">true</span><span class="sym">,</span><span class="hl std"> </span><span class="hl kwb">frequency</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;daily&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl kwb">priority</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;0.5&quot;</span><span class="sym">}</span><span class="hl std">
+  </span><span class="sym">}</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">out_file</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;file where to generate the sitemap&quot;</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">out_file</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;sitemap.xml&quot;</span><span class="hl std">
+</span><span class="sym">}</span></pre>
+<p>Moreover, each document can define the following values to change the
+default behaviour to this document:
+</p>
+<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std">
+</span><span class="">in-sitemap</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="">sitemap-frequency</span><span class="hl std">=</span><span class="hl str">&quot;hourly&quot;</span><span class="hl std">
+</span><span class="">sitemap-priority</span><span class="hl std">=</span><span class="hl str">&quot;0.9&quot;</span><span class="hl std">
+...
+</span><span class="hl kwa">&gt;</span><span class="hl std">
+...
+</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
+
+
+
+
+
+
+<div id="footer">
+<div class="generatedon">Generated on July 7, 2015 at 12h38</div>
+</div>
+
+
+
+</div> 
+</body>
+</html>

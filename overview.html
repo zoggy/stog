@@ -67,7 +67,7 @@ or simply
 <p>
 The <span class="icode"><span class="hl std">.stog</span></span> directory in the given root directory contains the
 templates (in directory <span class="icode"><span class="hl std">templates</span></span>) and the
-<span class="icode"><span class="hl std">config</span></span> file, containing stog configuration.
+<span class="icode"><span class="hl std">config</span></span> file (in JSON syntax), containing stog configuration.
 </p>
 <p id="config-file">In this file,
 using regular expressions, one can indicate which files must be ignored,
@@ -79,14 +79,27 @@ Default is to ignore symlinks.
 <p>
 Here is an example of <span class="icode"><span class="hl std">.stog/config</span></span> file:
 </p>
-<pre class="code-ocaml"><span class="hl com">(* Regexps of files to ignore *)</span><span class="hl std">
-</span><span class="">ignored</span><span class="hl std"> = [ </span><span class="hl str">&quot;.*stog-output&quot;</span><span class="hl std"> ; </span><span class="hl str">&quot;.*\\.git&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*Makefile&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*tmpl$&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*less$&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*\\.chamo.*&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*/test.*&quot;</span><span class="hl std"> ; </span><span class="hl str">&quot;.*/log$&quot;</span><span class="hl std"> ; </span><span class="hl str">&quot;.*/slides/inria_code.*\\.xml&quot;</span><span class="hl std"> ]
-</span><span class="hl com">(* Regexps of files containing documents *)</span><span class="hl std">
-</span><span class="">documents</span><span class="hl std"> = [</span><span class="hl str">&quot;.*\\..xml$&quot;</span><span class="hl std">; </span><span class="hl str">&quot;.*\\.html$&quot;</span><span class="hl std">]
-</span><span class="hl com">(* Regexps of files matching 'documents' regexps but not containing documents
-   *)</span><span class="hl std">
-</span><span class="hl str">&quot;not-documents&quot;</span><span class="hl std"> = []
-</span><span class="hl str">&quot;follow-symlinks&quot;</span><span class="hl std"> = </span><span class="hl num">false</span><span class="hl std">
+<pre class="code-json"><span class="sym">{</span><span class="hl std">
+  </span><span class="hl kwb">ignored</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl str">&quot;.*stog-output&quot;</span><span class="hl std"> </span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;.*\\.git&quot;</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">&quot;.*Makefile&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;.*tmpl$&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;.*less$&quot;</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">&quot;.*\\.chamo.*&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;.*/test.*&quot;</span><span class="hl std"> </span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">&quot;.*/log$&quot;</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">&quot;.*/slides/inria_code.*\\.xml&quot;</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">&quot;.*/examples$&quot;</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">&quot;.*/\\..*&quot;</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">&quot;.*/stog-tmpl.*\\.txt&quot;</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">&quot;.*/gmon\\.out&quot;</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">&quot;.*/videos/1&quot;</span><span class="hl std">
+          </span><span class="sym">]</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">documents</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl str">&quot;.*\\..xml$&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;.*\\.html$&quot;</span><span class="sym">]</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">not_documents</span><span class="hl std"> </span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
+            </span><span class="hl str">&quot;videos/1/.*&quot;</span><span class="hl std">
+          </span><span class="sym">]</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">follow_symlinks</span><span class="hl std"> </span><span class="sym">:</span><span class="hl std"> </span><span class="hl num">false</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
+    </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;extern&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">(</span><span class="hl str">&quot;my-action&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl num">1000</span><span class="sym">]</span><span class="hl std">)</span><span class="sym">]</span><span class="hl std"> </span><span class="sym">}</span><span class="hl std">
+  </span><span class="sym">]</span><span class="hl std">
+</span><span class="sym">}</span><span class="hl std">
 </span></pre>
 <p>
 A default file is generated by <span class="icode"><span class="hl std">stog</span></span> if it does not exist.
@@ -97,7 +110,7 @@ When launched, <span class="icode"><span class="hl std">stog</span></span> perfo
 <ol>
 <li>Read the given directory hierarchy,</li>
 <li>Create the target directory if it does not exist,</li>
-<li>Apply the engine on documents,</li>
+<li>Apply the <a href="https://zoggy.github.io/stog/engine.html">engine</a> on documents,</li>
 <li>Generate resulting document files in the target directory,</li>
 <li>Copy all other files in the target directory, of course
   keeping the source directory structure.</li>
@@ -107,7 +120,7 @@ When launched, <span class="icode"><span class="hl std">stog</span></span> perfo
 
 
 
-<p class="alert alert-info">
+<p class="doccode alert alert-info">
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
@@ -145,7 +158,7 @@ or simply
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> directory in the given root directory contains the
 templates (in directory </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">templates</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">) and the
-</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">config</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file, containing stog configuration.
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">config</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file (in JSON syntax), containing stog configuration.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;config-file&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">In this file,
 using regular expressions, one can indicate which files must be ignored,
@@ -157,7 +170,7 @@ Default is to ignore symlinks.
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Here is an example of </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/config</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;./.stog/config&quot;</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">depend</span><span class="hl std">=</span><span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;json&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;./.stog/config&quot;</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">depend</span><span class="hl std">=</span><span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 A default file is generated by </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> if it does not exist.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -167,7 +180,7 @@ When launched, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">
 </span><span class="hl kwa">&lt;ol</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Read the given directory hierarchy,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Create the target directory if it does not exist,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Apply the engine on documents,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Apply the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;engine&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">engine</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> on documents,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Generate resulting document files in the target directory,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Copy all other files in the target directory, of course
   keeping the source directory structure.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -178,7 +191,7 @@ When launched, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">
 
 
 <div id="footer">
-<div class="generatedon">Generated on May 19, 2015 at 20h45</div>
+<div class="generatedon">Generated on July 7, 2015 at 12h38</div>
 </div>
 
 

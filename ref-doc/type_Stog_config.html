@@ -39,12 +39,16 @@
 
 <div class="ocamldoc-page">
 <code class="code"><span class="keyword">sig</span><br/>
+  <span class="keyword">type</span> module_levels = {<br/>
+    module_name : string;<br/>
+    levels : (string * int list) list;<br/>
+  }<br/>
   <span class="keyword">type</span> t = {<br/>
     ignored : string list;<br/>
     documents : string list;<br/>
     not_documents : string list;<br/>
     follow_symlinks : bool;<br/>
-    levels : (string * (string * int list) list) list;<br/>
+    levels : <span class="constructor">Stog_config</span>.module_levels list;<br/>
   }<br/>
   <span class="keyword">val</span> config_dir : string <span class="keywordsign">-&gt;</span> string<br/>
   <span class="keyword">val</span> config_file : string <span class="keywordsign">-&gt;</span> string<br/>
@@ -59,7 +63,7 @@
 
 
 <div id="footer">
-<div class="generatedon">Generated on May 19, 2015 at 20h45</div>
+<div class="generatedon">Generated on July 7, 2015 at 12h38</div>
 </div>
 
 

@@ -5,7 +5,7 @@
          <link>https://zoggy.github.io/stog</link>
          <description>Static blog and web site generator</description>
          <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
-         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>19 May 2015 20:45:23 +0000</lastBuildDate>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>07 Jul 2015 12:38:51 +0000</lastBuildDate>
          <generator>Stog</generator>
          <div class="img"><img class="img" src="" width=""/><div class="legend"><url>https://zoggy.github.io/stog/logo.png</url>
            <title>Stog</title><link>https://zoggy.github.io/stog</link>
@@ -17,7 +17,7 @@
 &lt;p&gt;
 Release 0.9.0 of stog-rdf is available from the &lt;a href=&quot;https://zoggy.github.io/stog/plugins/rdf.html&quot;&gt;Stog-rdf&lt;/a&gt; page.
 &lt;/p&gt;
-&lt;a href=&quot;https://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html&quot;&gt;&lt;img alt=&quot;next&quot; src=&quot;https://zoggy.github.io/stog/next.png&quot;/&gt;&lt;/a&gt;</description>
+</description>
       <pubDate>27 Sep 2013 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html</guid>
     </item>

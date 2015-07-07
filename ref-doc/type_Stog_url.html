@@ -40,7 +40,10 @@
 <div class="ocamldoc-page">
 <code class="code"><span class="keyword">sig</span><br/>
   <span class="keyword">type</span> t<br/>
+  <span class="keyword">val</span> wrapper : <span class="constructor">Stog_url</span>.t <span class="constructor">Ocf</span>.wrapper<br/>
   <span class="keyword">type</span> url_config = { pub : <span class="constructor">Stog_url</span>.t; priv : <span class="constructor">Stog_url</span>.t; }<br/>
+  <span class="keyword">val</span> url_config_wrapper : <span class="constructor">Stog_url</span>.url_config <span class="constructor">Ocf</span>.wrapper<br/>
+  <span class="keyword">val</span> default_url_config : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.url_config<br/>
   <span class="keyword">val</span> of_string : string <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.t<br/>
   <span class="keyword">val</span> to_string : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> string<br/>
   <span class="keyword">val</span> concat : <span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.t<br/>
@@ -71,7 +74,7 @@
 
 
 <div id="footer">
-<div class="generatedon">Generated on May 19, 2015 at 20h45</div>
+<div class="generatedon">Generated on July 7, 2015 at 12h38</div>
 </div>
 
 

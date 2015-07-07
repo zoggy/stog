@@ -41,9 +41,9 @@
 
 <div class="left-toc"><ul class="toc"><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#download">Download</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#install">Installation and usage</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#definetriples">Defining RDF triples</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#namespaces">Namespaces</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#sources">Using external graphs</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#querying">Querying graphs</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/rdf.html#tips">Tips</a></li></ul></div>
 <p>
-This plugin allows to easily specify RDF triples within documents,
+This plugin allows to easily <span id="desc">specify RDF triples within documents,
 to produce a RDF graph for the whole generated site. It also permits
-executing Sparql queries to include data in the generated pages.
+executing Sparql queries to include data in the generated pages</span>.
 </p>
 <p>
 The following figure summarizes the way it works:
@@ -115,7 +115,7 @@ You can clone the git repository:
 </div>
 
 <div class="section"><div class="section-title" id="install">Installation and usage</div>
-<div class="subsection"><div class="subsection-title" id="77f3-5ee1-28f0-8967">Compiling and installing</div>
+<div class="subsection"><div class="subsection-title" id="f07b-fa0e-0319-5720">Compiling and installing</div>
 <pre class="code-sh"><span class="hl kwb">cd</span> stog<span class="hl opt">-</span>rdf<span class="hl opt">-</span>XXX
 <span class="hl kwc">make</span> all <span class="hl kwc">install</span></pre>
 <p>
@@ -123,7 +123,7 @@ You can clone the git repository:
 This will install the <span class="icode"><span class="hl std">stog-rdf</span></span> package with ocamlfind.
 </p>
 </div>
-<div class="subsection"><div class="subsection-title" id="ba88-af39-88f0-933f">Usage</div>
+<div class="subsection"><div class="subsection-title" id="6d4a-6ffa-eb04-75f1">Usage</div>
 <p>
 To use:
 </p>
@@ -268,22 +268,26 @@ from.
 Here is an example of configuration file describing two graphs to load,
 one from a file, and one from a MySQL database:
 </p>
-<pre class="code-ocaml"><span class="hl com">(* pairs (uri, name) specifying namespaces *)</span><span class="hl std">
-</span><span class="">namespaces</span><span class="hl std"> =
-  [(</span><span class="hl str">&quot;http://super-namespace.net/&quot;</span><span class="hl std">, </span><span class="hl str">&quot;super&quot;</span><span class="hl std">)]
-</span><span class="hl com">(* name of main graph output file *)</span><span class="hl std">
-</span><span class="">graph_file</span><span class="hl std"> = </span><span class="hl str">&quot;graph.rdf&quot;</span><span class="hl std">
-</span><span class="hl com">(* pairs (uri, options) specifying graphs to load and associate to uris.
-   Options is a list of pair (name, value). To load a load, use [&quot;file&quot;,
-   &quot;myfile.ttl&quot;]. Other options can be given to access graphs from a database
-   (see OCaml-RDF's Rdf_graph documentation) *)</span><span class="hl std">
-</span><span class="">sources</span><span class="hl std"> =
-  [
-   (</span><span class="hl str">&quot;http://foo.net/&quot;</span><span class="hl std">, [ (</span><span class="">file</span><span class="hl std">, </span><span class="hl str">&quot;foo_net.ttl&quot;</span><span class="hl std">) ]) ;
-   (</span><span class="hl str">&quot;http://foo.bar.net/&quot;</span><span class="hl std">,
-    [(</span><span class="">storage</span><span class="hl std">, </span><span class="">mysql2</span><span class="hl std">); (</span><span class="">database</span><span class="hl std">, </span><span class="">genet_example</span><span class="hl std">); (</span><span class="">user</span><span class="hl std">, </span><span class="">genet</span><span class="hl std">);
-     (</span><span class="">host</span><span class="hl std">, </span><span class="">localhost</span><span class="hl std">); (</span><span class="">password</span><span class="hl std">, </span><span class="hl str">&quot;&quot;</span><span class="hl std">); (</span><span class="">port</span><span class="hl std">, </span><span class="hl str">&quot;3306&quot;</span><span class="hl std">)])
-  ]
+<pre class="code-json"><span class="sym">{</span><span class="hl std">
+  </span><span class="hl kwb">namespaces</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;pairs (uri, name) specifying namespaces&quot;</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">namespaces</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">(</span><span class="hl str">&quot;http://super-namespace.net/&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;super&quot;</span><span class="hl std">)</span><span class="sym">]</span><span class="sym">,</span><span class="hl std">
+
+  </span><span class="hl kwb">&quot;graph-file&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;name of main graph output file&quot;</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">&quot;graph-file&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;graph.rdf&quot;</span><span class="sym">,</span><span class="hl std">
+
+  </span><span class="hl kwb">sources</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;pairs (uri, options) specifying graphs to load and associate to uris.
+            Options is a list of pair (name, value). To load a load, use
+            [\&quot;file\&quot;, \&quot;myfile.ttl\&quot;].
+            Other options can be given to access graphs from a database
+            (see OCaml-RDF's Rdf_graph documentation)&quot;</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">sources</span><span class="sym">:</span><span class="hl std">
+  </span><span class="sym">[</span><span class="hl std">
+   (</span><span class="hl str">&quot;http://foo.net/&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> (</span><span class="hl str">&quot;file&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;foo_net.ttl&quot;</span><span class="hl std">) </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+   (</span><span class="hl str">&quot;http://foo.bar.net/&quot;</span><span class="sym">,</span><span class="hl std">
+    </span><span class="sym">[</span><span class="hl std">(</span><span class="hl str">&quot;storage&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;mysql2&quot;</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std"> (</span><span class="hl str">&quot;database&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;genet_example&quot;</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std"> (</span><span class="hl str">&quot;user&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;genet&quot;</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+     (</span><span class="hl str">&quot;host&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;localhost&quot;</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std"> (</span><span class="hl str">&quot;password&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;&quot;</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std"> (</span><span class="hl str">&quot;port&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;3306&quot;</span><span class="hl std">)</span><span class="sym">]</span><span class="hl std">)
+  </span><span class="sym">]</span><span class="hl std">
+</span><span class="sym">}</span><span class="hl std">
 </span></pre>
 <p>
 The options associated to each IRI are the options passed to the
@@ -435,7 +439,7 @@ This will add a triple
 
 
 <div id="footer">
-<div class="generatedon">Generated on May 19, 2015 at 20h45</div>
+<div class="generatedon">Generated on July 7, 2015 at 12h38</div>
 </div>
 
 

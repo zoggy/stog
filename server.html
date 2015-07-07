@@ -45,6 +45,9 @@ The preview server watches Stog files and recomputes
 the documents when there is a change. This is useful to have
 a preview as you modify your web site or article.
 </p>
+<p>Have a look at stog server in action on a video
+<a href="https://zoggy.github.io/stog/posts/2014-10-27-video.html">here</a>.
+</p>
 </div>
 
 <div class="section"><div class="section-title" id="how">How does it work ?</div>
@@ -79,7 +82,7 @@ library allows to specify some nodes to ignore when applying a patch.
 <p class="alert alert-warning">
 By now, only documents which exist when the server is launched are
 watched for changes. This means that if you add a new document source file,
-you will have to restart the server.
+you have to click on the ↺ button at the top of the preview page.
 </p>
 </div>
 
@@ -93,11 +96,15 @@ You can use <span class="icode"><span class="hl std">mk-stog[.byte]</span></span
 so, just use <span class="icode"><span class="hl std">--package stog.server</span></span> in addition to other packages.
 </p>
 <p>
-The <span class="icode"><span class="hl std">--port</span></span> and <span class="icode"><span class="hl std">--host</span></span> command line options can be
-used to specify the host and port to listen on. Default is <span class="icode"><span class="hl std">localhost:8080</span></span>.
-The websocket server listens to port + 1, by now. This will change when the Websocket
-library allows changing a HTTP connection to a websocket connection on demand
-(see <span class="ext-a"><a href="https://github.com/vbmithr/ocaml-websocket/issues/18">this issue</a></span>).
+The <span class="icode"><span class="hl std">--http</span></span> and <span class="icode"><span class="hl std">--ws</span></span> command line options can be
+used to specify a url defining the host and port to listen on, for the HTTP
+and websocket servers respectively. Defaults are <span class="icode"><span class="hl std">http://localhost:8080</span></span>
+and <span class="icode"><span class="hl std">ws://localhost:8081</span></span>.
+</p>
+<p>If the server must be run behind a proxy, you must also give the
+<span class="icode"><span class="hl std">--pub-http</span></span> and <span class="icode"><span class="hl std">--pub-ws</span></span> options to indicate
+the &quot;public&quot; base urls, i.e. the ones that the proxy will handle to send
+queries to the server.
 </p>
 </div>
 
@@ -106,7 +113,7 @@ library allows changing a HTTP connection to a websocket connection on demand
 
 
 
-<p class="alert alert-info">
+<p class="doccode alert alert-info">
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
@@ -121,6 +128,9 @@ For information you can see the <a href="#pagesource"> source code of the page</
 The preview server watches Stog files and recomputes
 the documents when there is a change. This is useful to have
 a preview as you modify your web site or article.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Have a look at stog server in action on a video
+</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;2014-10-27-video.html&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">here</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
@@ -156,7 +166,7 @@ library allows to specify some nodes to ignore when applying a patch.
 </span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;alert alert-warning&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
 By now, only documents which exist when the server is launched are
 watched for changes. This means that if you add a new document source file,
-you will have to restart the server.
+you have to click on the ↺ button at the top of the preview page.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
@@ -170,11 +180,15 @@ You can use </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt
 so, just use </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--package stog.server</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> in addition to other packages.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--port</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> and </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--host</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> command line options can be
-used to specify the host and port to listen on. Default is </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">localhost:8080</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
-The websocket server listens to port + 1, by now. This will change when the Websocket
-library allows changing a HTTP connection to a websocket connection on demand
-(see </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/vbmithr/ocaml-websocket/issues/18&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">this issue</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">).
+The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--http</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> and </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--ws</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> command line options can be
+used to specify a url defining the host and port to listen on, for the HTTP
+and websocket servers respectively. Defaults are </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">http://localhost:8080</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
+and </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">ws://localhost:8081</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">If the server must be run behind a proxy, you must also give the
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--pub-http</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> and </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--pub-ws</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> options to indicate
+the &quot;public&quot; base urls, i.e. the ones that the proxy will handle to send
+queries to the server.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
@@ -184,7 +198,7 @@ library allows changing a HTTP connection to a websocket connection on demand
 
 
 <div id="footer">
-<div class="generatedon">Generated on May 19, 2015 at 20h45</div>
+<div class="generatedon">Generated on July 7, 2015 at 12h38</div>
 </div>
 
 
