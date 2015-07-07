@@ -4,10 +4,16 @@
             ".*\\.chamo.*", ".*/test.*" ,
             ".*/log$",
             ".*/slides/inria_code.*\\.xml",
-            ".*/examples$"
+            ".*/examples$",
+            ".*/\\..*",
+            ".*/stog-tmpl.*\\.txt",
+            ".*/gmon\\.out",
+            ".*/videos/1"
           ],
   documents: [".*\\..xml$", ".*\\.html$"],
-  not_documents : [],
+  not_documents : [
+            "videos/1/.*"
+          ],
   follow_symlinks : false,
   levels: [
     { module: "extern", levels: [("my-action", [1000])] }
