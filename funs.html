@@ -76,48 +76,59 @@ of the stog sources.
 <p>
 The default scheme can be changed, using the <code>levels</code>
 option in the <code>.stog/config</code> file.
-This option contains a list of pairs of the following form:
+This option contains a list of associations of the following form:
 </p>
-<pre class="code-ocaml"><span class="hl opt">(</span><span class="hl str">&quot;module-name&quot;</span><span class="hl opt">,</span>
-  <span class="hl opt">[ (</span><span class="hl str">&quot;fun1&quot;</span><span class="hl opt">, [</span> l1 <span class="hl opt">;</span> l2 <span class="hl opt">; ...]) ;</span>
-    <span class="hl opt">(</span><span class="hl str">&quot;fun2&quot;</span><span class="hl opt">, [</span> l3 <span class="hl opt">;</span> l4 <span class="hl opt">; ...]) ;</span>
-    <span class="hl opt">... ;</span>
-  <span class="hl opt">])</span></pre>
+<pre class="code-json"><span class="sym">[</span><span class="hl std">
+  </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;module-name&quot;</span><span class="sym">,</span><span class="hl std">
+    </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> (</span><span class="hl str">&quot;fun1&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl kwb">l1</span><span class="hl std"> ; </span><span class="hl kwb">l2</span><span class="hl std"> ; ...</span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+              (</span><span class="hl str">&quot;fun2&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl kwb">l3</span><span class="hl std"> ; </span><span class="hl kwb">l4</span><span class="hl std"> ; ...</span><span class="sym">]</span><span class="hl std">)
+            </span><span class="sym">]</span><span class="hl std">
+  </span><span class="sym">}</span><span class="sym">,</span><span class="hl std">
+    ... ;
+</span><span class="sym">]</span></pre>
 <p>
 The list is used to set the levels a function is associated to in a
 given module. The default scheme could be expressed with:
 </p>
-<pre class="code-ocaml">levels <span class="hl opt">= [</span>
-  <span class="hl opt">(</span><span class="hl str">&quot;html&quot;</span><span class="hl opt">,</span>
-    <span class="hl opt">[ (</span><span class="hl str">&quot;base&quot;</span><span class="hl opt">, [</span> <span class="hl num">0</span> <span class="hl opt">;</span> <span class="hl num">61</span> <span class="hl opt">]) ;</span>
-      <span class="hl opt">(</span><span class="hl str">&quot;add-docs&quot;</span><span class="hl opt">, [</span> <span class="hl num">30</span> <span class="hl opt">]) ;</span>
-      <span class="hl opt">(</span><span class="hl str">&quot;toc&quot;</span><span class="hl opt">, [</span> <span class="hl num">50</span> <span class="hl opt">]) ;</span>
-      <span class="hl opt">(</span><span class="hl str">&quot;cut&quot;</span><span class="hl opt">, [</span> <span class="hl num">60</span> <span class="hl opt">]) ;</span>
-      <span class="hl opt">(</span><span class="hl str">&quot;inc&quot;</span><span class="hl opt">, [</span> <span class="hl num">160</span> <span class="hl opt">]) ;</span>
-      <span class="hl opt">(</span><span class="hl str">&quot;clean&quot;</span><span class="hl opt">, [</span> <span class="hl num">500</span> <span class="hl opt">]) ;</span>
-    <span class="hl opt">]) ;</span>
-  <span class="hl opt">(</span><span class="hl str">&quot;blocks&quot;</span><span class="hl opt">,</span>
-    <span class="hl opt">[ (</span><span class="hl str">&quot;init&quot;</span><span class="hl opt">, [</span> <span class="hl num">0</span> <span class="hl opt">]) ;</span>
-      <span class="hl opt">(</span><span class="hl str">&quot;base&quot;</span><span class="hl opt">, [</span> <span class="hl num">61</span> <span class="hl opt">]) ;</span>
-      <span class="hl opt">(</span><span class="hl str">&quot;sectionning&quot;</span><span class="hl opt">, [</span> <span class="hl num">100</span> <span class="hl opt">]) ;</span>
-      <span class="hl opt">(</span><span class="hl str">&quot;gather-ids&quot;</span><span class="hl opt">, [</span> <span class="hl num">120</span> <span class="hl opt">]) ;</span>
-      <span class="hl opt">(</span><span class="hl str">&quot;doc&quot;</span><span class="hl opt">, [</span> <span class="hl num">150</span> <span class="hl opt">]) ;</span>
-    <span class="hl opt">]) ;</span>
- <span class="hl opt">]</span></pre>
+<pre class="code-json"><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
+  </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;html&quot;</span><span class="sym">,</span><span class="hl std">
+    </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
+      (</span><span class="hl str">&quot;base&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">0</span><span class="sym">,</span><span class="hl std"> </span><span class="hl num">61</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">&quot;add-docs&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">30</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">&quot;toc&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">50</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">&quot;cut&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">60</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">&quot;inc&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">160</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">&quot;clean&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">500</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+    </span><span class="sym">]</span><span class="hl std">
+  </span><span class="sym">}</span><span class="sym">,</span><span class="hl std">
+  </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;blocks&quot;</span><span class="sym">,</span><span class="hl std">
+    </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
+      (</span><span class="hl str">&quot;init&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">0</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">&quot;base&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">61</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">&quot;sectionning&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">100</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">&quot;gather-ids&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">120</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">&quot;doc&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">150</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+    </span><span class="sym">]</span><span class="hl std">
+  </span><span class="sym">}</span><span class="hl std">
+</span><span class="sym">]</span><span class="hl std">
+</span></pre>
 <p>It is possible to change only the levels of some functions.
 In the example below, the <a href="https://zoggy.github.io/stog/module_base.html#inc">inc</a> function
-of module <a href="https://zoggy.github.io/stog/module_base.html">Base</a> will not be called,
+of module <a href="https://zoggy.github.io/stog/module_base.html">Base</a> will not be called
 (as it is associated to an empty list of levels)
 and the <a href="https://zoggy.github.io/stog/module_base.html#base">base</a> function of the same module
 will be associated to levels 2 and 230, while the rest of the scheme
 remains unchanged:
 </p>
-<pre class="code-ocaml">levels <span class="hl opt">= [</span>
-  <span class="hl opt">(</span><span class="hl str">&quot;html&quot;</span><span class="hl opt">,</span>
-    <span class="hl opt">[ (</span><span class="hl str">&quot;base&quot;</span><span class="hl opt">, [</span> <span class="hl num">2</span> <span class="hl opt">;</span> <span class="hl num">230</span> <span class="hl opt">]) ;</span>
-      <span class="hl opt">(</span><span class="hl str">&quot;inc&quot;</span><span class="hl opt">, [ ]) ;</span>
-    <span class="hl opt">]) ;</span>
- <span class="hl opt">]</span></pre>
+<pre class="code-json"><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
+  </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;html&quot;</span><span class="sym">,</span><span class="hl std">
+    </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
+      (</span><span class="hl str">&quot;base&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">2</span><span class="sym">,</span><span class="hl std"> </span><span class="hl num">230</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">&quot;inc&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+    </span><span class="sym">]</span><span class="hl std">
+  </span><span class="sym">}</span><span class="hl std">
+</span><span class="sym">]</span><span class="hl std">
+</span></pre>
 <p>
 Each module can associate only one function to a given level:
 for a level and a module, the last associated function hides the
@@ -222,51 +233,60 @@ of the stog sources.
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The default scheme can be changed, using the </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">levels</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">
 option in the </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/config</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> file.
-This option contains a list of pairs of the following form:
+This option contains a list of associations of the following form:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">(&quot;module-name&quot;,
-  [ (&quot;fun1&quot;, [ l1 ; l2 ; ...]) ;
-    (&quot;fun2&quot;, [ l3 ; l4 ; ...]) ;
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;json&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">[
+  { module: &quot;module-name&quot;,
+    levels: [ (&quot;fun1&quot;, [ l1 ; l2 ; ...]),
+              (&quot;fun2&quot;, [ l3 ; l4 ; ...])
+            ]
+  },
     ... ;
-  ])</span><span class="hl kwa">&lt;/ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">
+]</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The list is used to set the levels a function is associated to in a
 given module. The default scheme could be expressed with:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">levels = [
-  (&quot;html&quot;,
-    [ (&quot;base&quot;, [ 0 ; 61 ]) ;
-      (&quot;add-docs&quot;, [ 30 ]) ;
-      (&quot;toc&quot;, [ 50 ]) ;
-      (&quot;cut&quot;, [ 60 ]) ;
-      (&quot;inc&quot;, [ 160 ]) ;
-      (&quot;clean&quot;, [ 500 ]) ;
-    ]) ;
-  (&quot;blocks&quot;,
-    [ (&quot;init&quot;, [ 0 ]) ;
-      (&quot;base&quot;, [ 61 ]) ;
-      (&quot;sectionning&quot;, [ 100 ]) ;
-      (&quot;gather-ids&quot;, [ 120 ]) ;
-      (&quot;doc&quot;, [ 150 ]) ;
-    ]) ;
- ]
-</span><span class="hl kwa">&lt;/ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;json&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">levels: [
+  { module: &quot;html&quot;,
+    levels: [
+      (&quot;base&quot;, [ 0, 61 ]),
+      (&quot;add-docs&quot;, [ 30 ]),
+      (&quot;toc&quot;, [ 50 ]),
+      (&quot;cut&quot;, [ 60 ]),
+      (&quot;inc&quot;, [ 160 ]),
+      (&quot;clean&quot;, [ 500 ]),
+    ]
+  },
+  { module: &quot;blocks&quot;,
+    levels: [
+      (&quot;init&quot;, [ 0 ]),
+      (&quot;base&quot;, [ 61 ]),
+      (&quot;sectionning&quot;, [ 100 ]),
+      (&quot;gather-ids&quot;, [ 120 ]),
+      (&quot;doc&quot;, [ 150 ]),
+    ]
+  }
+]
+</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">It is possible to change only the levels of some functions.
 In the example below, the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#inc&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> function
-of module </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Base</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> will not be called,
+of module </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Base</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> will not be called
 (as it is associated to an empty list of levels)
 and the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#base&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> function of the same module
 will be associated to levels 2 and 230, while the rest of the scheme
 remains unchanged:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">
-levels = [
-  (&quot;html&quot;,
-    [ (&quot;base&quot;, [ 2 ; 230 ]) ;
-      (&quot;inc&quot;, [ ]) ;
-    ]) ;
- ]
-</span><span class="hl kwa">&lt;/ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;json&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+levels: [
+  { module: &quot;html&quot;,
+    levels: [
+      (&quot;base&quot;, [ 2, 230 ]),
+      (&quot;inc&quot;, [ ]),
+    ]
+  }
+]
+</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Each module can associate only one function to a given level:
 for a level and a module, the last associated function hides the
@@ -325,7 +345,7 @@ to pages in other languages than </span><span class="hl kwa">&lt;icode</span><sp
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 12h45</div>
+<div class="generatedon">Generated on July 7, 2015 at 13h01</div>
 </div>
 
 
