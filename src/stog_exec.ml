@@ -162,7 +162,7 @@ let fun_exec stog env args code =
       let xml =
         if in_xml_block then
           [ Xtmpl.E (("","pre"),
-             Xtmpl.atts_of_list ~atts [("","class"), [Xtmpl.D "code-exec"]],
+             Xtmpl.atts_of_list ~atts [("","class"), [Xtmpl.D "command-exec"]],
              xml)
           ]
         else
