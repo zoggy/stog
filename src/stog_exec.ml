@@ -32,13 +32,14 @@
 type result = Ok of string | Error of string
 
 let exec_command ?directory command =
+  let command = Stog_misc.strip_string command in
   let in_dir com = match directory with
       | None -> com
       | Some d -> Printf.sprintf "cd %s && %s" (Filename.quote d) com
   in
   let temp_file = Filename.temp_file "stogexec" ".txt" in
   let com = Printf.sprintf "(%s) > %s 2>&1"
-    (Filename.quote temp_file) (in_dir command)
+    (in_dir command) (Filename.quote temp_file)
   in
   match Sys.command com with
     0 ->
