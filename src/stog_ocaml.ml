@@ -62,6 +62,13 @@ let close_sessions () =
   sessions := Smap.empty
 ;;
 
+let in_dir dir f =
+  let old_cwd = Sys.getcwd () in
+  Sys.chdir dir;
+  let x = f () in
+  Sys.chdir old_cwd ;
+  x
+
 let create_session () =
   try
     let (ic, oc) = Unix.open_process !stog_ocaml_session in
@@ -71,17 +78,24 @@ let create_session () =
       failwith (Printf.sprintf "%s: %s %s" (Unix.error_message e) s1 s2)
 ;;
 
-let get_session name =
+let get_session ?directory name =
   try Smap.find name !sessions
   with Not_found ->
-      Stog_msg.verbose ~level:1 (Printf.sprintf "Opening OCaml session %S"  name);
-      let t = create_session () in
+      Stog_msg.verbose ~level:1
+        (Printf.sprintf "Opening OCaml session %S%s" name
+          (match directory with None -> "" | Some s -> "in "^s)
+        );
+      let t =
+        match directory with
+          None -> create_session ()
+        | Some dir -> in_dir dir create_session
+      in
       sessions := Smap.add name t !sessions;
       t
 ;;
 
-let eval_ocaml_phrase ?(session_name="default") phrase =
-  let session = get_session session_name in
+let eval_ocaml_phrase ?(session_name="default") ?directory phrase =
+  let session = get_session ?directory session_name in
   Stog_ocaml_types.write_input session.session_out
     { Stog_ocaml_types.in_phrase = phrase };
   Stog_ocaml_types.read_result session.session_in
@@ -326,6 +340,11 @@ let concat_toplevel_outputs output =
 
 let fun_eval stog env args code =
   try
+    let directory =
+      match Xtmpl.get_att_cdata args ("", "directory") with
+        None | Some "" -> None
+      | x -> x
+    in
     let exc = Xtmpl.opt_att_cdata args ~def: "true" ("", "error-exc") = "true" in
     let toplevel = Xtmpl.opt_att_cdata args ~def: "false" ("", "toplevel") = "true" in
     let show_code = Xtmpl.opt_att_cdata args ~def: "true" ("", "show-code") <> "false" in
@@ -366,7 +385,7 @@ let fun_eval stog env args code =
         in
         (*prerr_endline (Printf.sprintf "evaluate %S" phrase);*)
         let (output, raised_exc) =
-          match eval_ocaml_phrase ?session_name phrase with
+          match eval_ocaml_phrase ?session_name ?directory phrase with
             Stog_ocaml_types.Ok output -> (output, false)
           | Stog_ocaml_types.Handled_error output -> (output, true)
           | Stog_ocaml_types.Exc s ->
