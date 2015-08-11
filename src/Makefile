@@ -80,6 +80,7 @@ LIB_CMXFILES= \
 	stog_html5.cmx \
 	stog_engine.cmx \
 	stog_ocaml.cmx \
+	stog_exec.cmx \
 	stog_svg.cmx \
 	stog_of_latex.cmx \
 	stog_latex.cmx \

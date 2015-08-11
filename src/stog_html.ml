@@ -968,6 +968,7 @@ let rec build_base_rules stog doc_id =
       ("", Stog_tags.doc_topics), mk html_of_topics ;
       ("", Stog_tags.doc_type), mk f_type ;
       ("", Stog_tags.doc_url), mk f_url ;
+      ("", Stog_tags.exec), Stog_exec.fun_exec  ;
       ("", Stog_tags.ext_a), fun_exta ;
       ("", Stog_tags.error_), fun_error_ ;
       ("", Stog_tags.graph), fun_graph ;

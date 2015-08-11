@@ -65,6 +65,7 @@ val date_now : string
 val date_today : string
 val dummy_ : string
 val documents : string
+val exec : string
 val ext_a : string
 val error_ : string
 val graph : string
