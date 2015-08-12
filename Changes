@@ -1,4 +1,9 @@
 Next release:
+* new <exec> rule to execute commands and include output in documents
+* new directory attribute for ocaml-eval to set the directory in which
+  the stog-ocaml-session tool is launched
+
+Release 0.15.0:
 * new tool stog-tmpl to generates website skeletons
 * use ppx_blob instead of ocaml-crunch
 * new stog.extern plugin
