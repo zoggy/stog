@@ -13,6 +13,7 @@ $base-text-color: #333;
 $date-color: lighten($base-text-color, 25);
 $code-background: #eeeeee ;
 $code-color: $base-text-color;
+$code-output: lighten($code-color,20);
 
 $warning-text:             #c09853;
 $warning-background:       #fcf8e3;

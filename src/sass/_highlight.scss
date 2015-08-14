@@ -17,7 +17,7 @@ pre.hl  { color:#ffffff; background-color:#005c70; font-size:10pt; font-family:'
 .hl.std { color: black; }
 
 div.ocaml-toplevel {
-  color: lighten($code-color,20);
+  color: $code-output;
   .stdout {
     @include rounded-box(darken($code-background,25), darken($code-background, 10));
     /*background-color: rgba(0, 0, 255, 0.08) ;*/
@@ -53,3 +53,14 @@ div.ocaml-exc {
   text-decoration: none;
   border-bottom: 2px solid $warning-text;
 }
+
+.command-exec {
+  div.command-output {
+    color: $code-output ;
+  }
+  div.command-error {
+    color: $error-text ;
+    font-weight: bold;
+  }
+}
+
