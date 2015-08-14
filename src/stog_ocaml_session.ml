@@ -53,6 +53,17 @@ let remove_empty_filename =
   Str.global_replace re "L"
 ;;
 
+let apply_pp phrase =
+    match !Clflags.preprocessor with
+    | None -> phrase
+    | Some pp ->
+        let file = Filename.temp_file "stogocamlsession" "pp" in
+        Stog_misc.file_of_string ~file phrase ;
+        let result = Pparse.preprocess file in
+        let phrase = Stog_misc.string_of_file result in
+        Pparse.remove_preprocessed result;
+        phrase
+
 let apply_ppx phrase =
   match phrase with
   | Parsetree.Ptop_dir _ -> phrase
@@ -63,6 +74,7 @@ let apply_ppx phrase =
 
 let eval_ocaml_phrase phrase =
   try
+    let phrase = apply_pp phrase in
     let lexbuf = Lexing.from_string phrase in
     let fd_err = Unix.openfile stderr_file
       [Unix.O_WRONLY; Unix.O_CREAT; Unix.O_TRUNC]
@@ -161,10 +173,10 @@ let parse_options () =
 
       "-safe-string", Arg.Clear Clflags.unsafe_string, " Make strings immutable" ;
       "-unsafe-string", Arg.Set Clflags.unsafe_string, " Make strings mutable (default)" ;
-(*
+
       "-pp", Arg.String (fun pp -> Clflags.preprocessor := Some pp),
       "<command>  Pipe sources through preprocessor <command>" ;
-*)
+
       "-ppx", Arg.String (fun ppx -> Clflags.all_ppx := !Clflags.all_ppx @ [ppx]),
       "<command>  Pipe abstract syntax trees through preprocessor <command>" ;
 
