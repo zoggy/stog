@@ -907,6 +907,7 @@ let _ = check_ocamlfind_package conf ~min_version: [0;12] "xtmpl";;
 let _ = check_ocamlfind_package conf ~min_version: [3;6] "netstring";;
 let _ = check_ocamlfind_package conf ~min_version: [0;3] "ocf";;
 let _ = check_ocamlfind_package conf ~min_version: [0;4] "higlo";;
+let _ = check_ocamlfind_package conf ~min_version: [2;4;8] "lwt.unix";;
 
 let _ =
   let checks =
@@ -917,8 +918,7 @@ let _ =
            prerr_endline "Cannot find js_of_ocaml";
            false
       );
-      check_ocamlfind_package conf ~fail: false ~min_version: [2;4] "lwt.unix";
-      check_ocamlfind_package conf ~fail: false ~min_version: [2;4] "lwt.preemptive";
+      check_ocamlfind_package conf ~fail: false ~min_version: [2;4;8] "lwt.preemptive";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff.js";
       check_ocamlfind_package conf ~fail: false ~min_version: [2;1] "websocket";
