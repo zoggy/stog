@@ -30,6 +30,7 @@
 (** *)
 
 open Stog_types;;
+open Lwt.Infix;;
 
 module Smap = Stog_types.Str_map;;
 
@@ -168,3 +169,38 @@ let max_deps_date stog doc_by_path path =
   in
   Depset.fold max_date deps 0.
 ;;
+
+let file_stat file =
+  Lwt.catch
+    (fun () -> Lwt_unix.stat file >>= fun st -> Lwt.return (Some st))
+    (fun _ -> Lwt.return None)
+
+let file_mod_date file =
+  file_stat file >>= function
+  | None -> Lwt.return_none
+  | Some st -> Lwt.return (Some st.Unix.st_mtime)
+
+let last_dep_date_with_files stog doc =
+  let file = Filename.concat stog.stog_dir doc.doc_src in
+  file_mod_date file >>=
+    function
+    | None -> Lwt.return_none
+    | Some doc_date ->
+      let path = Stog_path.to_string doc.doc_path in
+      let file_deps =
+        try
+          let set = Str_map.find path stog.stog_deps in
+          Depset.fold
+            (fun d acc -> match d with File f -> f :: acc | _ -> acc)
+            set []
+        with
+          Not_found -> []
+      in
+      Lwt_list.map_p file_mod_date file_deps >>=
+      Lwt_list.fold_left_s
+        (fun acc -> function
+             | Some d when d > acc -> Lwt.return d
+             | _ -> Lwt.return acc)
+         doc_date >>=
+        fun d -> Lwt.return (Some d)
+        

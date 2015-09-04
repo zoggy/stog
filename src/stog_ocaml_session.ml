@@ -54,15 +54,23 @@ let remove_empty_filename =
 ;;
 
 let apply_pp phrase =
-    match !Clflags.preprocessor with
-    | None -> phrase
-    | Some pp ->
-        let file = Filename.temp_file "stogocamlsession" "pp" in
-        Stog_misc.file_of_string ~file phrase ;
-        let result = Pparse.preprocess file in
-        let phrase = Stog_misc.string_of_file result in
-        Pparse.remove_preprocessed result;
-        phrase
+  match !Clflags.preprocessor with
+  | None -> phrase
+  | Some pp ->
+      let file = Filename.temp_file "stogocamlsession" "pp" in
+      let outfile = file ^ ".out" in
+      Stog_misc.file_of_string ~file phrase ;
+      let com = Printf.sprintf "cat %s | %s > %s"
+        (Filename.quote file) pp (Filename.quote outfile)
+      in
+      match Sys.command com with
+        0 -> 
+          let phrase = Stog_misc.string_of_file outfile in
+          Sys.remove file ;
+          Sys.remove outfile ;
+          phrase
+      | n ->
+          failwith (Printf.sprintf "Preprocess command failed: %s" com)
 
 let apply_ppx phrase =
   match phrase with

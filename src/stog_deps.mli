@@ -32,3 +32,5 @@
 val add_dep : Stog_types.stog -> Stog_types.doc ->
   Stog_types.doc Stog_types.dependency -> Stog_types.stog
 val max_deps_date : Stog_types.stog -> (string -> Stog_types.doc) -> string -> float
+
+val last_dep_date_with_files : Stog_types.stog -> Stog_types.doc -> float option Lwt.t

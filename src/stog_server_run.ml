@@ -105,10 +105,6 @@ let run_stog ?docs state =
          Lwt.return state
     )
 
-let file_stat file =
-  Lwt.catch
-    (fun () -> Lwt_unix.stat file >>= fun st -> Lwt.return (Some st))
-    (fun _ -> Lwt.return None)
 
 let rec watch_for_change current_state on_update on_error =
   Lwt.catch
@@ -130,12 +126,10 @@ let rec watch_for_change current_state on_update on_error =
         let doc_list = Stog_types.doc_list state.stog in
         let read_errors = ref [] in
         let f (acc_dates, docs, stog) (doc_id, doc) =
-          let file = Filename.concat stog.stog_dir doc.doc_src in
-          file_stat file >>=
+          Stog_deps.last_dep_date_with_files stog doc >>=
             function
             | None -> Lwt.return (acc_dates, docs, stog)
-            | Some st ->
-              let date = st.Unix.st_mtime in
+            | Some date ->
               (*prerr_endline ("date for "^file);*)
               let prev_date =
                 try Stog_path.Map.find doc.doc_path acc_dates
@@ -151,6 +145,7 @@ let rec watch_for_change current_state on_update on_error =
                       { doc with doc_out = None }
                   | None ->
                       (** FIXME: Use a Lwt version of Stog_io.doc_of_file *)
+                      let file = Filename.concat stog.stog_dir doc.doc_src in
                       try Stog_io.doc_of_file stog file
                       with
                         e ->
