@@ -1,4 +1,5 @@
 Next release:
+* install odoc_* files in stog ocamlfind directory
 * new option -pp for stog-ocaml-session
 * new <exec> rule to execute commands and include output in documents
 * new directory attribute for ocaml-eval to set the directory in which

@@ -414,7 +414,8 @@ install-lib:
 			$(LIB_SERVER_BYTE) $(PLUGIN_SERVER_BYTE) $(PLUGIN_MSERVER_BYTE)` \
 		`(test -n "$(SERVER)" || test -n "$(SERVER_BYTE)") && echo \
 			$(LIB_SERVER_CMIFILES) $(PLUGIN_SERVER_CMIFILES) $(PLUGIN_MSERVER_CMIFILES) ` \
-		$(OCAML_SESSION_CMOFILES)
+		$(OCAML_SESSION_CMOFILES) \
+		$(ODOC) $(ODOC_BYTE)
 
 install-share:
 
@@ -424,7 +425,6 @@ install-bin:
 	  $(MK_STOG) $(MK_STOG_BYTE) $(MK_STOG_OCAML) \
 	  $(LATEX2STOG) $(LATEX2STOG_BYTE) \
 		`dirname \`which $(OCAMLC)\``/
-	$(CP) $(ODOC) $(ODOC_BYTE) `$(OCAMLFIND) ocamldoc -customdir`/
 
 uninstall: uninstall-lib uninstall-share uninstall-bin
 
