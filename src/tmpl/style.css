@@ -118,6 +118,9 @@ p {
   line-height: 21px;
   margin-bottom: 21px; }
 
+dd {
+  margin-bottom: 21px; }
+
 a {
   color: #c22;
   text-decoration: none; }
