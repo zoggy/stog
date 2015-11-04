@@ -30,6 +30,8 @@
 (** Base module.
 *)
 
+module XR = Xtmpl_rewrite
+
 (** [doc_by_href ?typ ?src_doc stog env href] returns the document, path and
   optional id matching the given href string, of the form [path[#id]].
   Return None if the document could not be found, of the id could not be found,
@@ -37,7 +39,7 @@
   @param src_doc can be used to specify the source document, to improve
   the error message. *)
 val doc_by_href : ?typ: string -> ?src_doc: Stog_types.doc ->
-  Stog_types.stog -> 'a -> 'a Xtmpl.env -> string ->
+  Stog_types.stog -> 'a -> 'a XR.env -> string ->
     'a * (Stog_types.doc * string * string option) option
 
 (*
@@ -48,17 +50,17 @@ val doc_by_href : ?typ: string -> ?src_doc: Stog_types.doc ->
 *)
 val add_block :
   ?on_dup: [`Ignore | `Fail | `Warn] ->
-  path: string -> id: string -> short: Xtmpl.tree -> long: Xtmpl.tree -> unit -> unit
+  path: string -> id: string -> short: XR.tree -> long: XR.tree -> unit -> unit
 *)
 
 (** [get_in_env env tag] will look for the given string in the environment,
   by building a <tag/> node and evaluating it. If the result is the same node,
   then return [""] else return the reduced value as a string.*)
-val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * Xtmpl.tree list
+val get_in_env : 'a -> 'a XR.env -> Xmlm.name -> 'a * XR.tree list
 
 (** [get_path env] returns the path associated to ["path"] in [env].
   @raise Assert_failure if ["path"] is not found in the environment.*)
-val get_path : 'a -> 'a Xtmpl.env -> 'a * Stog_path.path
+val get_path : 'a -> 'a XR.env -> 'a * Stog_path.path
 
 (** Escape html code in the given string: change [&] to [&amp;],
   [<] to [&lt;] and [>] to [&gt;].*)
@@ -82,16 +84,16 @@ val generate_rss_feed_file :
 (** Build the base rules, using the default ones and the base rules register
   by plugins. *)
 val build_base_rules : Stog_types.stog ->
-  Stog_types.doc_id -> (Xmlm.name * Stog_types.stog Xtmpl.callback) list
+  Stog_types.doc_id -> (Xmlm.name * Stog_types.stog XR.callback) list
 
 (** The calllback to insert a list of documents. Can be called directly
   if provided an additional environment, argument and children nodes. *)
 val doc_list :
   Stog_types.doc ->
   ?rss:Stog_url.t ->
-  ?set:Stog_types.Doc_set.t -> Stog_types.stog Xtmpl.callback
+  ?set:Stog_types.Doc_set.t -> Stog_types.stog XR.callback
 
-val get_sectionning_tags : Stog_types.stog -> Stog_types.doc -> Xtmpl.name list
+val get_sectionning_tags : Stog_types.stog -> Stog_types.doc -> XR.name list
 
 (** [mk_levels modname funs default_levels] returns a function
   to create the level map from an optional list of pairs [(funname, [level1 ; level2; ...])].
@@ -106,4 +108,4 @@ val make_module : ?levels:(string * int list) list -> unit -> (module Stog_engin
 
 val module_name : string
 
-val register_base_rule : Xtmpl.name -> Stog_types.stog Xtmpl.callback -> unit
+val register_base_rule : XR.name -> Stog_types.stog XR.callback -> unit

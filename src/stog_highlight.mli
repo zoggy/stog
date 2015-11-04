@@ -32,7 +32,7 @@
 
 (** Call the highlight command on the given string and make it produce xhtml code.
   Options are passed to the highlight command. *)
-val external_highlight : opts:string -> string -> Xtmpl.tree list
+val external_highlight : opts:string -> string -> Xtmpl_rewrite.tree list
 
 (** Highlight the given code.
   If a lang and no option are given, then Higlo is tried first.
@@ -40,4 +40,4 @@ val external_highlight : opts:string -> string -> Xtmpl.tree list
   @param lang is used to indicate the language.
   @opts are options passed to highlight command.
 *)
-val highlight : ?lang: string -> ?opts: string -> string -> Xtmpl.tree list
+val highlight : ?lang: string -> ?opts: string -> string -> Xtmpl_rewrite.tree list

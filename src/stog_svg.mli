@@ -29,6 +29,8 @@
 
 (** Utilities for SVG documents. *)
 
-val prefix_svg_ids : string -> Xtmpl.tree -> Xtmpl.tree
+module XR = Xtmpl_rewrite
+
+val prefix_svg_ids : string -> XR.tree -> XR.tree
 val fun_prefix_svg_ids :
-  'a -> 'a Xtmpl.env -> Xtmpl.attributes -> Xtmpl.tree list -> 'a * Xtmpl.tree list
+  'a -> 'a XR.env -> XR.attributes -> XR.tree list -> 'a * XR.tree list

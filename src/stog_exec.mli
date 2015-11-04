@@ -29,4 +29,4 @@
 
 (** Functions to execute and display commands in generated pages. *)
 
-val fun_exec : Stog_types.stog Xtmpl.callback
+val fun_exec : Stog_types.stog Xtmpl_rewrite.callback

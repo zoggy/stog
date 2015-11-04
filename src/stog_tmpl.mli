@@ -29,7 +29,7 @@
 
 (** Default templates. *)
 
-type contents = Stog_types.stog -> Stog_types.stog * Xtmpl.tree
+type contents = Stog_types.stog -> Stog_types.stog * Xtmpl_rewrite.tree
 
 exception Template_file_not_found of string
 
@@ -55,10 +55,10 @@ val get_template_file : Stog_types.stog -> Stog_types.doc -> string -> string
   @raise Template_file_not_found (see {!get_template_file})
   *)
 val read_template_file : Stog_types.stog -> Stog_types.doc ->
-  ?depend: bool -> ?raw: bool -> string -> Stog_types.stog * Xtmpl.tree
+  ?depend: bool -> ?raw: bool -> string -> Stog_types.stog * Xtmpl_rewrite.tree
 
 val get_template : Stog_types.stog -> ?doc: Stog_types.doc ->
-  contents -> string -> Stog_types.stog * Xtmpl.tree
+  contents -> string -> Stog_types.stog * Xtmpl_rewrite.tree
 
 val page : contents
 val by_keyword : contents

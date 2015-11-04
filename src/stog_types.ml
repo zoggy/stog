@@ -29,15 +29,18 @@
 
 (** *)
 
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 type date = Netdate.t
 
 type 'a tree = 'a tree_node
 and 'a tree_node = Node of 'a * 'a tree list
 
-type body = Xtmpl.tree list
+type body = XR.tree list
 
 
-type def = Xtmpl.name * Xtmpl.attributes * body
+type def = XR.name * XR.attributes * body
 
 let get_def =
   let p name (s,_,_) = s = name in
@@ -323,8 +326,8 @@ let sort_ids_docs_by_date docs =
 
 let sort_ids_docs_by_rules =
   let apply_field env (data, acc) field =
-    let xml = [Xtmpl.E (("",field), Xtmpl.atts_empty,[])] in
-    let (data, xmls) = Xtmpl.apply_to_xmls data env xml in
+    let xml = [XR.node ("",field) []] in
+    let (data, xmls) = XR.apply_to_xmls data env xml in
     (data, xmls :: acc)
   in
   let apply_fields fields (data,acc) (id,e,env) =
@@ -400,7 +403,7 @@ let make_path stog str =
   iter 1
 ;;
 
-exception Block_found of Xtmpl.tree
+exception Block_found of XR.tree
 let find_block_by_id =
   let rec find_in_list id = function
     [] -> raise Not_found
@@ -410,9 +413,9 @@ let find_block_by_id =
       find_in_list id q
   and find id xml =
     match xml with
-      Xtmpl.D _ -> raise Not_found
-    | Xtmpl.E (_, atts, subs) ->
-        match Xtmpl.get_att_cdata atts ("","id") with
+      XR.D _ -> raise Not_found
+    | XR.E { XR.atts ; subs } ->
+        match XR.get_att_cdata atts ("","id") with
           Some s when s = id -> raise (Block_found xml)
         | _ -> find_in_list id subs
   in

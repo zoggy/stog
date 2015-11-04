@@ -51,4 +51,4 @@ val read_stog : string -> Stog_types.stog
 
 (** *)
 val fill_doc_from_atts_and_subs : Stog_types.doc ->
-  Xtmpl.attributes -> Stog_types.body -> Stog_types.doc
+  Xtmpl_rewrite.attributes -> Stog_types.body -> Stog_types.doc

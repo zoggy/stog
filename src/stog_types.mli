@@ -29,13 +29,16 @@
 
 (** Types. *)
 
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 type date = Netdate.t
 
-type body = Xtmpl.tree list
+type body = XR.tree list
 
-type def = Xtmpl.name * Xtmpl.attributes * body
+type def = XR.name * XR.attributes * body
 
-val get_def : def list -> Xmlm.name -> (Xtmpl.attributes * body) option
+val get_def : def list -> XR.name -> (XR.attributes * body) option
 
 module Str_map : Map.S with type key = string
 module Str_set : Set.S with type elt = string
@@ -131,7 +134,7 @@ val add_doc : stog -> doc -> stog
 val sort_docs_by_date : doc list -> doc list
 val sort_ids_docs_by_date : ('a * doc) list -> ('a * doc) list
 val sort_ids_docs_by_rules :
-  'b -> string list -> (doc_id * doc * 'b Xtmpl.env) list -> 'b * (doc_id * doc) list
+  'b -> string list -> (doc_id * doc * 'b XR.env) list -> 'b * (doc_id * doc) list
 
 val doc_list :
   ?by_date:bool -> ?set:string -> stog -> (doc Stog_tmap.key * doc) list
@@ -139,7 +142,7 @@ val doc_list :
 val merge_stogs : stog list -> stog
 val make_path : stog -> string -> string list
 
-val find_block_by_id : doc -> string -> Xtmpl.tree option
+val find_block_by_id : doc -> string -> XR.tree option
 
 val id_map_add : stog -> Stog_path.Map.key -> Str_map.key -> Stog_path.path -> string option -> stog
 val map_href : stog -> Stog_path.Map.key -> Str_map.key -> Stog_path.Map.key * Str_map.key

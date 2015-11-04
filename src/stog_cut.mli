@@ -38,5 +38,5 @@
 val mk_path : bool -> Stog_path.path -> string -> string -> Stog_path.path
 
 val cut_docs :
-  Stog_types.stog Xtmpl.env ->
+  Stog_types.stog Xtmpl_rewrite.env ->
     Stog_types.stog -> Stog_types.Doc_set.t -> Stog_types.stog

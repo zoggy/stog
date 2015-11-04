@@ -30,6 +30,7 @@
 (** LaTeX to Stog translation. *)
 
 module SMap : Map.S with type key = string
+module XR = Xtmpl_rewrite
 
 type param = {
   prefix : string option;
@@ -41,18 +42,18 @@ type param = {
 
 type tree = Source of string | Block of block
 and block = {
-  tag : Xtmpl.name;
+  tag : XR.name;
   title : tree list;
   id : string option;
   subs : tree list;
-  atts : Xtmpl.attributes;
+  atts : XR.attributes;
 }
 
 type preambule_section = string option * string
 type preambule = preambule_section list
 type tex_file = { preambule : preambule; body : tree list; }
 
-val to_xml : tree list -> Xtmpl.tree list
+val to_xml : tree list -> XR.tree list
 val string_of_stog_directives :
   ?tags:'a list -> ?notags:'a list -> ('a * string) list -> string
 

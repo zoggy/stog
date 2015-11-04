@@ -31,5 +31,5 @@
 
 val filter_of_string : string -> Stog_filter_types.t
 
-val filter_docs : 'a -> 'a Xtmpl.env -> Stog_filter_types.t ->
+val filter_docs : 'a -> 'a Xtmpl_rewrite.env -> Stog_filter_types.t ->
   (Stog_types.doc_id * Stog_types.doc) list -> 'a * (Stog_types.doc_id * Stog_types.doc) list

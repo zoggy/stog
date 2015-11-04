@@ -34,6 +34,8 @@
   another.
 *)
 
+module XR = Xtmpl_rewrite
+
 (** [plugin_config_file stog plugin_name] returns the configuration file
   for this plugin name, for consistency purpose. *)
 val plugin_config_file : Stog_types.stog -> string -> string
@@ -42,7 +44,7 @@ val register_lang : Stog_intl.lang_abbrev -> Stog_intl.lang_data -> unit
 
 (** [register_html_base_rule name f] registers a new function associated
      to [name] in the set of base rules of the "html" predefined module. *)
-val register_html_base_rule : Xmlm.name -> Stog_types.stog Xtmpl.callback -> unit
+val register_html_base_rule : Xmlm.name -> Stog_types.stog XR.callback -> unit
 
 (** [doc_by_href ?typ ?src_doc stog env href] returns the document, path and
   optional if matching the given href string, of the form [path[#id]].
@@ -51,14 +53,14 @@ val register_html_base_rule : Xmlm.name -> Stog_types.stog Xtmpl.callback -> uni
   @param src_doc can be used to specify the source document, to improve
   the error message. *)
 val doc_by_href : ?typ: string -> ?src_doc: Stog_types.doc ->
-  Stog_types.stog -> 'a -> 'a Xtmpl.env -> string ->
+  Stog_types.stog -> 'a -> 'a XR.env -> string ->
     'a * (Stog_types.doc * string * string option) option
 
 (** [mk_block_node ...] creates a [<block ...] with the given information.*)
 val mk_block_node :
-  id: string -> ?label: Xtmpl.tree list -> ?clas: string ->
-    title: Xtmpl.tree list -> ?counter: string ->
-    short_fmt: Xtmpl.tree list -> long_fmt: Xtmpl.tree list -> Xtmpl.tree list -> Xtmpl.tree
+  id: string -> ?label: XR.tree list -> ?clas: string ->
+    title: XR.tree list -> ?counter: string ->
+    short_fmt: XR.tree list -> long_fmt: XR.tree list -> XR.tree list -> XR.tree
 
 (** {2 Outputting message.} *)
 

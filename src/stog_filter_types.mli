@@ -30,7 +30,7 @@
 (** Representation of document filters. *)
 
 type t =
-  | Pred of Xtmpl.name * string
+  | Pred of Xtmpl_xml.name * string
   | Or of t * t
   | And of t * t
   | Not of t

@@ -31,6 +31,8 @@
 
 open Stog_types;;
 
+module XR = Xtmpl_rewrite
+
 (** Exception raised when a cache file of a loaded plugin could not be open.*)
 exception Cant_open_cache_file of string
 
@@ -42,9 +44,9 @@ exception Cant_open_cache_file of string
   function returns it with the stog structure.
 *)
 type 'a level_fun =
-  | Fun_stog of (stog Xtmpl.env -> stog -> Doc_set.t -> stog)
-  | Fun_data of ('a Xtmpl.env -> stog * 'a -> Doc_set.t -> stog * 'a)
-  | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> Doc_set.t -> stog * 'a)
+  | Fun_stog of (stog XR.env -> stog -> Doc_set.t -> stog)
+  | Fun_data of ('a XR.env -> stog * 'a -> Doc_set.t -> stog * 'a)
+  | Fun_stog_data of ((stog * 'a) XR.env -> stog * 'a -> Doc_set.t -> stog * 'a)
 
 (** A structure containing data and functions associated to levels.
   Contains also the module name. *)
@@ -70,7 +72,8 @@ type stog_state =
     st_docs : Doc_set.t ;
   };;
 
-val run : ?use_cache:bool -> ?default_style: Xtmpl.tree list -> stog_state -> stog_state
+val run : ?use_cache:bool ->
+  ?default_style: XR.tree list -> stog_state -> stog_state
 
 (** Generate the target files, with the following steps:
   - create the output directory,
@@ -84,7 +87,7 @@ val run : ?use_cache:bool -> ?default_style: Xtmpl.tree list -> stog_state -> st
 *)
 val generate :
   ?use_cache: bool -> ?gen_cache: bool ->
-    ?default_style: Xtmpl.tree list ->
+    ?default_style: XR.tree list ->
     ?only_docs:string list -> Stog_types.stog ->
     (module Module) list -> unit
 
@@ -94,47 +97,47 @@ val doc_dst_file : Stog_types.stog -> Stog_types.doc -> string
 (** Build the final url of the given document. *)
 val doc_url : Stog_types.stog -> Stog_types.doc -> Stog_url.t
 
-val env_of_defs : ?env:'a Xtmpl.env -> Stog_types.def list -> 'a Xtmpl.env
+val env_of_defs : ?env:'a XR.env -> Stog_types.def list -> 'a XR.env
 val env_of_used_mods : Stog_types.stog ->
-  ?env:'a Xtmpl.env -> Stog_types.Str_set.t -> 'a Xtmpl.env
+  ?env:'a XR.env -> Stog_types.Str_set.t -> 'a XR.env
 
 type 'a stog_doc_rules =
-  Stog_types.stog -> Stog_types.doc_id -> (Xtmpl.name * 'a Xtmpl.callback) list
+  Stog_types.stog -> Stog_types.doc_id -> (XR.name * 'a XR.callback) list
 
-val get_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * Xtmpl.tree list
-val opt_in_env : 'a -> 'a Xtmpl.env -> Xmlm.name -> 'a * Xtmpl.tree list option
+val get_in_env : 'a -> 'a XR.env -> Xmlm.name -> 'a * XR.tree list
+val opt_in_env : 'a -> 'a XR.env -> Xmlm.name -> 'a * XR.tree list option
 
 (** [get_in_args_or_env env args s] returns the value associated to [s]
  in [args] of else return the result of [get_in_env env s]. *)
-val get_in_args_or_env : 'a -> 'a Xtmpl.env -> Xtmpl.attributes -> Xmlm.name -> 'a * Xtmpl.tree list
+val get_in_args_or_env : 'a -> 'a XR.env -> XR.attributes -> Xmlm.name -> 'a * XR.tree list
 
 (** [get_path env] returns the path associated to ["doc-path"] in [env].
   @raise Stog_path.Invalid if ["doc-path"] is not found in the environment or is not a
   valid path.*)
-val get_path : 'a -> 'a Xtmpl.env -> 'a * Stog_path.path
+val get_path : 'a -> 'a XR.env -> 'a * Stog_path.path
 
 (** Same as {!get_path} but first looks for ["doc-path"] attribute in
   the given args. *)
 val get_path_in_args_or_env :
-  'a -> 'a Xtmpl.env -> Xtmpl.attributes -> 'a * Stog_path.path
+  'a -> 'a XR.env -> XR.attributes -> 'a * Stog_path.path
 
-val doc_env : 'a -> 'a Xtmpl.env -> Stog_types.stog -> Stog_types.doc -> 'a * 'a Xtmpl.env
+val doc_env : 'a -> 'a XR.env -> Stog_types.stog -> Stog_types.doc -> 'a * 'a XR.env
 
 val apply_stog_env_doc : Stog_types.stog ->
-  Stog_types.stog Xtmpl.env -> Stog_types.doc_id -> Stog_types.stog
+  Stog_types.stog XR.env -> Stog_types.doc_id -> Stog_types.stog
 
 val apply_stog_data_env_doc : Stog_types.stog * 'a ->
-  (Stog_types.stog * 'a) Xtmpl.env -> Stog_types.doc_id -> Stog_types.stog * 'a
+  (Stog_types.stog * 'a) XR.env -> Stog_types.doc_id -> Stog_types.stog * 'a
 
 val apply_data_env_doc : Stog_types.stog * 'a ->
-  'a Xtmpl.env -> Stog_types.doc_id -> Stog_types.stog * 'a
+  'a XR.env -> Stog_types.doc_id -> Stog_types.stog * 'a
 
 val fun_apply_stog_doc_rules : Stog_types.stog stog_doc_rules -> 'a level_fun
 val fun_apply_stog_data_doc_rules : (Stog_types.stog * 'a) stog_doc_rules -> 'a level_fun
 val fun_apply_data_doc_rules : 'a stog_doc_rules -> 'a level_fun
 
 
-val get_languages : 'a -> 'a Xtmpl.env -> 'a * string list
+val get_languages : 'a -> 'a XR.env -> 'a * string list
 
 (** {2 Registering modules} *)
 

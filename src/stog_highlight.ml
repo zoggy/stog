@@ -29,6 +29,8 @@
 
 (** *)
 
+module XR = Xtmpl_rewrite
+
 let external_highlight ~opts code =
   let code_file = Filename.temp_file "stog" "code" in
   Stog_misc.file_of_string ~file: code_file code;
@@ -43,7 +45,7 @@ let external_highlight ~opts code =
       Sys.remove code_file;
       Sys.remove temp_file;
       let code = Stog_misc.strip_string code in
-      [Xtmpl.xml_of_string code]
+      XR.from_string code
   | _ ->
       failwith (Printf.sprintf "command failed: %s" com)
 ;;
@@ -75,16 +77,16 @@ let higlo_classes =
 let highlight ?lang ?opts code =
   match lang, opts with
     None, Some opts -> external_highlight ~opts code
-  | None, None -> [Xtmpl.D code]
+  | None, None -> [XR.cdata code]
   | Some lang, Some opts ->
       let opts = opts^" --syntax="^lang in
       external_highlight ~opts code
   | Some "txt", None ->
-      [ Higlo.token_to_xtmpl ~classes: higlo_classes (Higlo.Text code) ]
+      [ Higlo.token_to_xml_rewrite ~classes: higlo_classes (Higlo.Text code) ]
   | Some lang, None ->
       try
         let _lexer = Higlo.get_lexer lang in
-        Higlo.to_xtmpl ~classes: higlo_classes ~lang code
+        Higlo.to_xml_rewrite ~classes: higlo_classes ~lang code
       with
         Higlo.Unknown_lang s ->
           Stog_msg.warning

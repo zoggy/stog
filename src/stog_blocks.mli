@@ -30,19 +30,20 @@
 (** The "blocks" predefined module. *)
 
 module Smap : Map.S with type key = string
+module XR = Xtmpl_rewrite
 
 type block
 
 val mk_block :
   id:string ->
-  ?label:Xtmpl.tree list ->
+  ?label:XR.tree list ->
   ?clas:string ->
-  title:Xtmpl.tree list ->
+  title:XR.tree list ->
   ?counter:string ->
-  short_fmt:Xtmpl.tree list ->
-  long_fmt:Xtmpl.tree list -> Xtmpl.tree list -> block
+  short_fmt:XR.tree list ->
+  long_fmt:XR.tree list -> XR.tree list -> block
 
-val node_of_block : block -> Xtmpl.tree
+val node_of_block : block -> XR.tree
 
 val module_name : string
 val make_module :

@@ -38,12 +38,12 @@ val docs :
   ?reverse:bool ->
   ?sort:string list ->
   Stog_types.stog ->
-  Stog_types.stog Xtmpl.env ->
+  Stog_types.stog Xtmpl_rewrite.env ->
   Stog_types.stog * (Stog_types.Doc_set.elt * Stog_types.doc) list
 
 val docs_of_args :
   ?set:Stog_types.Doc_set.t ->
   Stog_types.stog ->
-  Stog_types.stog Xtmpl.env ->
-  Xtmpl.attributes ->
+  Stog_types.stog Xtmpl_rewrite.env ->
+  Xtmpl_rewrite.attributes ->
   Stog_types.stog * (Stog_types.Doc_set.elt * Stog_types.doc) list

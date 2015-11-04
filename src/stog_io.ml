@@ -31,6 +31,7 @@
 
 open Stog_types;;
 
+module XR = Xtmpl_rewrite
 
 let first_that_exists =
   let rec iter = function
@@ -71,9 +72,9 @@ let bool_of_string s =
 let module_defs_of_xml =
   let f acc xml =
     match xml with
-      Xtmpl.D _ -> acc
-    | Xtmpl.E (tag, atts, subs) ->
-        (tag, atts, subs) :: acc
+      XR.D _ -> acc
+    | XR.E { XR.name ; atts ; subs } ->
+        (name, atts, subs) :: acc
   in
   List.fold_left f []
 ;;
@@ -90,12 +91,11 @@ let module_requires_of_string str =
 
 let read_module stog file =
   let modname = Filename.chop_extension (Filename.basename file) in
-  let xml = Xtmpl.xml_of_file file in
+  let xml = XR.from_file file in
   match xml with
-    Xtmpl.D _ -> assert false
-  | Xtmpl.E (tag, atts, subs) ->
+  | [ XR.E { XR.name ; atts ; subs} ] ->
       let mod_requires =
-        match Xtmpl.get_att_cdata atts ("","requires") with
+        match XR.get_att_cdata atts ("","requires") with
           None -> Stog_types.Str_set.empty
         | Some s -> module_requires_of_string s
       in
@@ -103,6 +103,7 @@ let read_module stog file =
       let m = { mod_requires ; mod_defs } in
       let modules = Stog_types.Str_map.add modname m stog.stog_modules in
       { stog with stog_modules = modules }
+  | _ -> failwith "Only module files with only one xml node are supported by now."
 
 let read_modules stog =
   let f_dir stog mod_dir =
@@ -148,14 +149,14 @@ let extract_stog_info_from_doc stog doc =
         match h with
         | (("stog", "site-description"), _, xmls) -> { stog with stog_desc = xmls }, None
         | (("stog", "site-url"), _, xmls) ->
-            { stog with stog_base_url = Stog_url.of_string (Xtmpl.string_of_xmls xmls) }, None
-        | (("stog", "site-email)"), _, xmls) -> { stog with stog_email = Xtmpl.string_of_xmls xmls }, None
+            { stog with stog_base_url = Stog_url.of_string (XR.to_string xmls) }, None
+        | (("stog", "site-email)"), _, xmls) -> { stog with stog_email = XR.to_string xmls }, None
         | (("stog", "rss-length"), _,xmls) ->
             { stog with
-              stog_rss_length = int_of_string (Xtmpl.string_of_xmls xmls) },
+              stog_rss_length = int_of_string (XR.to_string xmls) },
             None
         | (("stog", "use"), _, xmls) ->
-            let s = Xtmpl.string_of_xmls xmls in
+            let s = XR.to_string xmls in
             let stog =  { stog with stog_used_mods = used_mods_of_string stog.stog_used_mods s } in
             (stog, None)
         | (("stog", name), args, body) ->
@@ -175,9 +176,9 @@ let add_doc stog doc =
   let (stog, doc) =
     let is_main =
       try match List.find (fun (s,_,_) -> s = ("","main")) doc.doc_defs with
-          (_,_,[Xtmpl.D s]) -> bool_of_string s
+          (_,_,[XR.D s]) -> bool_of_string s.Xml.text
         | (_,_,xmls) ->
-          prerr_endline (Printf.sprintf "doc %S: not main:\n%S" doc.doc_title (Xtmpl.string_of_xmls xmls));
+          prerr_endline (Printf.sprintf "doc %S: not main:\n%S" doc.doc_title (XR.to_string xmls));
           false
       with Not_found -> false
     in
@@ -201,7 +202,7 @@ let add_doc stog doc =
 
 
 let fill_doc_from_atts =
-  let to_s = function [Xtmpl.D s] -> s | _ -> "" in
+  let to_s = function [XR.D s] -> s.Xml.text | _ -> "" in
   let f name v doc =
     match name with
     | ("","with-contents")-> doc
@@ -215,19 +216,19 @@ let fill_doc_from_atts =
     | ("", "use") ->
         { doc with doc_used_mods = used_mods_of_string doc.doc_used_mods (to_s v) }
     | _ ->
-        let defs = (name, Xtmpl.atts_empty, v) :: doc.doc_defs in
+        let defs = (name, XR.atts_empty, v) :: doc.doc_defs in
         { doc with doc_defs = defs  }
   in
-  Xtmpl.Name_map.fold f
+  Xml.Name_map.fold f
 ;;
 
 let fill_doc_from_nodes =
   let f doc xml =
     match xml with
-      Xtmpl.D _ -> doc
-    | Xtmpl.E (tag, atts, subs) ->
-        let v = Xtmpl.string_of_xmls subs in
-        match tag with
+      XR.D _ -> doc
+    | XR.E { XR.name ; atts ; subs} ->
+        let v = XR.to_string subs in
+        match name with
         | ("", "contents") -> { doc with doc_body = subs }
         | ("", "title") -> { doc with doc_title = v }
         | ("", "keywords") -> { doc with doc_keywords = keywords_of_string v }
@@ -244,12 +245,12 @@ let fill_doc_from_nodes =
 
 let fill_doc_from_atts_and_subs doc atts subs =
   let doc =
-    match Xtmpl.get_att_cdata atts ("","path") with
+    match XR.get_att_cdata atts ("","path") with
       None -> doc
     | Some s -> { doc with doc_path = Stog_path.of_string s }
   in
   let doc = fill_doc_from_atts atts doc in
-  match Xtmpl.get_att_cdata atts ("", "with-contents") with
+  match XR.get_att_cdata atts ("", "with-contents") with
     Some s when bool_of_string s ->
       (* arguments are also passed in sub nodes, and contents is in
          subnode "contents" *)
@@ -266,11 +267,11 @@ let doc_of_file stog file =
     Stog_path.of_string s
   in
   Stog_msg.verbose ~level: 3 (Printf.sprintf "reading document file %S" file);
-  let xml = Xtmpl.xml_of_file file in
+  let xml = XR.from_file file in
   let (typ, atts, subs) =
     match xml with
-      Xtmpl.D _ -> failwith (Printf.sprintf "File %S does not content an XML tree" file)
-    | Xtmpl.E ((_,tag), atts, subs) -> (tag, atts, subs)
+      XR.D _ -> failwith (Printf.sprintf "File %S does not content an XML tree" file)
+    | XR.E ((_,tag), atts, subs) -> (tag, atts, subs)
   in
   let doc = Stog_types.make_doc ~path ~typ () in
   let doc = { doc with doc_src = rel_file } in
