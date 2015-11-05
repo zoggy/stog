@@ -31,8 +31,11 @@
 
 open Stog_types
 
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 module Sset = Stog_types.Str_set;;
-module Nmap = Xtmpl.Name_map;;
+module Nmap = Xml.Name_map;;
 
 module PMap = Stog_path.Map
 
@@ -54,18 +57,18 @@ type links = {
 }
 
 let cutpoint_of_atts doc atts =
-  let typ = Xtmpl.opt_att_cdata atts ~def: doc.doc_type ("","type") in
+  let typ = XR.opt_att_cdata atts ~def: doc.doc_type ("","type") in
   let tag =
-    match Xtmpl.get_att_cdata atts ("","tag") with
+    match XR.get_att_cdata atts ("","tag") with
       None -> failwith "Missing 'tag' attribute for <cut-doc> node"
     | Some s ->
         match Stog_misc.split_string s [':'] with
           [] | [_] -> ("", s)
         | h :: q -> (h, String.concat ":" q)
   in
-  let sep = Xtmpl.opt_att_cdata atts ~def: "-" ("", Stog_tags.path_sep) in
-  let insert_link = not (Xtmpl.opt_att_cdata atts ~def: "true" ("","insert-link") = "false") in
-  let use_parent_path = not (Xtmpl.opt_att_cdata atts ~def: "true" ("","use-parent-path") = "false") in
+  let sep = XR.opt_att_cdata atts ~def: "-" ("", Stog_tags.path_sep) in
+  let insert_link = not (XR.opt_att_cdata atts ~def: "true" ("","insert-link") = "false") in
+  let use_parent_path = not (XR.opt_att_cdata atts ~def: "true" ("","use-parent-path") = "false") in
   { cut_tag = tag ; cut_doc_type = typ ;
     cut_path_sep = sep ; cut_insert_link = insert_link ;
     cut_use_parent_path = use_parent_path ;
@@ -110,8 +113,8 @@ let add_doc links stog doc =
     match prev with
       None -> doc
     | Some prev_path ->
-        let def = (("", Stog_tags.previous_path), Xtmpl.atts_empty,
-           [Xtmpl.D (Stog_path.to_string prev_path)])
+        let def = (("", Stog_tags.previous_path), XR.atts_empty,
+           [XR.cdata (Stog_path.to_string prev_path)])
         in
         { doc with doc_defs = def :: doc.doc_defs }
     in
@@ -119,8 +122,8 @@ let add_doc links stog doc =
     match next with
       None -> doc
     | Some next_path ->
-        let def = (("", Stog_tags.next_path), Xtmpl.atts_empty,
-           [Xtmpl.D (Stog_path.to_string next_path)])
+        let def = (("", Stog_tags.next_path), XR.atts_empty,
+           [XR.cdata (Stog_path.to_string next_path)])
         in
         { doc with doc_defs = def :: doc.doc_defs }
   in
@@ -147,10 +150,10 @@ let mk_path use_parent_path path sep id =
 let cut_docs =
   let id_set =
     let rec iter set = function
-      Xtmpl.D _ -> set
-    | Xtmpl.E (tag, atts, subs) ->
+      XR.D _ -> set
+    | XR.E { XR.atts ; subs } ->
         let set =
-          match Xtmpl.get_att_cdata atts ("", "id") with
+          match XR.get_att_cdata atts ("", "id") with
             None
           | Some "" -> set
           | Some id -> Sset.add id set
@@ -171,7 +174,7 @@ let cut_docs =
   in
   let set_id_map stog path atts new_path with_id =
     if path <> new_path then
-      match Xtmpl.get_att_cdata atts ("","id") with
+      match XR.get_att_cdata atts ("","id") with
         None -> stog
       | Some id ->
           let new_id = if with_id then Some id else None in
@@ -181,40 +184,42 @@ let cut_docs =
   in
   let rec iter doc new_path cutpoints links stog new_docs xml =
     match xml with
-      Xtmpl.D _ -> (stog, [xml], new_docs, links)
-    | Xtmpl.E (("","cut-doc"), atts, xmls) ->
+      XR.D _ -> (stog, [xml], new_docs, links)
+    | XR.E { XR.name = ("","cut-doc") ; atts ; subs } ->
         let cutpoints = (cutpoint_of_atts doc atts) :: cutpoints in
         let (stog, xmls, new_docs, links2) = List.fold_right
-          (fold doc new_path cutpoints) xmls (stog, [], new_docs, links)
+          (fold doc new_path cutpoints) subs (stog, [], new_docs, links)
         in
         let links = { links2 with next_by_cp = links.next_by_cp } in
         (stog, xmls, new_docs, links)
 
-    | Xtmpl.E (tag, atts, xmls) ->
+    | XR.E ({ XR.name ; atts ; subs } as node) ->
         let cp_opt =
-          try Some (List.find (fun cp -> cp.cut_tag = tag) cutpoints)
+          try Some (List.find (fun cp -> cp.cut_tag = name) cutpoints)
           with Not_found -> None
         in
         match cp_opt with
           None ->
             (* not a cut point *)
-            let (stog, xmls, new_docs, links) = List.fold_right
-              (fold doc new_path cutpoints) xmls (stog, [], new_docs, links)
+            let (stog, subs, new_docs, links) = List.fold_right
+              (fold doc new_path cutpoints) subs (stog, [], new_docs, links)
             in
-            (stog, [Xtmpl.E (tag, atts, xmls)], new_docs, links)
+            (stog, [XR.E { node with XR.subs }], new_docs, links)
         | Some cp ->
             try
               let title =
-                match Xtmpl.get_att_cdata atts ("","title") with
+                match XR.get_att_cdata atts ("","title") with
                   None ->
-                    Stog_msg.warning ("Missing title on cutpoint; not cutting node "^(string_of_tag tag));
+                    Stog_msg.warning
+                      ("Missing title on cutpoint; not cutting node "^(string_of_tag name));
                     raise Not_found
                 | Some s -> s
               in
               let id =
-                match Xtmpl.get_att_cdata atts ("","id") with
+                match XR.get_att_cdata atts ("","id") with
                   None ->
-                    Stog_msg.warning ("Missing id on cutpoint; not cutting node "^(string_of_tag tag));
+                    Stog_msg.warning
+                      ("Missing id on cutpoint; not cutting node "^(string_of_tag name));
                     raise Not_found
                 | Some s -> s
               in
@@ -222,7 +227,7 @@ let cut_docs =
               let stog = set_id_map stog doc.doc_path atts new_path false in
               let (stog, xmls, new_docs, links2) =
                 List.fold_right (fold doc new_path cutpoints)
-                  xmls (stog, [], new_docs, links)
+                  subs (stog, [], new_docs, links)
               in
               let links = { links2 with next_by_cp = links.next_by_cp } in
               let doc =
@@ -238,13 +243,13 @@ let cut_docs =
               let links = new_doc_in_cutpoint cp.cut_tag links doc in
               let xml =
                 if cp.cut_insert_link then
-                  [ Xtmpl.E (("","div"),
-                     Xtmpl.atts_one ("","class") [Xtmpl.D ("cutlink "^(snd tag))],
-                     [Xtmpl.E (("","doc"),
-                        Xtmpl.atts_one ("","href")
-                          [Xtmpl.D (Stog_path.to_string new_path)],
-                        [])]
-                    )
+                  [ XR.node ("","div")
+                     ~atts: (XR.atts_one ("","class") [XR.cdata ("cutlink "^(snd name))])
+                     [XR.node ("","doc")
+                        ~atts: (XR.atts_one ("","href")
+                         [XR.cdata (Stog_path.to_string new_path)])
+                          []
+                      ]
                   ]
                 else
                   []
@@ -255,7 +260,7 @@ let cut_docs =
                 (* not enough information to cut *)
                 let (stog, xmls, new_docs, links) =
                   List.fold_right (fold doc new_path cutpoints)
-                    xmls (stog, [], new_docs, links)
+                    subs (stog, [], new_docs, links)
                 in
                 (stog, xmls, new_docs, links)
 

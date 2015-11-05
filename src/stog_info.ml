@@ -32,10 +32,13 @@
 open Stog_types;;
 open Stog_filter_types;;
 
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 let is_archived_doc stog =
   match Stog_types.get_def stog.stog_defs ("","archived-docs") with
-  | Some (_,[Xtmpl.D s]) ->
-      let types = Stog_misc.split_string s [',' ; ';'] in
+  | Some (_,[XR.D cdata]) ->
+      let types = Stog_misc.split_string cdata.Xml.text [',' ; ';'] in
       let types = List.map Stog_misc.strip_string types in
       (fun doc_id -> let doc = Stog_types.doc stog doc_id in List.mem doc.doc_type types)
   | _ ->
@@ -309,7 +312,7 @@ let rec doc_verifies doc = function
     match Stog_types.get_def doc.doc_defs name with
       None -> v = ""
     | Some (_, body) ->
-        let s = Xtmpl.string_of_xmls body in
+        let s = XR.to_string body in
         v = s
 ;;
 

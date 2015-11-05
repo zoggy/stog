@@ -29,6 +29,9 @@
 
 (** *)
 
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 type result = Ok of string | Error of string
 
 let exec_command ?directory command =
@@ -53,10 +56,10 @@ let exec_command ?directory command =
 
 let concat_code =
   let f b = function
-    Xtmpl.D code -> Buffer.add_string b code
+    XR.D code -> Buffer.add_string b code.Xml.text
   | xml ->
       failwith (Printf.sprintf "XML code in command: %s"
-       (Xtmpl.string_of_xml xml))
+       (XR.to_string [xml]))
   in
   fun xmls ->
     let b = Buffer.create 256 in
@@ -67,34 +70,34 @@ let concat_code =
 let commands_of_xml xmls =
   let f xml acc =
     match xml with
-      Xtmpl.D _ -> acc
-    | Xtmpl.E(_,_,subs) -> (concat_code subs) :: acc
+      XR.D _ -> acc
+    | XR.E { XR.subs } -> (concat_code subs) :: acc
   in
   List.fold_right f xmls []
 
 let fun_exec stog env args code =
   try
     let directory =
-      match Xtmpl.get_att_cdata args ("", "directory") with
+      match XR.get_att_cdata args ("", "directory") with
         None | Some "" -> None
       | x -> x
     in
-    let exc = Xtmpl.opt_att_cdata args ~def: "true" ("", "stop-on-error") = "true" in
+    let exc = XR.opt_att_cdata args ~def: "true" ("", "stop-on-error") = "true" in
     let prompt =
-      match Xtmpl.get_att_cdata args ("", "prompt") with
+      match XR.get_att_cdata args ("", "prompt") with
         None | Some "" -> None
       | x -> x
     in
-    let show_code = Xtmpl.opt_att_cdata args ~def: "true" ("", "show-code") <> "false" in
-    let show_stdout = Xtmpl.opt_att_cdata args
+    let show_code = XR.opt_att_cdata args ~def: "true" ("", "show-code") <> "false" in
+    let show_stdout = XR.opt_att_cdata args
       ~def: (if prompt <> None then "true" else "false") ("", "show-stdout") <> "false"
     in
-    let in_xml_block = Xtmpl.opt_att_cdata args ~def: "true" ("", "in-xml-block") <> "false" in
-    let id_opt = Xtmpl.opt_att_cdata args ("", "id") in
-    let atts = Xtmpl.atts_of_list
-      (match id_opt with "" -> [] | id -> [("","id"), [Xtmpl.D id]])
+    let in_xml_block = XR.opt_att_cdata args ~def: "true" ("", "in-xml-block") <> "false" in
+    let id_opt = XR.opt_att_cdata args ("", "id") in
+    let atts = XR.atts_of_list
+      (match id_opt with "" -> [] | id -> [("","id"), [XR.cdata id]])
     in
-    let list = Xtmpl.opt_att_cdata args ~def: "false" ("", "list") = "true" in
+    let list = XR.opt_att_cdata args ~def: "false" ("", "list") = "true" in
     let commands =
       if list
       then commands_of_xml code
@@ -116,7 +119,7 @@ let fun_exec stog env args code =
           if show_code then
             Stog_highlight.highlight ~lang: "sh" ?opts command
           else
-            [Xtmpl.D ""]
+            [XR.cdata ""]
         in
         (*prerr_endline (Printf.sprintf "execute %S" command);*)
         let (output, error) =
@@ -137,9 +140,9 @@ let fun_exec stog env args code =
                 let code =
                   match prompt with
                     None -> code
-                  | Some str -> (Xtmpl_xhtml.span ~classes: ["command-prompt"] [Xtmpl.D str]) :: code
+                  | Some str -> (Xtmpl_xhtml.span ~classes: ["command-prompt"] [XR.cdata str]) :: code
                 in
-                [ Xtmpl.E (("","div"), Xtmpl.atts_empty, code) ]
+                [ XR.node ("","div") code ]
               end
             else
               code
@@ -148,10 +151,9 @@ let fun_exec stog env args code =
             (if error then " command-error" else "")
           in
           let xml =
-            Xtmpl.E (("","div"),
-             Xtmpl.atts_one ("","class") [Xtmpl.D classes],
-             [Xtmpl.D output]
-            )
+            XR.node ("","div")
+             ~atts: (XR.atts_one ("","class") [XR.cdata classes])
+             [XR.cdata output]
           in
           xml :: code @ acc
         in
@@ -161,16 +163,16 @@ let fun_exec stog env args code =
     if show_code || show_stdout then
       let xml =
         if in_xml_block then
-          [ Xtmpl.E (("","pre"),
-             Xtmpl.atts_of_list ~atts [("","class"), [Xtmpl.D "command-exec"]],
-             xml)
+          [ XR.node ("","pre")
+             ~atts: (XR.atts_of_list ~atts [("","class"), [XR.cdata "command-exec"]])
+             xml
           ]
         else
           xml
       in
       (stog, xml)
     else
-      (stog, [ Xtmpl.D "" ])
+      (stog, [ XR.cdata "" ])
   with
     e ->
       raise e

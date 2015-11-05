@@ -32,12 +32,15 @@
 open Stog_types;;
 module Smap = Stog_types.Str_map;;
 
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 exception Cant_open_cache_file of string
 
 type 'a level_fun =
-  | Fun_stog of (stog Xtmpl.env -> stog -> Stog_types.Doc_set.t -> stog)
-  | Fun_data of ('a Xtmpl.env -> stog * 'a -> Stog_types.Doc_set.t -> stog * 'a)
-  | Fun_stog_data of ((stog * 'a) Xtmpl.env -> stog * 'a -> Stog_types.Doc_set.t -> stog * 'a)
+  | Fun_stog of (stog XR.env -> stog -> Stog_types.Doc_set.t -> stog)
+  | Fun_data of ('a XR.env -> stog * 'a -> Stog_types.Doc_set.t -> stog * 'a)
+  | Fun_stog_data of ((stog * 'a) XR.env -> stog * 'a -> Stog_types.Doc_set.t -> stog * 'a)
 
 type 'a modul = {
       mod_data : 'a ;
@@ -81,10 +84,10 @@ let apply_module level env state modul =
           | Fun_stog_data f ->
               f (Obj.magic env) (stog, E.modul.mod_data) state.st_docs
         with
-          Xtmpl.Loop stack ->
-            let msg = "Possible loop when applying module "^
-              E.modul.mod_name^" on level "^(string_of_int level)^":\n"^
-              (Xtmpl.string_of_stack stack)
+          XR.Error e ->
+            let msg = Printf.sprintf
+              "Error when applying module %s on level %d:\n%s"
+              E.modul.mod_name level (XR.string_of_error e)
             in
             failwith msg
       in
@@ -119,7 +122,7 @@ let apply_module level env state modul =
       }
 ;;
 
-let (compute_level : 'a Xtmpl.env -> int -> stog_state -> stog_state) =
+let (compute_level : 'a XR.env -> int -> stog_state -> stog_state) =
   fun env level state ->
     Stog_msg.verbose (Printf.sprintf "Computing level %d" level);
     let state = List.fold_left (apply_module level env)
@@ -364,7 +367,7 @@ let state_merge_cdata ?docs state =
         None ->
           doc
       | Some xmls ->
-          { doc with doc_out = Some (Xtmpl.merge_cdata_list xmls) }
+          { doc with doc_out = Some (XR.merge_cdata_list xmls) }
     in
     Stog_types.set_doc stog doc_id doc
   in
@@ -425,23 +428,23 @@ let compute_levels ?use_cache env state =
 
 let rec make_fun (name, params, body) acc =
   let f data env atts subs =
-    let vars = Xtmpl.Name_map.fold
+    let vars = Xml.Name_map.fold
       (fun param default acc ->
-         match Xtmpl.get_att atts param with
-           None -> (param, Xtmpl.atts_empty, default) :: acc
-         | Some v -> (param, Xtmpl.atts_empty, v) :: acc
+         match XR.get_att atts param with
+           None -> (param, XR.atts_empty, default) :: acc
+         | Some v -> (param, XR.atts_empty, v) :: acc
       )
       params []
     in
     let env = env_of_defs ~env vars in
-    let body = [ Xtmpl.E (("",Xtmpl.tag_env), atts, body) ] in
+    let body = [ XR.node ("",XR.tag_env) ~atts body ] in
     let f data _ atts xmls =
-      match Xtmpl.Name_map.is_empty atts, xmls with
+      match Xml.Name_map.is_empty atts, xmls with
         true, [] -> (data, subs)
-      | _ -> raise Xtmpl.No_change
+      | _ -> raise XR.No_change
     in
-    let env = Xtmpl.env_add_cb "contents" f env in
-    Xtmpl.apply_to_xmls data env body
+    let env = XR.env_add_cb "contents" f env in
+    XR.apply_to_xmls data env body
   in
   (name, f) :: acc
 
@@ -449,19 +452,19 @@ let rec make_fun (name, params, body) acc =
 and env_of_defs ?env defs =
   let f x acc =
     match x with
-    | (key, atts, body) when Xtmpl.Name_map.is_empty atts ->
+    | (key, atts, body) when Xml.Name_map.is_empty atts ->
         (key, fun data _ _ _ -> (data, body)) :: acc
     | _ ->  make_fun x acc
   in
   (* fold_right instead of fold_left to reverse list and keep associations
      in the same order as in declarations *)
   let l = List.fold_right f defs [] in
-  Xtmpl.env_of_list ?env l
+  XR.env_of_list ?env l
 ;;
 
 (** FIXME: handle module requirements and already added modules *)
 (* FIXME: add dependency ? *)
-let env_of_used_mod stog ?(env=Xtmpl.env_empty()) modname =
+let env_of_used_mod stog ?(env=XR.env_empty()) modname =
   try
     let m = Stog_types.Str_map.find modname stog.stog_modules in
     (*prerr_endline (Printf.sprintf "adding %d definitions from module %S"
@@ -471,12 +474,12 @@ let env_of_used_mod stog ?(env=Xtmpl.env_empty()) modname =
     Stog_msg.warning (Printf.sprintf "No module %S" modname);
     env
 
-let env_of_used_mods stog ?(env=Xtmpl.env_empty()) mods =
+let env_of_used_mods stog ?(env=XR.env_empty()) mods =
   Stog_types.Str_set.fold (fun name env -> env_of_used_mod stog ~env name) mods env
 ;;
 
 let fun_site_url stog data _env _ _ =
-  (data, [ Xtmpl.D (Stog_url.to_string stog.stog_base_url) ])
+  (data, [ XR.cdata (Stog_url.to_string stog.stog_base_url) ])
 ;;
 
 let run ?(use_cache=true) ?default_style state =
@@ -487,12 +490,12 @@ let run ?(use_cache=true) ?default_style state =
     else
       stog.stog_dir
   in
-  let env = Xtmpl.env_of_list
+  let env = XR.env_of_list
     [
      (("", Stog_tags.site_desc), (fun data _ _ _ -> (data, stog.stog_desc))) ;
-     (("", Stog_tags.site_email), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_email ]))) ;
-     (("", Stog_tags.site_title), (fun data _ _ _ -> (data, [ Xtmpl.D stog.stog_title ]))) ;
-     (("", Stog_tags.stog_dir), (fun data _ _ _ -> (data, [ Xtmpl.D dir ]))) ;
+     (("", Stog_tags.site_email), (fun data _ _ _ -> (data, [ XR.cdata stog.stog_email ]))) ;
+     (("", Stog_tags.site_title), (fun data _ _ _ -> (data, [ XR.cdata stog.stog_title ]))) ;
+     (("", Stog_tags.stog_dir), (fun data _ _ _ -> (data, [ XR.cdata dir ]))) ;
      (("", Stog_tags.site_url), fun_site_url stog) ;
     ]
   in
@@ -552,6 +555,8 @@ let doc_url stog doc =
       | _ -> url
 ;;
 
+(* FIXME: no need to add doctype anymore, it should be kept
+  from the templates *)
 let output_doc ~gen_cache state doc =
   let file = doc_dst_file state.st_stog doc in
   Stog_misc.safe_mkdir (Filename.dirname file);
@@ -574,7 +579,7 @@ let output_doc ~gen_cache state doc =
           "html" -> List.map Stog_html5.hack_self_closed xmls
         | _ -> xmls
       in
-      List.iter (fun xml -> output_string oc (Xtmpl.string_of_xml ~xml_atts: false xml)) xmls;
+      output_string oc (XR.to_string ~xml_atts: false xmls);
       close_out oc;
       if gen_cache then cache_doc state doc
 ;;
@@ -667,35 +672,35 @@ let generate ?(use_cache=true) ?(gen_cache=true) ?default_style ?only_docs stog 
 
 
 let get_in_env data env (prefix, s) =
-  let node = [ Xtmpl.E((prefix,s), Xtmpl.atts_empty, []) ] in
-  let (data, node2) = Xtmpl.apply_to_xmls data env node in
+  let node = [ XR.node (prefix,s) [] ] in
+  let (data, node2) = XR.apply_to_xmls data env node in
   if node2 = node then (data, []) else (data, node2)
 ;;
 
 let opt_in_env data env (prefix, s) =
-  let node = [ Xtmpl.E((prefix,s), Xtmpl.atts_empty, []) ] in
-  let (data, node2) = Xtmpl.apply_to_xmls data env node in
+  let node = [ XR.node (prefix,s) [] ] in
+  let (data, node2) = XR.apply_to_xmls data env node in
   if node2 = node then (data, None) else (data, Some node2)
 ;;
 
 let get_in_args_or_env data env args s =
-  match Xtmpl.get_att args s with
+  match XR.get_att args s with
     None -> get_in_env data env s
   | Some xmls -> (data, xmls)
 ;;
 
 let get_path data env =
   let (data, xmls) = get_in_env data env ("", Stog_tags.doc_path) in
-  match Xtmpl.merge_cdata_list xmls with
-    [Xtmpl.D s] -> (data, Stog_path.of_string s)
-  | xmls -> Stog_path.invalid (Xtmpl.string_of_xmls xmls)
+  match XR.merge_cdata_list xmls with
+    [XR.D s] -> (data, Stog_path.of_string s.Xml.text)
+  | xmls -> Stog_path.invalid (XR.to_string xmls)
 ;;
 
 let get_path_in_args_or_env data env args =
   let (data,x) = get_in_args_or_env data env args ("", Stog_tags.doc_path) in
-  match Xtmpl.merge_cdata_list x with
-    [Xtmpl.D s] -> (data, Stog_path.of_string s)
-  | xmls -> Stog_path.invalid (Xtmpl.string_of_xmls xmls)
+  match XR.merge_cdata_list x with
+    [XR.D s] -> (data, Stog_path.of_string s.Xml.text)
+  | xmls -> Stog_path.invalid (XR.to_string xmls)
 ;;
 
 let get_doc_out stog doc =
@@ -712,45 +717,46 @@ let get_doc_out stog doc =
         in
         Stog_tmpl.get_template stog ~doc default (doc.doc_type^".tmpl")
       in
-      (stog, [tmpl])
+      (stog, tmpl)
   | Some xmls ->
       (stog, xmls)
 ;;
 
 let get_languages data env =
   match opt_in_env data env ("", "languages") with
-  | (data, Some [Xtmpl.D s]) -> (data, Stog_misc.split_string s [','; ';' ; ' '])
+  | (data, Some [XR.D s]) -> 
+      (data, Stog_misc.split_string s.Xml.text [','; ';' ; ' '])
   | (data, Some xmls) ->
-      failwith ("Invalid languages specification: "^(Xtmpl.string_of_xmls xmls))
+      failwith ("Invalid languages specification: "^(XR.to_string xmls))
   | (data, None) -> (data, ["fr" ; "en"])
 ;;
 
 let env_add_lang_rules data env stog doc =
   match stog.stog_lang with
     None ->
-      (data, Xtmpl.env_add_cb Stog_tags.langswitch (fun data _ _ _ -> (data, [])) env)
+      (data, XR.env_add_cb Stog_tags.langswitch (fun data _ _ _ -> (data, [])) env)
   | Some lang ->
       let (data, languages) = get_languages data env in
       let map_lang lang =
         let url = doc_url { stog with stog_lang = Some lang } doc in
         let img_url = Stog_url.concat stog.stog_base_url (lang^".png") in
-        Xtmpl.E (("", "a"),
-         Xtmpl.atts_of_list [("", "href"), [ Xtmpl.D (Stog_url.to_string url) ]],
+        XR.node ("", "a")
+         ~atts: (XR.atts_of_list [("", "href"), [ XR.cdata (Stog_url.to_string url) ]])
          [
-           Xtmpl.E (("", "img"),
-            Xtmpl.atts_of_list
-              [ ("", "src"), [ Xtmpl.D (Stog_url.to_string img_url) ] ;
-                ("", "title"), [ Xtmpl.D lang ] ;
-                ("", "alt"), [ Xtmpl.D lang]
-              ],
-            [])]
-        )
+           XR.node ("", "img")
+              ~atts: (XR.atts_of_list
+               [ ("", "src"), [ XR.cdata (Stog_url.to_string img_url) ] ;
+                 ("", "title"), [ XR.cdata lang ] ;
+                 ("", "alt"), [ XR.cdata lang]
+               ])
+               []
+          ]
       in
       let f data _env args _subs =
         let languages = List.filter ((<>) lang) languages in
         (data, List.map map_lang languages)
       in
-      let env = Xtmpl.env_add_cb Stog_tags.langswitch f env in
+      let env = XR.env_add_cb Stog_tags.langswitch f env in
       let to_remove = List.filter ((<>) lang) languages in
       let f_keep acc _env _args subs = (acc, subs) in
       let f_remove acc _env _args _subs = (acc, []) in
@@ -758,7 +764,7 @@ let env_add_lang_rules data env stog doc =
         (("", lang), f_keep) ::
           (List.map (fun lang -> (("", lang), f_remove)) to_remove)
       in
-      (data, Xtmpl.env_of_list ~env rules)
+      (data, XR.env_of_list ~env rules)
 ;;
 
 let doc_env data env stog doc =
@@ -768,24 +774,24 @@ let doc_env data env stog doc =
     (Printf.sprintf "doc=%s\ndefs=%s"
       (Stog_path.to_string doc.doc_path)
       (String.concat "\n"
-        (List.map (fun ((p,name),_,subs) -> Printf.sprintf "%s:%s=>%s" p name (Xtmpl.string_of_xmls subs))
+        (List.map (fun ((p,name),_,subs) -> Printf.sprintf "%s:%s=>%s" p name (XR.string_of_xmls subs))
           doc.doc_defs)
       )
     );
-  prerr_endline ("env_of_defs => "^(Xtmpl.string_of_env env));
+  prerr_endline ("env_of_defs => "^(XR.string_of_env env));
 *)
   let rules = [
       ("", Stog_tags.doc_path),
       (fun  acc _ _ _ ->
-         (acc, [Xtmpl.D (Stog_path.to_string doc.doc_path)]))
+         (acc, [XR.cdata (Stog_path.to_string doc.doc_path)]))
     ]
   in
-  let env = Xtmpl.env_of_list ~env rules in
+  let env = XR.env_of_list ~env rules in
   let (data, env) = env_add_lang_rules data env stog doc in
   (data, env)
 
 type 'a stog_doc_rules =
-  Stog_types.stog -> Stog_types.doc_id -> (Xtmpl.name * 'a Xtmpl.callback) list
+  Stog_types.stog -> Stog_types.doc_id -> (XR.name * 'a XR.callback) list
 
 let apply_stog_env_doc stog env doc_id =
   let doc = Stog_types.doc stog doc_id in
@@ -793,8 +799,8 @@ let apply_stog_env_doc stog env doc_id =
   let (stog, xmls) = get_doc_out stog doc in
   (*prerr_endline (Printf.sprintf "%s = %s"
      (Stog_path.to_string doc.doc_path)
-     (Xtmpl.string_of_xsmls xmls));*)
-  let (stog, xmls) = Xtmpl.apply_to_xmls stog env xmls in
+     (XR.string_of_xsmls xmls));*)
+  let (stog, xmls) = XR.apply_to_xmls stog env xmls in
   let doc = { doc with doc_out = Some xmls } in
   Stog_types.set_doc stog doc_id doc
 ;;
@@ -803,8 +809,8 @@ let apply_stog_data_env_doc (stog,data) env doc_id =
   let doc = Stog_types.doc stog doc_id in
   let ((stog, data), env) = doc_env (stog, data) env stog doc in
   let (stog, xmls) = get_doc_out stog doc in
-  (*prerr_endline (Printf.sprintf "env=%s" (Xtmpl.string_of_env env));*)
-  let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env xmls in
+  (*prerr_endline (Printf.sprintf "env=%s" (XR.string_of_env env));*)
+  let ((stog, data), xmls) = XR.apply_to_xmls (stog, data) env xmls in
   let doc = { doc with doc_out = Some xmls } in
   (Stog_types.set_doc stog doc_id doc, data)
 
@@ -812,7 +818,7 @@ let apply_data_env_doc (stog,data) env doc_id =
   let doc = Stog_types.doc stog doc_id in
   let (data, env) = doc_env data env stog doc in
   let (stog, xmls) = get_doc_out stog doc in
-  let (data, xmls) = Xtmpl.apply_to_xmls data env xmls in
+  let (data, xmls) = XR.apply_to_xmls data env xmls in
   let doc = { doc with doc_out = Some xmls } in
   (Stog_types.set_doc stog doc_id doc, data)
 ;;
@@ -820,7 +826,7 @@ let apply_data_env_doc (stog,data) env doc_id =
 let fun_apply_stog_doc_rules f_rules =
   let f_doc env doc_id stog =
     let rules = f_rules stog doc_id in
-    let env = Xtmpl.env_of_list ~env rules in
+    let env = XR.env_of_list ~env rules in
     apply_stog_env_doc stog env doc_id
   in
   let f env stog docs = Stog_types.Doc_set.fold (f_doc env) docs stog in
@@ -830,7 +836,7 @@ let fun_apply_stog_doc_rules f_rules =
 let fun_apply_stog_data_doc_rules f_rules =
   let f_doc env doc_id (stog, data) =
     let rules = f_rules stog doc_id in
-    let env = Xtmpl.env_of_list ~env rules in
+    let env = XR.env_of_list ~env rules in
     apply_stog_data_env_doc (stog,data) env doc_id
   in
   let f env (stog, data) docs =
@@ -842,7 +848,7 @@ let fun_apply_stog_data_doc_rules f_rules =
 let fun_apply_data_doc_rules f_rules =
   let f_doc env doc_id (stog, data) =
     let rules = f_rules stog doc_id in
-    let env = Xtmpl.env_of_list ~env rules in
+    let env = XR.env_of_list ~env rules in
     apply_data_env_doc (stog,data) env doc_id
   in
   let f env (stog, data) docs =

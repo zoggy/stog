@@ -29,6 +29,7 @@
 
 (** *)
 
+module XR = Xtmpl_rewrite
 
 module SMap = Map.Make (String);;
 
@@ -55,14 +56,14 @@ type tree =
 | Block of block
 
 and block = {
-    tag : Xtmpl.name ;
+    tag : XR.name ;
     title : tree list ;
     id : string option ;
     subs : tree list ;
-    atts : Xtmpl.attributes ;
+    atts : XR.attributes ;
   }
 
-let block ?(atts=Xtmpl.atts_empty) ?id ?(title=[]) tag subs =
+let block ?(atts=XR.atts_empty) ?id ?(title=[]) tag subs =
   { tag ; title ; id ; subs ; atts }
 ;;
 
@@ -376,10 +377,10 @@ let count_newlines =
 
 let to_xml =
   let rec iter = function
-    Source s -> Xtmpl.D s
+    Source s -> XR.cdata s
   | Block ({ tag = ("","[") } as b) ->
-     let subs = (Xtmpl.D "[") :: (List.map iter b.subs) @ [ Xtmpl.D "]"] in
-     Xtmpl.E (("","span"), Xtmpl.atts_empty, subs)
+     let subs = (XR.cdata "[") :: (List.map iter b.subs) @ [ XR.cdata "]"] in
+     XR.node ("","span") subs
   | Block b ->
      let atts =
         (match b.title with
@@ -391,11 +392,11 @@ let to_xml =
         ) @
         (match b.id with
            None -> []
-         | Some id -> [("","id"), [ Xtmpl.D id ] ]
+         | Some id -> [("","id"), [ XR.cdata id ] ]
         )
      in
-     let atts = Xtmpl.atts_of_list ~atts: b.atts atts in
-     Xtmpl.E (b.tag, atts, List.map iter b.subs)
+     let atts = XR.atts_of_list ~atts: b.atts atts in
+     XR.node b.tag ~atts (List.map iter b.subs)
   in
   fun l -> List.map iter l
 ;;
@@ -464,10 +465,10 @@ let rec blocks_of_tokens map tokens =
               | h :: q ->
                   let xmls = to_xml h in
                   let s = "p"^(string_of_int n) in
-                  let atts = Xtmpl.atts_one ~atts ("", s) xmls in
+                  let atts = XR.atts_one ~atts ("", s) xmls in
                   iter atts (n-1) q
               in
-              iter Xtmpl.atts_empty (List.length rest - 1) rest
+              iter XR.atts_empty (List.length rest - 1) rest
             in
             let b = block ~atts ("", name) last in
             iter ((Block b) :: acc) tokens
@@ -559,7 +560,7 @@ let gen_eqnarray_contents tokens =
     f_col acc q
   in
   let td cls subs =
-    let atts = Xtmpl.atts_one ("","class") [Xtmpl.D cls] in
+    let atts = XR.atts_one ("","class") [XR.cdata cls] in
     let b = block ~atts ("","td") subs in
     Block b
   in
@@ -646,7 +647,7 @@ let fun_superscript com = mk_one_arg_fun com ("","sup");;
 let fun_arobas = mk_const_fun 0 [Source " "];;
 let fun_space = mk_const_fun 0 [Source " "];;
 let fun_hrule =
-  let atts = Xtmpl.atts_one ("","width") [Xtmpl.D "100%"] in
+  let atts = XR.atts_one ("","width") [XR.cdata "100%"] in
   mk_const_fun 0 [Block (block ~atts ("", "hr") []) ];;
 let fun_hfill = mk_const_fun 0 [Source nbsp];;
 let fun_caption = mk_ignore_opt mk_one_arg_fun ("","legend");;
@@ -684,11 +685,11 @@ let fun_includegraphics params com eval tokens =
       | Some "pdf" | Some "eps" -> (Filename.chop_extension file)^".png"
       | _ -> file
     in
-    let atts = Xtmpl.atts_one ("","src") [Xtmpl.D file] in
+    let atts = XR.atts_one ("","src") [XR.cdata file] in
     let atts =
       try
         let size = SMap.find file params.image_sizes in
-        Xtmpl.atts_one ~atts ("","width") [Xtmpl.D size]
+        XR.atts_one ~atts ("","width") [XR.cdata size]
       with Not_found -> atts
     in
     let b = block ~atts ("","img") [] in
@@ -701,7 +702,7 @@ let fun_includegraphics params com eval tokens =
 let fun_ref com eval tokens =
   let (arg, rest) = get_atts com eval 1 tokens in
   let label = "#"^(string_tree (List.hd arg)) in
-  let atts = Xtmpl.atts_one ("", "href") [Xtmpl.D label] in
+  let atts = XR.atts_one ("", "href") [XR.cdata label] in
   ([Block (block ~atts ("", Stog_tags.doc) [])], rest)
 ;;
 
@@ -716,7 +717,7 @@ let fun_cite com (eval : token list -> tree list) tokens =
     | _ -> (None, [eval arg], rest)
   in
   let id = string_tree (List.hd arg) in
-  let atts = Xtmpl.atts_one ("", "href") [Xtmpl.D id] in
+  let atts = XR.atts_one ("", "href") [XR.cdata id] in
   let res =
     [ Block (block ~atts ("", "cite") []) ] @
     (match opt with
@@ -839,8 +840,8 @@ let fun_begin params com eval tokens =
            None -> failwith ("Could not find \\end{"^env^"}")
          | Some (subs, rest) ->
              let s = string_of_token_list subs in
-             let atts = Xtmpl.atts_one ("","outfile")
-               [Xtmpl.D (params.ext_file_prefix ^ (gen_asy_file())) ]
+             let atts = XR.atts_one ("","outfile")
+               [XR.cdata (params.ext_file_prefix ^ (gen_asy_file())) ]
              in
              let b = block ~atts ("","asy") [Source s] in
              ([ Block b ], rest)
@@ -1016,7 +1017,7 @@ let mk_sections =
           if len > 0 && command.[len-1] = '*' then
             { b with
               tag = ("", remove_end_star command) ;
-              atts = Xtmpl.atts_one ~atts: b.atts ("","counter") [Xtmpl.D "false"] ;
+              atts = XR.atts_one ~atts: b.atts ("","counter") [XR.cdata "false"] ;
             }
           else
             b
@@ -1277,7 +1278,7 @@ let block_map =
       (fun b ->
         [ Block { b with
              tag = ("","div") ;
-             atts = Xtmpl.atts_one ~atts: b.atts ("","class") [Xtmpl.D "legend"] ;
+             atts = XR.atts_one ~atts: b.atts ("","class") [XR.cdata "legend"] ;
             }
         ]
        ) ;

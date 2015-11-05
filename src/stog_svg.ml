@@ -29,39 +29,43 @@
 
 (** *)
 
+module XR = Xtmpl_rewrite
+
 let prefix_ids =
-  let rec iter p = function
-    (Xtmpl.D _) as t -> t
-  | Xtmpl.E (tag, atts, subs) ->
+  let rec iter p t =
+    match t with
+  | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> t
+  | XR.E node ->
+      let atts = node.XR.atts in
       let atts =
-       match Xtmpl.get_att_cdata atts ("","id") with
+       match XR.get_att_cdata atts ("","id") with
          None -> atts
        | Some s ->
-            Xtmpl.atts_replace ("","id") [ Xtmpl.D (p^s) ] atts
+            XR.atts_replace ("","id") [ XR.cdata (p^s) ] atts
       in
       let atts =
-        match Xtmpl.get_att_cdata atts ("http://www.w3.org/1999/xlink","href") with
+        match XR.get_att_cdata atts ("http://www.w3.org/1999/xlink","href") with
          None -> atts
        | Some s ->
             let len = String.length s in
             let s = String.sub s 1 (len -1) (* remove beginning '#' *) in
-            Xtmpl.atts_replace ("http://www.w3.org/1999/xlink","href") [ Xtmpl.D ("#"^p^s) ] atts
+            XR.atts_replace ("http://www.w3.org/1999/xlink","href") [ XR.cdata ("#"^p^s) ] atts
       in
-      Xtmpl.E (tag, atts, List.map (iter p) subs)
-
+      XR.E { node with XR.atts ; subs = List.map (iter p) node.XR.subs }
   in
   iter
 ;;
 
-let rec prefix_svg_ids prefix = function
-  (Xtmpl.D _) as t -> t
-| Xtmpl.E ((_,"svg"), _, _) as t -> prefix_ids prefix t
-| Xtmpl.E (t,atts,subs) ->
-    Xtmpl.E (t, atts, List.map (prefix_svg_ids prefix) subs)
+let rec prefix_svg_ids prefix t =
+  match t with
+  | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> t
+  | XR.E { XR.name = (_,"svg")} as t -> prefix_ids prefix t
+  | XR.E node ->
+      XR.E { node with XR.subs = List.map (prefix_svg_ids prefix) node.XR.subs }
 ;;
 
 let fun_prefix_svg_ids stog env atts subs =
-  match Xtmpl.get_att_cdata atts ("","prefix") with
+  match XR.get_att_cdata atts ("","prefix") with
     None -> (stog, subs)
   | Some prefix -> (stog, List.map (prefix_svg_ids prefix) subs)
 ;;

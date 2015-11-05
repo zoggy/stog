@@ -32,6 +32,8 @@
 open Stog_types;;
 open Stog_filter_types;;
 
+module XR = Xtmpl_rewrite
+
 let filter_of_string str =
   let lexbuf = Lexing.from_string str in
   Stog_filter_parser.filter Stog_filter_lexer.main lexbuf
@@ -46,16 +48,16 @@ module Set =
 
 let filter_pred env att s data (doc_id, doc) =
   let (data, v) =
-    let xml = Xtmpl.xml_of_string s in
-    let (data, xmls) = Xtmpl.apply_to_xmls data env [xml] in
-    (data, Xtmpl.string_of_xmls xmls)
+    let xmls = XR.from_string s in
+    let (data, xmls) = XR.apply_to_xmls data env xmls in
+    (data, XR.to_string xmls)
   in
   let (data, v_doc) =
     match Stog_types.get_def doc.doc_defs att  with
       None -> (data, "")
     | Some (_, body) ->
-        let (data, xmls) = Xtmpl.apply_to_xmls data env body in
-        (data, Xtmpl.string_of_xmls xmls)
+        let (data, xmls) = XR.apply_to_xmls data env body in
+        (data, XR.to_string xmls)
   in
   (data, v = v_doc)
 ;;

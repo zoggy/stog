@@ -30,6 +30,7 @@
 (** *)
 
 open Stog_types;;
+module XR = Xtmpl_rewrite
 
 let docs ?set ?setname ?filter ?typ ?max ?(reverse=true) ?(sort=[]) stog env =
   let docs =
@@ -72,28 +73,28 @@ let docs ?set ?setname ?filter ?typ ?max ?(reverse=true) ?(sort=[]) stog env =
 ;;
 
 let docs_of_args ?set stog env args =
-  let setname = Xtmpl.get_att_cdata args ("", "set") in
+  let setname = XR.get_att_cdata args ("", "set") in
   let filter =
     Stog_misc.map_opt
       Stog_filter.filter_of_string
-      (Xtmpl.get_att_cdata args ("", "filter"))
+      (XR.get_att_cdata args ("", "filter"))
   in
   let typ =
-    match Xtmpl.get_att_cdata args ("", "type") with
+    match XR.get_att_cdata args ("", "type") with
       None | Some "" -> None
     | Some s ->
         Some (Stog_misc.split_string s [',' ; ';'])
   in
   let max = Stog_misc.map_opt int_of_string
-    (Xtmpl.get_att_cdata args ("", "max"))
+    (XR.get_att_cdata args ("", "max"))
   in
   let reverse =
-    match Xtmpl.get_att_cdata args ("", "reverse") with
+    match XR.get_att_cdata args ("", "reverse") with
       None -> true
     | Some s -> Stog_io.bool_of_string s
   in
   let sort =
-    match Xtmpl.get_att_cdata args ("", "sort") with
+    match XR.get_att_cdata args ("", "sort") with
       None -> None
     | Some s -> Some (Stog_misc.split_string s [','])
   in

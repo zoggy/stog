@@ -29,6 +29,9 @@
 
 (** *)
 
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 let gensym = let cpt = ref 0 in fun () -> incr cpt; !cpt;;
 
 let cache = Hashtbl.create 111;;
@@ -56,9 +59,9 @@ let get_latex_defs stog env =
     | _ ->
         let s =
           match xmls with
-            [Xtmpl.D s] -> s
+            [XR.D s] -> s.Xml.text
           | _ ->
-              let msg = "Invalid filenames: "^(Xtmpl.string_of_xmls xmls) in
+              let msg = "Invalid filenames: "^(XR.to_string xmls) in
               failwith msg
         in
         let files = List.map Stog_misc.strip_string
@@ -80,7 +83,7 @@ let get_latex_defs stog env =
   in
   let (stog, defs) =
     let (stog, xmls) = Stog_engine.get_in_env stog env ("", "latex-defs") in
-    let defs = match xmls with [] -> "" | _ -> Xtmpl.string_of_xmls xmls in
+    let defs = match xmls with [] -> "" | _ -> XR.to_string xmls in
     (stog, defs)
   in
   (stog, defs, def_files)
@@ -135,11 +138,11 @@ let make_svg outdir ?(packages=[]) ?(scale=1.1) ?(def_files=[]) ?defs latex_code
 
 let code_of_subs =
   let f b = function
-    Xtmpl.D code -> Buffer.add_string b code
-  | xml -> failwith (Printf.sprintf "Invalid latex code: %s" (Xtmpl.string_of_xml xml))
+    XR.D code -> Buffer.add_string b code.Xml.text
+  | xml -> failwith (Printf.sprintf "Invalid latex code: %s" (XR.to_string [xml]))
   in
   function
-    [ Xtmpl.D code] -> code
+  | [ XR.D code] -> code.Xml.text
   | subs ->
     let b = Buffer.create 256 in
     List.iter (f b) subs;
@@ -148,12 +151,12 @@ let code_of_subs =
 
 let get_packages stog env args =
   let (stog, s) =
-    match Xtmpl.get_att_cdata args ("","packages") with
+    match XR.get_att_cdata args ("","packages") with
       Some s -> (stog, s)
     | None ->
         let (stog, xmls) = Stog_engine.get_in_args_or_env stog env args ("","latex-packages") in
         match xmls with
-          [Xtmpl.D s] -> (stog, s)
+          [XR.D s] -> (stog, s.Xml.text)
         | _ -> (stog, "")
   in
   let l = List.map Stog_misc.strip_string (Stog_misc.split_string s [';']) in
@@ -163,7 +166,7 @@ let get_packages stog env args =
 let fun_latex stog env args subs =
   let code = code_of_subs subs in
   let (stog, packages) = get_packages stog env args in
-  let showcode = Xtmpl.opt_att_cdata args ("", "showcode") = "true" in
+  let showcode = XR.opt_att_cdata args ("", "showcode") = "true" in
   let (stog, defs, def_files) = get_latex_defs stog env in
   let (stog, scale) =
     let (stog, xmls) = Stog_engine.get_in_env stog env ("", "latex-svg-scale") in
@@ -171,7 +174,7 @@ let fun_latex stog env args subs =
       match xmls with
         [] -> None
       | _ ->
-          let s = Xtmpl.string_of_xmls xmls in
+          let s = XR.to_string xmls in
           try Some (float_of_string s)
           with _ -> failwith (Printf.sprintf "Invalid latex-svg-scale %S" s)
     in
@@ -182,20 +185,23 @@ let fun_latex stog env args subs =
   in
   let url = Stog_url.concat stog.Stog_types.stog_base_url svg in
   let xmls =
-    (Xtmpl.E (("","img"),
-      Xtmpl.atts_of_list
-        [ ("", "class"), [Xtmpl.D "latex"] ;
-          ("", "src"), [Xtmpl.D (Stog_url.to_string url) ] ;
-          ("", "alt"), [Xtmpl.D code] ;
-          ("", "title"), [Xtmpl.D code]
-        ],
-      []) ) ::
+    (XR.node ("","img")
+      ~atts:
+       (XR.atts_of_list
+        [ ("", "class"), [XR.cdata "latex"] ;
+          ("", "src"), [XR.cdata (Stog_url.to_string url) ] ;
+          ("", "alt"), [XR.cdata code] ;
+          ("", "title"), [XR.cdata code]
+        ])
+      []
+    ) ::
       (match showcode with
          false -> []
        | true ->
-           [ Xtmpl.E (("","hcode"),
-              Xtmpl.atts_one ("","lang") [Xtmpl.D "tex"],
-              [Xtmpl.D code]) ]
+           [ XR.node ("","hcode")
+              ~atts: (XR.atts_one ("","lang") [XR.cdata "tex"])
+               [XR.cdata code]
+           ]
       )
   in
   (stog, xmls)
@@ -218,9 +224,9 @@ let fun_latex_body stog env args subs =
   let (stog, xmls) = Stog_engine.get_in_env stog env ("","sectionning") in
   let sectionning =
     match xmls with
-      [Xtmpl.D s] ->
+      [XR.D { Xml.text } ] ->
         List.map Stog_misc.strip_string
-          (Stog_misc.split_string s [','])
+          (Stog_misc.split_string text [','])
     | _ -> Stog_tags.default_sectionning
   in
   let params = {

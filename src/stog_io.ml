@@ -267,11 +267,14 @@ let doc_of_file stog file =
     Stog_path.of_string s
   in
   Stog_msg.verbose ~level: 3 (Printf.sprintf "reading document file %S" file);
-  let xml = XR.from_file file in
+  let xmls = XR.from_file file in
   let (typ, atts, subs) =
-    match xml with
-      XR.D _ -> failwith (Printf.sprintf "File %S does not content an XML tree" file)
-    | XR.E ((_,tag), atts, subs) -> (tag, atts, subs)
+    match List.rev (XR.upto_first_element xmls) with
+    | exception Not_found ->
+        failwith
+          (Printf.sprintf "File %S does not content an XML tree" file)
+    | (XR.E { XR.name = (_,tag) ; atts ; subs}) :: _ -> (tag, atts, subs)
+    | _ -> assert false
   in
   let doc = Stog_types.make_doc ~path ~typ () in
   let doc = { doc with doc_src = rel_file } in

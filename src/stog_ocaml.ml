@@ -31,6 +31,9 @@
 
 open Stog_ocaml_types;;
 
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 type err = { line : int ; start : int ; stop : int ; message : string ; warning : bool }
 
 let prompt = "# ";;
@@ -139,10 +142,10 @@ let fun_new_env env args subs =
 
 let concat_code =
   let f b = function
-    Xtmpl.D code -> Buffer.add_string b code
+    XR.D code -> Buffer.add_string b code.Xml.text
   | xml ->
       failwith (Printf.sprintf "XML code in OCaml code: %s"
-       (Xtmpl.string_of_xml xml))
+       (XR.to_string [xml]))
   in
   fun xmls ->
     let b = Buffer.create 256 in
@@ -232,22 +235,22 @@ let get_errors ?(print_locs=false) s =
 let add_loc_blocks errors code =
   let block err s =
     let cl = if err.warning then "warning-loc" else "error-loc" in
-    Xtmpl.E (("","span"),
-     Xtmpl.atts_of_list [
-       ("","title"), [Xtmpl.D err.message] ;
-       ("","class"), [Xtmpl.D cl] ;
-     ],
-     [Xtmpl.D s])
+    XR.node ("","span")
+     ~atts: (XR.atts_of_list [
+         ("","title"), [XR.cdata err.message] ;
+         ("","class"), [XR.cdata cl] ;
+       ])
+     [XR.cdata s]
   in
   let rec f err (l,c) = function
     "" -> ((l,c), [])
   | s ->
       if l > err.line then
-        ((l, c), [ Xtmpl.D s])
+        ((l, c), [ XR.cdata s])
       else
         if l = err.line then
           if c > err.stop then
-            ((l, c), [Xtmpl.D s])
+            ((l, c), [XR.cdata s])
           else
             begin
               let len = String.length s in
@@ -260,18 +263,18 @@ let add_loc_blocks errors code =
                    (
                     let s1 = String.sub s 0 required_size in
                     let s2 = String.sub s required_size (len - required_size) in
-                    ((l, c+len), [block err s1 ; Xtmpl.D s2])
+                    ((l, c+len), [block err s1 ; XR.cdata s2])
                    )
               )
               else
                 if c + len < err.start then
-                  ((l, c + len), [Xtmpl.D s])
+                  ((l, c + len), [XR.cdata s])
                 else
                   if c + len < err.stop then
                     (
                      let s1 = String.sub s 0 (err.start - c) in
                      let s2 = String.sub s (err.start - c) (len - (err.start - c)) in
-                     ((l, c+len), [Xtmpl.D s1 ; block err s2])
+                     ((l, c+len), [XR.cdata s1 ; block err s2])
                     )
                   else
                     (
@@ -279,7 +282,7 @@ let add_loc_blocks errors code =
                      let s2 = String.sub s (err.start - c) (err.stop - err.start) in
                      let s3 = String.sub s (err.stop - c) (len - (err.stop - c)) in
                      let c = c + len in
-                     ((l, c+len), [Xtmpl.D s1 ; block err s2 ; Xtmpl.D s3])
+                     ((l, c+len), [XR.cdata s1 ; block err s2 ; XR.cdata s3])
                   )
             end
         else
@@ -288,7 +291,7 @@ let add_loc_blocks errors code =
            let nb_lines = List.length lines in
            (*prerr_endline (Printf.sprintf "line=%d; err.line=%d, nb_lines=%d, s=%s" l err.line nb_lines s);*)
            if l + nb_lines - 1 < err.line then
-             ((l+nb_lines - 1, String.length (List.hd (List.rev lines))), [Xtmpl.D s])
+             ((l+nb_lines - 1, String.length (List.hd (List.rev lines))), [XR.cdata s])
            else
              let rec iter (l,c) = function
                [] -> assert false
@@ -298,7 +301,7 @@ let add_loc_blocks errors code =
                  else
                    (
                     let (acc, l) = iter (l+1,0) q in
-                    (acc, (Xtmpl.D (line^"\n")) :: l)
+                    (acc, (XR.cdata (line^"\n")) :: l)
                    )
              in
              iter (l,c) lines
@@ -306,14 +309,18 @@ let add_loc_blocks errors code =
   in
   let rec fold_cdata f acc = function
     [] -> (acc, [])
-  | (Xtmpl.D s) :: q ->
-      let (acc, l) = f acc s in
+  | (XR.D s) :: q ->
+      let (acc, l) = f acc s.Xml.text in
       let (acc, l2) = fold_cdata f acc q in
       (acc, l @ l2)
-  | (Xtmpl.E (tag, atts, subs)) :: q ->
-      let (acc,subs) = fold_cdata f acc subs in
+  | (XR.E node) :: q ->
+      let (acc,subs) = fold_cdata f acc node.XR.subs in
       let (acc, l) = fold_cdata f acc q in
-      (acc, (Xtmpl.E (tag, atts, subs)) :: l)
+      (acc, (XR.E { node with XR.subs }) :: l)
+  | (XR.C _)  :: q
+  | (XR.PI _) :: q
+  | (XR.X _) :: q
+  | (XR.DT _) :: q -> fold_cdata f acc q
   in
   let f_err xmls err = snd (fold_cdata (f err) (1, 0) xmls) in
   let errors = List.sort Pervasives.compare errors in
@@ -329,7 +336,9 @@ let concat_toplevel_outputs output =
   let mk (cl, s) =
     match s with
       "" -> []
-    | _ -> [ Xtmpl.E (("","div"), Xtmpl.atts_one ("","class") [Xtmpl.D cl], [Xtmpl.D s]) ]
+    | _ -> 
+        let atts = XR.atts_one ("","class") [XR.cdata cl] in
+        [ XR.node ("","div") ~atts [XR.cdata s] ]
   in
   List.flatten (List.map mk
     [ "stderr", output.stderr ;
@@ -341,27 +350,27 @@ let concat_toplevel_outputs output =
 let fun_eval stog env args code =
   try
     let directory =
-      match Xtmpl.get_att_cdata args ("", "directory") with
+      match XR.get_att_cdata args ("", "directory") with
         None | Some "" -> None
       | x -> x
     in
-    let exc = Xtmpl.opt_att_cdata args ~def: "true" ("", "error-exc") = "true" in
-    let toplevel = Xtmpl.opt_att_cdata args ~def: "false" ("", "toplevel") = "true" in
-    let show_code = Xtmpl.opt_att_cdata args ~def: "true" ("", "show-code") <> "false" in
-    let show_stdout = Xtmpl.opt_att_cdata args
+    let exc = XR.opt_att_cdata args ~def: "true" ("", "error-exc") = "true" in
+    let toplevel = XR.opt_att_cdata args ~def: "false" ("", "toplevel") = "true" in
+    let show_code = XR.opt_att_cdata args ~def: "true" ("", "show-code") <> "false" in
+    let show_stdout = XR.opt_att_cdata args
       ~def: (if toplevel then "true" else "false") ("", "show-stdout") <> "false"
     in
-    let highlight_locs = Xtmpl.opt_att_cdata args
+    let highlight_locs = XR.opt_att_cdata args
       ~def: "true" ("","highlight-locs") <> "false"
     in
-    let print_locs = Xtmpl.opt_att_cdata args
+    let print_locs = XR.opt_att_cdata args
       ~def: (if highlight_locs then "false" else "true") ("","print-locs") <> "false"
     in
-    let in_xml_block = Xtmpl.opt_att_cdata args ~def: "true" ("", "in-xml-block") <> "false" in
-    let session_name = Xtmpl.get_att_cdata args ("", "session") in
-    let id_opt = Xtmpl.opt_att_cdata args ("", "id") in
-    let atts = Xtmpl.atts_of_list
-      (match id_opt with "" -> [] | id -> [("","id"), [Xtmpl.D id]])
+    let in_xml_block = XR.opt_att_cdata args ~def: "true" ("", "in-xml-block") <> "false" in
+    let session_name = XR.get_att_cdata args ("", "session") in
+    let id_opt = XR.opt_att_cdata args ("", "id") in
+    let atts = XR.atts_of_list
+      (match id_opt with "" -> [] | id -> [("","id"), [XR.cdata id]])
     in
     let code = concat_code code in
     let phrases = ocaml_phrases_of_string code in
@@ -381,7 +390,7 @@ let fun_eval stog env args code =
           if show_code then
             Stog_highlight.highlight ~lang: "ocaml" ?opts phrase
            else
-            [Xtmpl.D ""]
+            [XR.cdata ""]
         in
         (*prerr_endline (Printf.sprintf "evaluate %S" phrase);*)
         let (output, raised_exc) =
@@ -400,15 +409,16 @@ let fun_eval stog env args code =
         let acc =
           match toplevel with
             false ->
-              let code = if in_xml_block then [Xtmpl.E (("","div"), Xtmpl.atts_empty, code)] else code in
+              let code = 
+                if in_xml_block then [XR.node ("","div") code] else code in
               if show_stdout then
                 let xml =
                   if in_xml_block then
-                    Xtmpl.E (("","div"),
-                     Xtmpl.atts_one ("","class") [Xtmpl.D "ocaml-toplevel"],
-                     [Xtmpl.D output.stdout])
+                    XR.node ("","div")
+                     ~atts: (XR.atts_one ("","class") [XR.cdata "ocaml-toplevel"])
+                     [XR.cdata output.stdout]
                   else
-                     Xtmpl.D output.stdout
+                     XR.cdata output.stdout
                 in
                 xml :: code @ acc
               else
@@ -422,7 +432,7 @@ let fun_eval stog env args code =
               in
               let code =
                 if in_xml_block then
-                  [ Xtmpl.E (("","div"), Xtmpl.atts_empty, (Xtmpl.D prompt) :: code) ]
+                  [ XR.node ("","div") ((XR.cdata prompt) :: code) ]
                 else
                   code
               in
@@ -430,10 +440,9 @@ let fun_eval stog env args code =
                 (if raised_exc then " ocaml-exc" else "")
               in
               let xml =
-                Xtmpl.E (("","div"),
-                 Xtmpl.atts_one ("","class") [Xtmpl.D classes],
+                XR.node ("","div")
+                 ~atts: (XR.atts_one ("","class") [XR.cdata classes])
                  (concat_toplevel_outputs output)
-                )
               in
               xml :: code @ acc
         in
@@ -443,16 +452,16 @@ let fun_eval stog env args code =
     if show_code || toplevel || show_stdout then
       let xml =
         if in_xml_block then
-          [ Xtmpl.E (("","pre"),
-             Xtmpl.atts_of_list ~atts [("","class"), [Xtmpl.D "code-ocaml"]],
-             xml)
+          [ XR.node ("","pre")
+             ~atts: (XR.atts_of_list ~atts [("","class"), [XR.cdata "code-ocaml"]])
+             xml
           ]
         else
           xml
       in
       (stog, xml)
     else
-      (stog, [ Xtmpl.D "" ])
+      (stog, [ XR.cdata "" ])
   with
     e ->
       raise e
@@ -461,15 +470,15 @@ let fun_eval stog env args code =
 
 let fun_printf stog env args subs =
   let code = concat_code subs in
-  let format = Xtmpl.opt_att_cdata args ~def: "%s" ("", "format") in
+  let format = XR.opt_att_cdata args ~def: "%s" ("", "format") in
   let code = "Printf.printf \""^format^"\" "^code^"; flush Pervasives.stdout;;" in
-  let args = Xtmpl.atts_of_list ~atts: args
-    [ ("","show-stdout"), [Xtmpl.D "true"] ;
-      ("","show-code"), [Xtmpl.D "false"] ;
-      ("","in-xml-block"), [Xtmpl.D "false"] ;
+  let args = XR.atts_of_list ~atts: args
+    [ ("","show-stdout"), [XR.cdata "true"] ;
+      ("","show-code"), [XR.cdata "false"] ;
+      ("","in-xml-block"), [XR.cdata "false"] ;
     ]
   in
-  fun_eval stog env args [Xtmpl.D code]
+  fun_eval stog env args [XR.cdata code]
 ;;
 
 
