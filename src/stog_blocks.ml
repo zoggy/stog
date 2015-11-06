@@ -111,7 +111,7 @@ let add_block_for_doc data doc =
       { data with blocks }
 ;;
 
-let fun_counter (stog, data) env atts subs =
+let fun_counter (stog, data) env ?loc atts subs =
 (*  prerr_endline (Printf.sprintf "fun_counter args=%s\nenv=%s"
     (String.concat "\n" (List.map (fun (s, v) -> Printf.sprintf "%S, %S" s v) atts))
     (XR.string_of_env env));
@@ -198,17 +198,15 @@ let fun_doc_href ?typ src_doc href (stog, data) env args subs =
       ((stog, data), [ xml ])
 ;;
 
-let fun_doc ?typ src_doc (stog, data) env args subs =
-  let href =
-    match XR.get_att_cdata args ("", "href") with
-      None ->
-        let msg = Printf.sprintf "Missing href for <%s>"
-          (match typ with None -> "doc" | Some s -> s)
-        in
-        failwith msg
-    | Some s -> s
-  in
-  fun_doc_href ?typ src_doc href (stog, data) env args subs
+let fun_doc ?typ ?loc src_doc (stog, data) env args subs =
+  match XR.get_att_cdata args ("", "href") with
+    None ->
+      Stog_msg.error ?loc
+        (Printf.sprintf "Missing href for <%s>"
+         (match typ with None -> "doc" | Some s -> s));
+      ((stog, data), [])
+  | Some href ->
+      fun_doc_href ?typ src_doc href (stog, data) env args subs
 ;;
 
 let fun_post = fun_doc ~typ: "post";;
@@ -471,7 +469,7 @@ let read_block stog doc args subs =
   | true -> read_block_from_subs stog doc blk subs
 ;;
 
-let fun_block1 (stog, data) env args subs =
+let fun_block1 (stog, data) env ?loc args subs =
   match XR.get_att_cdata args ("", "href") with
     Some s when s <> "" ->
       begin
@@ -501,9 +499,11 @@ let fun_block1 (stog, data) env args subs =
         | Some name -> fst (bump_counter data path name)
       in
       let env = XR.env_add_xml "id" [XR.cdata block.blk_id] env in
-      let env = XR.env_add_cb "title" (fun acc _ _ _ -> (acc, block.blk_title)) env in
+      let env = XR.env_add_cb "title" 
+        (fun acc _ ?loc _ _ -> (acc, block.blk_title)) env
+      in
       let env = XR.env_add_cb "label"
-        (fun acc _ _ _ ->
+        (fun acc _ ?loc _ _ ->
            match block.blk_label with
              None -> (acc, [])
            | Some xml -> (acc, xml)
@@ -524,7 +524,7 @@ let fun_block1 (stog, data) env args subs =
          ((stog, data), xmls)
       in
       let data = add_block ~path ~id: block.blk_id ~short ~long data in
-      let env = XR.env_add_cb "title" (fun acc _ _ _ -> (acc, long)) env in
+      let env = XR.env_add_cb "title" (fun acc _ ?loc _ _ -> (acc, long)) env in
       XR.apply_to_xmls (stog, data) env block.blk_body
 ;;
 
@@ -557,7 +557,7 @@ let fun_block2 (stog, data) env atts subs =
 
 let gather_existing_ids =
   let rec f path set = function
-    XR.D _ -> set
+  | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> set
   | XR.E { XR.name ; atts; subs } ->
       let set =
         match XR.get_att_cdata atts ("", "id") with

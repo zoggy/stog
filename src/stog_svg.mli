@@ -32,5 +32,5 @@
 module XR = Xtmpl_rewrite
 
 val prefix_svg_ids : string -> XR.tree -> XR.tree
-val fun_prefix_svg_ids :
-  'a -> 'a XR.env -> XR.attributes -> XR.tree list -> 'a * XR.tree list
+val fun_prefix_svg_ids : 'a Xtmpl_rewrite.callback
+

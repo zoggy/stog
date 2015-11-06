@@ -57,8 +57,11 @@ http://johnmacfarlane.net/pandoc/ ):
   </markdown>
 *)
 
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 let maybe_arg args key ~default =
-  match Xtmpl.get_att_cdata args key with
+  match XR.get_att_cdata args key with
     | None -> default
     | Some v -> v
 
@@ -67,9 +70,8 @@ let fun_markdown stog env args subs =
   let args = maybe_arg args ("", "args") ~default:"" in
   let input =
     match subs with
-      | [ Xtmpl.D text ] -> text
-      | _ ->
-        String.concat "" (List.map Xtmpl.string_of_xml subs)
+      | [ XR.D text ] -> text.Xml.text
+      | _ -> XR.to_string subs
   in
   let input_file = Filename.temp_file "stog" "markdown_input" in
   Stog_misc.file_of_string ~file:input_file input;
@@ -83,8 +85,8 @@ let fun_markdown stog env args subs =
   Sys.remove input_file;
   Sys.remove output_file;
   (* markdown may contain HTML portions meant to be processed by
-     Xtmpl, so we re-run Xtmpl.apply here *)
-  let (stog, applied_output) = Xtmpl.apply_to_string stog env output in
+     XR, so we re-run XR.apply here *)
+  let (stog, applied_output) = XR.apply_to_string stog env output in
   (stog, applied_output)
 ;;
 

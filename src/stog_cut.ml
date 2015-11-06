@@ -184,7 +184,7 @@ let cut_docs =
   in
   let rec iter doc new_path cutpoints links stog new_docs xml =
     match xml with
-      XR.D _ -> (stog, [xml], new_docs, links)
+    | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> (stog, [xml], new_docs, links)
     | XR.E { XR.name = ("","cut-doc") ; atts ; subs } ->
         let cutpoints = (cutpoint_of_atts doc atts) :: cutpoints in
         let (stog, xmls, new_docs, links2) = List.fold_right

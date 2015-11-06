@@ -98,8 +98,9 @@ let main () =
             ~notags: [Some "mathjax" ; Some "ignore"] tex.Stog_of_latex.preambule) ;
 
         Stog_misc.file_of_string ~file: xml_file
-          (Xtmpl.string_of_xml (Xtmpl.E (("","dummy_"),Xtmpl.atts_empty,
-             Stog_of_latex.to_xml tex.Stog_of_latex.body)));
+          (Xtmpl_rewrite.to_string
+           [Xtmpl_rewrite.node ("","dummy_")
+            (Stog_of_latex.to_xml tex.Stog_of_latex.body)]);
   with
     Failure msg -> prerr_endline msg ; exit 1
 ;;

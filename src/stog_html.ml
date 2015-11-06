@@ -72,7 +72,7 @@ let plugin_base_rules = ref [];;
 let register_base_rule name f =
    plugin_base_rules := (name, f) :: !plugin_base_rules ;;
 
-let include_href name stog doc ?id ~raw ~subsonly ~depend href env =
+let include_href name stog doc ?id ~raw ~subsonly ~depend ?loc href env =
   let new_id = id in
   let (path, id) =
     try
@@ -124,24 +124,24 @@ let include_href name stog doc ?id ~raw ~subsonly ~depend href env =
       (stog, [XR.cdata ("??"^href^"??")])
 ;;
 
-let include_file stog doc ?id ~raw ~depend file args subs =
+let include_file stog doc ?id ~raw ~depend file ?loc args subs =
   let atts = XR.atts_one ~atts: args ("", "contents") subs in
   let (stog, xml) = Stog_tmpl.read_template_file stog doc ~depend ~raw file in
   (stog, [XR.node ("", XR.tag_env) ~atts xml])
 ;;
 
-let fun_include_ name doc stog env args subs =
+let fun_include_ name doc stog env ?loc args subs =
   let raw = XR.opt_att_cdata ~def: "false" args ("", "raw") = "true" in
   let subsonly = XR.opt_att_cdata ~def: "false" args ("", "subs-only") = "true" in
   let id = XR.get_att args ("", "id") in
   let depend = XR.opt_att_cdata args ~def: "true" ("", "depend") <> "false" in
   match XR.get_att_cdata args ("", "file") with
   | Some file ->
-      let (stog, xml) = include_file stog doc ?id ~raw ~depend file args subs in
+      let (stog, xml) = include_file stog doc ?id ~raw ~depend file ?loc args subs in
       (stog, xml)
   | None ->
       match XR.get_att_cdata args ("", "href") with
-        Some href -> include_href name stog doc ?id ~raw ~subsonly ~depend href env
+        Some href -> include_href name stog doc ?id ~raw ~subsonly ~depend ?loc href env
       | None ->
           failwith ("Missing 'file' or 'href' argument for <"^name^"> rule")
 ;;
@@ -149,12 +149,12 @@ let fun_include_ name doc stog env args subs =
 let fun_include = fun_include_ (Stog_tags.include_);;
 let fun_late_inc = fun_include_ (Stog_tags.late_inc);;
 
-let fun_inc doc stog env args subs =
+let fun_inc doc stog env ?loc args subs =
   Stog_msg.warning ("<"^Stog_tags.inc^"> rule is deprecated; use <"^Stog_tags.late_inc^"> rule instead");
   fun_late_inc doc stog env args subs
 ;;
 
-let fun_image acc _env args legend =
+let fun_image acc _env ?loc args legend =
   let width = XR.opt_att args ("", "width") in
   let src = XR.opt_att args ("", "src") in
   let cls = Printf.sprintf "img%s"
@@ -200,7 +200,7 @@ let fun_image acc _env args legend =
   (acc, xmls)
 ;;
 
-let fun_list acc env args subs =
+let fun_list acc env ?loc args subs =
   let sep = XR.opt_att args ("", "sep") in
   let sep = List.rev sep in
   let rec iter acc = function
@@ -257,7 +257,7 @@ let doc_by_href ?typ ?src_doc stog acc env href =
 ;;
 
 (* FIXME: add adependency ? *)
-let fun_archive_tree stog _env _atts _subs =
+let fun_archive_tree stog _env ?loc _atts _subs =
   let mk_months map =
     List.sort (fun (m1, _) (m2, _) -> compare m2 m1)
     (Stog_types.Int_map.fold
@@ -296,7 +296,7 @@ let fun_archive_tree stog _env _atts _subs =
   (stog, [ XR.node ("", "ul") (List.map f_year years) ])
 ;;
 
-let fun_hcode ?(inline=false) ?lang stog _env args code =
+let fun_hcode ?(inline=false) ?lang stog _env ?loc args code =
   let lang, opts =
     match lang with
       None ->
@@ -371,18 +371,18 @@ let fun_as_xml =
           XR.subs = List.flatten (List.map iter node.XR.subs) }
       ]
   in
-  fun x _env _ subs ->
+  fun x _env ?loc _ subs ->
     let xmls = XR.merge_cdata_list subs in
     (x, List.flatten (List.map iter xmls))
 ;;
 
-let fun_as_cdata x _env _ subs = (x, [XR.cdata (XR.to_string subs)])
+let fun_as_cdata x _env ?loc _ subs = (x, [XR.cdata (XR.to_string subs)])
 
 (* FIXME: add dependency ? *)
 let fun_graph =
   let generated = ref false in
   let report_error msg = Stog_msg.error ~info: "Stog_html.fun_graph" msg in
-  fun stog _env _ _ ->
+  fun stog _env ?loc _ _ ->
     let png_name = "site-graph.png" in
     let small_png_name = "small-"^png_name in
     let svg_file = (Filename.chop_extension png_name) ^ ".svg" in
@@ -435,7 +435,7 @@ let fun_graph =
     (stog, xmls)
 ;;
 
-let fun_if stog env args subs =
+let fun_if stog env ?loc args subs =
   let pred (prefix, name) v (stog, cond) =
     let nodes = [ XR.node (prefix, name) [] ] in
     let (stog, nodes2) = XR.apply_to_xmls stog env nodes in
@@ -469,9 +469,9 @@ let fun_if stog env args subs =
   (stog, xmls)
 ;;
 
-let fun_dummy_ data _ _ subs = (data, subs);;
+let fun_dummy_ data _ ?loc _ subs = (data, subs);;
 
-let fun_twocolumns stog env args subs =
+let fun_twocolumns stog env ?loc args subs =
   (*prerr_endline (Printf.sprintf "two-columns, length(subs)=%d" (List.length subs));*)
   let empty = [] in
   let subs = List.fold_right
@@ -501,7 +501,7 @@ let fun_twocolumns stog env args subs =
   (stog, xmls)
 ;;
 
-let fun_ncolumns stog env args subs =
+let fun_ncolumns stog env ?loc args subs =
   let subs = List.fold_right
     (fun xml acc ->
        match xml with
@@ -530,7 +530,7 @@ let fun_ncolumns stog env args subs =
   (stog, xmls)
 ;;
 
-let fun_exta stog env atts subs =
+let fun_exta stog env ?loc atts subs =
   (stog,
    [ XR.node ("", "span")
      ~atts: (XR.atts_one ("", "class") [XR.cdata "ext-a"])
@@ -541,7 +541,7 @@ let fun_exta stog env atts subs =
 
 type toc = Toc of string option * XR.tree list * Xmlm.name * toc list (* name, title, class, subs *)
 
-let fun_prepare_toc tags stog env args subs =
+let fun_prepare_toc tags stog env ?loc args subs =
   let depth =
     match XR.get_att_cdata args ("", "depth") with
       None -> max_int
@@ -551,7 +551,7 @@ let fun_prepare_toc tags stog env args subs =
     XR.opt_att_cdata args ~def: "false" ("", "show-without-ids") <> "false"
   in
   let rec iter d acc = function
-  | XR.D _ -> acc
+  | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> acc
   | XR.E { XR.name = tag; atts ; subs } when List.mem tag tags ->
       begin
         match
@@ -623,7 +623,7 @@ let fun_prepare_toc tags stog env args subs =
   (stog, [ XR.node ("", XR.tag_env) ~atts subs ])
 ;;
 
-let fun_toc stog env args subs =
+let fun_toc stog env ?loc args subs =
   (stog, subs @ [XR.node ("", "toc-contents") [] ])
 ;;
 
@@ -635,14 +635,14 @@ let concat_xmls ?(sep=[]) l =
   List.fold_right f l []
 ;;
 
-let fun_error_ stog env args subs =
+let fun_error_ stog env ?loc args subs =
   let (stog, xmls) = XR.apply_to_xmls stog env subs in
   let s = XR.to_string xmls in
   Stog_msg.error s;
   (stog, [])
 ;;
 
-let fun_doc_navpath doc stog env args subs =
+let fun_doc_navpath doc stog env ?loc args subs =
   let root =
     match XR.get_att_cdata args ("", "with-root") with
       None -> None
@@ -714,12 +714,12 @@ let intro_of_doc stog doc =
     Not_found -> doc.doc_body
 ;;
 
-let html_of_topics doc stog env args _ =
+let html_of_topics doc stog env ?loc args _ =
   let sep = XR.opt_att args ~def: [XR.cdata ", "] ("", "sep") in
   let (stog, tmpl) = Stog_tmpl.get_template stog ~doc Stog_tmpl.topic "topic.tmpl" in
   let f stog w =
     let env = XR.env_of_list ~env
-      [ ("", Stog_tags.topic), (fun acc _ _ _ -> (acc, [XR.cdata w])) ]
+      [ ("", Stog_tags.topic), (fun acc _ ?loc _ _ -> (acc, [XR.cdata w])) ]
     in
     XR.apply_to_xmls stog env tmpl
   in
@@ -740,12 +740,12 @@ let html_of_topics doc stog env args _ =
   (stog, List.flatten xmls)
 ;;
 
-let html_of_keywords doc stog env args _ =
+let html_of_keywords doc stog env ?loc args _ =
   let sep = XR.opt_att args ~def: [XR.cdata ", "] ("", "sep") in
   let (stog, tmpl) = Stog_tmpl.get_template stog ~doc Stog_tmpl.keyword "keyword.tmpl" in
   let f stog w =
     let env = XR.env_of_list ~env
-      [ ("", Stog_tags.keyword), (fun acc _ _ _ -> (acc, [XR.cdata w])) ]
+      [ ("", Stog_tags.keyword), (fun acc _ ?loc _ _ -> (acc, [XR.cdata w])) ]
     in
     XR.apply_to_xmls stog env tmpl
   in
@@ -872,7 +872,7 @@ let format_date d f stog args =
   (stog, [ XR.cdata s ])
 ;;
 
-let fun_date_gen f stog env args _ =
+let fun_date_gen f stog env ?loc args _ =
   let (stog, path) = Stog_engine.get_path_in_args_or_env stog env args in
   let (_, doc) = Stog_types.doc_by_path stog path in
   match doc.doc_date with
@@ -883,15 +883,15 @@ let fun_date_gen f stog env args _ =
 let fun_date = fun_date_gen Stog_intl.string_of_date ;;
 let fun_datetime = fun_date_gen Stog_intl.string_of_datetime ;;
 
-let fun_date_today stog env args _ =
+let fun_date_today stog env ?loc args _ =
   let d = Netdate.create (Unix.time()) in
   format_date d Stog_intl.string_of_date stog args;;
 
-let fun_date_now stog env args _ =
+let fun_date_now stog env ?loc args _ =
   let d = Netdate.create (Unix.time()) in
   format_date d Stog_intl.string_of_datetime stog args;;
 
-let fun_print_date_gen f stog args subs =
+let fun_print_date_gen f stog ?loc args subs =
   match XR.merge_cdata_list subs with
     [XR.D cdata] ->
       begin
@@ -904,24 +904,24 @@ let fun_print_date_gen f stog args subs =
       end
   | _ -> raise XR.No_change
 
-let fun_print_date stog env args subs =
+let fun_print_date stog env ?loc args subs =
   fun_print_date_gen Stog_intl.string_of_date stog args subs;;
-let fun_print_datetime stog env args subs =
+let fun_print_datetime stog env ?loc args subs =
   fun_print_date_gen Stog_intl.string_of_datetime stog args subs;;
 
 let rec build_base_rules stog doc_id =
   let doc = Stog_types.doc stog doc_id in
-  let f_title doc acc _ _ _ =
+  let f_title doc acc _ ?loc _ _ =
     (acc, XR.from_string doc.doc_title)
   in
-  let f_url doc stog _ _ _ =
+  let f_url doc stog _ ?loc _ _ =
     (stog,[ XR.cdata (Stog_url.to_string (Stog_engine.doc_url stog doc)) ])
   in
-  let f_body doc acc _ _ _ = (acc, doc.doc_body) in
-  let f_type doc acc _ _ _ = (acc, [XR.cdata doc.doc_type]) in
-  let f_src doc acc _ _ _ = (acc, [XR.cdata doc.doc_src]) in
-  let f_intro doc stog _ _ _ = (stog, intro_of_doc stog doc) in
-  let mk f stog env atts subs =
+  let f_body doc acc _ ?loc _ _ = (acc, doc.doc_body) in
+  let f_type doc acc _ ?loc _ _ = (acc, [XR.cdata doc.doc_type]) in
+  let f_src doc acc _ ?loc _ _ = (acc, [XR.cdata doc.doc_src]) in
+  let f_intro doc stog _ ?loc _ _ = (stog, intro_of_doc stog doc) in
+  let mk f stog env ?loc atts subs =
     let doc =
       match XR.get_att_cdata atts ("", Stog_tags.doc_path) with
         None -> Stog_types.doc stog doc_id
@@ -931,7 +931,7 @@ let rec build_base_rules stog doc_id =
           in
           doc
     in
-    f doc stog env atts subs
+    f doc stog env ?loc atts subs
   in
   let (previous, next) =
     let html_link stog doc =
@@ -941,7 +941,7 @@ let rec build_base_rules stog doc_id =
          (XR.from_string doc.doc_title)
       ]
     in
-    let try_link key search stog _ _ _ =
+    let try_link key search stog _ ?loc _ _ =
       let fallback () =
         match search stog doc_id with
         | None -> []
@@ -1012,8 +1012,7 @@ let rec build_base_rules stog doc_id =
   in
   l
 
-and doc_list doc ?rss ?set stog env args _ =
-  let report_error msg = Stog_msg.error ~info: "Stog_html.doc_list" msg in
+and doc_list doc ?rss ?set stog env ?loc args _ =
   let (stog, docs) = Stog_list.docs_of_args ?set stog env args in
   (* the document depends on the listed documents *)
   let stog = List.fold_left
@@ -1031,16 +1030,11 @@ and doc_list doc ?rss ?set stog env args _ =
     Stog_tmpl.get_template stog ~doc Stog_tmpl.doc_in_list file
   in
   let f_doc tmpl (stog, acc) (doc_id, doc) =
-    let name = Stog_path.to_string doc.doc_path in
     let (stog, env) = Stog_engine.doc_env stog env stog doc in
     let rules = build_base_rules stog doc_id in
     let env = XR.env_of_list ~env rules in
     let (stog, xmls) = XR.apply_to_xmls stog env tmpl in
-    match xmls with
-      [xml] -> (stog, xml :: acc)
-    | _ ->
-        report_error ("Error while processing " ^ name);
-        assert false
+    (stog, (List.rev xmls) @ acc)
   in
   let (stog, xmls) = List.fold_left (f_doc tmpl) (stog, []) docs in
   let xmls = List.rev xmls in
@@ -1110,7 +1104,7 @@ and doc_list doc ?rss ?set stog env args _ =
         (XR.node ("", "div")
          ~atts: (XR.atts_one ("", "class") [XR.cdata "rss-button"])
            [
-             XR.node ("", "a") 
+             XR.node ("", "a")
                ~atts: (XR.atts_one ("", "href") [XR.cdata (Stog_url.to_string link)])
                [
                  XR.node ("", "img")
@@ -1291,7 +1285,7 @@ let fun_level_clean =
   let f env stog docs =
     Stog_ocaml.close_sessions ();
     let env = XR.env_of_list ~env
-      [ ("", Stog_tags.sep), (fun d _ _ _ -> (d, [])) ]
+      [ ("", Stog_tags.sep), (fun d _ ?loc _ _ -> (d, [])) ]
     in
     Stog_types.Doc_set.fold
       (fun doc_id stog -> Stog_engine.apply_stog_env_doc stog env doc_id)

@@ -72,7 +72,7 @@ let bool_of_string s =
 let module_defs_of_xml =
   let f acc xml =
     match xml with
-      XR.D _ -> acc
+    | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> acc
     | XR.E { XR.name ; atts ; subs } ->
         (name, atts, subs) :: acc
   in
@@ -225,7 +225,7 @@ let fill_doc_from_atts =
 let fill_doc_from_nodes =
   let f doc xml =
     match xml with
-      XR.D _ -> doc
+    | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> doc
     | XR.E { XR.name ; atts ; subs} ->
         let v = XR.to_string subs in
         match name with

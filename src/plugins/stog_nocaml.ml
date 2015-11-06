@@ -30,7 +30,8 @@
 (** A simple plugin to prevent execution of ocaml code. It simply redefines
   the default rules which allows the evaluation of ocaml code. *)
 
-let f stog env atts subs = (stog, [ Xtmpl.E (("","ocaml"), atts, subs) ])
+let f stog env atts subs = 
+  (stog, [ Xtmpl_rewrite.node ("","ocaml") ~atts subs ])
 
 let () = Stog_plug.register_html_base_rule ("", "ocaml-printf") f;;
 let () = Stog_plug.register_html_base_rule ("", "ocaml-eval") f;;

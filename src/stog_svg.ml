@@ -64,7 +64,7 @@ let rec prefix_svg_ids prefix t =
       XR.E { node with XR.subs = List.map (prefix_svg_ids prefix) node.XR.subs }
 ;;
 
-let fun_prefix_svg_ids stog env atts subs =
+let fun_prefix_svg_ids stog env ?loc atts subs =
   match XR.get_att_cdata atts ("","prefix") with
     None -> (stog, subs)
   | Some prefix -> (stog, List.map (prefix_svg_ids prefix) subs)

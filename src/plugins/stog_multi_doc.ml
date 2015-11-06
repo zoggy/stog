@@ -31,19 +31,23 @@
 
 open Stog_types;;
 
+
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 let get_path_sep doc =
   match Stog_types.get_def doc.doc_defs ("",Stog_tags.path_sep) with
     None -> "/"
-  | Some (_, [ Xtmpl.D s ]) -> s
+  | Some (_, [ XR.D s ]) -> s.Xml.text
   | Some (_, xmls) ->
-      failwith ("Invalid "^(Stog_tags.path_sep^": "^(Xtmpl.string_of_xmls xmls)))
+      failwith ("Invalid "^(Stog_tags.path_sep^": "^(XR.to_string xmls)))
 ;;
 
 let mk_doc path_sep doc_id (stog,doc) = function
-  Xtmpl.D _ -> (stog,doc)
-| Xtmpl.E (("","contents"), atts, subs) ->
+  XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _-> (stog,doc)
+| XR.E { XR.name = ("","contents") ; atts ; subs } ->
     begin
-      match Xtmpl.get_att_cdata atts ("","type") with
+      match XR.get_att_cdata atts ("","type") with
         None ->
           let msg = "Missing type attribute in <contents> in "^
             (Stog_path.to_string doc.doc_path)
@@ -51,7 +55,7 @@ let mk_doc path_sep doc_id (stog,doc) = function
             Stog_msg.error msg;
             (stog, doc)
       | Some typ ->
-          let atts = Xtmpl.atts_remove ("","type") atts in
+          let atts = XR.atts_remove ("","type") atts in
           (match doc.doc_body with
             [] -> ()
            | _ ->
@@ -64,12 +68,12 @@ let mk_doc path_sep doc_id (stog,doc) = function
           let doc = Stog_io.fill_doc_from_atts_and_subs doc atts subs in
           (stog, doc)
     end
-| Xtmpl.E ((_,typ),atts,subs) ->
+| XR.E { XR.name = (_,typ) ; atts ; subs } ->
     let path =
-      match Xtmpl.get_att_cdata atts ("","path") with
+      match XR.get_att_cdata atts ("","path") with
         Some path -> Stog_path.of_string path
       | None ->
-          match Xtmpl.get_att_cdata atts ("","id") with
+          match XR.get_att_cdata atts ("","id") with
             None ->
               let msg = "No id and no path attributes for an element in "^
                 (Stog_path.to_string doc.doc_path)

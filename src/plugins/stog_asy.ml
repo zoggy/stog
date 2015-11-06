@@ -51,12 +51,15 @@ to the [asy] command.
 The dvisvgm tool must be installed.
 *)
 
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 let concat_code =
   let f b = function
-    Xtmpl.D code -> Buffer.add_string b code
+    XR.D code -> Buffer.add_string b code.Xml.text
   | xml ->
       failwith (Printf.sprintf "XML code in Asymptote code: %s"
-       (Xtmpl.string_of_xml xml))
+       (XR.to_string [xml]))
   in
   fun xmls ->
     let b = Buffer.create 256 in
@@ -69,10 +72,10 @@ let fun_asy stog env atts subs =
   let (stog, path) = Stog_engine.get_path stog env in
   let (_, doc) = Stog_types.doc_by_path stog path in
   let doc_dir = Filename.dirname doc.Stog_types.doc_src in
-  let typ = Xtmpl.opt_att_cdata ~def: "svg" atts ("", "type") in
-  let id_prefix = Xtmpl.get_att_cdata atts ("","prefix-svg-ids") in
+  let typ = XR.opt_att_cdata ~def: "svg" atts ("", "type") in
+  let id_prefix = XR.get_att_cdata atts ("","prefix-svg-ids") in
   let (stog, infile, finalize_src) =
-    match Xtmpl.get_att_cdata atts ("","src") with
+    match XR.get_att_cdata atts ("","src") with
       None ->
         let f = Filename.temp_file "stog" ".asy" in
         Stog_misc.file_of_string ~file: f code ;
@@ -88,7 +91,7 @@ let fun_asy stog env atts subs =
   in
   try
     let (outfile, abs_outfile, inc, finalize_outfile) =
-      match Xtmpl.get_att_cdata atts ("","outfile") with
+      match XR.get_att_cdata atts ("","outfile") with
         None ->
           if typ <> "svg" then
             failwith "<asy>: please specify outfile attribute if file type is not 'svg'";
@@ -102,7 +105,7 @@ let fun_asy stog env atts subs =
           in
           (f, absf, false, fun () -> ())
     in
-    let args = Xtmpl.opt_att_cdata ~def: "" atts ("", "args") in
+    let args = XR.opt_att_cdata ~def: "" atts ("", "args") in
     Stog_misc.safe_mkdir (Filename.dirname abs_outfile);
     let com = Printf.sprintf "asy -f %s %s -o %s %s"
       (Filename.quote typ)
@@ -114,29 +117,29 @@ let fun_asy stog env atts subs =
         0 ->
           if inc then
             begin
-              let xml = Xtmpl.xml_of_file abs_outfile in
+              let xml = XR.from_file abs_outfile in
               let xml =
                 match id_prefix with
                   None -> xml
-                | Some prefix -> Stog_svg.prefix_svg_ids prefix xml
+                | Some prefix -> List.map (Stog_svg.prefix_svg_ids prefix) xml
               in
-              [ xml ]
+              xml
             end
           else
             begin
-              let atts = Xtmpl.atts_remove ("","args")
-                (Xtmpl.atts_remove ("","outfile")
-                 (Xtmpl.atts_remove ("","type")
-                  (Xtmpl.atts_remove ("","prefix-svg-ids")
-                   (Xtmpl.atts_remove ("","src") atts)
+              let atts = XR.atts_remove ("","args")
+                (XR.atts_remove ("","outfile")
+                 (XR.atts_remove ("","type")
+                  (XR.atts_remove ("","prefix-svg-ids")
+                   (XR.atts_remove ("","src") atts)
                   )
                  )
                 )
               in
-              let atts = Xtmpl.atts_one ~atts
-                ("","src") [ Xtmpl.D outfile ]
+              let atts = XR.atts_one ~atts
+                ("","src") [ XR.cdata outfile ]
               in
-              [ Xtmpl.E (("","img"), atts, []) ]
+              [ XR.node ("","img") ~atts [] ]
             end
       | _ ->
         Stog_msg.error ("Command failed: "^com);

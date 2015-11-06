@@ -57,10 +57,10 @@ let debug = ref false;;
 let add_stog_def s =
   match Stog_misc.split_string s [':'] with
     [] -> ()
-  | [name] -> stog_defs := !stog_defs @ [(("", name), Xtmpl.atts_empty, [])]
+  | [name] -> stog_defs := !stog_defs @ [(("", name), Xtmpl_rewrite.atts_empty, [])]
   | name :: q ->
-      let contents = Xtmpl.xml_of_string (String.concat ":" q) in
-      stog_defs := !stog_defs @ [(("", name), Xtmpl.atts_empty, [contents])]
+      let contents = Xtmpl_rewrite.from_string (String.concat ":" q) in
+      stog_defs := !stog_defs @ [(("", name), Xtmpl_rewrite.atts_empty, contents)]
 
 let set_stog_options stog =
   let stog = { stog with Stog_types.stog_outdir = !output_dir } in
@@ -281,6 +281,8 @@ let main () =
   | Stog_engine.Cant_open_cache_file cache_file ->
       let msg = "Could open cache file "^cache_file^"\nYou should run stog once with --nocache" in
       Stog_misc.safe_main (fun () -> failwith msg)
+  | Xtmpl_rewrite.Error e -> 
+      Stog_misc.safe_main (fun () -> failwith (Xtmpl_rewrite.string_of_error e))
   | e -> Stog_misc.safe_main (fun () -> raise e)
 ;;
 

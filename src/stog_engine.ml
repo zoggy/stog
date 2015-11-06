@@ -427,7 +427,7 @@ let compute_levels ?use_cache env state =
 
 
 let rec make_fun (name, params, body) acc =
-  let f data env atts subs =
+  let f data env ?loc atts subs =
     let vars = Xml.Name_map.fold
       (fun param default acc ->
          match XR.get_att atts param with
@@ -438,7 +438,7 @@ let rec make_fun (name, params, body) acc =
     in
     let env = env_of_defs ~env vars in
     let body = [ XR.node ("",XR.tag_env) ~atts body ] in
-    let f data _ atts xmls =
+    let f data _ ?loc atts xmls =
       match Xml.Name_map.is_empty atts, xmls with
         true, [] -> (data, subs)
       | _ -> raise XR.No_change
@@ -453,7 +453,7 @@ and env_of_defs ?env defs =
   let f x acc =
     match x with
     | (key, atts, body) when Xml.Name_map.is_empty atts ->
-        (key, fun data _ _ _ -> (data, body)) :: acc
+        (key, fun data _ ?loc _ _ -> (data, body)) :: acc
     | _ ->  make_fun x acc
   in
   (* fold_right instead of fold_left to reverse list and keep associations
@@ -478,7 +478,7 @@ let env_of_used_mods stog ?(env=XR.env_empty()) mods =
   Stog_types.Str_set.fold (fun name env -> env_of_used_mod stog ~env name) mods env
 ;;
 
-let fun_site_url stog data _env _ _ =
+let fun_site_url stog data _env ?loc _ _ =
   (data, [ XR.cdata (Stog_url.to_string stog.stog_base_url) ])
 ;;
 
@@ -492,10 +492,10 @@ let run ?(use_cache=true) ?default_style state =
   in
   let env = XR.env_of_list
     [
-     (("", Stog_tags.site_desc), (fun data _ _ _ -> (data, stog.stog_desc))) ;
-     (("", Stog_tags.site_email), (fun data _ _ _ -> (data, [ XR.cdata stog.stog_email ]))) ;
-     (("", Stog_tags.site_title), (fun data _ _ _ -> (data, [ XR.cdata stog.stog_title ]))) ;
-     (("", Stog_tags.stog_dir), (fun data _ _ _ -> (data, [ XR.cdata dir ]))) ;
+     (("", Stog_tags.site_desc), (fun data _ ?loc _ _ -> (data, stog.stog_desc))) ;
+     (("", Stog_tags.site_email), (fun data _ ?loc _ _ -> (data, [ XR.cdata stog.stog_email ]))) ;
+     (("", Stog_tags.site_title), (fun data _ ?loc _ _ -> (data, [ XR.cdata stog.stog_title ]))) ;
+     (("", Stog_tags.stog_dir), (fun data _ ?loc _ _ -> (data, [ XR.cdata dir ]))) ;
      (("", Stog_tags.site_url), fun_site_url stog) ;
     ]
   in
@@ -734,7 +734,9 @@ let get_languages data env =
 let env_add_lang_rules data env stog doc =
   match stog.stog_lang with
     None ->
-      (data, XR.env_add_cb Stog_tags.langswitch (fun data _ _ _ -> (data, [])) env)
+      (data, 
+       XR.env_add_cb Stog_tags.langswitch 
+         (fun data _ ?loc _ _ -> (data, [])) env)
   | Some lang ->
       let (data, languages) = get_languages data env in
       let map_lang lang =
@@ -752,14 +754,14 @@ let env_add_lang_rules data env stog doc =
                []
           ]
       in
-      let f data _env args _subs =
+      let f data _env ?loc args _subs =
         let languages = List.filter ((<>) lang) languages in
         (data, List.map map_lang languages)
       in
       let env = XR.env_add_cb Stog_tags.langswitch f env in
       let to_remove = List.filter ((<>) lang) languages in
-      let f_keep acc _env _args subs = (acc, subs) in
-      let f_remove acc _env _args _subs = (acc, []) in
+      let f_keep acc _env ?loc _args subs = (acc, subs) in
+      let f_remove acc _env ?loc _args _subs = (acc, []) in
       let rules =
         (("", lang), f_keep) ::
           (List.map (fun lang -> (("", lang), f_remove)) to_remove)
@@ -782,7 +784,7 @@ let doc_env data env stog doc =
 *)
   let rules = [
       ("", Stog_tags.doc_path),
-      (fun  acc _ _ _ ->
+      (fun  acc _ ?loc _ _ ->
          (acc, [XR.cdata (Stog_path.to_string doc.doc_path)]))
     ]
   in

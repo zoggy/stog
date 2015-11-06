@@ -31,6 +31,9 @@
 
 open Stog_types;;
 
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 let module_name = "sitemap";;
 let rc_file stog = Stog_plug.plugin_config_file stog module_name;;
 
@@ -87,7 +90,7 @@ type url_entry = {
 
 let gen_sitemap stog data entries =
   let f_entry e =
-    Xtmpl.(
+    XR.(
      node ("","url")
       ((node ("","loc") [cdata (Stog_url.to_string e.url_loc)]) ::
         (node ("","lastmod")
@@ -102,13 +105,11 @@ let gen_sitemap stog data entries =
        )
     )
   in
-  let atts = Xtmpl.atts_one ("","xmlns")
-    [Xtmpl.cdata "http://www.sitemaps.org/schemas/sitemap/0.9"]
+  let atts = XR.atts_one ("","xmlns")
+    [XR.cdata "http://www.sitemaps.org/schemas/sitemap/0.9"]
   in
-  let body =
-      Xtmpl.node ("","urlset") ~atts (List.map f_entry entries)
-  in
-  let xml = Xtmpl.string_of_xml ~xml_atts: false body in
+  let body = XR.node ("","urlset") ~atts (List.map f_entry entries) in
+  let xml = XR.to_string ~xml_atts: false [body] in
   let file = Filename.concat stog.stog_outdir data.out_file in
   Stog_misc.file_of_string ~file xml
 
@@ -125,7 +126,7 @@ let generate =
     match
       match Stog_types.get_def doc.doc_defs ("","in-sitemap") with
         None -> default.in_sitemap
-      | Some (_, [Xtmpl.D "false"]) -> false
+      | Some (_, [XR.D {Xml.text = "false"}]) -> false
       | _ -> true
     with
       false -> acc
@@ -133,12 +134,12 @@ let generate =
         let url_lastmod = Stog_types.today () in
         let url_freq =
           match Stog_types.get_def doc.doc_defs ("","sitemap-frequency") with
-          | Some (_, [Xtmpl.D s]) -> Stog_misc.opt_of_string s
+          | Some (_, [XR.D s]) -> Stog_misc.opt_of_string s.Xml.text
           | _ -> default.frequency
         in
         let url_prio =
           match Stog_types.get_def doc.doc_defs ("","sitemap-priority") with
-          | Some (_, [Xtmpl.D s]) -> Stog_misc.opt_of_string s
+          | Some (_, [XR.D s]) -> Stog_misc.opt_of_string s.Xml.text
           | _ -> default.priority
         in
         { url_loc = Stog_engine.doc_url stog doc ;

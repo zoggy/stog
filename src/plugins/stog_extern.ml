@@ -31,6 +31,9 @@
 
 open Stog_types;;
 
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 let module_name = "extern";;
 let rc_file stog = Stog_plug.plugin_config_file stog module_name;;
 
@@ -82,7 +85,7 @@ let apply_to_doc types command stog doc_id =
           | None -> doc.doc_body
           | Some xml -> xml
         in
-        Stog_misc.file_of_string ~file: in_file (Xtmpl.string_of_xmls xml) ;
+        Stog_misc.file_of_string ~file: in_file (XR.to_string xml) ;
         let com = Printf.sprintf "cat %s | %s > %s"
           (Filename.quote in_file)
             command
@@ -94,9 +97,9 @@ let apply_to_doc types command stog doc_id =
         in
         match Sys.command com with
           0 ->
-            let xml = Xtmpl.xml_of_file out_file in
+            let xml = XR.from_file out_file in
             rm ();
-            let doc = { doc with doc_out = Some [xml] } in
+            let doc = { doc with doc_out = Some xml } in
             Some (doc_id, doc)
         | n ->
         failwith (Printf.sprintf "Command exited with %d: %s" n com)

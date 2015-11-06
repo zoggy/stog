@@ -33,7 +33,7 @@ let gen_file ~outdir content path =
   mkdir (Filename.dirname file) ;
   let str =
     match content with
-      `Xml xmls -> Xtmpl.string_of_xmls xmls
+      `Xml xmls -> Xtmpl_rewrite.to_string xmls
     | `Text s -> s
   in
   file_of_string ~file str

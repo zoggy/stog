@@ -2,7 +2,7 @@
 
 let fun_list stog env args subs =
   (* get the optional sep attribute ... *)
-  let sep = Xtmpl.opt_att args ("", "sep") in
+  let sep = Xtmpl_rewrite.opt_att args ("", "sep") in
   (* reverse the separator, for final list will be reversed *)
   let sep = List.rev sep in
   (* then insert the separator between all children of the node *)

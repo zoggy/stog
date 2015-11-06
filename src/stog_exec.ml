@@ -75,7 +75,7 @@ let commands_of_xml xmls =
   in
   List.fold_right f xmls []
 
-let fun_exec stog env args code =
+let fun_exec stog env ?loc args code =
   try
     let directory =
       match XR.get_att_cdata args ("", "directory") with
@@ -129,7 +129,11 @@ let fun_exec stog env args code =
         in
         if error && exc then
           begin
-            let msg = Printf.sprintf "Exec error with command:\n%s\n%s" command output in
+            let msg = Printf.sprintf 
+              "%sExec error with command:\n%s\n%s" 
+              (match loc with None -> "" | Some loc -> Xml.string_of_loc loc)
+              command output
+            in
             failwith msg
           end;
 

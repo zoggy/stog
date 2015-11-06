@@ -31,16 +31,20 @@
   By now it only rewrite URIs of a document to a block of the
   same doc URI#id to #id. *)
 
-open Xtmpl
+
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 open Stog_types
 
 let rec rewrite_href url = function
-  | (Xtmpl.D _) as xml -> xml
-  | Xtmpl.E (tag, atts, subs) ->
-    let atts = Xtmpl.Name_map.mapi
+  | (XR.D _) as xml -> xml
+  | XR.E node ->
+    let atts = Xml.Name_map.mapi
       (fun att v ->
          match att, v with
-           (pref,"href"), [D href] ->
+           (pref,"href"), [XR.D href] ->
+             let href = href.Xml.text in
              begin
                let url2 =
                  try
@@ -60,18 +64,18 @@ let rec rewrite_href url = function
                        let len = String.length url in
                        let len2 = String.length href in
                        if len2 <= len then
-                         [D ""]
+                         [XR.cdata ""]
                        else
-                         [D (String.sub href len (len2 - len)) ]
+                         [XR.cdata (String.sub href len (len2 - len)) ]
                        end
                    else
-                     [D href]
+                     [XR.cdata href]
              end
         | _ -> v
       )
-      atts
+      node.XR.atts
     in
-    Xtmpl.E (tag, atts, List.map (rewrite_href url) subs)
+    XR.E { node with XR.atts ; subs = List.map (rewrite_href url) node.XR.subs }
 
 let rewrite_doc stog doc =
   let xmls =

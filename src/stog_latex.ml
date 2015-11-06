@@ -163,7 +163,7 @@ let get_packages stog env args =
   (stog, l)
 ;;
 
-let fun_latex stog env args subs =
+let fun_latex stog env ?loc args subs =
   let code = code_of_subs subs in
   let (stog, packages) = get_packages stog env args in
   let showcode = XR.opt_att_cdata args ("", "showcode") = "true" in
@@ -208,7 +208,7 @@ let fun_latex stog env args subs =
 ;;
 
 
-let fun_latex_body stog env args subs =
+let fun_latex_body stog env ?loc args subs =
   let (stog, packages) = get_packages stog env args in
   let (stog, defs, def_files) = get_latex_defs stog env in
   let code = code_of_subs subs in

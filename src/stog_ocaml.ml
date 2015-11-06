@@ -347,7 +347,7 @@ let concat_toplevel_outputs output =
     ])
 ;;
 
-let fun_eval stog env args code =
+let fun_eval stog env ?loc args code =
   try
     let directory =
       match XR.get_att_cdata args ("", "directory") with
@@ -402,7 +402,11 @@ let fun_eval stog env args code =
         in
         if raised_exc && exc then
           begin
-            let msg = Printf.sprintf "ocaml error with code:\n%s\n%s" phrase output.stderr in
+            let msg = Printf.sprintf
+              "%socaml error with code:\n%s\n%s" 
+                (match loc with None -> "" | Some loc -> (Xml.string_of_loc loc)^"\n")
+                phrase output.stderr
+            in
             failwith msg
           end;
 
@@ -468,7 +472,7 @@ let fun_eval stog env args code =
 ;;
 
 
-let fun_printf stog env args subs =
+let fun_printf stog env ?loc args subs =
   let code = concat_code subs in
   let format = XR.opt_att_cdata args ~def: "%s" ("", "format") in
   let code = "Printf.printf \""^format^"\" "^code^"; flush Pervasives.stdout;;" in
