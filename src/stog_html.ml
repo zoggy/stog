@@ -32,6 +32,9 @@
 open Stog_types;;
 module Smap = Stog_types.Str_map;;
 
+module XR = Xtmpl_rewrite;;
+module Xml = Xtmpl_xml;;
+
 let get_in_env = Stog_engine.get_in_env;;
 
 let get_path = Stog_engine.get_path;;
@@ -97,47 +100,47 @@ let include_href name stog doc ?id ~raw ~subsonly ~depend href env =
         failwith
           (Printf.sprintf "No id %S in document %S"
            id (Stog_path.to_string path))
-    | Some (Xtmpl.D _) -> assert false
-    | Some ((Xtmpl.E (tag, atts, subs)) as xml)->
+    | Some (XR.D _) -> assert false
+    | Some ((XR.E node) as xml)->
         let xmls =
           match raw, subsonly with
             true, false ->
-              [ Xtmpl.D (Xtmpl.string_of_xml xml) ]
+              [ XR.cdata (XR.to_string [xml]) ]
           | true, true ->
-              List.map (fun xml -> Xtmpl.D (Xtmpl.string_of_xml xml)) subs
+              [ XR.cdata (XR.to_string node.XR.subs) ]
           | false, true ->
-              subs
+              node.XR.subs
           | false, false ->
               match new_id with
                 None -> [xml]
               | Some new_id ->
-                  let atts = Xtmpl.atts_replace ("","id") new_id atts in
-                  [ Xtmpl.E (tag, atts, subs) ]
+                  let atts = XR.atts_replace ("","id") new_id node.XR.atts in
+                  [ XR.E { node with XR.atts } ]
         in
         (stog, xmls)
   with
     Failure s ->
       Stog_msg.error s;
-      (stog, [Xtmpl.D ("??"^href^"??")])
+      (stog, [XR.cdata ("??"^href^"??")])
 ;;
 
 let include_file stog doc ?id ~raw ~depend file args subs =
-  let args = Xtmpl.atts_one ~atts: args ("", "contents") subs in
+  let atts = XR.atts_one ~atts: args ("", "contents") subs in
   let (stog, xml) = Stog_tmpl.read_template_file stog doc ~depend ~raw file in
-  (stog, [Xtmpl.E (("", Xtmpl.tag_env), args, [xml])])
+  (stog, [XR.node ("", XR.tag_env) ~atts xml])
 ;;
 
 let fun_include_ name doc stog env args subs =
-  let raw = Xtmpl.opt_att_cdata ~def: "false" args ("", "raw") = "true" in
-  let subsonly = Xtmpl.opt_att_cdata ~def: "false" args ("", "subs-only") = "true" in
-  let id = Xtmpl.get_att args ("", "id") in
-  let depend = Xtmpl.opt_att_cdata args ~def: "true" ("", "depend") <> "false" in
-  match Xtmpl.get_att_cdata args ("", "file") with
+  let raw = XR.opt_att_cdata ~def: "false" args ("", "raw") = "true" in
+  let subsonly = XR.opt_att_cdata ~def: "false" args ("", "subs-only") = "true" in
+  let id = XR.get_att args ("", "id") in
+  let depend = XR.opt_att_cdata args ~def: "true" ("", "depend") <> "false" in
+  match XR.get_att_cdata args ("", "file") with
   | Some file ->
       let (stog, xml) = include_file stog doc ?id ~raw ~depend file args subs in
       (stog, xml)
   | None ->
-      match Xtmpl.get_att_cdata args ("", "href") with
+      match XR.get_att_cdata args ("", "href") with
         Some href -> include_href name stog doc ?id ~raw ~subsonly ~depend href env
       | None ->
           failwith ("Missing 'file' or 'href' argument for <"^name^"> rule")
@@ -152,10 +155,10 @@ let fun_inc doc stog env args subs =
 ;;
 
 let fun_image acc _env args legend =
-  let width = Xtmpl.opt_att args ("", "width") in
-  let src = Xtmpl.opt_att args ("", "src") in
+  let width = XR.opt_att args ("", "width") in
+  let src = XR.opt_att args ("", "src") in
   let cls = Printf.sprintf "img%s"
-    (match Xtmpl.get_att_cdata args ("", "float") with
+    (match XR.get_att_cdata args ("", "float") with
       Some s ->
          begin
            match s with
@@ -166,35 +169,39 @@ let fun_image acc _env args legend =
      | None -> ""
     )
   in
-  let cls = [ Xtmpl.D cls ] in
+  let cls = [ XR.cdata cls ] in
   let cls =
-    match Xtmpl.get_att args ("", "class") with
+    match XR.get_att args ("", "class") with
       None -> cls
-    | Some c -> c @ [Xtmpl.D " "] @ cls
+    | Some c -> c @ [XR.cdata " "] @ cls
   in
-  let atts = Xtmpl.atts_remove ("","width") args in
-  let atts = Xtmpl.atts_remove ("","src") atts in
-  let atts = Xtmpl.atts_remove ("","float") atts in
+  let atts = XR.atts_remove ("","width") args in
+  let atts = XR.atts_remove ("","src") atts in
+  let atts = XR.atts_remove ("","float") atts in
   let xmls =
     [
-      Xtmpl.E (("", "div"), Xtmpl.atts_one ("", "class") cls,
-       (Xtmpl.E (("", "img"),
-         Xtmpl.atts_of_list ~atts
-           [ ("", "class"), [Xtmpl.D "img"] ; ("", "src"), src; ("", "width"), width ],
-         [])
-       ) ::
-         (match legend with
-            [] -> []
-          | xml -> [ Xtmpl.E (("", "div"), Xtmpl.atts_one ("", "class") [Xtmpl.D "legend"], xml) ]
+      XR.node ("", "div") ~atts: (XR.atts_one ("", "class") cls)
+       ((XR.node ("", "img")
+         ~atts: (XR.atts_of_list ~atts
+          [ ("", "class"), [XR.cdata "img"] ; ("", "src"), src; ("", "width"), width ])
+          []
+        ) ::
+        (match legend with
+           [] -> []
+         | xml ->
+             [ XR.node ("", "div")
+               ~atts: (XR.atts_one ("", "class") [XR.cdata "legend"])
+                xml
+             ]
          )
-      )
+        )
     ]
   in
   (acc, xmls)
 ;;
 
 let fun_list acc env args subs =
-  let sep = Xtmpl.opt_att args ("", "sep") in
+  let sep = XR.opt_att args ("", "sep") in
   let sep = List.rev sep in
   let rec iter acc = function
     [] -> List.rev acc
@@ -271,23 +278,22 @@ let fun_archive_tree stog _env _atts _subs =
     let path = month_index_path ~year ~month in
     let href = url_of_path stog path in
     let month_str = Stog_intl.get_month stog.stog_lang month in
-    Xtmpl.E (("", "li"), Xtmpl.atts_empty, [
-       Xtmpl.E (("", "a"),
-        Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_url.to_string href)],
-        [ Xtmpl.D month_str ]
-       ) ;
-       Xtmpl.D (Printf.sprintf "(%d)" (Stog_types.Doc_set.cardinal set))
-     ]
-    )
+    XR.node ("", "li")
+      [
+       XR.node ("", "a")
+          ~atts: (XR.atts_one ("", "href") [XR.cdata (Stog_url.to_string href)])
+          [ XR.cdata month_str ] ;
+       XR.cdata (Printf.sprintf "(%d)" (Stog_types.Doc_set.cardinal set))
+      ]
   in
   let f_year (year, data) =
-    Xtmpl.E (("", "li"), Xtmpl.atts_empty, [
-       Xtmpl.D (string_of_int year) ;
-       Xtmpl.E (("", "ul"), Xtmpl.atts_empty, List.map (f_mon year) data) ;
+    XR.node ("", "li")
+      [
+       XR.cdata (string_of_int year) ;
+       XR.node ("", "ul") (List.map (f_mon year) data)
       ]
-    )
   in
-  (stog, [ Xtmpl.E (("", "ul"), Xtmpl.atts_empty, List.map f_year years) ])
+  (stog, [ XR.node ("", "ul") (List.map f_year years) ])
 ;;
 
 let fun_hcode ?(inline=false) ?lang stog _env args code =
@@ -295,12 +301,12 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
     match lang with
       None ->
         (
-         match Xtmpl.get_att_cdata args ("", "lang-file") with
+         match XR.get_att_cdata args ("", "lang-file") with
            None ->
-             let lang = Xtmpl.opt_att_cdata args ~def: "txt" ("", "lang") in
+             let lang = XR.opt_att_cdata args ~def: "txt" ("", "lang") in
              (lang, None)
          | Some f ->
-             let lang = Xtmpl.opt_att_cdata args ~def: "" ("", "lang") in
+             let lang = XR.opt_att_cdata args ~def: "" ("", "lang") in
              let opts = Printf.sprintf "--config-file=%s" f in
              (lang, Some opts)
         )
@@ -318,8 +324,9 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
   let code =
     let l = List.map
       (
-       function Xtmpl.D code -> code
-       | x -> Xtmpl.string_of_xml x
+       function
+       | XR.D code -> code.Xml.text
+       | x -> XR.to_string [x]
       )
       code
     in
@@ -328,17 +335,19 @@ let fun_hcode ?(inline=false) ?lang stog _env args code =
   let code = Stog_misc.strip_blank_lines code in
   let xmls = Stog_highlight.highlight ~lang ?opts code in
   let atts =
-    match Xtmpl.get_att_cdata args ("","id") with
-      None -> Xtmpl.atts_empty
-    | Some id -> Xtmpl.atts_one ("","id") [Xtmpl.D id]
+    match XR.get_att_cdata args ("","id") with
+      None -> XR.atts_empty
+    | Some id -> XR.atts_one ("","id") [XR.cdata id]
   in
   let xmls =
     if inline then
-      [ Xtmpl.E (("", "span"), Xtmpl.atts_one ~atts ("", "class") [Xtmpl.D "icode"], xmls) ]
+      [ XR.node ("", "span")
+        ~atts: (XR.atts_one ~atts ("", "class") [XR.cdata "icode"]) xmls
+      ]
     else
-      [ Xtmpl.E (("", "pre"),
-         Xtmpl.atts_one ~atts ("", "class") [Xtmpl.D (Printf.sprintf "code-%s" lang)],
-         xmls)
+      [ XR.node ("", "pre")
+        ~atts: (XR.atts_one ~atts ("", "class") [XR.cdata (Printf.sprintf "code-%s" lang)])
+         xmls
       ]
   in
   (stog, xmls)
@@ -356,16 +365,18 @@ let concat_name ?(sep=":") (prefix, name) =
 
 let fun_as_xml =
   let rec iter = function
-    Xtmpl.D s -> Xtmpl.xml_of_string s
-  | Xtmpl.E (t, atts, subs) ->
-    Xtmpl.E (t, atts, List.map iter subs)
+    XR.D s -> XR.from_string s.Xml.text
+  | XR.E node ->
+      [ XR.E { node with
+          XR.subs = List.flatten (List.map iter node.XR.subs) }
+      ]
   in
   fun x _env _ subs ->
-    let xmls = Xtmpl.merge_cdata_list subs in
-    (x, List.map iter xmls)
+    let xmls = XR.merge_cdata_list subs in
+    (x, List.flatten (List.map iter xmls))
 ;;
 
-let fun_as_cdata x _env _ subs = (x, [Xtmpl.D (Xtmpl.string_of_xmls subs)])
+let fun_as_cdata x _env _ subs = (x, [XR.cdata (XR.to_string subs)])
 
 (* FIXME: add dependency ? *)
 let fun_graph =
@@ -410,14 +421,15 @@ let fun_graph =
               report_error (Printf.sprintf "Command failed: %s" com)
     end;
     let xmls = [
-        Xtmpl.E (("", "a"),
-         Xtmpl.atts_one ("", "href") [ Xtmpl.D (Stog_url.to_string src)],
+        XR.node ("", "a")
+         ~atts: (XR.atts_one ("", "href") [ XR.cdata (Stog_url.to_string src)])
          [
-           Xtmpl.E (("", "img"),
-            Xtmpl.atts_of_list
-              [("", "src"), [ Xtmpl.D (Stog_url.to_string small_src)] ; ("", "alt"), [Xtmpl.D "Graph"]],
-            [])
-         ])
+           XR.node ("", "img")
+            ~atts: (XR.atts_of_list
+               [ ("", "src"), [ XR.cdata (Stog_url.to_string small_src)] ;
+                 ("", "alt"), [XR.cdata "Graph"]])
+            []
+         ]
       ]
     in
     (stog, xmls)
@@ -425,25 +437,25 @@ let fun_graph =
 
 let fun_if stog env args subs =
   let pred (prefix, name) v (stog, cond) =
-    let nodes = [ Xtmpl.E ((prefix, name), Xtmpl.atts_empty, []) ] in
-    let (stog, nodes2) = Xtmpl.apply_to_xmls stog env nodes in
+    let nodes = [ XR.node (prefix, name) [] ] in
+    let (stog, nodes2) = XR.apply_to_xmls stog env nodes in
     let v2 = if nodes = nodes2 then [] else nodes2 in
-    let v = match v with [Xtmpl.D ""] -> [] | _ -> v in
-    let v2 = match v2 with [Xtmpl.D ""] -> [] | _ -> v2 in
+    let v = match v with [XR.D { Xml.text = ""}] -> [] | _ -> v in
+    let v2 = match v2 with [XR.D { Xml.text = ""}] -> [] | _ -> v2 in
 (*
     prerr_endline (Printf.sprintf "fun_if: pred: att=(%s,%s), nodes=%S nodes2=%S, v=%S, v2=%S"
-     prefix name (Xtmpl.string_of_xmls nodes)
-       (Xtmpl.string_of_xmls nodes2) (Xtmpl.string_of_xmls v) (Xtmpl.string_of_xmls v2));
+     prefix name (XR.string_of_xmls nodes)
+       (XR.string_of_xmls nodes2) (XR.string_of_xmls v) (XR.string_of_xmls v2));
 *)
 (*
        prerr_endline (Printf.sprintf "v_xml=%S, v2_xml=%S, subs=%S, v=v2=%b"
-       (Xtmpl.string_of_xmls v) (Xtmpl.string_of_xmls v2) (Xtmpl.string_of_xmls subs) (v=v2));
+       (XR.string_of_xmls v) (XR.string_of_xmls v2) (XR.string_of_xmls subs) (v=v2));
 *)
     (stog, cond && (v = v2))
   in
-  let (stog, cond) = Xtmpl.Name_map.fold pred args (stog, true) in
+  let (stog, cond) = Xml.Name_map.fold pred args (stog, true) in
   let subs = List.filter
-    (function Xtmpl.D _ -> false | _ -> true)
+    (function XR.D _ -> false | _ -> true)
     subs
   in
   let xmls =
@@ -465,8 +477,8 @@ let fun_twocolumns stog env args subs =
   let subs = List.fold_right
     (fun xml acc ->
        match xml with
-         Xtmpl.D _ -> acc
-       | Xtmpl.E (_, _, subs) -> subs :: acc
+         XR.D _ -> acc
+       | XR.E { XR.subs } -> subs :: acc
     ) subs []
   in
   let left, right =
@@ -476,12 +488,14 @@ let fun_twocolumns stog env args subs =
     | left :: right :: _ -> left, right
   in
   let xmls =
-    [ Xtmpl.E (("", "table"), Xtmpl.atts_one ("", "class") [Xtmpl.D "two-columns"],
-       [ Xtmpl.E (("", "tr"), Xtmpl.atts_empty,
-          [ Xtmpl.E (("", "td"), Xtmpl.atts_one ("", "class") [Xtmpl.D "two-columns-left"], left) ;
-            Xtmpl.E (("", "td"), Xtmpl.atts_one ("", "class") [Xtmpl.D "two-columns-right"], right) ;
-          ]);
-       ])
+    [ XR.node ("", "table") ~atts: (XR.atts_one ("", "class") [XR.cdata "two-columns"])
+      [ XR.node ("", "tr")
+        [ XR.node ("", "td")
+          ~atts: (XR.atts_one ("", "class") [XR.cdata "two-columns-left"]) left;
+          XR.node ("", "td")
+            ~atts: (XR.atts_one ("", "class") [XR.cdata "two-columns-right"]) right;
+        ]
+      ]
     ]
   in
   (stog, xmls)
@@ -491,16 +505,16 @@ let fun_ncolumns stog env args subs =
   let subs = List.fold_right
     (fun xml acc ->
        match xml with
-         Xtmpl.D _ -> acc
-       | Xtmpl.E (_, _, subs) -> subs :: acc
+         XR.D _ -> acc
+       | XR.E { XR.subs } -> subs :: acc
     ) subs []
   in
   let tds =
     let f (n,acc) xmls =
        let acc =
-        (Xtmpl.E (("", "td"),
-          Xtmpl.atts_one ("", "class") [Xtmpl.D (Printf.sprintf "n-columns column-%d" n)],
-          xmls)
+        (XR.node ("", "td")
+          ~atts: (XR.atts_one ("", "class") [XR.cdata (Printf.sprintf "n-columns column-%d" n)])
+           xmls
         ) :: acc
       in
       (n+1, acc)
@@ -508,39 +522,41 @@ let fun_ncolumns stog env args subs =
     List.rev (snd (List.fold_left f (0,[]) subs))
   in
   let xmls =
-    [ Xtmpl.E (("", "table"), Xtmpl.atts_one ("", "class") [Xtmpl.D "n-columns"],
-       [ Xtmpl.E (("", "tr"), Xtmpl.atts_empty, tds) ]
-      );
+    [ XR.node ("", "table")
+      ~atts: (XR.atts_one ("", "class") [XR.cdata "n-columns"])
+        [ XR.node ("", "tr") tds ]
     ]
   in
   (stog, xmls)
 ;;
 
-let fun_exta stog env args subs =
+let fun_exta stog env atts subs =
   (stog,
-   [ Xtmpl.E (("", "span"), Xtmpl.atts_one ("", "class") [Xtmpl.D "ext-a"],
-      [ Xtmpl.E (("", "a"), args, subs) ])
+   [ XR.node ("", "span")
+     ~atts: (XR.atts_one ("", "class") [XR.cdata "ext-a"])
+      [ XR.node ("", "a") ~atts subs ]
    ]
   )
 ;;
 
-type toc = Toc of string option * Xtmpl.tree list * Xmlm.name * toc list (* name, title, class, subs *)
+type toc = Toc of string option * XR.tree list * Xmlm.name * toc list (* name, title, class, subs *)
 
 let fun_prepare_toc tags stog env args subs =
   let depth =
-    match Xtmpl.get_att_cdata args ("", "depth") with
+    match XR.get_att_cdata args ("", "depth") with
       None -> max_int
     | Some s -> int_of_string s
   in
   let show_noids =
-    Xtmpl.opt_att_cdata args ~def: "false" ("", "show-without-ids") <> "false"
+    XR.opt_att_cdata args ~def: "false" ("", "show-without-ids") <> "false"
   in
   let rec iter d acc = function
-  | Xtmpl.D _ -> acc
-  | Xtmpl.E (tag, atts, subs) when List.mem tag tags ->
+  | XR.D _ -> acc
+  | XR.E { XR.name = tag; atts ; subs } when List.mem tag tags ->
       begin
-        match Xtmpl.get_att_cdata atts ("", "id"),
-          Xtmpl.get_att atts ("", "title")
+        match
+          XR.get_att_cdata atts ("", "id"),
+          XR.get_att atts ("", "title")
         with
           None, None
         | Some _, None ->
@@ -559,7 +575,7 @@ let fun_prepare_toc tags stog env args subs =
                (Toc (name, title, tag, subs)) :: acc
               )
       end
-  | Xtmpl.E (_,_,subs) -> List.fold_left (iter d) acc subs
+  | XR.E { XR.subs } -> List.fold_left (iter d) acc subs
   in
   let toc = List.rev (List.fold_left (iter 1) [] subs) in
   (*(
@@ -574,37 +590,41 @@ let fun_prepare_toc tags stog env args subs =
           ("", s) -> s
         | (p, s) -> p ^"-"^ s
       in
-      Xtmpl.E (("", "li"), Xtmpl.atts_one ("", "class") [Xtmpl.D ("toc-"^cl)],
-       (match name with
-         None -> title
-       | Some name ->
-            [ Xtmpl.E (("", "doc"),
-               Xtmpl.atts_of_list
-                 [("", "href"), [Xtmpl.D ("#"^name)] ; ("","long"), [Xtmpl.D "true"]],
-               []) ]
-       )
-         @
-         ( match subs with
-            [] -> []
-          | _ ->
-              [ Xtmpl.E (("", "ul"),
-                 Xtmpl.atts_one ("", "class") [Xtmpl.D "toc"],
-                 List.map xml_of_toc subs)
-              ]
+      XR.node ("", "li")
+        ~atts: (XR.atts_one ("", "class") [XR.cdata ("toc-"^cl)])
+        (
+         (match name with
+            None -> title
+          | Some name ->
+              let atts = XR.atts_of_list
+                [ ("", "href"), [XR.cdata ("#"^name)] ;
+                  ("","long"), [XR.cdata "true"]
+                ]
+              in
+              [ XR.node ("", "doc") ~atts [] ]
          )
-      )
+           @
+           ( match subs with
+              [] -> []
+            | _ ->
+                [ XR.node ("", "ul")
+                  ~atts: (XR.atts_one ("", "class") [XR.cdata "toc"])
+                    (List.map xml_of_toc subs)
+                ]
+           )
+        )
   in
   let xml =
-    Xtmpl.E (("", "ul"),
-     Xtmpl.atts_one ("", "class") [Xtmpl.D "toc"],
-     List.map xml_of_toc toc)
+    XR.node ("", "ul")
+     ~atts: (XR.atts_one ("", "class") [XR.cdata "toc"])
+     (List.map xml_of_toc toc)
   in
-  let atts = Xtmpl.atts_one ("", "toc-contents") [ xml ] in
-  (stog, [ Xtmpl.E (("", Xtmpl.tag_env), atts, subs) ])
+  let atts = XR.atts_one ("", "toc-contents") [ xml ] in
+  (stog, [ XR.node ("", XR.tag_env) ~atts subs ])
 ;;
 
 let fun_toc stog env args subs =
-  (stog, subs @ [Xtmpl.E (("", "toc-contents"), Xtmpl.atts_empty, [])])
+  (stog, subs @ [XR.node ("", "toc-contents") [] ])
 ;;
 
 let concat_xmls ?(sep=[]) l =
@@ -616,15 +636,15 @@ let concat_xmls ?(sep=[]) l =
 ;;
 
 let fun_error_ stog env args subs =
-  let (stog, xmls) = Xtmpl.apply_to_xmls stog env subs in
-  let s = Xtmpl.string_of_xmls xmls in
+  let (stog, xmls) = XR.apply_to_xmls stog env subs in
+  let s = XR.to_string xmls in
   Stog_msg.error s;
   (stog, [])
 ;;
 
 let fun_doc_navpath doc stog env args subs =
   let root =
-    match Xtmpl.get_att_cdata args ("", "with-root") with
+    match XR.get_att_cdata args ("", "with-root") with
       None -> None
     | Some root_path ->
         let root_path = Stog_path.of_string root_path in
@@ -665,16 +685,15 @@ let fun_doc_navpath doc stog env args subs =
             ignore(Stog_types.doc_by_path stog path);
             path
       in
-      let xml = Xtmpl.E
-        (("", Stog_tags.doc),
-         Xtmpl.atts_one ("","href") [Xtmpl.D (Stog_path.to_string path)],
-         [])
+      let xml = XR.node ("", Stog_tags.doc)
+        ~atts: (XR.atts_one ("","href") [XR.cdata (Stog_path.to_string path)])
+          []
       in
       [ xml ]
     with Failure _ ->
         match List.rev path.Stog_path.path with
-          [] -> [Xtmpl.D "?"]
-        | h :: _ -> [ Xtmpl.D h ]
+          [] -> [XR.cdata "?"]
+        | h :: _ -> [ XR.cdata h ]
   in
   let xmls = concat_xmls ~sep: subs (List.map map paths) in
   (stog, xmls)
@@ -685,7 +704,7 @@ let fun_doc_navpath doc stog env args subs =
 let intro_of_doc stog doc =
   let rec iter acc = function
     [] -> raise Not_found
-  | (Xtmpl.E (("",tag), _, _)) :: _ when tag = Stog_tags.sep -> List.rev acc
+  | (XR.E { XR.name = ("",tag) }) :: _ when tag = Stog_tags.sep -> List.rev acc
   | h :: q -> iter (h::acc) q
   in
   try
@@ -696,22 +715,22 @@ let intro_of_doc stog doc =
 ;;
 
 let html_of_topics doc stog env args _ =
-  let sep = Xtmpl.opt_att args ~def: [Xtmpl.D ", "] ("", "sep") in
+  let sep = XR.opt_att args ~def: [XR.cdata ", "] ("", "sep") in
   let (stog, tmpl) = Stog_tmpl.get_template stog ~doc Stog_tmpl.topic "topic.tmpl" in
   let f stog w =
-    let env = Xtmpl.env_of_list ~env
-      [ ("", Stog_tags.topic), (fun acc _ _ _ -> (acc, [Xtmpl.D w])) ]
+    let env = XR.env_of_list ~env
+      [ ("", Stog_tags.topic), (fun acc _ _ _ -> (acc, [XR.cdata w])) ]
     in
-    Xtmpl.apply_to_xmls stog env [tmpl]
+    XR.apply_to_xmls stog env tmpl
   in
   let (stog, l) =
     List.fold_left
       (fun (stog, acc) w ->
          let (stog, xmls) = f stog w in
          let href = url_of_path stog (topic_index_path w) in
-         let xml = Xtmpl.E (("", "a"),
-            Xtmpl.atts_one ("", "href") [ Xtmpl.D (Stog_url.to_string href) ],
-            xmls)
+         let xml = XR.node ("", "a")
+            ~atts: (XR.atts_one ("", "href") [ XR.cdata (Stog_url.to_string href) ])
+            xmls
          in
          (stog, [xml] :: acc)
       )
@@ -722,22 +741,22 @@ let html_of_topics doc stog env args _ =
 ;;
 
 let html_of_keywords doc stog env args _ =
-  let sep = Xtmpl.opt_att args ~def: [Xtmpl.D ", "] ("", "sep") in
+  let sep = XR.opt_att args ~def: [XR.cdata ", "] ("", "sep") in
   let (stog, tmpl) = Stog_tmpl.get_template stog ~doc Stog_tmpl.keyword "keyword.tmpl" in
   let f stog w =
-    let env = Xtmpl.env_of_list ~env
-      [ ("", Stog_tags.keyword), (fun acc _ _ _ -> (acc, [Xtmpl.D w])) ]
+    let env = XR.env_of_list ~env
+      [ ("", Stog_tags.keyword), (fun acc _ _ _ -> (acc, [XR.cdata w])) ]
     in
-    Xtmpl.apply_to_xmls stog env [tmpl]
+    XR.apply_to_xmls stog env tmpl
   in
   let (stog, l) =
     List.fold_left
       (fun (stog, acc) w ->
          let (stog, xmls) = f stog w in
          let href = url_of_path stog (keyword_index_path w) in
-         let xml = Xtmpl.E (("", "a"),
-            Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_url.to_string href)],
-            xmls)
+         let xml = XR.node ("", "a")
+            ~atts: (XR.atts_one ("", "href") [XR.cdata (Stog_url.to_string href)])
+            xmls
          in
          (stog, [xml] :: acc)
       )
@@ -763,14 +782,14 @@ let rec doc_to_rss_item stog doc_id doc =
     (List.map f_word doc.doc_topics) @
     (List.map f_word doc.doc_keywords)
   in
-  let (stog, env) = Stog_engine.doc_env stog (Xtmpl.env_empty()) stog doc in
+  let (stog, env) = Stog_engine.doc_env stog (XR.env_empty()) stog doc in
   let (stog, author) =
     let (stog, author) = get_in_env stog env ("", "author") in
-    let author = Xtmpl.string_of_xmls author in
+    let author = XR.string_of_xmls author in
     (stog, Stog_misc.opt_of_string author)
   in
-  let (stog, desc_xml) = Xtmpl.apply_to_xmls stog env (intro_of_doc stog doc) in
-  let desc = Xtmpl.string_of_xmls desc_xml in
+  let (stog, desc_xml) = XR.apply_to_xmls stog env (intro_of_doc stog doc) in
+  let desc = XR.string_of_xmls desc_xml in
   let item =
     Rss.item ~title: doc.doc_title
       ~desc
@@ -812,7 +831,7 @@ and generate_rss_feed_file stog ?title link docs file =
     try
       let file =
         match Stog_types.get_def stog.stog_defs ("", "rss-image") with
-          Some (_,xmls) -> Xtmpl.string_of_xmls xmls
+          Some (_,xmls) -> XR.string_of_xmls xmls
         | None -> ""
       in
       let url = Stog_types.url_concat stog.stog_base_url file in
@@ -829,7 +848,7 @@ and generate_rss_feed_file stog ?title link docs file =
     with
       Not_found -> None
   in
-  let desc = String.concat "" (List.map Xtmpl.string_of_xml stog.stog_desc) in
+  let desc = String.concat "" (List.map XR.string_of_xml stog.stog_desc) in
   let channel =
     Rss.channel ~title ~link
     ~desc ?image
@@ -846,11 +865,11 @@ and generate_rss_feed_file stog ?title link docs file =
 
 let format_date d f stog args =
   let s =
-    match Xtmpl.get_att_cdata args ("","format") with
+    match XR.get_att_cdata args ("","format") with
       None -> f stog.stog_lang d
     | Some fmt -> Netdate.format ~fmt d
   in
-  (stog, [ Xtmpl.D s ])
+  (stog, [ XR.cdata s ])
 ;;
 
 let fun_date_gen f stog env args _ =
@@ -873,17 +892,17 @@ let fun_date_now stog env args _ =
   format_date d Stog_intl.string_of_datetime stog args;;
 
 let fun_print_date_gen f stog args subs =
-  match Xtmpl.merge_cdata_list subs with
-    [Xtmpl.D s] ->
+  match XR.merge_cdata_list subs with
+    [XR.D cdata] ->
       begin
         try
-          let d = Stog_io.date_of_string s in
+          let d = Stog_io.date_of_string cdata.Xml.text in
           format_date d f stog args
         with Failure s ->
-          Stog_msg.error s;
+          Stog_msg.error ?loc: cdata.Xml.loc s;
           (stog, [])
       end
-  | _ -> raise Xtmpl.No_change
+  | _ -> raise XR.No_change
 
 let fun_print_date stog env args subs =
   fun_print_date_gen Stog_intl.string_of_date stog args subs;;
@@ -893,18 +912,18 @@ let fun_print_datetime stog env args subs =
 let rec build_base_rules stog doc_id =
   let doc = Stog_types.doc stog doc_id in
   let f_title doc acc _ _ _ =
-    (acc, [ Xtmpl.xml_of_string doc.doc_title ])
+    (acc, XR.from_string doc.doc_title)
   in
   let f_url doc stog _ _ _ =
-    (stog,[ Xtmpl.D (Stog_url.to_string (Stog_engine.doc_url stog doc)) ])
+    (stog,[ XR.cdata (Stog_url.to_string (Stog_engine.doc_url stog doc)) ])
   in
   let f_body doc acc _ _ _ = (acc, doc.doc_body) in
-  let f_type doc acc _ _ _ = (acc, [Xtmpl.D doc.doc_type]) in
-  let f_src doc acc _ _ _ = (acc, [Xtmpl.D doc.doc_src]) in
+  let f_type doc acc _ _ _ = (acc, [XR.cdata doc.doc_type]) in
+  let f_src doc acc _ _ _ = (acc, [XR.cdata doc.doc_src]) in
   let f_intro doc stog _ _ _ = (stog, intro_of_doc stog doc) in
   let mk f stog env atts subs =
     let doc =
-      match Xtmpl.get_att_cdata atts ("", Stog_tags.doc_path) with
+      match XR.get_att_cdata atts ("", Stog_tags.doc_path) with
         None -> Stog_types.doc stog doc_id
       | Some path ->
           let (_, doc) = Stog_types.doc_by_path
@@ -917,9 +936,10 @@ let rec build_base_rules stog doc_id =
   let (previous, next) =
     let html_link stog doc =
       let href = Stog_engine.doc_url stog doc in
-      [ Xtmpl.E (("", "a"),
-         Xtmpl.atts_one ("","href") [Xtmpl.D (Stog_url.to_string href)],
-         [ Xtmpl.xml_of_string doc.doc_title ]) ]
+      [ XR.node ("", "a")
+         ~atts: (XR.atts_one ("","href") [XR.cdata (Stog_url.to_string href)])
+         (XR.from_string doc.doc_title)
+      ]
     in
     let try_link key search stog _ _ _ =
       let fallback () =
@@ -931,7 +951,7 @@ let rec build_base_rules stog doc_id =
         match Stog_types.get_def doc.doc_defs key with
           None -> fallback ()
         | Some (_,body) ->
-            let path = Stog_path.of_string (Xtmpl.string_of_xmls body) in
+            let path = Stog_path.of_string (XR.to_string body) in
             try
               let (_, doc) = Stog_types.doc_by_path stog path in
               html_link stog doc
@@ -1004,7 +1024,7 @@ and doc_list doc ?rss ?set stog env args _ =
   in
   let (stog, tmpl) =
     let file =
-      match Xtmpl.get_att_cdata args ("", "tmpl") with
+      match XR.get_att_cdata args ("", "tmpl") with
         None ->  "doc-in-list.tmpl"
       | Some s -> s
     in
@@ -1014,8 +1034,8 @@ and doc_list doc ?rss ?set stog env args _ =
     let name = Stog_path.to_string doc.doc_path in
     let (stog, env) = Stog_engine.doc_env stog env stog doc in
     let rules = build_base_rules stog doc_id in
-    let env = Xtmpl.env_of_list ~env rules in
-    let (stog, xmls) = Xtmpl.apply_to_xmls stog env [tmpl] in
+    let env = XR.env_of_list ~env rules in
+    let (stog, xmls) = XR.apply_to_xmls stog env tmpl in
     match xmls with
       [xml] -> (stog, xml :: acc)
     | _ ->
@@ -1026,7 +1046,7 @@ and doc_list doc ?rss ?set stog env args _ =
   let xmls = List.rev xmls in
   (*prerr_endline "doc_list:";
   List.iter
-    (fun xml -> prerr_endline (Printf.sprintf "ITEM: %s" (Xtmpl.string_of_xml xml)))
+    (fun xml -> prerr_endline (Printf.sprintf "ITEM: %s" (XR.string_of_xml xml)))
     xml;
      *)
   let (stog, alt_link) =
@@ -1034,19 +1054,19 @@ and doc_list doc ?rss ?set stog env args _ =
       Some link -> (stog, Some link)
     | None ->
         let alt_doc_path =
-          match Xtmpl.get_att_cdata args ("", "rss") with
+          match XR.get_att_cdata args ("", "rss") with
             Some path -> Some path
           | None ->
-              match Xtmpl.get_att_cdata args ("", "alt-doc-path") with
+              match XR.get_att_cdata args ("", "alt-doc-path") with
                 Some path -> Some path
               | None -> None
         in
         match alt_doc_path with
           None -> (stog, None)
         | Some path ->
-            let alt_doc_type = Xtmpl.opt_att_cdata ~def: "rss" args ("","alt-doc-type") in
+            let alt_doc_type = XR.opt_att_cdata ~def: "rss" args ("","alt-doc-type") in
             let alt_doc_in_list_tmpl =
-              Xtmpl.opt_att_cdata ~def: "rss-item.tmpl" args ("","alt-doc-in-list-tmpl")
+              XR.opt_att_cdata ~def: "rss-item.tmpl" args ("","alt-doc-in-list-tmpl")
             in
             let doc_path =
               if Filename.is_relative path then
@@ -1056,7 +1076,7 @@ and doc_list doc ?rss ?set stog env args _ =
                 (Stog_path.of_string path)
             in
             let doc_title =
-              match Xtmpl.get_att_cdata args ("", "alt-doc-title") with
+              match XR.get_att_cdata args ("", "alt-doc-title") with
                 None -> doc.doc_title
               | Some t -> t
             in
@@ -1087,17 +1107,19 @@ and doc_list doc ?rss ?set stog env args _ =
     match alt_link with
       None -> xmls
     | Some link ->
-        (Xtmpl.E (("", "div"),
-          Xtmpl.atts_one ("", "class") [Xtmpl.D "rss-button"],
-          [
-            Xtmpl.E (("", "a"), Xtmpl.atts_one ("", "href")
-             [Xtmpl.D (Stog_url.to_string link)],
-             [
-               Xtmpl.E (("", "img"),
-                Xtmpl.atts_of_list [("", "src"), [Xtmpl.D "rss.png"] ; ("", "alt"), [Xtmpl.D "Rss feed"]],
-                [])
-             ]) ;
-          ])
+        (XR.node ("", "div")
+         ~atts: (XR.atts_one ("", "class") [XR.cdata "rss-button"])
+           [
+             XR.node ("", "a") 
+               ~atts: (XR.atts_one ("", "href") [XR.cdata (Stog_url.to_string link)])
+               [
+                 XR.node ("", "img")
+                   ~atts: (XR.atts_of_list
+                    [ ("", "src"), [XR.cdata "rss.png"] ;
+                      ("", "alt"), [XR.cdata "Rss feed"]])
+                   []
+               ]
+           ]
         ) :: xmls
   in
   (stog, xml)
@@ -1139,7 +1161,7 @@ let make_by_word_indexes stog env f_doc_path doc_type map =
           this latter document must exist *)
         let stog = Stog_types.add_doc stog doc in
         let (doc_id, _) = Stog_types.doc_by_path stog doc.doc_path in
-        let atts = Xtmpl.atts_one ("","rss") [Xtmpl.D rss_path] in
+        let atts = XR.atts_one ("","rss") [XR.cdata rss_path] in
         let (stog, body) = doc_list doc ~set (*~rss: rss_url*) stog env atts [] in
         let doc = { doc with Stog_types.doc_body = body } in
         Stog_types.set_doc stog doc_id doc
@@ -1200,7 +1222,7 @@ let make_archive_indexes stog env =
           this latter document must exist *)
         let stog = Stog_types.add_doc stog doc in
         let (doc_id, _) = Stog_types.doc_by_path stog doc.doc_path in
-        let (stog, body) = doc_list doc ~set stog env Xtmpl.atts_empty [] in
+        let (stog, body) = doc_list doc ~set stog env XR.atts_empty [] in
         let doc = { doc with doc_body = body } in
         Stog_types.set_doc stog doc_id doc
   in
@@ -1231,7 +1253,7 @@ let get_sectionning_tags stog doc =
   match spec with
     None -> List.map (fun t -> ("",t)) Stog_tags.default_sectionning
   | Some (_,xmls) ->
-      let s = Xtmpl.string_of_xmls xmls in
+      let s = XR.to_string xmls in
       let l = Stog_misc.split_string s [',' ; ';'] in
       let strip = Stog_misc.strip_string in
       List.fold_right
@@ -1268,7 +1290,7 @@ let fun_level_inc_doc =
 let fun_level_clean =
   let f env stog docs =
     Stog_ocaml.close_sessions ();
-    let env = Xtmpl.env_of_list ~env
+    let env = XR.env_of_list ~env
       [ ("", Stog_tags.sep), (fun d _ _ _ -> (d, [])) ]
     in
     Stog_types.Doc_set.fold
