@@ -33,8 +33,11 @@ open Stog_types;;
 module Smap = Stog_types.Str_map ;;
 module Sset = Stog_types.Str_set ;;
 
+module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
+
 type block_data =
-  { blocks : (Xtmpl.tree * Xtmpl.tree) Smap.t Smap.t ;
+  { blocks : (XR.tree list * XR.tree list) Smap.t Smap.t ;
     counters : int Smap.t Smap.t ;
   }
 
@@ -111,14 +114,14 @@ let add_block_for_doc data doc =
 let fun_counter (stog, data) env atts subs =
 (*  prerr_endline (Printf.sprintf "fun_counter args=%s\nenv=%s"
     (String.concat "\n" (List.map (fun (s, v) -> Printf.sprintf "%S, %S" s v) atts))
-    (Xtmpl.string_of_env env));
+    (XR.string_of_env env));
 *)
-  match Xtmpl.get_att_cdata atts ("", "counter-name") with
+  match XR.get_att_cdata atts ("", "counter-name") with
     None -> ((stog, data), subs)
   | Some name ->
       let ((stog, data), path) = Stog_html.get_path (stog, data) env in
       let cpt = get_counter data (Stog_path.to_string path) name in
-      ((stog, data), [Xtmpl.D (string_of_int cpt)])
+      ((stog, data), [XR.cdata (string_of_int cpt)])
 ;;
 
 
@@ -126,7 +129,7 @@ let fun_doc_href ?typ src_doc href (stog, data) env args subs =
   let src_path_s = Stog_path.to_string src_doc.doc_path in
   let report_error msg = Stog_msg.error ~info: "Stog_html.fun_doc_href" msg in
   let quotes =
-    match Xtmpl.get_att_cdata args ("", "quotes") with
+    match XR.get_att_cdata args ("", "quotes") with
       None -> false
     | Some s -> Stog_io.bool_of_string s
   in
@@ -136,14 +139,14 @@ let fun_doc_href ?typ src_doc href (stog, data) env args subs =
     in
     let (stog, text) =
       match info with
-        None -> (stog, [Xtmpl.D "??"])
+        None -> (stog, [XR.cdata "??"])
       | Some (doc, path, id) ->
           let stog = Stog_deps.add_dep stog src_doc (Stog_types.Doc doc) in
           match subs, id with
           | [], None ->
               let quote = if quotes then "\"" else "" in
               let s = Printf.sprintf "%s%s%s" quote doc.doc_title quote in
-              (stog, [Xtmpl.xml_of_string s])
+              (stog, XR.from_string s)
           | text, None -> (stog, text)
           | _, Some id ->
               let path = Stog_path.to_string doc.doc_path in
@@ -152,24 +155,24 @@ let fun_doc_href ?typ src_doc href (stog, data) env args subs =
                   let id_map = Smap.find path data.blocks in
                   try
                     let (short, long) = Smap.find id id_map in
-                    match Xtmpl.get_att_cdata args ("", "long") with
+                    match XR.get_att_cdata args ("", "long") with
                       Some "true" -> long
                     | _ -> short
                   with Not_found ->
                       let msg = Printf.sprintf "In %s: Unknown block path=%S, id=%S" src_path_s path id in
                       report_error msg;
-                      Xtmpl.D "??"
+                      [ XR.cdata "??" ]
                 with Not_found ->
                     let msg = Printf.sprintf "In %s: Unknown document %S in block map" src_path_s path in
                     report_error msg;
-                    Xtmpl.D "??"
+                    [ XR.cdata "??" ]
               in
               match subs with
                 [] ->
                   if quotes then
-                    (stog, [ Xtmpl.D "\"" ; title ; Xtmpl.D "\""])
+                    (stog, XR.cdata "\"" :: title @ [ XR.cdata "\""])
                   else
-                    (stog, [title])
+                    (stog, title)
               | text -> (stog, text)
     in
     (stog, data, info, text)
@@ -177,9 +180,9 @@ let fun_doc_href ?typ src_doc href (stog, data) env args subs =
   match doc with
     None ->
       ((stog, data),
-       [Xtmpl.E (("", "span"),
-          Xtmpl.atts_one ("", "class") [Xtmpl.D "unknown-ref"],
-          text)
+       [XR.node ("", "span")
+         ~atts: (XR.atts_one ("", "class") [XR.cdata "unknown-ref"])
+           text
        ])
   | Some (doc, _, id) ->
       let href =
@@ -188,16 +191,16 @@ let fun_doc_href ?typ src_doc href (stog, data) env args subs =
           None -> url
         | Some id -> Stog_url.with_fragment url id
       in
-      let xml = Xtmpl.E (("", "a"),
-         Xtmpl.atts_one ("", "href") [Xtmpl.D (Stog_url.to_string href)],
-         text)
+      let xml = XR.node ("", "a")
+        ~atts: (XR.atts_one ("", "href") [XR.cdata (Stog_url.to_string href)])
+          text
       in
       ((stog, data), [ xml ])
 ;;
 
 let fun_doc ?typ src_doc (stog, data) env args subs =
   let href =
-    match Xtmpl.get_att_cdata args ("", "href") with
+    match XR.get_att_cdata args ("", "href") with
       None ->
         let msg = Printf.sprintf "Missing href for <%s>"
           (match typ with None -> "doc" | Some s -> s)
@@ -216,24 +219,23 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
   let ((stog, data), path) = Stog_html.get_path (stog, data) env in
   let data = List.fold_left
     (fun data cls_down ->
-       set_counter data 
+       set_counter data
          (Stog_path.to_string path)
          (Stog_html.concat_name ~sep: ":" cls_down) 0
      )
     data sect_down
   in
-  let att_id = Xtmpl.atts_one ("", "id") [Xtmpl.E (("","id"), Xtmpl.atts_empty, [])] in
+  let att_id = XR.atts_one ("", "id") [XR.node ("","id") []] in
   let class_name = Stog_html.concat_name ~sep: "-" cls in
   let body =
-    [ Xtmpl.E (("", "div"),
-       Xtmpl.atts_one ("", "class") [Xtmpl.D class_name],
-       (
-        (Xtmpl.E (("", "div"),
-          Xtmpl.atts_one ~atts: att_id ("", "class") [Xtmpl.D (class_name^"-title")],
-          [Xtmpl.E (("", "title"), Xtmpl.atts_empty, [])])) ::
-        subs
+    [ XR.node ("", "div")
+       ~atts: (XR.atts_one ("", "class") [XR.cdata class_name])
+        (
+         (XR.node ("", "div")
+          ~atts: (XR.atts_one ~atts: att_id ("", "class") [XR.cdata (class_name^"-title")])
+            [XR.node ("", "title") []]
+         ) :: subs
        )
-      )
     ]
   in
   let f ((stog, data), acc) (prefix, cls) =
@@ -243,12 +245,12 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
     in
     let xml =
       match cpt with
-        [Xtmpl.D "false"]
-      | [Xtmpl.D "0"] -> []
+      | [XR.D {Xml.text = "false"}]
+      | [XR.D {Xml.text ="0"}] -> []
       | _ ->
-          [ Xtmpl.E (("","counter"),
-             Xtmpl.atts_one ("","counter-name") [Xtmpl.D (Stog_html.concat_name (prefix, cls))],
-             [])
+          [ XR.node ("","counter")
+             ~atts: (XR.atts_one ("","counter-name") [XR.cdata (Stog_html.concat_name (prefix, cls))])
+               []
           ]
     in
     ((stog, data), xml :: acc)
@@ -256,14 +258,15 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
   let ((stog,data), counter_name) =
     let (pref, name) = cls in
     let ((stog,data), xmls) =
-      match Xtmpl.get_att args ("","counter") with
+      match XR.get_att args ("","counter") with
       | Some x -> ((stog, data), x)
       | None ->
-          Stog_html.get_in_env (stog,data) env (pref, (Stog_html.concat_name cls)^"-counter")
+          Stog_html.get_in_env (stog,data) env
+           (pref, (Stog_html.concat_name cls)^"-counter")
     in
     match xmls with
-      [ Xtmpl.D "false" ]
-    | [ Xtmpl.D "0" ] -> ((stog, data), "")
+      [ XR.D {Xml.text = "false"} ]
+    | [ XR.D {Xml.text = "0"} ] -> ((stog, data), "")
     | _ -> ((stog,data), Stog_html.concat_name cls)
   in
   let ((stog,data), counters) =
@@ -271,33 +274,34 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
       "" -> ((stog,data), [])
     | _ ->
         let ((stog,data), cpts) = List.fold_left f ((stog,data), []) (cls::sect_up) in
-        let xmls = Stog_misc.list_concat ~sep: [Xtmpl.D "."] (List.filter ((<>) []) cpts) in
+        let xmls = Stog_misc.list_concat
+          ~sep: [XR.cdata "."] (List.filter ((<>) []) cpts)
+        in
         let xmls = List.flatten xmls in
         ((stog,data), xmls)
   in
   let label = String.capitalize (snd cls) in
   let xmls =
-    [ Xtmpl.E (("", Stog_tags.block),
-       Xtmpl.atts_of_list ~atts: args
-         [ ("", "label"), [Xtmpl.D label] ;
-           ("", "class"), [Xtmpl.D class_name] ;
-           ("", "counter-name"), [Xtmpl.D counter_name] ;
-           ("", "with-contents"), [Xtmpl.D "true"]
-         ],
+    [ XR.node ("", Stog_tags.block)
+       ~atts:(XR.atts_of_list ~atts: args
+       [ ("", "label"), [XR.cdata label] ;
+         ("", "class"), [XR.cdata class_name] ;
+         ("", "counter-name"), [XR.cdata counter_name] ;
+         ("", "with-contents"), [XR.cdata "true"]
+       ])
        [
-         Xtmpl.E (("", "long-title-format"), Xtmpl.atts_empty,
-          counters @
-            (if counters = [] then [] else [Xtmpl.D ". "]) @
-            [Xtmpl.E (("","title"), Xtmpl.atts_empty, [])]
+         XR.node ("", "long-title-format")
+          (counters @
+            (if counters = [] then [] else [XR.cdata ". "]) @
+            [XR.node ("","title") []]
           ) ;
-          Xtmpl.E (("", "short-title-format"), Xtmpl.atts_empty,
+          XR.node ("", "short-title-format")
            (match counter_name with
-              "" -> [ Xtmpl.E (("","title"), Xtmpl.atts_empty, []) ]
+              "" -> [ XR.node ("","title") [] ]
             | _ -> counters
-           ));
-          Xtmpl.E (("", "contents"), Xtmpl.atts_empty, body) ;
+           );
+          XR.node ("", "contents") body ;
        ]
-      )
     ]
   in
   ((stog, data), xmls)
@@ -305,13 +309,13 @@ let make_fun_section sect_up cls sect_down (stog, data) env args subs =
 
 type block =
   { blk_id : string ;
-    blk_label : Xtmpl.tree list option ;
+    blk_label : XR.tree list option ;
     blk_class : string option ;
-    blk_title : Xtmpl.tree list ;
+    blk_title : XR.tree list ;
     blk_cpt_name : string option ;
-    blk_long_f : Xtmpl.tree list ;
-    blk_short_f : Xtmpl.tree list ;
-    blk_body : Xtmpl.tree list ;
+    blk_long_f : XR.tree list ;
+    blk_short_f : XR.tree list ;
+    blk_body : XR.tree list ;
   }
 
 let mk_block ~id ?label ?clas ~title ?counter ~short_fmt ~long_fmt body =
@@ -328,35 +332,33 @@ let mk_block ~id ?label ?clas ~title ?counter ~short_fmt ~long_fmt body =
 
 let node_of_block b =
   let atts =
-    Xtmpl.atts_of_list
+    XR.atts_of_list
       [
-        ("","id"), [Xtmpl.D b.blk_id] ;
-        ("","with-contents"), [Xtmpl.D "true"] ;
+        ("","id"), [XR.cdata b.blk_id] ;
+        ("","with-contents"), [XR.cdata "true"] ;
       ]
   in
-  let title = Xtmpl.E (("","title"), Xtmpl.atts_empty, b.blk_title) in
+  let title = XR.node ("","title") b.blk_title in
   let label =
     match b.blk_label with
       None -> []
-    | Some l -> [ Xtmpl.E (("","label"), Xtmpl.atts_empty, l) ]
+    | Some l -> [ XR.node ("","label") l ]
   in
   let clas =
     match b.blk_class with
       None -> []
-    | Some s -> [ Xtmpl.E (("","class"), Xtmpl.atts_empty, [ Xtmpl.D s ]) ]
+    | Some s -> [ XR.node ("","class") [ XR.cdata s ] ]
   in
   let cpt_name =
     match b.blk_cpt_name with
       None -> []
-    | Some s -> [ Xtmpl.E (("","counter-name"), Xtmpl.atts_empty, [ Xtmpl.D s]) ]
+    | Some s -> [ XR.node ("","counter-name") [ XR.cdata s] ]
   in
-  let long_f = [ Xtmpl.E (("","long-title-format"), Xtmpl.atts_empty, b.blk_long_f) ]
-  in
-  let short_f = [ Xtmpl.E (("","short-title-format"), Xtmpl.atts_empty, b.blk_short_f) ]
-  in
-  let contents = [ Xtmpl.E (("","contents"), Xtmpl.atts_empty, b.blk_body) ] in
+  let long_f = [ XR.node ("","long-title-format") b.blk_long_f ] in
+  let short_f = [ XR.node ("","short-title-format") b.blk_short_f ] in
+  let contents = [ XR.node ("","contents") b.blk_body ] in
   let subs = title :: label @ clas @ cpt_name @ long_f @ short_f @ contents in
-  Xtmpl.E (("",Stog_tags.block), atts, subs)
+  XR.node ("",Stog_tags.block) ~atts subs
 ;;
 
 let block_body_of_subs stog doc blk = function
@@ -366,93 +368,95 @@ let block_body_of_subs stog doc blk = function
         None -> "block.tmpl"
       | Some c -> Printf.sprintf "block-%s.tmpl" c
     in
-    
+
     let tmpl = Stog_tmpl.get_template_file stog doc tmpl_file in
-    [ Xtmpl.xml_of_file tmpl ]
+    XR.from_file tmpl
 | l -> l
 ;;
 
 let read_block_from_subs stog doc =
-  let s_xmls l = String.concat "" (List.map Xtmpl.string_of_xml l) in
+  let s_xmls = XR.to_string in
   let rec f blk = function
-    Xtmpl.D _ -> blk
-  | Xtmpl.E (("", tag), _, xmls) ->
+    XR.D _ -> blk
+  | XR.E { XR.name = ("", tag) ; subs } ->
       begin
-        match tag, xmls with
-          "id", [Xtmpl.D id] -> { blk with blk_id = id }
+        match tag, subs with
+          "id", [XR.D id] -> { blk with blk_id = id.Xml.text }
         | "id", _ ->
             Stog_msg.warning
-            (Printf.sprintf "Ignoring id of block: %S" (s_xmls xmls));
+              (Printf.sprintf "Ignoring id of block: %S" (s_xmls subs));
             blk
-        | "label", _ -> { blk with blk_label = Some xmls }
-        | "class", [Xtmpl.D cls] -> { blk with blk_class = Some cls }
+        | "label", _ -> { blk with blk_label = Some subs }
+        | "class", [XR.D cls] -> { blk with blk_class = Some cls.Xml.text }
         | "class", _ ->
             Stog_msg.warning
-            (Printf.sprintf  "Ignoring class of block: %S" (s_xmls xmls));
+              (Printf.sprintf  "Ignoring class of block: %S" (s_xmls subs));
             blk
-        | "counter-name", [Xtmpl.D s] when Stog_misc.strip_string s = ""->
+        | "counter-name", [XR.D s] when Stog_misc.strip_string s.Xml.text = ""->
             blk
-        | "counter-name", [Xtmpl.D s] ->
-            { blk with blk_cpt_name = Some s }
+        | "counter-name", [XR.D s] ->
+            { blk with blk_cpt_name = Some s.Xml.text }
         | "counter-name", _ ->
             Stog_msg.warning
-            (Printf.sprintf "Ignoring counter-name of block: %S" (s_xmls xmls));
+              (Printf.sprintf "Ignoring counter-name of block: %S" (s_xmls subs));
             blk
-        | "title", _ -> { blk with blk_title = xmls }
-        | "long-title-format", _ -> { blk with blk_long_f = xmls }
-        | "short-title-format", _ -> { blk with blk_short_f = xmls }
-        | "contents", _ -> { blk with blk_body = block_body_of_subs stog doc blk xmls }
+        | "title", _ -> { blk with blk_title = subs }
+        | "long-title-format", _ -> { blk with blk_long_f = subs }
+        | "short-title-format", _ -> { blk with blk_short_f = subs }
+        | "contents", _ -> { blk with blk_body = block_body_of_subs stog doc blk subs }
         | _, _ ->
             Stog_msg.warning (Printf.sprintf "Ignoring block node %S" tag);
             blk
       end
-  | Xtmpl.E _ -> blk
+  | XR.E _ -> blk
   in
   List.fold_left f
 ;;
 
 let read_block stog doc args subs =
   let with_contents =
-    match Xtmpl.get_att_cdata args ("", "with-contents") with
+    match XR.get_att_cdata args ("", "with-contents") with
       Some "true" -> true
     | None | Some _ -> false
   in
   let blk_id =
-    match Xtmpl.get_att_cdata args ("", "id") with
+    match XR.get_att_cdata args ("", "id") with
       Some id -> id
     | None -> random_id ()
   in
-  let blk_label = Xtmpl.get_att args ("", "label") in
-  let blk_class = Xtmpl.get_att_cdata args ("", "class") in
+  let blk_label = XR.get_att args ("", "label") in
+  let blk_class = XR.get_att_cdata args ("", "class") in
   let blk_title =
-    match Xtmpl.get_att args ("", "title") with
-      None -> [ Xtmpl.D " " ]
+    match XR.get_att args ("", "title") with
+      None -> [ XR.cdata " " ]
     | Some l -> l
   in
-  let blk_cpt_name = Xtmpl.get_att_cdata args ("", "counter-name") in
-  let xml_title = Xtmpl.E (("", "title"), Xtmpl.atts_empty, []) in
-  let xml_label =  Xtmpl.E (("", "label"), Xtmpl.atts_empty, []) in
-  let xml_cpt s = Xtmpl.E (("", "counter"), Xtmpl.atts_one ("", "counter-name") [Xtmpl.D s], []) in
+  let blk_cpt_name = XR.get_att_cdata args ("", "counter-name") in
+  let xml_title = XR.node ("", "title") [] in
+  let xml_label =  XR.node ("", "label") [] in
+  let xml_cpt s = XR.node ("", "counter")
+    ~atts: (XR.atts_one ("", "counter-name") [XR.cdata s]) []
+  in
   let blk_long_f =
-    match Xtmpl.get_att args ("", "long-title-format") with
+    match XR.get_att args ("", "long-title-format") with
       None ->
         (xml_label ::
          (match blk_cpt_name with
             None -> []
-          | Some c -> [Xtmpl.D " " ; xml_cpt c]
-         ) @ [ Xtmpl.D ": " ; xml_title ]
+          | Some c -> [XR.cdata " " ; xml_cpt c]
+         ) @ [ XR.cdata ": " ; xml_title ]
         )
     | Some xmls -> xmls
   in
   let blk_short_f =
-    match Xtmpl.get_att args ("", "short-title-format") with
+    match XR.get_att args ("", "short-title-format") with
       None ->
         begin
           match blk_label, blk_cpt_name with
             None, None ->  [ xml_title ]
           | Some _, None -> [ xml_label ]
           | None, Some s -> [ xml_cpt s ]
-          | Some _, Some s -> [ xml_label ; Xtmpl.D " " ; xml_cpt s ]
+          | Some _, Some s -> [ xml_label ; XR.cdata " " ; xml_cpt s ]
         end
     | Some xmls -> xmls
   in
@@ -468,18 +472,20 @@ let read_block stog doc args subs =
 ;;
 
 let fun_block1 (stog, data) env args subs =
-  match Xtmpl.get_att_cdata args ("", "href") with
+  match XR.get_att_cdata args ("", "href") with
     Some s when s <> "" ->
       begin
-        match Xtmpl.get_att_cdata args ("", Stog_tags.doc_path) with
-          Some _ -> raise Xtmpl.No_change
+        match XR.get_att_cdata args ("", Stog_tags.doc_path) with
+          Some _ -> raise XR.No_change
         | None ->
             let ((stog, data), path) = Stog_html.get_path (stog, data) env in
             let path = Stog_path.to_string path in
             let xmls =
-              [ Xtmpl.E (("", Stog_tags.block),
-                 Xtmpl.atts_of_list [("", Stog_tags.doc_path), [Xtmpl.D path] ; ("", "href"), [Xtmpl.D s]],
-                 subs)
+              [ XR.node ("", Stog_tags.block)
+                 ~atts: (XR.atts_of_list
+                 [ ("", Stog_tags.doc_path), [XR.cdata path] ;
+                   ("", "href"), [XR.cdata s]])
+                 subs
               ]
             in
             ((stog, data), xmls)
@@ -494,53 +500,55 @@ let fun_block1 (stog, data) env args subs =
           None -> data
         | Some name -> fst (bump_counter data path name)
       in
-      let env = Xtmpl.env_add_xml "id" [Xtmpl.D block.blk_id] env in
-      let env = Xtmpl.env_add_cb "title" (fun acc _ _ _ -> (acc, block.blk_title)) env in
-      let env = Xtmpl.env_add_cb "label"
+      let env = XR.env_add_xml "id" [XR.cdata block.blk_id] env in
+      let env = XR.env_add_cb "title" (fun acc _ _ _ -> (acc, block.blk_title)) env in
+      let env = XR.env_add_cb "label"
         (fun acc _ _ _ ->
            match block.blk_label with
              None -> (acc, [])
            | Some xml -> (acc, xml)
         ) env
       in
-      let env = Xtmpl.env_add_xml "class"
-        [Xtmpl.D (Stog_misc.string_of_opt block.blk_class)] env
+      let env = XR.env_add_xml "class"
+        [XR.cdata (Stog_misc.string_of_opt block.blk_class)] env
       in
-      let env = Xtmpl.env_add_xml "counter-name"
-        [Xtmpl.D (Stog_misc.string_of_opt block.blk_cpt_name)] env
+      let env = XR.env_add_xml "counter-name"
+        [XR.cdata (Stog_misc.string_of_opt block.blk_cpt_name)] env
       in
       let ((stog, data), long) =
-        let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env block.blk_long_f in
-        ((stog, data), Xtmpl.E (("", Xtmpl.tag_main), Xtmpl.atts_empty, xmls))
+        let ((stog, data), xmls) = XR.apply_to_xmls (stog, data) env block.blk_long_f in
+        ((stog, data), xmls)
       in
       let ((stog, data), short) =
-        let ((stog, data), xmls) = Xtmpl.apply_to_xmls (stog, data) env block.blk_short_f in
-         ((stog, data), Xtmpl.E (("", Xtmpl.tag_main), Xtmpl.atts_empty, xmls))
+        let ((stog, data), xmls) = XR.apply_to_xmls (stog, data) env block.blk_short_f in
+         ((stog, data), xmls)
       in
       let data = add_block ~path ~id: block.blk_id ~short ~long data in
-      let env = Xtmpl.env_add_cb "title" (fun acc _ _ _ -> (acc, [long])) env in
-      Xtmpl.apply_to_xmls (stog, data) env block.blk_body
+      let env = XR.env_add_cb "title" (fun acc _ _ _ -> (acc, long)) env in
+      XR.apply_to_xmls (stog, data) env block.blk_body
 ;;
 
 let fun_block2 (stog, data) env atts subs =
-  match Xtmpl.get_att_cdata atts ("", "href") with
+  match XR.get_att_cdata atts ("", "href") with
     None -> ((stog, data), subs)
   | Some href ->
-      let path = match Xtmpl.get_att_cdata atts ("", Stog_tags.doc_path) with
+      let path = match XR.get_att_cdata atts ("", Stog_tags.doc_path) with
           None -> assert false
         | Some path -> path
       in
       let url = Printf.sprintf "%s#%s" path href in
       let quotes =
-        match Xtmpl.get_att_cdata atts ("", "quotes") with
+        match XR.get_att_cdata atts ("", "quotes") with
           None -> "false"
         | Some s -> s
       in
       let xmls =
-        [ Xtmpl.E (("", Stog_tags.doc),
-           Xtmpl.atts_of_list
-             [("", "href"), [Xtmpl.D url] ; ("", "quotes"), [Xtmpl.D quotes]],
-           [])
+        [ XR.node ("", Stog_tags.doc)
+           ~atts: (XR.atts_of_list
+           [ ("", "href"), [XR.cdata url] ;
+             ("", "quotes"), [XR.cdata quotes]
+           ])
+           []
         ]
       in
       ((stog, data), xmls)
@@ -549,10 +557,10 @@ let fun_block2 (stog, data) env atts subs =
 
 let gather_existing_ids =
   let rec f path set = function
-    Xtmpl.D _ -> set
-  | Xtmpl.E (tag, atts, subs) ->
+    XR.D _ -> set
+  | XR.E { XR.name ; atts; subs } ->
       let set =
-        match Xtmpl.get_att_cdata atts ("", "id") with
+        match XR.get_att_cdata atts ("", "id") with
           None
         | Some "" -> set
         | Some id ->
@@ -561,7 +569,7 @@ let gather_existing_ids =
                Stog_msg.warning
                  (Printf.sprintf
                   "id %S defined twice in the same document %S (here for tag %S)" id
-                    (Stog_path.to_string path) (Stog_html.concat_name tag));
+                    (Stog_path.to_string path) (Stog_html.concat_name name));
                set
               )
             else
@@ -579,12 +587,12 @@ let gather_existing_ids =
           let g set xml =
             try f doc.doc_path set xml
             with e ->
-                prerr_endline (Xtmpl.string_of_xml xml);
+                prerr_endline (XR.to_string [xml]);
                 raise e
           in
           List.fold_left g Sset.empty body
         in
-        let title = Xtmpl.xml_of_string doc.doc_title in
+        let title = XR.from_string doc.doc_title in
         let path = Stog_path.to_string doc.doc_path in
         let data = Sset.fold
           (fun id data ->
@@ -656,7 +664,7 @@ let fun_level_fun_doc =
 let dump_data env (stog,data) _ =
   let f_block id (short,long) =
     prerr_endline
-      ("id="^id^", short="^(Xtmpl.string_of_xml short)^", long="^(Xtmpl.string_of_xml long))
+      ("id="^id^", short="^(XR.to_string short)^", long="^(XR.to_string long))
   in
   let f s_path map =
     prerr_endline ("Blocks for path="^s_path^" :");
@@ -703,7 +711,7 @@ let make_module ?levels () =
        }
 
     type cache_data = {
-        cache_blocks : (Xtmpl.tree * Xtmpl.tree) Str_map.t ;
+        cache_blocks : (XR.tree list * XR.tree list) Str_map.t ;
       }
 
     let cache_load _stog data doc t =

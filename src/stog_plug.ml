@@ -29,6 +29,8 @@
 
 (** *)
 
+module XR = Xtmpl_rewrite
+
 let plugin_config_file stog plugin_name =
   Filename.concat
     (Stog_config.config_dir stog.Stog_types.stog_dir)

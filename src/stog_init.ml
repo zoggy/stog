@@ -31,6 +31,8 @@
 
 open Stog_types
 
+module XR = Xtmpl_rewrite
+
 let init_modules stog =
   let modules = Stog_engine.modules () in
   List.map
@@ -51,10 +53,10 @@ let from_dirs ?set_fields dirs =
   let stogs = List.map Stog_io.read_stog dirs in
   let stog = init_common ?set_fields stogs in
   let def_style =
-    (("", Stog_tags.default_style), Xtmpl.atts_empty,
-     [ Xtmpl.xml_of_string ~add_main: false
+    (("", Stog_tags.default_style), XR.atts_empty,
+     XR.from_string
        "<link href=\"&lt;site-url/&gt;/style.css\" rel=\"stylesheet\" type=\"text/css\"/>"
-     ])
+    )
   in
   let stog = { stog with stog_defs = stog.stog_defs @ [ def_style ] } in
   stog
@@ -90,10 +92,10 @@ let from_files ?set_fields files =
   let stog = init_common ~set_fields stogs in
   let stog = Stog_io.read_modules stog in
   let def_style =
-    (("", Stog_tags.default_style), Xtmpl.atts_empty,
-     [ Xtmpl.xml_of_string ~add_main: false
+    (("", Stog_tags.default_style), XR.atts_empty,
+     XR.from_string
        "<style><include file=\"&lt;doc-type/&gt;-style.css\" raw=\"true\"/></style>"
-     ])
+    )
   in
   let stog = { stog with stog_defs = stog.stog_defs @ [ def_style ] } in
   stog

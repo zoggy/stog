@@ -67,10 +67,10 @@ val mk_block_node :
 val verbose : ?info:string -> ?level: int -> string -> unit
 val set_print_verbose : (string -> unit) -> unit
 
-val warning : ?info:string -> string -> unit
+val warning : ?loc: Xtmpl_xml.loc -> ?info:string -> string -> unit
 val set_print_warning : (string -> unit) -> unit
 
-val error : ?info:string -> ?fatal: int -> string -> unit
+val error : ?loc: Xtmpl_xml.loc -> ?info:string -> ?fatal: int -> string -> unit
 val set_print_error : (string -> unit) -> unit
 
 (** {2 Dependencies} *)
