@@ -1,6 +1,6 @@
 (** Stog plugin example. *)
 
-let fun_list stog env args subs =
+let fun_list stog env ?loc args subs =
   (* get the optional sep attribute ... *)
   let sep = Xtmpl_rewrite.opt_att args ("", "sep") in
   (* reverse the separator, for final list will be reversed *)

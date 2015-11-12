@@ -31,6 +31,7 @@
 *)
 
 module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
 
 (** [doc_by_href ?typ ?src_doc stog env href] returns the document, path and
   optional id matching the given href string, of the form [path[#id]].
@@ -39,7 +40,7 @@ module XR = Xtmpl_rewrite
   @param src_doc can be used to specify the source document, to improve
   the error message. *)
 val doc_by_href : ?typ: string -> ?src_doc: Stog_types.doc ->
-  Stog_types.stog -> 'a -> 'a XR.env -> string ->
+  Stog_types.stog -> 'a -> 'a XR.env -> ?loc: Xml.loc -> string ->
     'a * (Stog_types.doc * string * string option) option
 
 (*
@@ -56,7 +57,7 @@ val add_block :
 (** [get_in_env env tag] will look for the given string in the environment,
   by building a <tag/> node and evaluating it. If the result is the same node,
   then return [""] else return the reduced value as a string.*)
-val get_in_env : 'a -> 'a XR.env -> Xmlm.name -> 'a * XR.tree list
+val get_in_env : 'a -> 'a XR.env -> Xml.name -> 'a * XR.tree list
 
 (** [get_path env] returns the path associated to ["path"] in [env].
   @raise Assert_failure if ["path"] is not found in the environment.*)

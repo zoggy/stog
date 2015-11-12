@@ -30,6 +30,7 @@
 (** *)
 
 module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
 
 let plugin_config_file stog plugin_name =
   Filename.concat

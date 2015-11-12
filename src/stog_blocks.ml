@@ -125,9 +125,9 @@ let fun_counter (stog, data) env ?loc atts subs =
 ;;
 
 
-let fun_doc_href ?typ src_doc href (stog, data) env args subs =
+let fun_doc_href ?typ src_doc href (stog, data) env ?loc args subs =
   let src_path_s = Stog_path.to_string src_doc.doc_path in
-  let report_error msg = Stog_msg.error ~info: "Stog_html.fun_doc_href" msg in
+  let report_error msg = Stog_msg.error ?loc ~info: "Stog_html.fun_doc_href" msg in
   let quotes =
     match XR.get_att_cdata args ("", "quotes") with
       None -> false
@@ -135,7 +135,7 @@ let fun_doc_href ?typ src_doc href (stog, data) env args subs =
   in
   let (stog, data, doc, text) =
     let ((stog,data), info) =
-      Stog_html.doc_by_href ?typ ~src_doc stog (stog,data) env href
+      Stog_html.doc_by_href ?typ ~src_doc stog (stog,data) env ?loc href
     in
     let (stog, text) =
       match info with
@@ -198,7 +198,7 @@ let fun_doc_href ?typ src_doc href (stog, data) env args subs =
       ((stog, data), [ xml ])
 ;;
 
-let fun_doc ?typ ?loc src_doc (stog, data) env args subs =
+let fun_doc ?typ src_doc (stog, data) env ?loc args subs =
   match XR.get_att_cdata args ("", "href") with
     None ->
       Stog_msg.error ?loc
@@ -206,14 +206,14 @@ let fun_doc ?typ ?loc src_doc (stog, data) env args subs =
          (match typ with None -> "doc" | Some s -> s));
       ((stog, data), [])
   | Some href ->
-      fun_doc_href ?typ src_doc href (stog, data) env args subs
+      fun_doc_href ?typ src_doc href (stog, data) env ?loc args subs
 ;;
 
 let fun_post = fun_doc ~typ: "post";;
 let fun_page = fun_doc ~typ: "page";;
 
 
-let make_fun_section sect_up cls sect_down (stog, data) env args subs =
+let make_fun_section sect_up cls sect_down (stog, data) env ?loc args subs =
   let ((stog, data), path) = Stog_html.get_path (stog, data) env in
   let data = List.fold_left
     (fun data cls_down ->
@@ -359,15 +359,14 @@ let node_of_block b =
   XR.node ("",Stog_tags.block) ~atts subs
 ;;
 
-let block_body_of_subs stog doc blk = function
+let block_body_of_subs stog doc ?loc blk = function
   [] ->
     let tmpl_file =
       match blk.blk_class with
         None -> "block.tmpl"
       | Some c -> Printf.sprintf "block-%s.tmpl" c
     in
-
-    let tmpl = Stog_tmpl.get_template_file stog doc tmpl_file in
+    let tmpl = Stog_tmpl.get_template_file stog doc ?loc tmpl_file in
     XR.from_file tmpl
 | l -> l
 ;;
@@ -375,8 +374,8 @@ let block_body_of_subs stog doc blk = function
 let read_block_from_subs stog doc =
   let s_xmls = XR.to_string in
   let rec f blk = function
-    XR.D _ -> blk
-  | XR.E { XR.name = ("", tag) ; subs } ->
+    XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> blk
+  | XR.E { XR.name = ("", tag) ; subs ; loc } ->
       begin
         match tag, subs with
           "id", [XR.D id] -> { blk with blk_id = id.Xml.text }
@@ -401,7 +400,7 @@ let read_block_from_subs stog doc =
         | "title", _ -> { blk with blk_title = subs }
         | "long-title-format", _ -> { blk with blk_long_f = subs }
         | "short-title-format", _ -> { blk with blk_short_f = subs }
-        | "contents", _ -> { blk with blk_body = block_body_of_subs stog doc blk subs }
+        | "contents", _ -> { blk with blk_body = block_body_of_subs stog doc ?loc blk subs }
         | _, _ ->
             Stog_msg.warning (Printf.sprintf "Ignoring block node %S" tag);
             blk
@@ -411,7 +410,7 @@ let read_block_from_subs stog doc =
   List.fold_left f
 ;;
 
-let read_block stog doc args subs =
+let read_block stog doc ?loc args subs =
   let with_contents =
     match XR.get_att_cdata args ("", "with-contents") with
       Some "true" -> true
@@ -465,7 +464,7 @@ let read_block stog doc args subs =
     }
   in
   match with_contents with
-    false -> { blk with blk_body = block_body_of_subs stog doc blk subs }
+    false -> { blk with blk_body = block_body_of_subs stog doc ?loc blk subs }
   | true -> read_block_from_subs stog doc blk subs
 ;;
 
@@ -499,7 +498,7 @@ let fun_block1 (stog, data) env ?loc args subs =
         | Some name -> fst (bump_counter data path name)
       in
       let env = XR.env_add_xml "id" [XR.cdata block.blk_id] env in
-      let env = XR.env_add_cb "title" 
+      let env = XR.env_add_cb "title"
         (fun acc _ ?loc _ _ -> (acc, block.blk_title)) env
       in
       let env = XR.env_add_cb "label"
@@ -528,7 +527,7 @@ let fun_block1 (stog, data) env ?loc args subs =
       XR.apply_to_xmls (stog, data) env block.blk_body
 ;;
 
-let fun_block2 (stog, data) env atts subs =
+let fun_block2 (stog, data) env ?loc atts subs =
   match XR.get_att_cdata atts ("", "href") with
     None -> ((stog, data), subs)
   | Some href ->

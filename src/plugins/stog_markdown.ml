@@ -65,7 +65,7 @@ let maybe_arg args key ~default =
     | None -> default
     | Some v -> v
 
-let fun_markdown stog env args subs =
+let fun_markdown stog env ?loc args subs =
   let command = maybe_arg args ("", "command") ~default:"markdown" in
   let args = maybe_arg args ("", "args") ~default:"" in
   let input =
@@ -79,15 +79,20 @@ let fun_markdown stog env args subs =
   let com =
     Printf.sprintf "%s %s < %s > %s"
       command args (Filename.quote input_file) (Filename.quote output_file) in
-  if Sys.command com <> 0 then begin
-  end;
-  let output = Stog_misc.string_of_file output_file in
-  Sys.remove input_file;
-  Sys.remove output_file;
-  (* markdown may contain HTML portions meant to be processed by
-     XR, so we re-run XR.apply here *)
-  let (stog, applied_output) = XR.apply_to_string stog env output in
-  (stog, applied_output)
+  match Sys.command com with
+      0 ->
+      let output = Stog_misc.string_of_file output_file in
+      Sys.remove input_file;
+      Sys.remove output_file;
+      (* markdown may contain HTML portions meant to be processed by
+         XR, so we re-run XR.apply here *)
+      let (stog, applied_output) = XR.apply_to_string stog env output in
+      (stog, applied_output)
+  | _ -> 
+      Stog_msg.error ?loc ("Command failed: "^com);
+      Sys.remove input_file;
+      Sys.remove output_file;
+      (stog, [])
 ;;
 
 let () = Stog_plug.register_html_base_rule ("", "markdown") fun_markdown;;

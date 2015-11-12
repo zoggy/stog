@@ -336,7 +336,7 @@ let concat_toplevel_outputs output =
   let mk (cl, s) =
     match s with
       "" -> []
-    | _ -> 
+    | _ ->
         let atts = XR.atts_one ("","class") [XR.cdata cl] in
         [ XR.node ("","div") ~atts [XR.cdata s] ]
   in
@@ -402,9 +402,8 @@ let fun_eval stog env ?loc args code =
         in
         if raised_exc && exc then
           begin
-            let msg = Printf.sprintf
-              "%socaml error with code:\n%s\n%s" 
-                (match loc with None -> "" | Some loc -> (Xml.string_of_loc loc)^"\n")
+            let msg = Xtmpl_xml.loc_sprintf loc
+              "OCaml error with code:\n%s\n%s"
                 phrase output.stderr
             in
             failwith msg
@@ -413,7 +412,7 @@ let fun_eval stog env ?loc args code =
         let acc =
           match toplevel with
             false ->
-              let code = 
+              let code =
                 if in_xml_block then [XR.node ("","div") code] else code in
               if show_stdout then
                 let xml =

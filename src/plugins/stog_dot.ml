@@ -58,19 +58,21 @@ module XR = Xtmpl_rewrite
 module Xml = Xtmpl_xml
 
 let concat_code =
-  let f b = function
+  let f ?loc b = function
     XR.D code -> Buffer.add_string b code.Xml.text
   | xml ->
-      failwith (Printf.sprintf "XML code in dot code: %s"
-       (XR.to_string [xml]))
+      failwith
+        (Xtmpl_xml.loc_sprintf loc
+         "XML code in dot code: %s"
+           (XR.to_string [xml]))
   in
-  fun xmls ->
+  fun ?loc xmls ->
     let b = Buffer.create 256 in
-    List.iter (f b) xmls;
+    List.iter (f ?loc b) xmls;
     Buffer.contents b
 ;;
 
-let fun_dot stog env atts subs =
+let fun_dot stog env ?loc atts subs =
   let code = concat_code subs in
   let (stog, path) = Stog_engine.get_path stog env in
   let (_, doc) = Stog_types.doc_by_path stog path in
@@ -98,7 +100,10 @@ let fun_dot stog env atts subs =
       match XR.get_att_cdata atts ("","outfile") with
         None ->
           if typ <> "svg" then
-            failwith "<dot>: please specify outfile attribute if file type is not 'svg'";
+            failwith
+              (Xtmpl_xml.loc_sprintf loc
+               "<dot>: please specify outfile attribute if file type is not 'svg'"
+              );
           let f = Filename.temp_file "stog_dot" ".svg" in
           (f, f, true, (fun () -> try Unix.unlink f with _ -> ()))
       | Some f ->
@@ -149,7 +154,7 @@ let fun_dot stog env atts subs =
               [ XR.node ("","img") ~atts [] ]
             end
       | _ ->
-          Stog_msg.error ("Command failed: "^com);
+          Stog_msg.error ?loc ("Command failed: "^com);
           []
     in
     finalize_outfile () ;
@@ -157,7 +162,7 @@ let fun_dot stog env atts subs =
     (stog, xml)
   with
     Failure msg ->
-      Stog_msg.error msg ;
+      Stog_msg.error ?loc msg ;
       (stog, [])
 ;;
 

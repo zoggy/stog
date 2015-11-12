@@ -31,7 +31,7 @@
 
 type contents = Stog_types.stog -> Stog_types.stog * Xtmpl_rewrite.tree list
 
-exception Template_file_not_found of string
+exception Template_file_not_found of string Xtmpl_xml.with_loc
 
 (** [get_template_file stog doc file] returns absolute filename of the given
   template filename.
@@ -43,7 +43,8 @@ exception Template_file_not_found of string
   @raise Template_file_not_found if no include directory contains the
   given file (when the file is relative an implicit).
 *)
-val get_template_file : Stog_types.stog -> Stog_types.doc -> string -> string
+val get_template_file : Stog_types.stog -> Stog_types.doc -> 
+  ?loc: Xtmpl_xml.loc -> string -> string
 
 (** [read_template_file stog doc file] returns the content of the given
   template filename, after calling {!get_template_file} to get the final
@@ -55,7 +56,8 @@ val get_template_file : Stog_types.stog -> Stog_types.doc -> string -> string
   @raise Template_file_not_found (see {!get_template_file})
   *)
 val read_template_file : Stog_types.stog -> Stog_types.doc ->
-  ?depend: bool -> ?raw: bool -> string -> Stog_types.stog * Xtmpl_rewrite.tree list
+  ?depend: bool -> ?raw: bool -> 
+  ?loc: Xtmpl_xml.loc -> string -> Stog_types.stog * Xtmpl_rewrite.tree list
 
 val get_template : Stog_types.stog -> ?doc: Stog_types.doc ->
   contents -> string -> Stog_types.stog * Xtmpl_rewrite.tree list

@@ -217,7 +217,7 @@ let fun_list acc env ?loc args subs =
   (acc, iter [] subs)
 ;;
 
-let doc_by_href ?typ ?src_doc stog acc env href =
+let doc_by_href ?typ ?src_doc stog acc env ?loc href =
   let (path, id) =
     try
       let p = String.index href '#' in
@@ -247,7 +247,7 @@ let doc_by_href ?typ ?src_doc stog acc env href =
           | Some doc ->
             "In "^(Stog_path.to_string doc.doc_path)^": "^s
         in
-        Stog_msg.error ~info: "Stog_html.doc_by_href" msg;
+        Stog_msg.error ?loc ~info: "Stog_html.doc_by_href" msg;
         (acc, None)
   in
   match info with

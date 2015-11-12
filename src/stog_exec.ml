@@ -129,9 +129,8 @@ let fun_exec stog env ?loc args code =
         in
         if error && exc then
           begin
-            let msg = Printf.sprintf 
-              "%sExec error with command:\n%s\n%s" 
-              (match loc with None -> "" | Some loc -> Xml.string_of_loc loc)
+            let msg = Xtmpl_xml.loc_sprintf loc
+              "Exec error with command:\n%s\n%s"
               command output
             in
             failwith msg

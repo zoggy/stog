@@ -35,6 +35,7 @@
 *)
 
 module XR = Xtmpl_rewrite
+module Xml = Xtmpl_xml
 
 (** [plugin_config_file stog plugin_name] returns the configuration file
   for this plugin name, for consistency purpose. *)
@@ -53,7 +54,7 @@ val register_html_base_rule : Xmlm.name -> Stog_types.stog XR.callback -> unit
   @param src_doc can be used to specify the source document, to improve
   the error message. *)
 val doc_by_href : ?typ: string -> ?src_doc: Stog_types.doc ->
-  Stog_types.stog -> 'a -> 'a XR.env -> string ->
+  Stog_types.stog -> 'a -> 'a XR.env -> ?loc: Xml.loc -> string ->
     'a * (Stog_types.doc * string * string option) option
 
 (** [mk_block_node ...] creates a [<block ...] with the given information.*)

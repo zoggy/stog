@@ -53,11 +53,7 @@ let print_warning = ref prerr_endline;;
 module Sset = Set.Make (struct type t = string let compare = String.compare end);;
 let seen_warnings = ref Sset.empty;;
 let warning ?loc ?info msg =
-  let msg = Printf.sprintf "%sWarning: %s%s"
-    (match loc with
-       None -> ""
-     | Some loc -> (Xtmpl_xml.string_of_loc loc)^"\n"
-    )
+  let msg = Xtmpl_xml.loc_sprintf loc "Warning: %s%s"
     (match info with None -> "" | Some s -> Printf.sprintf "[%s]" s)
     msg
   in
@@ -76,11 +72,7 @@ let errors = ref 0;;
 let print_error = ref prerr_endline;;
 
 let error ?loc ?info ?fatal msg =
-  let msg = Printf.sprintf "%sError: %s%s"
-    (match loc with
-       None -> ""
-     | Some loc -> (Xtmpl_xml.string_of_loc loc)^"\n"
-    )
+  let msg = Xtmpl_xml.loc_sprintf loc "Error: %s%s"
     (match info with None -> "" | Some s -> Printf.sprintf "[%s]" s)
     msg
   in

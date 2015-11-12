@@ -413,7 +413,7 @@ let find_block_by_id =
       find_in_list id q
   and find id xml =
     match xml with
-      XR.D _ -> raise Not_found
+      XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> raise Not_found
     | XR.E { XR.atts ; subs } ->
         match XR.get_att_cdata atts ("","id") with
           Some s when s = id -> raise (Block_found xml)
