@@ -125,7 +125,7 @@ let http_handler cfg user ~http_url ~ws_url base_path session_id req body = func
     Stog_server_preview.respond_js Stog_server_files.multi_ed_js
 | [] | [""] ->
     let body = editor_page cfg user ~http_url ~ws_url base_path session_id in
-    let body = Xtmpl.string_of_xmls body in
+    let body = Xtmpl_rewrite.to_string body in
     S.respond_string ~status: `OK ~body ()
 | _ ->
     S.respond_error ~status:`Not_found ~body: "" ()

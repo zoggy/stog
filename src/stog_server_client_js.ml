@@ -115,7 +115,7 @@ let add_action_box ws http_url =
                 log "click on refresh";
                 let json = Stog_server_types.wsdata_of_client_msg msg in
                 ws##send (Js.string json);
-                display_msg [Xtmpl.D "Recomputing has been asked, please wait..."]
+                display_msg [Xtmpl_rewrite.cdata "Recomputing has been asked, please wait..."]
              ) ;
            ]
          in
@@ -192,11 +192,11 @@ let update ws http_url page_path (path,op) =
         log "patch received";
         Xdiffjs.apply_dom_patch ~skip_node: (skip_node http_url) patch ;
         if mathjax_active () then mathjax_typeset ();
-        display_msg [Xtmpl.D "Page patched !"]
+        display_msg [Xtmpl_rewrite.cdata "Page patched !"]
     | Update_all xml ->
         set_page_content ws http_url xml;
         if mathjax_active () then mathjax_typeset ();
-        display_msg [Xtmpl.D "Page updated !"]
+        display_msg [Xtmpl_rewrite.cdata "Page updated !"]
   with e ->
     log (Printexc.to_string e)
 ;;
@@ -205,9 +205,9 @@ let display_errors ~errors ~warnings =
   let block cls = function
     [] -> []
   | msgs ->
-      [Xtmpl.E (("","pre"),
-       Xtmpl.atts_of_list [("","class"), [Xtmpl.D cls]],
-       [ Xtmpl.D (String.concat "\n" msgs) ]) ;
+      [Xtmpl_rewrite.node ("","pre")
+        ~atts: (Xtmpl_rewrite.atts_of_list [("","class"), [Xtmpl_rewrite.cdata cls]])
+          [ Xtmpl_rewrite.cdata (String.concat "\n" msgs) ]
       ]
   in
   let xmls = (block "error" errors) @ (block "warning" warnings) in

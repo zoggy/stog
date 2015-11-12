@@ -1716,10 +1716,10 @@ fi
 SHARE_DIR=$datadir
 
 
-PACKAGES=ppx_blob,xmlm,xtmpl,netstring,ocf,ocf.ppx,dynlink,unix,str,higlo.lexers,lwt.unix
+PACKAGES=ppx_blob,xtmpl,netstring,ocf,ocf.ppx,dynlink,unix,str,higlo.lexers,lwt.unix,xtmpl.ppx
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
 SERVER_PACKAGES=lwt.preemptive,lwt.ppx,websocket,xmldiff,yojson,ppx_deriving_yojson,ojs.server,sha
-SERVER_JS_PACKAGES=js_of_ocaml,js_of_ocaml.syntax,xmldiff.js,yojson,ppx_deriving_yojson,ojs.js,xtmpl.js
+SERVER_JS_PACKAGES=js_of_ocaml,js_of_ocaml.syntax,xmldiff.js,yojson,ppx_deriving_yojson,xtmpl.js,ojs.js
 MSERVER_PACKAGES=ojs.filetree.server,ojs.editor.server
 MSERVER_JS_PACKAGES=ojs.filetree.js,ojs.editor.js
 if test "$SERVER" = "" ; then SERVER_PACKAGES=""; MSERVER_PACKAGES="" ; fi

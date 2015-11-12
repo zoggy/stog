@@ -181,8 +181,8 @@ let send_patch active_cons old_stog stog doc_id =
   | Some xtmpl1, Some xtmpl2 when xtmpl1 = xtmpl2 ->
       Lwt.return_unit
   | Some xtmpl1, Some xtmpl2 -> (* xml1 <> xml2 *)
-      let xml1 = Xmldiff.xml_of_string (Xtmpl.string_of_xmls xtmpl1) in
-      let xml2 = Xmldiff.xml_of_string (Xtmpl.string_of_xmls xtmpl2) in
+      let xml1 = Xmldiff.xml_of_string (Xtmpl_rewrite.to_string xtmpl1) in
+      let xml2 = Xmldiff.xml_of_string (Xtmpl_rewrite.to_string xtmpl2) in
       Lwt_preemptive.detach
        (fun xml2 ->
            try `Patch (Xmldiff.diff ~cut: diff_cut xml1 xml2)

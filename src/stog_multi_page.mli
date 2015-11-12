@@ -29,6 +29,8 @@
 
 (** *)
 
+module XR = Xtmpl_rewrite
+
 val url_ : Stog_multi_config.t -> string list -> string
 val path_login : string list
 val path_sessions : string list
@@ -36,12 +38,12 @@ val path_sessions : string list
 val url_login : Stog_multi_config.t -> string
 val url_sessions : Stog_multi_config.t -> string
 
-type block = [`Msg of string | `Block of Xtmpl.tree list]
+type block = [`Msg of string | `Block of XR.tree list]
 
-val error_block: block -> Xtmpl.tree list
-val message_block: block -> Xtmpl.tree list
+val error_block: block -> XR.tree list
+val message_block: block -> XR.tree list
 
-val nbsp : Xtmpl.tree
+val nbsp : XR.tree
 
 val page :
   Stog_multi_config.t ->
@@ -51,36 +53,36 @@ val page :
     ?js: string list ->
     ?message: block ->
     title:string ->
-    Xtmpl.tree list -> Xtmpl.tree list
+    XR.tree list -> XR.tree list
 
 module Form_login :
   sig
     type form =
-        ?env:unit Xtmpl.env ->
+        ?env:unit XR.env ->
         ?action:string ->
-        ?error_msg:Xtmpl.tree list ->
+        ?error_msg:XR.tree list ->
         ?login:string ->
         ?meth:Cohttp.Code.meth ->
         ?password:string ->
         ?submit:string ->
-        unit -> Xtmpl.tree list
+        unit -> XR.tree list
     type template =
-        ?env:unit Xtmpl.env ->
+        ?env:unit XR.env ->
         ?action:string ->
-        ?error_msg:Xtmpl.tree list ->
+        ?error_msg:XR.tree list ->
         ?meth:Cohttp.Code.meth ->
-        unit -> Xtmpl.tree list
+        unit -> XR.tree list
     exception Error of (template * string list)
     type t = { submit : string option; password : string; login : string; }
     val form :
-      ?env:unit Xtmpl.env ->
+      ?env:unit XR.env ->
       ?action:string ->
-      ?error_msg:Xtmpl.tree list ->
+      ?error_msg:XR.tree list ->
       ?login:string ->
       ?meth:Cohttp.Code.meth ->
       ?password:string ->
       ?submit:string ->
-      unit -> Xtmpl.tree list
+      unit -> XR.tree list
     val read_form : (string -> string option) -> template * t
   end
 

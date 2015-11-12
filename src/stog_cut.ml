@@ -150,7 +150,7 @@ let mk_path use_parent_path path sep id =
 let cut_docs =
   let id_set =
     let rec iter set = function
-      XR.D _ -> set
+      XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> set
     | XR.E { XR.atts ; subs } ->
         let set =
           match XR.get_att_cdata atts ("", "id") with

@@ -30,7 +30,7 @@
 (** *)
 
 open Stog_url
-open Xtmpl
+
 open Stog_multi_config
 open Stog_server_types
 open Stog_multi_session
@@ -39,6 +39,8 @@ open Stog_multi_gs
 module S = Cohttp_lwt_unix.Server
 module Request = Cohttp.Request
 let (>>=) = Lwt.bind
+
+module XR = Xtmpl_rewrite
 
 let restart_previous_sessions cfg sessions =
   List.iter
@@ -66,7 +68,7 @@ let action_form_login app_url =
 let sha256 s = String.lowercase (Sha256.to_hex (Sha256.string s))
 
 let respond_page page =
-  let body = Xtmpl.string_of_xmls page in
+  let body = XR.to_string page in
   S.respond_string ~status:`OK ~body ()
 
 let handle_login_post cfg gs req body =
@@ -90,7 +92,7 @@ let handle_login_post cfg gs req body =
       let error_msg =
         Stog_multi_page.error_block
           (`Block (List.map
-            (fun msg -> Xtmpl.E (("","div"), Xtmpl.atts_empty, [Xtmpl.D msg]))
+            (fun msg -> XR.node ("","div") [XR.cdata msg])
               errors))
       in
       let contents = tmpl ~error_msg ~action: (Stog_multi_page.url_login cfg) () in
@@ -111,7 +113,7 @@ let handle_login_post cfg gs req body =
           (token_cookie, token)
       in
       let page = Stog_multi_user.page cfg gs account in
-      let body = Xtmpl.string_of_xmls page in
+      let body = XR.to_string page in
       let headers =
         let (h,s) = Cohttp.Cookie.Set_cookie_hdr.serialize cookie in
         Cohttp.Header.init_with h s
@@ -166,7 +168,7 @@ let handle_path cfg gs ~http_url ~ws_url sock opt_user req body = function
       ~action: (Stog_multi_page.url_login cfg) ()
     in
     let page = Stog_multi_page.page cfg None ~title: "Login" contents in
-    let body = Xtmpl.string_of_xmls page in
+    let body = XR.to_string page in
     S.respond_string ~status:`OK ~body ()
 
 | ["styles" ; s] when s = Stog_server_preview.default_css ->

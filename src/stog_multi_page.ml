@@ -34,6 +34,8 @@ open Stog_url
 module S = Cohttp_lwt_unix.Server
 module H = Xtmpl_xhtml
 
+module XR = Xtmpl_rewrite
+
 let url_ cfg path =
   let url = Stog_url.append cfg.http_url.pub path in
   Stog_url.to_string url
@@ -49,26 +51,26 @@ let page_body_tmpl = [%xtmpl "templates/multi_page_body.tmpl"]
 
 let app_name = "Stog-multi-server"
 
-type block = [`Msg of string | `Block of Xtmpl.tree list]
+type block = [`Msg of string | `Block of XR.tree list]
 
 let xmls_of_block = function
-| (`Msg str) -> [Xtmpl.D str]
+| (`Msg str) -> [XR.cdata str]
 | (`Block xmls) -> xmls
 
 let error_block b =
   let xmls =  xmls_of_block b in
-  let atts = Xtmpl.atts_one ("","class") [Xtmpl.D "alert alert-error"] in
-  [ Xtmpl.E (("","div"), atts, xmls) ]
+  let atts = XR.atts_one ("","class") [XR.cdata "alert alert-error"] in
+  [ XR.node ("","div") ~atts xmls ]
 
 let message_block b =
   let xmls =  xmls_of_block b in
-  let atts = Xtmpl.atts_one ("","class") [Xtmpl.D "alert alert-info"] in
-  [ Xtmpl.E (("","div"), atts, xmls) ]
+  let atts = XR.atts_one ("","class") [XR.cdata "alert alert-info"] in
+  [ XR.node ("","div") ~atts xmls ]
 
 let nbsp = List.hd ([%xtmpl.string "&#xa0;"] ())
 
 let mk_js_script code =
-  H.script ~type_: "text/javascript" [ Xtmpl.D code ]
+  H.script ~type_: "text/javascript" [ XR.cdata code ]
 
 let page cfg account_opt ?(empty=false) ?error  ?(js=[]) ?message ~title body =
   let topbar = [] in

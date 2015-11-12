@@ -33,7 +33,7 @@ module J = Yojson.Safe
 
 type page_update =
   | Patch of Xmldiff.patch
-  | Update_all of Xtmpl.tree
+  | Update_all of Xtmpl_rewrite.tree
 
 type server_message =
   | Update of string * page_update (* path * operation *)

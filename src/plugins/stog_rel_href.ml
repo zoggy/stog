@@ -37,8 +37,9 @@ module Xml = Xtmpl_xml
 
 open Stog_types
 
-let rec rewrite_href url = function
-  | (XR.D _) as xml -> xml
+let rec rewrite_href url xml =
+  match xml with
+  | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> xml
   | XR.E node ->
     let atts = Xml.Name_map.mapi
       (fun att v ->

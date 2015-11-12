@@ -902,7 +902,6 @@ let _ =
 let _ = !print "\n### checking required tools and libraries ###\n"
 
 
-let _ = check_ocamlfind_package conf ~min_version: [1;1] "xmlm";;
 let _ = check_ocamlfind_package conf ~min_version: [0;12] "xtmpl";;
 let _ = check_ocamlfind_package conf ~min_version: [3;6] "netstring";;
 let _ = check_ocamlfind_package conf ~min_version: [0;3] "ocf";;

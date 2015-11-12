@@ -36,14 +36,14 @@ val page :
   Stog_multi_gs.global_state ->
   ?message:Stog_multi_page.block ->
   ?error:Stog_multi_page.block ->
-  Stog_multi_config.account -> Xtmpl.tree list
+  Stog_multi_config.account -> Xtmpl_rewrite.tree list
 
 val handle_sessions_post :
   Stog_multi_config.t ->
   Stog_multi_gs.global_state ->
-  Stog_multi_config.account -> 'a -> 'b -> Xtmpl.tree list Lwt.t
+  Stog_multi_config.account -> 'a -> 'b -> Xtmpl_rewrite.tree list Lwt.t
 
 val handle_sessions_get :
   Stog_multi_config.t ->
   Stog_multi_gs.global_state ->
-  Stog_multi_config.account -> 'a -> 'b -> Xtmpl.tree list Lwt.t
+  Stog_multi_config.account -> 'a -> 'b -> Xtmpl_rewrite.tree list Lwt.t

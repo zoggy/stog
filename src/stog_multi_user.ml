@@ -38,6 +38,8 @@ open Stog_multi_gs
 let (>>=) = Lwt.bind
 module H = Xtmpl_xhtml
 
+module XR = Xtmpl_rewrite
+
 let user_page_tmpl = [%xtmpl "templates/multi_user_page.tmpl"]
 
 let create_session cfg sessions account =
@@ -59,38 +61,40 @@ let session_list cfg gs user =
       !(gs.sessions)
       []
   in
-  let td x = Xtmpl.E(("","td"), Xtmpl.atts_empty, x) in
+  let td x = XR.node ("","td") x in
   let nbsp = Stog_multi_page.nbsp in
   let tds_of_session s =
     let preview_url = Stog_url.to_string s.session_stog.stog_preview_url in
     let editor_url = Stog_url.to_string s.session_editor.editor_url in
     let st = s.session_stored in
     [
-      td [Xtmpl.D (string_of_date st.session_create_date) ] ;
-      td [Xtmpl.D st.session_git.origin_url ; H.br ;
-          Xtmpl.D ("{ " ^ st.session_git.origin_branch ^ " }") ] ;
+      td [XR.cdata (string_of_date st.session_create_date) ] ;
+      td [XR.cdata st.session_git.origin_url ; H.br ;
+          XR.cdata ("{ " ^ st.session_git.origin_branch ^ " }") ] ;
       td ([
-        Xtmpl.D st.session_git.edit_branch ;
+        XR.cdata st.session_git.edit_branch ;
         H.br ;
-        H.a ~href: preview_url [Xtmpl.D "preview"] ; nbsp ;
-        H.a ~href: editor_url [Xtmpl.D "editor"] ; nbsp
+        H.a ~href: preview_url [XR.cdata "preview"] ; nbsp ;
+        H.a ~href: editor_url [XR.cdata "editor"] ; nbsp
         ]
       )
     ]
   in
   let trs = List.map
-    (fun s -> Xtmpl.E (("","tr"), Xtmpl.atts_empty, tds_of_session s))
+    (fun s -> XR.node ("","tr") (tds_of_session s))
     sessions
   in
   let headers =
-    let th s = Xtmpl.E(("","th"), Xtmpl.atts_empty, [Xtmpl.D s]) in
-    Xtmpl.E (("","tr"), Xtmpl.atts_empty,
+    let th s = XR.node ("","th") [XR.cdata s] in
+    XR.node ("","tr")
      [ th "Creation date" ; th "Origin {branch}" ; th "Current branch" ;
        th "" ; th "" ;
      ]
-    )
   in
-  [ Xtmpl.E (("","table"), Xtmpl.atts_one ("","class") [Xtmpl.D "table"], headers :: trs) ]
+  [ XR.node ("","table") 
+    ~atts: (XR.atts_one ("","class") [XR.cdata "table"])
+    (headers :: trs)
+  ]
 
 
 module Form_session = [%ojs.form "templates/form_session.tmpl"]

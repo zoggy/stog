@@ -100,24 +100,26 @@ let include_href name stog doc ?id ~raw ~subsonly ~depend ?loc href env =
         failwith
           (Printf.sprintf "No id %S in document %S"
            id (Stog_path.to_string path))
-    | Some (XR.D _) -> assert false
-    | Some ((XR.E node) as xml)->
-        let xmls =
-          match raw, subsonly with
-            true, false ->
-              [ XR.cdata (XR.to_string [xml]) ]
-          | true, true ->
-              [ XR.cdata (XR.to_string node.XR.subs) ]
-          | false, true ->
-              node.XR.subs
-          | false, false ->
-              match new_id with
-                None -> [xml]
-              | Some new_id ->
-                  let atts = XR.atts_replace ("","id") new_id node.XR.atts in
-                  [ XR.E { node with XR.atts } ]
-        in
-        (stog, xmls)
+    | Some xml ->
+        match xml with
+        | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> assert false
+        | XR.E node ->
+            let xmls =
+              match raw, subsonly with
+                true, false ->
+                  [ XR.cdata (XR.to_string [xml]) ]
+              | true, true ->
+                  [ XR.cdata (XR.to_string node.XR.subs) ]
+              | false, true ->
+                  node.XR.subs
+              | false, false ->
+                  match new_id with
+                    None -> [xml]
+                  | Some new_id ->
+                      let atts = XR.atts_replace ("","id") new_id node.XR.atts in
+                      [ XR.E { node with XR.atts } ]
+            in
+            (stog, xmls)
   with
     Failure s ->
       Stog_msg.error s;
@@ -364,12 +366,14 @@ let concat_name ?(sep=":") (prefix, name) =
 ;;
 
 let fun_as_xml =
-  let rec iter = function
-    XR.D s -> XR.from_string s.Xml.text
-  | XR.E node ->
-      [ XR.E { node with
-          XR.subs = List.flatten (List.map iter node.XR.subs) }
-      ]
+  let rec iter xml =
+    match xml with
+    | XR.D s -> XR.from_string s.Xml.text
+    | XR.E node ->
+        [ XR.E { node with
+            XR.subs = List.flatten (List.map iter node.XR.subs) }
+        ]
+    | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> [xml]
   in
   fun x _env ?loc _ subs ->
     let xmls = XR.merge_cdata_list subs in
@@ -477,7 +481,7 @@ let fun_twocolumns stog env ?loc args subs =
   let subs = List.fold_right
     (fun xml acc ->
        match xml with
-         XR.D _ -> acc
+         XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> acc
        | XR.E { XR.subs } -> subs :: acc
     ) subs []
   in
@@ -505,7 +509,7 @@ let fun_ncolumns stog env ?loc args subs =
   let subs = List.fold_right
     (fun xml acc ->
        match xml with
-         XR.D _ -> acc
+         XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> acc
        | XR.E { XR.subs } -> subs :: acc
     ) subs []
   in
