@@ -1,4 +1,6 @@
 Next release:
+* a document's doctype is now taken from the template corresponding to
+  the document's type
 * install odoc_* files in stog ocamlfind directory
 * new option -pp for stog-ocaml-session
 * new <exec> rule to execute commands and include output in documents

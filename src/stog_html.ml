@@ -1148,7 +1148,6 @@ let make_by_word_indexes stog env f_doc_path doc_type map =
             doc_src = Stog_path.to_string path ;
             doc_sets = [] ;
             doc_lang_dep = true ;
-            doc_xml_doctype = None ;
             doc_out = None ;
             doc_used_mods = Stog_types.Str_set.empty ;
           }
@@ -1214,7 +1213,6 @@ let make_archive_indexes stog env =
             doc_src = Stog_path.to_string path ;
             doc_sets = [] ;
             doc_lang_dep = true ;
-            doc_xml_doctype = None ;
             doc_out = None ;
             doc_used_mods = Stog_types.Str_set.empty ;
           }

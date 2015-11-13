@@ -212,7 +212,6 @@ let fill_doc_from_atts =
     | ("","date") -> { doc with doc_date = Some (date_of_string (to_s v)) }
     | ("","sets") -> { doc with doc_sets = sets_of_string (to_s v) }
     | ("","language-dep") -> { doc with doc_lang_dep = bool_of_string (to_s v) }
-    | ("","doctype") -> { doc with doc_xml_doctype = Some (to_s v) }
     | ("", "use") ->
         { doc with doc_used_mods = used_mods_of_string doc.doc_used_mods (to_s v) }
     | _ ->
@@ -236,7 +235,6 @@ let fill_doc_from_nodes =
         | ("", "date") -> { doc with doc_date = Some (date_of_string v) }
         | ("", "sets") -> { doc with doc_sets = sets_of_string v }
         | ("", "language-dep") -> { doc with doc_lang_dep = bool_of_string v }
-        | ("", "doctype") -> { doc with doc_xml_doctype = Some v }
         | ("", "use") -> { doc with doc_used_mods = used_mods_of_string doc.doc_used_mods v }
         | s -> { doc with doc_defs = (s, atts, subs) :: doc.doc_defs }
   in

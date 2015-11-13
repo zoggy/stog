@@ -70,7 +70,6 @@ type doc =
     doc_src : string ;
     doc_sets : string list ;
     doc_lang_dep : bool ;
-    doc_xml_doctype : string option ;
     doc_out : body option;
     doc_used_mods : Str_set.t ;
   }
@@ -93,7 +92,6 @@ let make_doc ?(typ="dummy") ?(path=Stog_path.path [] false) ?prolog () =
     doc_src = "/tmp" ;
     doc_sets = [] ;
     doc_lang_dep = true ;
-    doc_xml_doctype = None ;
     doc_out = None ;
     doc_used_mods = Str_set.empty ;
   }

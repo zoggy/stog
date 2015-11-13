@@ -568,23 +568,19 @@ let output_doc ~gen_cache state doc =
         )
   | Some xmls ->
       let oc = open_out file in
-      let doctype =
-        match doc.doc_xml_doctype with
-          None -> "HTML"
-        | Some s -> s
-      in
-      Printf.fprintf oc "<!DOCTYPE %s>\n" doctype;
-      let xmls =
-        match String.lowercase doctype with
-          "html" -> List.map Stog_html5.hack_self_closed xmls
-        | _ -> xmls
-      in
-      let xmldoc = 
-        let prolog = match doc.doc_prolog with 
+      let xmldoc =
+        let prolog = match doc.doc_prolog with
             None -> Xml.prolog []
           | Some p -> p
-        in 
+        in
         XR.doc prolog xmls
+      in
+      let xmldoc =
+        match Xml.doctype_name xmldoc with
+        | Some (_,s) when String.lowercase s = "html" ->
+            let elements = List.map Stog_html5.hack_self_closed xmldoc.Xml.elements in
+            { xmldoc with Xml.elements }
+        | _ -> xmldoc
       in
       output_string oc (XR.doc_to_string ~xml_atts: false xmldoc);
       close_out oc;
@@ -726,7 +722,7 @@ let get_doc_out stog doc =
       in
       let xmls = xmldoc.Xml.elements in
       let doc = { doc with
-          doc_prolog = Some xmldoc.Xml.prolog ; 
+          doc_prolog = Some xmldoc.Xml.prolog ;
           doc_out = Some xmls ;
         }
       in
@@ -737,7 +733,7 @@ let get_doc_out stog doc =
 
 let get_languages data env =
   match opt_in_env data env ("", "languages") with
-  | (data, Some [XR.D s]) -> 
+  | (data, Some [XR.D s]) ->
       (data, Stog_misc.split_string s.Xml.text [','; ';' ; ' '])
   | (data, Some xmls) ->
       failwith ("Invalid languages specification: "^(XR.to_string xmls))
@@ -747,8 +743,8 @@ let get_languages data env =
 let env_add_lang_rules data env stog doc =
   match stog.stog_lang with
     None ->
-      (data, 
-       XR.env_add_cb Stog_tags.langswitch 
+      (data,
+       XR.env_add_cb Stog_tags.langswitch
          (fun data _ ?loc _ _ -> (data, [])) env)
   | Some lang ->
       let (data, languages) = get_languages data env in
