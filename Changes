@@ -1,4 +1,5 @@
 Next release:
+* use Xtmpl >= 0.13.0
 * a document's doctype is now taken from the template corresponding to
   the document's type
 * install odoc_* files in stog ocamlfind directory
