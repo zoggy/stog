@@ -68,7 +68,7 @@ let read_template_file stog doc ?(depend=true) ?(raw=false) ?loc file =
     if raw then
       [Xtmpl_rewrite.cdata (Stog_misc.string_of_file file)]
     else
-      Xtmpl_rewrite.from_file file
+      (Xtmpl_rewrite.doc_from_file file).Xml.elements
   in
   (stog, xmls)
 ;;
@@ -86,7 +86,7 @@ let create_template stog file contents =
       file
 ;;
 
-let get_template stog ?doc contents name =
+let get_template_ from_file stog ?doc contents name =
   let (stog, contents) = contents stog in
   let file =
     try from_includes stog name
@@ -98,15 +98,19 @@ let get_template stog ?doc contents name =
       None -> stog
     | Some doc -> Stog_deps.add_dep stog doc (Stog_types.File file)
   in
-  (stog, Xtmpl_rewrite.from_file file)
+  (stog, from_file file)
 ;;
+
+let get_template = get_template_
+  (fun file -> (Xtmpl_rewrite.doc_from_file file).Xml.elements)
+let get_template_doc = get_template_ Xtmpl_rewrite.doc_from_file
 
 let default_page_tempalte =
  parse
   "<html>
     <head>
       <title><if site-title=\"\"><dummy_/><dummy_><site-title/> : </dummy_></if><doc-title/></title>
-      <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
+      <meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml; charset=utf-8\"/>
       <link href=\"&lt;site-url/&gt;/style.css\" rel=\"stylesheet\" type=\"text/css\"/>
     </head>
     <body>

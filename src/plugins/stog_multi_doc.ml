@@ -44,7 +44,7 @@ let get_path_sep doc =
 ;;
 
 let mk_doc path_sep doc_id (stog,doc) = function
-  XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _-> (stog,doc)
+  XR.D _ | XR.C _ | XR.PI _ -> (stog,doc)
 | XR.E { XR.name = ("","contents") ; atts ; subs } ->
     begin
       match XR.get_att_cdata atts ("","type") with

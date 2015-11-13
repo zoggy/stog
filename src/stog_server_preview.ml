@@ -117,7 +117,10 @@ let handle_preview ~http_url ~ws_url current_state req path =
                   let url = Stog_url.with_path http_url.pub path in
                   Stog_url.to_string url
                 in
-                "<!DOCTYPE html><html><header><meta charset=\"utf-8\"/><title>"^title^"</title>"^
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?><html xmlns=\"http://www.w3.org/1999/xhtml\"><header>
+                  <meta charset=\"utf-8\"/>
+                  <meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml; charset=utf-8\"/>
+                  <title>"^title^"</title>"^
                 "<script type=\"text/javascript\">
                   stog_server = {
                     wsUrl: '"^(Stog_url.to_string ws_url.pub)^"',
@@ -127,7 +130,7 @@ let handle_preview ~http_url ~ws_url current_state req path =
                          type=\"text/javascript\"> </script>"^
                 "</header><body><h1>"^title^"</h1></body></html>"
           in
-          let headers = Cohttp.Header.init_with "Content-Type" "text/html; charset=utf-8" in
+          let headers = Cohttp.Header.init_with "Content-Type" "application/xhtml+xml; charset=utf-8" in
           S.respond_string ~headers ~status:`OK ~body ()
       | None -> preview_file state.stog path
 

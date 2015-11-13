@@ -281,8 +281,10 @@ let main () =
   | Stog_engine.Cant_open_cache_file cache_file ->
       let msg = "Could open cache file "^cache_file^"\nYou should run stog once with --nocache" in
       Stog_misc.safe_main (fun () -> failwith msg)
-  | Xtmpl_rewrite.Error e -> 
+  | Xtmpl_rewrite.Error e ->
       Stog_misc.safe_main (fun () -> failwith (Xtmpl_rewrite.string_of_error e))
+  | Stog_error.Error e ->
+      Stog_misc.safe_main (fun () -> failwith (Stog_error.string_of_error e))
   | e -> Stog_misc.safe_main (fun () -> raise e)
 ;;
 

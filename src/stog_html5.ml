@@ -49,7 +49,7 @@ let hack_self_closed =
         XR.E { node with XR.subs = [XR.cdata ""] }
     | XR.E node ->
         XR.E { node with XR.subs = List.map iter node.XR.subs }
-    | XR.PI _ | XR.C _ | XR.DT _ | XR.X _ -> xml
+    | XR.PI _ | XR.C _ -> xml
   in
   iter
 ;;

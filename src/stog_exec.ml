@@ -70,7 +70,7 @@ let concat_code =
 let commands_of_xml xmls =
   let f xml acc =
     match xml with
-      XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> acc
+      XR.D _ | XR.C _ | XR.PI _ -> acc
     | XR.E { XR.subs } -> (concat_code subs) :: acc
   in
   List.fold_right f xmls []

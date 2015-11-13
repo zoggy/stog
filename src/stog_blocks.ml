@@ -374,7 +374,7 @@ let block_body_of_subs stog doc ?loc blk = function
 let read_block_from_subs stog doc =
   let s_xmls = XR.to_string in
   let rec f blk = function
-    XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> blk
+    XR.D _ | XR.C _ | XR.PI _ -> blk
   | XR.E { XR.name = ("", tag) ; subs ; loc } ->
       begin
         match tag, subs with
@@ -556,7 +556,7 @@ let fun_block2 (stog, data) env ?loc atts subs =
 
 let gather_existing_ids =
   let rec f path set = function
-  | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> set
+  | XR.D _ | XR.C _ | XR.PI _ -> set
   | XR.E { XR.name ; atts; subs } ->
       let set =
         match XR.get_att_cdata atts ("", "id") with

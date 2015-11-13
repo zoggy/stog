@@ -72,7 +72,7 @@ let bool_of_string s =
 let module_defs_of_xml =
   let f acc xml =
     match xml with
-    | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> acc
+    | XR.D _ | XR.C _ | XR.PI _-> acc
     | XR.E { XR.name ; atts ; subs } ->
         (name, atts, subs) :: acc
   in
@@ -91,8 +91,8 @@ let module_requires_of_string str =
 
 let read_module stog file =
   let modname = Filename.chop_extension (Filename.basename file) in
-  let xml = XR.from_file file in
-  match xml with
+  let xmldoc = XR.doc_from_file file in
+  match xmldoc.Xml.elements with
   | [ XR.E { XR.name ; atts ; subs} ] ->
       let mod_requires =
         match XR.get_att_cdata atts ("","requires") with
@@ -225,7 +225,7 @@ let fill_doc_from_atts =
 let fill_doc_from_nodes =
   let f doc xml =
     match xml with
-    | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> doc
+    | XR.D _ | XR.C _ | XR.PI _ -> doc
     | XR.E { XR.name ; atts ; subs} ->
         let v = XR.to_string subs in
         match name with
@@ -267,9 +267,9 @@ let doc_of_file stog file =
     Stog_path.of_string s
   in
   Stog_msg.verbose ~level: 3 (Printf.sprintf "reading document file %S" file);
-  let xmls = XR.from_file file in
+  let doc = XR.doc_from_file file in
   let (typ, atts, subs) =
-    match List.rev (XR.upto_first_element xmls) with
+    match List.rev (XR.upto_first_element doc.Xml.elements) with
     | exception Not_found ->
         failwith
           (Printf.sprintf "File %S does not content an XML tree" file)

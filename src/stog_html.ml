@@ -102,7 +102,7 @@ let include_href name stog doc ?id ~raw ~subsonly ~depend ?loc href env =
            id (Stog_path.to_string path))
     | Some xml ->
         match xml with
-        | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> assert false
+        | XR.D _ | XR.C _ | XR.PI _ -> assert false
         | XR.E node ->
             let xmls =
               match raw, subsonly with
@@ -128,8 +128,11 @@ let include_href name stog doc ?id ~raw ~subsonly ~depend ?loc href env =
 
 let include_file stog doc ?id ~raw ~depend file ?loc args subs =
   let atts = XR.atts_one ~atts: args ("", "contents") subs in
-  let (stog, xml) = Stog_tmpl.read_template_file stog doc ~depend ~raw file in
-  (stog, [XR.node ("", XR.tag_env) ~atts xml])
+  try
+    let (stog, xml) = Stog_tmpl.read_template_file stog doc ~depend ~raw file in
+    (stog, [XR.node ("", XR.tag_env) ~atts xml])
+  with
+    e -> Stog_error.error_loc ?loc e
 ;;
 
 let fun_include_ name doc stog env ?loc args subs =
@@ -373,7 +376,7 @@ let fun_as_xml =
         [ XR.E { node with
             XR.subs = List.flatten (List.map iter node.XR.subs) }
         ]
-    | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> [xml]
+    | XR.C _ | XR.PI _ -> [xml]
   in
   fun x _env ?loc _ subs ->
     let xmls = XR.merge_cdata_list subs in
@@ -481,7 +484,7 @@ let fun_twocolumns stog env ?loc args subs =
   let subs = List.fold_right
     (fun xml acc ->
        match xml with
-         XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> acc
+         XR.D _ | XR.C _ | XR.PI _ -> acc
        | XR.E { XR.subs } -> subs :: acc
     ) subs []
   in
@@ -509,7 +512,7 @@ let fun_ncolumns stog env ?loc args subs =
   let subs = List.fold_right
     (fun xml acc ->
        match xml with
-         XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> acc
+         XR.D _ | XR.C _ | XR.PI _ -> acc
        | XR.E { XR.subs } -> subs :: acc
     ) subs []
   in
@@ -555,7 +558,7 @@ let fun_prepare_toc tags stog env ?loc args subs =
     XR.opt_att_cdata args ~def: "false" ("", "show-without-ids") <> "false"
   in
   let rec iter d acc = function
-  | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> acc
+  | XR.D _ | XR.C _ | XR.PI _ -> acc
   | XR.E { XR.name = tag; atts ; subs } when List.mem tag tags ->
       begin
         match
@@ -1135,6 +1138,7 @@ let make_by_word_indexes stog env f_doc_path doc_type map =
             doc_parent = None ;
             doc_children = [] ;
             doc_type = doc_type ;
+            doc_prolog = None ;
             doc_body = [] ;
             doc_date = None ;
             doc_title = word ;
@@ -1200,6 +1204,7 @@ let make_archive_indexes stog env =
             doc_parent = None ;
             doc_children = [] ;
             doc_type = "by-month";
+            doc_prolog = None ;
             doc_body = [] ;
             doc_date = None ;
             doc_title = title ;

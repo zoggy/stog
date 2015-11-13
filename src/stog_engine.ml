@@ -579,7 +579,14 @@ let output_doc ~gen_cache state doc =
           "html" -> List.map Stog_html5.hack_self_closed xmls
         | _ -> xmls
       in
-      output_string oc (XR.to_string ~xml_atts: false xmls);
+      let xmldoc = 
+        let prolog = match doc.doc_prolog with 
+            None -> Xml.prolog []
+          | Some p -> p
+        in 
+        XR.doc prolog xmls
+      in
+      output_string oc (XR.doc_to_string ~xml_atts: false xmldoc);
       close_out oc;
       if gen_cache then cache_doc state doc
 ;;
@@ -706,7 +713,7 @@ let get_path_in_args_or_env data env args =
 let get_doc_out stog doc =
   match doc.doc_out with
     None ->
-      let (stog, tmpl) =
+      let (stog, xmldoc) =
         let default =
           match doc.doc_type with
             "by-topic" -> Stog_tmpl.by_topic
@@ -715,11 +722,17 @@ let get_doc_out stog doc =
           | "rss" -> Stog_tmpl.rss
           | _ -> Stog_tmpl.page
         in
-        Stog_tmpl.get_template stog ~doc default (doc.doc_type^".tmpl")
+        Stog_tmpl.get_template_doc stog ~doc default (doc.doc_type^".tmpl")
       in
-      (stog, tmpl)
+      let xmls = xmldoc.Xml.elements in
+      let doc = { doc with
+          doc_prolog = Some xmldoc.Xml.prolog ; 
+          doc_out = Some xmls ;
+        }
+      in
+      (stog, doc, xmls)
   | Some xmls ->
-      (stog, xmls)
+      (stog, doc, xmls)
 ;;
 
 let get_languages data env =
@@ -798,7 +811,7 @@ type 'a stog_doc_rules =
 let apply_stog_env_doc stog env doc_id =
   let doc = Stog_types.doc stog doc_id in
   let (stog, env) = doc_env stog env stog doc in
-  let (stog, xmls) = get_doc_out stog doc in
+  let (stog, doc, xmls) = get_doc_out stog doc in
   (*prerr_endline (Printf.sprintf "%s = %s"
      (Stog_path.to_string doc.doc_path)
      (XR.string_of_xsmls xmls));*)
@@ -810,7 +823,7 @@ let apply_stog_env_doc stog env doc_id =
 let apply_stog_data_env_doc (stog,data) env doc_id =
   let doc = Stog_types.doc stog doc_id in
   let ((stog, data), env) = doc_env (stog, data) env stog doc in
-  let (stog, xmls) = get_doc_out stog doc in
+  let (stog, doc, xmls) = get_doc_out stog doc in
   (*prerr_endline (Printf.sprintf "env=%s" (XR.string_of_env env));*)
   let ((stog, data), xmls) = XR.apply_to_xmls (stog, data) env xmls in
   let doc = { doc with doc_out = Some xmls } in
@@ -819,7 +832,7 @@ let apply_stog_data_env_doc (stog,data) env doc_id =
 let apply_data_env_doc (stog,data) env doc_id =
   let doc = Stog_types.doc stog doc_id in
   let (data, env) = doc_env data env stog doc in
-  let (stog, xmls) = get_doc_out stog doc in
+  let (stog, doc, xmls) = get_doc_out stog doc in
   let (data, xmls) = XR.apply_to_xmls data env xmls in
   let doc = { doc with doc_out = Some xmls } in
   (Stog_types.set_doc stog doc_id doc, data)

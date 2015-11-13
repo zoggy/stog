@@ -163,6 +163,7 @@ let add_msg_box http_url =
 let set_page_content ws http_url xml =
   log "set_page_content";
   let doc = Dom_html.document in
+
   let children = doc##childNodes in
   log ("got children ("^(string_of_int (children##length)^")"));
   for i=0 to children##length-1 do

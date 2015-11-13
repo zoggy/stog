@@ -39,7 +39,7 @@ open Stog_types
 
 let rec rewrite_href url xml =
   match xml with
-  | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> xml
+  | XR.D _ | XR.C _ | XR.PI _ -> xml
   | XR.E node ->
     let atts = Xml.Name_map.mapi
       (fun att v ->

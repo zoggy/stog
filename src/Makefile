@@ -55,6 +55,7 @@ ODOC_BYTE=$(ODOC:.cmxs=.cmo)
 
 LIB_CMXFILES= \
 	stog_install.cmx \
+	stog_error.cmx \
 	stog_msg.cmx \
 	stog_misc.cmx \
 	stog_highlight.cmx \

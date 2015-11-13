@@ -318,9 +318,7 @@ let add_loc_blocks errors code =
       let (acc, l) = fold_cdata f acc q in
       (acc, (XR.E { node with XR.subs }) :: l)
   | (XR.C _)  :: q
-  | (XR.PI _) :: q
-  | (XR.X _) :: q
-  | (XR.DT _) :: q -> fold_cdata f acc q
+  | (XR.PI _) :: q -> fold_cdata f acc q
   in
   let f_err xmls err = snd (fold_cdata (f err) (1, 0) xmls) in
   let errors = List.sort Pervasives.compare errors in

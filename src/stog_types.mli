@@ -48,6 +48,7 @@ type doc = {
   doc_parent : Stog_path.path option ;
   doc_children : Stog_path.path list ;
   doc_type : string ;
+  doc_prolog : Xml.prolog option;
   doc_body : body ;
   doc_date : date option ;
   doc_title : string ;
@@ -63,8 +64,7 @@ type doc = {
 }
 type doc_id = doc Stog_tmap.key
 
-val make_doc : ?typ:string -> ?path:Stog_path.path -> unit -> doc
-
+val make_doc : ?typ:string -> ?path:Stog_path.path -> ?prolog: Xml.prolog -> unit -> doc
 
 val today : unit -> date
 

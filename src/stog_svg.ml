@@ -34,7 +34,7 @@ module XR = Xtmpl_rewrite
 let prefix_ids =
   let rec iter p t =
     match t with
-  | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> t
+  | XR.D _ | XR.C _ | XR.PI _ -> t
   | XR.E node ->
       let atts = node.XR.atts in
       let atts =
@@ -58,7 +58,7 @@ let prefix_ids =
 
 let rec prefix_svg_ids prefix t =
   match t with
-  | XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> t
+  | XR.D _ | XR.C _ | XR.PI _ -> t
   | XR.E { XR.name = (_,"svg")} as t -> prefix_ids prefix t
   | XR.E node ->
       XR.E { node with XR.subs = List.map (prefix_svg_ids prefix) node.XR.subs }

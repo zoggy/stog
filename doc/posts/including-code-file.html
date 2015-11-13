@@ -12,14 +12,14 @@ If you want to include and highlight for example the <icode>../src/plugins/stog_
 relative to your project directory, you can try
 <hcode lang="xml"><![CDATA[<hcode raw="true" lang="ocaml"><include file="../src/plugins/stog_disqus.ml"/></hcode>]]></hcode>
 but this will only result in
-<hcode raw="true" lang="ocaml"><include file="../../plugins/stog_disqus.ml"/></hcode>
+<hcode lang="ocaml"><include raw="true" file="../../plugins/stog_disqus.ml"/></hcode>
 </p>
 <p>This is because <icode>&lt;hcode...&gt;</icode> is evaluated immediately, displaying
 its children nodes. What you need is to defer the evaluation of <icode>&lt;hcode...&gt;</icode>,
 using the special <icode>defer_</icode> attribute:
 <hcode lang="xml"><![CDATA[<hcode raw="true" lang="ocaml" defer_="1"><include file="../src/plugins/stog_disqus.ml"/></hcode>]]></hcode>
 This will give the expected result:
-<hcode raw="true" lang="ocaml" defer_="1"><include file="../../src/plugins/stog_disqus.ml"/></hcode>
+<hcode lang="ocaml" defer_="1"><include raw="true" file="../../src/plugins/stog_disqus.ml"/></hcode>
 </p>
 <p>
 The <icode>defer_</icode> attribute is decremented each time the node should be evaluated.

@@ -28,6 +28,9 @@ stog_engine.cmx : stog_url.cmx stog_types.cmx stog_tmpl.cmx stog_tmap.cmx \
     stog_tags.cmx stog_path.cmx stog_msg.cmx stog_misc.cmx stog_html5.cmx \
     stog_find.cmx stog_deps.cmx stog_engine.cmi
 stog_engine.cmi : stog_url.cmi stog_types.cmi stog_path.cmi
+stog_error.cmo : stog_error.cmi
+stog_error.cmx : stog_error.cmi
+stog_error.cmi :
 stog_exec.cmo : stog_types.cmi stog_misc.cmi stog_highlight.cmi \
     stog_exec.cmi
 stog_exec.cmx : stog_types.cmx stog_misc.cmx stog_highlight.cmx \
@@ -77,13 +80,13 @@ stog_html5.cmi :
 stog_html.cmo : stog_url.cmi stog_types.cmi stog_tmpl.cmi stog_tags.cmi \
     stog_svg.cmi stog_path.cmi stog_ocaml.cmi stog_msg.cmi stog_misc.cmi \
     stog_list.cmi stog_latex.cmi stog_io.cmi stog_intl.cmi stog_info.cmi \
-    stog_highlight.cmi stog_exec.cmi stog_engine.cmi stog_deps.cmi \
-    stog_cut.cmi stog_html.cmi
+    stog_highlight.cmi stog_exec.cmi stog_error.cmi stog_engine.cmi \
+    stog_deps.cmi stog_cut.cmi stog_html.cmi
 stog_html.cmx : stog_url.cmx stog_types.cmx stog_tmpl.cmx stog_tags.cmx \
     stog_svg.cmx stog_path.cmx stog_ocaml.cmx stog_msg.cmx stog_misc.cmx \
     stog_list.cmx stog_latex.cmx stog_io.cmx stog_intl.cmx stog_info.cmx \
-    stog_highlight.cmx stog_exec.cmx stog_engine.cmx stog_deps.cmx \
-    stog_cut.cmx stog_html.cmi
+    stog_highlight.cmx stog_exec.cmx stog_error.cmx stog_engine.cmx \
+    stog_deps.cmx stog_cut.cmx stog_html.cmi
 stog_html.cmi : stog_url.cmi stog_types.cmi stog_path.cmi stog_engine.cmi
 stog_info.cmo : stog_url.cmi stog_types.cmi stog_tmap.cmi stog_misc.cmi \
     stog_filter_types.cmi stog_info.cmi

@@ -97,7 +97,8 @@ let apply_to_doc types command stog doc_id =
         in
         match Sys.command com with
           0 ->
-            let xml = XR.from_file out_file in
+            let xmldoc = XR.doc_from_file out_file in
+            let xml = xmldoc.Xml.elements in
             rm ();
             let doc = { doc with doc_out = Some xml } in
             Some (doc_id, doc)

@@ -126,7 +126,8 @@ let fun_dot stog env ?loc atts subs =
         0 ->
           if inc then
             begin
-              let xml = XR.from_file abs_outfile in
+              let xmldoc = XR.doc_from_file abs_outfile in
+              let xml = xmldoc.Xml.elements in
               let xml =
                 match id_prefix with
                   None -> xml

@@ -60,6 +60,7 @@ type doc =
     doc_parent : Stog_path.path option ;
     doc_children : Stog_path.path list ;
     doc_type : string ;
+    doc_prolog : Xml.prolog option ;
     doc_body : body ;
     doc_date : date option ;
     doc_title : string ;
@@ -77,11 +78,12 @@ and doc_id = doc Stog_tmap.key
 
 let today () = Netdate.create (Unix.time()) ;;
 
-let make_doc ?(typ="dummy") ?(path=Stog_path.path [] false) () =
+let make_doc ?(typ="dummy") ?(path=Stog_path.path [] false) ?prolog () =
   { doc_path = path ;
     doc_parent = None ;
     doc_children = [] ;
     doc_type = typ ;
+    doc_prolog = prolog ;
     doc_body = [] ;
     doc_date = None ;
     doc_title = "";
@@ -413,7 +415,7 @@ let find_block_by_id =
       find_in_list id q
   and find id xml =
     match xml with
-      XR.D _ | XR.C _ | XR.PI _ | XR.X _ | XR.DT _ -> raise Not_found
+      XR.D _ | XR.C _ | XR.PI _ -> raise Not_found
     | XR.E { XR.atts ; subs } ->
         match XR.get_att_cdata atts ("","id") with
           Some s when s = id -> raise (Block_found xml)
