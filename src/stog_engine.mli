@@ -104,12 +104,12 @@ val env_of_used_mods : Stog_types.stog ->
 type 'a stog_doc_rules =
   Stog_types.stog -> Stog_types.doc_id -> (XR.name * 'a XR.callback) list
 
-val get_in_env : 'a -> 'a XR.env -> Xmlm.name -> 'a * XR.tree list
-val opt_in_env : 'a -> 'a XR.env -> Xmlm.name -> 'a * XR.tree list option
+val get_in_env : 'a -> 'a XR.env -> Xml.name -> 'a * XR.tree list
+val opt_in_env : 'a -> 'a XR.env -> Xml.name -> 'a * XR.tree list option
 
 (** [get_in_args_or_env env args s] returns the value associated to [s]
  in [args] of else return the result of [get_in_env env s]. *)
-val get_in_args_or_env : 'a -> 'a XR.env -> XR.attributes -> Xmlm.name -> 'a * XR.tree list
+val get_in_args_or_env : 'a -> 'a XR.env -> XR.attributes -> Xml.name -> 'a * XR.tree list
 
 (** [get_path env] returns the path associated to ["doc-path"] in [env].
   @raise Stog_path.Invalid if ["doc-path"] is not found in the environment or is not a

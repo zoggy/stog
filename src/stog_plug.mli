@@ -45,7 +45,7 @@ val register_lang : Stog_intl.lang_abbrev -> Stog_intl.lang_data -> unit
 
 (** [register_html_base_rule name f] registers a new function associated
      to [name] in the set of base rules of the "html" predefined module. *)
-val register_html_base_rule : Xmlm.name -> Stog_types.stog XR.callback -> unit
+val register_html_base_rule : Xml.name -> Stog_types.stog XR.callback -> unit
 
 (** [doc_by_href ?typ ?src_doc stog env href] returns the document, path and
   optional if matching the given href string, of the form [path[#id]].

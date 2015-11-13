@@ -445,10 +445,16 @@ let fun_graph =
 let fun_if stog env ?loc args subs =
   let pred (prefix, name) v (stog, cond) =
     let nodes = [ XR.node (prefix, name) [] ] in
+    let v_nodes = XR.to_string nodes in
     let (stog, nodes2) = XR.apply_to_xmls stog env nodes in
     let v2 = if nodes = nodes2 then [] else nodes2 in
+(*
     let v = match v with [XR.D { Xml.text = ""}] -> [] | _ -> v in
     let v2 = match v2 with [XR.D { Xml.text = ""}] -> [] | _ -> v2 in
+*)
+    let v = XR.to_string v in
+    let v2 = XR.to_string v2 in
+    let v2 = if v2 = v_nodes then "" else v2 in
 (*
     prerr_endline (Printf.sprintf "fun_if: pred: att=(%s,%s), nodes=%S nodes2=%S, v=%S, v2=%S"
      prefix name (XR.string_of_xmls nodes)
@@ -467,7 +473,7 @@ let fun_if stog env ?loc args subs =
   in
   let xmls =
     match cond, subs with
-    | true, [] -> failwith "<if>: missing children"
+    | true, [] -> failwith (Xml.loc_sprintf loc "<if>: missing children")
     | true, h :: _
     | false, _ :: h :: _ -> [h]
     | false, []
@@ -546,7 +552,7 @@ let fun_exta stog env ?loc atts subs =
   )
 ;;
 
-type toc = Toc of string option * XR.tree list * Xmlm.name * toc list (* name, title, class, subs *)
+type toc = Toc of string option * XR.tree list * Xml.name * toc list (* name, title, class, subs *)
 
 let fun_prepare_toc tags stog env ?loc args subs =
   let depth =

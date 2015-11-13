@@ -85,7 +85,7 @@ val generate_rss_feed_file :
 (** Build the base rules, using the default ones and the base rules register
   by plugins. *)
 val build_base_rules : Stog_types.stog ->
-  Stog_types.doc_id -> (Xmlm.name * Stog_types.stog XR.callback) list
+  Stog_types.doc_id -> (Xml.name * Stog_types.stog XR.callback) list
 
 (** The calllback to insert a list of documents. Can be called directly
   if provided an additional environment, argument and children nodes. *)
