@@ -1,3 +1,12 @@
+pre, code {
+  background: transparent;
+  border-width: 0;
+  padding-left: 0;
+}
+pre + br, .typetable + br {
+  display: none ;
+}
+
 img.depgraph { border-width: 0px; }
 .keyword { font-weight : bold ; color : Red }
 .keywordsign { color : #C04600 }
@@ -10,22 +19,65 @@ img.depgraph { border-width: 0px; }
 .type { color : #5C6585 }
 .string { color : Maroon }
 .warning { color : Red ; font-weight : bold }
-.info { margin-left : 3em; margin-right: 3em ; margin-bottom: 1.5em; }
+.info {
+   margin-left : 1.5em;
+   margin-right: 1.5em ;
+   margin-bottom: 1.5em;
+   padding-left: 0.5em;
+/*   @include border-radius(3px);
+   border-width: 0 0 0 2px;
+   border-color: darken($code-background, 25) ;
+   border-style: solid ;
+*/
+}
+pre + .info {
+  margin-top: - $base-line-height ;
+  padding-top: $base-line-height / 3;
+}
 td.typefieldcomment .info {
    margin : 0.1em 0.1em 0.1em 0.2em;
 }
-.param_info { margin-top: 4px;
-              margin-left : 4.5em;
-              margin-right : 4.5em ;
-              border-width: 0 0 0 1pt;
-              border-color: lighten($base-text-color,10) ;
-              border-style: solid ;
-              padding-left: 0.2em ;
-            }
+.indextable .info {
+  margin-bottom: 0;
+}
+.param_info {
+  margin-top: 4px;
+  margin-left : 1.5em;
+  margin-right : 1.5em ;
+  margin-bottom: 1.5em;
+/*
+  @include border-radius(3px);
+  border-width: 0 0 0 2px;
+  border-color: darken($code-background, 25) ;
+  border-style: solid ;
+*/
+  padding-left: 0.5em ;
+}
+.info + .param_info {
+  margin-top: - $base-line-height ;
+  padding-top: $base-line-height / 3 ;
+}
+
 .code { color : #465F91 ; }
 .typetable { border-style : hidden;
-  background-color: $code-background;
+  /* background-color: $code-background;*/
   }
+
+pre + .typetable {
+  margin-top: - $base-line-height ;
+  padding-left: 2px;
+  padding-top: $base-line-height / 4;
+  /*
+  border-width: 0 0 0 2px;
+  border-color: darken($code-background, 25) ;
+  border-style: solid ;
+  -webkit-border-bottom-left-radius: 3px;
+     -moz-border-bottom-left-radius: 3px;
+      -ms-border-bottom-left-radius: 3px;
+          border-bottom-left-radius: 3px;
+   */
+}
+
 .paramstable { border-style : hidden ; padding: 5pt 5pt}
 tr { background-color : transparent }
 td.typefieldcomment, td.typefieldcomment code {

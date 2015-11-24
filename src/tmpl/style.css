@@ -332,6 +332,12 @@ body {
     margin-top: 1em; }
   .ocamldoc-page > .subsubsection-title {
     margin-top: 1em; }
+  .ocamldoc-page pre, .ocamldoc-page code {
+    background: transparent;
+    border-width: 0;
+    padding-left: 0; }
+  .ocamldoc-page pre + br, .ocamldoc-page .typetable + br {
+    display: none; }
   .ocamldoc-page img.depgraph {
     border-width: 0px; }
   .ocamldoc-page .keyword {
@@ -355,24 +361,55 @@ body {
     color: Red;
     font-weight: bold; }
   .ocamldoc-page .info {
-    margin-left: 3em;
-    margin-right: 3em;
-    margin-bottom: 1.5em; }
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+    margin-bottom: 1.5em;
+    padding-left: 0.5em;
+    /*   @include border-radius(3px);
+       border-width: 0 0 0 2px;
+       border-color: darken($code-background, 25) ;
+       border-style: solid ;
+    */ }
+  .ocamldoc-page pre + .info {
+    margin-top: -21px;
+    padding-top: 7px; }
   .ocamldoc-page td.typefieldcomment .info {
     margin: 0.1em 0.1em 0.1em 0.2em; }
+  .ocamldoc-page .indextable .info {
+    margin-bottom: 0; }
   .ocamldoc-page .param_info {
     margin-top: 4px;
-    margin-left: 4.5em;
-    margin-right: 4.5em;
-    border-width: 0 0 0 1pt;
-    border-color: #4d4d4d;
-    border-style: solid;
-    padding-left: 0.2em; }
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+    margin-bottom: 1.5em;
+    /*
+      @include border-radius(3px);
+      border-width: 0 0 0 2px;
+      border-color: darken($code-background, 25) ;
+      border-style: solid ;
+    */
+    padding-left: 0.5em; }
+  .ocamldoc-page .info + .param_info {
+    margin-top: -21px;
+    padding-top: 7px; }
   .ocamldoc-page .code {
     color: #465F91; }
   .ocamldoc-page .typetable {
     border-style: hidden;
-    background-color: #eeeeee; }
+    /* background-color: $code-background;*/ }
+  .ocamldoc-page pre + .typetable {
+    margin-top: -21px;
+    padding-left: 2px;
+    padding-top: 5.25px;
+    /*
+    border-width: 0 0 0 2px;
+    border-color: darken($code-background, 25) ;
+    border-style: solid ;
+    -webkit-border-bottom-left-radius: 3px;
+       -moz-border-bottom-left-radius: 3px;
+        -ms-border-bottom-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+     */ }
   .ocamldoc-page .paramstable {
     border-style: hidden;
     padding: 5pt 5pt; }

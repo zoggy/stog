@@ -309,8 +309,8 @@ $(LATEX2STOG_BYTE): $(LIB_BYTE) latex2stog.cmo
 	$(OCAMLFIND) ocamlc$(P) -o $@ -package $(PACKAGES) -linkall -linkpkg $^
 
 default-styles:
-	lessc ../doc/less/default-page.less | cleancss -o share/templates/page-style.css
-	lessc ../doc/less/default-article.less | cleancss -o share/templates/article-style.css
+	lessc ../doc/less/default-page.less | cleancss -o ../share/templates/page-style.css
+	lessc ../doc/less/default-article.less | cleancss -o ../share/templates/article-style.css
 
 # mk scripts
 $(MK_STOG): $(LIB)
