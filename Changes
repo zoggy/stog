@@ -1,4 +1,4 @@
-Next release:
+Release 0.16.0:
 * use Xtmpl >= 0.13.0
 * a document's doctype is now taken from the template corresponding to
   the document's type

@@ -902,11 +902,13 @@ let _ =
 let _ = !print "\n### checking required tools and libraries ###\n"
 
 
-let _ = check_ocamlfind_package conf ~min_version: [0;12] "xtmpl";;
+let _ = check_ocamlfind_package conf ~min_version: [0;13;0] "xtmpl";;
 let _ = check_ocamlfind_package conf ~min_version: [3;6] "netstring";;
-let _ = check_ocamlfind_package conf ~min_version: [0;3] "ocf";;
-let _ = check_ocamlfind_package conf ~min_version: [0;4] "higlo";;
-let _ = check_ocamlfind_package conf ~min_version: [2;4;8] "lwt.unix";;
+let _ = check_ocamlfind_package conf ~min_version: [0;4] "ocf";;
+let _ = check_ocamlfind_package conf ~min_version: [0;5] "higlo";;
+let _ = check_ocamlfind_package conf ~min_version: [2;5] "lwt.unix";;
+let _ = check_ocamlfind_package conf ~fail: false ~min_version: [0;1] "ppx_blob";;
+
 
 let _ =
   let checks =
@@ -917,13 +919,12 @@ let _ =
            prerr_endline "Cannot find js_of_ocaml";
            false
       );
-      check_ocamlfind_package conf ~fail: false ~min_version: [2;4;8] "lwt.preemptive";
+      check_ocamlfind_package conf ~fail: false ~min_version: [2;5] "lwt.preemptive";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff.js";
-      check_ocamlfind_package conf ~fail: false ~min_version: [2;1] "websocket";
-      check_ocamlfind_package conf ~fail: false ~min_version: [0;3;0] "ojs";
+      check_ocamlfind_package conf ~fail: false ~min_version: [2;2] "websocket";
+      check_ocamlfind_package conf ~fail: false ~min_version: [0;4;0] "ojs";
       check_ocamlfind_package conf ~fail: false ~min_version: [2;0] "ppx_deriving_yojson";
-      check_ocamlfind_package conf ~fail: false ~min_version: [0;1] "ppx_blob";
       check_ocamlfind_package conf ~fail: false ~min_version: [1;1;8] "yojson";
       check_ocamlfind_package conf ~fail: false ~min_version: [1;9] "sha";
     ]

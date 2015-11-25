@@ -23,11 +23,10 @@ install: [
 remove: [["ocamlfind" "remove" "stog"]]
 depends: [
   "ocamlfind"
-  "xmlm" {>= "1.1"}
-  "xtmpl" {>= "0.12"}
-  "ocf" {>= "0.3.0"}
+  "xtmpl" {>= "0.13.0"}
+  "ocf" {>= "0.4.0"}
   "ocamlnet" {>= "3.6"}
-  "higlo" { >= "0.4" }
+  "higlo" { >= "0.5" }
   "ppx_blob" { >= "0.1" }
 ]
 depopts: [
