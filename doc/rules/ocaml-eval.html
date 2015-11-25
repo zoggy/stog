@@ -1,0 +1,85 @@
+<rule title="ocaml-eval"
+with-contents="true"
+descr="evaluate OCaml code"
+>
+<synopsis><![CDATA[
+<exec directory="" id="" in-xml-block="true" error-exc="true"
+      highlight-locs="true" print-locs="false|true"
+      session=""
+      show-code="true" show-stdout="true" toplevel="false"
+> command </exec>
+]]>
+</synopsis>
+<contents>
+<p>
+Evaluate the given OCaml code and return its output.
+See examples in <post href="displaying-evaluated-ocaml-code"/>
+and <post href="ocaml-sessions"/>.
+</p>
+<rule-options>
+<rule-option name="directory">
+If given, the session is executed in this directory,
+else the session is executed in the current working directory.
+Note that if the session already exists, its directory is not changed so
+you only have to specify the directory once, for the first use of
+a session with <rule>ocaml-eval</rule>.
+</rule-option>
+
+<rule-option name="id">
+If given and <code>in-xml-block</code> is true, the given id is given to
+the root XML element of the result.
+</rule-option>
+
+<rule-option name="in-xml-block" default="true">
+Embed code and result in XML elements, except if set to <code>false</code>
+</rule-option>
+
+<rule-option name="error-exc" default="true">
+By default, an error in evaluation of the given code will raise
+an error. Setting this option to <code>false</code> will result
+is having the error message in the result of the rule. This is useful
+to provide examples of errors in a documentation.
+</rule-option>
+
+<rule-option name="highlight-locs" default="true">
+Warning and error locations are shown using classes. Set this option
+to <code>false</code> to prevent adding such classes.
+</rule-option>
+
+<rule-option name="print-locs" default="not highlight-locs">
+Specify whether to print warning and error locations or not.
+If <code>highlight-locs</code> is <code>true</code>, then default
+value of <code>print-locs</code> is <code>false</code>, else it
+is <code>true</code>.
+</rule-option>
+
+<rule-option name="session">
+Specify the name of the OCaml session to use to evaluate the given code.
+If no name is specified, the default session is used. Else, if the
+given session does not exist yet, it is created, eventually using the
+given <code>directory</code> option. This allows to evaluate OCaml
+code in different contexts, to prevent poluting a session's environment.
+</rule-option>
+
+<rule-option name="show-code" default="true">
+Set to <code>false</code> not to have the original code in the result of
+the rule.
+</rule-option>
+
+<rule-option name="show-stdout" default="same as toplevel">
+Default is <code>true</code> if the <code>toplevel</code> option is
+<code>true</code>, else <code>false</code>.
+Set to <code>false</code> not to have the output of the code
+in the result of the rule. Note that stderr is only kept in case
+of error in toplevel mode.
+</rule-option>
+
+<rule-option name="toplevel" default="false">
+Set to <code>true</code> to enable toplevel-like output for the rule.
+This includes a prompt before the code and the result of evaluation
+(types, values, ...).
+</rule-option>
+
+</rule-options>
+</contents>
+</rule>

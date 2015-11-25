@@ -555,8 +555,6 @@ let doc_url stog doc =
       | _ -> url
 ;;
 
-(* FIXME: no need to add doctype anymore, it should be kept
-  from the templates *)
 let output_doc ~gen_cache state doc =
   let file = doc_dst_file state.st_stog doc in
   Stog_misc.safe_mkdir (Filename.dirname file);

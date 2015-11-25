@@ -26,11 +26,11 @@ Like any other OCamldoc generator, once installed, you can use
 it with the following command, in native code:
 </p>
 <command-line>
-&gt; ocamldoc.opt -g odoc_stog.cmxs ...
+&gt; ocamldoc.opt -i `ocamlfind query stog` -g odoc_stog.cmxs ...
 </command-line>
 <p>and in bytecode:</p>
 <command-line>
-&gt; ocamldoc -g odoc_stog.cmo ...
+&gt; ocamldoc -i `ocamlfind query stog` -g odoc_stog.cmo ...
 </command-line>
 </section>
 

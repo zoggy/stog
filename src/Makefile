@@ -45,6 +45,7 @@ PLUGINS_BYTE= \
 	plugins/stog_markdown.cmo \
 	plugins/stog_multi_doc.cmo \
 	plugins/stog_nocaml.cmo \
+	plugins/stog_noexec.cmo \
 	plugins/stog_rel_href.cmo \
 	plugins/stog_sitemap.cmo \
 	plugins/plugin_example.cmo

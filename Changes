@@ -12,7 +12,7 @@ Release 0.16.0:
 * now require lwt not only for server
 
 Release 0.15.0:
-* new tool stog-tmpl to generates website skeletons
+* new tool stog-tmpl to generate website skeletons
 * use ppx_blob instead of ocaml-crunch
 * new stog.extern plugin
 * new stog.nocaml plugin

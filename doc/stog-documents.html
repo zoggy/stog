@@ -59,10 +59,6 @@ belonging to a set,</li>
 <li><b>language-dep</b>: can be set to <i>false</i> to indicate that this page is not
 language dependent, when generating multi-language sites (this affects the name of the
 generated file),</li>
-<li><b>doctype</b>: specify the doctype which will be printed into the final XML file. Default is "HTML".
-If doctype is "HTML" (case-insensitive), tags are not self-closed, except
-    <ext-a href="http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-documents">HTML5 void documents</ext-a>.
-</li>
 </ul>
 <p>
 Any other attribute will be available by its name in the environment when processing the template
@@ -74,6 +70,10 @@ To generate the file corresponding to a document, <icode>stog</icode> will use t
 the document (for example "post") to load the associated template (for example "post.tmpl" in
 the templates directory).
 </p>
+<li>If the XML template file used for a document type specifies a DOCTYPE, it is used
+in the final XML file. If DOCTYPE is "HTML" (case-insensitive), tags are not self-closed, except
+    <ext-a href="http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-documents">HTML5 void documents</ext-a>.
+</li>
 <p>You can have a look at the source of the pages of this site at the bottom of each page.
 The sources of this site can be a good starting point. You can browse it in the
 <ext-a href="https://github.com/zoggy/stog/tree/master/doc">doc directory of the

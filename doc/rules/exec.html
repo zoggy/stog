@@ -1,0 +1,63 @@
+<rule title="exec"
+with-contents="true"
+descr="execute shell commands"
+>
+<synopsis><![CDATA[
+<exec directory="" id="" in-xml-block="true" list="false"
+      prompt="" show-code="true" show-stdout="true" stop-on-error="true"
+> command </exec>
+]]>
+</synopsis>
+<contents>
+Run the given command (or list of commands) and return the command output.
+<rule-options>
+<rule-option name="directory">
+If given, commands are executed in this directory. Else commands are executed in the
+current working directory.
+</rule-option>
+
+<rule-option name="id">
+If given and <code>in-xml-block</code> is <code>true</code>, the given id is given to
+the root XML element of the result.
+</rule-option>
+
+<rule-option name="in-xml-block" default="true">
+Embed code and result in XML elements, except if set to <code>false</code>
+</rule-option>
+
+<rule-option name="list" default="false">
+If set to <code>true</code>, a list of commands is expected in sub-elements,
+for example:
+<hxml><![CDATA[<exec list="true">
+  <x>echo foo > foo.txt</x>
+  <x>ls</x>
+  <x>ls -l</x>
+</rule>]]></hxml>
+Commands are run in the given order. For each command, the result shows the
+command followed by its output.
+</rule-option>
+
+<rule-option name="prompt">
+The specified string is used as prompt string to print before the
+command in the output.
+</rule-option>
+
+<rule-option name="show-code" default="true">
+Set to <code>false</code> not to have the original code in the result of
+the rule.
+</rule-option>
+
+<rule-option name="show-stdout" default="true">
+Set to <code>false</code> not to have the output of the command
+in the result of the rule. Note that stderr is redirected to stdout
+during the execution of the command, so the output contains both.
+</rule-option>
+
+<rule-option name="stop-on-error" default="true">
+Set to <code>false</code> not to stop compilation if an error occurs
+during execution of command.
+</rule-option>
+
+</rule-options>
+</contents>
+</rule>

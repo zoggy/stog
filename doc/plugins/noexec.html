@@ -1,0 +1,17 @@
+<plugin
+title="Stog-noexec"
+with-contents="true"
+>
+<contents>
+<p>This plugin overwrites predefined <rule>exec</rule> to
+<span id="desc"> prevent shell commands from being executed during
+the compilation of documents</span>.
+When this plugin is loaded,
+<rule>exec</rule> rule behaves as
+the <rule>hcode</rule> rule, i.e. it only syntactically highlights
+ the given command.
+</p>
+<p>Usage:</p>
+<command-line>$ stog --package stog.noexec ...</command-line>
+</contents>
+</plugin>

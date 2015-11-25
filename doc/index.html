@@ -31,6 +31,12 @@ For information you can see the <a href="#pagesource"> source code of the page</
 
 <stog:rule foo=""><ixml defer_="1">&lt;<contents/>&gt;</ixml></stog:rule>
 
+<stog:rule-options foo=""><dl class="rule-options"><contents/></dl></stog:rule-options>
+<stog:rule-option name="" default="">
+<dt class="rule-option"><name/><if default=""><dummy_/><span> [="<default/>"]</span></if></dt>
+<dl><contents/></dl>
+</stog:rule-option>
+
 <contents>
 <p>Stog is a static web site compiler. It is able to
 handle blog posts as well are regular pages or any XML document in general.

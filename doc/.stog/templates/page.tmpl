@@ -12,13 +12,13 @@
   <if doc-type="plugin"><doc-navpath> / </doc-navpath></if>
   <if doc-type="post">
     <div class="doc-navbar">
-      <if previous=""><main_/><div class="navleft"><previous/></div></if>
-      <if next=""><main_/><div class="navright"><next/></div></if>
+      <if previous=""><dummy_/><div class="navleft"><previous/></div></if>
+      <if next=""><dummy_/><div class="navright"><next/></div></if>
     </div>
   </if>
-  <if doc-type="ocamldoc"><main_/><div class="page-title"><doc-title/></div></if>
+  <if doc-type="ocamldoc"><dummy_/><div class="page-title"><doc-title/></div></if>
 </div>
-<if withsidebar="true"><include file="sidebar.tmpl"/><main_/></if>
+<if withsidebar="true"><include file="sidebar.tmpl"/><dummy_/></if>
 <if doc-type="post"><div class="date"><doc-date/></div></if>
 
 <doc-body/>

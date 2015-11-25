@@ -48,13 +48,14 @@ function, possibly redefining pre-defined rules with the same names.
 <li><doc href="#doc-url"/></li>
 <li><doc href="#dummy_"/></li>
 <li><doc href="#error_"/></li>
+<li><doc href="#exec"/></li>
 <li><doc href="#ext-a"/></li>
 <li><doc href="#graphx"/></li>
-<li><doc href="#hcode"/></li>
 </ul>
 </middle>
 <right>
 <ul>
+<li><doc href="#hcode"/></li>
 <li><doc href="#icode"/></li>
 <li><doc href="#if"/></li>
 <li><doc href="#image"/></li>
@@ -65,11 +66,11 @@ function, possibly redefining pre-defined rules with the same names.
 <li><doc href="#list"/></li>
 <li><doc href="#ocaml"/></li>
 <li><doc href="#ocaml-eval"/></li>
-<li><doc href="#ocaml-printf"/></li>
 </ul>
 </right>
 <col4>
 <ul>
+<li><doc href="#ocaml-printf"/></li>
 <li><doc href="#previous"/></li>
 <li><doc href="#print-date"/></li>
 <li><doc href="#print-datetime"/></li>
@@ -315,6 +316,12 @@ not empty in the environment.
 </p>
 </subsection>
 
+<subsection id="exec" title="exec">
+<p>
+Execute shell commands. See <doc href="rules/exec">details</doc>.
+</p>
+</subsection>
+
 <subsection id="ext-a" title="ext-a">
 <p>
 <hxml>&lt;ext-a attributes&gt;...&lt;/ext-a&gt;</hxml> is reduced
@@ -544,9 +551,7 @@ attribute already set to "ocaml".
 </subsection>
 
 <subsection id="ocaml-eval" title="ocaml-eval">
-<p>This rule evaluates OCaml code. See the following
-blog posts: <post href="displaying-evaluated-ocaml-code"/> and <post href="ocaml-sessions"/>.
-</p>
+<p>This rule evaluates OCaml code. See <doc href="rules/ocaml-eval">details</doc>.</p>
 </subsection>
 
 <subsection id="ocaml-printf" title="ocaml-printf">
