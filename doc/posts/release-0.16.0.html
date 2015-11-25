@@ -11,24 +11,14 @@ Release 0.16.0 of stog is available from the <page href="/install"/> page.
 <p>Changes:</p>
 <ul id="changes">
 <li>require <ext-a href="https://zoggy.github.io/xtmpl/posts/xtmpl-0.12.html">Xtmpl</ext-a> &gt;= 0.13.0,</li>
-
-
-<li><code>--host</code> and <code>--port</code> options are replaced by
-  <code>--http</code>, <code>--ws</code>, <code>--public-http</code>
-  and <code>--public-ws</code>, which accept urls as values. The <code>--public-...</code>
-  options are used when the stog server is behing a proxy,</li>
-<li>New plugins: <doc href="plugins/sitemap"/>, <doc href="plugins/nocaml"/>
-   and <doc href="plugins/extern"/>,</li>
-<li><doc href="posts/ocaml-sessions"><code>stog-ocaml-session</code></doc>
-  now handles the <code>-ppx</code>, <code>-safe-string</code> and
-  <code>-unsafe-string</code> options,</li>
-<li><rule>doc-intro</rule> does not include "next" link with image; it is now
-  in the default <code>doc-in-list</code> template,</li>
-<li>use <ext-a href="https://zoggy.github.io/ocf">Ocf</ext-a> (0.3.0) instead of
-  <ext-a href="http://config-file.forge.ocamlcore.org/">Config-file</ext-a>; as a
-  consequence, previous <doc href="overview#config-file">configuration files</doc>
-  must be translated to JSON syntax,</li>
-<li>new tool <doc href="stog-tmpl"/> to generate web site skeletons,</li>
-<li>new multiserver, with online editor.</li>
+<li>a document's DOCTYPE is now taken from the XML template corresponding to the document's type,</li>
+<li>install <code>odoc_*</code> files in stog ocamlfind directory,</li>
+<li>new option <code>-pp</code> for <code>stog-ocaml-session</code>,</li>
+<li>new <doc href="rules/exec"><rule>exec</rule></doc>
+   rule to execute commands and include output in documents,</li>
+<li>new directory attribute for <doc href="rules/ocaml-eval"><rule>ocaml-eval</rule></doc>
+  to set the directory in which the stog-ocaml-session tool is launched,</li>
+<li>stog preview server: handle file dependencies to trigger recomputation of documents,</li>
+<li>now require lwt not only for server.</li>
 </ul>
 </post>
