@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Developing plugins</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -58,9 +57,9 @@ Here is an example:
 </p>
 <pre class="code-ocaml"><span class="hl com">(** Stog plugin example. *)</span><span class="hl std">
 
-</span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">fun_list</span><span class="hl std"> </span><span class="">stog</span><span class="hl std"> </span><span class="">env</span><span class="hl std"> </span><span class="">args</span><span class="hl std"> </span><span class="">subs</span><span class="hl std"> =
+</span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">fun_list</span><span class="hl std"> </span><span class="">stog</span><span class="hl std"> </span><span class="">env</span><span class="hl std"> ?</span><span class="">loc</span><span class="hl std"> </span><span class="">args</span><span class="hl std"> </span><span class="">subs</span><span class="hl std"> =
   </span><span class="hl com">(* get the optional sep attribute ... *)</span><span class="hl std">
-  </span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">sep</span><span class="hl std"> = </span><span class="hl kwc">Xtmpl</span><span class="hl std">.</span><span class="">opt_att</span><span class="hl std"> </span><span class="">args</span><span class="hl std"> (</span><span class="hl str">&quot;&quot;</span><span class="hl std">, </span><span class="hl str">&quot;sep&quot;</span><span class="hl std">) </span><span class="hl kwa">in</span><span class="hl std">
+  </span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">sep</span><span class="hl std"> = </span><span class="hl kwc">Xtmpl_rewrite</span><span class="hl std">.</span><span class="">opt_att</span><span class="hl std"> </span><span class="">args</span><span class="hl std"> (</span><span class="hl str">""</span><span class="hl std">, </span><span class="hl str">"sep"</span><span class="hl std">) </span><span class="hl kwa">in</span><span class="hl std">
   </span><span class="hl com">(* reverse the separator, for final list will be reversed *)</span><span class="hl std">
   </span><span class="hl kwa">let</span><span class="hl std"> </span><span class="">sep</span><span class="hl std"> = </span><span class="hl kwc">List</span><span class="hl std">.</span><span class="">rev</span><span class="hl std"> </span><span class="">sep</span><span class="hl std"> </span><span class="hl kwa">in</span><span class="hl std">
   </span><span class="hl com">(* then insert the separator between all children of the node *)</span><span class="hl std">
@@ -78,9 +77,9 @@ Here is an example:
   (</span><span class="">stog</span><span class="hl std">, </span><span class="">iter</span><span class="hl std"> [] </span><span class="">subs</span><span class="hl std">)
 ;;
 
-</span><span class="hl com">(* register the new function, associated to tag &quot;list&quot;.
+</span><span class="hl com">(* register the new function, associated to tag "list".
   Before stog 0.3, this function was called [Stog_plug.register_fun]. *)</span><span class="hl std">
-</span><span class="hl kwa">let</span><span class="hl std"> () = </span><span class="hl kwc">Stog_plug</span><span class="hl std">.</span><span class="">register_html_base_rule</span><span class="hl std"> (</span><span class="hl str">&quot;&quot;</span><span class="hl std">, </span><span class="hl str">&quot;list&quot;</span><span class="hl std">) </span><span class="">fun_list</span><span class="hl std">;;
+</span><span class="hl kwa">let</span><span class="hl std"> () = </span><span class="hl kwc">Stog_plug</span><span class="hl std">.</span><span class="">register_html_base_rule</span><span class="hl std"> (</span><span class="hl str">""</span><span class="hl std">, </span><span class="hl str">"list"</span><span class="hl std">) </span><span class="">fun_list</span><span class="hl std">;;
 
 
 </span></pre>
@@ -125,9 +124,9 @@ The plugin is used by specifying it on the <span class="icode"><span class="hl s
 <pre class="code-sh">stog <span class="hl opt">--</span>package plugin_example ...</pre>
 </div>
 <p>
-With our plugin example registering just a base rule, we can use the new &quot;list&quot;:
+With our plugin example registering just a base rule, we can use the new "list":
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;list</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;b&amp;gt; -- &amp;lt;/b&amp;gt;&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;span</span><span class="hl kwa">&gt;</span><span class="hl std">first thing</span><span class="hl kwa">&lt;/span</span><span class="hl kwa">&gt;</span><span class="hl std">second thing</span><span class="hl kwa">&lt;div</span><span class="hl kwa">&gt;</span><span class="hl std">something else</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/list</span><span class="hl kwa">&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;list</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">"&amp;lt;b&amp;gt; -- &amp;lt;/b&amp;gt;"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;span</span><span class="hl kwa">&gt;</span><span class="hl std">first thing</span><span class="hl kwa">&lt;/span</span><span class="hl kwa">&gt;</span><span class="hl std">second thing</span><span class="hl kwa">&lt;div</span><span class="hl kwa">&gt;</span><span class="hl std">something else</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/list</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
 <p>
 This will be evaluated (reduced) to
@@ -136,7 +135,30 @@ This will be evaluated (reduced) to
 </span></pre>
 </div>
 
-
+<!--
+&lt;section id="cache" title="Keeping the cache system in the loop"&gt;
+&lt;p&gt;
+The cache system (see &lt;doc href="running"/&gt;) must be aware
+of dependencies of each document on other documents and files.
+&lt;/p&gt;
+&lt;p&gt;
+If a new rule defined by a plugin uses a file or implies a dependency
+from a document to another, this rule must declare this dependency
+using the &lt;doc href="Stog_plug#VALadd_dep"&gt;&lt;code&gt;Stog_plug.add_dep&lt;/code&gt;&lt;/doc&gt; function:
+&lt;/p&gt;
+&lt;ocaml&gt;Stog_plug.add_dep : Stog_types.doc -&gt; dependency -&gt; unit&lt;/ocaml&gt;
+&lt;p&gt;
+If a plugin computes information which could be cached, it can declare a
+new cache for this informations, using the
+&lt;doc href="Stog_plug#VALregister_cache"&gt;&lt;code&gt;Stog_plug.register_cache&lt;/code&gt;&lt;/doc&gt; function:
+&lt;/p&gt;
+&lt;ocaml&gt;val register_cache : (module Stog_cache.Cache) -&gt; unit&lt;/ocaml&gt;
+&lt;p&gt;
+The Cache module to provide is very simple; have a look at the
+&lt;doc href="Stog_cache.Cache"&gt;&lt;code&gt;Stog_cache.Cache&lt;/code&gt;&lt;/doc&gt;module type.
+&lt;/p&gt;
+&lt;/section&gt;
+-->
 
 
 
@@ -147,49 +169,49 @@ This will be evaluated (reduced) to
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Developing plugins&quot;</span><span class="hl std">
-</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Developing plugins"</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">"active"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Plugins are written in OCaml. The compiled OCaml code is then
 loaded in Stog with the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--plugin</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> or </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--package</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
-options of </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> (see </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;running&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">).
+options of </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> (see </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"running"</span><span class="hl kwa">/&gt;</span><span class="hl std">).
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 A plugin can register new base rules and new modules.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;prepare-toc</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;toc</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;baserules&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Registering base rules&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"baserules"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Registering base rules"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 A plugin can add rewrite rules to the rules of function
-</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#base&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> of module </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Base</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#base"</span><span class="hl kwa">/&gt;</span><span class="hl std"> of module </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base"</span><span class="hl kwa">&gt;</span><span class="hl std">Base</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Here is an example:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;ocaml&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;../src/plugins/plugin_example.ml&quot;</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"ocaml"</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">"1"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">"../src/plugins/plugin_example.ml"</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-Have a look at the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;/ref-doc/index&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">.
+Have a look at the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"/ref-doc/index"</span><span class="hl kwa">/&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;modules&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Registering modules&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"modules"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Registering modules"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 A plugin can also register a complete module, with named functions
 associated to levels. These levels can also be specified in
 the </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/config</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> file as explained
-</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;funs#config_funs&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">here</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"funs#config_funs"</span><span class="hl kwa">&gt;</span><span class="hl std">here</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">An example of such a plugin is
-</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/zoggy/stog/blob/master/plugins/stog_multi_doc.ml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">stog_multi_doc</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://github.com/zoggy/stog/blob/master/plugins/stog_multi_doc.ml"</span><span class="hl kwa">&gt;</span><span class="hl std">stog_multi_doc</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;compiling&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Compilation&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;codecompilation&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"compiling"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Compilation"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"codecompilation"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The plugin is simply compiled with
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -202,8 +224,8 @@ for native code or
 </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;using&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Using&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;usingcode&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"using"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Using"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"usingcode"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The plugin is used by specifying it on the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> command line:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -212,40 +234,40 @@ The plugin is used by specifying it on the </span><span class="hl kwa">&lt;icode
 </span><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span><span class="hl std">stog --package plugin_example ...</span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-With our plugin example registering just a base rule, we can use the new &quot;list&quot;:
+With our plugin example registering just a base rule, we can use the new "list":
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[
-</span><span class="hl kwa">&lt;list</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;b&amp;gt; -- &amp;lt;/b&amp;gt;&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;span</span><span class="hl kwa">&gt;</span><span class="hl std">first thing</span><span class="hl kwa">&lt;/span</span><span class="hl kwa">&gt;</span><span class="hl std">second thing</span><span class="hl kwa">&lt;div</span><span class="hl kwa">&gt;</span><span class="hl std">something else</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/list</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[
+</span><span class="hl kwa">&lt;list</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">"&amp;lt;b&amp;gt; -- &amp;lt;/b&amp;gt;"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;span</span><span class="hl kwa">&gt;</span><span class="hl std">first thing</span><span class="hl kwa">&lt;/span</span><span class="hl kwa">&gt;</span><span class="hl std">second thing</span><span class="hl kwa">&lt;div</span><span class="hl kwa">&gt;</span><span class="hl std">something else</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/list</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;
 </span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 This will be evaluated (reduced) to
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;list</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;b&amp;gt; -- &amp;lt;/b&amp;gt;&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;span</span><span class="hl kwa">&gt;</span><span class="hl std">first thing</span><span class="hl kwa">&lt;/span</span><span class="hl kwa">&gt;</span><span class="hl std">second thing</span><span class="hl kwa">&lt;div</span><span class="hl kwa">&gt;</span><span class="hl std">something else</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/list</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">"1"</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;list</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">"&amp;lt;b&amp;gt; -- &amp;lt;/b&amp;gt;"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;span</span><span class="hl kwa">&gt;</span><span class="hl std">first thing</span><span class="hl kwa">&lt;/span</span><span class="hl kwa">&gt;</span><span class="hl std">second thing</span><span class="hl kwa">&lt;div</span><span class="hl kwa">&gt;</span><span class="hl std">something else</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/list</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
 &lt;!--
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;cache&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Keeping the cache system in the loop&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"cache"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Keeping the cache system in the loop"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-The cache system (see </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;running&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">) must be aware
+The cache system (see </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"running"</span><span class="hl kwa">/&gt;</span><span class="hl std">) must be aware
 of dependencies of each document on other documents and files.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 If a new rule defined by a plugin uses a file or implies a dependency
 from a document to another, this rule must declare this dependency
-using the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;Stog_plug#VALadd_dep&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">Stog_plug.add_dep</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> function:
+using the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"Stog_plug#VALadd_dep"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">Stog_plug.add_dep</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> function:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">Stog_plug.add_dep : Stog_types.doc -&gt; dependency -&gt; unit</span><span class="hl kwa">&lt;/ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 If a plugin computes information which could be cached, it can declare a
 new cache for this informations, using the
-</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;Stog_plug#VALregister_cache&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">Stog_plug.register_cache</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> function:
+</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"Stog_plug#VALregister_cache"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">Stog_plug.register_cache</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> function:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">val register_cache : (module Stog_cache.Cache) -&gt; unit</span><span class="hl kwa">&lt;/ocaml</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The Cache module to provide is very simple; have a look at the
-</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;Stog_cache.Cache&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">Stog_cache.Cache</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">module type.
+</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"Stog_cache.Cache"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">Stog_cache.Cache</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">module type.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 --&gt;
@@ -255,11 +277,11 @@ The Cache module to provide is very simple; have a look at the
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>

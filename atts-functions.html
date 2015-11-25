@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Attributes and functions</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -43,22 +42,22 @@ When defining documents, you can add attributes, which will be added
 to the base environment when applying level functions to this document.
 For example:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;....&quot;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"...."</span><span class="hl std">
 ...
-</span><span class="">author</span><span class="hl std">=</span><span class="hl str">&quot;Santa Claus&quot;</span><span class="hl std">
+</span><span class="">author</span><span class="hl std">=</span><span class="hl str">"Santa Claus"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 .... </span><span class="hl kwa">&lt;author</span><span class="hl kwa">/&gt;</span><span class="hl std"> ....
 </span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
 <p>
 Here the node <span class="icode"><span class="hl kwa">&lt;author</span><span class="hl kwa">/&gt;</span></span> will we rewritten to
-&quot;Santa Claus&quot; (without quotes).
+"Santa Claus" (without quotes).
 </p>
 <p>The same can be achieved for more complex nodes, using the
-<span class="icode"><span class="hl std">with-contents=&quot;true&quot;</span></span>
+<span class="icode"><span class="hl std">with-contents="true"</span></span>
 attribute:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;....&quot;</span><span class="hl std">
-  </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"...."</span><span class="hl std">
+  </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
   ...
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;author</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">Santa Claus</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/author</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -71,15 +70,15 @@ attribute:
 </p>
 <p>
 You can also define functions. A function is defined like an attribute
-when having <span class="icode"><span class="hl std">with-contents=&quot;true&quot;</span></span>, except the
+when having <span class="icode"><span class="hl std">with-contents="true"</span></span>, except the
 node defining the name of the function has XML attributes:
 </p>
-<pre class="code-xml" id="function-def"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;....&quot;</span><span class="hl std">
-  </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+<pre class="code-xml" id="function-def"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"...."</span><span class="hl std">
+  </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
   ...
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
-</span><span class="hl kwa">&lt;command</span><span class="hl std"> </span><span class="">prompt</span><span class="hl std">=</span><span class="hl str">&quot;#&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;pre</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;prompt</span><span class="hl kwa">/&gt;</span><span class="hl std"> </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;more</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/pre</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;command</span><span class="hl std"> </span><span class="">prompt</span><span class="hl std">=</span><span class="hl str">"#"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;pre</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;prompt</span><span class="hl kwa">/&gt;</span><span class="hl std"> </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;more</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/pre</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
 </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
 .... </span><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">ls -l</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -88,7 +87,7 @@ node defining the name of the function has XML attributes:
 <p>
 Here we define a function <span class="icode"><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span></span> which allows to put some
 XML into a <span class="icode"><span class="hl kwa">&lt;pre</span><span class="hl kwa">/&gt;</span></span> node, with a prompt before.
-<span class="icode"><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span></span> is used to insert the &quot;contents&quot; parameter of the function,
+<span class="icode"><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span></span> is used to insert the "contents" parameter of the function,
 that is the subnodes of the <span class="icode"><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span></span> node.
 </p>
 <p>So <span class="icode"><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">ls -l</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span></span> will be rewritten to
@@ -96,22 +95,22 @@ that is the subnodes of the <span class="icode"><span class="hl kwa">&lt;command
 </p>
 <p>
 <span class="icode"><span class="hl std">prompt</span></span> is an argument for <span class="icode"><span class="hl kwa">&lt;command</span><span class="hl kwa">/&gt;</span></span>, with a default
-value set to &quot;# &quot;. This argument can be changed when &quot;calling&quot; the function:
+value set to "# ". This argument can be changed when "calling" the function:
 </p>
-<pre class="code-xml" id="function-app"><span class="hl std">... </span><span class="hl kwa">&lt;command</span><span class="hl std"> </span><span class="">prompt</span><span class="hl std">=</span><span class="hl str">&quot;mysql&amp;amp;gt;&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">select * from table</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std"> ...</span></pre>
+<pre class="code-xml" id="function-app"><span class="hl std">... </span><span class="hl kwa">&lt;command</span><span class="hl std"> </span><span class="">prompt</span><span class="hl std">=</span><span class="hl str">"mysql&amp;amp;gt; "</span><span class="hl kwa">&gt;</span><span class="hl std">select * from table</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std"> ...</span></pre>
 <p>will be rewritten to</p>
-<pre class="code-xml" id="function-app-result"><span class="hl std">... </span><span class="hl kwa">&lt;pre</span><span class="hl kwa">&gt;</span><span class="hl std">mysql</span><span class="hl kwb">&amp;gt;</span><span class="hl std"> select * from table</span><span class="hl kwa">&lt;/pre</span><span class="hl kwa">&gt;</span><span class="hl std"> ...</span></pre>
+<pre class="code-xml" id="function-app-result"><span class="hl std">... </span><span class="hl kwa">&lt;pre</span><span class="hl kwa">&gt;</span><span class="hl std">mysql</span><span class="hl kwb">&amp;gt;</span><span class="hl std">  select * from table</span><span class="hl kwa">&lt;/pre</span><span class="hl kwa">&gt;</span><span class="hl std"> ...</span></pre>
 <p>
 Even attributes of the <span class="icode"><span class="hl kwa">&lt;command</span><span class="hl kwa">/&gt;</span></span> nodes which are
-not &quot;declared&quot; in the rule attribute list are added to the environment used
+not "declared" in the rule attribute list are added to the environment used
 when applying the <span class="icode"><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span></span> rule.
 </p>
 <p>It is not unusual to declare only one dummy parameter to create a function
 so that <span class="icode"><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span></span> can be used in the rule body, this way:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;....&quot;</span><span class="hl std"> </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">  ... </span><span class="hl kwa">&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"...."</span><span class="hl std"> </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">  ... </span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
-</span><span class="hl kwa">&lt;emph</span><span class="hl std"> </span><span class="">foo</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;emph</span><span class="hl std"> </span><span class="">foo</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
 </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
   ... </span><span class="hl kwa">&lt;emph</span><span class="hl kwa">&gt;</span><span class="hl std">bla bla</span><span class="hl kwa">&lt;/emph</span><span class="hl kwa">&gt;</span><span class="hl std"> ...
@@ -120,7 +119,7 @@ so that <span class="icode"><span class="hl kwa">&lt;contents</span><span class=
 
 <p>
 To define functions available for all documents, you have to define them in
-the main document and prefix their name with &quot;stog:&quot;, like &quot;stog:command&quot;. Then,
+the main document and prefix their name with "stog:", like "stog:command". Then,
 the <span class="icode"><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span></span> rule will be available in all documents; besides
 it can be redefined in a document to change this rule for this document only.
 </p>
@@ -133,30 +132,30 @@ it can be redefined in a document to change this rule for this document only.
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Attributes and functions&quot;</span><span class="hl std">
-</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Attributes and functions"</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">"active"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 When defining documents, you can add attributes, which will be added
 to the base environment when applying level functions to this document.
 For example:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;....&quot;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"...."</span><span class="hl std">
 ...
-</span><span class="">author</span><span class="hl std">=</span><span class="hl str">&quot;Santa Claus&quot;</span><span class="hl std">
+</span><span class="">author</span><span class="hl std">=</span><span class="hl str">"Santa Claus"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 .... </span><span class="hl kwa">&lt;author</span><span class="hl kwa">/&gt;</span><span class="hl std"> ....
 </span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-Here the node </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">author/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> will we rewritten to
-&quot;Santa Claus&quot; (without quotes).
+Here the node </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">author/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> will we rewritten to
+"Santa Claus" (without quotes).
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The same can be achieved for more complex nodes, using the
-</span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">with-contents=&quot;true&quot;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl std">with-contents="true"</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
 attribute:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;....&quot;</span><span class="hl std">
-  </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"...."</span><span class="hl std">
+  </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
   ...
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;author</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">Santa Claus</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/author</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -164,20 +163,20 @@ attribute:
 .... </span><span class="hl kwa">&lt;author</span><span class="hl kwa">/&gt;</span><span class="hl std"> ....
 </span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">here </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">author/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> will we rewritten to
-</span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">b</span><span class="hl kwb">&amp;gt;</span><span class="hl std">Santa Claus</span><span class="hl kwb">&amp;lt;</span><span class="hl std">/b</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">here </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">author/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> will we rewritten to
+</span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">b</span><span class="hl kwb">&amp;gt;</span><span class="hl std">Santa Claus</span><span class="hl kwb">&amp;lt;</span><span class="hl std">/b</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 You can also define functions. A function is defined like an attribute
-when having </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">with-contents=&quot;true&quot;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, except the
+when having </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl std">with-contents="true"</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, except the
 node defining the name of the function has XML attributes:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;function-def&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;....&quot;</span><span class="hl std">
-  </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"function-def"</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"...."</span><span class="hl std">
+  </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
   ...
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
-</span><span class="hl kwa">&lt;command</span><span class="hl std"> </span><span class="">prompt</span><span class="hl std">=</span><span class="hl str">&quot;#&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;pre</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;prompt</span><span class="hl kwa">/&gt;</span><span class="hl std"> </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;more</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/pre</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;command</span><span class="hl std"> </span><span class="">prompt</span><span class="hl std">=</span><span class="hl str">"#"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;pre</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;prompt</span><span class="hl kwa">/&gt;</span><span class="hl std"> </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;more</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/pre</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
 </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
 .... </span><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">ls -l</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -186,30 +185,30 @@ node defining the name of the function has XML attributes:
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Here we define a function </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">command</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> which allows to put some
 XML into a </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;pre</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> node, with a prompt before.
-</span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">contents/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> is used to insert the &quot;contents&quot; parameter of the function,
+</span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">contents/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> is used to insert the "contents" parameter of the function,
 that is the subnodes of the </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">command</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> node.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">So </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">ls -l</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> will be rewritten to
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">So </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">ls -l</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> will be rewritten to
 </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">ls -l</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">prompt</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is an argument for </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;command</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, with a default
-value set to &quot;# &quot;. This argument can be changed when &quot;calling&quot; the function:
+</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">prompt</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is an argument for </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;command</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, with a default
+value set to "# ". This argument can be changed when "calling" the function:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;function-app&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">... </span><span class="hl kwa">&lt;command</span><span class="hl std"> </span><span class="">prompt</span><span class="hl std">=</span><span class="hl str">&quot;mysql&amp;gt; &quot;</span><span class="hl kwa">&gt;</span><span class="hl std">select * from table</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std"> ...</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"function-app"</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl std">... </span><span class="hl kwa">&lt;command</span><span class="hl std"> </span><span class="">prompt</span><span class="hl std">=</span><span class="hl str">"mysql&amp;gt; "</span><span class="hl kwa">&gt;</span><span class="hl std">select * from table</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std"> ...</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">will be rewritten to</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;function-app-result&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">... </span><span class="hl kwa">&lt;command</span><span class="hl std"> </span><span class="">prompt</span><span class="hl std">=</span><span class="hl str">&quot;mysql&amp;gt; &quot;</span><span class="hl kwa">&gt;</span><span class="hl std">select * from table</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std"> ...</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"function-app-result"</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">"1"</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl std">... </span><span class="hl kwa">&lt;command</span><span class="hl std"> </span><span class="">prompt</span><span class="hl std">=</span><span class="hl str">"mysql&amp;gt; "</span><span class="hl kwa">&gt;</span><span class="hl std">select * from table</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std"> ...</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Even attributes of the </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">command/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> nodes which are
-not &quot;declared&quot; in the rule attribute list are added to the environment used
+not "declared" in the rule attribute list are added to the environment used
 when applying the </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">command</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> rule.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">It is not unusual to declare only one dummy parameter to create a function
 so that </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">contents/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> can be used in the rule body, this way:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;....&quot;</span><span class="hl std"> </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">  ... </span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"...."</span><span class="hl std"> </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">  ... </span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
-</span><span class="hl kwa">&lt;emph</span><span class="hl std"> </span><span class="">foo</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;emph</span><span class="hl std"> </span><span class="">foo</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">
 ...
 </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
   ... </span><span class="hl kwa">&lt;emph</span><span class="hl kwa">&gt;</span><span class="hl std">bla bla</span><span class="hl kwa">&lt;/emph</span><span class="hl kwa">&gt;</span><span class="hl std"> ...
@@ -218,7 +217,7 @@ so that </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</sp
 
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 To define functions available for all documents, you have to define them in
-the main document and prefix their name with &quot;stog:&quot;, like &quot;stog:command&quot;. Then,
+the main document and prefix their name with "stog:", like "stog:command". Then,
 the </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">command</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> rule will be available in all documents; besides
 it can be redefined in a document to change this rule for this document only.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -228,11 +227,11 @@ it can be redefined in a document to change this rule for this document only.
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>

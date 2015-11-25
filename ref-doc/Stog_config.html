@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_config</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -74,7 +73,7 @@ Reading stog config.<br/>
 <code>  </code></td>
 <td align="left" valign="top">
 <code><span id="TYPEELTt.ignored">ignored</span> : <code class="type">string list</code>;</code></td>
-<td align="left" class="typefieldcomment" valign="top"><code>(*</code></td><td align="left" class="typefieldcomment" valign="top"><div class="info">
+<td align="left" class="typefieldcomment" valign="top"><code>(*</code></td><td align="left" class="typefieldcomment" valign="top"><div class="info ">
 list of regexps of filenames to ignore<br/>
 </div>
 </td><td align="left" class="typefieldcomment" valign="bottom"><code>*)</code></td>
@@ -84,7 +83,7 @@ list of regexps of filenames to ignore<br/>
 <code>  </code></td>
 <td align="left" valign="top">
 <code><span id="TYPEELTt.documents">documents</span> : <code class="type">string list</code>;</code></td>
-<td align="left" class="typefieldcomment" valign="top"><code>(*</code></td><td align="left" class="typefieldcomment" valign="top"><div class="info">
+<td align="left" class="typefieldcomment" valign="top"><code>(*</code></td><td align="left" class="typefieldcomment" valign="top"><div class="info ">
 list of regexps for document files<br/>
 </div>
 </td><td align="left" class="typefieldcomment" valign="bottom"><code>*)</code></td>
@@ -94,7 +93,7 @@ list of regexps for document files<br/>
 <code>  </code></td>
 <td align="left" valign="top">
 <code><span id="TYPEELTt.not_documents">not_documents</span> : <code class="type">string list</code>;</code></td>
-<td align="left" class="typefieldcomment" valign="top"><code>(*</code></td><td align="left" class="typefieldcomment" valign="top"><div class="info">
+<td align="left" class="typefieldcomment" valign="top"><code>(*</code></td><td align="left" class="typefieldcomment" valign="top"><div class="info ">
 list of regexps for file matching documents rules but not being  documents<br/>
 </div>
 </td><td align="left" class="typefieldcomment" valign="bottom"><code>*)</code></td>
@@ -115,34 +114,34 @@ list of regexps for file matching documents rules but not being  documents<br/>
 </tr></table>
 }
 
-<div class="info">
+<div class="info ">
 Contents of <code class="code">.stog/config</code> file.<br/>
 </div>
 
 
-<pre><span id="VALconfig_dir"><span class="keyword">val</span> config_dir</span> : <code class="type">string -&gt; string</code></pre><div class="info">
+<pre><span id="VALconfig_dir"><span class="keyword">val</span> config_dir</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
 <code class="code">config_dir dir</code> returns the stog configuration directory in the given directory.<br/>
 </div>
 
-<pre><span id="VALconfig_file"><span class="keyword">val</span> config_file</span> : <code class="type">string -&gt; string</code></pre><div class="info">
+<pre><span id="VALconfig_file"><span class="keyword">val</span> config_file</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
 <code class="code">config_file dir</code> returns the stog <code class="code">config</code> file for a given project directory,
-     that is <code class="code">Filename.concat (config_dir dir) &quot;config&quot;</code>.<br/>
+     that is <code class="code">Filename.concat (config_dir dir) "config"</code>.<br/>
 </div>
 
-<pre><span id="VALtmpl_dir"><span class="keyword">val</span> tmpl_dir</span> : <code class="type">string -&gt; string</code></pre><div class="info">
+<pre><span id="VALtmpl_dir"><span class="keyword">val</span> tmpl_dir</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
 <code class="code">tmpl_dir dir</code> returns the directory containing templates, from a
   stog project directory.<br/>
 </div>
 
-<pre><span id="VALcache_dir"><span class="keyword">val</span> cache_dir</span> : <code class="type">string -&gt; string</code></pre><div class="info">
+<pre><span id="VALcache_dir"><span class="keyword">val</span> cache_dir</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
 <code class="code">cache_dir dir</code> returns the cache directory, from a stog project directory.<br/>
 </div>
 
-<pre><span id="VALmodules_dir"><span class="keyword">val</span> modules_dir</span> : <code class="type">string -&gt; string</code></pre><div class="info">
+<pre><span id="VALmodules_dir"><span class="keyword">val</span> modules_dir</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
 <code class="code">modules_dir dir</code> returns the modules directory, from a stog project directory.<br/>
 </div>
 
-<pre><span id="VALread_config"><span class="keyword">val</span> read_config</span> : <code class="type">string -&gt; <a href="Stog_config.html#TYPEt">t</a></code></pre><div class="info">
+<pre><span id="VALread_config"><span class="keyword">val</span> read_config</span> : <code class="type">string -&gt; <a href="Stog_config.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">read_config file</code> returns the configuration stored in the given
   stog configuration file.
   If the file does not exists, it is created.
@@ -155,11 +154,12 @@ Contents of <code class="code">.stog/config</code> file.<br/>
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>
+

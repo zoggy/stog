@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Running Stog</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -41,7 +40,7 @@
 <p>
 To compile your web site, use the following command:
 </p>
-<pre># stog &lt;root-directory&gt;</pre>
+<pre><![CDATA[# stog <root-directory>]]></pre>
 <p>Stog will generate the result in <span class="icode"><span class="hl std">./stog-output</span></span>,
 except if you use the <span class="icode"><span class="hl std">-d</span></span> option to specify another
 output directory.
@@ -128,20 +127,28 @@ for <span class="icode"><span class="hl std">stog.byte</span></span> or native-c
 </div>
 <div class="section"><div class="section-title" id="multilang">Handling languages</div>
 <p>The <span class="icode"><span class="hl std">--lang</span></span> option is used to generate the website
-for one language. By default, the only known languages are &quot;en&quot; and &quot;fr&quot;.
+for one language. By default, the only known languages are "en" and "fr".
 If you use the <span class="icode"><span class="hl std">--lang en</span></span> option, then pages will be generated
 in <span class="icode"><span class="hl std">.html.en</span></span> files and all <span class="icode"><span class="hl kwa">&lt;fr</span><span class="hl kwa">&gt;</span></span> nodes will be removed.
 Then you can run <span class="icode"><span class="hl std">stog</span></span> with the <span class="icode"><span class="hl std">--lang fr</span></span>
-to generate the &quot;fr&quot; part of your web site, removing all <span class="icode"><span class="hl kwa">&lt;en</span><span class="hl kwa">&gt;</span></span>.
+to generate the "fr" part of your web site, removing all <span class="icode"><span class="hl kwa">&lt;en</span><span class="hl kwa">&gt;</span></span>.
 </p>
 <p>
-The default language is &quot;en&quot;. It is used when generating date representations.
+The default language is "en". It is used when generating date representations.
 The default language can be changed by using the <span class="icode"><span class="hl std">--default-lang</span></span> option,
 for example:
 </p>
 <pre># stog --default-lang fr ...</pre>
 <p>will generate pages with no language suffix, but with dates printed in french.</p>
-
+<!--
+&lt;p&gt;
+If you need more languages, just define "stog:languages" in the main document
+this way:
+&lt;/p&gt;
+&lt;hcode&gt;&lt;![CDATA[&lt;type main="true" ... stog:languages="es,de,fr,en"&gt;...&lt;/type&gt;]]&gt;&lt;/hcode&gt;
+&lt;p&gt;This makes &lt;languages/&gt; returning the list of languages, and it is used by
+the provided
+-->
 </div>
 
 <div class="section"><div class="section-title" id="caching">Caching</div>
@@ -172,7 +179,7 @@ to use non-recursive dependencies in the caching strategy.
 <div class="section"><div class="section-title" id="filter">Filtering published documents</div>
 <p>
 By default, Stog will not compute documents having definition
-<span class="icode"><span class="hl std">published=&quot;false&quot;</span></span> or <span class="icode"><span class="hl std">published=&quot;0&quot;</span></span>
+<span class="icode"><span class="hl std">published="false"</span></span> or <span class="icode"><span class="hl std">published="0"</span></span>
 in its header.
 </p>
 <p>The <span class="icode"><span class="hl std">--publish-only</span></span> option takes a filter and will
@@ -180,9 +187,9 @@ make Stog keep only the documents matching this filter.
 </p>
 <p>
 For example, the following command will compute all documents except
-the ones having &quot;ocaml&quot; in their topics:
+the ones having "ocaml" in their topics:
 </p>
-<pre># stog --publish-only &quot;! (topic='ocaml')&quot; ...</pre>
+<pre># stog --publish-only "! (topic='ocaml')" ...</pre>
 <p>
 See <a href="https://zoggy.github.io/stog/module_base.html#documents">here</a> for filter syntax. Beware
 that the condition to keep only some documents to publish is evaluated
@@ -191,13 +198,13 @@ as when evaluating filters in the <span class="icode"><span class="hl kwa">&lt;d
 </p>
 <p>Some attributes in the filter are handled specially:</p>
 <ul>
-<li><span class="icode"><span class="hl std">type=&quot;t&quot;</span></span> is true if the document is of type <span class="icode"><span class="hl std">t</span></span>,</li>
-<li><span class="icode"><span class="hl std">keyword=&quot;k&quot;</span></span> is true if the document has <span class="icode"><span class="hl std">k</span></span> among its keywords,</li>
-<li><span class="icode"><span class="hl std">topic=&quot;t&quot;</span></span> is true if the document has <span class="icode"><span class="hl std">t</span></span> among its topics,</li>
-<li><span class="icode"><span class="hl std">set=&quot;s&quot;</span></span> is true if the document belong to set <span class="icode"><span class="hl std">s</span></span>.</li>
+<li><span class="icode"><span class="hl std">type="t"</span></span> is true if the document is of type <span class="icode"><span class="hl std">t</span></span>,</li>
+<li><span class="icode"><span class="hl std">keyword="k"</span></span> is true if the document has <span class="icode"><span class="hl std">k</span></span> among its keywords,</li>
+<li><span class="icode"><span class="hl std">topic="t"</span></span> is true if the document has <span class="icode"><span class="hl std">t</span></span> among its topics,</li>
+<li><span class="icode"><span class="hl std">set="s"</span></span> is true if the document belong to set <span class="icode"><span class="hl std">s</span></span>.</li>
 </ul>
 <p>
-At last, the condition <span class="icode"><span class="hl std">foo=&quot;&quot;</span></span> is true if the document has no
+At last, the condition <span class="icode"><span class="hl std">foo=""</span></span> is true if the document has no
 attribute <span class="icode"><span class="hl std">foo</span></span> or if the attribute <span class="icode"><span class="hl std">foo</span></span> is empty.
 </p>
 </div>
@@ -219,8 +226,8 @@ Makefile</a></span> used to build stog documentation.
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Running Stog&quot;</span><span class="hl std">
-</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Running Stog"</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">"active"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 To compile your web site, use the following command:
@@ -240,10 +247,10 @@ all documents are merged as if all were defined in the last directory
 given. It may be useful to gather blogs or pages to generate one big site. Or not.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-Stog can also be used to </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;single-documents&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">compile single documents</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
+Stog can also be used to </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"single-documents"</span><span class="hl kwa">&gt;</span><span class="hl std">compile single documents</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;siteurl&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Site location&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"siteurl"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Site location"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--site-url</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option is used to override the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog:site-url</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
 field of the main document. It it useful to generate a local site, for example
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -252,12 +259,12 @@ field of the main document. It it useful to generate a local site, for example
 to test your site locally with correct links.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;optionlocal&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"optionlocal"</span><span class="hl kwa">&gt;</span><span class="hl std">
 As a shortcut, the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--local</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option sets </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog:site-url</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> to
 </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">file://</span><span class="hl kwb">&amp;lt;</span><span class="hl std">absolute path of output directory/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;template-path&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Template paths&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"template-path"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Template paths"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">By default, Stog will look for templates in the following directories, in this
 order: </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/templates</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">/path/to/stog/share/templates</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -272,7 +279,7 @@ several times. In the following example:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;module-path&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Module paths&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"module-path"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Module paths"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">By default, Stog will look for modules in the following directories, in this
 order: </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/modules</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">/path/to/stog/share/modules</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -287,8 +294,8 @@ several times. In the following example:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;def&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Additional definitions&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;optiondef&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"def"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Additional definitions"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"optiondef"</span><span class="hl kwa">&gt;</span><span class="hl std">
 The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--def</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option can be used to define an additional global rule. For example
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">stog --def stogdir:`pwd`</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -297,11 +304,11 @@ will make the current working directory accessible using </span><span class="hl 
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;plugins&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Plugins&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"plugins"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Plugins"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--plugin</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option makes </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> dynamically
 load the given OCaml object file. The loaded plugin can define new functions
 to associate to some tags, or even override some pre-defined functions.
-See </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;writing_plugins&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">.
+See </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"writing_plugins"</span><span class="hl kwa">/&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 If a plugin was installed with ocamlfind, the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--package</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option can be used
@@ -310,16 +317,16 @@ then be used to get the location and required files to load these packages, in b
 for </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog.byte</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> or native-code for </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;multilang&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Handling languages&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"multilang"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Handling languages"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--lang</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option is used to generate the website
-for one language. By default, the only known languages are &quot;en&quot; and &quot;fr&quot;.
+for one language. By default, the only known languages are "en" and "fr".
 If you use the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--lang en</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option, then pages will be generated
 in </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.html.en</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> files and all </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">fr</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> nodes will be removed.
 Then you can run </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> with the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--lang fr</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
-to generate the &quot;fr&quot; part of your web site, removing all </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">en</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">.
+to generate the "fr" part of your web site, removing all </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">en</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-The default language is &quot;en&quot;. It is used when generating date representations.
+The default language is "en". It is used when generating date representations.
 The default language can be changed by using the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--default-lang</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option,
 for example:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -327,16 +334,16 @@ for example:
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">will generate pages with no language suffix, but with dates printed in french.</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl com">&lt;!--
 &lt;p&gt;
-If you need more languages, just define &quot;stog:languages&quot; in the main document
+If you need more languages, just define "stog:languages" in the main document
 this way:
 &lt;/p&gt;
-&lt;hcode&gt;&lt;![CDATA[&lt;type main=&quot;true&quot; ... stog:languages=&quot;es,de,fr,en&quot;&gt;...&lt;/type&gt;]]&gt;&lt;/hcode&gt;
+&lt;hcode&gt;&lt;![CDATA[&lt;type main="true" ... stog:languages="es,de,fr,en"&gt;...&lt;/type&gt;]]&gt;&lt;/hcode&gt;
 &lt;p&gt;This makes &amp;lt;languages/&amp;gt; returning the list of languages, and it is used by
 the provided
 --&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;caching&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Caching&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"caching"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Caching"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Stog will keep computed documents in directory </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/cache</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">.
 To prevent stog from using this cache, use the </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--nocache</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -345,7 +352,7 @@ be updated by contents of computed documents.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The caching strategy uses dependencies between documents: if a document
-refers to another one (see </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;funs&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">), a dependency will be
+refers to another one (see </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"funs"</span><span class="hl kwa">/&gt;</span><span class="hl std">), a dependency will be
 added and stored in the cache directory, so that this dependency will
 be used during the next run of stog. A document can also depend
 on files: the templates used, the files included, ... Dependencies are
@@ -361,10 +368,10 @@ to use non-recursive dependencies in the caching strategy.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;filter&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Filtering published documents&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"filter"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Filtering published documents"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 By default, Stog will not compute documents having definition
-</span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">published=&quot;false&quot;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> or </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">published=&quot;0&quot;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">published="false"</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> or </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">published="0"</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">
 in its header.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--publish-only</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option takes a filter and will
@@ -372,33 +379,33 @@ make Stog keep only the documents matching this filter.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 For example, the following command will compute all documents except
-the ones having &quot;ocaml&quot; in their topics:
+the ones having "ocaml" in their topics:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">stog --publish-only &quot;! (topic='ocaml')&quot; ...</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">stog --publish-only "! (topic='ocaml')" ...</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-See </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#documents&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">here</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> for filter syntax. Beware
+See </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#documents"</span><span class="hl kwa">&gt;</span><span class="hl std">here</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> for filter syntax. Beware
 that the condition to keep only some documents to publish is evaluated
 without performing XML rewriting on the document definitions, as opposed
 as when evaluating filters in the </span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">documents</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std"> rule.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Some attributes in the filter are handled specially:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">type=&quot;t&quot;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is true if the document is of type </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">t</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">keyword=&quot;k&quot;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is true if the document has </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">k</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> among its keywords,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">topic=&quot;t&quot;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is true if the document has </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">t</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> among its topics,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">set=&quot;s&quot;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is true if the document belong to set </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">s</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">type="t"</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is true if the document is of type </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">t</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">keyword="k"</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is true if the document has </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">k</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> among its keywords,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">topic="t"</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is true if the document has </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">t</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> among its topics,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">set="s"</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is true if the document belong to set </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">s</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-At last, the condition </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">foo=&quot;&quot;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is true if the document has no
+At last, the condition </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">foo=""</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is true if the document has no
 attribute </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">foo</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> or if the attribute </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">foo</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is empty.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;makefile&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Using with Make&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"makefile"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Using with Make"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 A convenient way to use stog is to create a Makefile with different targets,
 to generate your site for a local test and for online publishing.
-Have a look at </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/zoggy/stog/tree/master/doc/Makefile&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">this
+Have a look at </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://github.com/zoggy/stog/tree/master/doc/Makefile"</span><span class="hl kwa">&gt;</span><span class="hl std">this
 Makefile</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> used to build stog documentation.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -408,11 +415,11 @@ Makefile</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>

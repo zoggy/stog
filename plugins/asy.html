@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog-asy</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -62,8 +61,8 @@ Here are the possible ways to use it:
 <td>
 Output to <code>asy.svg</code>, using an <span class="icode"><span class="hl kwa">&lt;img</span><span class="hl kwa">&gt;</span></span>
 node to show the image:
-<div class="hide" id="code1">
-&lt;asy outfile=&quot;asy1.svg&quot;&gt;
+<div class="hide" id="code1"><![CDATA[
+<asy outfile="asy1.svg">
 void testline(real y) {
   draw((0,y)--(100,y),currentpen+solid);
   draw((0,y-10)--(100,y-10),currentpen+dotted);
@@ -78,8 +77,8 @@ currentpen=linewidth(0.5);
 testline(100);
 currentpen=linewidth(4);
 testline(0);
-&lt;/asy&gt;</div>
-<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">outfile</span><span class="hl std">=</span><span class="hl str">&quot;asy1.svg&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</asy>]]></div>
+<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">outfile</span><span class="hl std">=</span><span class="hl str">"asy1.svg"</span><span class="hl kwa">&gt;</span><span class="hl std">
 void testline(real y) {
   draw((0,y)--(100,y),currentpen+solid);
   draw((0,y-10)--(100,y-10),currentpen+dotted);
@@ -95,61 +94,59 @@ testline(100);
 currentpen=linewidth(4);
 testline(0);
 </span><span class="hl kwa">&lt;/asy</span><span class="hl kwa">&gt;</span></pre></td>
-<td>
-<img src="asy1.svg"/></td>
+<td><img src="asy1.svg"/></td>
 </tr>
 
 <tr>
 <td>
 Output a <code>png</code> file to <code>asy2.png</code>
 and read source from <code>code2.asy</code>:
-<div class="hide" id="code2">
-&lt;asy src=&quot;code2.asy&quot;
-  type=&quot;png&quot; outfile=&quot;asy2.png&quot;
-  width=&quot;200px&quot;/&gt;
-</div>
-<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">src</span><span class="hl std">=</span><span class="hl str">&quot;code2.asy&quot;</span><span class="hl std">
-  </span><span class="">type</span><span class="hl std">=</span><span class="hl str">&quot;png&quot;</span><span class="hl std"> </span><span class="">outfile</span><span class="hl std">=</span><span class="hl str">&quot;asy2.png&quot;</span><span class="hl std">
-  </span><span class="">width</span><span class="hl std">=</span><span class="hl str">&quot;200px&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+<div class="hide" id="code2"><![CDATA[
+<asy src="code2.asy"
+  type="png" outfile="asy2.png"
+  width="200px"/>
+]]></div>
+<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">src</span><span class="hl std">=</span><span class="hl str">"code2.asy"</span><span class="hl std">
+  </span><span class="">type</span><span class="hl std">=</span><span class="hl str">"png"</span><span class="hl std"> </span><span class="">outfile</span><span class="hl std">=</span><span class="hl str">"asy2.png"</span><span class="hl std">
+  </span><span class="">width</span><span class="hl std">=</span><span class="hl str">"200px"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span></pre>
 With <a href="code2.asy"><code>code2.asy</code></a>.
 The additional attributes (here <code>width</code>) are
 passed to the <span class="icode"><span class="hl kwa">&lt;img</span><span class="hl kwa">&gt;</span></span> node.
 </td>
-<td>
-<img src="asy2.png" width="200px"/>
+<td><img src="asy2.png" width="200px"/>
 </td>
 </tr>
 
 <tr>
 <td>
 With <span class="icode"><span class="hl kwa">&lt;doc-</span><span class="hl std">...</span><span class="hl kwa">&gt;</span></span> rules to get labels,
-using attribute <span class="icode"><span class="hl std">defer_=&quot;1&quot;</span></span> in the <span class="icode"><span class="hl kwa">&lt;asy</span><span class="hl kwa">&gt;</span></span>
+using attribute <span class="icode"><span class="hl std">defer_="1"</span></span> in the <span class="icode"><span class="hl kwa">&lt;asy</span><span class="hl kwa">&gt;</span></span>
 so that rewriting is performed in its children before the
 code is being passed to asymptote:
-<div class="hide" id="code3">
-&lt;asy defer_=&quot;1&quot;&gt;
+<div class="hide" id="code3"><![CDATA[
+<asy defer_="1">
 real margin=1.5mm;
 object left=align(
-  object(&quot;&lt;doc-title doc-path=&quot;plugins/asy&quot;/&gt;&quot;,
+  object("<doc-title doc-path="plugins/asy"/>",
          ellipse,margin),W);
 add(left);
 object right=align(
-  object(&quot;&lt;doc-title doc-path=&quot;plugins&quot;/&gt;&quot;,
+  object("<doc-title doc-path="plugins"/>",
          ellipse,margin),4E);
 add(right);
 add(new void(frame f, transform t) {
     draw(f,point(left,NE,t)--point(right,W,t));
   });
-&lt;/asy&gt;</div>
-<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</asy>]]></div>
+<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">"1"</span><span class="hl kwa">&gt;</span><span class="hl std">
 real margin=1.5mm;
 object left=align(
-  object(&quot;</span><span class="hl kwa">&lt;doc-title</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;plugins/asy&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">&quot;,
+  object("</span><span class="hl kwa">&lt;doc-title</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">"plugins/asy"</span><span class="hl kwa">/&gt;</span><span class="hl std">",
          ellipse,margin),W);
 add(left);
 object right=align(
-  object(&quot;</span><span class="hl kwa">&lt;doc-title</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;plugins&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">&quot;,
+  object("</span><span class="hl kwa">&lt;doc-title</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">"plugins"</span><span class="hl kwa">/&gt;</span><span class="hl std">",
          ellipse,margin),4E);
 add(right);
 add(new void(frame f, transform t) {
@@ -160,8 +157,7 @@ Since no <code>outfile</code> attribute is given, the <code>svg</code>
 file produced is included (no use of <span class="icode"><span class="hl kwa">&lt;img</span><span class="hl kwa">&gt;</span></span>).
 </td>
 <td>
-
-<svg height="28.7624pt" version="1.1" viewBox="56.4094 53.8583 147.383 28.7624" width="147.383pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+<!-- This file was generated by dvisvgm 1.2.2 (x86_64-pc-linux-gnu) --><!-- Wed Nov 25 15:00:22 2015 --><svg height="28.7624pt" version="1.1" viewBox="56.4094 53.8583 147.383 28.7624" width="147.383pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <path d="M3.252 -2.268V-2.916H0.132V-2.268H3.252Z" id="g0-45"/>
 <path d="M2.616 -3.816H4.644C6.048 -3.816 7.332 -4.764 7.332 -5.976C7.332 -7.14 6.168 -8.196 4.548 -8.196H0.504V-7.848H0.744C1.608 -7.848 1.644 -7.728 1.644 -7.284V-0.912C1.644 -0.468 1.608 -0.348 0.744 -0.348H0.504V0C0.792 -0.024 1.776 -0.024 2.124 -0.024C2.484 -0.024 3.468 -0.024 3.756 0V-0.348H3.516C2.652 -0.348 2.616 -0.468 2.616 -0.912V-3.816ZM2.592 -4.104V-7.368C2.592 -7.764 2.616 -7.848 3.144 -7.848H4.272C6.216 -7.848 6.216 -6.492 6.216 -5.976C6.216 -5.472 6.216 -4.104 4.26 -4.104H2.592Z" id="g0-80"/>
@@ -203,21 +199,21 @@ file produced is included (no use of <span class="icode"><span class="hl kwa">&l
 <g transform="matrix(1 0 0 1 132.892 68.4954)">
 <path d="M -12.2039 -9.96309L 4.26594 -1.04366e-14" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10.0375" stroke-width="0.501875"/>
 </g></g>
-</svg></td>
+</svg>
+</td>
 </tr>
 
 <tr>
 <td>
 Including again the produced <code>svg</code> file. To avoid
-conflicts in ids, we use the <span class="icode"><span class="hl std">prefix-svg-ids=&quot;foo&quot;</span></span>
+conflicts in ids, we use the <span class="icode"><span class="hl std">prefix-svg-ids="foo"</span></span>
 attribute:
-<div class="hide" id="code4">
-&lt;asy prefix-svg-ids=&quot;foo&quot; src=&quot;code4.asy&quot;/&gt;</div>
-<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">prefix-svg-ids</span><span class="hl std">=</span><span class="hl str">&quot;foo&quot;</span><span class="hl std"> </span><span class="">src</span><span class="hl std">=</span><span class="hl str">&quot;code4.asy&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<div class="hide" id="code4"><![CDATA[
+<asy prefix-svg-ids="foo" src="code4.asy"/>]]></div>
+<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">prefix-svg-ids</span><span class="hl std">=</span><span class="hl str">"foo"</span><span class="hl std"> </span><span class="">src</span><span class="hl std">=</span><span class="hl str">"code4.asy"</span><span class="hl kwa">/&gt;</span></pre>
 With <a href="code4.asy"><code>code4.asy</code></a>.
 </td>
-<td>
-<svg height="198.425pt" version="1.1" viewBox="56.4094 53.8583 198.426 198.425" width="198.426pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+<td><!-- This file was generated by dvisvgm 1.2.2 (x86_64-pc-linux-gnu) --><!-- Wed Nov 25 15:00:21 2015 --><svg height="198.425pt" version="1.1" viewBox="56.4094 53.8583 198.426 198.425" width="198.426pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 <g id="foopage1" transform="matrix(0.996264 0 0 0.996264 0 0)">
 <g transform="matrix(1 0 0 1 -41.9599 252.728)">
 <path d="M 158.532 -46.4084L 158.393 -46.7477L 158.253 -47.0876L 158.002 -48.1097L 157.751 -49.1349L 157.668 -50.158L 157.585 -51.1822L 157.668 -52.2063L 157.751 -53.2295L 158.002 -54.2546L 158.253 -55.2768L 158.393 -55.6167L 158.532 -55.956L 158.829 -56.6412L 159.126 -57.3241L 159.756 -58.3513L 160.39 -59.3713L 160.452 -59.4488L 160.514 -59.5262L 161.32 -60.4764L 162.133 -61.4186L 162.314 -61.5899L 162.496 -61.7609L 163.463 -62.6174L 164.439 -63.4659L 164.458 -63.4801L 164.477 -63.4943L 165.464 -64.1746L 166.459 -64.8489L 166.986 -65.1818L 167.516 -65.5132L 167.977 -65.7637L 168.441 -66.0133L 169.428 -66.5074L 170.422 -66.9977L 171.041 -67.2797L 171.663 -67.5605L 172.033 -67.7084L 172.404 -67.8559L 173.392 -68.2178L 174.386 -68.5774L 175.374 -68.9035L 176.367 -69.2276L 177.011 -69.418L 177.656 -69.6078L 178.002 -69.6994L 178.349 -69.7909L 179.337 -70.026L 180.331 -70.26L 181.319 -70.4671L 182.312 -70.6734L 183.301 -70.8537L 184.294 -71.0332L 185.283 -71.1876L 186.276 -71.3415L 187.265 -71.4708L 188.257 -71.5997L 188.518 -71.6274L 188.779 -71.6551L 189.509 -71.7258L 190.239 -71.7964L 191.229 -71.8707L 192.221 -71.9449L 193.211 -71.9977L 194.202 -72.0504L 195.193 -72.082L 196.184 -72.1135L 197.175 -72.124L 198.166 -72.1345L 199.156 -72.124L 200.147 -72.1135L 201.138 -72.082L 202.129 -72.0504L 203.12 -71.9977L 204.111 -71.9449L 205.102 -71.8707L 206.092 -71.7964L 206.823 -71.7258L 207.552 -71.6551L 207.813 -71.6274L 208.074 -71.5997L 209.066 -71.4708L 210.055 -71.3415L 211.048 -71.1876L 212.037 -71.0332L 213.03 -70.8537L 214.019 -70.6734L 215.012 -70.4671L 216 -70.26L 216.994 -70.026L 217.982 -69.7909L 218.329 -69.6994L 218.675 -69.6078L 219.32 -69.418L 219.964 -69.2276L 220.958 -68.9035L 221.945 -68.5774L 222.939 -68.2178L 223.927 -67.8559L 224.298 -67.7084L 224.668 -67.5605L 225.29 -67.2797L 225.909 -66.9977L 226.903 -66.5074L 227.89 -66.0133L 228.354 -65.7637L 228.815 -65.5132L 229.345 -65.1818L 229.872 -64.8489L 230.867 -64.1746L 231.854 -63.4943L 231.873 -63.4801L 231.892 -63.4659L 232.868 -62.6174L 233.835 -61.7609L 234.017 -61.5899L 234.198 -61.4186L 235.011 -60.4764L 235.817 -59.5262L 235.879 -59.4488L 235.941 -59.3713L 236.575 -58.3513L 237.205 -57.3241L 237.502 -56.6412L 237.799 -55.956L 237.938 -55.6167L 238.078 -55.2768L 238.329 -54.2546L 238.58 -53.2295L 238.663 -52.2063L 238.746 -51.1822L 238.663 -50.158L 238.58 -49.1349L 238.329 -48.1097L 238.078 -47.0876L 237.938 -46.7477L 237.799 -46.4084L 237.502 -45.7232L 237.205 -45.0403L 236.575 -44.0131L 235.941 -42.993L 235.879 -42.9156L 235.817 -42.8382L 235.011 -41.888L 234.198 -40.9458L 234.017 -40.7745L 233.835 -40.6035L 232.868 -39.747L 231.892 -38.8985L 231.873 -38.8843L 231.854 -38.8701L 230.867 -38.1897L 229.872 -37.5155L 229.345 -37.1826L 228.815 -36.8512L 228.354 -36.6007L 227.89 -36.3511L 226.903 -35.857L 225.909 -35.3667L 225.29 -35.0847L 224.668 -34.8039L 224.298 -34.656L 223.927 -34.5085L 222.939 -34.1465L 221.945 -33.7869L 220.958 -33.4609L 219.964 -33.1368L 219.32 -32.9464L 218.675 -32.7566L 218.329 -32.665L 217.982 -32.5735L 216.994 -32.3384L 216 -32.1044L 215.012 -31.8972L 214.019 -31.691L 213.03 -31.5107L 212.037 -31.3311L 211.048 -31.1768L 210.055 -31.0229L 209.066 -30.8936L 208.074 -30.7647L 207.813 -30.737L 207.552 -30.7093L 206.823 -30.6386L 206.092 -30.568L 205.102 -30.4937L 204.111 -30.4195L 203.12 -30.3667L 202.129 -30.314L 201.138 -30.2824L 200.147 -30.2509L 199.156 -30.2404L 198.166 -30.2299L 197.175 -30.2404L 196.184 -30.2509L 195.193 -30.2824L 194.202 -30.314L 193.211 -30.3667L 192.221 -30.4195L 191.229 -30.4937L 190.239 -30.568L 189.509 -30.6386L 188.779 -30.7093L 188.518 -30.737L 188.257 -30.7647L 187.265 -30.8936L 186.276 -31.0229L 185.283 -31.1768L 184.294 -31.3311L 183.301 -31.5107L 182.312 -31.691L 181.319 -31.8972L 180.331 -32.1044L 179.337 -32.3384L 178.349 -32.5735L 178.002 -32.665L 177.656 -32.7566L 177.011 -32.9464L 176.367 -33.1368L 175.374 -33.4609L 174.386 -33.7869L 173.392 -34.1465L 172.404 -34.5085L 172.033 -34.656L 171.663 -34.8039L 171.041 -35.0847L 170.422 -35.3667L 169.428 -35.857L 168.441 -36.3511L 167.977 -36.6007L 167.516 -36.8512L 166.986 -37.1826L 166.459 -37.5155L 165.464 -38.1897L 164.477 -38.8701L 164.458 -38.8843L 164.439 -38.8985L 163.463 -39.747L 162.496 -40.6035L 162.314 -40.7745L 162.133 -40.9458L 161.32 -41.888L 160.514 -42.8382L 160.452 -42.9156L 160.39 -42.993L 159.756 -44.0131L 159.126 -45.0403L 158.829 -45.7232L 158.532 -46.4084Z" fill="#ff00ff" fill-rule="evenodd"/>
@@ -273,24 +269,24 @@ With <a href="code4.asy"><code>code4.asy</code></a>.
 <g transform="matrix(1 0 0 1 -41.9599 252.728)">
 <path d="M 158.253 -149.452L 158.393 -149.112L 158.532 -148.773L 158.829 -148.088L 159.126 -147.405L 159.756 -146.377L 160.39 -145.357L 160.452 -145.28L 160.514 -145.203L 161.32 -144.252L 162.133 -143.31L 162.314 -143.139L 162.496 -142.968L 163.463 -142.111L 164.439 -141.263L 164.458 -141.249L 164.477 -141.234L 165.464 -140.554L 166.459 -139.88L 166.986 -139.547L 167.516 -139.216L 167.977 -138.965L 168.441 -138.716L 169.428 -138.221L 170.422 -137.731L 171.041 -137.449L 171.663 -137.168L 172.033 -137.02L 172.404 -136.873L 173.392 -136.511L 174.386 -136.151L 175.374 -135.825L 176.367 -135.501L 177.011 -135.311L 177.656 -135.121L 178.002 -135.029L 178.349 -134.938L 179.337 -134.703L 180.331 -134.469L 181.319 -134.262L 182.312 -134.055L 183.301 -133.875L 184.294 -133.696L 185.283 -133.541L 186.276 -133.387L 187.265 -133.258L 188.257 -133.129L 188.518 -133.101L 188.779 -133.074L 189.509 -133.003L 190.239 -132.932L 191.229 -132.858L 192.221 -132.784L 193.211 -132.731L 194.202 -132.678L 195.193 -132.647L 196.184 -132.615L 197.175 -132.605L 198.166 -132.594L 199.156 -132.605L 200.147 -132.615L 201.138 -132.647L 202.129 -132.678L 203.12 -132.731L 204.111 -132.784L 205.102 -132.858L 206.092 -132.932L 206.823 -133.003L 207.552 -133.074L 207.813 -133.101L 208.074 -133.129L 209.066 -133.258L 210.055 -133.387L 211.048 -133.541L 212.037 -133.696L 213.03 -133.875L 214.019 -134.055L 215.012 -134.262L 216 -134.469L 216.994 -134.703L 217.982 -134.938L 218.329 -135.029L 218.675 -135.121L 219.32 -135.311L 219.964 -135.501L 220.958 -135.825L 221.945 -136.151L 222.939 -136.511L 223.927 -136.873L 224.298 -137.02L 224.668 -137.168L 225.29 -137.449L 225.909 -137.731L 226.903 -138.221L 227.89 -138.716L 228.354 -138.965L 228.815 -139.216L 229.345 -139.547L 229.872 -139.88L 230.867 -140.554L 231.854 -141.234L 231.873 -141.249L 231.892 -141.263L 232.868 -142.111L 233.835 -142.968L 234.017 -143.139L 234.198 -143.31L 235.011 -144.252L 235.817 -145.203L 235.879 -145.28L 235.941 -145.357L 236.575 -146.377L 237.205 -147.405L 237.502 -148.088L 237.799 -148.773L 237.938 -149.112L 238.078 -149.452L 238.329 -150.474L 238.58 -151.499L 238.663 -152.522L 238.746 -153.547L 238.663 -154.571L 238.58 -155.594L 238.329 -156.619L 238.078 -157.641L 237.938 -157.981L 237.799 -158.32L 237.502 -159.006L 237.205 -159.688L 236.575 -160.716L 235.941 -161.736L 235.879 -161.813L 235.817 -161.891L 235.011 -162.841L 234.198 -163.783L 234.017 -163.954L 233.835 -164.125L 232.868 -164.982L 231.892 -165.83L 231.873 -165.845L 231.854 -165.859L 230.867 -166.539L 229.872 -167.213L 229.345 -167.546L 228.815 -167.878L 228.354 -168.128L 227.89 -168.378L 226.903 -168.872L 225.909 -169.362L 225.29 -169.644L 224.668 -169.925L 224.298 -170.073L 223.927 -170.22L 222.939 -170.582L 221.945 -170.942L 220.958 -171.268L 219.964 -171.592L 219.32 -171.782L 218.675 -171.972L 218.329 -172.064L 217.982 -172.155L 216.994 -172.39L 216 -172.624L 215.012 -172.832L 214.019 -173.038L 213.03 -173.218L 212.037 -173.398L 211.048 -173.552L 210.055 -173.706L 209.066 -173.835L 208.074 -173.964L 207.813 -173.992L 207.552 -174.019L 206.823 -174.09L 206.092 -174.161L 205.102 -174.235L 204.111 -174.309L 203.12 -174.362L 202.129 -174.415L 201.138 -174.446L 200.147 -174.478L 199.156 -174.488L 198.166 -174.499L 197.175 -174.488L 196.184 -174.478L 195.193 -174.446L 194.202 -174.415L 193.211 -174.362L 192.221 -174.309L 191.229 -174.235L 190.239 -174.161L 189.509 -174.09L 188.779 -174.019L 188.518 -173.992L 188.257 -173.964L 187.265 -173.835L 186.276 -173.706L 185.283 -173.552L 184.294 -173.398L 183.301 -173.218L 182.312 -173.038L 181.319 -172.832L 180.331 -172.624L 179.337 -172.39L 178.349 -172.155L 178.002 -172.064L 177.656 -171.972L 177.011 -171.782L 176.367 -171.592L 175.374 -171.268L 174.386 -170.942L 173.392 -170.582L 172.404 -170.22L 172.033 -170.073L 171.663 -169.925L 171.041 -169.644L 170.422 -169.362L 169.428 -168.872L 168.441 -168.378L 167.977 -168.128L 167.516 -167.878L 166.986 -167.546L 166.459 -167.213L 165.464 -166.539L 164.477 -165.859L 164.458 -165.845L 164.439 -165.83L 163.463 -164.982L 162.496 -164.125L 162.314 -163.954L 162.133 -163.783L 161.32 -162.841L 160.514 -161.891L 160.452 -161.813L 160.39 -161.736L 159.756 -160.716L 159.126 -159.688L 158.829 -159.006L 158.532 -158.32L 158.393 -157.981L 158.253 -157.641L 158.002 -156.619L 157.751 -155.594L 157.668 -154.571L 157.585 -153.547L 157.668 -152.522L 157.751 -151.499L 158.002 -150.474L 158.253 -149.452Z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10.0375" stroke-width="1.00375"/>
 </g></g>
-</svg></td>
+</svg>
+</td>
 </tr>
 
 <tr>
 <td>The contents of the <code>args</code> attribute is used
 as additional argument to the command which is run:
-<div class="hide" id="code5">
-&lt;asy prefix-svg-ids=&quot;bar&quot;
-  args=&quot;-gray&quot;
-  src=&quot;code4.asy&quot;/&gt;
-</div>
-<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">prefix-svg-ids</span><span class="hl std">=</span><span class="hl str">&quot;bar&quot;</span><span class="hl std">
-  </span><span class="">args</span><span class="hl std">=</span><span class="hl str">&quot;-gray&quot;</span><span class="hl std">
-  </span><span class="">src</span><span class="hl std">=</span><span class="hl str">&quot;code4.asy&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+<div class="hide" id="code5"><![CDATA[
+<asy prefix-svg-ids="bar"
+  args="-gray"
+  src="code4.asy"/>
+]]></div>
+<pre class="code-xml"><span class="hl kwa">&lt;asy</span><span class="hl std"> </span><span class="">prefix-svg-ids</span><span class="hl std">=</span><span class="hl str">"bar"</span><span class="hl std">
+  </span><span class="">args</span><span class="hl std">=</span><span class="hl str">"-gray"</span><span class="hl std">
+  </span><span class="">src</span><span class="hl std">=</span><span class="hl str">"code4.asy"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span></pre>
 With <a href="code4.asy"><code>code4.asy</code></a>.</td>
-<td>
-<svg height="198.425pt" version="1.1" viewBox="56.4094 53.8583 198.426 198.425" width="198.426pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+<td><!-- This file was generated by dvisvgm 1.2.2 (x86_64-pc-linux-gnu) --><!-- Wed Nov 25 15:00:22 2015 --><svg height="198.425pt" version="1.1" viewBox="56.4094 53.8583 198.426 198.425" width="198.426pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
 <g id="barpage1" transform="matrix(0.996264 0 0 0.996264 0 0)">
 <g transform="matrix(1 0 0 1 -41.9599 252.728)">
 <path d="M 158.532 -46.4084L 158.393 -46.7477L 158.253 -47.0876L 158.002 -48.1097L 157.751 -49.1349L 157.668 -50.158L 157.585 -51.1822L 157.668 -52.2063L 157.751 -53.2295L 158.002 -54.2546L 158.253 -55.2768L 158.393 -55.6167L 158.532 -55.956L 158.829 -56.6412L 159.126 -57.3241L 159.756 -58.3513L 160.39 -59.3713L 160.452 -59.4488L 160.514 -59.5262L 161.32 -60.4764L 162.133 -61.4186L 162.314 -61.5899L 162.496 -61.7609L 163.463 -62.6174L 164.439 -63.4659L 164.458 -63.4801L 164.477 -63.4943L 165.464 -64.1746L 166.459 -64.8489L 166.986 -65.1818L 167.516 -65.5132L 167.977 -65.7637L 168.441 -66.0133L 169.428 -66.5074L 170.422 -66.9977L 171.041 -67.2797L 171.663 -67.5605L 172.033 -67.7084L 172.404 -67.8559L 173.392 -68.2178L 174.386 -68.5774L 175.374 -68.9035L 176.367 -69.2276L 177.011 -69.418L 177.656 -69.6078L 178.002 -69.6994L 178.349 -69.7909L 179.337 -70.026L 180.331 -70.26L 181.319 -70.4671L 182.312 -70.6734L 183.301 -70.8537L 184.294 -71.0332L 185.283 -71.1876L 186.276 -71.3415L 187.265 -71.4708L 188.257 -71.5997L 188.518 -71.6274L 188.779 -71.6551L 189.509 -71.7258L 190.239 -71.7964L 191.229 -71.8707L 192.221 -71.9449L 193.211 -71.9977L 194.202 -72.0504L 195.193 -72.082L 196.184 -72.1135L 197.175 -72.124L 198.166 -72.1345L 199.156 -72.124L 200.147 -72.1135L 201.138 -72.082L 202.129 -72.0504L 203.12 -71.9977L 204.111 -71.9449L 205.102 -71.8707L 206.092 -71.7964L 206.823 -71.7258L 207.552 -71.6551L 207.813 -71.6274L 208.074 -71.5997L 209.066 -71.4708L 210.055 -71.3415L 211.048 -71.1876L 212.037 -71.0332L 213.03 -70.8537L 214.019 -70.6734L 215.012 -70.4671L 216 -70.26L 216.994 -70.026L 217.982 -69.7909L 218.329 -69.6994L 218.675 -69.6078L 219.32 -69.418L 219.964 -69.2276L 220.958 -68.9035L 221.945 -68.5774L 222.939 -68.2178L 223.927 -67.8559L 224.298 -67.7084L 224.668 -67.5605L 225.29 -67.2797L 225.909 -66.9977L 226.903 -66.5074L 227.89 -66.0133L 228.354 -65.7637L 228.815 -65.5132L 229.345 -65.1818L 229.872 -64.8489L 230.867 -64.1746L 231.854 -63.4943L 231.873 -63.4801L 231.892 -63.4659L 232.868 -62.6174L 233.835 -61.7609L 234.017 -61.5899L 234.198 -61.4186L 235.011 -60.4764L 235.817 -59.5262L 235.879 -59.4488L 235.941 -59.3713L 236.575 -58.3513L 237.205 -57.3241L 237.502 -56.6412L 237.799 -55.956L 237.938 -55.6167L 238.078 -55.2768L 238.329 -54.2546L 238.58 -53.2295L 238.663 -52.2063L 238.746 -51.1822L 238.663 -50.158L 238.58 -49.1349L 238.329 -48.1097L 238.078 -47.0876L 237.938 -46.7477L 237.799 -46.4084L 237.502 -45.7232L 237.205 -45.0403L 236.575 -44.0131L 235.941 -42.993L 235.879 -42.9156L 235.817 -42.8382L 235.011 -41.888L 234.198 -40.9458L 234.017 -40.7745L 233.835 -40.6035L 232.868 -39.747L 231.892 -38.8985L 231.873 -38.8843L 231.854 -38.8701L 230.867 -38.1897L 229.872 -37.5155L 229.345 -37.1826L 228.815 -36.8512L 228.354 -36.6007L 227.89 -36.3511L 226.903 -35.857L 225.909 -35.3667L 225.29 -35.0847L 224.668 -34.8039L 224.298 -34.656L 223.927 -34.5085L 222.939 -34.1465L 221.945 -33.7869L 220.958 -33.4609L 219.964 -33.1368L 219.32 -32.9464L 218.675 -32.7566L 218.329 -32.665L 217.982 -32.5735L 216.994 -32.3384L 216 -32.1044L 215.012 -31.8972L 214.019 -31.691L 213.03 -31.5107L 212.037 -31.3311L 211.048 -31.1768L 210.055 -31.0229L 209.066 -30.8936L 208.074 -30.7647L 207.813 -30.737L 207.552 -30.7093L 206.823 -30.6386L 206.092 -30.568L 205.102 -30.4937L 204.111 -30.4195L 203.12 -30.3667L 202.129 -30.314L 201.138 -30.2824L 200.147 -30.2509L 199.156 -30.2404L 198.166 -30.2299L 197.175 -30.2404L 196.184 -30.2509L 195.193 -30.2824L 194.202 -30.314L 193.211 -30.3667L 192.221 -30.4195L 191.229 -30.4937L 190.239 -30.568L 189.509 -30.6386L 188.779 -30.7093L 188.518 -30.737L 188.257 -30.7647L 187.265 -30.8936L 186.276 -31.0229L 185.283 -31.1768L 184.294 -31.3311L 183.301 -31.5107L 182.312 -31.691L 181.319 -31.8972L 180.331 -32.1044L 179.337 -32.3384L 178.349 -32.5735L 178.002 -32.665L 177.656 -32.7566L 177.011 -32.9464L 176.367 -33.1368L 175.374 -33.4609L 174.386 -33.7869L 173.392 -34.1465L 172.404 -34.5085L 172.033 -34.656L 171.663 -34.8039L 171.041 -35.0847L 170.422 -35.3667L 169.428 -35.857L 168.441 -36.3511L 167.977 -36.6007L 167.516 -36.8512L 166.986 -37.1826L 166.459 -37.5155L 165.464 -38.1897L 164.477 -38.8701L 164.458 -38.8843L 164.439 -38.8985L 163.463 -39.747L 162.496 -40.6035L 162.314 -40.7745L 162.133 -40.9458L 161.32 -41.888L 160.514 -42.8382L 160.452 -42.9156L 160.39 -42.993L 159.756 -44.0131L 159.126 -45.0403L 158.829 -45.7232L 158.532 -46.4084Z" fill="#000000" fill-rule="evenodd"/>
@@ -347,6 +343,7 @@ With <a href="code4.asy"><code>code4.asy</code></a>.</td>
 <path d="M 158.253 -149.452L 158.393 -149.112L 158.532 -148.773L 158.829 -148.088L 159.126 -147.405L 159.756 -146.377L 160.39 -145.357L 160.452 -145.28L 160.514 -145.203L 161.32 -144.252L 162.133 -143.31L 162.314 -143.139L 162.496 -142.968L 163.463 -142.111L 164.439 -141.263L 164.458 -141.249L 164.477 -141.234L 165.464 -140.554L 166.459 -139.88L 166.986 -139.547L 167.516 -139.216L 167.977 -138.965L 168.441 -138.716L 169.428 -138.221L 170.422 -137.731L 171.041 -137.449L 171.663 -137.168L 172.033 -137.02L 172.404 -136.873L 173.392 -136.511L 174.386 -136.151L 175.374 -135.825L 176.367 -135.501L 177.011 -135.311L 177.656 -135.121L 178.002 -135.029L 178.349 -134.938L 179.337 -134.703L 180.331 -134.469L 181.319 -134.262L 182.312 -134.055L 183.301 -133.875L 184.294 -133.696L 185.283 -133.541L 186.276 -133.387L 187.265 -133.258L 188.257 -133.129L 188.518 -133.101L 188.779 -133.074L 189.509 -133.003L 190.239 -132.932L 191.229 -132.858L 192.221 -132.784L 193.211 -132.731L 194.202 -132.678L 195.193 -132.647L 196.184 -132.615L 197.175 -132.605L 198.166 -132.594L 199.156 -132.605L 200.147 -132.615L 201.138 -132.647L 202.129 -132.678L 203.12 -132.731L 204.111 -132.784L 205.102 -132.858L 206.092 -132.932L 206.823 -133.003L 207.552 -133.074L 207.813 -133.101L 208.074 -133.129L 209.066 -133.258L 210.055 -133.387L 211.048 -133.541L 212.037 -133.696L 213.03 -133.875L 214.019 -134.055L 215.012 -134.262L 216 -134.469L 216.994 -134.703L 217.982 -134.938L 218.329 -135.029L 218.675 -135.121L 219.32 -135.311L 219.964 -135.501L 220.958 -135.825L 221.945 -136.151L 222.939 -136.511L 223.927 -136.873L 224.298 -137.02L 224.668 -137.168L 225.29 -137.449L 225.909 -137.731L 226.903 -138.221L 227.89 -138.716L 228.354 -138.965L 228.815 -139.216L 229.345 -139.547L 229.872 -139.88L 230.867 -140.554L 231.854 -141.234L 231.873 -141.249L 231.892 -141.263L 232.868 -142.111L 233.835 -142.968L 234.017 -143.139L 234.198 -143.31L 235.011 -144.252L 235.817 -145.203L 235.879 -145.28L 235.941 -145.357L 236.575 -146.377L 237.205 -147.405L 237.502 -148.088L 237.799 -148.773L 237.938 -149.112L 238.078 -149.452L 238.329 -150.474L 238.58 -151.499L 238.663 -152.522L 238.746 -153.547L 238.663 -154.571L 238.58 -155.594L 238.329 -156.619L 238.078 -157.641L 237.938 -157.981L 237.799 -158.32L 237.502 -159.006L 237.205 -159.688L 236.575 -160.716L 235.941 -161.736L 235.879 -161.813L 235.817 -161.891L 235.011 -162.841L 234.198 -163.783L 234.017 -163.954L 233.835 -164.125L 232.868 -164.982L 231.892 -165.83L 231.873 -165.845L 231.854 -165.859L 230.867 -166.539L 229.872 -167.213L 229.345 -167.546L 228.815 -167.878L 228.354 -168.128L 227.89 -168.378L 226.903 -168.872L 225.909 -169.362L 225.29 -169.644L 224.668 -169.925L 224.298 -170.073L 223.927 -170.22L 222.939 -170.582L 221.945 -170.942L 220.958 -171.268L 219.964 -171.592L 219.32 -171.782L 218.675 -171.972L 218.329 -172.064L 217.982 -172.155L 216.994 -172.39L 216 -172.624L 215.012 -172.832L 214.019 -173.038L 213.03 -173.218L 212.037 -173.398L 211.048 -173.552L 210.055 -173.706L 209.066 -173.835L 208.074 -173.964L 207.813 -173.992L 207.552 -174.019L 206.823 -174.09L 206.092 -174.161L 205.102 -174.235L 204.111 -174.309L 203.12 -174.362L 202.129 -174.415L 201.138 -174.446L 200.147 -174.478L 199.156 -174.488L 198.166 -174.499L 197.175 -174.488L 196.184 -174.478L 195.193 -174.446L 194.202 -174.415L 193.211 -174.362L 192.221 -174.309L 191.229 -174.235L 190.239 -174.161L 189.509 -174.09L 188.779 -174.019L 188.518 -173.992L 188.257 -173.964L 187.265 -173.835L 186.276 -173.706L 185.283 -173.552L 184.294 -173.398L 183.301 -173.218L 182.312 -173.038L 181.319 -172.832L 180.331 -172.624L 179.337 -172.39L 178.349 -172.155L 178.002 -172.064L 177.656 -171.972L 177.011 -171.782L 176.367 -171.592L 175.374 -171.268L 174.386 -170.942L 173.392 -170.582L 172.404 -170.22L 172.033 -170.073L 171.663 -169.925L 171.041 -169.644L 170.422 -169.362L 169.428 -168.872L 168.441 -168.378L 167.977 -168.128L 167.516 -167.878L 166.986 -167.546L 166.459 -167.213L 165.464 -166.539L 164.477 -165.859L 164.458 -165.845L 164.439 -165.83L 163.463 -164.982L 162.496 -164.125L 162.314 -163.954L 162.133 -163.783L 161.32 -162.841L 160.514 -161.891L 160.452 -161.813L 160.39 -161.736L 159.756 -160.716L 159.126 -159.688L 158.829 -159.006L 158.532 -158.32L 158.393 -157.981L 158.253 -157.641L 158.002 -156.619L 157.751 -155.594L 157.668 -154.571L 157.585 -153.547L 157.668 -152.522L 157.751 -151.499L 158.002 -150.474L 158.253 -149.452Z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10.0375" stroke-width="1.00375"/>
 </g></g>
 </svg>
+
 </td>
 </tr>
 </table>
@@ -358,11 +355,12 @@ With <a href="code4.asy"><code>code4.asy</code></a>.</td>
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>
+

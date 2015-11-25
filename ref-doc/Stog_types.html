@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_types</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -49,16 +48,18 @@ Types.<br/>
 </div>
 <hr width="100%"/>
 
+<pre><span class="keyword">module</span> <a href="Stog_types.XR.html">XR</a>: <code class="type">Xtmpl_rewrite</code></pre>
+<pre><span class="keyword">module</span> <a href="Stog_types.Xml.html">Xml</a>: <code class="type">Xtmpl_xml</code></pre>
 <pre><span id="TYPEdate"><span class="keyword">type</span> date</span> = <code class="type">Netdate.t</code> </pre>
 
 
-<pre><span id="TYPEbody"><span class="keyword">type</span> body</span> = <code class="type">Xtmpl.tree list</code> </pre>
+<pre><span id="TYPEbody"><span class="keyword">type</span> body</span> = <code class="type">XR.tree list</code> </pre>
 
 
-<pre><span id="TYPEdef"><span class="keyword">type</span> def</span> = <code class="type">Xtmpl.name * Xtmpl.attributes * <a href="Stog_types.html#TYPEbody">body</a></code> </pre>
+<pre><span id="TYPEdef"><span class="keyword">type</span> def</span> = <code class="type">XR.name * XR.attributes * <a href="Stog_types.html#TYPEbody">body</a></code> </pre>
 
 
-<pre><span id="VALget_def"><span class="keyword">val</span> get_def</span> : <code class="type"><a href="Stog_types.html#TYPEdef">def</a> list -&gt;<br/>       Xmlm.name -&gt; (Xtmpl.attributes * <a href="Stog_types.html#TYPEbody">body</a>) option</code></pre>
+<pre><span id="VALget_def"><span class="keyword">val</span> get_def</span> : <code class="type"><a href="Stog_types.html#TYPEdef">def</a> list -&gt; XR.name -&gt; (XR.attributes * <a href="Stog_types.html#TYPEbody">body</a>) option</code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Str_map.html">Str_map</a>: <code class="type">Map.S</code><code class="type">  with type key = string</code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Str_set.html">Str_set</a>: <code class="type">Set.S</code><code class="type">  with type elt = string</code></pre>
 <pre><code><span id="TYPEdoc"><span class="keyword">type</span> doc</span> = {</code></pre><table class="typetable">
@@ -88,6 +89,13 @@ Types.<br/>
 <code>  </code></td>
 <td align="left" valign="top">
 <code><span id="TYPEELTdoc.doc_type">doc_type</span> : <code class="type">string</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+<code>  </code></td>
+<td align="left" valign="top">
+<code><span id="TYPEELTdoc.doc_prolog">doc_prolog</span> : <code class="type">Xml.prolog option</code>;</code></td>
 
 </tr>
 <tr>
@@ -144,8 +152,8 @@ Types.<br/>
 <code>  </code></td>
 <td align="left" valign="top">
 <code><span id="TYPEELTdoc.doc_sets">doc_sets</span> : <code class="type">string list</code>;</code></td>
-<td align="left" class="typefieldcomment" valign="top"><code>(*</code></td><td align="left" class="typefieldcomment" valign="top"><div class="info">
-list of sets (&quot;blog&quot;, &quot;foo&quot;, etc.) this document belongs to<br/>
+<td align="left" class="typefieldcomment" valign="top"><code>(*</code></td><td align="left" class="typefieldcomment" valign="top"><div class="info ">
+list of sets ("blog", "foo", etc.) this document belongs to<br/>
 </div>
 </td><td align="left" class="typefieldcomment" valign="bottom"><code>*)</code></td>
 </tr>
@@ -154,17 +162,10 @@ list of sets (&quot;blog&quot;, &quot;foo&quot;, etc.) this document belongs to<
 <code>  </code></td>
 <td align="left" valign="top">
 <code><span id="TYPEELTdoc.doc_lang_dep">doc_lang_dep</span> : <code class="type">bool</code>;</code></td>
-<td align="left" class="typefieldcomment" valign="top"><code>(*</code></td><td align="left" class="typefieldcomment" valign="top"><div class="info">
+<td align="left" class="typefieldcomment" valign="top"><code>(*</code></td><td align="left" class="typefieldcomment" valign="top"><div class="info ">
 whether a file must be generated for each language<br/>
 </div>
 </td><td align="left" class="typefieldcomment" valign="bottom"><code>*)</code></td>
-</tr>
-<tr>
-<td align="left" valign="top">
-<code>  </code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTdoc.doc_xml_doctype">doc_xml_doctype</span> : <code class="type">string option</code>;</code></td>
-
 </tr>
 <tr>
 <td align="left" valign="top">
@@ -187,7 +188,7 @@ whether a file must be generated for each language<br/>
 <pre><span id="TYPEdoc_id"><span class="keyword">type</span> doc_id</span> = <code class="type"><a href="Stog_types.html#TYPEdoc">doc</a> Stog_tmap.key</code> </pre>
 
 
-<pre><span id="VALmake_doc"><span class="keyword">val</span> make_doc</span> : <code class="type">?typ:string -&gt; ?path:<a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; unit -&gt; <a href="Stog_types.html#TYPEdoc">doc</a></code></pre>
+<pre><span id="VALmake_doc"><span class="keyword">val</span> make_doc</span> : <code class="type">?typ:string -&gt;<br/>       ?path:<a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; ?prolog:Xml.prolog -&gt; unit -&gt; <a href="Stog_types.html#TYPEdoc">doc</a></code></pre>
 <pre><span id="VALtoday"><span class="keyword">val</span> today</span> : <code class="type">unit -&gt; <a href="Stog_types.html#TYPEdate">date</a></code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Path_trie.html">Path_trie</a>: <code class="type"><a href="Stog_trie.S.html">Stog_trie.S</a></code><code class="type">  with type symbol = string</code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Doc_set.html">Doc_set</a>: <code class="type">Set.S</code><code class="type">  with type elt = doc_id</code></pre>
@@ -498,11 +499,11 @@ whether a file must be generated for each language<br/>
 <pre><span id="VALadd_doc"><span class="keyword">val</span> add_doc</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt; <a href="Stog_types.html#TYPEdoc">doc</a> -&gt; <a href="Stog_types.html#TYPEstog">stog</a></code></pre>
 <pre><span id="VALsort_docs_by_date"><span class="keyword">val</span> sort_docs_by_date</span> : <code class="type"><a href="Stog_types.html#TYPEdoc">doc</a> list -&gt; <a href="Stog_types.html#TYPEdoc">doc</a> list</code></pre>
 <pre><span id="VALsort_ids_docs_by_date"><span class="keyword">val</span> sort_ids_docs_by_date</span> : <code class="type">('a * <a href="Stog_types.html#TYPEdoc">doc</a>) list -&gt; ('a * <a href="Stog_types.html#TYPEdoc">doc</a>) list</code></pre>
-<pre><span id="VALsort_ids_docs_by_rules"><span class="keyword">val</span> sort_ids_docs_by_rules</span> : <code class="type">'b -&gt;<br/>       string list -&gt;<br/>       (<a href="Stog_types.html#TYPEdoc_id">doc_id</a> * <a href="Stog_types.html#TYPEdoc">doc</a> * 'b Xtmpl.env) list -&gt;<br/>       'b * (<a href="Stog_types.html#TYPEdoc_id">doc_id</a> * <a href="Stog_types.html#TYPEdoc">doc</a>) list</code></pre>
+<pre><span id="VALsort_ids_docs_by_rules"><span class="keyword">val</span> sort_ids_docs_by_rules</span> : <code class="type">'b -&gt;<br/>       string list -&gt;<br/>       (<a href="Stog_types.html#TYPEdoc_id">doc_id</a> * <a href="Stog_types.html#TYPEdoc">doc</a> * 'b XR.env) list -&gt;<br/>       'b * (<a href="Stog_types.html#TYPEdoc_id">doc_id</a> * <a href="Stog_types.html#TYPEdoc">doc</a>) list</code></pre>
 <pre><span id="VALdoc_list"><span class="keyword">val</span> doc_list</span> : <code class="type">?by_date:bool -&gt;<br/>       ?set:string -&gt;<br/>       <a href="Stog_types.html#TYPEstog">stog</a> -&gt; (<a href="Stog_types.html#TYPEdoc">doc</a> Stog_tmap.key * <a href="Stog_types.html#TYPEdoc">doc</a>) list</code></pre>
 <pre><span id="VALmerge_stogs"><span class="keyword">val</span> merge_stogs</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> list -&gt; <a href="Stog_types.html#TYPEstog">stog</a></code></pre>
 <pre><span id="VALmake_path"><span class="keyword">val</span> make_path</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt; string -&gt; string list</code></pre>
-<pre><span id="VALfind_block_by_id"><span class="keyword">val</span> find_block_by_id</span> : <code class="type"><a href="Stog_types.html#TYPEdoc">doc</a> -&gt; string -&gt; Xtmpl.tree option</code></pre>
+<pre><span id="VALfind_block_by_id"><span class="keyword">val</span> find_block_by_id</span> : <code class="type"><a href="Stog_types.html#TYPEdoc">doc</a> -&gt; string -&gt; XR.tree option</code></pre>
 <pre><span id="VALid_map_add"><span class="keyword">val</span> id_map_add</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt;<br/>       Stog_path.Map.key -&gt;<br/>       Str_map.key -&gt; <a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; string option -&gt; <a href="Stog_types.html#TYPEstog">stog</a></code></pre>
 <pre><span id="VALmap_href"><span class="keyword">val</span> map_href</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt;<br/>       Stog_path.Map.key -&gt;<br/>       Str_map.key -&gt; Stog_path.Map.key * Str_map.key</code></pre>
 <pre><span id="VALmap_doc_ref"><span class="keyword">val</span> map_doc_ref</span> : <code class="type"><a href="Stog_types.html#TYPEstog">stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEdoc">doc</a> -&gt;<br/>       Str_map.key -&gt; <a href="Stog_types.html#TYPEdoc">doc</a> * Str_map.key</code></pre></div>
@@ -512,11 +513,12 @@ whether a file must be generated for each language<br/>
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>
+

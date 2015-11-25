@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_server_mode</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -43,7 +42,9 @@
   <span class="keyword">val</span> ws_url : string <span class="constructor">Pervasives</span>.ref<br/>
   <span class="keyword">val</span> pub_http_url : string option <span class="constructor">Pervasives</span>.ref<br/>
   <span class="keyword">val</span> pub_ws_url : string option <span class="constructor">Pervasives</span>.ref<br/>
-  <span class="keyword">type</span> server_mode = server_mode<br/>
+  <span class="keyword">type</span> server_mode =<br/>
+      [ <span class="keywordsign">`</span><span class="constructor">Multi</span> <span class="keyword">of</span> string list <span class="keywordsign">-&gt;</span> unit<br/>
+      <span class="keywordsign">|</span> <span class="keywordsign">`</span><span class="constructor">Single</span> <span class="keyword">of</span> (unit <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog) <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> unit ]<br/>
   <span class="keyword">val</span> server_mode : <span class="constructor">Stog_server_mode</span>.server_mode option <span class="constructor">Pervasives</span>.ref<br/>
   <span class="keyword">val</span> set_single :<br/>
     ((unit <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog) <span class="keywordsign">-&gt;</span><br/>
@@ -61,11 +62,12 @@
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>
+

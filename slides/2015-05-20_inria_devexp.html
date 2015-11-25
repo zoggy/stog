@@ -1,16 +1,15 @@
-<!DOCTYPE HTML>
 <html>
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog</title>
-
+<!-- configuration parameters -->
 <meta content="slideshow" name="defaultView"/>
 <meta content="hidden" name="controlVis"/>
-
+<!-- Slidy style sheet links and JS -->
 <link href="https://zoggy.github.io/stog/slides/slidy.css" rel="stylesheet" type="text/css"/>
 <script src="https://zoggy.github.io/stog/slides/slidy.js" type="text/javascript">_</script>
 
-
+<!-- Stog style -->
 <link href="https://zoggy.github.io/stog/slides.css" media="all" rel="stylesheet" type="text/css"/>
 <meta content="15" name="duration"/>
 </head>
@@ -73,7 +72,7 @@ Quelques sites générés avec Stog:
 <li>gestion de billets de blog, avec dates, thèmes, mots-clés et fils RSS associés,</li>
 <li>contenu dynamique pour les commentaires (⇒ avec Disqus),</li>
 <li>pas de nouvelle syntaxe,</li>
-<li>possibilité d'utiliser des tags &quot;sémantiques&quot; de mon choix (e.g. <span class="icode"><span class="hl std">&lt;exercice&gt;</span></span>),</li>
+<li>possibilité d'utiliser des tags "sémantiques" de mon choix (e.g. <span class="icode"><span class="hl std">&lt;exercice&gt;</span></span>),</li>
 <li>éviter la duplication de code ⇒ définir ses propres commandes, inclure des
   morceaux d'une page dans une autre, </li>
 <li>possibilité d'utiliser tout HTML 5 ou tout XML en général, pas seulement un sous-ensemble permis par un langage intermédiaire,</li>
@@ -96,22 +95,22 @@ Trois étapes:
 <ol>
 <li>Lecture du fichier de configuration <span class="icode"><span class="hl std">.stog/config</span></span> et de l'arborescence source:
 <pre class="code-ocaml"><span class="hl std">{
-  </span><span class="">ignored</span><span class="hl std">: [ </span><span class="hl str">&quot;.*stog-output&quot;</span><span class="hl std"> , </span><span class="hl str">&quot;.*\\.git&quot;</span><span class="hl std">,
-            </span><span class="hl str">&quot;.*Makefile&quot;</span><span class="hl std">, </span><span class="hl str">&quot;.*tmpl$&quot;</span><span class="hl std">, </span><span class="hl str">&quot;.*less$&quot;</span><span class="hl std">,
-            </span><span class="hl str">&quot;.*\\.chamo.*&quot;</span><span class="hl std">, </span><span class="hl str">&quot;.*/test.*&quot;</span><span class="hl std"> ,
-            </span><span class="hl str">&quot;.*/log$&quot;</span><span class="hl std">,
-            </span><span class="hl str">&quot;.*/slides/inria_code.*\\.xml&quot;</span><span class="hl std">,
-            </span><span class="hl str">&quot;.*/examples$&quot;</span><span class="hl std">,
-            </span><span class="hl str">&quot;.*/\\..*&quot;</span><span class="hl std">,
-            </span><span class="hl str">&quot;.*/stog-tmpl.*\\.txt&quot;</span><span class="hl std">,
-            </span><span class="hl str">&quot;.*/gmon\\.out&quot;</span><span class="hl std">,
-            </span><span class="hl str">&quot;.*/videos/1&quot;</span><span class="hl std">
+  </span><span class="">ignored</span><span class="hl std">: [ </span><span class="hl str">".*stog-output"</span><span class="hl std"> , </span><span class="hl str">".*\\.git"</span><span class="hl std">,
+            </span><span class="hl str">".*Makefile"</span><span class="hl std">, </span><span class="hl str">".*tmpl$"</span><span class="hl std">, </span><span class="hl str">".*less$"</span><span class="hl std">,
+            </span><span class="hl str">".*\\.chamo.*"</span><span class="hl std">, </span><span class="hl str">".*/test.*"</span><span class="hl std"> ,
+            </span><span class="hl str">".*/log$"</span><span class="hl std">,
+            </span><span class="hl str">".*/slides/inria_code.*\\.xml"</span><span class="hl std">,
+            </span><span class="hl str">".*/examples$"</span><span class="hl std">,
+            </span><span class="hl str">".*/\\..*"</span><span class="hl std">,
+            </span><span class="hl str">".*/stog-tmpl.*\\.txt"</span><span class="hl std">,
+            </span><span class="hl str">".*/gmon\\.out"</span><span class="hl std">,
+            </span><span class="hl str">".*/videos/1"</span><span class="hl std">
           ],
-  </span><span class="">documents</span><span class="hl std">: [</span><span class="hl str">&quot;.*\\..xml$&quot;</span><span class="hl std">, </span><span class="hl str">&quot;.*\\.html$&quot;</span><span class="hl std">],
+  </span><span class="">documents</span><span class="hl std">: [</span><span class="hl str">".*\\..xml$"</span><span class="hl std">, </span><span class="hl str">".*\\.html$"</span><span class="hl std">],
   </span><span class="">not_documents</span><span class="hl std"> : [ ],
   </span><span class="">follow_symlinks</span><span class="hl std"> : </span><span class="hl num">false</span><span class="hl std">,
   </span><span class="">levels</span><span class="hl std">: [
-    { </span><span class="hl kwa">module</span><span class="hl std">: </span><span class="hl str">&quot;extern&quot;</span><span class="hl std">, </span><span class="">levels</span><span class="hl std">: [(</span><span class="hl str">&quot;my-action&quot;</span><span class="hl std">, [</span><span class="hl num">1000</span><span class="hl std">])] }
+    { </span><span class="hl kwa">module</span><span class="hl std">: </span><span class="hl str">"extern"</span><span class="hl std">, </span><span class="">levels</span><span class="hl std">: [(</span><span class="hl str">"my-action"</span><span class="hl std">, [</span><span class="hl num">1000</span><span class="hl std">])] }
   ]
 }
 </span></pre>
@@ -151,61 +150,62 @@ Trois étapes:
 
 <p>Exemple: fichier <span class="icode"><span class="hl std">doc.html</span></span> du site web de Stog:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Documentation&quot;</span><span class="hl std">
-</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
-</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Documentation"</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">"active"</span><span class="hl std">
+</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;bloc</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;doc-block&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;title&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;title</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;contents&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;bloc</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"doc-block"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"title"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;title</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"contents"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/bloc</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;alert alert-warning&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-We assume Stog was correctly installed (see </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;/install&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">)
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"alert alert-warning"</span><span class="hl kwa">&gt;</span><span class="hl std">
+We assume Stog was correctly installed (see </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"/install"</span><span class="hl kwa">/&gt;</span><span class="hl std">)
 and the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog-server</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog-tmpl</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
 and </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog-ocaml-session</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> executables are in your </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">PATH</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
 All text is assumed to be UTF-8.
 </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;n-columns</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;column</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;bloc</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Getting started&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;toc&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;5-minutes&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;overview&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;engine&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-documents&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-main-document&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;atts-functions&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;single-documents&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;bloc</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Getting started"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"toc"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"5-minutes"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"overview"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"engine"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"stog-documents"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"stog-main-document"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"atts-functions"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"single-documents"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/bloc</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/column</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;column</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;bloc</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Tools&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;bloc</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Tools"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;server&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-tmpl&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;latex2stog&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;odoc&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"server"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"stog-tmpl"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"latex2stog"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"odoc"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/bloc</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/column</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;column</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;bloc</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Reference&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;bloc</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Reference"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;running&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;funs&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;writing_plugins&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;site-url/&amp;gt;/ref-doc/index.html&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Library reference documentation</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"running"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"funs"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"writing_plugins"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"rules"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"&amp;lt;site-url/&amp;gt;/ref-doc/index.html"</span><span class="hl kwa">&gt;</span><span class="hl std">Library reference documentation</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/bloc</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/column</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/n-columns</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Presentations&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Presentations"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">2013/04/23: </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;slides/2013_04_23_inria&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Talk about Stog at INRIA</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">2013/04/23: </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"slides/2013_04_23_inria"</span><span class="hl kwa">&gt;</span><span class="hl std">Talk about Stog at INRIA</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -228,13 +228,13 @@ les valeurs données dans chaque document source.
 <p>On peut utiliser un gabarit de trois façons:</p>
 <ul>
 <li>le type (le nœud racine) d'un document indique le gabarit à utiliser:
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span></pre>
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
+  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span></pre>
   <span class="icode"><span class="hl std">page</span></span> entraîne l'utilisation du fichier <span class="icode"><span class="hl std">.stog/template/page.tmpl</span></span>
   comme gabarit pour le document (et <span class="icode"><span class="hl std">post.tmpl</span></span> pour <span class="icode"><span class="hl std">post</span></span>, etc.).
 </li>
 <li>en le référençant dans l'attribut <span class="icode"><span class="hl std">file</span></span> d'un nœud
-  <span class="icode"><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></span>,</li>
+  <span class="icode"><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">/&gt;</span></span>,</li>
 <li>en utilisant des règles utilisant elles-mêmes des gabarits.</li>
 </ul>
 
@@ -248,57 +248,57 @@ les valeurs données dans chaque document source.
 <p>
 Le fichier de gabarit <span class="icode"><span class="hl std">.stog/templates/page.tmpl</span></span>:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;html</span><span class="hl kwa">&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;html</span><span class="hl std"> </span><span class="">xmlns</span><span class="hl std">=</span><span class="hl str">"http://www.w3.org/1999/xhtml"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;head</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;meta</span><span class="hl std"> </span><span class="">http-equiv</span><span class="hl std">=</span><span class="hl str">&quot;Content-Type&quot;</span><span class="hl std"> </span><span class="">content</span><span class="hl std">=</span><span class="hl str">&quot;text/html; charset=utf-8&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;meta</span><span class="hl std"> </span><span class="">http-equiv</span><span class="hl std">=</span><span class="hl str">"Content-Type"</span><span class="hl std"> </span><span class="">content</span><span class="hl std">=</span><span class="hl str">"application/xhtml+xml; charset=utf-8"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;title</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;site-title</span><span class="hl kwa">/&gt;</span><span class="hl std"> : </span><span class="hl kwa">&lt;doc-title</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/title</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;link</span><span class="hl std"> </span><span class="">rel</span><span class="hl std">=</span><span class="hl str">&quot;stylesheet&quot;</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">&quot;text/css&quot;</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;site-url/&amp;gt;/style.css&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/link</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;link</span><span class="hl std"> </span><span class="">rel</span><span class="hl std">=</span><span class="hl str">"stylesheet"</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">"text/css"</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"&amp;lt;site-url/&amp;gt;/style.css"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/link</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/head</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;body</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;page&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;menubar.tmpl&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;header&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">&quot;page&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc-navpath</span><span class="hl kwa">&gt;</span><span class="hl std"> / </span><span class="hl kwa">&lt;/doc-navpath</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">&quot;plugin&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc-navpath</span><span class="hl kwa">&gt;</span><span class="hl std"> / </span><span class="hl kwa">&lt;/doc-navpath</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">&quot;post&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-    </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;doc-navbar&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-      </span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">previous</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;main_</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;navleft&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;previous</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
-      </span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">next</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;main_</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;navright&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;next</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"page"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">"menubar.tmpl"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"header"</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">"page"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc-navpath</span><span class="hl kwa">&gt;</span><span class="hl std"> / </span><span class="hl kwa">&lt;/doc-navpath</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">"plugin"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc-navpath</span><span class="hl kwa">&gt;</span><span class="hl std"> / </span><span class="hl kwa">&lt;/doc-navpath</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">"post"</span><span class="hl kwa">&gt;</span><span class="hl std">
+    </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"doc-navbar"</span><span class="hl kwa">&gt;</span><span class="hl std">
+      </span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">previous</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;dummy_</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"navleft"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;previous</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
+      </span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">next</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;dummy_</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"navright"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;next</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
     </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
   </span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">&quot;ocamldoc&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;main_</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;page-title&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc-title</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">"ocamldoc"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;dummy_</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"page-title"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc-title</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">withsidebar</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;sidebar.tmpl&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;main_</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">&quot;post&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;date&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc-date</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">withsidebar</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">"sidebar.tmpl"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;dummy_</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">"post"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"date"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc-date</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
 
 </span><span class="hl kwa">&lt;doc-body</span><span class="hl kwa">/&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">&quot;post&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
- </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;comments&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
- </span><span class="hl kwa">&lt;hr</span><span class="hl std"> </span><span class="">width</span><span class="hl std">=</span><span class="hl str">&quot;100%&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-typbe</span><span class="hl std">=</span><span class="hl str">"post"</span><span class="hl kwa">&gt;</span><span class="hl std">
+ </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"comments"</span><span class="hl kwa">&gt;</span><span class="hl std">
+ </span><span class="hl kwa">&lt;hr</span><span class="hl std"> </span><span class="">width</span><span class="hl std">=</span><span class="hl str">"100%"</span><span class="hl kwa">/&gt;</span><span class="hl std">
   </span><span class="hl kwa">&lt;div</span><span class="hl kwa">&gt;</span><span class="hl std">
-    </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;doc-keywords&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-      </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;bloc-keywords&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-      Topics: </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;keywords&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc-topics</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">&quot;, &quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+    </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"doc-keywords"</span><span class="hl kwa">&gt;</span><span class="hl std">
+      </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"bloc-keywords"</span><span class="hl kwa">&gt;</span><span class="hl std">
+      Topics: </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"keywords"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc-topics</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">", "</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
       </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
-      </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;bloc-keywords&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-      Keywords: </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;keywords&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc-keywords</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">&quot;, &quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+      </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"bloc-keywords"</span><span class="hl kwa">&gt;</span><span class="hl std">
+      Keywords: </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"keywords"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc-keywords</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">", "</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
       </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
     </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
   </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">itemprop</span><span class="hl std">=</span><span class="hl str">&quot;articleSection&quot;</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;section&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">itemprop</span><span class="hl std">=</span><span class="hl str">"articleSection"</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"section"</span><span class="hl kwa">&gt;</span><span class="hl std">
     </span><span class="hl kwa">&lt;comments</span><span class="hl kwa">/&gt;</span><span class="hl std">
   </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
  </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">&quot;page&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doccode</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">&quot;post&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doccode</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;footer&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;generatedon&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Generated on </span><span class="hl kwa">&lt;date-now</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">"page"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doccode</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">doc-type</span><span class="hl std">=</span><span class="hl str">"post"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doccode</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"footer"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"generatedon"</span><span class="hl kwa">&gt;</span><span class="hl std">Generated on </span><span class="hl kwa">&lt;date-now</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl com">&lt;!--&lt;script type=&quot;text/javascript&quot; src=&quot;&amp;lt;site-url/&amp;gt;/jquery.js&quot;&gt;_&lt;/script&gt;--&gt;</span><span class="hl std">
-</span><span class="hl com">&lt;!--&lt;script type=&quot;text/javascript&quot; src=&quot;&amp;lt;site-url/&amp;gt;/bootstrap-collapse.js&quot;&gt;_&lt;/script&gt;--&gt;</span><span class="hl std">
+</span><span class="hl com">&lt;!--&lt;script type="text/javascript" src="&amp;lt;site-url/&amp;gt;/jquery.js"&gt;_&lt;/script&gt;--&gt;</span><span class="hl std">
+</span><span class="hl com">&lt;!--&lt;script type="text/javascript" src="&amp;lt;site-url/&amp;gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;--&gt;</span><span class="hl std">
 
 </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std"> </span><span class="hl com">&lt;!-- #page --&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/body</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -337,7 +337,7 @@ vers une liste d'arbres XML insérés à la place du nœud.
 <div class="centered">
 <div class="row">
   <div class="span10">
-    <pre class="code-xml"><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;python&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+    <pre class="code-xml"><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"python"</span><span class="hl kwa">&gt;</span><span class="hl std">
 name = raw_input('What is your name?\n')
 print 'Hi, %s.' % name
 </span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -346,8 +346,8 @@ print 'Hi, %s.' % name
 </div>
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
-  <div class="span12" title="&lt;pre class=&quot;code-python&quot;&gt;name &lt;span class=&quot;hl opt&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;hl kwb&quot;&gt;raw_input&lt;/span&gt;&lt;span class=&quot;hl opt&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;hl str&quot;&gt;'What is your name?&lt;/span&gt;&lt;span class=&quot;hl esc&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;hl str&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;hl opt&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;hl kwa&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;hl str&quot;&gt;'Hi, %s.'&lt;/span&gt; &lt;span class=&quot;hl opt&quot;&gt;%&lt;/span&gt; name&lt;/pre&gt;
+  <div class="span12" title="&lt;pre class=&quot;code-python&quot;&gt;name &lt;span class=&quot;hl opt&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;hl kwb&quot;&gt;raw_input&lt;/span&gt;&lt;span class=&quot;hl opt&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;hl str&quot;&gt;&apos;What is your name?&lt;/span&gt;&lt;span class=&quot;hl esc&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;hl str&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;hl opt&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;hl kwa&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;hl str&quot;&gt;&apos;Hi, %s.&apos;&lt;/span&gt; &lt;span class=&quot;hl opt&quot;&gt;%&lt;/span&gt; name&lt;/pre&gt;
 ">
       <div><pre class="code-python">name <span class="hl opt">=</span> <span class="hl kwb">raw_input</span><span class="hl opt">(</span><span class="hl str">'What is your name?</span><span class="hl esc">\n</span><span class="hl str">'</span><span class="hl opt">)</span>
 <span class="hl kwa">print</span> <span class="hl str">'Hi, %s.'</span> <span class="hl opt">%</span> name</pre>
@@ -360,14 +360,14 @@ print 'Hi, %s.' % name
 <div class="centered">
 <div class="row">
   <div class="span10">
-    <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">let f x = x + 1
+    <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">let f x = x + 1
 </span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
   </div>
 </div>
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
-  <div class="span12" title="&lt;pre class=&quot;code-ocaml&quot;&gt;&lt;div&gt;# &lt;span class=&quot;hl kwa&quot;&gt;let&lt;/span&gt; f x &lt;span class=&quot;hl opt&quot;&gt;=&lt;/span&gt; x &lt;span class=&quot;hl opt&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;hl num&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;hl opt&quot;&gt;;;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;ocaml-toplevel&quot;&gt;&lt;div class=&quot;toplevel-out&quot;&gt;val f : int -&gt; int = &lt;fun&gt;
+  <div class="span12" title="&lt;pre class=&quot;code-ocaml&quot;&gt;&lt;div&gt;# &lt;span class=&quot;hl kwa&quot;&gt;let&lt;/span&gt; f x &lt;span class=&quot;hl opt&quot;&gt;=&lt;/span&gt; x &lt;span class=&quot;hl opt&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;hl num&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;hl opt&quot;&gt;;;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;ocaml-toplevel&quot;&gt;&lt;div class=&quot;toplevel-out&quot;&gt;val f : int -&amp;gt; int = &amp;lt;fun&amp;gt;
 &lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;
 ">
       <div><pre class="code-ocaml"><div># <span class="hl kwa">let</span> f x <span class="hl opt">=</span> x <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val f : int -&gt; int = &lt;fun&gt;
@@ -381,7 +381,7 @@ print 'Hi, %s.' % name
 <div class="centered">
 <div class="row">
   <div class="span10">
-    <pre class="code-xml"><span class="hl kwa">&lt;late-inc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;release-0.11.1#changes&quot;</span><span class="hl kwa">/&gt;</span></pre>
+    <pre class="code-xml"><span class="hl kwa">&lt;late-inc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"release-0.11.1#changes"</span><span class="hl kwa">/&gt;</span></pre>
   </div>
 </div>
 <div class="row">
@@ -400,8 +400,8 @@ print 'Hi, %s.' % name
 <div class="centered">
 <div class="row">
   <div class="span10">
-    <pre class="code-xml"><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Titre 1&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;sec1&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Sous-titre 1&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;ssec1&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+    <pre class="code-xml"><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Titre 1"</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"sec1"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Sous-titre 1"</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"ssec1"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">bla bla bla</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/subsection</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -509,8 +509,8 @@ Les deux derniers visent à permettre l'écriture d'articles scientifiques
 avec des annotations sémantiques comme:
 </p>
 <ul>
-<li>&quot;ce bloc est une preuve de cette proposition&quot;,</li>
-<li>&quot;cette preuve utilise ce théorème&quot;,</li>
+<li>"ce bloc est une preuve de cette proposition",</li>
+<li>"cette preuve utilise ce théorème",</li>
 <li>...</li>
 </ul>
 <div class="center centered">

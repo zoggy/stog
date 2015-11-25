@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Start using Stog in 5 minutes</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -44,8 +43,8 @@ Let's create a new directory and add a first HTML page:
 </p>
 <pre class="code-sh">$ mkdir mystog
 $ <span class="hl kwc">cat</span> <span class="hl opt">&gt;</span> mystog<span class="hl opt">/</span>index.html
-<span class="hl opt">&lt;</span>page title<span class="hl opt">=</span><span class="hl str">&quot;My first site with Stog&quot;</span>
-main<span class="hl opt">=</span><span class="hl str">&quot;true&quot;</span>
+<span class="hl opt">&lt;</span>page title<span class="hl opt">=</span><span class="hl str">"My first site with Stog"</span>
+main<span class="hl opt">=</span><span class="hl str">"true"</span>
 <span class="hl opt">&gt;</span>
 Hello world <span class="hl opt">!</span>
 <span class="hl opt">&lt;/</span>page<span class="hl opt">&gt;</span>
@@ -55,9 +54,8 @@ to generate the result in the (automatically created) <span class="icode"><span 
 directory:
 </p>
 <pre class="code-sh">$ stog <span class="hl opt">--</span><span class="hl kwb">local</span> mystog
-Warning<span class="hl opt">:</span> Creating non<span class="hl opt">-</span>existent configuration directory <span class="hl str">&quot;mystog/.stog&quot;</span>
-Warning<span class="hl opt">:</span> Creating default template <span class="hl kwc">file</span> <span class="hl str">&quot;mystog/.stog/templates/page.tmpl&quot;</span>
-<span class="hl num">0</span> error<span class="hl opt">,</span> <span class="hl num">2</span> warnings
+Warning<span class="hl opt">:</span> Creating non<span class="hl opt">-</span>existent configuration directory <span class="hl str">"mystog/.stog"</span>
+<span class="hl num">0</span> error<span class="hl opt">,</span> <span class="hl num">1</span> warning
 $ <span class="hl kwc">ls</span> stog<span class="hl opt">-</span>output
 index.html</pre>
 <p>Now browse the <span class="icode"><span class="hl std">stog-output/index.html</span></span> file. Hum,
@@ -65,7 +63,7 @@ it misses some style.
 Let's add a default stylesheet to our source directory and run
 <span class="icode"><span class="hl std">stog</span></span> again:
 </p>
-<pre class="code-sh">$ wget http<span class="hl opt">://</span>zoggy.github.io<span class="hl opt">/</span>stog<span class="hl opt">/</span>style.css <span class="hl opt">-</span>O mystog<span class="hl opt">/</span>style.css
+<pre class="code-sh">$ wget https<span class="hl opt">://</span>raw.githubusercontent.com<span class="hl opt">/</span>zoggy<span class="hl opt">/</span>stog<span class="hl opt">/</span>master<span class="hl opt">/</span>share<span class="hl opt">/</span>templates<span class="hl opt">/</span>page<span class="hl opt">-</span>style.css <span class="hl opt">-</span>O mystog<span class="hl opt">/</span>style.css
 $ stog <span class="hl opt">--</span><span class="hl kwb">local</span> mystog</pre>
 <p>Now the page <span class="icode"><span class="hl std">stog-output/index.html</span></span> looks better.
 </p>
@@ -73,14 +71,14 @@ $ stog <span class="hl opt">--</span><span class="hl kwb">local</span> mystog</p
 
 <div class="section"><div class="section-title" id="twomorepages">Two more pages</div>
 <p>
-We start by adding a post, which is a document of type &quot;post&quot;,
+We start by adding a post, which is a document of type "post",
 as the first node in the file indicates. We create the file
 in a new <span class="icode"><span class="hl std">posts</span></span> directory to keep things clean:
 </p>
 <pre class="code-sh">$ mkdir mystog<span class="hl opt">/</span>posts
 $ <span class="hl kwc">cat</span> <span class="hl opt">&gt;</span> mystog<span class="hl opt">/</span>posts<span class="hl opt">/</span>first<span class="hl opt">-</span>post.html
-<span class="hl opt">&lt;</span>post title<span class="hl opt">=</span><span class="hl str">&quot;My first blog post!&quot;</span>
-<span class="hl kwc">date</span><span class="hl opt">=</span><span class="hl str">&quot;2013/11/25&quot;</span>
+<span class="hl opt">&lt;</span>post title<span class="hl opt">=</span><span class="hl str">"My first blog post!"</span>
+<span class="hl kwc">date</span><span class="hl opt">=</span><span class="hl str">"2013/11/25"</span>
 <span class="hl opt">&gt;</span>
 <span class="hl opt">&lt;</span>p<span class="hl opt">&gt;</span>This is the first post of this blog.<span class="hl opt">&lt;/</span>p<span class="hl opt">&gt;</span>
 <span class="hl opt">&lt;</span>sep_<span class="hl opt">/&gt;</span>
@@ -91,9 +89,9 @@ $ <span class="hl kwc">cat</span> <span class="hl opt">&gt;</span> mystog<span c
 in <span class="icode"><span class="hl std">stog-output/posts/first-post.html</span></span>:
 </p>
 <pre class="code-sh">$ stog <span class="hl opt">--</span><span class="hl kwb">local</span> mystog
-Warning<span class="hl opt">:</span> Creating default template <span class="hl kwc">file</span> <span class="hl str">&quot;mystog/.stog/templates/post.tmpl&quot;</span>
-Warning<span class="hl opt">:</span> Creating default template <span class="hl kwc">file</span> <span class="hl str">&quot;mystog/.stog/templates/doc-in-list.tmpl&quot;</span>
-Warning<span class="hl opt">:</span> Creating default template <span class="hl kwc">file</span> <span class="hl str">&quot;mystog/.stog/templates/by-month.tmpl&quot;</span>
+Warning<span class="hl opt">:</span> Creating default template <span class="hl kwc">file</span> <span class="hl str">"mystog/.stog/templates/post.tmpl"</span>
+Warning<span class="hl opt">:</span> Creating default template <span class="hl kwc">file</span> <span class="hl str">"mystog/.stog/templates/doc-in-list.tmpl"</span>
+Warning<span class="hl opt">:</span> Creating default template <span class="hl kwc">file</span> <span class="hl str">"mystog/.stog/templates/by-month.tmpl"</span>
 <span class="hl num">0</span> error<span class="hl opt">,</span> <span class="hl num">3</span> warnings
 $ tree stog<span class="hl opt">-</span>output
 stog<span class="hl opt">-</span>output
@@ -113,16 +111,18 @@ this date (out first blog post).
 </p>
 <p>
 Let's add another page, here a <span class="icode"><span class="hl std">mystog/blog.html</span></span> file, containing
-the list of documents of type &quot;post&quot;, with 4 documents maximum, and generating
+the list of documents of type "post", with 4 documents maximum, and generating
 a <span class="icode"><span class="hl std">index.rss</span></span> file on the fly:
 </p>
 <pre class="code-sh">$ <span class="hl kwc">cat</span> <span class="hl opt">&gt;</span> mystog<span class="hl opt">/</span>blog.html
-<span class="hl opt">&lt;</span>page title<span class="hl opt">=</span><span class="hl str">&quot;My blog&quot;</span><span class="hl opt">&gt;</span>
+<span class="hl opt">&lt;</span>page title<span class="hl opt">=</span><span class="hl str">"My blog"</span><span class="hl opt">&gt;</span>
   <span class="hl opt">&lt;</span>p<span class="hl opt">&gt;</span>Most recent posts<span class="hl opt">:&lt;/</span>p<span class="hl opt">&gt;</span>
-  <span class="hl opt">&lt;</span>documents <span class="hl kwb">type</span><span class="hl opt">=</span><span class="hl str">&quot;post&quot;</span> rss<span class="hl opt">=</span><span class="hl str">&quot;index.rss&quot;</span> max<span class="hl opt">=</span><span class="hl str">&quot;4&quot;</span><span class="hl opt">/&gt;</span>
+  <span class="hl opt">&lt;</span>documents <span class="hl kwb">type</span><span class="hl opt">=</span><span class="hl str">"post"</span> rss<span class="hl opt">=</span><span class="hl str">"index.rss"</span> max<span class="hl opt">=</span><span class="hl str">"4"</span><span class="hl opt">/&gt;</span>
 <span class="hl opt">&lt;/</span>page<span class="hl opt">&gt;</span>
 ^D
-$ stog <span class="hl opt">--</span><span class="hl kwb">local</span> mystog</pre>
+$ stog <span class="hl opt">--</span><span class="hl kwb">local</span> mystog
+Warning<span class="hl opt">:</span> Creating default template <span class="hl kwc">file</span> <span class="hl str">"mystog/.stog/templates/rss-item.tmpl"</span>
+Warning<span class="hl opt">:</span> Creating default template <span class="hl kwc">file</span> <span class="hl str">"mystog/.stog/templates/rss.tmpl"</span></pre>
 <p>
 Let's retrieve two images into our source directory and run <span class="icode"><span class="hl std">stog</span></span> again:
 </p>
@@ -133,15 +133,15 @@ $ stog <span class="hl opt">--</span><span class="hl kwb">local</span> mystog</p
 
 <div class="section"><div class="section-title" id="ref">Referencing documents</div>
 <p>References from a document (a page, a post, ...) to another are checked by stog.
-Let's add a reference to our first post from the main page. We show the contents
+Let's add a reference to our blog from the main page. We show the contents
 of <span class="icode"><span class="hl std">mystog/index.html</span></span> after the modification:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;My first page with Stog&quot;</span><span class="hl std">
-</span><span class="">main</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"My first page with Stog"</span><span class="hl std">
+</span><span class="">main</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 Hello world !
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-This is reference to </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;first-post&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">.
+This is reference to </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"blog"</span><span class="hl kwa">/&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
@@ -165,20 +165,20 @@ Feel free to have a look to see how something is achieved.
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Start using Stog in 5 minutes&quot;</span><span class="hl std">
-</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
-</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Start using Stog in 5 minutes"</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">"active"</span><span class="hl std">
+</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;cl</span><span class="hl std"> </span><span class="">foo</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;command-line</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/cl</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;cl</span><span class="hl std"> </span><span class="">foo</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;command-line</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">"1"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/cl</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;firstpage&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;First page&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"firstpage"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"First page"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Let's create a new directory and add a first HTML page:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;cl</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[$ mkdir mystog
 $ cat &gt; mystog/index.html
-</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;My first site with Stog&quot;</span><span class="hl std">
-</span><span class="">main</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"My first site with Stog"</span><span class="hl std">
+</span><span class="">main</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 Hello world !
 </span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -188,9 +188,8 @@ to generate the result in the (automatically created) </span><span class="hl kwa
 directory:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;cl</span><span class="hl kwa">&gt;</span><span class="hl std">$ stog --local mystog
-Warning: Creating non-existent configuration directory &quot;mystog/.stog&quot;
-Warning: Creating default template file &quot;mystog/.stog/templates/page.tmpl&quot;
-0 error, 2 warnings
+Warning: Creating non-existent configuration directory "mystog/.stog"
+0 error, 1 warning
 $ ls stog-output
 index.html
 </span><span class="hl kwa">&lt;/cl</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -199,23 +198,23 @@ it misses some style.
 Let's add a default stylesheet to our source directory and run
 </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> again:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;cl</span><span class="hl kwa">&gt;</span><span class="hl std">$ wget http://zoggy.github.io/stog/style.css -O mystog/style.css
+</span><span class="hl kwa">&lt;cl</span><span class="hl kwa">&gt;</span><span class="hl std">$ wget https://raw.githubusercontent.com/zoggy/stog/master/share/templates/page-style.css -O mystog/style.css
 $ stog --local mystog
 </span><span class="hl kwa">&lt;/cl</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Now the page </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog-output/index.html</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> looks better.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;twomorepages&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Two more pages&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"twomorepages"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Two more pages"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-We start by adding a post, which is a document of type &quot;post&quot;,
+We start by adding a post, which is a document of type "post",
 as the first node in the file indicates. We create the file
 in a new </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">posts</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> directory to keep things clean:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;cl</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[$ mkdir mystog/posts
 $ cat &gt; mystog/posts/first-post.html
-</span><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;My first blog post!&quot;</span><span class="hl std">
-</span><span class="">date</span><span class="hl std">=</span><span class="hl str">&quot;2013/11/25&quot;</span><span class="hl std">
+</span><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"My first blog post!"</span><span class="hl std">
+</span><span class="">date</span><span class="hl std">=</span><span class="hl str">"2013/11/25"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">This is the first post of this blog.</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
@@ -226,9 +225,9 @@ $ cat &gt; mystog/posts/first-post.html
 in </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog-output/posts/first-post.html</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;cl</span><span class="hl kwa">&gt;</span><span class="hl std">$ stog --local mystog
-Warning: Creating default template file &quot;mystog/.stog/templates/post.tmpl&quot;
-Warning: Creating default template file &quot;mystog/.stog/templates/doc-in-list.tmpl&quot;
-Warning: Creating default template file &quot;mystog/.stog/templates/by-month.tmpl&quot;
+Warning: Creating default template file "mystog/.stog/templates/post.tmpl"
+Warning: Creating default template file "mystog/.stog/templates/doc-in-list.tmpl"
+Warning: Creating default template file "mystog/.stog/templates/by-month.tmpl"
 0 error, 3 warnings
 $ tree stog-output
 stog-output
@@ -249,16 +248,18 @@ this date (out first blog post).
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Let's add another page, here a </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">mystog/blog.html</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file, containing
-the list of documents of type &quot;post&quot;, with 4 documents maximum, and generating
+the list of documents of type "post", with 4 documents maximum, and generating
 a </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">index.rss</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file on the fly:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;cl</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[$ cat &gt; mystog/blog.html
-</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;My blog&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"My blog"</span><span class="hl kwa">&gt;</span><span class="hl std">
   </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Most recent posts:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;documents</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">&quot;post&quot;</span><span class="hl std"> </span><span class="">rss</span><span class="hl std">=</span><span class="hl str">&quot;index.rss&quot;</span><span class="hl std"> </span><span class="">max</span><span class="hl std">=</span><span class="hl str">&quot;4&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;documents</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">"post"</span><span class="hl std"> </span><span class="">rss</span><span class="hl std">=</span><span class="hl str">"index.rss"</span><span class="hl std"> </span><span class="">max</span><span class="hl std">=</span><span class="hl str">"4"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std">
 ^D
-$ stog --local mystog]]&gt;</span><span class="hl kwa">&lt;/cl</span><span class="hl kwa">&gt;</span><span class="hl std">
+$ stog --local mystog
+Warning: Creating default template file "mystog/.stog/templates/rss-item.tmpl"
+Warning: Creating default template file "mystog/.stog/templates/rss.tmpl"]]&gt;</span><span class="hl kwa">&lt;/cl</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Let's retrieve two images into our source directory and run </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> again:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -268,27 +269,27 @@ $ stog --local mystog
 ]]&gt;</span><span class="hl kwa">&lt;/cl</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;ref&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Referencing documents&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"ref"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Referencing documents"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">References from a document (a page, a post, ...) to another are checked by stog.
-Let's add a reference to our first post from the main page. We show the contents
+Let's add a reference to our blog from the main page. We show the contents
 of </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">mystog/index.html</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> after the modification:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;hxml</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[
-</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;My first page with Stog&quot;</span><span class="hl std">
-</span><span class="">main</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+</span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"My first page with Stog"</span><span class="hl std">
+</span><span class="">main</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 Hello world !
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-This is reference to </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;first-post&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">.
+This is reference to </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"blog"</span><span class="hl kwa">/&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std">
 ]]&gt;</span><span class="hl kwa">&lt;/hxml</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;cl</span><span class="hl kwa">&gt;</span><span class="hl std">$ stog --local mystog</span><span class="hl kwa">&lt;/cl</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Now browse the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog-output/index.html</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file to see the result.</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;further&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Going further&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Now you can read </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;overview&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">how Stog works</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> and
-the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;funs&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">predefined rewrite rules</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"further"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Going further"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Now you can read </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"overview"</span><span class="hl kwa">&gt;</span><span class="hl std">how Stog works</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> and
+the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"funs"</span><span class="hl kwa">&gt;</span><span class="hl std">predefined rewrite rules</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The source of each page is available at the bottom of the page.
 Feel free to have a look to see how something is achieved.
@@ -301,11 +302,11 @@ Feel free to have a look to see how something is achieved.
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>

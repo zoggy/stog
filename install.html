@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Installation</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -58,28 +57,28 @@ To build Stog, you will need:
 </p>
 <ul>
 <li><span class="ext-a"><a href="http://caml.inria.fr/">OCaml &gt;= 4.02.1</a></span>,</li>
-<li><span class="ext-a"><a href="http://zoggy.github.io/ocf/">Ocf &gt;= 0.3.0</a></span>.</li>
-<li><span class="ext-a"><a href="http://erratique.ch/software/xmlm">Xmlm &gt;= 1.1.0</a></span>,</li>
+<li><span class="ext-a"><a href="http://zoggy.github.io/ocf/">Ocf &gt;= 0.4.0</a></span>.</li>
 <li><span class="ext-a"><a href="http://projects.camlcity.org/projects/ocamlnet.html">OCamlnet &gt;= 3.6</a></span>.</li>
 <li><span class="ext-a"><a href="https://github.com/johnwhitington/ppx_blob">ppx_blob &gt;= 0.1</a></span>,</li>
-<li><span class="ext-a"><a href="http://zoggy.github.io/xtmpl/">Xtmpl &gt;= 0.12</a></span>,</li>
-<li><span class="ext-a"><a href="http://zoggy.github.io/higlo/">Higlo &gt;= 0.4</a></span>.</li>
+<li><span class="ext-a"><a href="http://zoggy.github.io/xtmpl/">Xtmpl &gt;= 0.13.0</a></span>,</li>
+<li><span class="ext-a"><a href="http://zoggy.github.io/higlo/">Higlo &gt;= 0.5</a></span>.</li>
 </ul>
 <p>
 These additional libraries are required to compile and install
 the preview server:
 </p>
 <ul>
-<li><span class="ext-a"><a href="http://ocsigen.org/lwt">Lwt &gt;= 2.4.5</a></span>,</li>
-<li><span class="ext-a"><a href="http://ocsigen.org/js_of_ocaml">Js_of_ocaml &gt;= 2.4.1</a></span>,</li>
+<li><span class="ext-a"><a href="http://ocsigen.org/lwt">Lwt &gt;= 2.5</a></span>,</li>
+<li><span class="ext-a"><a href="http://ocsigen.org/js_of_ocaml">Js_of_ocaml &gt;= 2.6</a></span>,</li>
 <li><span class="ext-a"><a href="http://zoggy.github.io/xmldiff/">Xmldiff &gt;= 0.5.0</a></span>.</li>
-<li><span class="ext-a"><a href="https://github.com/vbmithr/ocaml-websocket">OCaml-Websocket &gt;= 2.1</a></span>,</li>
-<li><span class="ext-a"><a href="https://zoggy.github.com/ojs-base">Ojs-base &gt;= 0.3.0</a></span>,</li>
+<li><span class="ext-a"><a href="https://github.com/vbmithr/ocaml-websocket">OCaml-Websocket &gt;= 2.2</a></span>,</li>
+<li><span class="ext-a"><a href="https://github.com/vincenthz/ocaml-sha">Sha &gt;= 1.9</a></span>,</li>
+<li><span class="ext-a"><a href="https://zoggy.github.com/ojs-base">Ojs-base &gt;= 0.4.0</a></span>,</li>
 <li><span class="ext-a"><a href="https://github.com/whitequark/ppx_deriving_yojson/">Ppx-deriving-yojson &gt;= 2.0</a></span>.</li>
 </ul>
 <p>
 To force the compilation of the stog server, you can use this commande line:
-<pre class="code-sh">$ opam <span class="hl kwc">install</span> lwt js_of_ocaml xmldiff websocket ojs<span class="hl opt">-</span>base ppx_deriving_yojson stog</pre>
+<pre class="code-sh">$ opam <span class="hl kwc">install</span> lwt js_of_ocaml sha xmldiff websocket ojs<span class="hl opt">-</span>base ppx_deriving_yojson stog</pre>
 </p>
 <p>
 You will need to have the following tools installed to use
@@ -102,6 +101,26 @@ LaTeX in your pages.</li>
 <ul>
 
 
+<li><a href="stog-0.16.0.tar.gz">0.16.0</a>
+<span class="date">[November 25, 2015]</span>
+<ul id="changes-0.16.0">
+<li>require <span class="ext-a"><a href="https://zoggy.github.io/xtmpl/posts/xtmpl-0.12.html">Xtmpl</a></span> &gt;= 0.13.0,</li>
+<li>a document's DOCTYPE is now taken from the XML template corresponding to the document's type,</li>
+<li>install <code>odoc_*</code> files in stog ocamlfind directory,</li>
+<li>new option <code>-pp</code> for <code>stog-ocaml-session</code>,</li>
+<li>new <a href="https://zoggy.github.io/stog/rules/exec.html"><span class="icode"><span class="hl kwa">&lt;exec</span><span class="hl kwa">&gt;</span></span></a>
+   rule to execute commands and include output in documents,</li>
+<li>new directory attribute for <a href="https://zoggy.github.io/stog/rules/ocaml-eval.html"><span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span></span></a>
+  to set the directory in which the stog-ocaml-session tool is launched,</li>
+<li>stog preview server: handle file dependencies to trigger recomputation of documents,</li>
+<li>now require lwt not only for server,</li>
+<li>change templates to use xhtml namespace,</li>
+<li>various fixes.</li>
+</ul>
+</li>
+
+
+
 <li><a href="stog-0.15.0.tar.gz">0.15.0</a>
 <span class="date">[July 7, 2015]</span>
 <ul id="changes-0.15.0">
@@ -117,7 +136,7 @@ LaTeX in your pages.</li>
 <li><a href="https://zoggy.github.io/stog/posts/ocaml-sessions.html"><code>stog-ocaml-session</code></a>
   now handles the <code>-ppx</code>, <code>-safe-string</code> and
   <code>-unsafe-string</code> options,</li>
-<li><span class="icode"><span class="hl kwa">&lt;doc-intro</span><span class="hl kwa">&gt;</span></span> does not include &quot;next&quot; link with image; it is now
+<li><span class="icode"><span class="hl kwa">&lt;doc-intro</span><span class="hl kwa">&gt;</span></span> does not include "next" link with image; it is now
   in the default <code>doc-in-list</code> template,</li>
 <li>use <span class="ext-a"><a href="https://zoggy.github.io/ocf">Ocf</a></span> (0.3.0) instead of
   <span class="ext-a"><a href="http://config-file.forge.ocamlcore.org/">Config-file</a></span>; as a
@@ -140,7 +159,7 @@ LaTeX in your pages.</li>
 <li>preview server:
   <ul><li>use <span class="ext-a"><a href="http://zoggy.github.io/ojs-base/">Ojs-base</a></span> facilities
       to display messages in browser,</li>
-  <li>a &quot;recompute&quot; button on top-left corner allows the reload of all
+  <li>a "recompute" button on top-left corner allows the reload of all
     files (useful when adding new files to the edited web site sources),</li>
   <li>use <span class="ext-a"><a href="https://github.com/whitequark/ppx_deriving_yojson/">ppx_deriving_yojson</a></span> 2.0 (and so require ocaml 4.02.1).</li>
   </ul>
@@ -159,10 +178,10 @@ LaTeX in your pages.</li>
 <li>new plugin <a href="https://zoggy.github.io/stog/plugins/rel-href.html">Stog-rel-href</a>,</li>
 <li>new rules <a href="https://zoggy.github.io/stog/module_base.html#print-date"><span class="icode"><span class="hl kwa">&lt;print-date</span><span class="hl kwa">&gt;</span></span></a>
   and <a href="https://zoggy.github.io/stog/module_base.html#print-datetime"><span class="icode"><span class="hl kwa">&lt;print-datetime</span><span class="hl kwa">&gt;</span></span></a>,</li>
-<li>keep <span class="icode"><span class="hl std">/index.html</span></span> in urls when the site url scheme is &quot;<span class="icode"><span class="hl std">file:</span></span>&quot;,</li>
+<li>keep <span class="icode"><span class="hl std">/index.html</span></span> in urls when the site url scheme is "<span class="icode"><span class="hl std">file:</span></span>",</li>
 <li>handle subtitle in article default template,</li>
 <li>improve latex translator,</li>
-<li>allow <span class="icode"><span class="hl std">use-parent-path=&quot;false&quot;</span></span> in <a href="https://zoggy.github.io/stog/module_base.html#cut">cut</a>,
+<li>allow <span class="icode"><span class="hl std">use-parent-path="false"</span></span> in <a href="https://zoggy.github.io/stog/module_base.html#cut">cut</a>,
   not to use parent path when forging new elements' path,</li>
 <li>improve provided templates and math module,</li>
 <li>various fixes,</li>
@@ -185,15 +204,15 @@ LaTeX in your pages.</li>
 <li><a href="https://zoggy.github.io/stog/running.html#template-path">--tmpl</a>
   now adds a directory to look for templates,</li>
 <li>OCaml toplevel output now highlights code corresponding to
-  warnings and errors; use <span class="icode"><span class="hl std">highlight-locs=&quot;false&quot;</span></span> in <span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span>
-  to disable; when enabled, use <span class="icode"><span class="hl std">print-locs=&quot;true&quot;</span></span> in <span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span>
+  warnings and errors; use <span class="icode"><span class="hl std">highlight-locs="false"</span></span> in <span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span>
+  to disable; when enabled, use <span class="icode"><span class="hl std">print-locs="true"</span></span> in <span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span>
   to force printing also the warning and error locations.
-  To highlight the code, <span class="icode"><span class="hl kwa">&lt;span</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;warning-loc&quot;</span><span class="hl kwa">&gt;</span></span>
-   and <span class="icode"><span class="hl kwa">&lt;span</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;error-loc&quot;</span><span class="hl kwa">&gt;</span></span> nodes are added,</li>
+  To highlight the code, <span class="icode"><span class="hl kwa">&lt;span</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"warning-loc"</span><span class="hl kwa">&gt;</span></span>
+   and <span class="icode"><span class="hl kwa">&lt;span</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"error-loc"</span><span class="hl kwa">&gt;</span></span> nodes are added,</li>
 <li>use more HTML blocks in output of <span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span></span>:
-  <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;stderr&quot;</span><span class="hl kwa">/&gt;</span></span>,
-  <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;stdout&quot;</span><span class="hl kwa">/&gt;</span></span>,
-  <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;toplevel-out&quot;</span><span class="hl kwa">/&gt;</span></span>.
+  <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"stderr"</span><span class="hl kwa">/&gt;</span></span>,
+  <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"stdout"</span><span class="hl kwa">/&gt;</span></span>,
+  <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"toplevel-out"</span><span class="hl kwa">/&gt;</span></span>.
 </li>
 </ul>
 </li>
@@ -212,10 +231,10 @@ LaTeX in your pages.</li>
 <li><a href="stog-0.11.0.tar.gz">0.11.0</a>
 <span class="date">[March 20, 2014]</span>
 <ul id="changes-0.11.0">
-<li>the term &quot;element&quot; is replaced by &quot;document&quot;, and all
+<li>the term "element" is replaced by "document", and all
   <span class="icode"><span class="hl kwa">&lt;elt</span><span class="hl std">*</span><span class="hl kwa">&gt;</span></span> rules are replaced by <span class="icode"><span class="hl kwa">&lt;doc</span><span class="hl std">*</span><span class="hl kwa">&gt;</span></span> rules,</li>
-<li>the term &quot;human id&quot; is replaced by &quot;path&quot;. In all rules and
-  attributes, &quot;hid&quot; is replaced by &quot;path&quot;. The <span class="icode"><span class="hl kwa">&lt;doc-path</span><span class="hl kwa">&gt;</span></span> rule
+<li>the term "human id" is replaced by "path". In all rules and
+  attributes, "hid" is replaced by "path". The <span class="icode"><span class="hl kwa">&lt;doc-path</span><span class="hl kwa">&gt;</span></span> rule
   is replace by <span class="icode"><span class="hl kwa">&lt;doc-navpath</span><span class="hl kwa">&gt;</span></span>,</li>
 <li>document path now includes the extension of the document's filename;
   when referencing a document, the extension is only needed where
@@ -229,7 +248,7 @@ LaTeX in your pages.</li>
 <li>new option <a href="https://zoggy.github.io/stog/running.html#filter">--publish-only</a>,</li>
 <li>more generic way to define an alternative document when using
   the <a href="https://zoggy.github.io/stog/module_base.html#documents"><span class="icode"><span class="hl kwa">&lt;documents</span><span class="hl kwa">&gt;</span></span></a> rule,</li>
-<li>new attribute <span class="icode"><span class="hl std">format=&quot;...&quot;</span></span> for rules
+<li>new attribute <span class="icode"><span class="hl std">format="..."</span></span> for rules
   <span class="icode"><span class="hl kwa">&lt;date</span><span class="hl kwa">&gt;</span></span>, <span class="icode"><span class="hl kwa">&lt;datetime</span><span class="hl kwa">&gt;</span></span>,
   <span class="icode"><span class="hl kwa">&lt;date-now</span><span class="hl kwa">&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;date-today</span><span class="hl kwa">&gt;</span></span>,</li>
 <li>defining twice the same id in a document is not an
@@ -238,7 +257,7 @@ LaTeX in your pages.</li>
 <li><span class="icode"><span class="hl kwa">&lt;cut-doc</span><span class="hl kwa">&gt;</span></span>: add previous-path and next-path in definitions
   of cut documents, to create navigation links,</li>
 <li>merge CData in resulting XML trees when computing documents,</li>
-<li>urls of <span class="icode"><span class="hl std">.../index.html</span></span> documents now include a final &quot;/&quot;,</li>
+<li>urls of <span class="icode"><span class="hl std">.../index.html</span></span> documents now include a final "/",</li>
 <li>the new <span class="icode"><span class="hl kwa">&lt;stog-dir</span><span class="hl kwa">&gt;</span></span> rule is pre-defined to return the
   absolute stog directory,</li>
 <li>(fix) compile and install <span class="icode"><span class="hl std">odoc_stog.cmo</span></span>,</li>
@@ -306,10 +325,10 @@ LaTeX in your pages.</li>
 <li>New <a href="https://zoggy.github.io/stog/odoc.html">ocamldoc generator</a> (<span class="icode"><span class="hl std">odoc_stog.cm{o,xs}</span></span>)
     to embed ocamldoc-generated documentation into sites generated with stog,</li>
 <li><span class="icode"><span class="hl std">&lt;doc-*&gt;</span></span> predefined functions handle a
-    <span class="icode"><span class="hl std">doc-hid=&quot;hid of document&quot;</span></span> attribute, to access information about
+    <span class="icode"><span class="hl std">doc-hid="hid of document"</span></span> attribute, to access information about
     another document rather than the current one,</li>
 <li>Fix <a href="https://zoggy.github.io/stog/module_base.html#ocaml-eval">ocaml-eval</a>: use return of <span class="icode"><span class="hl std">Toploop.execute_phrase</span></span>
-    to consider catched exceptions as errors if <span class="icode"><span class="hl std">error-exc=&quot;true&quot;</span></span>,</li>
+    to consider catched exceptions as errors if <span class="icode"><span class="hl std">error-exc="true"</span></span>,</li>
 <li>Fix: allow list of CDATA in ocaml code,</li>
 <li>New <a href="https://zoggy.github.io/stog/running.html#optiondef"><span class="icode"><span class="hl std">--def</span></span> command-line option</a>
     to define a global rule on command line,</li>
@@ -371,7 +390,7 @@ LaTeX in your pages.</li>
 <span class="date">[January 16, 2013]</span>
 <ul id="changes-0.6">
 <li>mod: do not write the config file if it already exists,</li>
-<li>add: <span class="icode"><span class="hl std">&lt;documents&gt;</span></span> node handles <span class="icode"><span class="hl std">reverse=&quot;false&quot;</span></span> attribute not to
+<li>add: <span class="icode"><span class="hl std">&lt;documents&gt;</span></span> node handles <span class="icode"><span class="hl std">reverse="false"</span></span> attribute not to
     reverse order of documents (which is default, i.e. the more recent first),</li>
 <li>mod: better cache system, using dependencies of each document on other
     documents and files; also handles the stog environment used to compute
@@ -380,7 +399,7 @@ LaTeX in your pages.</li>
 <li>add: a rule using a file or another document must add a dependency from
     the computed document to the document or file it depends on, using
     <a href="ref-doc/Stog_plug.html#VALadd_dep"><span class="icode"><span class="hl std">Stog_plug.add_dep</span></span></a>,</li>
-<li>add: <span class="icode"><span class="hl std">&lt;include&gt;</span></span> now handles a <span class="icode"><span class="hl std">depend=&quot;false&quot;</span></span> attribute, to prevent
+<li>add: <span class="icode"><span class="hl std">&lt;include&gt;</span></span> now handles a <span class="icode"><span class="hl std">depend="false"</span></span> attribute, to prevent
     adding a dependency of the document on the included file,</li>
 <li>add: <span class="icode"><span class="hl std">--depcut</span></span> option, used when getting cached documents, to use
     only one level of dependency between documents; this is useful
@@ -419,21 +438,21 @@ LaTeX in your pages.</li>
 <ul id="changes-0.4">
 <li>handle relative paths in <span class="icode"><span class="hl std">&lt;include&gt;</span></span>, when starting with
   <span class="icode"><span class="hl std">.</span></span> or <span class="icode"><span class="hl std">..</span></span>,</li>
-<li>use a separate tool to evaluate ocaml code, &quot;stog-ocaml-session&quot;;
+<li>use a separate tool to evaluate ocaml code, "stog-ocaml-session";
    this allows to use native code version of stog even when evaluating
    ocaml code; it also makes possible to use distinct ocaml toplevels in
-   ocaml-eval (with session=&quot;...&quot;); details <a href="https://zoggy.github.io/stog/posts/ocaml-sessions.html">here</a>,</li>
+   ocaml-eval (with session="..."); details <a href="https://zoggy.github.io/stog/posts/ocaml-sessions.html">here</a>,</li>
 <li>add simple cache system, and option <span class="icode"><span class="hl std">--nocache</span></span>,</li>
 <li>new <span class="icode"><span class="hl std">&lt;inc&gt;</span></span> rule to include a block from another
-  document: <span class="icode"><span class="hl kwa">&lt;inc</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;/install&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;blockid&quot;</span><span class="hl kwa">/&gt;</span></span>,
+  document: <span class="icode"><span class="hl kwa">&lt;inc</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">"/install"</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"blockid"</span><span class="hl kwa">/&gt;</span></span>,
 </li>
-<li>ability to define &quot;functions&quot;, site-wide or document-wide,</li>
+<li>ability to define "functions", site-wide or document-wide,</li>
 <li>handle blocks and counters,</li>
 <li>sectionning now uses blocks and counters,</li>
-<li>a &quot;sectionning&quot; attribute is used to determine which nodes are used for
-  sectionning a document; default is &quot;section,subsection&quot;,</li>
+<li>a "sectionning" attribute is used to determine which nodes are used for
+  sectionning a document; default is "section,subsection",</li>
 <li>verify references to blocks by id (sections, ...) and use their title in links,</li>
-<li>use &quot;id&quot; attribute instead of &quot;name&quot; attribute in sectionning tags,</li>
+<li>use "id" attribute instead of "name" attribute in sectionning tags,</li>
 <li>define and use levels of rules; plugins can extend the number of levels
     to define their own rewriting system.</li>
 </ul>
@@ -461,7 +480,7 @@ LaTeX in your pages.</li>
 <li>change the format of files, now all in XML. Config and templates are in <span class="icode"><span class="hl std">.stog</span></span>
 directory,</li>
 <li>less templates required,</li>
-<li>user can define documents of any &quot;type&quot; (post, page, ...).</li>
+<li>user can define documents of any "type" (post, page, ...).</li>
 </ul>
 </li>
 
@@ -511,24 +530,24 @@ and (eventually) <span class="icode"><span class="hl std">stog.server</span></sp
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Installation&quot;</span><span class="hl std">
-</span><span class="">navbar-install</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
-</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Installation"</span><span class="hl std">
+</span><span class="">navbar-install</span><span class="hl std">=</span><span class="hl str">"active"</span><span class="hl std">
+</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;error_</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">release</span><span class="hl kwb">&amp;gt;</span><span class="hl std">: missing version</span><span class="hl kwa">&lt;/error_</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-&amp;lt;version/&amp;gt;.tar.gz&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;version</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;span</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;date&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">[</span><span class="hl kwa">&lt;doc-date</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">&quot;release-&amp;lt;version/&amp;gt;&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">]</span><span class="hl kwa">&lt;/span</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;late-inc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;release-&amp;lt;version/&amp;gt;#changes&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;changes-&amp;lt;version/&amp;gt;&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;error_</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">release</span><span class="hl kwb">&amp;gt;</span><span class="hl std">: missing version</span><span class="hl kwa">&lt;/error_</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"stog-&amp;lt;version/&amp;gt;.tar.gz"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;version</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;span</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"date"</span><span class="hl kwa">&gt;</span><span class="hl std">[</span><span class="hl kwa">&lt;doc-date</span><span class="hl std"> </span><span class="">doc-path</span><span class="hl std">=</span><span class="hl str">"release-&amp;lt;version/&amp;gt;"</span><span class="hl kwa">/&gt;</span><span class="hl std">]</span><span class="hl kwa">&lt;/span</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;late-inc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"release-&amp;lt;version/&amp;gt;#changes"</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"changes-&amp;lt;version/&amp;gt;"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/release</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;prepare-toc</span><span class="hl std"> </span><span class="">depth</span><span class="hl std">=</span><span class="hl str">&quot;2&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;prepare-toc</span><span class="hl std"> </span><span class="">depth</span><span class="hl std">=</span><span class="hl str">"2"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;toc</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/toc</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;opam&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Quick install with Opam&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"opam"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Quick install with Opam"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-The easiest way to install is to use  </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://opam.ocaml.org&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OPAM</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.
+The easiest way to install is to use  </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://opam.ocaml.org"</span><span class="hl kwa">&gt;</span><span class="hl std">OPAM</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.
 Install Opam, then, as a regular user, fetch and install an OCaml version and install Stog.
 The whole can be done with the following opam commands:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -539,35 +558,35 @@ $ opam install stog
 </span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;deps&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Dependencies&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"deps"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Dependencies"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 To build Stog, you will need:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://caml.inria.fr/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml &gt;= 4.02.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://zoggy.github.io/ocf/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Ocf &gt;= 0.3.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://erratique.ch/software/xmlm&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xmlm &gt;= 1.1.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://projects.camlcity.org/projects/ocamlnet.html&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCamlnet &gt;= 3.6</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/johnwhitington/ppx_blob&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">ppx_blob &gt;= 0.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://zoggy.github.io/xtmpl/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xtmpl &gt;= 0.12</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://zoggy.github.io/higlo/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Higlo &gt;= 0.4</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://caml.inria.fr/"</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml &gt;= 4.02.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://zoggy.github.io/ocf/"</span><span class="hl kwa">&gt;</span><span class="hl std">Ocf &gt;= 0.4.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://projects.camlcity.org/projects/ocamlnet.html"</span><span class="hl kwa">&gt;</span><span class="hl std">OCamlnet &gt;= 3.6</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://github.com/johnwhitington/ppx_blob"</span><span class="hl kwa">&gt;</span><span class="hl std">ppx_blob &gt;= 0.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://zoggy.github.io/xtmpl/"</span><span class="hl kwa">&gt;</span><span class="hl std">Xtmpl &gt;= 0.13.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://zoggy.github.io/higlo/"</span><span class="hl kwa">&gt;</span><span class="hl std">Higlo &gt;= 0.5</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 These additional libraries are required to compile and install
 the preview server:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://ocsigen.org/lwt&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Lwt &gt;= 2.4.5</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://ocsigen.org/js_of_ocaml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Js_of_ocaml &gt;= 2.4.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://zoggy.github.io/xmldiff/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xmldiff &gt;= 0.5.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/vbmithr/ocaml-websocket&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml-Websocket &gt;= 2.1</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://zoggy.github.com/ojs-base&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Ojs-base &gt;= 0.3.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/whitequark/ppx_deriving_yojson/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Ppx-deriving-yojson &gt;= 2.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://ocsigen.org/lwt"</span><span class="hl kwa">&gt;</span><span class="hl std">Lwt &gt;= 2.5</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://ocsigen.org/js_of_ocaml"</span><span class="hl kwa">&gt;</span><span class="hl std">Js_of_ocaml &gt;= 2.6</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://zoggy.github.io/xmldiff/"</span><span class="hl kwa">&gt;</span><span class="hl std">Xmldiff &gt;= 0.5.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://github.com/vbmithr/ocaml-websocket"</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml-Websocket &gt;= 2.2</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://github.com/vincenthz/ocaml-sha"</span><span class="hl kwa">&gt;</span><span class="hl std">Sha &gt;= 1.9</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://zoggy.github.com/ojs-base"</span><span class="hl kwa">&gt;</span><span class="hl std">Ojs-base &gt;= 0.4.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://github.com/whitequark/ppx_deriving_yojson/"</span><span class="hl kwa">&gt;</span><span class="hl std">Ppx-deriving-yojson &gt;= 2.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 To force the compilation of the stog server, you can use this commande line:
 </span><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
-$ opam install lwt js_of_ocaml xmldiff websocket ojs-base ppx_deriving_yojson stog
+$ opam install lwt js_of_ocaml sha xmldiff websocket ojs-base ppx_deriving_yojson stog
 </span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -575,40 +594,41 @@ You will need to have the following tools installed to use
 some functions:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://www.andre-simon.de/doku/highlight/en/highlight.html&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">highlight</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://www.andre-simon.de/doku/highlight/en/highlight.html"</span><span class="hl kwa">&gt;</span><span class="hl std">highlight</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">
 to use syntax highlighting for languages not supported by
-</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://zoggy.github.io/higlo/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Higlo</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">LaTeX and </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://dvisvgm.sourceforge.net/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">dvisvgm</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> to embed
+</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://zoggy.github.io/higlo/"</span><span class="hl kwa">&gt;</span><span class="hl std">Higlo</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">LaTeX and </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://dvisvgm.sourceforge.net/"</span><span class="hl kwa">&gt;</span><span class="hl std">dvisvgm</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> to embed
 LaTeX in your pages.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;download&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;From the sources&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"download"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"From the sources"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Get the sources from git repository:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span><span class="hl std">$ git clone https://github.com/zoggy/stog.git</span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
 
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Or pick one of the releases:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.15.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.14.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.13.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.12.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.11.1&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.11.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.10.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.9.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.8.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.7.0&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.6.1&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.6&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.5&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.4&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.3&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.2&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">&quot;0.1&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.16.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.15.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.14.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.13.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.12.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.11.1"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.11.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.10.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.9.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.8.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.7.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.6.1"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.6"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.5"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.4"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.3"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.2"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.1"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;compilation&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Compilation&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"compilation"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Compilation"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Just type
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -641,11 +661,11 @@ and (eventually) </span><span class="hl kwa">&lt;icode</span><span class="hl kwa
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>

@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Predefined modules and functions</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -79,9 +78,9 @@ option in the <code>.stog/config</code> file.
 This option contains a list of associations of the following form:
 </p>
 <pre class="code-json"><span class="sym">[</span><span class="hl std">
-  </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;module-name&quot;</span><span class="sym">,</span><span class="hl std">
-    </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> (</span><span class="hl str">&quot;fun1&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl kwb">l1</span><span class="hl std"> ; </span><span class="hl kwb">l2</span><span class="hl std"> ; ...</span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
-              (</span><span class="hl str">&quot;fun2&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl kwb">l3</span><span class="hl std"> ; </span><span class="hl kwb">l4</span><span class="hl std"> ; ...</span><span class="sym">]</span><span class="hl std">)
+  </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">"module-name"</span><span class="sym">,</span><span class="hl std">
+    </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> (</span><span class="hl str">"fun1"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl kwb">l1</span><span class="hl std"> ; </span><span class="hl kwb">l2</span><span class="hl std"> ; ...</span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+              (</span><span class="hl str">"fun2"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl kwb">l3</span><span class="hl std"> ; </span><span class="hl kwb">l4</span><span class="hl std"> ; ...</span><span class="sym">]</span><span class="hl std">)
             </span><span class="sym">]</span><span class="hl std">
   </span><span class="sym">}</span><span class="sym">,</span><span class="hl std">
     ... ;
@@ -91,23 +90,23 @@ The list is used to set the levels a function is associated to in a
 given module. The default scheme could be expressed with:
 </p>
 <pre class="code-json"><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
-  </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;html&quot;</span><span class="sym">,</span><span class="hl std">
+  </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">"html"</span><span class="sym">,</span><span class="hl std">
     </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
-      (</span><span class="hl str">&quot;base&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">0</span><span class="sym">,</span><span class="hl std"> </span><span class="hl num">61</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
-      (</span><span class="hl str">&quot;add-docs&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">30</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
-      (</span><span class="hl str">&quot;toc&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">50</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
-      (</span><span class="hl str">&quot;cut&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">60</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
-      (</span><span class="hl str">&quot;inc&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">160</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
-      (</span><span class="hl str">&quot;clean&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">500</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">"base"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">0</span><span class="sym">,</span><span class="hl std"> </span><span class="hl num">61</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">"add-docs"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">30</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">"toc"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">50</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">"cut"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">60</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">"inc"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">160</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">"clean"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">500</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
     </span><span class="sym">]</span><span class="hl std">
   </span><span class="sym">}</span><span class="sym">,</span><span class="hl std">
-  </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;blocks&quot;</span><span class="sym">,</span><span class="hl std">
+  </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">"blocks"</span><span class="sym">,</span><span class="hl std">
     </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
-      (</span><span class="hl str">&quot;init&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">0</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
-      (</span><span class="hl str">&quot;base&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">61</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
-      (</span><span class="hl str">&quot;sectionning&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">100</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
-      (</span><span class="hl str">&quot;gather-ids&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">120</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
-      (</span><span class="hl str">&quot;doc&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">150</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">"init"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">0</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">"base"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">61</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">"sectionning"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">100</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">"gather-ids"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">120</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">"doc"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">150</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
     </span><span class="sym">]</span><span class="hl std">
   </span><span class="sym">}</span><span class="hl std">
 </span><span class="sym">]</span><span class="hl std">
@@ -121,10 +120,10 @@ will be associated to levels 2 and 230, while the rest of the scheme
 remains unchanged:
 </p>
 <pre class="code-json"><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
-  </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;html&quot;</span><span class="sym">,</span><span class="hl std">
+  </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">"html"</span><span class="sym">,</span><span class="hl std">
     </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
-      (</span><span class="hl str">&quot;base&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">2</span><span class="sym">,</span><span class="hl std"> </span><span class="hl num">230</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
-      (</span><span class="hl str">&quot;inc&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">"base"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl num">2</span><span class="sym">,</span><span class="hl std"> </span><span class="hl num">230</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+      (</span><span class="hl str">"inc"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
     </span><span class="sym">]</span><span class="hl std">
   </span><span class="sym">}</span><span class="hl std">
 </span><span class="sym">]</span><span class="hl std">
@@ -154,14 +153,14 @@ on the context.
 <div class="subsection"><div class="subsection-title" id="env_">env_</div>
 <p>The special tag <span class="icode"><span class="hl std">env_</span></span> can be used to modify the environment
 before analysing children. For example, here we add an association
-between &quot;login&quot; and &quot;zoggy&quot;. This will add to the environment
-an association between the key &quot;login&quot; and
-the function returning the one-element list [&quot;zoggy&quot;], which is used
-later in the &quot;login&quot; attribute:
+between "login" and "zoggy". This will add to the environment
+an association between the key "login" and
+the function returning the one-element list ["zoggy"], which is used
+later in the "login" attribute:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;env_</span><span class="hl std"> </span><span class="">login</span><span class="hl std">=</span><span class="hl str">&quot;zoggy&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;env_</span><span class="hl std"> </span><span class="">login</span><span class="hl std">=</span><span class="hl str">"zoggy"</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-  </span><span class="hl kwa">&lt;user</span><span class="hl std"> </span><span class="">login</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;login/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/user</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;user</span><span class="hl std"> </span><span class="">login</span><span class="hl std">=</span><span class="hl str">"&amp;lt;login/&amp;gt;"</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/user</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
 </span><span class="hl kwa">&lt;/env_</span><span class="hl kwa">&gt;</span></pre>
 <p>Such a function cannot be created in plugins, since functions only return
@@ -190,36 +189,36 @@ to pages in other languages than <span class="icode"><span class="hl std">langua
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Predefined modules and functions&quot;</span><span class="hl std">
-</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
-</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Predefined modules and functions"</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">"active"</span><span class="hl std">
+</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;default_scheme&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Default scheme&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"default_scheme"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Default scheme"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-As explained in </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;engine&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">, modules provide named functions associated
+As explained in </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"engine"</span><span class="hl kwa">/&gt;</span><span class="hl std">, modules provide named functions associated
 to levels, and the documents are succesively modified by these functions.
 Additionaly, a function of a module can be associated to various levels.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The following modules are available by default:
-</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Base</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_blocks&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Blocks</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base"</span><span class="hl kwa">&gt;</span><span class="hl std">Base</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_blocks"</span><span class="hl kwa">&gt;</span><span class="hl std">Blocks</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Here is the list of default levels and their associated functions
 defined by these modules:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;table</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;table table-bordered table-condensed&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;table</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"table table-bordered table-condensed"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;th</span><span class="hl kwa">&gt;</span><span class="hl std">Level</span><span class="hl kwa">&lt;/th</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;th</span><span class="hl kwa">&gt;</span><span class="hl std">Function(s)</span><span class="hl kwa">&lt;/th</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">  0</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#base&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base), </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_blocks#init&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std"> 30</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#add-docs&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std"> 50</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#toc&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std"> 60</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#cut&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std"> 61</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#base&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base), </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_blocks#base&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">100</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_blocks#sectionning&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">120</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_blocks#gather-ids&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">150</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_blocks#doc&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">160</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#inc&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">500</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#clean&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">  0</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#base"</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base), </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_blocks#init"</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std"> 30</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#add-docs"</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std"> 50</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#toc"</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std"> 60</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#cut"</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std"> 61</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#base"</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base), </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_blocks#base"</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">100</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_blocks#sectionning"</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">120</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_blocks#gather-ids"</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">150</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_blocks#doc"</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Blocks)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">160</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#inc"</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;tr</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl std">500</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#clean"</span><span class="hl kwa">/&gt;</span><span class="hl std"> (Base)</span><span class="hl kwa">&lt;/td</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tr</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/table</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">For most of the rules applied by module functions, you should look
 at the generated XML to modify
@@ -229,16 +228,16 @@ of the stog sources.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;config_funs&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Configuring the scheme&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"config_funs"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Configuring the scheme"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The default scheme can be changed, using the </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">levels</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">
 option in the </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/config</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> file.
 This option contains a list of associations of the following form:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;json&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">[
-  { module: &quot;module-name&quot;,
-    levels: [ (&quot;fun1&quot;, [ l1 ; l2 ; ...]),
-              (&quot;fun2&quot;, [ l3 ; l4 ; ...])
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"json"</span><span class="hl kwa">&gt;</span><span class="hl std">[
+  { module: "module-name",
+    levels: [ ("fun1", [ l1 ; l2 ; ...]),
+              ("fun2", [ l3 ; l4 ; ...])
             ]
   },
     ... ;
@@ -247,42 +246,42 @@ This option contains a list of associations of the following form:
 The list is used to set the levels a function is associated to in a
 given module. The default scheme could be expressed with:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;json&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">levels: [
-  { module: &quot;html&quot;,
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"json"</span><span class="hl kwa">&gt;</span><span class="hl std">levels: [
+  { module: "html",
     levels: [
-      (&quot;base&quot;, [ 0, 61 ]),
-      (&quot;add-docs&quot;, [ 30 ]),
-      (&quot;toc&quot;, [ 50 ]),
-      (&quot;cut&quot;, [ 60 ]),
-      (&quot;inc&quot;, [ 160 ]),
-      (&quot;clean&quot;, [ 500 ]),
+      ("base", [ 0, 61 ]),
+      ("add-docs", [ 30 ]),
+      ("toc", [ 50 ]),
+      ("cut", [ 60 ]),
+      ("inc", [ 160 ]),
+      ("clean", [ 500 ]),
     ]
   },
-  { module: &quot;blocks&quot;,
+  { module: "blocks",
     levels: [
-      (&quot;init&quot;, [ 0 ]),
-      (&quot;base&quot;, [ 61 ]),
-      (&quot;sectionning&quot;, [ 100 ]),
-      (&quot;gather-ids&quot;, [ 120 ]),
-      (&quot;doc&quot;, [ 150 ]),
+      ("init", [ 0 ]),
+      ("base", [ 61 ]),
+      ("sectionning", [ 100 ]),
+      ("gather-ids", [ 120 ]),
+      ("doc", [ 150 ]),
     ]
   }
 ]
 </span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">It is possible to change only the levels of some functions.
-In the example below, the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#inc&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> function
-of module </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Base</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> will not be called
+In the example below, the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#inc"</span><span class="hl kwa">/&gt;</span><span class="hl std"> function
+of module </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base"</span><span class="hl kwa">&gt;</span><span class="hl std">Base</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> will not be called
 (as it is associated to an empty list of levels)
-and the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;module_base#base&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> function of the same module
+and the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#base"</span><span class="hl kwa">/&gt;</span><span class="hl std"> function of the same module
 will be associated to levels 2 and 230, while the rest of the scheme
 remains unchanged:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;json&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"json"</span><span class="hl kwa">&gt;</span><span class="hl std">
 levels: [
-  { module: &quot;html&quot;,
+  { module: "html",
     levels: [
-      (&quot;base&quot;, [ 2, 230 ]),
-      (&quot;inc&quot;, [ ]),
+      ("base", [ 2, 230 ]),
+      ("inc", [ ]),
     ]
   }
 ]
@@ -295,31 +294,31 @@ previous function associated to this level, if any.
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;base&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Common base rules&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"base"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Common base rules"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Some predefined rules are applied in various functions of the
 predefined modules. They are listed here.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;contents&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;contents&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"contents"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"contents"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">contents/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is the generic function to insert some
+</span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">contents/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is the generic function to insert some
 contents in an included file or template. It may be available or not depending
 on the context.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/subsection</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;env_&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;env_&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"env_"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"env_"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The special tag </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">env_</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> can be used to modify the environment
 before analysing children. For example, here we add an association
-between &quot;login&quot; and &quot;zoggy&quot;. This will add to the environment
-an association between the key &quot;login&quot; and
-the function returning the one-element list [&quot;zoggy&quot;], which is used
-later in the &quot;login&quot; attribute:
+between "login" and "zoggy". This will add to the environment
+an association between the key "login" and
+the function returning the one-element list ["zoggy"], which is used
+later in the "login" attribute:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;env_</span><span class="hl std"> </span><span class="">login</span><span class="hl std">=</span><span class="hl str">&quot;zoggy&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[</span><span class="hl kwa">&lt;env_</span><span class="hl std"> </span><span class="">login</span><span class="hl std">=</span><span class="hl str">"zoggy"</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-  </span><span class="hl kwa">&lt;user</span><span class="hl std"> </span><span class="">login</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;login/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/user</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;user</span><span class="hl std"> </span><span class="">login</span><span class="hl std">=</span><span class="hl str">"&amp;lt;login/&amp;gt;"</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/user</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
 </span><span class="hl kwa">&lt;/env_</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Such a function cannot be created in plugins, since functions only return
@@ -329,10 +328,10 @@ evaluate the returned XML trees.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/subsection</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;langswitch&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;langswitch&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;subsection</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"langswitch"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"langswitch"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 If </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is launched with option </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--lang language</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">, the
-</span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;xml&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">langswitch</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> function returns some code to access
+</span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">langswitch</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> function returns some code to access
 to pages in other languages than </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">language</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/subsection</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -345,11 +344,11 @@ to pages in other languages than </span><span class="hl kwa">&lt;icode</span><sp
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>

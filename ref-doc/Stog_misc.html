@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_misc</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -49,14 +48,14 @@ Utilities.<br/>
 </div>
 <hr width="100%"/>
 
-<pre><span id="VALsafe_main"><span class="keyword">val</span> safe_main</span> : <code class="type">(unit -&gt; unit) -&gt; unit</code></pre><div class="info">
+<pre><span id="VALsafe_main"><span class="keyword">val</span> safe_main</span> : <code class="type">(unit -&gt; unit) -&gt; unit</code></pre><div class="info ">
 <code class="code">safe_main f</code> calls <code class="code">f ()</code> but handles <code class="code">Sys_error</code> and <code class="code">Failure</code>
    exceptions by exiting with error code 1.<br/>
 <b>Author(s):</b> Maxence Guesdon<br/>
 <b>Version:</b> 1.0<br/>
 </div>
 
-<pre><span id="VALstring_of_file"><span class="keyword">val</span> string_of_file</span> : <code class="type">string -&gt; string</code></pre><div class="info">
+<pre><span id="VALstring_of_file"><span class="keyword">val</span> string_of_file</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
 <code class="code">string_of_file filename</code> returns the content of <code class="code">filename</code>
    in the form of one string.<br/>
 <b>Author(s):</b> Maxence Guesdon<br/>
@@ -64,7 +63,7 @@ Utilities.<br/>
 <b>Raises</b> <code>Sys_error</code> if the file could not be opened.<br/>
 </div>
 
-<pre><span id="VALfile_of_string"><span class="keyword">val</span> file_of_string</span> : <code class="type">file:string -&gt; string -&gt; unit</code></pre><div class="info">
+<pre><span id="VALfile_of_string"><span class="keyword">val</span> file_of_string</span> : <code class="type">file:string -&gt; string -&gt; unit</code></pre><div class="info ">
 <code class="code">file_of_string ~file str</code> creates a file named
    <code class="code">filename</code> whose content is <code class="code">str</code>.<br/>
 <b>Author(s):</b> Fabrice Lefessant<br/>
@@ -72,7 +71,7 @@ Utilities.<br/>
 <b>Raises</b> <code>Sys_error</code> if the file could not be opened.<br/>
 </div>
 
-<pre><span id="VALcreate_log_fun"><span class="keyword">val</span> create_log_fun</span> : <code class="type">?prefix:string -&gt;<br/>       ?print:(string -&gt; unit) -&gt;<br/>       string -&gt; ?loc:string -&gt; ?level:int -&gt; (unit -&gt; string) -&gt; unit</code></pre><div class="info">
+<pre><span id="VALcreate_log_fun"><span class="keyword">val</span> create_log_fun</span> : <code class="type">?prefix:string -&gt;<br/>       ?print:(string -&gt; unit) -&gt;<br/>       string -&gt; ?loc:string -&gt; ?level:int -&gt; (unit -&gt; string) -&gt; unit</code></pre><div class="info ">
 Creating a log function.
   <code class="code">create_log_fun env_var</code> get the log level (an integer) from the given
   environment variable, and returns a function to print messages.
@@ -89,12 +88,12 @@ Creating a log function.
   indicate an alternative way to display the message; default is to call
   <code class="code">prerr_endline</code>.</div>
 
-<pre><span id="VALcreate_log_fun_with_set"><span class="keyword">val</span> create_log_fun_with_set</span> : <code class="type">?prefix:string -&gt;<br/>       ?print:(string -&gt; unit) -&gt;<br/>       string -&gt;<br/>       (?loc:string -&gt; ?level:int -&gt; (unit -&gt; string) -&gt; unit) * (int -&gt; unit)</code></pre><div class="info">
+<pre><span id="VALcreate_log_fun_with_set"><span class="keyword">val</span> create_log_fun_with_set</span> : <code class="type">?prefix:string -&gt;<br/>       ?print:(string -&gt; unit) -&gt;<br/>       string -&gt;<br/>       (?loc:string -&gt; ?level:int -&gt; (unit -&gt; string) -&gt; unit) * (int -&gt; unit)</code></pre><div class="info ">
 Same as <code class="code">create_log_fun</code> but also return a function to change
        the log level.<br/>
 </div>
 
-<pre><span id="VALsplit_string"><span class="keyword">val</span> split_string</span> : <code class="type">?keep_empty:bool -&gt; string -&gt; char list -&gt; string list</code></pre><div class="info">
+<pre><span id="VALsplit_string"><span class="keyword">val</span> split_string</span> : <code class="type">?keep_empty:bool -&gt; string -&gt; char list -&gt; string list</code></pre><div class="info ">
 Separate the given string according to the given list of characters.<br/>
 <b>Author(s):</b> Maxence Guesdon<br/>
 <b>Version:</b> 1.2<br/>
@@ -102,24 +101,24 @@ Separate the given string according to the given list of characters.<br/>
 <div class="param_info"><code class="code">keep_empty</code> : is <code class="code">false</code> by default. If set to <code class="code">true</code>,
    the empty strings between separators are kept.</div>
 
-<pre><span id="VALstrip_string"><span class="keyword">val</span> strip_string</span> : <code class="type">string -&gt; string</code></pre><div class="info">
+<pre><span id="VALstrip_string"><span class="keyword">val</span> strip_string</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
 <code class="code">strip_string s</code> removes all leading and trailing spaces from the given string.<br/>
 <b>Author(s):</b> Maxence Guesdon<br/>
 <b>Version:</b> 1.0<br/>
 </div>
 
-<pre><span id="VALstrip_blank_lines"><span class="keyword">val</span> strip_blank_lines</span> : <code class="type">string -&gt; string</code></pre><div class="info">
+<pre><span id="VALstrip_blank_lines"><span class="keyword">val</span> strip_blank_lines</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
 <code class="code">strip_blank_lines s</code> works as <a href="Stog_misc.html#VALstrip_string"><code class="code">Stog_misc.strip_string</code></a>, but only strips
     full blank lines, without touching spaces or tabulations.<br/>
 </div>
 
-<pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">string -&gt; string</code></pre><div class="info">
+<pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
 <code class="code">lowercase s</code> lowers the case of the given string, including accentuated characters.<br/>
 <b>Author(s):</b> Maxence Guesdon<br/>
 <b>Version:</b> 1.0<br/>
 </div>
 
-<pre><span id="VALlist_chop"><span class="keyword">val</span> list_chop</span> : <code class="type">int -&gt; 'h list -&gt; 'h list</code></pre><div class="info">
+<pre><span id="VALlist_chop"><span class="keyword">val</span> list_chop</span> : <code class="type">int -&gt; 'h list -&gt; 'h list</code></pre><div class="info ">
 <code class="code">list_chop n l</code> returns the <code class="code">n</code> first documents of list <code class="code">l</code> or the whole
    list if <code class="code">n &gt;= List.length l</code>.<br/>
 <b>Author(s):</b> Maxence Guesdon<br/>
@@ -127,13 +126,13 @@ Separate the given string according to the given list of characters.<br/>
 </div>
 
 <pre><span id="VALmkdir"><span class="keyword">val</span> mkdir</span> : <code class="type">string -&gt; unit</code></pre>
-<pre><span id="VALis_prefix"><span class="keyword">val</span> is_prefix</span> : <code class="type">string -&gt; string -&gt; bool</code></pre><div class="info">
+<pre><span id="VALis_prefix"><span class="keyword">val</span> is_prefix</span> : <code class="type">string -&gt; string -&gt; bool</code></pre><div class="info ">
 <code class="code">is_prefix pattern s</code> returns true if string <code class="code">s</code> begins with <code class="code">pattern</code>.<br/>
 <b>Author(s):</b> Maxence Guesdon<br/>
 <b>Version:</b> 1.0<br/>
 </div>
 
-<pre><span id="VALlist_remove_doubles"><span class="keyword">val</span> list_remove_doubles</span> : <code class="type">?pred:('k -&gt; 'k -&gt; bool) -&gt; 'k list -&gt; 'k list</code></pre><div class="info">
+<pre><span id="VALlist_remove_doubles"><span class="keyword">val</span> list_remove_doubles</span> : <code class="type">?pred:('k -&gt; 'k -&gt; bool) -&gt; 'k list -&gt; 'k list</code></pre><div class="info ">
 <code class="code">list_remove_doubles ?pred l</code> remove doubles in the given list <code class="code">l</code>, according
    to the optional equality function <code class="code">pred</code>. Default equality function is <code class="code">(=)</code>.<br/>
 <b>Author(s):</b> Maxence Guesdon<br/>
@@ -147,30 +146,30 @@ Separate the given string according to the given list of characters.<br/>
 <pre><span id="VALlist_concat"><span class="keyword">val</span> list_concat</span> : <code class="type">?sep:'a -&gt; 'a list -&gt; 'a list</code></pre>
 <pre><span id="VALdot_to_svg"><span class="keyword">val</span> dot_to_svg</span> : <code class="type">string -&gt; string</code></pre>
 <pre><span id="VALlist_compare"><span class="keyword">val</span> list_compare</span> : <code class="type">('a -&gt; 'a -&gt; int) -&gt; 'a list -&gt; 'a list -&gt; int</code></pre>
-<pre><span id="VALfilename_extension"><span class="keyword">val</span> filename_extension</span> : <code class="type">string -&gt; string</code></pre><div class="info">
+<pre><span id="VALfilename_extension"><span class="keyword">val</span> filename_extension</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
 <code class="code">filename_extension filename</code> returns extension of <code class="code">filename</code>
-  or <code class="code">&quot;&quot;</code> if there is no extension.<br/>
+  or <code class="code">""</code> if there is no extension.<br/>
 </div>
 
 <pre><span id="VALsafe_mkdir"><span class="keyword">val</span> safe_mkdir</span> : <code class="type">string -&gt; unit</code></pre>
-<pre><span id="VALopt_of_string"><span class="keyword">val</span> opt_of_string</span> : <code class="type">string -&gt; string option</code></pre><div class="info">
+<pre><span id="VALopt_of_string"><span class="keyword">val</span> opt_of_string</span> : <code class="type">string -&gt; string option</code></pre><div class="info ">
 <code class="code">opt_of_string s</code> returns <code class="code">None</code> if the string if empty
    (length is 0) or <code class="code">Some s</code>.<br/>
 <b>Version:</b> 1.0<br/>
 </div>
 
-<pre><span id="VALstring_of_opt"><span class="keyword">val</span> string_of_opt</span> : <code class="type">string option -&gt; string</code></pre><div class="info">
+<pre><span id="VALstring_of_opt"><span class="keyword">val</span> string_of_opt</span> : <code class="type">string option -&gt; string</code></pre><div class="info ">
 <code class="code">string_of_opt s_opt</code> returns the empty string if
    <code class="code">s_opt = None</code> or <code class="code">s</code> if <code class="code">s_opt = Some s</code>.<br/>
 <b>Version:</b> 1.0<br/>
 </div>
 
-<pre><span id="VALfile_mtime"><span class="keyword">val</span> file_mtime</span> : <code class="type">string -&gt; float option</code></pre><div class="info">
+<pre><span id="VALfile_mtime"><span class="keyword">val</span> file_mtime</span> : <code class="type">string -&gt; float option</code></pre><div class="info ">
 Return mdification time of the given file, or None if
   the file does not exist.<br/>
 </div>
 
-<pre><span id="VALpath_under"><span class="keyword">val</span> path_under</span> : <code class="type">parent:string -&gt; string -&gt; string</code></pre><div class="info">
+<pre><span id="VALpath_under"><span class="keyword">val</span> path_under</span> : <code class="type">parent:string -&gt; string -&gt; string</code></pre><div class="info ">
 <code class="code">path_under ~parent file</code> returns the path to <code class="code">file</code> from <code class="code">parent</code>.<br/>
 <b>Raises</b> <code>Failure</code> if <code class="code">parent</code> is not a prefix of <code class="code">file</code>.<br/>
 </div>
@@ -182,11 +181,12 @@ Return mdification time of the given file, or None if
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>
+

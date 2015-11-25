@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog-rdf</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -89,7 +88,7 @@ You can clone the git repository:
     <li>Base rules are not applied, they must be
      explictely run after level 220 to apply on result
     of <span class="icode"><span class="hl kwa">&lt;rdf-select</span><span class="hl kwa">&gt;</span></span> (using the
-    <a href="https://zoggy.github.io/stog/funs.html#config_funs">&quot;levels&quot; field in
+    <a href="https://zoggy.github.io/stog/funs.html#config_funs">"levels" field in
     stog config file</a>),
     </li>
     <li>Bug fixes.</li>
@@ -155,9 +154,9 @@ The name of this file is set in the <span class="icode"><span class="hl std">.st
 (default is <span class="icode"><span class="hl std">graph.rdf</span></span>).
 </p>
 <div class="subsection"><div class="subsection-title" id="tripleexamples">Examples</div>
-<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-  </span><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">obj</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">obj</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">/&gt;</span><span class="hl std">
   ...
 </span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
@@ -166,9 +165,9 @@ Subject is the document url, <span class="icode"><span class="hl std">pred</span
 (possibly of the form <span class="icode"><span class="hl std">prefix:term</span></span>). <span class="icode"><span class="hl std">obj</span></span> is the IRI of
 the object.
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
-  </span><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">/&gt;</span><span class="hl std">
   ...
 </span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
@@ -178,10 +177,10 @@ the form <span class="icode"><span class="hl std">path[#id]</span></span> to ind
 a node id in this document. This is reduced to the complete IRI
 of the document or block referenced by <span class="icode"><span class="hl std">document#id</span></span>.
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">&gt;</span><span class="hl std">
    ...
-   </span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;id1&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-     </span><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> ...</span><span class="hl kwa">/&gt;</span><span class="hl std">
+   </span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"id1"</span><span class="hl kwa">&gt;</span><span class="hl std">
+     </span><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> ...</span><span class="hl kwa">/&gt;</span><span class="hl std">
    </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
@@ -193,9 +192,9 @@ if my document has path <span class="icode"><span class="hl std">foo/page1</span
 </p>
 <p>
 To add the triples, the
-<span class="icode"><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">&quot;pref:term&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/rdf</span><span class="hl kwa">&gt;</span></span> node is rewritten to
+<span class="icode"><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">"pref:term"</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/rdf</span><span class="hl kwa">&gt;</span></span> node is rewritten to
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;rdf:Description</span><span class="hl std"> </span><span class="">rdf:about</span><span class="hl std">=</span><span class="hl str">&quot;&lt;document-url&gt;[#id]&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;rdf:Description</span><span class="hl std"> </span><span class="">rdf:about</span><span class="hl std">=</span><span class="hl str">"&lt;document-url&gt;[#id]"</span><span class="hl kwa">&gt;</span><span class="hl std">
   </span><span class="hl kwa">&lt;pref:term</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">
     ...
   </span><span class="hl kwa">&lt;/pref:term</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -207,8 +206,8 @@ and this XML tree is parsed using OCaml-RDF
 to the document graph. If a <span class="icode"><span class="hl std">href</span></span> or <span class="icode"><span class="hl std">obj</span></span> attribute was used,
 the corresponding IRI is associated to the `rdf:resource` attribute in the rewritten node:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;rdf:Description</span><span class="hl std"> </span><span class="">rdf:about</span><span class="hl std">=</span><span class="hl str">&quot;&lt;document-url&gt;[#id]&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;pref:term</span><span class="hl std"> </span><span class="">rdf:resource</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;rdf:Description</span><span class="hl std"> </span><span class="">rdf:about</span><span class="hl std">=</span><span class="hl str">"&lt;document-url&gt;[#id]"</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;pref:term</span><span class="hl std"> </span><span class="">rdf:resource</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">
     ...
   </span><span class="hl kwa">&lt;/pref:term</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/rdf:Description</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -220,13 +219,13 @@ and the whole <span class="icode"><span class="hl kwa">&lt;rdf:Description</span
 It is possible to insert triple with a subject not being the current document
 or a block of the current document, using the <span class="icode"><span class="hl std">subject</span></span> attribute:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">subject</span><span class="hl std">=</span><span class="hl str">&quot;http://foo.bar&quot;</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> ...</span><span class="hl kwa">/&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">subject</span><span class="hl std">=</span><span class="hl str">"http://foo.bar"</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> ...</span><span class="hl kwa">/&gt;</span></pre>
 <p>
 It is sometimes useful to force the subject to be the current document url even if the
 <span class="icode"><span class="hl kwa">&lt;rdf</span><span class="hl kwa">&gt;</span></span> node is under a XML node with an id:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">subject</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;doc-url/&amp;gt;&quot;</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> ...</span><span class="hl kwa">/&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">subject</span><span class="hl std">=</span><span class="hl str">"&amp;lt;doc-url/&amp;gt;"</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> ...</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
 </div>
@@ -269,23 +268,23 @@ Here is an example of configuration file describing two graphs to load,
 one from a file, and one from a MySQL database:
 </p>
 <pre class="code-json"><span class="sym">{</span><span class="hl std">
-  </span><span class="hl kwb">namespaces</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;pairs (uri, name) specifying namespaces&quot;</span><span class="sym">,</span><span class="hl std">
-  </span><span class="hl kwb">namespaces</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">(</span><span class="hl str">&quot;http://super-namespace.net/&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;super&quot;</span><span class="hl std">)</span><span class="sym">]</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">namespaces</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">"pairs (uri, name) specifying namespaces"</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">namespaces</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">(</span><span class="hl str">"http://super-namespace.net/"</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">"super"</span><span class="hl std">)</span><span class="sym">]</span><span class="sym">,</span><span class="hl std">
 
-  </span><span class="hl kwb">&quot;graph-file&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;name of main graph output file&quot;</span><span class="sym">,</span><span class="hl std">
-  </span><span class="hl kwb">&quot;graph-file&quot;</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;graph.rdf&quot;</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">"graph-file"</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">"name of main graph output file"</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">"graph-file"</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">"graph.rdf"</span><span class="sym">,</span><span class="hl std">
 
-  </span><span class="hl kwb">sources</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;pairs (uri, options) specifying graphs to load and associate to uris.
+  </span><span class="hl kwb">sources</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">"pairs (uri, options) specifying graphs to load and associate to uris.
             Options is a list of pair (name, value). To load a load, use
-            [\&quot;file\&quot;, \&quot;myfile.ttl\&quot;].
+            [\"file\", \"myfile.ttl\"].
             Other options can be given to access graphs from a database
-            (see OCaml-RDF's Rdf_graph documentation)&quot;</span><span class="sym">,</span><span class="hl std">
+            (see OCaml-RDF's Rdf_graph documentation)"</span><span class="sym">,</span><span class="hl std">
   </span><span class="hl kwb">sources</span><span class="sym">:</span><span class="hl std">
   </span><span class="sym">[</span><span class="hl std">
-   (</span><span class="hl str">&quot;http://foo.net/&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> (</span><span class="hl str">&quot;file&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;foo_net.ttl&quot;</span><span class="hl std">) </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
-   (</span><span class="hl str">&quot;http://foo.bar.net/&quot;</span><span class="sym">,</span><span class="hl std">
-    </span><span class="sym">[</span><span class="hl std">(</span><span class="hl str">&quot;storage&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;mysql2&quot;</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std"> (</span><span class="hl str">&quot;database&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;genet_example&quot;</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std"> (</span><span class="hl str">&quot;user&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;genet&quot;</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
-     (</span><span class="hl str">&quot;host&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;localhost&quot;</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std"> (</span><span class="hl str">&quot;password&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;&quot;</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std"> (</span><span class="hl str">&quot;port&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;3306&quot;</span><span class="hl std">)</span><span class="sym">]</span><span class="hl std">)
+   (</span><span class="hl str">"http://foo.net/"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> (</span><span class="hl str">"file"</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">"foo_net.ttl"</span><span class="hl std">) </span><span class="sym">]</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+   (</span><span class="hl str">"http://foo.bar.net/"</span><span class="sym">,</span><span class="hl std">
+    </span><span class="sym">[</span><span class="hl std">(</span><span class="hl str">"storage"</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">"mysql2"</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std"> (</span><span class="hl str">"database"</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">"genet_example"</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std"> (</span><span class="hl str">"user"</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">"genet"</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std">
+     (</span><span class="hl str">"host"</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">"localhost"</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std"> (</span><span class="hl str">"password"</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">""</span><span class="hl std">)</span><span class="sym">,</span><span class="hl std"> (</span><span class="hl str">"port"</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">"3306"</span><span class="hl std">)</span><span class="sym">]</span><span class="hl std">)
   </span><span class="sym">]</span><span class="hl std">
 </span><span class="sym">}</span><span class="hl std">
 </span></pre>
@@ -295,7 +294,7 @@ The options associated to each IRI are the options passed to the
 function in OCaml-RDF.
 </p>
 <p>By default, files are expected to be in Turtle format.
-Setting the &quot;format&quot; option to &quot;rdf/xml&quot; indicates that the file is in RDF/XML format.
+Setting the "format" option to "rdf/xml" indicates that the file is in RDF/XML format.
 </p>
 </div>
 
@@ -305,7 +304,7 @@ A graph can be loaded when the XML node <span class="icode"><span class="hl kwa"
 is encountered. This rule is registered in level 202.
 </p>
 <p>The general form of using this rule is:</p>
-<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span><span class="hl std"> </span><span class="">att1</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">att2</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span><span class="hl std"> </span><span class="">att1</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">att2</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">/&gt;</span></pre>
 <p>Each attribute defines a pair (name, value) used as an option. The complete
 option list is used as the option lists specified in the <span class="icode"><span class="hl std">.stog/config-rdf</span></span>
 file (see <a href="https://zoggy.github.io/stog/plugins/rdf.html#startupgraphs">Loading graphs at startup</a>).
@@ -314,24 +313,24 @@ file (see <a href="https://zoggy.github.io/stog/plugins/rdf.html#startupgraphs">
 from a Turtle file <span class="icode"><span class="hl std">foo_net.ttl</span></span> in the same directory
 as the source file of the current document:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;./foo_net.ttl&quot;</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;http://foo.net/&quot;</span><span class="hl kwa">/&gt;</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">"./foo_net.ttl"</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"http://foo.net/"</span><span class="hl kwa">/&gt;</span></pre>
 <p>
 If the filename is not explicitely relative to the current directory
-(i.e. if it does not start with &quot;.&quot; or &quot;..&quot;) then is it used as is.
+(i.e. if it does not start with "." or "..") then is it used as is.
 </p>
 <p>
 The following code loads a graph named <span class="icode"><span class="hl std">http://foo.bar.net/</span></span>
 from a MySQL database, using the given options:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;http://foo.bar.net/&quot;</span><span class="hl std"> </span><span class="">storage</span><span class="hl std">=</span><span class="hl str">&quot;mysql2&quot;</span><span class="hl std">
-  </span><span class="">database</span><span class="hl std">=</span><span class="hl str">&quot;genet_example&quot;</span><span class="hl std"> </span><span class="">user</span><span class="hl std">=</span><span class="hl str">&quot;genet&quot;</span><span class="hl std"> </span><span class="">host</span><span class="hl std">=</span><span class="hl str">&quot;localhost&quot;</span><span class="hl std"> </span><span class="">password</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl std"> </span><span class="">port</span><span class="hl std">=</span><span class="hl str">&quot;3306&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"http://foo.bar.net/"</span><span class="hl std"> </span><span class="">storage</span><span class="hl std">=</span><span class="hl str">"mysql2"</span><span class="hl std">
+  </span><span class="">database</span><span class="hl std">=</span><span class="hl str">"genet_example"</span><span class="hl std"> </span><span class="">user</span><span class="hl std">=</span><span class="hl str">"genet"</span><span class="hl std"> </span><span class="">host</span><span class="hl std">=</span><span class="hl str">"localhost"</span><span class="hl std"> </span><span class="">password</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std"> </span><span class="">port</span><span class="hl std">=</span><span class="hl str">"3306"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span></pre>
 <p>
 If no <span class="icode"><span class="hl std">file</span></span> attribute is given, and the <span class="icode"><span class="hl kwa">&lt;rdf-load</span><span class="hl kwa">&gt;</span></span>
 node is not empty, then the PCDATA content of the node is used as Turtle code
 describing the triples to load in the graph. For example:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;http://foo.bar.org/&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[
+<pre class="code-xml"><span class="hl kwa">&lt;rdf-load</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"http://foo.bar.org/"</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[
 @prefix toto: </span><span class="hl kwa">&lt;http:</span><span class="hl std">//</span><span class="">toto</span><span class="hl std">.</span><span class="">net</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;http:</span><span class="hl std">//</span><span class="">foo</span><span class="hl std">.</span><span class="">bar</span><span class="hl std">.</span><span class="">org</span><span class="hl std">/</span><span class="">toto</span><span class="hl kwa">&gt;</span><span class="hl std"> a toto:file .
 ]]&gt;</span><span class="hl kwa">&lt;/rdf-load</span><span class="hl kwa">&gt;</span></pre>
@@ -360,11 +359,11 @@ environment when applying the template.</li>
 <p>
 The parameters for the <span class="icode"><span class="hl kwa">&lt;rdf-select</span><span class="hl kwa">&gt;</span></span> rule are given in the following way:
 </p>
-<pre class="code-xml"><span class="hl std">  </span><span class="hl kwa">&lt;rdf-select</span><span class="hl std"> [</span><span class="">query</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std">] [</span><span class="">tmpl</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std">] [</span><span class="">sep</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std">]</span><span class="hl kwa">&gt;</span><span class="hl std">DATA</span><span class="hl kwa">&lt;/rdf-select</span><span class="hl kwa">&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl std">  </span><span class="hl kwa">&lt;rdf-select</span><span class="hl std"> [</span><span class="">query</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std">] [</span><span class="">tmpl</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std">] [</span><span class="">sep</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std">]</span><span class="hl kwa">&gt;</span><span class="hl std">DATA</span><span class="hl kwa">&lt;/rdf-select</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
 <p>
 If DATA does not contain XML nodes and DATA is not empty,
-then DATA is used as query, even if the <span class="icode"><span class="hl std">query=&quot;...&quot;</span></span> attribute is given.
+then DATA is used as query, even if the <span class="icode"><span class="hl std">query="..."</span></span> attribute is given.
 </p>
 <p>
 If DATA contains XML nodes, they are used to override the previous definition of the
@@ -372,14 +371,14 @@ query, the template and the separator. For example:
 </p>
 <pre class="code-xml"><span class="hl kwa">&lt;rdf-select</span><span class="hl kwa">&gt;</span><span class="hl std">
   </span><span class="hl kwa">&lt;query</span><span class="hl kwa">&gt;</span><span class="hl std">SELECT ?url ?name WHERE { ... }</span><span class="hl kwa">&lt;/query</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;tmpl</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;url/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;name</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tmpl</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;tmpl</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"&amp;lt;url/&amp;gt;"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;name</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/tmpl</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/rdf-select</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
-<p>If the template is specified in the attribute <span class="icode"><span class="hl std">tmpl=&quot;s&quot;</span></span>, then <span class="icode"><span class="hl std">s</span></span>
+<p>If the template is specified in the attribute <span class="icode"><span class="hl std">tmpl="s"</span></span>, then <span class="icode"><span class="hl std">s</span></span>
 is considered as being a template file. If the template is specified in a <span class="icode"><span class="hl kwa">&lt;tmpl</span><span class="hl kwa">&gt;</span></span>
 node, then the template is the content of the node.
 </p>
-<p>The separator is always &quot;inline&quot;, whether it is given in the <span class="icode"><span class="hl std">sep=&quot;...&quot;</span></span>
+<p>The separator is always "inline", whether it is given in the <span class="icode"><span class="hl std">sep="..."</span></span>
 attribute or in the <span class="icode"><span class="hl kwa">&lt;sep</span><span class="hl kwa">&gt;</span></span> node.
 </p>
 <p>If the query is specified in the attributes and in a <span class="icode"><span class="hl kwa">&lt;query</span><span class="hl kwa">&gt;</span></span> node,
@@ -401,7 +400,7 @@ in the solution, and they can be referred to
 using <span class="icode"><span class="hl kwa">&lt;url</span><span class="hl kwa">/&gt;</span></span> and <span class="icode"><span class="hl kwa">&lt;name</span><span class="hl kwa">/&gt;</span></span>.
 </p>
 <p>
-Moreover, additional variables, postfixed with &quot;_rdf&quot;, are also added to the environment
+Moreover, additional variables, postfixed with "_rdf", are also added to the environment
 so that the associated term can be inserted in a Sparql-compatible syntax,
 for example to use result in another Sparql query in the template.
 In the example above, results in Sparql syntax are accessible
@@ -414,11 +413,11 @@ using <span class="icode"><span class="hl kwa">&lt;url_rdf</span><span class="hl
 To make definition of triples even easier, one can define rules in the
 document header, for example:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;isproof</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">&quot;rdf:hasType&quot;</span><span class="hl std"> </span><span class="">obj</span><span class="hl std">=</span><span class="hl str">&quot;science:proof&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/isproof</span><span class="hl kwa">&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;isproof</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">"rdf:hasType"</span><span class="hl std"> </span><span class="">obj</span><span class="hl std">=</span><span class="hl str">"science:proof"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/isproof</span><span class="hl kwa">&gt;</span><span class="hl std">
   </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
     ...
-      </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;proof&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;proof1&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+      </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"proof"</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"proof1"</span><span class="hl kwa">&gt;</span><span class="hl std">
         </span><span class="hl kwa">&lt;isproof</span><span class="hl kwa">/&gt;</span><span class="hl std">
       ...
       </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -439,11 +438,12 @@ This will add a triple
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>
+

@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Evaluation and templating</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -42,7 +41,9 @@
 <div class="section"><div class="section-title" id="howitworks">How it works</div>
 <div class="float-right">
 <a href="engine.svg">
-<div class="img"><img alt="engine's big picture" class="img" src="engine.png" title="Data flow in Stog's engine. Click on the image to open the .svg file, which includes some links to reference documentation." width="350"/><div class="legend">
+<div class="img"><img alt="engine&apos;s big picture" class="img" src="engine.png" title="Data flow in Stog&apos;s engine.
+ Click on the image to open the .svg file, which
+includes some links to reference documentation." width="350"/><div class="legend">
 Data flow in Stog's engine.</div></div></a>
 </div>
 <p>
@@ -69,9 +70,9 @@ These functions take the stog structure and the list of documents
 to compute. They return a new stog structure (which may be unchanged, if
 no document was changed or created).
 </p>
-<p>These &quot;level functions&quot; also take in parameter a data structure which is
+<p>These "level functions" also take in parameter a data structure which is
 specific for each module. This data structure is also returned by the functions,
-as in a regular &quot;fold&quot; function.
+as in a regular "fold" function.
 </p>
 <p>
 When the functions of all levels have been applied, the documents in the
@@ -87,8 +88,8 @@ to know which documents must be recomputed, and cached module data will
 be used to initialize the data structure specific to each module.
 </p>
 <p>
-Stog comes with two predefined modules, &quot;base&quot; and &quot;blocks&quot;, each defining
-functions for various levels. The &quot;level functions&quot; often apply rewrite rules
+Stog comes with two predefined modules, "base" and "blocks", each defining
+functions for various levels. The "level functions" often apply rewrite rules
 on the documents' contents (which are XML trees) but can also perform other
 actions like gathering information in the module-specific data structure
 to use it in a higher level.
@@ -104,7 +105,7 @@ sure they will be applied before level 0.
 </p>
 <p>The first application of a level function to a document uses the
 type of the document to load the corresponding template; for example,
-if the document has type &quot;page&quot;, then a template <span class="icode"><span class="hl std">page.tmpl</span></span> will
+if the document has type "page", then a template <span class="icode"><span class="hl std">page.tmpl</span></span> will
 be looked for (in the <span class="icode"><span class="hl std">.stog/templates</span></span> directory).
 </p>
 </div>
@@ -112,13 +113,13 @@ be looked for (in the <span class="icode"><span class="hl std">.stog/templates</
 <div class="section"><div class="section-title" id="env">Environment</div>
 <p>An environment is built containing the
 <a href="https://zoggy.github.io/stog/stog-main-document.html">site-wide attributes</a>.
-This environment is a set of rewrite rules. It is passed to every &quot;level function&quot;.
+This environment is a set of rewrite rules. It is passed to every "level function".
 </p>
 <p>
-A &quot;level function&quot; can enrich this environment with the attributes of a document
+A "level function" can enrich this environment with the attributes of a document
 (using <a href="https://zoggy.github.io/stog/ref-doc/Stog_engine.html#VALdoc_env">this function</a>). This is what
 most of the default level functions do, in addition to defining rewrite rules,
-to get the &quot;rewrite environment&quot; to apply on each document to compute.
+to get the "rewrite environment" to apply on each document to compute.
 </p>
 <p>
 The environment is used in the following way to rewrite XML trees.
@@ -153,32 +154,32 @@ associated to some tags, but more can be created in
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Evaluation and templating&quot;</span><span class="hl std">
-</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Evaluation and templating"</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">"active"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;howitworks&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;How it works&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;float-right&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;engine.svg&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;image</span><span class="hl std"> </span><span class="">width</span><span class="hl std">=</span><span class="hl str">&quot;350&quot;</span><span class="hl std"> </span><span class="">src</span><span class="hl std">=</span><span class="hl str">&quot;engine.png&quot;</span><span class="hl std"> </span><span class="">alt</span><span class="hl std">=</span><span class="hl str">&quot;engine's big picture&quot;</span><span class="hl std">
-</span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Data flow in Stog's engine.
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"howitworks"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"How it works"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"float-right"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"engine.svg"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;image</span><span class="hl std"> </span><span class="">width</span><span class="hl std">=</span><span class="hl str">"350"</span><span class="hl std"> </span><span class="">src</span><span class="hl std">=</span><span class="hl str">"engine.png"</span><span class="hl std"> </span><span class="">alt</span><span class="hl std">=</span><span class="hl str">"engine's big picture"</span><span class="hl std">
+</span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Data flow in Stog's engine.
  Click on the image to open the .svg file, which
-includes some links to reference documentation.&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+includes some links to reference documentation."</span><span class="hl kwa">&gt;</span><span class="hl std">
 Data flow in Stog's engine.</span><span class="hl kwa">&lt;/image</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The figure on the side shows the global architecture of the
 Stog engine and the flow of data.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-documents&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std"> are read from the source directory
-and a </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;Stog_types#TYPEstog&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> structure is created.
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"stog-documents"</span><span class="hl kwa">/&gt;</span><span class="hl std"> are read from the source directory
+and a </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"Stog_types#TYPEstog"</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> structure is created.
 Since some documents may be in the cache and do not need to be recomputed,
 the small yellow boxes represent the filtering of documents in the stog
 structure to create a list of documents to compute.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Two modules are represented on the figure (Module 1 and Module 2). More modules
-can be present, for example when loading </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;writing_plugins&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">plugins</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
+can be present, for example when loading </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"writing_plugins"</span><span class="hl kwa">&gt;</span><span class="hl std">plugins</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">These modules define functions associated to </span><span class="hl kwa">&lt;em</span><span class="hl kwa">&gt;</span><span class="hl std">levels</span><span class="hl kwa">&lt;/em</span><span class="hl kwa">&gt;</span><span class="hl std">: Here
 the Module 1 has functions for levels 0, 20 and 30, while Module 2 has
@@ -190,9 +191,9 @@ These functions take the stog structure and the list of documents
 to compute. They return a new stog structure (which may be unchanged, if
 no document was changed or created).
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">These &quot;level functions&quot; also take in parameter a data structure which is
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">These "level functions" also take in parameter a data structure which is
 specific for each module. This data structure is also returned by the functions,
-as in a regular &quot;fold&quot; function.
+as in a regular "fold" function.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 When the functions of all levels have been applied, the documents in the
@@ -208,8 +209,8 @@ to know which documents must be recomputed, and cached module data will
 be used to initialize the data structure specific to each module.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-Stog comes with two predefined modules, &quot;base&quot; and &quot;blocks&quot;, each defining
-functions for various levels. The &quot;level functions&quot; often apply rewrite rules
+Stog comes with two predefined modules, "base" and "blocks", each defining
+functions for various levels. The "level functions" often apply rewrite rules
 on the documents' contents (which are XML trees) but can also perform other
 actions like gathering information in the module-specific data structure
 to use it in a higher level.
@@ -225,21 +226,21 @@ sure they will be applied before level 0.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The first application of a level function to a document uses the
 type of the document to load the corresponding template; for example,
-if the document has type &quot;page&quot;, then a template </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">page.tmpl</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> will
+if the document has type "page", then a template </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">page.tmpl</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> will
 be looked for (in the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/templates</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> directory).
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 
-</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;env&quot;</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Environment&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;section</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"env"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Environment"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">An environment is built containing the
-</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-main-document&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">site-wide attributes</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
-This environment is a set of rewrite rules. It is passed to every &quot;level function&quot;.
+</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"stog-main-document"</span><span class="hl kwa">&gt;</span><span class="hl std">site-wide attributes</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
+This environment is a set of rewrite rules. It is passed to every "level function".
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-A &quot;level function&quot; can enrich this environment with the attributes of a document
-(using </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;Stog_engine#VALdoc_env&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">this function</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">). This is what
+A "level function" can enrich this environment with the attributes of a document
+(using </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"Stog_engine#VALdoc_env"</span><span class="hl kwa">&gt;</span><span class="hl std">this function</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">). This is what
 most of the default level functions do, in addition to defining rewrite rules,
-to get the &quot;rewrite environment&quot; to apply on each document to compute.
+to get the "rewrite environment" to apply on each document to compute.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The environment is used in the following way to rewrite XML trees.
@@ -255,14 +256,14 @@ a list of XML trees which must then be analysed.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">When this analyze reaches a fixpoint, the final XML is returned.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">This work is performed by the </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;https://github.com/zoggy/xtmpl&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Xtmpl</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">This work is performed by the </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://github.com/zoggy/xtmpl"</span><span class="hl kwa">&gt;</span><span class="hl std">Xtmpl</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">
 library.</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Besides, the contents of the attributes are also analysed to perform such substitutions,
 before looking up for the tag in the environment.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Stog comes with </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;funs&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">predefined functions</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std"> (in two default modules)
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Stog comes with </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"funs"</span><span class="hl kwa">&gt;</span><span class="hl std">predefined functions</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std"> (in two default modules)
 associated to some tags, but more can be created in
-</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;writing_plugins&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">plugins</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
+</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"writing_plugins"</span><span class="hl kwa">&gt;</span><span class="hl std">plugins</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/section</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -271,11 +272,11 @@ associated to some tags, but more can be created in
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>

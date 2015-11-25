@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog-writing</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -43,7 +42,7 @@ This plugin adds
 <span id="desc">new rewrite rules to use <a href="https://zoggy.github.io/stog/plugins/writing.html#footnotes">footnotes</a>
 and <a href="https://zoggy.github.io/stog/plugins/writing.html#biblio">bibliographies</a> in your documents</span>.
 </p>
-
+<!--&lt;todo&gt;Add about automatic ids and config file&lt;/todo&gt;-->
 
 <div class="section"><div class="section-title" id="download">Download</div>
 <div class="alert alert-info">
@@ -59,10 +58,10 @@ Stog-writing is <span class="ext-a"><a href="https://github.com/zoggy/stog-writi
 <li><a href="stog-writing-0.13.0.tar.gz">0.13.0</a> [2014/10/09]:
   <ul>
     <li>more powerful format specification in <span class="icode"><span class="hl kwa">&lt;cite</span><span class="hl kwa">&gt;</span></span>:
-  <span class="icode"><span class="hl kwa">&lt;cite</span><span class="hl std"> </span><span class="">begin</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">end</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">format</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">/&gt;</span></span>
+  <span class="icode"><span class="hl kwa">&lt;cite</span><span class="hl std"> </span><span class="">begin</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">end</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">sep</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">format</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">/&gt;</span></span>
   and also look for <span class="icode"><span class="hl kwa">&lt;cite-begin</span><span class="hl kwa">&gt;</span></span>, <span class="icode"><span class="hl kwa">&lt;cite-end</span><span class="hl kwa">&gt;</span></span>
   and <span class="icode"><span class="hl kwa">&lt;cite-sep</span><span class="hl kwa">&gt;</span></span> in environment,</li>
-  <li><span class="icode"><span class="hl kwa">&lt;bibliography</span><span class="hl std"> </span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">&quot;kwd1,..&quot;</span><span class="hl kwa">&gt;</span></span> to include bibliography items
+  <li><span class="icode"><span class="hl kwa">&lt;bibliography</span><span class="hl std"> </span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">"kwd1,.."</span><span class="hl kwa">&gt;</span></span> to include bibliography items
     having the required keywords associated in <span class="icode"><span class="hl std">keywords</span></span> fields
   </li>
   </ul>
@@ -167,22 +166,22 @@ Bibliographies can be defined in any document header, with the following syntax:
 The <span class="icode"><span class="hl kwa">&lt;bibliographies</span><span class="hl kwa">&gt;</span></span> node can have the following attributes:
 </p>
 <ul>
-<li><span class="icode"><span class="hl std">sort=&quot;...&quot;</span></span>:
+<li><span class="icode"><span class="hl std">sort="..."</span></span>:
   the items in each bibliography will be sorted by default, according
   to the given list of comma-separated fields,</li>
-<li><span class="icode"><span class="hl std">reverse=&quot;true&quot;</span></span>:
+<li><span class="icode"><span class="hl std">reverse="true"</span></span>:
    the items in each bibliography will be sorted in reverse order,</li>
-<li><span class="icode"><span class="hl std">prefix=&quot;...&quot;</span></span>:
+<li><span class="icode"><span class="hl std">prefix="..."</span></span>:
    a default string to use as prefix for ids of entries read from bibtex files.</li>
 </ul>
 <p>
 Each <span class="icode"><span class="hl kwa">&lt;bibliography</span><span class="hl kwa">&gt;</span></span> node can have the following attributes:
 </p>
 <ul>
-<li><span class="icode"><span class="hl std">name=&quot;...&quot;</span></span>:
-   the name of the bibliography, for further reference; default name is &quot;default&quot;;
+<li><span class="icode"><span class="hl std">name="..."</span></span>:
+   the name of the bibliography, for further reference; default name is "default";
               each bibliography must have a site-wide unique name,</li>
-<li><span class="icode"><span class="hl std">files=&quot;...&quot;</span></span>:
+<li><span class="icode"><span class="hl std">files="..."</span></span>:
    a comma-separated list of filenames, in bibtex format;
    filenames are relative to the document source file,</li>
 <li><span class="icode"><span class="hl std">sort</span></span>, <span class="icode"><span class="hl std">reverse</span></span> and <span class="icode"><span class="hl std">prefix</span></span>:
@@ -190,11 +189,11 @@ Each <span class="icode"><span class="hl kwa">&lt;bibliography</span><span class
 </li>
 </ul>
 <p>
-Using attribute <span class="icode"><span class="hl std">bib-files=&quot;file1.bib,file2.bib,...&quot;</span></span> in an document
+Using attribute <span class="icode"><span class="hl std">bib-files="file1.bib,file2.bib,..."</span></span> in an document
 header is a shortcut for
 </p>
 <pre class="code-xml"><span class="hl kwa">&lt;bibliographies</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;bibliography</span><span class="hl std"> </span><span class="">files</span><span class="hl std">=</span><span class="hl str">&quot;file1.bib,file2.bib,...&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;bibliography</span><span class="hl std"> </span><span class="">files</span><span class="hl std">=</span><span class="hl str">"file1.bib,file2.bib,..."</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/bibliographies</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
 </div>
@@ -203,17 +202,17 @@ header is a shortcut for
 <p>
 In your pages and posts, you can use this syntax to cite an entry:
 </p>
-<pre class="code-xml"><span class="hl std">    </span><span class="hl kwa">&lt;cite</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;entryid&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl std">    </span><span class="hl kwa">&lt;cite</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"entryid"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span></pre>
 <p>
 The format of the reference can be set by various means, in order of priority:
 </p>
 <ul>
 <li>in the children of the <span class="icode"><span class="hl kwa">&lt;cite</span><span class="hl kwa">&gt;</span></span> node, for example:
-  <pre class="code-xml"><span class="hl kwa">&lt;cite</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;bib-entry-author</span><span class="hl kwa">/&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;bib-entry-title</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/cite</span><span class="hl kwa">&gt;</span></pre>
+  <pre class="code-xml"><span class="hl kwa">&lt;cite</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;bib-entry-author</span><span class="hl kwa">/&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;bib-entry-title</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/cite</span><span class="hl kwa">&gt;</span></pre>
 </li>
 <li>using the <span class="icode"><span class="hl std">format</span></span> attribute, for example:
-  <pre class="code-xml"><span class="hl kwa">&lt;cite</span><span class="hl std"> </span><span class="">format</span><span class="hl std">=</span><span class="hl str">&quot;$(author): $(title)&quot;</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;entryid&quot;</span><span class="hl kwa">/&gt;</span></pre>
+  <pre class="code-xml"><span class="hl kwa">&lt;cite</span><span class="hl std"> </span><span class="">format</span><span class="hl std">=</span><span class="hl str">"$(author): $(title)"</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"entryid"</span><span class="hl kwa">/&gt;</span></pre>
 </li>
 <li>setting <span class="icode"><span class="hl std">cite-format</span></span> in the environment, for example in the header
   of the page/article:
@@ -238,7 +237,7 @@ environement (of the document or for the whole site).
 </li>
 </ul>
 <p>In case the <span class="icode"><span class="hl std">href</span></span> attribute contains several references,
-a separator is used between reference texts. By default it is &quot;,&quot; but it
+a separator is used between reference texts. By default it is "," but it
 can be changed by using the <span class="icode"><span class="hl std">cite-sep</span></span> attribute in the <span class="icode"><span class="hl kwa">&lt;cite</span><span class="hl kwa">&gt;</span></span>
 rule, or by setting <span class="icode"><span class="hl std">cite-sep</span></span> in the environment.
 </p>
@@ -247,8 +246,8 @@ To include the complete list of entries of a bibliography, use the following nod
 </p>
 <pre class="code-xml"><span class="hl kwa">&lt;bibliography</span><span class="hl kwa">/&gt;</span></pre>
 <p>
-The attribute <span class="icode"><span class="hl std">name=&quot;...&quot;</span></span> can be used to specify the name of the bibliography to
-insert. Default name is &quot;default&quot;. The attribute <span class="icode"><span class="hl std">keywords=...&quot;</span></span> allows to
+The attribute <span class="icode"><span class="hl std">name="..."</span></span> can be used to specify the name of the bibliography to
+insert. Default name is "default". The attribute <span class="icode"><span class="hl std">keywords=..."</span></span> allows to
 filter the entries according to the keywods they are associated to, using the
 <span class="icode"><span class="hl std">keywords</span></span> field in the <span class="icode"><span class="hl std">.bib</span></span> files.
 </p>
@@ -267,11 +266,12 @@ template directory.
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>
+

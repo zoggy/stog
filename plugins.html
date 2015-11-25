@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Plugins</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -72,10 +71,15 @@ in Stog documents</span></dd>
 the compilation of documents</span></dd>
 
 
+<dt><a href="https://zoggy.github.io/stog/plugins/noexec.html">noexec</a></dt>
+<dd><span id="desc-noexec"> prevent shell commands from being executed during
+the compilation of documents</span></dd>
+
+
 <dt><a href="https://zoggy.github.io/stog/plugins/rel-href.html">rel-href</a></dt>
 <dd><span id="desc-rel-href">change
 URLs with fragments in
-<span class="icode"><span class="hl std">href</span></span> attributes of a document to keep only &quot;#&quot; followed by the fragment,
+<span class="icode"><span class="hl std">href</span></span> attributes of a document to keep only "#" followed by the fragment,
 when refering to the same document</span></dd>
 
 
@@ -113,37 +117,38 @@ and <a href="https://zoggy.github.io/stog/plugins/writing.html#biblio">bibliogra
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Plugins&quot;</span><span class="hl std">
-</span><span class="">navbar-plugins</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
-</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Plugins"</span><span class="hl std">
+</span><span class="">navbar-plugins</span><span class="hl std">=</span><span class="hl str">"active"</span><span class="hl std">
+</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dt</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;&amp;lt;name/&amp;gt;&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;name</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/dt</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dd</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;plugins/&amp;lt;name/&amp;gt;#desc&quot;</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;desc-&amp;lt;name/&amp;gt;&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/dd</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dt</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"&amp;lt;name/&amp;gt;"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;name</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/dt</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dd</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"plugins/&amp;lt;name/&amp;gt;#desc"</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"desc-&amp;lt;name/&amp;gt;"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/dd</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/dp</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Some plugins are included in Stog distribution:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;dl</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;asy&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;dot&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;extern&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;markdown&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;multi-doc&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;nocaml&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;rel-href&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;sitemap&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"asy"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"dot"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"extern"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"markdown"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"multi-doc"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"nocaml"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"noexec"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"rel-href"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"sitemap"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/dl</span><span class="hl kwa">&gt;</span><span class="hl std">
 
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Some other plugins are developped separately:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;dl</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;rdf&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">&quot;writing&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"rdf"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;dp</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"writing"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/dl</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;mailto:zoggy%20AT%20bat8.org&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">Tell me</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl std"> if you known about other plugins.
+</span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"mailto:zoggy%20AT%20bat8.org"</span><span class="hl kwa">&gt;</span><span class="hl std">Tell me</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl std"> if you known about other plugins.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
@@ -151,11 +156,11 @@ Some plugins are included in Stog distribution:
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>

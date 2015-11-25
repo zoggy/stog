@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Overview</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -54,15 +53,15 @@ Since the document files are handled as XML documents, the boolean attributes,
 like in HTML5, are not allowed. So, when using Stog to generate HTML5 pages,
 instead of writing
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;tag</span><span class="hl std"> </span><span class="">att1</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">att2</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">boolean-attribute</span><span class="hl std"> </span><span class="">att3</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;tag</span><span class="hl std"> </span><span class="">att1</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">att2</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">boolean-attribute</span><span class="hl std"> </span><span class="">att3</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span></pre>
 <p>you have to give a
 <span class="ext-a"><a href="http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#boolean-attributes">value
 to the boolean attribute</a></span>, for example</p>
-<pre class="code-xml"><span class="hl kwa">&lt;tag</span><span class="hl std"> </span><span class="">att1</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">att2</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">boolean-att</span><span class="hl std">=</span><span class="hl str">&quot;boolean-att&quot;</span><span class="hl std"> </span><span class="">att3</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;tag</span><span class="hl std"> </span><span class="">att1</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">att2</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">boolean-att</span><span class="hl std">=</span><span class="hl str">"boolean-att"</span><span class="hl std"> </span><span class="">att3</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span></pre>
 <p>
 or simply
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;tag</span><span class="hl std"> </span><span class="">att1</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">att2</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> </span><span class="">boolean-att</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl std"> </span><span class="">att3</span><span class="hl std">=</span><span class="hl str">&quot;...&quot;</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span></pre>
+<pre class="code-xml"><span class="hl kwa">&lt;tag</span><span class="hl std"> </span><span class="">att1</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">att2</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">boolean-att</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std"> </span><span class="">att3</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span></pre>
 </div>
 <p>
 The <span class="icode"><span class="hl std">.stog</span></span> directory in the given root directory contains the
@@ -80,22 +79,22 @@ Default is to ignore symlinks.
 Here is an example of <span class="icode"><span class="hl std">.stog/config</span></span> file:
 </p>
 <pre class="code-json"><span class="sym">{</span><span class="hl std">
-  </span><span class="hl kwb">ignored</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl str">&quot;.*stog-output&quot;</span><span class="hl std"> </span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;.*\\.git&quot;</span><span class="sym">,</span><span class="hl std">
-            </span><span class="hl str">&quot;.*Makefile&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;.*tmpl$&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;.*less$&quot;</span><span class="sym">,</span><span class="hl std">
-            </span><span class="hl str">&quot;.*\\.chamo.*&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;.*/test.*&quot;</span><span class="hl std"> </span><span class="sym">,</span><span class="hl std">
-            </span><span class="hl str">&quot;.*/log$&quot;</span><span class="sym">,</span><span class="hl std">
-            </span><span class="hl str">&quot;.*/slides/inria_code.*\\.xml&quot;</span><span class="sym">,</span><span class="hl std">
-            </span><span class="hl str">&quot;.*/examples$&quot;</span><span class="sym">,</span><span class="hl std">
-            </span><span class="hl str">&quot;.*/\\..*&quot;</span><span class="sym">,</span><span class="hl std">
-            </span><span class="hl str">&quot;.*/stog-tmpl.*\\.txt&quot;</span><span class="sym">,</span><span class="hl std">
-            </span><span class="hl str">&quot;.*/gmon\\.out&quot;</span><span class="sym">,</span><span class="hl std">
-            </span><span class="hl str">&quot;.*/videos/1&quot;</span><span class="hl std">
+  </span><span class="hl kwb">ignored</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="hl str">".*stog-output"</span><span class="hl std"> </span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">".*\\.git"</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">".*Makefile"</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">".*tmpl$"</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">".*less$"</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">".*\\.chamo.*"</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">".*/test.*"</span><span class="hl std"> </span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">".*/log$"</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">".*/slides/inria_code.*\\.xml"</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">".*/examples$"</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">".*/\\..*"</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">".*/stog-tmpl.*\\.txt"</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">".*/gmon\\.out"</span><span class="sym">,</span><span class="hl std">
+            </span><span class="hl str">".*/videos/1"</span><span class="hl std">
           </span><span class="sym">]</span><span class="sym">,</span><span class="hl std">
-  </span><span class="hl kwb">documents</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl str">&quot;.*\\..xml$&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">&quot;.*\\.html$&quot;</span><span class="sym">]</span><span class="sym">,</span><span class="hl std">
+  </span><span class="hl kwb">documents</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl str">".*\\..xml$"</span><span class="sym">,</span><span class="hl std"> </span><span class="hl str">".*\\.html$"</span><span class="sym">]</span><span class="sym">,</span><span class="hl std">
   </span><span class="hl kwb">not_documents</span><span class="hl std"> </span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std"> </span><span class="sym">]</span><span class="sym">,</span><span class="hl std">
   </span><span class="hl kwb">follow_symlinks</span><span class="hl std"> </span><span class="sym">:</span><span class="hl std"> </span><span class="hl num">false</span><span class="sym">,</span><span class="hl std">
   </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">
-    </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">&quot;extern&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">(</span><span class="hl str">&quot;my-action&quot;</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl num">1000</span><span class="sym">]</span><span class="hl std">)</span><span class="sym">]</span><span class="hl std"> </span><span class="sym">}</span><span class="hl std">
+    </span><span class="sym">{</span><span class="hl std"> </span><span class="hl kwb">module</span><span class="sym">:</span><span class="hl std"> </span><span class="hl str">"extern"</span><span class="sym">,</span><span class="hl std"> </span><span class="hl kwb">levels</span><span class="sym">:</span><span class="hl std"> </span><span class="sym">[</span><span class="hl std">(</span><span class="hl str">"my-action"</span><span class="sym">,</span><span class="hl std"> </span><span class="sym">[</span><span class="hl num">1000</span><span class="sym">]</span><span class="hl std">)</span><span class="sym">]</span><span class="hl std"> </span><span class="sym">}</span><span class="hl std">
   </span><span class="sym">]</span><span class="hl std">
 </span><span class="sym">}</span><span class="hl std">
 </span></pre>
@@ -122,9 +121,9 @@ When launched, <span class="icode"><span class="hl std">stog</span></span> perfo
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">&quot;Overview&quot;</span><span class="hl std">
-</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">&quot;active&quot;</span><span class="hl std">
-</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Overview"</span><span class="hl std">
+</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">"active"</span><span class="hl std">
+</span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -133,32 +132,32 @@ and directories
 from this starting point and generate the same hierarchy in the output directory.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-Some of the files will be read as </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;stog-documents&quot;</span><span class="hl kwa">/&gt;</span><span class="hl std">,
+Some of the files will be read as </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"stog-documents"</span><span class="hl kwa">/&gt;</span><span class="hl std">,
 i.e. XML files which will
 be processed through a templating engine to produce the final files.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">&quot;alert alert-warning&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"alert alert-warning"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Since the document files are handled as XML documents, the boolean attributes,
 like in HTML5, are not allowed. So, when using Stog to generate HTML5 pages,
 instead of writing
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hxml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">tag att1=&quot;...&quot; att2=&quot;...&quot; boolean-attribute att3=&quot;...&quot; ...</span><span class="hl kwb">&amp;gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/hxml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hxml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">tag att1="..." att2="..." boolean-attribute att3="..." ...</span><span class="hl kwb">&amp;gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/hxml</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">you have to give a
-</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#boolean-attributes&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">value
+</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://www.w3.org/html/wg/drafts/html/master/infrastructure.html#boolean-attributes"</span><span class="hl kwa">&gt;</span><span class="hl std">value
 to the boolean attribute</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">, for example</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hxml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">tag att1=&quot;...&quot; att2=&quot;...&quot; boolean-att=&quot;boolean-att&quot; att3=&quot;...&quot; ...</span><span class="hl kwb">&amp;gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/hxml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hxml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">tag att1="..." att2="..." boolean-att="boolean-att" att3="..." ...</span><span class="hl kwb">&amp;gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/hxml</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 or simply
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hxml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">tag att1=&quot;...&quot; att2=&quot;...&quot; boolean-att=&quot;&quot; att3=&quot;...&quot; ...</span><span class="hl kwb">&amp;gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/hxml</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hxml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">tag att1="..." att2="..." boolean-att="" att3="..." ...</span><span class="hl kwb">&amp;gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/hxml</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/div</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 The </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> directory in the given root directory contains the
 templates (in directory </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">templates</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">) and the
 </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">config</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file (in JSON syntax), containing stog configuration.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">&quot;config-file&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">In this file,
+</span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"config-file"</span><span class="hl kwa">&gt;</span><span class="hl std">In this file,
 using regular expressions, one can indicate which files must be ignored,
 and which files are documents. Files not being ignored nor being documents
 will be copied by </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> to the target directory.
@@ -168,7 +167,7 @@ Default is to ignore symlinks.
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 Here is an example of </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/config</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> file:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">&quot;json&quot;</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">&quot;1&quot;</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">&quot;./.stog/config&quot;</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">&quot;true&quot;</span><span class="hl std"> </span><span class="">depend</span><span class="hl std">=</span><span class="hl str">&quot;false&quot;</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"json"</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">"1"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">"./.stog/config"</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">depend</span><span class="hl std">=</span><span class="hl str">"false"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 A default file is generated by </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> if it does not exist.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -178,7 +177,7 @@ When launched, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">
 </span><span class="hl kwa">&lt;ol</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Read the given directory hierarchy,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Create the target directory if it does not exist,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Apply the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">&quot;engine&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">engine</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> on documents,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Apply the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"engine"</span><span class="hl kwa">&gt;</span><span class="hl std">engine</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> on documents,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Generate resulting document files in the target directory,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Copy all other files in the target directory, of course
   keeping the source directory structure.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -189,11 +188,11 @@ When launched, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>

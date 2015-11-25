@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog library reference documentation : Stog_msg</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -54,10 +53,10 @@ Printing warnings and errors.<br/>
 <pre><span id="VALincr_verbose_level"><span class="keyword">val</span> incr_verbose_level</span> : <code class="type">unit -&gt; unit</code></pre>
 <pre><span id="VALverbose"><span class="keyword">val</span> verbose</span> : <code class="type">?info:string -&gt; ?level:int -&gt; string -&gt; unit</code></pre>
 <pre><span id="VALset_print_verbose"><span class="keyword">val</span> set_print_verbose</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre>
-<pre><span id="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?info:string -&gt; string -&gt; unit</code></pre>
+<pre><span id="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; ?info:string -&gt; string -&gt; unit</code></pre>
 <pre><span id="VALset_print_warning"><span class="keyword">val</span> set_print_warning</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre>
 <pre><span id="VALwarnings"><span class="keyword">val</span> warnings</span> : <code class="type">unit -&gt; int</code></pre>
-<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?info:string -&gt; ?fatal:int -&gt; string -&gt; unit</code></pre>
+<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; ?info:string -&gt; ?fatal:int -&gt; string -&gt; unit</code></pre>
 <pre><span id="VALset_print_error"><span class="keyword">val</span> set_print_error</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre>
 <pre><span id="VALerrors"><span class="keyword">val</span> errors</span> : <code class="type">unit -&gt; int</code></pre></div>
 
@@ -66,11 +65,12 @@ Printing warnings and errors.<br/>
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>
+

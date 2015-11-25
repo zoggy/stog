@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog-markdown</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -10,7 +9,7 @@
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
     <ul class="nav">
@@ -63,8 +62,8 @@ This plugin was contributed by
 This plugin adds a new <a href="https://zoggy.github.io/stog/module_base.html#base">base rule</a>
 <span class="icode"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span></span>.
 </p>
-<div class="hide" id="code1">
-&lt;markdown&gt;
+<div class="hide" id="code1"><![CDATA[
+<markdown>
 ## A typical markdown example
 
 [Markdown](http://daringfireball.net/projects/markdown/) is
@@ -72,8 +71,8 @@ a markup language meant to be written simply in a text editor,
 with a markup that is both easy to read and write. It is later
 translated into HTML by one of the numerous `markdown`
 implementations.
- &lt;/markdown&gt;
-</div>
+ </markdown>
+]]></div>
 <pre class="code-xml"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span><span class="hl std">
 ## A typical markdown example
 
@@ -90,7 +89,6 @@ line tool to convert Markdown syntax to (X)HTML.
 Here is the result, embedded in a box:
 </p>
 <div class="alert alert-info">
-
 <h2>A typical markdown example</h2>
 
 <p><a href="http://daringfireball.net/projects/markdown/">Markdown</a> is
@@ -115,8 +113,8 @@ is added on the command line.
 <code>args</code> attribute to make it translate our markdown code
 into XHTML:
 </p>
-<div class="hide" id="code2">
-&lt;markdown command=&quot;pandoc&quot; args=&quot;-f markdown -t html&quot;&gt;
+<div class="hide" id="code2"><![CDATA[
+<markdown command="pandoc" args="-f markdown -t html">
 ## A typical markdown example
 
 [Markdown](http://daringfireball.net/projects/markdown/) is
@@ -124,9 +122,9 @@ a markup language meant to be written simply in a text editor,
 with a markup that is both easy to read and write. It is later
 translated into HTML by one of the numerous `markdown`
 implementations.
- &lt;/markdown&gt;
-</div>
-<pre class="code-xml"><span class="hl kwa">&lt;markdown</span><span class="hl std"> </span><span class="">command</span><span class="hl std">=</span><span class="hl str">&quot;pandoc&quot;</span><span class="hl std"> </span><span class="">args</span><span class="hl std">=</span><span class="hl str">&quot;-f markdown -t html&quot;</span><span class="hl kwa">&gt;</span><span class="hl std">
+ </markdown>
+]]></div>
+<pre class="code-xml"><span class="hl kwa">&lt;markdown</span><span class="hl std"> </span><span class="">command</span><span class="hl std">=</span><span class="hl str">"pandoc"</span><span class="hl std"> </span><span class="">args</span><span class="hl std">=</span><span class="hl str">"-f markdown -t html"</span><span class="hl kwa">&gt;</span><span class="hl std">
 ## A typical markdown example
 
 [Markdown](http://daringfireball.net/projects/markdown/) is
@@ -140,7 +138,6 @@ implementations.
 Here is the result, embedded in a box:
 </p>
 <div class="alert alert-info">
-
 <h2 id="a-typical-markdown-example">A typical markdown example</h2>
 <p><a href="http://daringfireball.net/projects/markdown/">Markdown</a> is a markup language meant to be written simply in a text editor, with a markup that is both easy to read and write. It is later translated into HTML by one of the numerous <code>markdown</code> implementations.</p>
 
@@ -154,11 +151,12 @@ Here is the result, embedded in a box:
 
 
 <div id="footer">
-<div class="generatedon">Generated on July 7, 2015 at 13h31</div>
+<div class="generatedon">Generated on November 25, 2015 at 14h00</div>
 </div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
 
-
-
-</div> 
+</div> <!-- #page -->
 </body>
 </html>
+
