@@ -679,9 +679,17 @@ let fun_doc_navpath doc stog env ?loc args subs =
   in
   let path = doc.Stog_types.doc_path in
   let paths =
-    (* remove last component of path to keep only "parent path" *)
+    (* remove last component of path to keep only "parent path"
+       and remove one more level if the document ends with "index",
+       else it would be refer to itself in the map below *)
     match List.rev path.Stog_path.path with
       [] | [_] -> (match root with None -> [] | Some path -> [path])
+    | s :: q when (try Filename.chop_extension s with _ -> s) = "index" ->
+        begin
+          match q with
+            [] -> []
+          | _ :: q -> f [] (List.rev q)
+        end
     | _ :: q -> f [] (List.rev q)
   in
   let map path =
