@@ -1,0 +1,138 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : &lt;exec&gt; -  execute shell commands</title>
+<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+  <div class="page-title">&lt;exec&gt; -  execute shell commands</div>
+</div>
+
+
+
+
+<div class="section"><div class="section-title" id="synopsis">Synopsis</div>
+<pre class="code-xml"><span class="hl kwa">&lt;exec</span><span class="hl std"> </span><span class="">directory</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std"> </span><span class="">in-xml-block</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">list</span><span class="hl std">=</span><span class="hl str">"false"</span><span class="hl std">
+      </span><span class="">prompt</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std"> </span><span class="">show-code</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">show-stdout</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">stop-on-error</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std"> command </span><span class="hl kwa">&lt;/exec</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
+</div>
+<div class="section"><div class="section-title" id="descr">Description</div>
+
+Run the given command (or list of commands) and return the command output.
+<dl class="rule-options">
+
+<dt class="rule-option">directory</dt>
+<dl>
+If given, commands are executed in this directory. Else commands are executed in the
+current working directory.
+</dl>
+
+
+
+<dt class="rule-option">id</dt>
+<dl>
+If given and <code>in-xml-block</code> is <code>true</code>, the given id is given to
+the root XML element of the result.
+</dl>
+
+
+
+<dt class="rule-option">in-xml-block<span> [="true"]</span></dt>
+<dl>
+Embed code and result in XML elements, except if set to <code>false</code>
+</dl>
+
+
+
+<dt class="rule-option">list<span> [="false"]</span></dt>
+<dl>
+If set to <code>true</code>, a list of commands is expected in sub-elements,
+for example:
+<pre class="code-xml"><span class="hl kwa">&lt;exec</span><span class="hl std"> </span><span class="">list</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;x</span><span class="hl kwa">&gt;</span><span class="hl std">echo foo &gt; foo.txt</span><span class="hl kwa">&lt;/x</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;x</span><span class="hl kwa">&gt;</span><span class="hl std">ls</span><span class="hl kwa">&lt;/x</span><span class="hl kwa">&gt;</span><span class="hl std">
+  </span><span class="hl kwa">&lt;x</span><span class="hl kwa">&gt;</span><span class="hl std">ls -l</span><span class="hl kwa">&lt;/x</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span></pre>
+Commands are run in the given order. For each command, the result shows the
+command followed by its output.
+</dl>
+
+
+
+<dt class="rule-option">prompt</dt>
+<dl>
+The specified string is used as prompt string to print before the
+command in the output.
+</dl>
+
+
+
+<dt class="rule-option">show-code<span> [="true"]</span></dt>
+<dl>
+Set to <code>false</code> not to have the original code in the result of
+the rule.
+</dl>
+
+
+
+<dt class="rule-option">show-stdout<span> [="true"]</span></dt>
+<dl>
+Set to <code>false</code> not to have the output of the command
+in the result of the rule. Note that stderr is redirected to stdout
+during the execution of the command, so the output contains both.
+</dl>
+
+
+
+<dt class="rule-option">stop-on-error<span> [="true"]</span></dt>
+<dl>
+Set to <code>false</code> not to stop compilation if an error occurs
+during execution of command.
+</dl>
+
+
+</dl>
+
+</div>
+
+
+
+
+
+
+<div id="footer">
+<div class="generatedon">Generated on November 25, 2015 at 14h17</div>
+</div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
+
+</div> <!-- #page -->
+</body>
+</html>

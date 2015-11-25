@@ -1,0 +1,88 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Rules with their own page</title>
+<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="&lt;navbar-doc/&gt;"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
+  </ul>
+  <div class="nav pull-right">  </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+  <div class="page-title">Rules with their own page</div>
+</div>
+
+
+
+
+<div class="doc-item">
+     <div class="doc-item-title">
+       <link href="https://zoggy.github.io/stog/rules/exec.html" itemprop="url"/>
+       <a href="https://zoggy.github.io/stog/rules/exec.html">&lt;exec&gt;</a> - execute shell commands
+     </div>
+     <div class="doc-intro" itemprop="headline">
+       <pre class="code-xml"><span class="hl kwa">&lt;exec</span><span class="hl std"> </span><span class="">directory</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std"> </span><span class="">in-xml-block</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">list</span><span class="hl std">=</span><span class="hl str">"false"</span><span class="hl std">
+      </span><span class="">prompt</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std"> </span><span class="">show-code</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">show-stdout</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">stop-on-error</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std"> command </span><span class="hl kwa">&lt;/exec</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
+     </div>
+  </div><div class="doc-item">
+     <div class="doc-item-title">
+       <link href="https://zoggy.github.io/stog/rules/ocaml-eval.html" itemprop="url"/>
+       <a href="https://zoggy.github.io/stog/rules/ocaml-eval.html">&lt;ocaml-eval&gt;</a> - evaluate OCaml code
+     </div>
+     <div class="doc-intro" itemprop="headline">
+       <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">directory</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std"> </span><span class="">in-xml-block</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">error-exc</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
+      </span><span class="">highlight-locs</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">print-locs</span><span class="hl std">=</span><span class="hl str">"false|true"</span><span class="hl std">
+      </span><span class="">session</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std">
+      </span><span class="">show-code</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">show-stdout</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"false"</span><span class="hl std">
+</span><span class="hl kwa">&gt;</span><span class="hl std"> command </span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
+     </div>
+  </div>
+
+
+
+
+
+<p class="doccode alert alert-info">
+For information you can see the <a href="#pagesource"> source code of the page</a>.
+</p>
+<div id="pagesource">
+  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Rules with their own page"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;documents</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">"rule"</span><span class="hl std"> </span><span class="">reverse</span><span class="hl std">=</span><span class="hl str">"false"</span><span class="hl std"> </span><span class="">sort</span><span class="hl std">=</span><span class="hl str">"doc-title"</span><span class="hl std"> </span><span class="">tmpl</span><span class="hl std">=</span><span class="hl str">"rule-in-list.tmpl"</span><span class="hl kwa">/&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span></pre>
+</div>
+
+
+<div id="footer">
+<div class="generatedon">Generated on November 25, 2015 at 14h17</div>
+</div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
+
+</div> <!-- #page -->
+</body>
+</html>
