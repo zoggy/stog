@@ -5,10 +5,11 @@
 &#160;&#160;<span class="keyword">val</span>&#160;incr_verbose_level&#160;:&#160;unit&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;verbose&#160;:&#160;?info:string&#160;<span class="keywordsign">-&gt;</span>&#160;?level:int&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;set_print_verbose&#160;:&#160;(string&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;warning&#160;:&#160;?info:string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;warning&#160;:&#160;?loc:<span class="constructor">Xtmpl_xml</span>.loc&#160;<span class="keywordsign">-&gt;</span>&#160;?info:string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;set_print_warning&#160;:&#160;(string&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;warnings&#160;:&#160;unit&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;error&#160;:&#160;?info:string&#160;<span class="keywordsign">-&gt;</span>&#160;?fatal:int&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
+&#160;&#160;<span class="keyword">val</span>&#160;error&#160;:<br/>
+&#160;&#160;&#160;&#160;?loc:<span class="constructor">Xtmpl_xml</span>.loc&#160;<span class="keywordsign">-&gt;</span>&#160;?info:string&#160;<span class="keywordsign">-&gt;</span>&#160;?fatal:int&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;set_print_error&#160;:&#160;(string&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
 &#160;&#160;<span class="keyword">val</span>&#160;errors&#160;:&#160;unit&#160;<span class="keywordsign">-&gt;</span>&#160;int<br/>
 <span class="keyword">end</span></code></div></contents></ocamldoc>

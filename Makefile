@@ -102,10 +102,9 @@ noheaders: dummy
 
 ############
 
-#webdoc:
-#	(cd src && $(MAKE) docstog)
-#	cd web && $(MAKE)
-
+webdoc:
+	(cd src && $(MAKE) docstog)
+	cd doc && $(MAKE)
 
 #################
 # installation

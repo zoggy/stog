@@ -28,7 +28,7 @@ Optional public HTTP URL, modified by command line option<br/>
 Optional public websocket URL, modified by command line option<br/>
 </div>
 
-<pre><span id="TYPEserver_mode"><span class="keyword">type</span> server_mode</span> = <code class="type">server_mode</code> </pre>
+<pre><span id="TYPEserver_mode"><span class="keyword">type</span> server_mode</span> = <code class="type">[ `Multi of string list -&gt; unit<br/>       | `Single of (unit -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a>) -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; unit ]</code> </pre>
 <div class="info ">
 Multi server: handling users, sessions with editor and preview for each session.
 <div class="vertical-space"> </div>

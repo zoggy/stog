@@ -376,7 +376,8 @@ doc: dump.odoc
 PKGS := $(shell echo $(PACKAGES) | sed -e "s/,/ /g")
 docdep: dump.odoc
 	$(MKDIR) ocamldoc
-	$(OCAMLDOC) -load $< -d ocamldoc -g odoc_depgraph.cmxs -t "Stog" \
+	$(OCAMLDOC) -load $< -d ocamldoc \
+	-i `$(OCAMLFIND) query odoc-depgraph` -g odoc_depgraph.cmxs -t "Stog" \
 	-width 700 -height 700	\
 	-dot-options '-Nfontsize=60. -Granksep=0.1 -Earrowsize=3.0 -Ecolor="#444444" '
 
@@ -386,6 +387,7 @@ docstog: $(ODOC) dump.odoc
 	OCAMLFIND_COMMANDS="ocamldoc=ocamldoc.opt" \
 	ocamldoc.opt -load dump.odoc -d ../doc/ref-doc \
 	-t "Stog library reference documentation" -short-functors \
+	-i `$(OCAMLFIND) query odoc-depgraph` \
 	-g odoc_depgraph.cmxs -g ./$(ODOC) -width 700 -height 700 -dot-reduce \
 	-dot-options '-Nfontsize=40. -Granksep=0.1 -Earrowsize=3.0 -Ecolor="#444444" '
 

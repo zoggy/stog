@@ -17,9 +17,9 @@ Printing warnings and errors.<br/>
 <pre><span id="VALincr_verbose_level"><span class="keyword">val</span> incr_verbose_level</span> : <code class="type">unit -&gt; unit</code></pre>
 <pre><span id="VALverbose"><span class="keyword">val</span> verbose</span> : <code class="type">?info:string -&gt; ?level:int -&gt; string -&gt; unit</code></pre>
 <pre><span id="VALset_print_verbose"><span class="keyword">val</span> set_print_verbose</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre>
-<pre><span id="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?info:string -&gt; string -&gt; unit</code></pre>
+<pre><span id="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; ?info:string -&gt; string -&gt; unit</code></pre>
 <pre><span id="VALset_print_warning"><span class="keyword">val</span> set_print_warning</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre>
 <pre><span id="VALwarnings"><span class="keyword">val</span> warnings</span> : <code class="type">unit -&gt; int</code></pre>
-<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?info:string -&gt; ?fatal:int -&gt; string -&gt; unit</code></pre>
+<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; ?info:string -&gt; ?fatal:int -&gt; string -&gt; unit</code></pre>
 <pre><span id="VALset_print_error"><span class="keyword">val</span> set_print_error</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre>
 <pre><span id="VALerrors"><span class="keyword">val</span> errors</span> : <code class="type">unit -&gt; int</code></pre></div></contents></ocamldoc>

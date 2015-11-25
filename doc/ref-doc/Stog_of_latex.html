@@ -13,6 +13,7 @@ LaTeX to Stog translation.<br/>
 <hr width="100%"/>
 
 <pre><span class="keyword">module</span> <a href="Stog_of_latex.SMap.html">SMap</a>: <code class="type">Map.S</code><code class="type">  with type key = string</code></pre>
+<pre><span class="keyword">module</span> <a href="Stog_of_latex.XR.html">XR</a>: <code class="type">Xtmpl_rewrite</code></pre>
 <pre><code><span id="TYPEparam"><span class="keyword">type</span> param</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
@@ -76,7 +77,7 @@ LaTeX to Stog translation.<br/>
 <td align="left" valign="top" >
 <code>&#160;&#160;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTblock.tag">tag</span>&#160;: <code class="type">Xtmpl.name</code>;</code></td>
+<code><span id="TYPEELTblock.tag">tag</span>&#160;: <code class="type">XR.name</code>;</code></td>
 
 </tr>
 <tr>
@@ -104,7 +105,7 @@ LaTeX to Stog translation.<br/>
 <td align="left" valign="top" >
 <code>&#160;&#160;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTblock.atts">atts</span>&#160;: <code class="type">Xtmpl.attributes</code>;</code></td>
+<code><span id="TYPEELTblock.atts">atts</span>&#160;: <code class="type">XR.attributes</code>;</code></td>
 
 </tr></table>
 }
@@ -136,6 +137,6 @@ LaTeX to Stog translation.<br/>
 
 
 
-<pre><span id="VALto_xml"><span class="keyword">val</span> to_xml</span> : <code class="type"><a href="Stog_of_latex.html#TYPEtree">tree</a> list -&gt; Xtmpl.tree list</code></pre>
+<pre><span id="VALto_xml"><span class="keyword">val</span> to_xml</span> : <code class="type"><a href="Stog_of_latex.html#TYPEtree">tree</a> list -&gt; XR.tree list</code></pre>
 <pre><span id="VALstring_of_stog_directives"><span class="keyword">val</span> string_of_stog_directives</span> : <code class="type">?tags:'a list -&gt; ?notags:'a list -&gt; ('a * string) list -&gt; string</code></pre>
 <pre><span id="VALparse"><span class="keyword">val</span> parse</span> : <code class="type"><a href="Stog_of_latex.html#TYPEparam">param</a> -&gt;<br/>       string -&gt; string -&gt; <a href="Stog_of_latex.html#TYPEtex_file">tex_file</a> * <a href="Stog_of_latex.html#TYPEparam">param</a></code></pre></div></contents></ocamldoc>

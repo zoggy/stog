@@ -12,12 +12,12 @@ Highlighting code.<br/>
 </div>
 <hr width="100%"/>
 
-<pre><span id="VALexternal_highlight"><span class="keyword">val</span> external_highlight</span> : <code class="type">opts:string -&gt; string -&gt; Xtmpl.tree list</code></pre><div class="info ">
+<pre><span id="VALexternal_highlight"><span class="keyword">val</span> external_highlight</span> : <code class="type">opts:string -&gt; string -&gt; Xtmpl_rewrite.tree list</code></pre><div class="info ">
 Call the highlight command on the given string and make it produce xhtml code.
   Options are passed to the highlight command.<br/>
 </div>
 
-<pre><span id="VALhighlight"><span class="keyword">val</span> highlight</span> : <code class="type">?lang:string -&gt; ?opts:string -&gt; string -&gt; Xtmpl.tree list</code></pre><div class="info ">
+<pre><span id="VALhighlight"><span class="keyword">val</span> highlight</span> : <code class="type">?lang:string -&gt; ?opts:string -&gt; string -&gt; Xtmpl_rewrite.tree list</code></pre><div class="info ">
 Highlight the given code.
   If a lang and no option are given, then Higlo is tried first.
   If the language is unknown, we fallback to using external highlight command.<br/>

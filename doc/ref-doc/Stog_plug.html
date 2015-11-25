@@ -17,18 +17,20 @@ Interface for plugins.
 </div>
 <hr width="100%"/>
 
+<pre><span class="keyword">module</span> <a href="Stog_plug.XR.html">XR</a>: <code class="type">Xtmpl_rewrite</code></pre>
+<pre><span class="keyword">module</span> <a href="Stog_plug.Xml.html">Xml</a>: <code class="type">Xtmpl_xml</code></pre>
 <pre><span id="VALplugin_config_file"><span class="keyword">val</span> plugin_config_file</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; string -&gt; string</code></pre><div class="info ">
 <code class="code">plugin_config_file stog plugin_name</code> returns the configuration file
   for this plugin name, for consistency purpose.<br/>
 </div>
 
 <pre><span id="VALregister_lang"><span class="keyword">val</span> register_lang</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">Stog_intl.lang_abbrev</a> -&gt; <a href="Stog_intl.html#TYPElang_data">Stog_intl.lang_data</a> -&gt; unit</code></pre>
-<pre><span id="VALregister_html_base_rule"><span class="keyword">val</span> register_html_base_rule</span> : <code class="type">Xmlm.name -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> Xtmpl.callback -&gt; unit</code></pre><div class="info ">
+<pre><span id="VALregister_html_base_rule"><span class="keyword">val</span> register_html_base_rule</span> : <code class="type">Xml.name -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> XR.callback -&gt; unit</code></pre><div class="info ">
 <code class="code">register_html_base_rule name f</code> registers a new function associated
      to <code class="code">name</code> in the set of base rules of the "html" predefined module.<br/>
 </div>
 
-<pre><span id="VALdoc_by_href"><span class="keyword">val</span> doc_by_href</span> : <code class="type">?typ:string -&gt;<br/>       ?src_doc:<a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       'a -&gt;<br/>       'a Xtmpl.env -&gt;<br/>       string -&gt; 'a * (<a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> * string * string option) option</code></pre><div class="info ">
+<pre><span id="VALdoc_by_href"><span class="keyword">val</span> doc_by_href</span> : <code class="type">?typ:string -&gt;<br/>       ?src_doc:<a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       'a -&gt;<br/>       'a XR.env -&gt;<br/>       ?loc:Xml.loc -&gt;<br/>       string -&gt; 'a * (<a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> * string * string option) option</code></pre><div class="info ">
 <code class="code">doc_by_href ?typ ?src_doc stog env href</code> returns the document, path and
   optional if matching the given href string, of the form <code class="code">path[#id]</code>.
   Return None if the document could not be found, of the id could not be found,
@@ -37,7 +39,7 @@ Interface for plugins.
 <div class="param_info"><code class="code">src_doc</code> : can be used to specify the source document, to improve
   the error message.</div>
 
-<pre><span id="VALmk_block_node"><span class="keyword">val</span> mk_block_node</span> : <code class="type">id:string -&gt;<br/>       ?label:Xtmpl.tree list -&gt;<br/>       ?clas:string -&gt;<br/>       title:Xtmpl.tree list -&gt;<br/>       ?counter:string -&gt;<br/>       short_fmt:Xtmpl.tree list -&gt;<br/>       long_fmt:Xtmpl.tree list -&gt; Xtmpl.tree list -&gt; Xtmpl.tree</code></pre><div class="info ">
+<pre><span id="VALmk_block_node"><span class="keyword">val</span> mk_block_node</span> : <code class="type">id:string -&gt;<br/>       ?label:XR.tree list -&gt;<br/>       ?clas:string -&gt;<br/>       title:XR.tree list -&gt;<br/>       ?counter:string -&gt;<br/>       short_fmt:XR.tree list -&gt; long_fmt:XR.tree list -&gt; XR.tree list -&gt; XR.tree</code></pre><div class="info ">
 <code class="code">mk_block_node ...</code> creates a <code class="code">&lt;block ...</code> with the given information.<br/>
 </div>
 <br/>
@@ -45,9 +47,9 @@ Interface for plugins.
 
 <pre><span id="VALverbose"><span class="keyword">val</span> verbose</span> : <code class="type">?info:string -&gt; ?level:int -&gt; string -&gt; unit</code></pre>
 <pre><span id="VALset_print_verbose"><span class="keyword">val</span> set_print_verbose</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre>
-<pre><span id="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?info:string -&gt; string -&gt; unit</code></pre>
+<pre><span id="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; ?info:string -&gt; string -&gt; unit</code></pre>
 <pre><span id="VALset_print_warning"><span class="keyword">val</span> set_print_warning</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre>
-<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?info:string -&gt; ?fatal:int -&gt; string -&gt; unit</code></pre>
+<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; ?info:string -&gt; ?fatal:int -&gt; string -&gt; unit</code></pre>
 <pre><span id="VALset_print_error"><span class="keyword">val</span> set_print_error</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre><br/>
 <div class="section-title" id="2_Dependencies">Dependencies</div><br/>
 
