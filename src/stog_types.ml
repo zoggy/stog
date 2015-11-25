@@ -326,7 +326,8 @@ let sort_ids_docs_by_date docs =
 
 let sort_ids_docs_by_rules =
   let apply_field env (data, acc) field =
-    let xml = [XR.node ("",field) []] in
+    let name = Xtmpl_xml.name_of_string field in
+    let xml = [XR.node name []] in
     let (data, xmls) = XR.apply_to_xmls data env xml in
     (data, xmls :: acc)
   in

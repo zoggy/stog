@@ -56,8 +56,12 @@ let docs ?set ?setname ?filter ?typ ?max ?(reverse=true) ?(sort=[]) stog env =
     match sort with
       [] -> (stog, Stog_types.sort_ids_docs_by_date docs)
     | fields ->
-        let docs = List.map
-          (fun (id, e) -> (id, e, Stog_engine.env_of_defs ~env e.doc_defs))
+        let (stog, docs) = List.fold_left
+          (fun (stog, acc) (id, e) ->
+             let (stog, env) = Stog_engine.doc_env stog env stog e in
+             (stog, ((id, e, env) :: acc))
+          )
+            (stog, [])
             docs
         in
         Stog_types.sort_ids_docs_by_rules stog fields docs

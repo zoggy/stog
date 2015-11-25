@@ -930,11 +930,13 @@ let fun_print_date stog env ?loc args subs =
 let fun_print_datetime stog env ?loc args subs =
   fun_print_date_gen Stog_intl.string_of_datetime stog args subs;;
 
+let on_doc_path f stog env ?loc args _ =
+
+  f stog doc
+
 let rec build_base_rules stog doc_id =
   let doc = Stog_types.doc stog doc_id in
-  let f_title doc acc _ ?loc _ _ =
-    (acc, XR.from_string doc.doc_title)
-  in
+  let f_title doc acc _ ?loc _ _ = (acc, XR.from_string doc.doc_title) in
   let f_url doc stog _ ?loc _ _ =
     (stog,[ XR.cdata (Stog_url.to_string (Stog_engine.doc_url stog doc)) ])
   in
@@ -943,14 +945,10 @@ let rec build_base_rules stog doc_id =
   let f_src doc acc _ ?loc _ _ = (acc, [XR.cdata doc.doc_src]) in
   let f_intro doc stog _ ?loc _ _ = (stog, intro_of_doc stog doc) in
   let mk f stog env ?loc atts subs =
-    let doc =
-      match XR.get_att_cdata atts ("", Stog_tags.doc_path) with
-        None -> Stog_types.doc stog doc_id
-      | Some path ->
-          let (_, doc) = Stog_types.doc_by_path
-            stog (Stog_path.of_string path)
-          in
-          doc
+    let (stog, doc) =
+      let (stog, path) = Stog_engine.get_path_in_args_or_env stog env atts in
+      let (_, doc) = Stog_types.doc_by_path stog path in
+      (stog, doc)
     in
     f doc stog env ?loc atts subs
   in
