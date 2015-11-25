@@ -77,7 +77,7 @@ dummy:
 # Web site:
 ###########
 website:
-	(cd doc && $(MAKE) DEST_DIR=`pwd`/../../stog-pages)
+	(cd doc && $(MAKE) clean && $(MAKE) DEST_DIR=`pwd`/../../stog-pages)
 
 # archive :
 ###########
