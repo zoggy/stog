@@ -22,8 +22,7 @@ directory:
 </p>
 <cl>$ stog --local mystog
 Warning: Creating non-existent configuration directory "mystog/.stog"
-Warning: Creating default template file "mystog/.stog/templates/page.tmpl"
-0 error, 2 warnings
+0 error, 1 warning
 $ ls stog-output
 index.html
 </cl>
@@ -32,7 +31,7 @@ it misses some style.
 Let's add a default stylesheet to our source directory and run
 <icode>stog</icode> again:
 </p>
-<cl>$ wget http://zoggy.github.io/stog/style.css -O mystog/style.css
+<cl>$ wget https://raw.githubusercontent.com/zoggy/stog/master/share/templates/page-style.css -O mystog/style.css
 $ stog --local mystog
 </cl>
 <p>Now the page <icode>stog-output/index.html</icode> looks better.
@@ -91,7 +90,9 @@ a <icode>index.rss</icode> file on the fly:
   <documents type="post" rss="index.rss" max="4"/>
 </page>
 ^D
-$ stog --local mystog]]></cl>
+$ stog --local mystog
+Warning: Creating default template file "mystog/.stog/templates/rss-item.tmpl"
+Warning: Creating default template file "mystog/.stog/templates/rss.tmpl"]]></cl>
 <p>
 Let's retrieve two images into our source directory and run <icode>stog</icode> again:
 </p>
@@ -103,7 +104,7 @@ $ stog --local mystog
 
 <section id="ref" title="Referencing documents">
 <p>References from a document (a page, a post, ...) to another are checked by stog.
-Let's add a reference to our first post from the main page. We show the contents
+Let's add a reference to our blog from the main page. We show the contents
 of <icode>mystog/index.html</icode> after the modification:
 </p>
 <hxml><![CDATA[
@@ -112,7 +113,7 @@ main="true"
 >
 Hello world !
 <p>
-This is reference to <doc href="first-post"/>.
+This is reference to <doc href="blog"/>.
 </p>
 </page>
 ]]></hxml>
