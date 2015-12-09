@@ -69,6 +69,15 @@ package "nocaml" (
   archive(plugin,native) = "stog_nocaml.cmxs"
 )
 
+package "noexec" (
+  version = "@VERSION@"
+  description = "Stog plugin to prevent running external commands"
+  archive(byte) = "stog_noexec.cmo"
+  archive(native) = "stog_noexec.cmx"
+  archive(plugin,byte) = "stog_noexec.cmo"
+  archive(plugin,native) = "stog_noexec.cmxs"
+)
+
 package "rel-href" (
   version = "@VERSION@"
   description = "Stog relative href plugin"
