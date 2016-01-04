@@ -94,7 +94,7 @@ let gen_sitemap stog data entries =
      node ("","url")
       ((node ("","loc") [cdata (Stog_url.to_string e.url_loc)]) ::
         (node ("","lastmod")
-         [cdata (Netdate.format ~fmt: "%d %b %Y %T %z" e.url_lastmod)]
+         [cdata (Netdate.format ~fmt: "%Y-%m-%dT%T%:z" e.url_lastmod)]
         ) ::
           (match e.url_freq with
              None -> []
