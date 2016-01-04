@@ -263,7 +263,7 @@ let list_concat ?sep l =
 ;;
 
 let dot_to_svg dot =
-  let temp_file = Filename.temp_file "genet" "svg" in
+  let temp_file = Filename.temp_file "stogdot2svg" "svg" in
   let com = Printf.sprintf "echo %s | dot -Tsvg | tail -n +7 > %s"
     (Filename.quote dot) (Filename.quote temp_file)
   in
