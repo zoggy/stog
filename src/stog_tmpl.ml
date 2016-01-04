@@ -131,7 +131,7 @@ let page stog =
   let xml =
     try
       let file = from_includes stog "page.tmpl" in
-      Xtmpl_rewrite.from_file file
+      (Xtmpl_rewrite.doc_from_file file).Xml.elements
     with Template_file_not_found _-> default_page_tempalte
 
   in
