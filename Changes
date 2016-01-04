@@ -1,3 +1,8 @@
+Next release:
+* sitemap plugin: fix date format (by Leo Wzukw)
+* fix handling of default page.tmpl (by avysk)
+* fix: call tail in BSD-friendly way (by avysk)
+
 Release 0.16.0:
 * use Xtmpl >= 0.13.0
 * a document's DOCTYPE is now taken from the XML template corresponding to
