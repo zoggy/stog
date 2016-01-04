@@ -114,8 +114,9 @@ let make_svg outdir ?(packages=[]) ?(scale=1.1) ?(def_files=[]) ?defs latex_code
       Stog_misc.file_of_string ~file: tex code;
       let log = Filename.temp_file "stog" ".log" in
       let command = Printf.sprintf
-        "(latex -output-directory=/tmp -interaction=batchmode %s > %s 2>&1) && \
+        "(latex -output-directory=%s -interaction=batchmode %s > %s 2>&1) && \
          dvisvgm -e --scale=%f -M 1.5 --no-fonts %s -s 2>> %s > %s"
+          (Filename.get_temp_dir_name () |> Filename.quote)
           (Filename.quote tex) (Filename.quote log)
           scale
           (Filename.quote dvi)
