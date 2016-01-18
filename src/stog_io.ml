@@ -265,7 +265,11 @@ let doc_of_file stog file =
     Stog_path.of_string s
   in
   Stog_msg.verbose ~level: 3 (Printf.sprintf "reading document file %S" file);
-  let doc = XR.doc_from_file file in
+  let doc =
+    try XR.doc_from_file file
+    with XR.Error e ->
+        failwith (XR.string_of_error e)
+  in
   let (typ, atts, subs) =
     match List.rev (XR.upto_first_element doc.Xml.elements) with
     | exception Not_found ->
