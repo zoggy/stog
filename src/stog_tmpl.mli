@@ -31,8 +31,6 @@
 
 type contents = Stog_types.stog -> Stog_types.stog * Xtmpl_rewrite.tree list
 
-exception Template_file_not_found of string Xtmpl_xml.with_loc
-
 (** [get_template_file stog doc file] returns absolute filename of the given
   template filename.
   If [file] is relative and implicit then the file is looked up the

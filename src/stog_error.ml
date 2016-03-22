@@ -29,7 +29,9 @@
 
 (** *)
 
-type error = Loc of Xtmpl_xml.loc * exn
+type error =
+| Loc of Xtmpl_xml.loc * exn
+| Template_file_not_found of string
 
 exception Error of error
 
@@ -39,8 +41,13 @@ let error_loc ?loc e =
     None -> raise e
   | Some loc -> error (Loc (loc, e))
 
+let template_file_not_found ?loc file =
+  error_loc ?loc (Error (Template_file_not_found file))
+
 let rec string_of_error ?(to_string=Printexc.to_string) = function
-  Loc (loc, e) ->
+| Template_file_not_found file ->
+    Printf.sprintf "Template file not found: %s" file
+| Loc (loc, e) ->
     let str =
       match e with
         Error err -> string_of_error ~to_string err

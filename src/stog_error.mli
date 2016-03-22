@@ -29,11 +29,13 @@
 
 (** Errors. *)
 
-type error = Loc of Xtmpl_xml.loc * exn
+type error
 
 exception Error of error
 
 val error : error -> 'a
 val error_loc : ?loc: Xtmpl_xml.loc -> exn -> 'a
+
+val template_file_not_found : ?loc: Xtmpl_xml.loc -> string -> 'a
 
 val string_of_error : ?to_string: (exn -> string) -> error -> string

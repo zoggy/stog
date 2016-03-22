@@ -31,15 +31,13 @@
 
 open Stog_types;;
 
-exception Template_file_not_found of string Xtmpl_xml.with_loc
-
 type contents = Stog_types.stog -> Stog_types.stog * Xtmpl_rewrite.tree list
 
 let parse = Xtmpl_rewrite.from_string ;;
 
 let from_includes =
   let rec iter ?loc file = function
-    [] -> raise (Template_file_not_found (file, loc))
+    [] -> raise Not_found
   | dir :: q ->
     let f = Filename.concat dir file in
     if Sys.file_exists f then f else iter ?loc file q
@@ -51,7 +49,9 @@ let get_template_file stog doc ?loc file =
   if Filename.is_relative file then
     begin
       if Filename.is_implicit file then
-        from_includes stog ?loc file
+        try from_includes stog ?loc file
+        with Not_found ->
+            Stog_error.template_file_not_found ?loc file
       else
         Filename.concat (Filename.dirname doc.doc_src) file
     end
@@ -90,7 +90,7 @@ let get_template_ from_file stog ?doc contents name =
   let (stog, contents) = contents stog in
   let file =
     try from_includes stog name
-    with Template_file_not_found _ ->
+    with Not_found ->
         create_template stog name contents
   in
   let stog =
@@ -132,7 +132,7 @@ let page stog =
     try
       let file = from_includes stog "page.tmpl" in
       (Xtmpl_rewrite.doc_from_file file).Xml.elements
-    with Template_file_not_found _-> default_page_tempalte
+    with Not_found -> default_page_tempalte
 
   in
   (stog, xml)
