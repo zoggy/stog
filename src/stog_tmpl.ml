@@ -105,7 +105,7 @@ let get_template = get_template_
   (fun file -> (Xtmpl_rewrite.doc_from_file file).Xml.elements)
 let get_template_doc = get_template_ Xtmpl_rewrite.doc_from_file
 
-let default_page_tempalte =
+let default_page_template =
  parse
   "<html>
     <head>
@@ -132,7 +132,7 @@ let page stog =
     try
       let file = from_includes stog "page.tmpl" in
       (Xtmpl_rewrite.doc_from_file file).Xml.elements
-    with Not_found -> default_page_tempalte
+    with Not_found -> default_page_template
 
   in
   (stog, xml)
@@ -220,3 +220,17 @@ let rss_item stog =
   in
   (stog, xml)
 ;;
+
+let doc_list =
+  let xml = parse
+    {|<if alt-link="">
+      <dummy_/>
+      <div class="rss-button">
+        <a href="&lt;alt-link/&gt;"><img src="rss.png" alt="Rss feed"/></a>
+      </div></if>
+      <items/>
+    |}
+  in
+  fun stog -> (stog, xml)
+
+

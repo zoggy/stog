@@ -72,3 +72,4 @@ val keyword : contents
 val topic : contents
 val rss : contents
 val rss_item : contents
+val doc_list : contents

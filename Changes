@@ -1,4 +1,8 @@
 Next release:
+* <docs> rule now uses a template; default is doc-list.tmpl
+  but another one can be specified with list-tmpl="..." attribute.
+  In this template, <alt-link/> is the url of the link to (tyically)
+  the RSS feed, and <item/> is the tree of listed documents.
 * sitemap plugin: fix date format (by Leo Wzukw)
 * fix handling of default page.tmpl (by avysk)
 * fix call tail in BSD-friendly way (by avysk)

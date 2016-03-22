@@ -1116,26 +1116,23 @@ and doc_list doc ?rss ?set stog env ?loc args _ =
             let url = Stog_engine.doc_url stog doc in
             (stog, Some url)
   in
-  let xml =
+  let env =
     match alt_link with
-      None -> xmls
+      None -> env
     | Some link ->
-        (XR.node ("", "div")
-         ~atts: (XR.atts_one ("", "class") [XR.cdata "rss-button"])
-           [
-             XR.node ("", "a")
-               ~atts: (XR.atts_one ("", "href") [XR.cdata (Stog_url.to_string link)])
-               [
-                 XR.node ("", "img")
-                   ~atts: (XR.atts_of_list
-                    [ ("", "src"), [XR.cdata "rss.png"] ;
-                      ("", "alt"), [XR.cdata "Rss feed"]])
-                   []
-               ]
-           ]
-        ) :: xmls
+        let link = Stog_url.to_string link in
+        XR.env_add_xml "alt-link" [XR.cdata link] env
   in
-  (stog, xml)
+  let (stog, tmpl) =
+    let file =
+      match XR.get_att_cdata args ("", "list-tmpl") with
+        None ->  "doc-list.tmpl"
+      | Some s -> s
+    in
+    Stog_tmpl.get_template stog ~doc Stog_tmpl.doc_list file
+  in
+  let env = XR.env_add_xml "items" xmls env in
+  XR.apply_to_xmls stog env tmpl
 ;;
 
 let make_by_word_indexes stog env f_doc_path doc_type map =
