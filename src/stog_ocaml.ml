@@ -336,7 +336,10 @@ let concat_nl x = function
 
 let list_concat_nl x = function
   [] -> x
-| l -> x @ ((XR.cdata "\n") :: l)
+| l ->
+  match x with
+    [] -> l
+  | _ -> x @ ((XR.cdata "\n") :: l)
 
 let remove_ending_nl s =
   let len = String.length s in
@@ -431,15 +434,18 @@ let fun_eval stog env ?loc args code =
               let code =
                 if in_xml_block then [XR.node ("","span") code] else code in
               if show_stdout then
-                let xml =
-                  if in_xml_block then
-                    XR.node ("","span")
-                     ~atts: (XR.atts_one ("","class") [XR.cdata "ocaml-toplevel"])
-                     [XR.cdata output.stdout]
-                  else
-                     XR.cdata output.stdout
-                in
-                list_concat_nl (concat_nl xml code) acc
+                match output.stdout with
+                  "" -> list_concat_nl code acc
+                | _ ->
+                    let xml =
+                      if in_xml_block then
+                        XR.node ("","span")
+                          ~atts: (XR.atts_one ("","class") [XR.cdata "ocaml-toplevel"])
+                          [XR.cdata output.stdout]
+                      else
+                        XR.cdata output.stdout
+                    in
+                    list_concat_nl (concat_nl xml code) acc
               else
                 list_concat_nl code acc
           | true ->
@@ -458,12 +464,15 @@ let fun_eval stog env ?loc args code =
               let classes = Printf.sprintf "ocaml-toplevel%s"
                 (if raised_exc then " ocaml-exc" else "")
               in
-              let xml =
-                XR.node ("","span")
-                 ~atts: (XR.atts_one ("","class") [XR.cdata classes])
-                 (concat_toplevel_outputs output)
-              in
-              list_concat_nl (concat_nl xml code) acc
+              match concat_toplevel_outputs output with
+                [] -> list_concat_nl code acc
+              | outputs ->
+                  let xml =
+                    XR.node ("","span")
+                      ~atts: (XR.atts_one ("","class") [XR.cdata classes])
+                      outputs
+                  in
+                  list_concat_nl (concat_nl xml code) acc
         in
         iter acc q
     in

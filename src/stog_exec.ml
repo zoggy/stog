@@ -153,15 +153,18 @@ let fun_exec stog env ?loc args code =
             else
               code
           in
-          let classes = Printf.sprintf "command-output%s"
-            (if error then " command-error" else "")
-          in
-          let xml =
-            XR.node ("","span")
-             ~atts: (XR.atts_one ("","class") [XR.cdata classes])
-             [XR.cdata output]
-          in
-          list_concat_nl (concat_nl xml code) acc
+          match output with
+            "" -> list_concat_nl code acc
+          | _ ->
+              let classes = Printf.sprintf "command-output%s"
+                (if error then " command-error" else "")
+              in
+              let xml =
+                XR.node ("","span")
+                  ~atts: (XR.atts_one ("","class") [XR.cdata classes])
+                  [XR.cdata output]
+              in
+              list_concat_nl (concat_nl xml code) acc
         in
         iter acc q
     in
