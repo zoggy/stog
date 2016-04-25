@@ -348,17 +348,19 @@ let remove_ending_nl s =
 let concat_toplevel_outputs output =
   let mk acc (cl, s) =
     match s with
-      "" -> List.rev acc
+      "" -> acc
     | _ ->
         let atts = XR.atts_one ("","class") [XR.cdata cl] in
         let xml = XR.node ("","span") ~atts [XR.cdata s] in
         concat_nl xml acc
   in
-  List.fold_left mk []
+  let l = List.fold_left mk []
     [ "stderr", output.stderr ;
       "stdout", output.stdout ;
       "toplevel-out", remove_ending_nl output.topout ;
     ]
+  in
+  List.rev l
 ;;
 
 let fun_eval stog env ?loc args code =
@@ -426,9 +428,8 @@ let fun_eval stog env ?loc args code =
         let acc =
           match toplevel with
             false ->
-              (*let code =
+              let code =
                 if in_xml_block then [XR.node ("","span") code] else code in
-              *)
               if show_stdout then
                 let xml =
                   if in_xml_block then
