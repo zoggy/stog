@@ -122,7 +122,7 @@ let handle_messages read_stog current_state active_cons base_path stream push =
         match Stog_server_types.client_msg_of_wsdata s with
           None -> Lwt.return_unit
         | Some (`Stog_msg msg) ->
-            handle_message read_stog current_state active_cons 
+            handle_message read_stog current_state active_cons
               base_path stream push msg
   in
   Lwt.catch
@@ -147,8 +147,10 @@ let run_server read_stog current_state active_cons ws_url base_path =
   in
   Resolver_lwt.resolve_uri ~uri Resolver_lwt_unix.system >>= fun endp ->
   let ctx = Conduit_lwt_unix.default_ctx in
+  Nocrypto_entropy_lwt.initialize () >>
   Conduit_lwt_unix.endp_to_server ~ctx endp >>= fun server ->
     Websocket_lwt.establish_standard_server ~ctx ~mode: server
+    ~g: !Nocrypto.Rng.generator
     (handle_con read_stog current_state active_cons base_path)
 ;;
 
