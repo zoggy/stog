@@ -352,7 +352,7 @@ let concat_toplevel_outputs output =
     | _ ->
         let atts = XR.atts_one ("","class") [XR.cdata cl] in
         let xml = XR.node ("","span") ~atts [XR.cdata s] in
-        concat_nl xml acc
+        xml :: acc
   in
   let l = List.fold_left mk []
     [ "stderr", output.stderr ;

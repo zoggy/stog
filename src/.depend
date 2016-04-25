@@ -31,10 +31,10 @@ stog_engine.cmi : stog_url.cmi stog_types.cmi stog_path.cmi
 stog_error.cmo : stog_error.cmi
 stog_error.cmx : stog_error.cmi
 stog_error.cmi :
-stog_exec.cmo : stog_types.cmi stog_misc.cmi stog_highlight.cmi \
-    stog_exec.cmi
-stog_exec.cmx : stog_types.cmx stog_misc.cmx stog_highlight.cmx \
-    stog_exec.cmi
+stog_exec.cmo : stog_types.cmi stog_ocaml.cmi stog_misc.cmi \
+    stog_highlight.cmi stog_exec.cmi
+stog_exec.cmx : stog_types.cmx stog_ocaml.cmx stog_misc.cmx \
+    stog_highlight.cmx stog_exec.cmi
 stog_exec.cmi : stog_types.cmi
 stog_filter_lexer.cmo : stog_filter_parser.cmi stog_filter_lexer.cmi
 stog_filter_lexer.cmx : stog_filter_parser.cmx stog_filter_lexer.cmi
