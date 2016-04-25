@@ -75,6 +75,9 @@ let commands_of_xml xmls =
   in
   List.fold_right f xmls []
 
+let concat_nl = Stog_ocaml.concat_nl
+let list_concat_nl = Stog_ocaml.list_concat_nl
+
 let fun_exec stog env ?loc args code =
   try
     let directory =
@@ -145,7 +148,7 @@ let fun_exec stog env ?loc args code =
                     None -> code
                   | Some str -> (Xtmpl_xhtml.span ~classes: ["command-prompt"] [XR.cdata str]) :: code
                 in
-                [ XR.node ("","div") code ]
+                [ XR.node ("","span") code ]
               end
             else
               code
@@ -154,11 +157,11 @@ let fun_exec stog env ?loc args code =
             (if error then " command-error" else "")
           in
           let xml =
-            XR.node ("","div")
+            XR.node ("","span")
              ~atts: (XR.atts_one ("","class") [XR.cdata classes])
              [XR.cdata output]
           in
-          xml :: code @ acc
+          list_concat_nl (concat_nl xml code) acc
         in
         iter acc q
     in

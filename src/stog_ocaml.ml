@@ -86,7 +86,7 @@ let get_session ?directory name =
   with Not_found ->
       Stog_msg.verbose ~level:1
         (Printf.sprintf "Opening OCaml session %S%s" name
-          (match directory with None -> "" | Some s -> "in "^s)
+          (match directory with None -> "" | Some s -> " in "^s)
         );
       let t =
         match directory with
@@ -330,19 +330,35 @@ let highlight_warnings_and_errors ?print_locs output code =
   ({output with stderr}, add_loc_blocks errors code)
 ;;
 
+let concat_nl x = function
+  [] -> [x]
+| l -> x :: (XR.cdata "\n") :: l
+
+let list_concat_nl x = function
+  [] -> x
+| l -> x @ ((XR.cdata "\n") :: l)
+
+let remove_ending_nl s =
+  let len = String.length s in
+  if len > 0 && String.get s (len-1) = '\n' then
+    String.sub s 0 (len - 1)
+  else
+    s
+
 let concat_toplevel_outputs output =
-  let mk (cl, s) =
+  let mk acc (cl, s) =
     match s with
-      "" -> []
+      "" -> List.rev acc
     | _ ->
         let atts = XR.atts_one ("","class") [XR.cdata cl] in
-        [ XR.node ("","div") ~atts [XR.cdata s] ]
+        let xml = XR.node ("","span") ~atts [XR.cdata s] in
+        concat_nl xml acc
   in
-  List.flatten (List.map mk
+  List.fold_left mk []
     [ "stderr", output.stderr ;
       "stdout", output.stdout ;
-      "toplevel-out", output.topout ;
-    ])
+      "toplevel-out", remove_ending_nl output.topout ;
+    ]
 ;;
 
 let fun_eval stog env ?loc args code =
@@ -410,20 +426,21 @@ let fun_eval stog env ?loc args code =
         let acc =
           match toplevel with
             false ->
-              let code =
-                if in_xml_block then [XR.node ("","div") code] else code in
+              (*let code =
+                if in_xml_block then [XR.node ("","span") code] else code in
+              *)
               if show_stdout then
                 let xml =
                   if in_xml_block then
-                    XR.node ("","div")
+                    XR.node ("","span")
                      ~atts: (XR.atts_one ("","class") [XR.cdata "ocaml-toplevel"])
                      [XR.cdata output.stdout]
                   else
                      XR.cdata output.stdout
                 in
-                xml :: code @ acc
+                list_concat_nl (concat_nl xml code) acc
               else
-                code @ acc
+                list_concat_nl code acc
           | true ->
               let (output, code) =
                 if highlight_locs then
@@ -433,7 +450,7 @@ let fun_eval stog env ?loc args code =
               in
               let code =
                 if in_xml_block then
-                  [ XR.node ("","div") ((XR.cdata prompt) :: code) ]
+                  [ XR.node ("","span") ((XR.cdata prompt) :: code) ]
                 else
                   code
               in
@@ -441,11 +458,11 @@ let fun_eval stog env ?loc args code =
                 (if raised_exc then " ocaml-exc" else "")
               in
               let xml =
-                XR.node ("","div")
+                XR.node ("","span")
                  ~atts: (XR.atts_one ("","class") [XR.cdata classes])
                  (concat_toplevel_outputs output)
               in
-              xml :: code @ acc
+              list_concat_nl (concat_nl xml code) acc
         in
         iter acc q
     in

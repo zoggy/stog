@@ -1,4 +1,6 @@
 Next release:
+* <ocaml-eval> and <run> use <span> instead of <div> in <pre> nodes, to
+  be html-correct
 * <docs> rule now uses a template; default is doc-list.tmpl
   but another one can be specified with list-tmpl="..." attribute.
   In this template, <alt-link/> is the url of the link to (tyically)

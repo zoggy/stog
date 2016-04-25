@@ -35,3 +35,6 @@ val close_sessions : unit -> unit
 
 val fun_eval : Stog_types.stog Xtmpl_rewrite.callback
 val fun_printf : Stog_types.stog Xtmpl_rewrite.callback
+
+val concat_nl : Xtmpl_rewrite.tree -> Xtmpl_rewrite.tree list -> Xtmpl_rewrite.tree list
+val list_concat_nl : Xtmpl_rewrite.tree list -> Xtmpl_rewrite.tree list -> Xtmpl_rewrite.tree list
