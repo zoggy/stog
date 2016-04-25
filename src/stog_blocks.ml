@@ -225,15 +225,22 @@ let make_fun_section sect_up cls sect_down (stog, data) env ?loc args subs =
   in
   let att_id = XR.atts_one ("", "id") [XR.node ("","id") []] in
   let class_name = Stog_html.concat_name ~sep: "-" cls in
+  let level = List.length sect_up + 1 in
   let body =
+    let title_atts = XR.atts_of_list ~atts: att_id
+      [
+        ("", "class"), [XR.cdata (class_name^"-title")] ;
+        ("", "role"), [XR.cdata "heading"] ;
+        ("","aria-level"), [XR.cdata (string_of_int level)] ;
+      ]
+    in
     [ XR.node ("", "div")
-       ~atts: (XR.atts_one ("", "class") [XR.cdata class_name])
+      ~atts: (XR.atts_one ("", "class") [XR.cdata class_name])
         (
-         (XR.node ("", "div")
-          ~atts: (XR.atts_one ~atts: att_id ("", "class") [XR.cdata (class_name^"-title")])
+         (XR.node ("", "div") ~atts: title_atts
             [XR.node ("", "title") []]
          ) :: subs
-       )
+        )
     ]
   in
   let f ((stog, data), acc) (prefix, cls) =
