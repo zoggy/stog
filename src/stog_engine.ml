@@ -546,7 +546,7 @@ let doc_dst_file stog doc =
 let doc_url stog doc =
   let url_path = doc_dst_path stog doc in
   let url = Stog_url.append stog.stog_base_url url_path in
-  match String.lowercase (Stog_url.scheme url) with
+  match String.lowercase_ascii (Stog_url.scheme url) with
     "file" -> url
   | _ ->
       let p = Stog_url.path url in
@@ -575,7 +575,7 @@ let output_doc ~gen_cache state doc =
       in
       let xmldoc =
         match Xml.doctype_name xmldoc with
-        | Some (_,s) when String.lowercase s = "html" ->
+        | Some (_,s) when String.lowercase_ascii s = "html" ->
             let elements = List.map Stog_html5.hack_self_closed xmldoc.Xml.elements in
             { xmldoc with Xml.elements }
         | _ -> xmldoc

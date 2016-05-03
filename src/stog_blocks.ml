@@ -285,7 +285,7 @@ let make_fun_section sect_up cls sect_down (stog, data) env ?loc args subs =
         let xmls = List.flatten xmls in
         ((stog,data), xmls)
   in
-  let label = String.capitalize (snd cls) in
+  let label = String.capitalize_ascii (snd cls) in
   let xmls =
     [ XR.node ("", Stog_tags.block)
        ~atts:(XR.atts_of_list ~atts: args

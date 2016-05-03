@@ -31,6 +31,7 @@ include ../master.Makefile
 
 STOGDIR=../src
 STOG=$(STOGDIR)/stog #--plugin ../plugins/plugin_example.cmxs --plugin ../plugins/stog_disqus.cmxs
+STOG_OCAML_SESSION=$(STOGDIR)/stog-ocaml-session
 STOG_SERVER=$(STOGDIR)/stog-server
 #STOG=$(STOGDIR)/stog.byte --plugin ../plugins/plugin_example.cmo --plugin ../plugins/stog_disqus.cmo
 DEST_DIR=`pwd`/../doc-output
@@ -42,7 +43,8 @@ STOG_OPTIONS=\
 	--plugin ../src/plugins/stog_multi_doc.cmxs \
 	--plugin ../src/plugins/stog_disqus.cmxs \
 	--plugin ../src/plugins/stog_sitemap.cmxs \
-	-d $(DEST_DIR) --depcut $(BASE_URL_OPTION) $(MORE_OPTS) #-v -v -v -v -v
+	--stog-ocaml-session $(STOG_OCAML_SESSION) \
+	-d $(DEST_DIR) --depcut $(BASE_URL_OPTION) $(MORE_OPTS) #--nocache -v -v -v -v -v
 LESSC=lessc
 
 .PHONY: build site test style
@@ -59,8 +61,9 @@ site: stog-tmpl-usage.txt stog-tmpl-tree.txt style plugins/rdf_fig.svg
 	$(STOG) -d $(DEST_DIR) \
 		--tmpl $(ROOT)/share/templates\
 		--mods $(ROOT)/share/modules \
+		--stog-ocaml-session $(STOG_OCAML_SESSION) \
 		--site-url https://zoggy.github.io/stog \
-		examples/article-example.html
+		examples/article-example.html #-v -v
 	$(STOG) $(STOG_OPTIONS) .
 
 plugins/rdf_fig.svg: plugins/rdf_fig.dot

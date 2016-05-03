@@ -53,6 +53,8 @@ let remove_empty_filename =
   Str.global_replace re "L"
 ;;
 
+exception Pp_error of string
+
 let apply_pp phrase =
   match !Clflags.preprocessor with
   | None -> phrase
@@ -64,13 +66,13 @@ let apply_pp phrase =
         (Filename.quote file) pp (Filename.quote outfile)
       in
       match Sys.command com with
-        0 -> 
+        0 ->
           let phrase = Stog_misc.string_of_file outfile in
           Sys.remove file ;
           Sys.remove outfile ;
           phrase
       | n ->
-          failwith (Printf.sprintf "Preprocess command failed: %s" com)
+          raise (Pp_error com)
 
 let apply_ppx phrase =
   match phrase with
@@ -206,7 +208,7 @@ let main () =
   init_toplevel ();
   let ic_input = Unix.in_channel_of_descr (Unix.dup Unix.stdin) in
   let oc_result = Unix.out_channel_of_descr (Unix.dup Unix.stdout) in
-  let old_stderr = Unix.dup Unix.stderr in
+  let old_stderr = Unix.out_channel_of_descr (Unix.dup Unix.stderr) in
   let rec loop () =
     let finish =
       try
@@ -215,16 +217,19 @@ let main () =
         Stog_ocaml_types.write_result oc_result res;
         false
       with
-        End_of_file -> true
+        End_of_file
+      | Failure _ ->
+          (* since ocaml 4.03.0 input_value raise Failure instead of EOF *)
+          true
       | e ->
           let msg =
             match e with
-              Failure msg -> msg
+              Pp_error com ->
+                (Printf.sprintf "Preprocess command failed: %s" com)
             | e -> Printexc.to_string e
           in
-          let oc = Unix.out_channel_of_descr old_stderr in
-          output_string oc msg;
-          flush oc;
+          output_string old_stderr msg;
+          flush old_stderr;
           false
     in
     if not finish then loop ()

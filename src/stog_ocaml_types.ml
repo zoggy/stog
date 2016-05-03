@@ -47,31 +47,45 @@ type result =
 let pid = Unix.getpid();;
 
 let read_input ic =
+  (*prerr_endline (Printf.sprintf "[%d] ocaml: read_input" pid);*)
   let (v : input) = input_value ic in
+  (*prerr_endline "ocaml: read_input done";*)
   v
 ;;
 
 let write_input oc (i : input) =
-(*  prerr_endline (Printf.sprintf "write_input len(phrase)=%d" (String.length i.in_phrase));*)
+  (*prerr_endline (Printf.sprintf "ocaml: write_input len(phrase)=%d" (String.length i.in_phrase));*)
   output_value oc i;
   flush oc
+  (*prerr_endline "ocaml: write_input done"*)
 ;;
 
 let read_result ic =
+  (*prerr_endline (Printf.sprintf "[%d] ocaml: read_result" pid);*)
   let (r : result) = input_value ic in
+  (*prerr_endline "ocaml: read_result done";
+  let s =
+    match r with
+      Exc s -> Printf.sprintf "Exc(%S)" s
+    | Ok s -> Printf.sprintf "Ok(%S)" s.topout
+    | Handled_error _ -> Printf.sprintf "Handled_error"
+  in
+  prerr_endline (Printf.sprintf "ocaml: read_result => %s" s);*)
   r
 ;;
 
 
 let write_result oc (r : result) =
-(*  let s =
+  (*let s =
     match r with
       Exc s -> Printf.sprintf "Exc(%S)" s
-    | Ok (s1, s2) -> Printf.sprintf "Ok(%S,%S)" s1 s2
+    | Ok s -> Printf.sprintf "Ok(%S)" s.stdout
+    | Handled_error _ -> Printf.sprintf "Handled_error"
   in
   prerr_endline (Printf.sprintf "write_result %s" s);
-*)
+  *)
   output_value oc r ;
+  (*prerr_endline "ocaml: write_result done";*)
   flush oc
 ;;
 
