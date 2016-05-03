@@ -1,7 +1,8 @@
 Next release:
+* adapt to new behaviour of input_value in ocaml 4.03.0
 * sectionning rules now generate role="heading" and aria-level="..."
 * <ocaml-eval> and <run> use <span> instead of <div> in <pre> nodes, to
-  be html-correct
+  be html-correct (default styles are modified in consequence)
 * <docs> rule now uses a template; default is doc-list.tmpl
   but another one can be specified with list-tmpl="..." attribute.
   In this template, <alt-link/> is the url of the link to (tyically)
