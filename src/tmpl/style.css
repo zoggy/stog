@@ -268,9 +268,9 @@ pre.hl {
 .hl.std {
   color: black; }
 
-div.ocaml-toplevel {
+.ocaml-toplevel {
   color: #666666; }
-  div.ocaml-toplevel .stdout {
+  .ocaml-toplevel .stdout {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     -ms-border-radius: 3px;
@@ -283,15 +283,16 @@ div.ocaml-toplevel {
     padding: 2px;
     padding-left: 4px;
     padding-right: 4px;
-    margin-right: 1em; }
-  div.ocaml-toplevel .stderr {
+    margin-right: 1em;
+    display: block; }
+  .ocaml-toplevel .stderr {
     font-style: italic; }
-  div.ocaml-toplevel .toplevel-out {
+  .ocaml-toplevel .toplevel-out {
     font-style: italic; }
 
-div.ocaml-exc div.toplevel-out {
+.ocaml-exc .toplevel-out {
   color: #b94a48; }
-div.ocaml-exc div.stderr {
+.ocaml-exc .stderr {
   color: #b94a48;
   font-weight: bold; }
 
@@ -303,9 +304,9 @@ div.ocaml-exc div.stderr {
   text-decoration: none;
   border-bottom: 2px solid #c09853; }
 
-.command-exec div.command-output {
+.command-exec .command-output {
   color: #666666; }
-.command-exec div.command-error {
+.command-exec .command-error {
   color: #b94a48;
   font-weight: bold; }
 

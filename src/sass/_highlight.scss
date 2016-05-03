@@ -16,7 +16,7 @@ pre.hl  { color:#ffffff; background-color:#005c70; font-size:10pt; font-family:'
 .hl.top { color: rgb(77, 77, 77); }
 .hl.std { color: black; }
 
-div.ocaml-toplevel {
+.ocaml-toplevel {
   color: $code-output;
   .stdout {
     @include rounded-box(darken($code-background,25), darken($code-background, 10));
@@ -25,6 +25,7 @@ div.ocaml-toplevel {
     padding-left: 4px;
     padding-right: 4px;
     margin-right: 1em;
+    display: block;
   }
   .stderr {
     font-style: italic;
@@ -34,11 +35,11 @@ div.ocaml-toplevel {
   }
 }
 
-div.ocaml-exc {
-  div.toplevel-out {
+.ocaml-exc {
+  .toplevel-out {
     color: $error-text ;
   }
-  div.stderr {
+  .stderr {
     color: $error-text;
     font-weight: bold;
   }
@@ -55,10 +56,10 @@ div.ocaml-exc {
 }
 
 .command-exec {
-  div.command-output {
+  .command-output {
     color: $code-output ;
   }
-  div.command-error {
+  .command-error {
     color: $error-text ;
     font-weight: bold;
   }
