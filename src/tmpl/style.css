@@ -262,6 +262,9 @@ pre.hl {
 .hl.kwd {
   color: #1c45d6; }
 
+.hl.kw5 {
+  color: orange; }
+
 .hl.top {
   color: #4d4d4d; }
 
