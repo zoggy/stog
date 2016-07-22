@@ -23,7 +23,7 @@ body {
   border-color: black;
   border-style: solid;
  .container-fixed ();
-  #grid > .core > .span(@gridColumns);
+ width: (@gridColumnWidth * @gridColumns) + (@gridGutterWidth * (@gridColumns - 1));
   /*text-align: justify;*/
 }
 
@@ -207,7 +207,7 @@ div.doc-keywords {
   font-size : 0.9em;
   /*.rounded-box ;*/
   margin-left: 1em;
-  margin-right: /*@docRightMargin ;*/
+  /*margin-right: @docRightMargin ;*/
 }
 
 div.bloc-keywords {
