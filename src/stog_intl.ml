@@ -28,7 +28,6 @@
 (*********************************************************************************)
 
 open Stog_types
-open Netdate
 
 type lang_abbrev = string
 
@@ -39,6 +38,15 @@ type lang_data = {
     string_of_datetime : date -> string;
 }
 
+let int_of_weekday = function
+  | `Sun -> 0
+  | `Mon -> 1
+  | `Tue -> 2
+  | `Wed -> 3
+  | `Thu -> 4
+  | `Fri -> 5
+  | `Sat -> 6
+
 let french =
   let days =
     [| "dimanche" ; "lundi" ; "mardi" ; "mercredi" ;
@@ -48,14 +56,17 @@ let french =
     "janvier" ; "février" ; "mars" ; "avril" ; "mai" ; "juin" ;
     "juillet" ; "août" ; "septembre" ; "octobre" ; "novembre" ; "décembre" |]
   in
+
   let string_of_date date =
+    let ((y,m,d), _) = Stog_date.to_date_time date in
     Printf.sprintf "%s %d %s %d"
-      days.(Netdate.week_day date)
-      date.day months.(date.month-1) date.year
+      days.(int_of_weekday (Stog_date.weekday date))
+      d months.(m-1) y
   in
   let string_of_datetime date =
+    let (_, ((h,mi,s), _)) = Stog_date.to_date_time date in
     Printf.sprintf "%s à %dh%02d"
-      (string_of_date date) date.hour date.minute
+      (string_of_date date) h mi
   in
   { days; months; string_of_date ; string_of_datetime }
 
@@ -69,12 +80,14 @@ let english =
     "July" ; "August" ; "September" ; "October" ; "November" ; "December" |]
   in
   let string_of_date date =
+    let ((y,m,d), _) = Stog_date.to_date_time date in
     Printf.sprintf "%s %d, %d"
-      months.(date.month-1) date.day date.year
+      months.(m-1) d y
   in
   let string_of_datetime date =
+    let (_, ((h,mi,s), _)) = Stog_date.to_date_time date in
     Printf.sprintf "%s at %dh%02d"
-      (string_of_date date) date.hour date.minute
+      (string_of_date date) h mi
   in
   { days; months; string_of_date ; string_of_datetime }
 
@@ -128,7 +141,4 @@ let string_of_datetime_opt lang = function
   None -> ""
 | Some d -> (data_of_lang lang).string_of_datetime d
 ;;
-
-let short_string_of_date { year; month; day } =
-  Printf.sprintf "%04d/%02d/%02d" year month day
 

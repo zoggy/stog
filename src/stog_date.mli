@@ -27,35 +27,20 @@
 (*                                                                               *)
 (*********************************************************************************)
 
-(** Inernationalization *)
+(** *)
 
-type lang_abbrev = string
+exception Invalid_date of string * string
 
-(** Such a structure must be defined for each language to support. *)
-type lang_data = {
-    days : string array;
-    months : string array;
-    string_of_date : Stog_types.date -> string;
-    string_of_datetime : Stog_types.date -> string;
-}
+type t
 
-val french : lang_data
-val english : lang_data
+val of_string : string -> t
+val of_string_date : string -> t
+val to_string : t -> string
 
-val register_lang : lang_abbrev -> lang_data -> unit
+val now : unit -> t
+val to_date_time : t -> Ptime.date * Ptime.time
 
-(** Use the given language abbreviation (such as "fr") to set the default
-     language. The language must have been registered previously (except
-     for predefined "en" and "fr" languages) or else the [Failure] exception
-     if raised. *)
-val set_default_lang : lang_abbrev -> unit
+(** Return week day from 0 (sunday) to 6 (saturday). *)
+val weekday : t -> [ `Fri | `Mon | `Sat | `Sun | `Thu | `Tue | `Wed ]
 
-val data_of_lang : lang_abbrev option -> lang_data
-
-val get_month : lang_abbrev option -> int -> string
-
-val string_of_date : lang_abbrev option -> Stog_types.date -> string
-val string_of_date_opt : lang_abbrev option -> Stog_types.date option -> string
-
-val string_of_datetime : lang_abbrev option -> Stog_types.date -> string
-val string_of_datetime_opt : lang_abbrev option -> Stog_types.date option -> string
+val format : t -> string -> string

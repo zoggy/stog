@@ -29,44 +29,30 @@
 
 (** *)
 
-type t = Neturl.url
+type t = Uri.t
 
 module W = Ocf.Wrapper
 
 type url_config = { pub : t; priv: t }
 
-(* register ws and wss url syntaxes, using http syntax *)
-let () =
-  let http_url_syntax =
-    try Hashtbl.find Neturl.common_url_syntax "http"
-    with Not_found -> failwith "No http syntax registered in Neturl !"
-  in
-  Hashtbl.add Neturl.common_url_syntax "ws" http_url_syntax ;
-  Hashtbl.add Neturl.common_url_syntax "wss" http_url_syntax
-
-let to_neturl t = t
-let of_neturl t = t
-
 let of_string s =
-  try Neturl.parse_url ~enable_fragment: true ~accept_8bits: true s
-  with Neturl.Malformed_URL ->
+  try Uri.of_string s
+  with _ ->
     failwith (Printf.sprintf "Malformed URL %S" s)
 ;;
-let to_string = Neturl.string_of_url;;
+let to_string = Uri.to_string ;;
 
 let path url =
-  match Neturl.url_path url with
-    "" :: q -> q
-  | x -> x
+  let l =
+    match Stog_misc.split_string ~keep_empty: true (Uri.path url) ['/'] with
+      "" :: q -> q
+    | x -> x
+  in
+  List.map Uri.pct_decode l
 
 let with_path url path =
-  (* to be compliant with Neturl, path must begin with "" *)
-  let path =
-    match path with
-    | "" :: _ -> path
-    | _ -> "" :: path
-  in
-  Neturl.modify_url ~path url
+  let path = List.map Uri.pct_encode path in
+  Uri.with_path url ("/"^(String.concat "/" path))
 
 let concat uri s =
   match s with
@@ -78,20 +64,20 @@ let concat uri s =
       with e ->
           prerr_endline
             (Printf.sprintf "url_concat: uri=%s url_path=%s, s=%s"
-             (to_string uri)
-               (String.concat "/" (Neturl.url_path uri)) s);
+             (to_string uri) (Uri.path uri) s);
           raise e
 ;;
 
 
 let field name f url =
-  try f url
-  with Not_found ->
-    failwith (Printf.sprintf "No %s in url %s" name (to_string url))
+  match f url with
+  | None ->
+      failwith (Printf.sprintf "No %s in url %s" name (to_string url))
+  | Some v -> v
 
-let scheme = field "scheme" Neturl.url_scheme
+let scheme = field "scheme" Uri.scheme
 let port t =
-  try field "port" Neturl.url_port t
+  try field "port" Uri.port t
   with e ->
     match scheme t with
     | exception _ -> raise e
@@ -99,10 +85,9 @@ let port t =
     | "https" | "wss" -> 443
     | _ -> raise e
 
-let host = field "host" Neturl.url_host
+let host = field "host" Uri.host
 
-
-let with_fragment t fragment = Neturl.modify_url ~fragment t
+let with_fragment = Uri.with_fragment
 
 let append uri p =
   let p0 =
@@ -115,21 +100,10 @@ let append uri p =
   with_path uri path
 
 let remove_ending_slash url =
-  try
-    match List.rev (Neturl.url_path url) with
-    | [""] -> url
-    | "" :: q -> Neturl.modify_url ~path: (List.rev q) url
-    | _ -> url
-  with Neturl.Malformed_URL ->
-      failwith (Printf.sprintf "Could not modify path of %S"  (to_string url))
-
-let remove ?scheme ?user ?user_param ?password
-    ?host ?port ?path ?param ?query ?fragment ?other t =
-    try Neturl.remove_from_url
-      ?scheme ?user ?user_param ?password
-        ?host ?port ?path ?param ?query ?fragment ?other t
-    with Neturl.Malformed_URL ->
-        failwith (Printf.sprintf "Malformed_URL: %s" (to_string t))
+  match List.rev (path url) with
+  | [""] -> url
+  | "" :: q -> with_path url (List.rev q)
+  | _ -> url
 
 let wrapper = W.string_ to_string of_string
 
@@ -156,4 +130,7 @@ let url_config_wrapper =
       { pub = priv ; priv }
   in
   W.make to_j from_j
+
 let default_url_config url = { pub = url ; priv = url }
+
+let remove_query t = Uri.with_query t []

@@ -189,7 +189,7 @@ let fun_doc_href ?typ src_doc href (stog, data) env ?loc args subs =
         let url = Stog_engine.doc_url stog doc in
         match id with
           None -> url
-        | Some id -> Stog_url.with_fragment url id
+        | Some id -> Stog_url.with_fragment url (Some id)
       in
       let xml = XR.node ("", "a")
         ~atts: (XR.atts_one ("", "href") [XR.cdata (Stog_url.to_string href)])

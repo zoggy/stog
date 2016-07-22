@@ -787,108 +787,11 @@ let html_of_keywords doc stog env ?loc args _ =
   (stog, List.flatten xmls)
 ;;
 
-(*
-(* FIXME: handle RSS files as any other document ? *)
-let rec doc_to_rss_item stog doc_id doc =
-  let link = Stog_engine.doc_url stog doc in
-  let pubdate =
-    match doc.doc_date with
-      None -> assert false
-    | Some d -> d
-  in
-  let f_word w =
-    { Rss.cat_name = w ; Rss.cat_domain = None }
-  in
-  let cats =
-    (List.map f_word doc.doc_topics) @
-    (List.map f_word doc.doc_keywords)
-  in
-  let (stog, env) = Stog_engine.doc_env stog (XR.env_empty()) stog doc in
-  let (stog, author) =
-    let (stog, author) = get_in_env stog env ("", "author") in
-    let author = XR.string_of_xmls author in
-    (stog, Stog_misc.opt_of_string author)
-  in
-  let (stog, desc_xml) = XR.apply_to_xmls stog env (intro_of_doc stog doc) in
-  let desc = XR.string_of_xmls desc_xml in
-  let item =
-    Rss.item ~title: doc.doc_title
-      ~desc
-      ~link
-      ~pubdate
-      ~cats
-      ~guid: (Rss.Guid_permalink link)
-      ?author
-      ()
-  in
-  (stog, item)
-
-and generate_rss_feed_file stog ?title link docs file =
-  let docs = (* no reverse since the list is reversed
-    below in a List.fold_left when converting to items *)
-    Stog_types.sort_ids_docs_by_date docs
-  in
-  let docs = List.filter
-    (fun (_,doc) -> match doc.doc_date with None -> false | _ -> true)  docs
-  in
-  let (stog, items) = List.fold_left
-    (fun (stog, acc) (id, doc) ->
-       let (stog, item) = doc_to_rss_item stog id doc in
-       (stog, item :: acc)
-    )
-      (stog, [])
-      docs
-  in
-  let title = Printf.sprintf "%s%s"
-    stog.stog_title
-    (match title with None -> "" | Some t -> Printf.sprintf ": %s" t)
-  in
-  let pubdate =
-    match docs with
-      [] -> None
-    | (_,h) :: _ -> h.doc_date
-  in
-  let image =
-    try
-      let file =
-        match Stog_types.get_def stog.stog_defs ("", "rss-image") with
-          Some (_,xmls) -> XR.string_of_xmls xmls
-        | None -> ""
-      in
-      let url = Stog_types.url_concat stog.stog_base_url file in
-      let image = {
-          Rss.image_url = url ;
-          image_title = stog.stog_title ;
-          image_link = stog.stog_base_url ;
-          image_height = None ;
-          image_width = None ;
-          image_desc = None ;
-        }
-      in
-      Some image
-    with
-      Not_found -> None
-  in
-  let desc = String.concat "" (List.map XR.string_of_xml stog.stog_desc) in
-  let channel =
-    Rss.channel ~title ~link
-    ~desc ?image
-    ~managing_editor: stog.stog_email
-    ?pubdate ?last_build_date: pubdate
-    ~generator: "Stog"
-    items
-  in
-  let channel = Rss.keep_n_items stog.stog_rss_length channel in
-  Rss.print_file ~encoding: "UTF-8" file channel;
-  stog
-*)
-
-
 let format_date d f stog args =
   let s =
     match XR.get_att_cdata args ("","format") with
       None -> f stog.stog_lang d
-    | Some fmt -> Netdate.format ~fmt d
+    | Some fmt -> Stog_date.format d fmt
   in
   (stog, [ XR.cdata s ])
 ;;
@@ -905,19 +808,19 @@ let fun_date = fun_date_gen Stog_intl.string_of_date ;;
 let fun_datetime = fun_date_gen Stog_intl.string_of_datetime ;;
 
 let fun_date_today stog env ?loc args _ =
-  let d = Netdate.create (Unix.time()) in
+  let d = Stog_date.now () in
   format_date d Stog_intl.string_of_date stog args;;
 
 let fun_date_now stog env ?loc args _ =
-  let d = Netdate.create (Unix.time()) in
+  let d = Stog_date.now () in
   format_date d Stog_intl.string_of_datetime stog args;;
 
-let fun_print_date_gen f stog ?loc args subs =
+let fun_print_date_gen of_string f stog ?loc args subs =
   match XR.merge_cdata_list subs with
     [XR.D cdata] ->
       begin
         try
-          let d = Stog_io.date_of_string cdata.Xml.text in
+          let d = of_string cdata.Xml.text in
           format_date d f stog args
         with Failure s ->
           Stog_msg.error ?loc: cdata.Xml.loc s;
@@ -926,9 +829,12 @@ let fun_print_date_gen f stog ?loc args subs =
   | _ -> raise XR.No_change
 
 let fun_print_date stog env ?loc args subs =
-  fun_print_date_gen Stog_intl.string_of_date stog args subs;;
+  fun_print_date_gen
+    Stog_date.of_string_date Stog_intl.string_of_date stog args subs;;
+
 let fun_print_datetime stog env ?loc args subs =
-  fun_print_date_gen Stog_intl.string_of_datetime stog args subs;;
+  fun_print_date_gen
+    Stog_date.of_string Stog_intl.string_of_datetime stog args subs;;
 
 let on_doc_path f stog env ?loc args _ =
 

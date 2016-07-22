@@ -67,6 +67,7 @@ LIB_CMXFILES= \
 	stog_path.cmx \
 	stog_filter_types.cmx \
 	stog_url.cmx \
+	stog_date.cmx \
 	stog_types.cmx \
 	stog_intl.cmx \
 	stog_find.cmx \

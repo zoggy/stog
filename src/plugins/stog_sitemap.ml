@@ -94,7 +94,7 @@ let gen_sitemap stog data entries =
      node ("","url")
       ((node ("","loc") [cdata (Stog_url.to_string e.url_loc)]) ::
         (node ("","lastmod")
-         [cdata (Netdate.format ~fmt: "%Y-%m-%dT%T%:z" e.url_lastmod)]
+         [cdata (Stog_date.to_string e.url_lastmod)]
         ) ::
           (match e.url_freq with
              None -> []
@@ -131,7 +131,7 @@ let generate =
     with
       false -> acc
     | true ->
-        let url_lastmod = Stog_types.today () in
+        let url_lastmod = Stog_date.now () in
         let url_freq =
           match Stog_types.get_def doc.doc_defs ("","sitemap-frequency") with
           | Some (_, [XR.D s]) -> Stog_misc.opt_of_string s.Xml.text

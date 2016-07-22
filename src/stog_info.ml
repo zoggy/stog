@@ -205,7 +205,8 @@ let compute_archives stog =
   let f_art doc_id doc ymap =
     match doc.doc_date with
       None -> ymap
-    | Some  {Netdate.year = year; Netdate.month = month } ->
+    | Some  dt ->
+        let ((year, month, _), _) = Stog_date.to_date_time dt in
         let mmap =
           try Stog_types.Int_map.find year ymap
           with Not_found -> Stog_types.Int_map.empty

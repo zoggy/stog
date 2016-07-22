@@ -1716,7 +1716,7 @@ fi
 SHARE_DIR=$datadir
 
 
-PACKAGES=ppx_blob,xtmpl,netstring,ocf,ocf.ppx,dynlink,unix,str,higlo.lexers,lwt.unix,xtmpl.ppx
+PACKAGES=ppx_blob,xtmpl,ptime,ocf,ocf.ppx,dynlink,unix,str,higlo.lexers,lwt.unix,xtmpl.ppx,uri
 OCAML_SESSION_PACKAGES=xtmpl,unix,str,compiler-libs.toplevel
 SERVER_PACKAGES=lwt.preemptive,lwt.ppx,websocket,xmldiff,yojson,ppx_deriving_yojson,ojs.server,sha
 SERVER_JS_PACKAGES=js_of_ocaml,js_of_ocaml.syntax,xmldiff.js,yojson,ppx_deriving_yojson,xtmpl.js,ojs.js

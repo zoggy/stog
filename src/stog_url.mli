@@ -44,22 +44,13 @@ val append : t -> string list -> t
 val path : t -> string list
 val with_path : t -> string list -> t
 val remove_ending_slash : t -> t
-val with_fragment : t -> string -> t
-val remove :
-  ?scheme:bool -> ?user:bool ->
-    ?user_param:bool -> ?password:bool ->
-    ?host:bool -> ?port:bool ->
-    ?path:bool -> ?param:bool ->
-    ?query:bool -> ?fragment:bool ->
-    ?other:bool -> t -> t
+
+val remove_query : t -> t
+val with_fragment : t -> string option -> t
 
 (** {2 Accessing parts of URLs} Raise [Failure] if the requested part is not defined. *)
 
 val scheme: t -> string
 val port : t -> int
 val host : t -> string
-
-val of_neturl : Neturl.url -> t
-val to_neturl : t -> Neturl.url
-
 

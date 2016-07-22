@@ -13,6 +13,9 @@ stog_cut.cmo : stog_types.cmi stog_tags.cmi stog_path.cmi stog_msg.cmi \
 stog_cut.cmx : stog_types.cmx stog_tags.cmx stog_path.cmx stog_msg.cmx \
     stog_misc.cmx stog_cut.cmi
 stog_cut.cmi : stog_types.cmi stog_path.cmi
+stog_date.cmo : stog_date.cmi
+stog_date.cmx : stog_date.cmi
+stog_date.cmi :
 stog_deps.cmo : stog_types.cmi stog_path.cmi stog_msg.cmi stog_misc.cmi \
     stog_deps.cmi
 stog_deps.cmx : stog_types.cmx stog_path.cmx stog_msg.cmx stog_misc.cmx \
@@ -105,9 +108,9 @@ stog_intl.cmo : stog_types.cmi stog_intl.cmi
 stog_intl.cmx : stog_types.cmx stog_intl.cmi
 stog_intl.cmi : stog_types.cmi
 stog_io.cmo : stog_url.cmi stog_types.cmi stog_path.cmi stog_msg.cmi \
-    stog_misc.cmi stog_find.cmi stog_config.cmi stog_io.cmi
+    stog_misc.cmi stog_find.cmi stog_date.cmi stog_config.cmi stog_io.cmi
 stog_io.cmx : stog_url.cmx stog_types.cmx stog_path.cmx stog_msg.cmx \
-    stog_misc.cmx stog_find.cmx stog_config.cmx stog_io.cmi
+    stog_misc.cmx stog_find.cmx stog_date.cmx stog_config.cmx stog_io.cmi
 stog_io.cmi : stog_types.cmi
 stog_latex.cmo : stog_url.cmi stog_types.cmi stog_tags.cmi stog_of_latex.cmi \
     stog_misc.cmi stog_engine.cmi stog_latex.cmi
@@ -282,12 +285,12 @@ stog_trie.cmx : stog_trie.cmi
 stog_trie.cmi :
 stog_types.cmo : stog_url.cmi stog_trie.cmi stog_tmap.cmi stog_path.cmi \
     stog_misc.cmi stog_install.cmi stog_graph.cmi stog_filter_types.cmi \
-    stog_config.cmi stog_types.cmi
+    stog_date.cmi stog_config.cmi stog_types.cmi
 stog_types.cmx : stog_url.cmx stog_trie.cmx stog_tmap.cmx stog_path.cmx \
     stog_misc.cmx stog_install.cmx stog_graph.cmx stog_filter_types.cmx \
-    stog_config.cmx stog_types.cmi
+    stog_date.cmx stog_config.cmx stog_types.cmi
 stog_types.cmi : stog_url.cmi stog_trie.cmi stog_tmap.cmi stog_path.cmi \
-    stog_graph.cmi stog_filter_types.cmi
-stog_url.cmo : stog_url.cmi
-stog_url.cmx : stog_url.cmi
+    stog_graph.cmi stog_filter_types.cmi stog_date.cmi
+stog_url.cmo : stog_misc.cmi stog_url.cmi
+stog_url.cmx : stog_misc.cmx stog_url.cmi
 stog_url.cmi :

@@ -50,8 +50,10 @@ let rec rewrite_href url xml =
                let url2 =
                  try
                    let href_url = Stog_url.of_string href in
-                   let url2 = Stog_url.remove
-                     ~query: true ~fragment: true href_url
+                   let url2 =
+                       Stog_url.with_fragment
+                         (Stog_url.remove_query href_url)
+                         None
                    in
                    Some (Stog_url.to_string url2)
                  with

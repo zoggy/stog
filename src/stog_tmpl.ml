@@ -182,9 +182,7 @@ let doc_in_list stog =
 let keyword stog = (stog, parse "<span itemprop=\"keywords\"><keyword/></span>");;
 let topic stog = (stog, parse "<span itemprop=\"keywords\"><topic/></span>");;
 
-let default_date =
-  Netdate.format ~fmt: "%d %b %Y %T %z"
-    (Netdate.create (Unix.time()));;
+let default_date = Stog_date.(to_string (now ()))
 
 let rss stog =
   let xml = parse

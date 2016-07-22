@@ -44,18 +44,6 @@ let first_that_exists =
   iter
 ;;
 
-let date_of_string s =
-  try Netdate.parse s
-  with _ -> failwith ("Invalid date: "^s)
-;;
-(*
-  try Scanf.sscanf s "%d/%d/%d" (fun year month day -> {day; month; year})
-  with
-  | Scanf.Scan_failure _ -> failwith ("Invalid date: "^s)
-  | End_of_file -> failwith (Printf.sprintf "Incomplete date \"%s\"" s)
-;;
-*)
-
 let topics_of_string s =
   List.map Stog_misc.strip_string
     (Stog_misc.split_string s [','; ';'])
@@ -209,7 +197,8 @@ let fill_doc_from_atts =
     | ("","title") -> { doc with doc_title = (to_s v) }
     | ("","keywords") -> { doc with doc_keywords = keywords_of_string (to_s v) }
     | ("","topics") -> { doc with doc_topics = topics_of_string (to_s v) }
-    | ("","date") -> { doc with doc_date = Some (date_of_string (to_s v)) }
+    | ("","date") -> { doc with doc_date = Some (Stog_date.of_string_date (to_s v)) }
+    | ("","datetime") -> { doc with doc_date = Some (Stog_date.of_string (to_s v)) }
     | ("","sets") -> { doc with doc_sets = sets_of_string (to_s v) }
     | ("","language-dep") -> { doc with doc_lang_dep = bool_of_string (to_s v) }
     | ("", "use") ->
@@ -232,7 +221,8 @@ let fill_doc_from_nodes =
         | ("", "title") -> { doc with doc_title = v }
         | ("", "keywords") -> { doc with doc_keywords = keywords_of_string v }
         | ("", "topics") -> { doc with doc_topics = topics_of_string v }
-        | ("", "date") -> { doc with doc_date = Some (date_of_string v) }
+        | ("", "date") -> { doc with doc_date = Some (Stog_date.of_string_date v) }
+        | ("", "datetime") -> { doc with doc_date = Some (Stog_date.of_string v) }
         | ("", "sets") -> { doc with doc_sets = sets_of_string v }
         | ("", "language-dep") -> { doc with doc_lang_dep = bool_of_string v }
         | ("", "use") -> { doc with doc_used_mods = used_mods_of_string doc.doc_used_mods v }

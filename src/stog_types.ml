@@ -32,7 +32,7 @@
 module XR = Xtmpl_rewrite
 module Xml = Xtmpl_xml
 
-type date = Netdate.t
+type date = Stog_date.t
 
 type 'a tree = 'a tree_node
 and 'a tree_node = Node of 'a * 'a tree list
@@ -74,8 +74,6 @@ type doc =
     doc_used_mods : Str_set.t ;
   }
 and doc_id = doc Stog_tmap.key
-
-let today () = Netdate.create (Unix.time()) ;;
 
 let make_doc ?(typ="dummy") ?(path=Stog_path.path [] false) ?prolog () =
   { doc_path = path ;

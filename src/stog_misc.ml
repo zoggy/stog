@@ -182,7 +182,7 @@ let lowercase s =
       | 'ô' | 'ö' -> 'o'
       | 'ù' | 'û' | 'ü' -> 'u'
       | 'ç' -> 'c'
-      | c -> Char.lowercase c
+      | c -> Char.lowercase_ascii c
     in
     Buffer.add_char b c
   done;

@@ -1,4 +1,9 @@
 Next release:
+* use Uri instead of Neturl
+* use Ptime instead of Netdate
+* change of %-format usable in datetime format
+* date attribute for documents is now used to specify only dates
+* datetime attribute for documents must now be used to specify datetime
 * adapt to new behaviour of input_value in ocaml 4.03.0
 * sectionning rules now generate role="heading" and aria-level="..."
 * <ocaml-eval> and <run> use <span> instead of <div> in <pre> nodes, to

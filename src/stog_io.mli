@@ -29,11 +29,6 @@
 
 (** Building a stog structure from a project tree. *)
 
-(** Parse a date. @raise Failure if the date format is incorrect.
-  See Netdate module documentation for details about accepted formats.
-*)
-val date_of_string : string -> Netdate.t
-
 (** [bool_of_string "0" = false] and [bool_of_string "false" = false].
   [bool_of_string] returns [true] for any other value. *)
 val bool_of_string : string -> bool

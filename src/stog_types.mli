@@ -32,7 +32,7 @@
 module XR = Xtmpl_rewrite
 module Xml = Xtmpl_xml
 
-type date = Netdate.t
+type date = Stog_date.t
 
 type body = XR.tree list
 
@@ -64,8 +64,6 @@ type doc = {
 type doc_id = doc Stog_tmap.key
 
 val make_doc : ?typ:string -> ?path:Stog_path.path -> ?prolog: Xml.prolog -> unit -> doc
-
-val today : unit -> date
 
 module Path_trie : Stog_trie.S with type symbol = string
 module Doc_set : Set.S with type elt = doc_id
