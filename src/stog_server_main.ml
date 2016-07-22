@@ -44,7 +44,9 @@ let start_server current_state ~http_url ~ws_url base_path =
   let host = Stog_url.host http_url.priv in
   let port = Stog_url.port http_url.priv in
   Lwt_io.write Lwt_io.stdout
-    (Printf.sprintf "Listening for HTTP request on: %s:%d\n" host port)
+    (Printf.sprintf "Listening for HTTP request on: %s:%d\n\
+    Open http://%s:%s/preview"
+      host port host port)
   >>= fun _ ->
   let conn_closed (_,id) =
     ignore(Lwt_io.write Lwt_io.stdout
