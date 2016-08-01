@@ -29,12 +29,10 @@
 
 (** *)
 
-exception Invalid_date of string * string
-
 type t
 
-val of_string : string -> t
-val of_string_date : string -> t
+val of_string : ?loc: Xtmpl_xml.loc -> string -> t
+val of_string_date : ?loc: Xtmpl_xml.loc -> string -> t
 val to_string : t -> string
 
 val now : unit -> t

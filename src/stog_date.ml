@@ -29,16 +29,12 @@
 
 (** *)
 
-exception Invalid_date of string * string
-
-let invalid_date str err = raise (Invalid_date (str, err))
-
 type t =
   { stamp : Ptime.t ;
     tz: Ptime.tz_offset_s option ;
   }
 
-let of_string str =
+let of_string ?loc str =
   match Ptime.of_rfc3339 str with
      Ok (stamp, tz, _) -> { stamp ; tz }
    | Error (`RFC3339 ((p1,p2), e)) ->
@@ -51,9 +47,15 @@ let of_string str =
       Ptime.pp_rfc3339_error fmt e;
       Format.pp_print_flush fmt () ;
       let err = Buffer.contents b in
-      invalid_date str err
+      Stog_error.invalid_date ?loc str err
 
-let of_string_date str = of_string (str^"T00:00:00Z")
+let of_string_date ?loc str =
+  try of_string ?loc (str^"T00:00:00Z")
+  with e ->
+      (* backward compatibility handling of YYYY/MM/DD *)
+      try Scanf.sscanf str "%d/%d/%d"
+        (fun y m d -> of_string ?loc (Printf.sprintf "%04d-%02d-%02dT00:00:00Z" y m d))
+      with _ -> raise e
 
 let to_string t = Ptime.to_rfc3339 ?tz_offset_s: t.tz t.stamp
 

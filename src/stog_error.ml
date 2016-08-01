@@ -32,6 +32,7 @@
 type error =
 | Loc of Xtmpl_xml.loc * exn
 | Template_file_not_found of string
+| Invalid_date of string * string
 
 exception Error of error
 
@@ -47,6 +48,8 @@ let template_file_not_found ?loc file =
 let rec string_of_error ?(to_string=Printexc.to_string) = function
 | Template_file_not_found file ->
     Printf.sprintf "Template file not found: %s" file
+| Invalid_date (str, err) ->
+    Printf.sprintf "Invalid date %S:\n%s" str err
 | Loc (loc, e) ->
     let str =
       match e with
@@ -56,4 +59,6 @@ let rec string_of_error ?(to_string=Printexc.to_string) = function
       | _ -> to_string e
     in
     Printf.sprintf "From %s\n%s" (Xtmpl_xml.string_of_loc loc) str
+
+let invalid_date ?loc str err = error_loc ?loc (Error (Invalid_date (str, err)))
 

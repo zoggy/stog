@@ -187,18 +187,21 @@ let add_doc stog doc =
   Stog_types.add_doc stog doc
 ;;
 
-
-
 let fill_doc_from_atts =
   let to_s = function [XR.D s] -> s.Xml.text | _ -> "" in
+  let to_s_loc = function [XR.D s] -> (s.Xml.text, s.Xml.loc) | _ -> ("", None) in
   let f name v doc =
     match name with
     | ("","with-contents")-> doc
     | ("","title") -> { doc with doc_title = (to_s v) }
     | ("","keywords") -> { doc with doc_keywords = keywords_of_string (to_s v) }
     | ("","topics") -> { doc with doc_topics = topics_of_string (to_s v) }
-    | ("","date") -> { doc with doc_date = Some (Stog_date.of_string_date (to_s v)) }
-    | ("","datetime") -> { doc with doc_date = Some (Stog_date.of_string (to_s v)) }
+    | ("","date") ->
+        let (s, loc) = to_s_loc v in
+        { doc with doc_date = Some (Stog_date.of_string_date ?loc s) }
+    | ("","datetime") ->
+        let (s, loc) = to_s_loc v in
+        { doc with doc_date = Some (Stog_date.of_string ?loc s) }
     | ("","sets") -> { doc with doc_sets = sets_of_string (to_s v) }
     | ("","language-dep") -> { doc with doc_lang_dep = bool_of_string (to_s v) }
     | ("", "use") ->
@@ -214,15 +217,15 @@ let fill_doc_from_nodes =
   let f doc xml =
     match xml with
     | XR.D _ | XR.C _ | XR.PI _ -> doc
-    | XR.E { XR.name ; atts ; subs} ->
+    | XR.E { XR.name ; atts ; subs ; loc } ->
         let v = XR.to_string subs in
         match name with
         | ("", "contents") -> { doc with doc_body = subs }
         | ("", "title") -> { doc with doc_title = v }
         | ("", "keywords") -> { doc with doc_keywords = keywords_of_string v }
         | ("", "topics") -> { doc with doc_topics = topics_of_string v }
-        | ("", "date") -> { doc with doc_date = Some (Stog_date.of_string_date v) }
-        | ("", "datetime") -> { doc with doc_date = Some (Stog_date.of_string v) }
+        | ("", "date") -> { doc with doc_date = Some (Stog_date.of_string_date ?loc v) }
+        | ("", "datetime") -> { doc with doc_date = Some (Stog_date.of_string ?loc v) }
         | ("", "sets") -> { doc with doc_sets = sets_of_string v }
         | ("", "language-dep") -> { doc with doc_lang_dep = bool_of_string v }
         | ("", "use") -> { doc with doc_used_mods = used_mods_of_string doc.doc_used_mods v }

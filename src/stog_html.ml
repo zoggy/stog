@@ -830,14 +830,13 @@ let fun_print_date_gen of_string f stog ?loc args subs =
 
 let fun_print_date stog env ?loc args subs =
   fun_print_date_gen
-    Stog_date.of_string_date Stog_intl.string_of_date stog args subs;;
+    (Stog_date.of_string_date ?loc) Stog_intl.string_of_date stog args subs;;
 
 let fun_print_datetime stog env ?loc args subs =
   fun_print_date_gen
-    Stog_date.of_string Stog_intl.string_of_datetime stog args subs;;
+    (Stog_date.of_string ?loc) Stog_intl.string_of_datetime stog args subs;;
 
 let on_doc_path f stog env ?loc args _ =
-
   f stog doc
 
 let rec build_base_rules stog doc_id =

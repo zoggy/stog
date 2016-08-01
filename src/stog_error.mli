@@ -37,5 +37,6 @@ val error : error -> 'a
 val error_loc : ?loc: Xtmpl_xml.loc -> exn -> 'a
 
 val template_file_not_found : ?loc: Xtmpl_xml.loc -> string -> 'a
+val invalid_date : ?loc: Xtmpl_xml.loc -> string -> string -> 'a
 
 val string_of_error : ?to_string: (exn -> string) -> error -> string
