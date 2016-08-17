@@ -18,6 +18,7 @@ package "disqus" (
 package "markdown" (
   version = "@VERSION@"
   description = "Stog markdown plugin"
+  requires = "omd"
   archive(byte) = "stog_markdown.cmo"
   archive(native) = "stog_markdown.cmx"
   archive(plugin,byte) = "stog_markdown.cmo"

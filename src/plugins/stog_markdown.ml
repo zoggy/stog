@@ -62,37 +62,54 @@ module Xml = Xtmpl_xml
 
 let maybe_arg args key ~default =
   match XR.get_att_cdata args key with
-    | None -> default
-    | Some v -> v
+  | None -> default
+  | Some v -> v
 
-let fun_markdown stog env ?loc args subs =
-  let command = maybe_arg args ("", "command") ~default:"markdown" in
+let run_command command ?loc args input =
   let args = maybe_arg args ("", "args") ~default:"" in
-  let input =
-    match subs with
-      | [ XR.D text ] -> text.Xml.text
-      | _ -> XR.to_string subs
-  in
   let input_file = Filename.temp_file "stog" "markdown_input" in
   Stog_misc.file_of_string ~file:input_file input;
   let output_file = Filename.temp_file "stog" "markdown_output" in
   let com =
     Printf.sprintf "%s %s < %s > %s"
-      command args (Filename.quote input_file) (Filename.quote output_file) in
+      command args (Filename.quote input_file) (Filename.quote output_file)
+  in
   match Sys.command com with
       0 ->
       let output = Stog_misc.string_of_file output_file in
       Sys.remove input_file;
       Sys.remove output_file;
-      (* markdown may contain HTML portions meant to be processed by
-         XR, so we re-run XR.apply here *)
-      let (stog, applied_output) = XR.apply_to_string stog env output in
-      (stog, applied_output)
-  | _ -> 
+      output
+  | _ ->
       Stog_msg.error ?loc ("Command failed: "^com);
       Sys.remove input_file;
       Sys.remove output_file;
-      (stog, [])
+      ""
+
+let cs ~lang code =
+  let xmls = Stog_highlight.highlight ~lang code in
+  XR.to_string xmls
+
+let use_omd ?loc args input =
+  let md = Omd.of_string input in
+  let html = Omd.to_html ~pindent:false ~nl2br:false ~cs md in
+  html
+
+let fun_markdown stog env ?loc args subs =
+  let input =
+    match subs with
+      | [ XR.D text ] -> text.Xml.text
+      | _ -> XR.to_string subs
+  in
+  let output =
+    match XR.get_att_cdata args ("","command") with
+      None -> use_omd ?loc args input
+    | Some command -> run_command command ?loc args input
+  in
+  (* markdown may contain HTML portions meant to be processed by
+     XR, so we re-run XR.apply here *)
+  let (stog, applied_output) = XR.apply_to_string stog env output in
+  (stog, applied_output)
 ;;
 
 let () = Stog_plug.register_html_base_rule ("", "markdown") fun_markdown;;

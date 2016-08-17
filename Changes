@@ -1,4 +1,6 @@
 Next release:
+* Markdown plugin now uses Omd, except if a command attribute is specified
+  in <markdown> node
 * use Uri instead of Neturl
 * use Ptime instead of Netdate
 * change of %-format usable in datetime format

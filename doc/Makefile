@@ -39,7 +39,7 @@ BASE_URL_OPTION=
 STOG_OPTIONS=\
 	--plugin ../src/plugins/stog_asy.cmxs \
   --plugin ../src/plugins/stog_dot.cmxs \
-	--plugin ../src/plugins/stog_markdown.cmxs \
+	--plugin ../src/plugins/stog_markdown.cmxs --package omd \
 	--plugin ../src/plugins/stog_multi_doc.cmxs \
 	--plugin ../src/plugins/stog_disqus.cmxs \
 	--plugin ../src/plugins/stog_sitemap.cmxs \

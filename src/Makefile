@@ -216,6 +216,12 @@ $(MSERVER_BYTE): $(LIB_BYTE) $(LIB_SERVER_BYTE) $(PLUGIN_MSERVER_BYTE) stog_main
 	$(OCAMLFIND) ocamlc$(PBYTE) -package $(PACKAGES),$(SERVER_PACKAGES),$(MSERVER_PACKAGES) \
 	-linkall -linkpkg -o $@ $(COMPFLAGS) $^
 
+plugins/stog_markdown.cmo: plugins/stog_markdown.ml
+	$(OCAMLFIND) ocamlc -package $(PACKAGES),omd -c $(COMPFLAGS) $<
+
+plugins/stog_markdown.cmxs: plugins/stog_markdown.ml
+	$(OCAMLFIND) ocamlopt -package $(PACKAGES),omd -o $@ -shared $(COMPFLAGS) $<
+
 #	`$(OCAMLFIND) query -predicates byte -r -a-format compiler-libs.toplevel` $^
 
 $(SERVER_JS): stog_server_types.cmi stog_server_types.cmo \

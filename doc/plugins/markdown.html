@@ -6,20 +6,15 @@ with-contents="true"
 <p>
 This plugin allows <span id="desc">using
 <ext-a href="https://en.wikipedia.org/wiki/Markdown">Markdown</ext-a> syntax
-in Stog documents</span>, by calling an external tool to convert this syntax
-to XHTML.
-</p>
-<p class="alert alert-warning">
-By default, the <rule>markdown</rule> calls the
-<code>markdown</code> command, so make sure that
-<ext-a href="http://daringfireball.net/projects/markdown/">markdown</ext-a>
-is installed.
+in Stog documents</span>, by converting this syntax
+to XHTML, using the <ext-a href="https://github.com/ocaml/omd/">Omd library</ext-a>
+or by calling an external command.
 </p>
 
 <p>Usage:</p>
 <command-line>$ stog --package stog.markdown ...</command-line>
 <p>
-This plugin was contributed by
+The first version of this plugin was contributed by
 <ext-a href="http://gallium.inria.fr/~scherer/">Gabriel Scherer</ext-a>.
 </p>
 
@@ -37,12 +32,16 @@ a markup language meant to be written simply in a text editor,
 with a markup that is both easy to read and write. It is later
 translated into HTML by one of the numerous `markdown`
 implementations.
+
+````ocaml
+let f x = x + 1;;
+````
  </markdown>
 ]]></div>
 <hcode lang="xml" defer_="1"><include href="#code1" subs-only="true"/></hcode>
 <p>
-The <rule>markdown</rule> rule calls the <code>markdown</code> command
-line tool to convert Markdown syntax to (X)HTML.
+The <rule>markdown</rule> rule converts Markdown syntax to (X)HTML, which is then
+rewritten by the Stog engine like any other XML.
 Here is the result, embedded in a box:
 </p>
 <div class="alert alert-info">
@@ -54,8 +53,8 @@ Here is the result, embedded in a box:
 <p>The <rule>markdown</rule> rule handles attributes <code>command</code>
 and <code>args</code>.
 </p>
-<p>The <code>command</code> attribute is used to specify another command
-than <code>markdown</code>. The value of <code>args</code> attribute
+<p>The <code>command</code> attribute is used to specify an external command
+to run to convert Markdown to (X)HTML. The value of <code>args</code> attribute
 is added on the command line.
 </p>
 <p>Here is an example of using <code>pandoc</code> command, using
@@ -71,7 +70,11 @@ a markup language meant to be written simply in a text editor,
 with a markup that is both easy to read and write. It is later
 translated into HTML by one of the numerous `markdown`
 implementations.
- </markdown>
+
+````ocaml
+let f x = x + 1;;
+````
+</markdown>
 ]]></div>
 <hcode lang="xml" defer_="1"><include href="#code2" subs-only="true"/></hcode>
 <p>
