@@ -86,12 +86,12 @@ let format t fmt =
           if prev_cp = cp_percent then
             let () =
               match cp with
-              | 131 (* Y *) -> Buffer.add_string b (string_of_int y)
-              | 115 (* M *) -> Buffer.add_string b (string_of_int m)
-              | 104 (* D *) -> Buffer.add_string b (string_of_int d)
-              | 150 (* h *) -> Buffer.add_string b (string_of_int h)
-              | 155 (* m *) -> Buffer.add_string b (string_of_int m)
-              | 163 (* s *) -> Buffer.add_string b (string_of_int s)
+              | 89 (* Y *) -> Buffer.add_string b (string_of_int y)
+              | 77 (* M *) -> Printf.bprintf b "%02d" m
+              | 68 (* D *) -> Printf.bprintf b "%02d" d
+              | 104 (* h *) -> Printf.bprintf b "%02d" h
+              | 109 (* m *) -> Printf.bprintf b "%02d" mi
+              | 115 (* s *) -> Printf.bprintf b "%02d" s
               | n when n = cp_percent -> Buffer.add_char b '%'
               | _ ->
                   Uutf.Buffer.add_utf_8 b prev_cp ;
