@@ -70,10 +70,44 @@ let to_date_time t =
 let weekday t = Ptime.weekday t.stamp
   (* FIXME: give tz_offset_s parameter when weekday accepts it *)
 
+let to_rfc_822 t =
+  let wd =
+    match weekday t with
+    | `Sun -> "Sun"
+    | `Mon -> "Mon"
+    | `Tue -> "Tue"
+    | `Wed -> "Wed"
+    | `Thu -> "Thu"
+    | `Fri -> "Fri"
+    | `Sat -> "Sat"
+  in
+  let ((y,m,d),((h,mi,s),tz)) = to_date_time t in
+  let mon =
+    match m with
+      1 -> "Jan"
+    | 2 -> "Feb"
+    | 3 -> "Mar"
+    | 4 -> "Apr"
+    | 5 -> "May"
+    | 6 -> "Jun"
+    | 7 -> "Jul"
+    | 8 -> "Aug"
+    | 9 -> "Sep"
+    | 10 -> "Oct"
+    | 11 -> "Nov"
+    | _ -> "Dec"
+  in
+  let abs_tz = abs tz in
+  Printf.sprintf "%s %02d %s %04d %02d:%02d:%02d %c%02d%02d"
+    wd d mon y h mi s
+    (if tz < 0 then '-' else '+')
+    (abs_tz mod 3600) (abs_tz mod 60)
+
 let cp_percent = Char.code '%'
 let format t fmt =
   match fmt with
     "rfc3339" -> to_string t
+  | "rfc822" -> to_rfc_822 t
   | _ ->
       let b = Buffer.create 256 in
       let ((y,m,d),((h,mi,s),tz)) = to_date_time t in
