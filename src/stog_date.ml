@@ -98,7 +98,7 @@ let to_rfc_822 t =
     | _ -> "Dec"
   in
   let abs_tz = abs tz in
-  Printf.sprintf "%s %02d %s %04d %02d:%02d:%02d %c%02d%02d"
+  Printf.sprintf "%s, %02d %s %04d %02d:%02d:%02d %c%02d%02d"
     wd d mon y h mi s
     (if tz < 0 then '-' else '+')
     (abs_tz mod 3600) (abs_tz mod 60)
