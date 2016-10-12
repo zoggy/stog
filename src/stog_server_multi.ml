@@ -65,7 +65,12 @@ let action_form_login app_url =
   in
   Stog_url.to_string url
 
-let sha256 s = String.lowercase (Sha256.to_hex (Sha256.string s))
+let sha256 s =
+  Cryptokit.(
+    let h = Hash.sha256 () in
+    let t = Hexa.encode () in
+    String.lowercase (transform_string t (hash_string h s))
+  )
 
 let respond_page page =
   let body = XR.to_string page in

@@ -150,7 +150,6 @@ let run_server read_stog current_state active_cons ws_url base_path =
   Nocrypto_entropy_lwt.initialize () >>
   Conduit_lwt_unix.endp_to_server ~ctx endp >>= fun server ->
     Websocket_lwt.establish_standard_server ~ctx ~mode: server
-    ~g: !Nocrypto.Rng.generator
     (handle_con read_stog current_state active_cons base_path)
 ;;
 

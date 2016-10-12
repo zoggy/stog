@@ -36,6 +36,7 @@ val of_string_date : ?loc: Xtmpl_xml.loc -> string -> t
 val to_string : t -> string
 
 val now : unit -> t
+val of_float : float -> t
 val to_date_time : t -> Ptime.date * Ptime.time
 
 (** Return week day from 0 (sunday) to 6 (saturday). *)

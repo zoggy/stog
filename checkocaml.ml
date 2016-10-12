@@ -902,12 +902,14 @@ let _ =
 let _ = !print "\n### checking required tools and libraries ###\n"
 
 
-let _ = check_ocamlfind_package conf ~min_version: [0;13;0] "xtmpl";;
-let _ = check_ocamlfind_package conf ~min_version: [3;6] "netstring";;
+let _ = check_ocamlfind_package conf ~min_version: [0;14;0] "xtmpl";;
+let _ = check_ocamlfind_package conf ~min_version: [0;8;2] "ptime";;
+let _ = check_ocamlfind_package conf ~min_version: [1;3;0] "omd";;
 let _ = check_ocamlfind_package conf ~min_version: [0;4] "ocf";;
 let _ = check_ocamlfind_package conf ~min_version: [0;5] "higlo";;
+let _ = check_ocamlfind_package conf ~min_version: [1;9;2] "uri";;
 let _ = check_ocamlfind_package conf ~min_version: [2;5] "lwt.unix";;
-let _ = check_ocamlfind_package conf ~fail: false ~min_version: [0;1] "ppx_blob";;
+let _ = check_ocamlfind_package conf ~fail: false ~min_version: [0;2] "ppx_blob";;
 
 
 let _ =
@@ -922,11 +924,10 @@ let _ =
       check_ocamlfind_package conf ~fail: false ~min_version: [2;5] "lwt.preemptive";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff.js";
-      check_ocamlfind_package conf ~fail: false ~min_version: [2;2] "websocket";
+      check_ocamlfind_package conf ~fail: false ~min_version: [2;6] "websocket";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;4;0] "ojs";
-      check_ocamlfind_package conf ~fail: false ~min_version: [2;0] "ppx_deriving_yojson";
+      check_ocamlfind_package conf ~fail: false ~min_version: [2;4] "ppx_deriving_yojson";
       check_ocamlfind_package conf ~fail: false ~min_version: [1;1;8] "yojson";
-      check_ocamlfind_package conf ~fail: false ~min_version: [1;9] "sha";
     ]
   in
   if List.fold_left (&&) true checks then

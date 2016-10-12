@@ -59,15 +59,17 @@ let of_string_date ?loc str =
 
 let to_string t = Ptime.to_rfc3339 ?tz_offset_s: t.tz t.stamp
 
-let now () =
-  match Ptime.of_float_s (Unix.time()) with
+let of_float t =
+  match Ptime.of_float_s t with
   | Some stamp -> { stamp ; tz = None }
-  | None -> failwith "Could not create date from Unix.time"
+  | None -> failwith (Printf.sprintf "Could not create date from %f" t)
+
+let now () = of_float (Unix.time())
 
 let to_date_time t =
   Ptime.to_date_time ?tz_offset_s: t.tz t.stamp
 
-let weekday t = Ptime.weekday t.stamp
+let weekday t = Ptime.weekday ?tz_offset_s: t.tz t.stamp
   (* FIXME: give tz_offset_s parameter when weekday accepts it *)
 
 let to_rfc_822 t =

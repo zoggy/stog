@@ -45,10 +45,10 @@ module Git : Stog_git_types.Default_P
 
 val server_msg_to_yojson : App_msg.app_server_msg -> Yojson.Safe.json
 val server_msg_of_yojson :
-  Yojson.Safe.json -> [ `Error of string | `Ok of App_msg.app_server_msg ]
+  Yojson.Safe.json -> (App_msg.app_server_msg, string) result
 val client_msg_to_yojson : App_msg.app_client_msg -> Yojson.Safe.json
 val client_msg_of_yojson :
-  Yojson.Safe.json -> [ `Error of string | `Ok of App_msg.app_client_msg ]
+  Yojson.Safe.json -> (App_msg.app_client_msg, string) result
 
 val ft_id : string
 val ed_id : string

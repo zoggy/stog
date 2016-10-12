@@ -47,7 +47,9 @@ let create_session cfg sessions account =
   Stog_multi_gs.add_session session sessions ;
   Lwt.return session
 
-let string_of_date = Netdate.mk_date ~fmt: "%F %R"
+let string_of_date t =
+  Stog_date.format (Stog_date.of_float t) "rfc822"
+
 
 let session_list cfg gs user =
   let sessions =
@@ -91,7 +93,7 @@ let session_list cfg gs user =
        th "" ; th "" ;
      ]
   in
-  [ XR.node ("","table") 
+  [ XR.node ("","table")
     ~atts: (XR.atts_one ("","class") [XR.cdata "table"])
     (headers :: trs)
   ]

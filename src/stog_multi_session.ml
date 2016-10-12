@@ -133,8 +133,8 @@ let load cfg session_id =
         failwith (Printf.sprintf "File %S: %s" file err)
     | json ->
         match stored_of_yojson json with
-        | `Error s -> failwith (Printf.sprintf "File %S: %s" file s)
-        | `Ok x -> x
+        | Error s -> failwith (Printf.sprintf "File %S: %s" file s)
+        | Ok x -> x
   in
   let repo_dir = repo_dir_of_session_dir session_dir in
   let stog_info = stog_info_of_repo_dir cfg session_id repo_dir in

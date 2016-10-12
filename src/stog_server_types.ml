@@ -52,8 +52,8 @@ let client_msg_of_wsdata s =
   try
     let json = J.from_string s in
     match client_msg_of_yojson json with
-      `Error s -> raise (Yojson.Json_error s)
-    | `Ok msg -> Some msg
+      Error s -> raise (Yojson.Json_error s)
+    | Ok msg -> Some msg
   with
     Yojson.Json_error s ->
       prerr_endline s;

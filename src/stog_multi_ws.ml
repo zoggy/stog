@@ -82,6 +82,5 @@ let run_server cfg gs =
   Nocrypto_entropy_lwt.initialize () >>
   Conduit_lwt_unix.endp_to_server ~ctx endp >>= fun server ->
   let handler = handle_con gs (Stog_url.path cfg.ws_url.pub) in
-  Websocket_lwt.establish_standard_server ~ctx ~mode: server 
-    ~g: !Nocrypto.Rng.generator handler
+  Websocket_lwt.establish_standard_server ~ctx ~mode: server handler
 ;;
