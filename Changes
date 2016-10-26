@@ -8,16 +8,16 @@ Next release:
 * datetime attribute for documents must now be used to specify datetime
 * adapt to new behaviour of input_value in ocaml 4.03.0
 * sectionning rules now generate role="heading" and aria-level="..."
-* <ocaml-eval> and <run> use <span> instead of <div> in <pre> nodes, to
+* <ocaml-eval> and <exec> use <span> instead of <div> in <pre> nodes, to
   be html-correct (default styles are modified in consequence)
-* <docs> rule now uses a template; default is doc-list.tmpl
+* <documents> rule now uses a template; default is doc-list.tmpl
   but another one can be specified with list-tmpl="..." attribute.
   In this template, <alt-link/> is the url of the link to (tyically)
-  the RSS feed, and <item/> is the tree of listed documents.
+  the RSS feed, and <items/> is the tree of listed documents.
 * sitemap plugin: fix date format (by Leo Wzukw)
-* fix handling of default page.tmpl (by avysk)
-* fix call tail in BSD-friendly way (by avysk)
-* fix hardcoded temp directory for latex (by avysk)
+* fix: handling of default page.tmpl (by avysk)
+* fix: call tail in BSD-friendly way (by avysk)
+* fix: hardcoded temp directory for latex (by avysk)
 
 Release 0.16.0:
 * use Xtmpl >= 0.13.0

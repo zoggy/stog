@@ -12,19 +12,13 @@ Errors.<br/>
 </div>
 <hr width="100%"/>
 
-<pre><code><span id="TYPEerror"><span class="keyword">type</span> error</span> = </code></pre><table class="typetable">
-<tr>
-<td align="left" valign="top" >
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top" >
-<code><span id="TYPEELTerror.Loc"><span class="constructor">Loc</span></span> <span class="keyword">of</span> <code class="type">Xtmpl_xml.loc * exn</code></code></td>
-
-</tr></table>
-
+<pre><span id="TYPEerror"><span class="keyword">type</span> error</span> </pre>
 
 
 <pre><span id="EXCEPTIONError"><span class="keyword">exception</span> Error</span> <span class="keyword">of</span> <code class="type"><a href="Stog_error.html#TYPEerror">error</a></code></pre>
 
 <pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type"><a href="Stog_error.html#TYPEerror">error</a> -&gt; 'a</code></pre>
 <pre><span id="VALerror_loc"><span class="keyword">val</span> error_loc</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; exn -&gt; 'a</code></pre>
+<pre><span id="VALtemplate_file_not_found"><span class="keyword">val</span> template_file_not_found</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; string -&gt; 'a</code></pre>
+<pre><span id="VALinvalid_date"><span class="keyword">val</span> invalid_date</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; string -&gt; string -&gt; 'a</code></pre>
 <pre><span id="VALstring_of_error"><span class="keyword">val</span> string_of_error</span> : <code class="type">?to_string:(exn -&gt; string) -&gt; <a href="Stog_error.html#TYPEerror">error</a> -&gt; string</code></pre></div></contents></ocamldoc>

@@ -1,21 +1,21 @@
 <ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_find</title><contents><div class="ocamldoc-page">
-<code class="code"><span class="keyword">sig</span><br/>
-&#160;&#160;<span class="keyword">type</span>&#160;filter&#160;=<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Maxdepth</span>&#160;<span class="keyword">of</span>&#160;int<br/>
-&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Type</span>&#160;<span class="keyword">of</span>&#160;<span class="constructor">Unix</span>.file_kind<br/>
-&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Follow</span><br/>
-&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Regexp</span>&#160;<span class="keyword">of</span>&#160;<span class="constructor">Str</span>.regexp<br/>
-&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Atime</span>&#160;<span class="keyword">of</span>&#160;<span class="constructor">Stog_find</span>.interval<br/>
-&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Predicate</span>&#160;<span class="keyword">of</span>&#160;(string&#160;<span class="keywordsign">-&gt;</span>&#160;bool)<br/>
-&#160;&#160;<span class="keyword">and</span>&#160;interval&#160;=&#160;<span class="constructor">Le</span>&#160;<span class="keyword">of</span>&#160;int&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Eq</span>&#160;<span class="keyword">of</span>&#160;int&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Ge</span>&#160;<span class="keyword">of</span>&#160;int<br/>
-&#160;&#160;<span class="keyword">type</span>&#160;mode&#160;=<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Ignore</span><br/>
-&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Stderr</span><br/>
-&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Failure</span><br/>
-&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Custom</span>&#160;<span class="keyword">of</span>&#160;(<span class="constructor">Unix</span>.error&#160;*&#160;string&#160;*&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit)<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;find&#160;:<br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_find</span>.mode&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;string&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_find</span>.filter&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;(string&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;find_list&#160;:<br/>
-&#160;&#160;&#160;&#160;<span class="constructor">Stog_find</span>.mode&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_find</span>.filter&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;list<br/>
+<code class="code"><span class="keyword">sig</span>
+&#160;&#160;<span class="keyword">type</span>&#160;filter&#160;=
+&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Maxdepth</span>&#160;<span class="keyword">of</span>&#160;int
+&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Type</span>&#160;<span class="keyword">of</span>&#160;<span class="constructor">Unix</span>.file_kind
+&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Follow</span>
+&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Regexp</span>&#160;<span class="keyword">of</span>&#160;<span class="constructor">Str</span>.regexp
+&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Atime</span>&#160;<span class="keyword">of</span>&#160;<span class="constructor">Stog_find</span>.interval
+&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Predicate</span>&#160;<span class="keyword">of</span>&#160;(string&#160;<span class="keywordsign">-&gt;</span>&#160;bool)
+&#160;&#160;<span class="keyword">and</span>&#160;interval&#160;=&#160;<span class="constructor">Le</span>&#160;<span class="keyword">of</span>&#160;int&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Eq</span>&#160;<span class="keyword">of</span>&#160;int&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Ge</span>&#160;<span class="keyword">of</span>&#160;int
+&#160;&#160;<span class="keyword">type</span>&#160;mode&#160;=
+&#160;&#160;&#160;&#160;&#160;&#160;<span class="constructor">Ignore</span>
+&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Stderr</span>
+&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Failure</span>
+&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="constructor">Custom</span>&#160;<span class="keyword">of</span>&#160;(<span class="constructor">Unix</span>.error&#160;*&#160;string&#160;*&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;unit)
+&#160;&#160;<span class="keyword">val</span>&#160;find&#160;:
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_find</span>.mode&#160;<span class="keywordsign">-&gt;</span>
+&#160;&#160;&#160;&#160;string&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_find</span>.filter&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;(string&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span>&#160;unit
+&#160;&#160;<span class="keyword">val</span>&#160;find_list&#160;:
+&#160;&#160;&#160;&#160;<span class="constructor">Stog_find</span>.mode&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_find</span>.filter&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;list
 <span class="keyword">end</span></code></div></contents></ocamldoc>

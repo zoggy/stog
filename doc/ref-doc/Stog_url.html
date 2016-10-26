@@ -43,12 +43,10 @@ URLs.<br/>
 <pre><span id="VALpath"><span class="keyword">val</span> path</span> : <code class="type"><a href="Stog_url.html#TYPEt">t</a> -&gt; string list</code></pre>
 <pre><span id="VALwith_path"><span class="keyword">val</span> with_path</span> : <code class="type"><a href="Stog_url.html#TYPEt">t</a> -&gt; string list -&gt; <a href="Stog_url.html#TYPEt">t</a></code></pre>
 <pre><span id="VALremove_ending_slash"><span class="keyword">val</span> remove_ending_slash</span> : <code class="type"><a href="Stog_url.html#TYPEt">t</a> -&gt; <a href="Stog_url.html#TYPEt">t</a></code></pre>
-<pre><span id="VALwith_fragment"><span class="keyword">val</span> with_fragment</span> : <code class="type"><a href="Stog_url.html#TYPEt">t</a> -&gt; string -&gt; <a href="Stog_url.html#TYPEt">t</a></code></pre>
-<pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">?scheme:bool -&gt;<br/>       ?user:bool -&gt;<br/>       ?user_param:bool -&gt;<br/>       ?password:bool -&gt;<br/>       ?host:bool -&gt;<br/>       ?port:bool -&gt;<br/>       ?path:bool -&gt;<br/>       ?param:bool -&gt;<br/>       ?query:bool -&gt; ?fragment:bool -&gt; ?other:bool -&gt; <a href="Stog_url.html#TYPEt">t</a> -&gt; <a href="Stog_url.html#TYPEt">t</a></code></pre><br/>
+<pre><span id="VALremove_query"><span class="keyword">val</span> remove_query</span> : <code class="type"><a href="Stog_url.html#TYPEt">t</a> -&gt; <a href="Stog_url.html#TYPEt">t</a></code></pre>
+<pre><span id="VALwith_fragment"><span class="keyword">val</span> with_fragment</span> : <code class="type"><a href="Stog_url.html#TYPEt">t</a> -&gt; string option -&gt; <a href="Stog_url.html#TYPEt">t</a></code></pre><br/>
 <div class="section-title" id="2_AccessingpartsofURLs">Accessing parts of URLs</div> Raise <code class="code">Failure</code> if the requested part is not defined.<br/>
 
 <pre><span id="VALscheme"><span class="keyword">val</span> scheme</span> : <code class="type"><a href="Stog_url.html#TYPEt">t</a> -&gt; string</code></pre>
 <pre><span id="VALport"><span class="keyword">val</span> port</span> : <code class="type"><a href="Stog_url.html#TYPEt">t</a> -&gt; int</code></pre>
-<pre><span id="VALhost"><span class="keyword">val</span> host</span> : <code class="type"><a href="Stog_url.html#TYPEt">t</a> -&gt; string</code></pre>
-<pre><span id="VALof_neturl"><span class="keyword">val</span> of_neturl</span> : <code class="type">Neturl.url -&gt; <a href="Stog_url.html#TYPEt">t</a></code></pre>
-<pre><span id="VALto_neturl"><span class="keyword">val</span> to_neturl</span> : <code class="type"><a href="Stog_url.html#TYPEt">t</a> -&gt; Neturl.url</code></pre></div></contents></ocamldoc>
+<pre><span id="VALhost"><span class="keyword">val</span> host</span> : <code class="type"><a href="Stog_url.html#TYPEt">t</a> -&gt; string</code></pre></div></contents></ocamldoc>

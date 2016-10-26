@@ -1,0 +1,43 @@
+<post title="Stog 0.17.0"
+date="2016/10/26"
+topics="stog"
+keywords="release"
+published="true"
+>
+<p>
+Release 0.17.0 of stog is available from the <page href="/install"/> page.
+</p>
+<sep_/>
+<p>Changes:</p>
+<ul id="changes">
+<li><doc href="plugins/markdown">Markdown plugin</doc> now uses
+  <ext-a href="https://github.com/ocaml/omd/">Omd</ext-a>, except if a
+  command attribute is specified in <rule>markdown</rule> node,</li>
+<li>use <ext-a href="https://github.com/mirage/ocaml-uri">ocaml-uri</ext-a>
+instead of <ml>Neturl</ml>,</li>
+<li>use <ext-a href="http://erratique.ch/software/ptime">Ptime</ext-a>
+instead of <ml>Netdate</ml>,</li>
+<li>change of %-format usable in <doc href="module_base#datetimeformat">datetime
+format</doc>,</li>
+<li><doc href="stog-documents#date"><ixml>date</ixml></doc> attribute for
+documents is now used to specify only dates;
+to specify datetime, <doc href="stog-documents#datetime"><ixml>datetime</ixml></doc>
+attribute for documents must now be used,</li>
+<li>fix: adapt to new behaviour of <ml>input_value</ml> in ocaml 4.03.0,</li>
+<li>sectionning rules now generate <ixml>role="heading"</ixml> and <ixml>aria-level="..."</ixml>,</li>
+<li><doc href="ocaml-eval"><rule>ocaml-eval</rule></doc> and
+<doc href="exec"><rule>exec</rule></doc> use <ixml>&lt;span&gt;</ixml>
+instead of <ixml>&lt;div&gt;</ixml> in <ixml>&lt;pre&gt;</ixml> nodes, to
+be HTML-correct (default styles are modified in consequence),</li>
+<li><doc href="module_base#documents"><rule>docs</rule></doc> now uses a
+template; default is <code>doc-list.tmpl</code> but another one can be
+specified with <ixml>list-tmpl="..."</ixml> attribute.
+In this template, <ixml>&lt;alt-link/&gt;</ixml> is the url of the link
+to (tyically) the RSS feed, and <ixml>&lt;items/&gt;</ixml> is the tree of
+listed documents,</li>
+<li>sitemap plugin: fix date format (by Leo Wzukw),</li>
+<li>fix: handling of default <code>page.tmpl</code> (by avysk),</li>
+<li>fix: call <ml>tail</ml> in BSD-friendly way (by avysk),</li>
+<li>fix: hardcoded temp directory for latex (by avysk).</li>
+</ul>
+</post>

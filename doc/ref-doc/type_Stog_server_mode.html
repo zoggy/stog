@@ -1,20 +1,20 @@
 <ocamldoc with-contents="true"><title>Stog library reference documentation : Stog_server_mode</title><contents><div class="ocamldoc-page">
-<code class="code"><span class="keyword">sig</span><br/>
-&#160;&#160;<span class="keyword">val</span>&#160;http_url&#160;:&#160;string&#160;<span class="constructor">Pervasives</span>.ref<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;ws_url&#160;:&#160;string&#160;<span class="constructor">Pervasives</span>.ref<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;pub_http_url&#160;:&#160;string&#160;option&#160;<span class="constructor">Pervasives</span>.ref<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;pub_ws_url&#160;:&#160;string&#160;option&#160;<span class="constructor">Pervasives</span>.ref<br/>
-&#160;&#160;<span class="keyword">type</span>&#160;server_mode&#160;=<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;[&#160;<span class="keywordsign">`</span><span class="constructor">Multi</span>&#160;<span class="keyword">of</span>&#160;string&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;unit<br/>
-&#160;&#160;&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="keywordsign">`</span><span class="constructor">Single</span>&#160;<span class="keyword">of</span>&#160;(unit&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;unit&#160;]<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;server_mode&#160;:&#160;<span class="constructor">Stog_server_mode</span>.server_mode&#160;option&#160;<span class="constructor">Pervasives</span>.ref<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;set_single&#160;:<br/>
-&#160;&#160;&#160;&#160;((unit&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog)&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;&#160;http_url:<span class="constructor">Stog_url</span>.url_config&#160;<span class="keywordsign">-&gt;</span>&#160;ws_url:<span class="constructor">Stog_url</span>.url_config&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;unit<br/>
-&#160;&#160;<span class="keyword">val</span>&#160;set_multi&#160;:<br/>
-&#160;&#160;&#160;&#160;(http_url:<span class="constructor">Stog_url</span>.url_config&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;&#160;ws_url:<span class="constructor">Stog_url</span>.url_config&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span><br/>
-&#160;&#160;&#160;&#160;unit<br/>
+<code class="code"><span class="keyword">sig</span>
+&#160;&#160;<span class="keyword">val</span>&#160;http_url&#160;:&#160;string&#160;<span class="constructor">Pervasives</span>.ref
+&#160;&#160;<span class="keyword">val</span>&#160;ws_url&#160;:&#160;string&#160;<span class="constructor">Pervasives</span>.ref
+&#160;&#160;<span class="keyword">val</span>&#160;pub_http_url&#160;:&#160;string&#160;option&#160;<span class="constructor">Pervasives</span>.ref
+&#160;&#160;<span class="keyword">val</span>&#160;pub_ws_url&#160;:&#160;string&#160;option&#160;<span class="constructor">Pervasives</span>.ref
+&#160;&#160;<span class="keyword">type</span>&#160;server_mode&#160;=
+&#160;&#160;&#160;&#160;&#160;&#160;[&#160;<span class="keywordsign">`</span><span class="constructor">Multi</span>&#160;<span class="keyword">of</span>&#160;string&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;unit
+&#160;&#160;&#160;&#160;&#160;&#160;<span class="keywordsign">|</span>&#160;<span class="keywordsign">`</span><span class="constructor">Single</span>&#160;<span class="keyword">of</span>&#160;(unit&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog)&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>&#160;unit&#160;]
+&#160;&#160;<span class="keyword">val</span>&#160;server_mode&#160;:&#160;<span class="constructor">Stog_server_mode</span>.server_mode&#160;option&#160;<span class="constructor">Pervasives</span>.ref
+&#160;&#160;<span class="keyword">val</span>&#160;set_single&#160;:
+&#160;&#160;&#160;&#160;((unit&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_types</span>.stog)&#160;<span class="keywordsign">-&gt;</span>
+&#160;&#160;&#160;&#160;&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="keywordsign">-&gt;</span>
+&#160;&#160;&#160;&#160;&#160;http_url:<span class="constructor">Stog_url</span>.url_config&#160;<span class="keywordsign">-&gt;</span>&#160;ws_url:<span class="constructor">Stog_url</span>.url_config&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span>
+&#160;&#160;&#160;&#160;unit
+&#160;&#160;<span class="keyword">val</span>&#160;set_multi&#160;:
+&#160;&#160;&#160;&#160;(http_url:<span class="constructor">Stog_url</span>.url_config&#160;<span class="keywordsign">-&gt;</span>
+&#160;&#160;&#160;&#160;&#160;ws_url:<span class="constructor">Stog_url</span>.url_config&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;list&#160;<span class="keywordsign">-&gt;</span>&#160;unit)&#160;<span class="keywordsign">-&gt;</span>
+&#160;&#160;&#160;&#160;unit
 <span class="keyword">end</span></code></div></contents></ocamldoc>

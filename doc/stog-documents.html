@@ -47,13 +47,17 @@ in templates to access it,</li>
 use <ixml>&lt;doc-keywords/&gt;</ixml> in templates to insert the list of keywords
 with links to by-keyword index,</li>
 <li><b>topics</b>: same as keywords, but for topics (access with <ixml>&lt;doc-topics/&gt;</ixml>),</li>
-<li><b>date</b>: the document date, used for sorting in list. The date format follows
-<ext-a href="https://tools.ietf.org/html/rfc3339">RFC 3339</ext-a>,
-for example <i>2013/11/26</i> or <i>2013/11/26 09:16:45</i>.
-Use <ixml>&lt;doc-date/&gt;</ixml> or <ixml>&lt;doc-datetime/&gt;</ixml>
-in templates to insert it.
-The function
-<ext-a href="http://projects.camlcity.org/projects/dl/ocamlnet-3.7.3/doc/html-main/Netdate.html#VALparse">Netdate.parse</ext-a> from OCamlnet is used to parse dates,</li>
+<li id="date"><b>date</b>: the document date, used for sorting in list. The date format follows
+<ext-a href="https://tools.ietf.org/html/rfc3339">RFC 3339</ext-a> (<code>YYYY-MM-DD</code>).
+The format <code>YYYY/MM/DD</code> is still supported for backward compatibility.
+Use <ixml>&lt;doc-date/&gt;</ixml> in templates to insert it. The time of the document
+is set to 00h00m00s.
+</li>
+<li id="datetime"><b>datetime</b>: the document date and time, used for sorting in list. The datetime format
+follows <ext-a href="https://tools.ietf.org/html/rfc3339">RFC 3339</ext-a>
+(like <code>1990-12-31T23:59:60Z</code> or <code>1937-01-01T12:00:27.87+00:20</code>).
+Use <ixml>&lt;doc-datetime/&gt;</ixml> in templates to insert it.
+</li>
 <li><b>sets</b>: a comma-separated list of set names; sets can be used to list documents
 belonging to a set,</li>
 <li><b>language-dep</b>: can be set to <i>false</i> to indicate that this page is not

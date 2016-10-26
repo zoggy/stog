@@ -42,7 +42,7 @@ Example of use:
     implementations.
     </markdown>
 
-It calls 'markdown' by default, but the attribute "command" allow to
+It uses the Omd library by default, but the attribute "command" allows to
 specify a different preprocessor command (a different implementation
 of markdown, or even a completely different markup langauge). The
 attribute "args" allows to pass parameters that are appended to the

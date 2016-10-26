@@ -14,7 +14,7 @@ Types.<br/>
 
 <pre><span class="keyword">module</span> <a href="Stog_types.XR.html">XR</a>: <code class="type">Xtmpl_rewrite</code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Xml.html">Xml</a>: <code class="type">Xtmpl_xml</code></pre>
-<pre><span id="TYPEdate"><span class="keyword">type</span> date</span> = <code class="type">Netdate.t</code> </pre>
+<pre><span id="TYPEdate"><span class="keyword">type</span> date</span> = <code class="type"><a href="Stog_date.html#TYPEt">Stog_date.t</a></code> </pre>
 
 
 <pre><span id="TYPEbody"><span class="keyword">type</span> body</span> = <code class="type">XR.tree list</code> </pre>
@@ -153,7 +153,6 @@ whether a file must be generated for each language<br/>
 
 
 <pre><span id="VALmake_doc"><span class="keyword">val</span> make_doc</span> : <code class="type">?typ:string -&gt;<br/>       ?path:<a href="Stog_path.html#TYPEpath">Stog_path.path</a> -&gt; ?prolog:Xml.prolog -&gt; unit -&gt; <a href="Stog_types.html#TYPEdoc">doc</a></code></pre>
-<pre><span id="VALtoday"><span class="keyword">val</span> today</span> : <code class="type">unit -&gt; <a href="Stog_types.html#TYPEdate">date</a></code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Path_trie.html">Path_trie</a>: <code class="type"><a href="Stog_trie.S.html">Stog_trie.S</a></code><code class="type">  with type symbol = string</code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Doc_set.html">Doc_set</a>: <code class="type">Set.S</code><code class="type">  with type elt = doc_id</code></pre>
 <pre><span class="keyword">module</span> <a href="Stog_types.Int_map.html">Int_map</a>: <code class="type">Map.S</code><code class="type">  with type key = int</code></pre>

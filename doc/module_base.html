@@ -170,6 +170,13 @@ expanded for each document.</li>
 make the documents listed in ascending order.</li>
 <li><ixml>tmpl="..."</ixml> specifies a template file to use for each document of
 the list. Default is <code>.stog/templates/doc-in-list.tmpl</code>.</li>
+
+<li><ixml>list-tmpl="..."</ixml> specifies a template file to use for the list.
+Default is <code>.stog/templates/doc-list.tmpl</code>. In this template,
+<ixml>&lt;alt-link/&gt;</ixml> is the url of the link
+to (tyically) the RSS feed, and <ixml>&lt;items/&gt;</ixml> is the tree of
+listed documents.</li>
+
 <li id="filter"><ixml>filter="p"</ixml> specifies to keep only documents verifying
 the given predicate <code>p</code>. The predicate can be an expression such as
   <ixml>attribute='value'</ixml>
@@ -205,8 +212,32 @@ or an empty string if no date were specified.
 </p>
 <p>
 The <code>format</code> attribute, if present, specifies the format used
-to print the date. See the <ext-a href="http://projects.camlcity.org/projects/dl/ocamlnet-3.5.1/doc/html-main/Netdate.html#VALformat_to">documentation of Netdate.format_to</ext-a> for details, which is
-the function used to print dates.
+to print the date. This format can be:
+</p>
+<ul id="datetimeformat">
+<li><ixml>"rfc3339"</ixml>: to print the date to
+<ext-a href="https://tools.ietf.org/html/rfc3339">RFC3339</ext-a>
+format, like <code><print-datetime format="rfc3339">2016-10-17T10:30:00+02:00</print-datetime></code>.</li>
+
+<li><ixml>"rfc822"</ixml>: to print the date to
+<ext-a href="https://tools.ietf.org/html/rfc822">RFC822</ext-a>
+format, like <code><print-datetime format="rfc822">2016-10-17T10:30:00+02:00</print-datetime></code>.</li>
+
+<li>any other string with <ml>%</ml> tags. Supported tags are :
+<ul>
+<li><ml>%Y</ml>: replaced by the year</li>
+<li><ml>%M</ml>: replaced by the month on two digits</li>
+<li><ml>%D</ml>: replaced by the day on two digits</li>
+<li><ml>%h</ml>: replaced by the hour on two digits</li>
+<li><ml>%m</ml>: replaced by the minute on two digits</li>
+<li><ml>%s</ml>: replaced by the second on two digits</li>
+<li><ml>%%</ml>: replaced by the '%' character.</li>
+</ul>
+</li>
+</ul>
+<p>If the format is not specified, the current language specific
+form is used, as in
+<code><print-datetime>2016-10-17T10:30:00+02:00</print-datetime></code>.
 </p>
 </subsection>
 
