@@ -909,7 +909,7 @@ let _ = check_ocamlfind_package conf ~min_version: [0;4] "ocf";;
 let _ = check_ocamlfind_package conf ~min_version: [0;5] "higlo";;
 let _ = check_ocamlfind_package conf ~min_version: [1;9;2] "uri";;
 let _ = check_ocamlfind_package conf ~min_version: [2;5] "lwt.unix";;
-let _ = check_ocamlfind_package conf ~fail: false ~min_version: [0;2] "ppx_blob";;
+let _ = check_ocamlfind_package conf ~fail: false ~min_version: [0;1] "ppx_blob";;
 
 
 let _ =
