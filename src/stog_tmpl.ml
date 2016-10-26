@@ -193,7 +193,7 @@ let rss stog =
          <description><late-cdata><site-description/></late-cdata></description>
          <managingEditor><site-email/></managingEditor>
          <pubDate>"^default_date^"</pubDate>"^
-         "<lastBuildDate><date-now format=\"%d %b %Y %T %z\"/></lastBuildDate>
+         "<lastBuildDate><date-now format=\"rfc822\"/></lastBuildDate>
          <generator>Stog</generator>
          <image><url><site-url/>/logo.png</url>
            <title><site-title/></title><link><site-url/></link>
@@ -212,7 +212,7 @@ let rss_item stog =
       <title><doc-title/></title>
       <link><doc-url/></link>
       <description><late-cdata><doc-intro/></late-cdata></description>
-      <pubDate><doc-date format=\"%d %b %Y %T %z\"/></pubDate>
+      <pubDate><doc-date format=\"rfc822\"/></pubDate>
       <guid isPermaLink=\"true\"><doc-url/></guid>
     </item>"
   in
