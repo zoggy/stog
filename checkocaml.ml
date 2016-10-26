@@ -902,7 +902,7 @@ let _ =
 let _ = !print "\n### checking required tools and libraries ###\n"
 
 
-let _ = check_ocamlfind_package conf ~min_version: [0;14;0] "xtmpl";;
+let _ = check_ocamlfind_package conf ~min_version: [0;15;0] "xtmpl";;
 let _ = check_ocamlfind_package conf ~min_version: [0;8;2] "ptime";;
 let _ = check_ocamlfind_package conf ~min_version: [1;3;0] "omd";;
 let _ = check_ocamlfind_package conf ~min_version: [0;4] "ocf";;
@@ -925,8 +925,8 @@ let _ =
       check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff.js";
       check_ocamlfind_package conf ~fail: false ~min_version: [2;6] "websocket";
-      check_ocamlfind_package conf ~fail: false ~min_version: [0;4;0] "ojs";
-      check_ocamlfind_package conf ~fail: false ~min_version: [2;4] "ppx_deriving_yojson";
+      check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "ojs";
+      check_ocamlfind_package conf ~fail: false ~min_version: [3;0] "ppx_deriving_yojson";
       check_ocamlfind_package conf ~fail: false ~min_version: [1;1;8] "yojson";
     ]
   in
