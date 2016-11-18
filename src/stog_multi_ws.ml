@@ -71,7 +71,7 @@ let server cfg gs sockaddr =
 let run_server cfg gs =
   let host = Stog_url.host cfg.ws_url.priv in
   let port = Stog_url.port cfg.ws_url.priv in
-  prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));  
+  prerr_endline ("Setting up websocket server on host="^host^", port="^(string_of_int port));
   (* set scheme to http to be resolved correctly *)
   let uri =
     let u = Uri.of_string (Stog_url.to_string cfg.ws_url.priv) in
@@ -79,7 +79,6 @@ let run_server cfg gs =
   in
   Resolver_lwt.resolve_uri ~uri Resolver_lwt_unix.system >>= fun endp ->
   let ctx = Conduit_lwt_unix.default_ctx in
-  Nocrypto_entropy_lwt.initialize () >>
   Conduit_lwt_unix.endp_to_server ~ctx endp >>= fun server ->
   let handler = handle_con gs (Stog_url.path cfg.ws_url.pub) in
   Websocket_lwt.establish_standard_server ~ctx ~mode: server handler

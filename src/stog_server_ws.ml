@@ -147,7 +147,6 @@ let run_server read_stog current_state active_cons ws_url base_path =
   in
   Resolver_lwt.resolve_uri ~uri Resolver_lwt_unix.system >>= fun endp ->
   let ctx = Conduit_lwt_unix.default_ctx in
-  Nocrypto_entropy_lwt.initialize () >>
   Conduit_lwt_unix.endp_to_server ~ctx endp >>= fun server ->
     Websocket_lwt.establish_standard_server ~ctx ~mode: server
     (handle_con read_stog current_state active_cons base_path)
