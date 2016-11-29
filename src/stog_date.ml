@@ -105,7 +105,7 @@ let to_rfc_822 t =
     (if tz < 0 then '-' else '+')
     (abs_tz mod 3600) (abs_tz mod 60)
 
-let cp_percent = Char.code '%'
+let cp_percent = Uchar.of_char '%'
 let format t fmt =
   match fmt with
     "rfc3339" -> to_string t
@@ -115,32 +115,39 @@ let format t fmt =
       let ((y,m,d),((h,mi,s),tz)) = to_date_time t in
       let f prev_cp i = function
         `Malformed str ->
-          if prev_cp >= 0 then Uutf.Buffer.add_utf_8 b prev_cp ;
+          begin
+            match prev_cp with
+              None -> ()
+            | Some prev_cp -> Uutf.Buffer.add_utf_8 b prev_cp 
+          end;
           Buffer.add_string b str ;
-          -1
+          None
       | `Uchar cp ->
-          if prev_cp = cp_percent then
-            let () =
-              match cp with
-              | 89 (* Y *) -> Buffer.add_string b (string_of_int y)
-              | 77 (* M *) -> Printf.bprintf b "%02d" m
-              | 68 (* D *) -> Printf.bprintf b "%02d" d
-              | 104 (* h *) -> Printf.bprintf b "%02d" h
-              | 109 (* m *) -> Printf.bprintf b "%02d" mi
-              | 115 (* s *) -> Printf.bprintf b "%02d" s
-              | n when n = cp_percent -> Buffer.add_char b '%'
-              | _ ->
-                  Uutf.Buffer.add_utf_8 b prev_cp ;
-                  Uutf.Buffer.add_utf_8 b cp
-            in
-            -1
-          else
-            (
-             if prev_cp >= 0 then Uutf.Buffer.add_utf_8 b prev_cp ;
-             cp
-            )
+          match prev_cp with
+          | Some prev_cp when Uchar.equal prev_cp cp_percent ->
+              let () =
+                match Uchar.to_int cp with
+                | 89 (* Y *) -> Buffer.add_string b (string_of_int y)
+                | 77 (* M *) -> Printf.bprintf b "%02d" m
+                | 68 (* D *) -> Printf.bprintf b "%02d" d
+                | 104 (* h *) -> Printf.bprintf b "%02d" h
+                | 109 (* m *) -> Printf.bprintf b "%02d" mi
+                | 115 (* s *) -> Printf.bprintf b "%02d" s
+                | _ when Uchar.equal cp cp_percent -> Buffer.add_char b '%'
+                | _ ->
+                    Uutf.Buffer.add_utf_8 b prev_cp ;
+                    Uutf.Buffer.add_utf_8 b cp
+              in
+              None
+          | Some prev_cp ->
+              Uutf.Buffer.add_utf_8 b prev_cp ;
+              Some cp
+          | None ->
+              Some cp
       in
-      let remain = Uutf.String.fold_utf_8 f (-1) fmt in
-      if remain >= 0 then Uutf.Buffer.add_utf_8 b remain ;
+      (match Uutf.String.fold_utf_8 f None fmt with
+         None -> ()
+       | Some remain -> Uutf.Buffer.add_utf_8 b remain
+      );
       Buffer.contents b
 
