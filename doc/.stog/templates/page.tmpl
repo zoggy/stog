@@ -6,6 +6,13 @@
 <title><site-title/> : <doc-title/></title>
 <link rel="stylesheet" type="text/css" href="&lt;site-url/&gt;/style.css"></link>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:<site-url/> ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <include file="menubar.tmpl"/>
