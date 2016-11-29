@@ -18,6 +18,8 @@ Next release:
 * fix: handling of default page.tmpl (by avysk)
 * fix: call tail in BSD-friendly way (by avysk)
 * fix: hardcoded temp directory for latex (by avysk)
+* fix: stog-ocaml-session's -package option now includes
+  all required directories recursively (using ocamlfind -r)
 
 Release 0.16.0:
 * use Xtmpl >= 0.13.0

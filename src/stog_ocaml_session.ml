@@ -159,7 +159,7 @@ let add_directory =
 let option_package s =
   let packages = String.concat " " (Stog_misc.split_string s [',']) in
   let temp_file = Filename.temp_file "stogocamlsession" ".txt" in
-  let com = Printf.sprintf "ocamlfind query %s > %s"
+  let com = Printf.sprintf "ocamlfind query -r %s | sort -u > %s"
     packages (Filename.quote temp_file)
   in
   match Sys.command com with
