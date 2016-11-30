@@ -409,7 +409,7 @@ let fun_eval stog env ?loc args code =
           if show_code then
             Stog_highlight.highlight ~lang: "ocaml" ?opts phrase
            else
-            [XR.cdata ""]
+            []
         in
         (*prerr_endline (Printf.sprintf "evaluate %S" phrase);*)
         let (output, raised_exc) =
@@ -432,7 +432,14 @@ let fun_eval stog env ?loc args code =
           match toplevel with
             false ->
               let code =
-                if in_xml_block then [XR.node ("","span") code] else code in
+                match code with
+                  [] -> []
+                | _ ->
+                    if in_xml_block then
+                      [XR.node ("","span") code]
+                    else
+                      code
+              in
               if show_stdout then
                 match output.stdout with
                   "" -> list_concat_nl code acc
