@@ -1,14 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog documents</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +29,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -81,13 +96,17 @@ in templates to access it,</li>
 use <span class="icode"><span class="hl kwa">&lt;doc-keywords</span><span class="hl kwa">/&gt;</span></span> in templates to insert the list of keywords
 with links to by-keyword index,</li>
 <li><b>topics</b>: same as keywords, but for topics (access with <span class="icode"><span class="hl kwa">&lt;doc-topics</span><span class="hl kwa">/&gt;</span></span>),</li>
-<li><b>date</b>: the document date, used for sorting in list. The date format follows
-<span class="ext-a"><a href="https://tools.ietf.org/html/rfc3339">RFC 3339</a></span>,
-for example <i>2013/11/26</i> or <i>2013/11/26 09:16:45</i>.
-Use <span class="icode"><span class="hl kwa">&lt;doc-date</span><span class="hl kwa">/&gt;</span></span> or <span class="icode"><span class="hl kwa">&lt;doc-datetime</span><span class="hl kwa">/&gt;</span></span>
-in templates to insert it.
-The function
-<span class="ext-a"><a href="http://projects.camlcity.org/projects/dl/ocamlnet-3.7.3/doc/html-main/Netdate.html#VALparse">Netdate.parse</a></span> from OCamlnet is used to parse dates,</li>
+<li id="date"><b>date</b>: the document date, used for sorting in list. The date format follows
+<span class="ext-a"><a href="https://tools.ietf.org/html/rfc3339">RFC 3339</a></span> (<code>YYYY-MM-DD</code>).
+The format <code>YYYY/MM/DD</code> is still supported for backward compatibility.
+Use <span class="icode"><span class="hl kwa">&lt;doc-date</span><span class="hl kwa">/&gt;</span></span> in templates to insert it. The time of the document
+is set to 00h00m00s.
+</li>
+<li id="datetime"><b>datetime</b>: the document date and time, used for sorting in list. The datetime format
+follows <span class="ext-a"><a href="https://tools.ietf.org/html/rfc3339">RFC 3339</a></span>
+(like <code>1990-12-31T23:59:60Z</code> or <code>1937-01-01T12:00:27.87+00:20</code>).
+Use <span class="icode"><span class="hl kwa">&lt;doc-datetime</span><span class="hl kwa">/&gt;</span></span> in templates to insert it.
+</li>
 <li><b>sets</b>: a comma-separated list of set names; sets can be used to list documents
 belonging to a set,</li>
 <li><b>language-dep</b>: can be set to <i>false</i> to indicate that this page is not
@@ -114,7 +133,7 @@ The sources of this site can be a good starting point. You can browse it in the
 distribution</a></span>.
 </p>
 <hr width="100%"/>
-<notes/>
+<notes></notes>
 
 
 
@@ -173,13 +192,17 @@ in templates to access it,</span><span class="hl kwa">&lt;/li</span><span class=
 use </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">doc-keywords/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> in templates to insert the list of keywords
 with links to by-keyword index,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">topics</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: same as keywords, but for topics (access with </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">doc-topics/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">),</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">date</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: the document date, used for sorting in list. The date format follows
-</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://tools.ietf.org/html/rfc3339"</span><span class="hl kwa">&gt;</span><span class="hl std">RFC 3339</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,
-for example </span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl std">2013/11/26</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl std"> or </span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl std">2013/11/26 09:16:45</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl std">.
-Use </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">doc-date/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> or </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">doc-datetime/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">
-in templates to insert it.
-The function
-</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://projects.camlcity.org/projects/dl/ocamlnet-3.7.3/doc/html-main/Netdate.html#VALparse"</span><span class="hl kwa">&gt;</span><span class="hl std">Netdate.parse</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> from OCamlnet is used to parse dates,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"date"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">date</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: the document date, used for sorting in list. The date format follows
+</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://tools.ietf.org/html/rfc3339"</span><span class="hl kwa">&gt;</span><span class="hl std">RFC 3339</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> (</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">YYYY-MM-DD</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">).
+The format </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">YYYY/MM/DD</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> is still supported for backward compatibility.
+Use </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">doc-date/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> in templates to insert it. The time of the document
+is set to 00h00m00s.
+</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"datetime"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">datetime</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: the document date and time, used for sorting in list. The datetime format
+follows </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://tools.ietf.org/html/rfc3339"</span><span class="hl kwa">&gt;</span><span class="hl std">RFC 3339</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">
+(like </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">1990-12-31T23:59:60Z</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> or </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">1937-01-01T12:00:27.87+00:20</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">).
+Use </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">doc-datetime/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> in templates to insert it.
+</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">sets</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: a comma-separated list of set names; sets can be used to list documents
 belonging to a set,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;b</span><span class="hl kwa">&gt;</span><span class="hl std">language-dep</span><span class="hl kwa">&lt;/b</span><span class="hl kwa">&gt;</span><span class="hl std">: can be set to </span><span class="hl kwa">&lt;i</span><span class="hl kwa">&gt;</span><span class="hl std">false</span><span class="hl kwa">&lt;/i</span><span class="hl kwa">&gt;</span><span class="hl std"> to indicate that this page is not
@@ -212,7 +235,7 @@ distribution</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&g
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

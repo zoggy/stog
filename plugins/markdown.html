@@ -4,11 +4,19 @@
 <title>Stog : Stog-markdown</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="active"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -40,24 +53,19 @@
 <p>
 This plugin allows <span id="desc">using
 <span class="ext-a"><a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a></span> syntax
-in Stog documents</span>, by calling an external tool to convert this syntax
-to XHTML.
-</p>
-<p class="alert alert-warning">
-By default, the <span class="icode"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span></span> calls the
-<code>markdown</code> command, so make sure that
-<span class="ext-a"><a href="http://daringfireball.net/projects/markdown/">markdown</a></span>
-is installed.
+in Stog documents</span>, by converting this syntax
+to XHTML, using the <span class="ext-a"><a href="https://github.com/ocaml/omd/">Omd library</a></span>
+or by calling an external command.
 </p>
 
 <p>Usage:</p>
 <pre class="code-sh">$ stog <span class="hl opt">--</span>package stog.markdown ...</pre>
 <p>
-This plugin was contributed by
+The first version of this plugin was contributed by
 <span class="ext-a"><a href="http://gallium.inria.fr/~scherer/">Gabriel Scherer</a></span>.
 </p>
 
-<div class="section"><div class="section-title" id="example">Example</div>
+<div class="section"><div aria-level="1" class="section-title" id="example" role="heading">Example</div>
 <p>
 This plugin adds a new <a href="https://zoggy.github.io/stog/module_base.html#base">base rule</a>
 <span class="icode"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span></span>.
@@ -71,6 +79,10 @@ a markup language meant to be written simply in a text editor,
 with a markup that is both easy to read and write. It is later
 translated into HTML by one of the numerous `markdown`
 implementations.
+
+````ocaml
+let f x = x + 1;;
+````
  </markdown>
 ]]></div>
 <pre class="code-xml"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -81,32 +93,36 @@ a markup language meant to be written simply in a text editor,
 with a markup that is both easy to read and write. It is later
 translated into HTML by one of the numerous `markdown`
 implementations.
+
+````ocaml
+let f x = x + 1;;
+````
  </span><span class="hl kwa">&lt;/markdown</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
 <p>
-The <span class="icode"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span></span> rule calls the <code>markdown</code> command
-line tool to convert Markdown syntax to (X)HTML.
+The <span class="icode"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span></span> rule converts Markdown syntax to (X)HTML, which is then
+rewritten by the Stog engine like any other XML.
 Here is the result, embedded in a box:
 </p>
 <div class="alert alert-info">
-<h2>A typical markdown example</h2>
+<h2 id="Atypicalmarkdownexample">A typical markdown example</h2>
 
 <p><a href="http://daringfireball.net/projects/markdown/">Markdown</a> is
 a markup language meant to be written simply in a text editor,
 with a markup that is both easy to read and write. It is later
 translated into HTML by one of the numerous <code>markdown</code>
 implementations.</p>
-
+<pre class="ocaml"><code class="ocaml"><span class="hl kwa">let</span><span class="hl std"> </span><span class="">f</span><span class="hl std"> </span><span class="">x</span><span class="hl std"> = </span><span class="">x</span><span class="hl std"> + </span><span class="hl num">1</span><span class="hl std">;;</span></code></pre>
 
 </div>
 </div>
 
-<div class="section"><div class="section-title" id="command">Command and arguments</div>
+<div class="section"><div aria-level="1" class="section-title" id="command" role="heading">Command and arguments</div>
 <p>The <span class="icode"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span></span> rule handles attributes <code>command</code>
 and <code>args</code>.
 </p>
-<p>The <code>command</code> attribute is used to specify another command
-than <code>markdown</code>. The value of <code>args</code> attribute
+<p>The <code>command</code> attribute is used to specify an external command
+to run to convert Markdown to (X)HTML. The value of <code>args</code> attribute
 is added on the command line.
 </p>
 <p>Here is an example of using <code>pandoc</code> command, using
@@ -122,7 +138,11 @@ a markup language meant to be written simply in a text editor,
 with a markup that is both easy to read and write. It is later
 translated into HTML by one of the numerous `markdown`
 implementations.
- </markdown>
+
+````ocaml
+let f x = x + 1;;
+````
+</markdown>
 ]]></div>
 <pre class="code-xml"><span class="hl kwa">&lt;markdown</span><span class="hl std"> </span><span class="">command</span><span class="hl std">=</span><span class="hl str">"pandoc"</span><span class="hl std"> </span><span class="">args</span><span class="hl std">=</span><span class="hl str">"-f markdown -t html"</span><span class="hl kwa">&gt;</span><span class="hl std">
 ## A typical markdown example
@@ -132,7 +152,11 @@ a markup language meant to be written simply in a text editor,
 with a markup that is both easy to read and write. It is later
 translated into HTML by one of the numerous `markdown`
 implementations.
- </span><span class="hl kwa">&lt;/markdown</span><span class="hl kwa">&gt;</span><span class="hl std">
+
+````ocaml
+let f x = x + 1;;
+````
+</span><span class="hl kwa">&lt;/markdown</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
 <p>
 Here is the result, embedded in a box:
@@ -140,6 +164,7 @@ Here is the result, embedded in a box:
 <div class="alert alert-info">
 <h2 id="a-typical-markdown-example">A typical markdown example</h2>
 <p><a href="http://daringfireball.net/projects/markdown/">Markdown</a> is a markup language meant to be written simply in a text editor, with a markup that is both easy to read and write. It is later translated into HTML by one of the numerous <code>markdown</code> implementations.</p>
+<div class="sourceCode"><pre class="sourceCode ocaml"><code class="sourceCode ocaml"><span class="kw">let</span> f x = x + <span class="dv">1</span>;;</code></pre></div>
 
 
 </div>
@@ -151,7 +176,7 @@ Here is the result, embedded in a box:
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

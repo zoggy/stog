@@ -86,16 +86,12 @@ sub {
 }
 img {
   /* Responsive images (ensure images don't scale beyond their parents) */
-
   max-width: 100%;
   /* Part 1: Set a maxium relative to the parent */
-
   width: auto\9;
   /* IE7-8 need help adjusting responsive images */
-
   height: auto;
   /* Part 2: Scale the height according to the width, otherwise you get stretching */
-
   vertical-align: middle;
   border: 0;
   -ms-interpolation-mode: bicubic;
@@ -190,7 +186,7 @@ textarea {
   img {
     max-width: 100% !important;
   }
-  @page  {
+  @page {
     margin: 0.5cm;
   }
   p,
@@ -357,158 +353,158 @@ a:focus {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   float: left;
-  margin-left: 2.631578947368421%;
-  *margin-left: 2.56578947368421%;
+  margin-left: 2.63157895%;
+  *margin-left: 2.56578947%;
 }
 .row-fluid [class*="span"]:first-child {
   margin-left: 0;
 }
 .row-fluid .controls-row [class*="span"] + [class*="span"] {
-  margin-left: 2.631578947368421%;
+  margin-left: 2.63157895%;
 }
 .row-fluid .span12 {
   width: 100%;
-  *width: 99.9342105263158%;
+  *width: 99.93421053%;
 }
 .row-fluid .span11 {
-  width: 91.44736842105262%;
-  *width: 91.38157894736841%;
+  width: 91.44736842%;
+  *width: 91.38157895%;
 }
 .row-fluid .span10 {
-  width: 82.89473684210526%;
-  *width: 82.82894736842105%;
+  width: 82.89473684%;
+  *width: 82.82894737%;
 }
 .row-fluid .span9 {
-  width: 74.34210526315789%;
-  *width: 74.27631578947368%;
+  width: 74.34210526%;
+  *width: 74.27631579%;
 }
 .row-fluid .span8 {
-  width: 65.78947368421052%;
-  *width: 65.72368421052632%;
+  width: 65.78947368%;
+  *width: 65.72368421%;
 }
 .row-fluid .span7 {
-  width: 57.23684210526315%;
-  *width: 57.17105263157894%;
+  width: 57.23684211%;
+  *width: 57.17105263%;
 }
 .row-fluid .span6 {
-  width: 48.68421052631579%;
-  *width: 48.618421052631575%;
+  width: 48.68421053%;
+  *width: 48.61842105%;
 }
 .row-fluid .span5 {
-  width: 40.13157894736842%;
-  *width: 40.065789473684205%;
+  width: 40.13157895%;
+  *width: 40.06578947%;
 }
 .row-fluid .span4 {
-  width: 31.578947368421048%;
-  *width: 31.51315789473684%;
+  width: 31.57894737%;
+  *width: 31.51315789%;
 }
 .row-fluid .span3 {
-  width: 23.026315789473685%;
-  *width: 22.960526315789476%;
+  width: 23.02631579%;
+  *width: 22.96052632%;
 }
 .row-fluid .span2 {
-  width: 14.473684210526315%;
-  *width: 14.407894736842104%;
+  width: 14.47368421%;
+  *width: 14.40789474%;
 }
 .row-fluid .span1 {
-  width: 5.921052631578947%;
-  *width: 5.855263157894736%;
+  width: 5.92105263%;
+  *width: 5.85526316%;
 }
 .row-fluid .offset12 {
-  margin-left: 105.26315789473684%;
-  *margin-left: 105.13157894736842%;
+  margin-left: 105.26315789%;
+  *margin-left: 105.13157895%;
 }
 .row-fluid .offset12:first-child {
-  margin-left: 102.63157894736842%;
-  *margin-left: 102.50000000000001%;
+  margin-left: 102.63157895%;
+  *margin-left: 102.5%;
 }
 .row-fluid .offset11 {
-  margin-left: 96.71052631578945%;
-  *margin-left: 96.57894736842104%;
+  margin-left: 96.71052632%;
+  *margin-left: 96.57894737%;
 }
 .row-fluid .offset11:first-child {
-  margin-left: 94.07894736842104%;
-  *margin-left: 93.94736842105263%;
+  margin-left: 94.07894737%;
+  *margin-left: 93.94736842%;
 }
 .row-fluid .offset10 {
-  margin-left: 88.1578947368421%;
-  *margin-left: 88.02631578947368%;
+  margin-left: 88.15789474%;
+  *margin-left: 88.02631579%;
 }
 .row-fluid .offset10:first-child {
-  margin-left: 85.52631578947368%;
-  *margin-left: 85.39473684210527%;
+  margin-left: 85.52631579%;
+  *margin-left: 85.39473684%;
 }
 .row-fluid .offset9 {
-  margin-left: 79.60526315789473%;
-  *margin-left: 79.47368421052632%;
+  margin-left: 79.60526316%;
+  *margin-left: 79.47368421%;
 }
 .row-fluid .offset9:first-child {
-  margin-left: 76.97368421052632%;
-  *margin-left: 76.8421052631579%;
+  margin-left: 76.97368421%;
+  *margin-left: 76.84210526%;
 }
 .row-fluid .offset8 {
-  margin-left: 71.05263157894736%;
-  *margin-left: 70.92105263157895%;
+  margin-left: 71.05263158%;
+  *margin-left: 70.92105263%;
 }
 .row-fluid .offset8:first-child {
-  margin-left: 68.42105263157895%;
-  *margin-left: 68.28947368421053%;
+  margin-left: 68.42105263%;
+  *margin-left: 68.28947368%;
 }
 .row-fluid .offset7 {
-  margin-left: 62.49999999999999%;
-  *margin-left: 62.36842105263157%;
+  margin-left: 62.5%;
+  *margin-left: 62.36842105%;
 }
 .row-fluid .offset7:first-child {
-  margin-left: 59.86842105263157%;
-  *margin-left: 59.73684210526314%;
+  margin-left: 59.86842105%;
+  *margin-left: 59.73684211%;
 }
 .row-fluid .offset6 {
-  margin-left: 53.94736842105263%;
-  *margin-left: 53.815789473684205%;
+  margin-left: 53.94736842%;
+  *margin-left: 53.81578947%;
 }
 .row-fluid .offset6:first-child {
-  margin-left: 51.315789473684205%;
-  *margin-left: 51.18421052631578%;
+  margin-left: 51.31578947%;
+  *margin-left: 51.18421053%;
 }
 .row-fluid .offset5 {
-  margin-left: 45.39473684210526%;
-  *margin-left: 45.263157894736835%;
+  margin-left: 45.39473684%;
+  *margin-left: 45.26315789%;
 }
 .row-fluid .offset5:first-child {
-  margin-left: 42.763157894736835%;
-  *margin-left: 42.63157894736841%;
+  margin-left: 42.76315789%;
+  *margin-left: 42.63157895%;
 }
 .row-fluid .offset4 {
-  margin-left: 36.84210526315789%;
-  *margin-left: 36.710526315789465%;
+  margin-left: 36.84210526%;
+  *margin-left: 36.71052632%;
 }
 .row-fluid .offset4:first-child {
-  margin-left: 34.210526315789465%;
-  *margin-left: 34.07894736842105%;
+  margin-left: 34.21052632%;
+  *margin-left: 34.07894737%;
 }
 .row-fluid .offset3 {
-  margin-left: 28.289473684210527%;
-  *margin-left: 28.15789473684211%;
+  margin-left: 28.28947368%;
+  *margin-left: 28.15789474%;
 }
 .row-fluid .offset3:first-child {
-  margin-left: 25.657894736842106%;
-  *margin-left: 25.52631578947369%;
+  margin-left: 25.65789474%;
+  *margin-left: 25.52631579%;
 }
 .row-fluid .offset2 {
-  margin-left: 19.736842105263158%;
-  *margin-left: 19.605263157894736%;
+  margin-left: 19.73684211%;
+  *margin-left: 19.60526316%;
 }
 .row-fluid .offset2:first-child {
-  margin-left: 17.105263157894736%;
-  *margin-left: 16.973684210526315%;
+  margin-left: 17.10526316%;
+  *margin-left: 16.97368421%;
 }
 .row-fluid .offset1 {
-  margin-left: 11.184210526315788%;
-  *margin-left: 11.052631578947368%;
+  margin-left: 11.18421053%;
+  *margin-left: 11.05263158%;
 }
 .row-fluid .offset1:first-child {
-  margin-left: 8.552631578947368%;
-  *margin-left: 8.421052631578947%;
+  margin-left: 8.55263158%;
+  *margin-left: 8.42105263%;
 }
 [class*="span"].hide,
 .row-fluid [class*="span"].hide {
@@ -703,7 +699,6 @@ ol.inline > li {
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
-
   *zoom: 1;
   padding-left: 5px;
   padding-right: 5px;
@@ -982,7 +977,6 @@ input[type="color"]:focus,
   outline: 0;
   outline: thin dotted \9;
   /* IE6-9 */
-
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
   -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
@@ -992,10 +986,8 @@ input[type="checkbox"] {
   margin: 4px 0 0;
   *margin-top: 0;
   /* IE7 */
-
   margin-top: 1px \9;
   /* IE8-9 */
-
   line-height: normal;
 }
 input[type="file"],
@@ -1011,10 +1003,8 @@ select,
 input[type="file"] {
   height: 61px;
   /* In IE7, the height of the select element cannot be changed by height, only font-size */
-
   *margin-top: 4px;
   /* For IE7, add top margin to align select with labels */
-
   line-height: 61px;
 }
 select {
@@ -1412,7 +1402,6 @@ select:focus:invalid:focus {
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
-
   *zoom: 1;
   vertical-align: middle;
   padding-left: 5px;
@@ -1563,7 +1552,6 @@ input.search-query {
   padding-left: 14px;
   padding-left: 4px \9;
   /* IE7-8 doesn't have border-radius, so don't indent the padding */
-
   margin-bottom: 0;
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
@@ -1620,7 +1608,6 @@ input.search-query {
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
-
   *zoom: 1;
   margin-bottom: 0;
   vertical-align: middle;
@@ -2678,7 +2665,6 @@ button.close {
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
-
   *zoom: 1;
   padding: 4px 12px;
   margin-bottom: 0;
@@ -2701,7 +2687,6 @@ button.close {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   *background-color: #e6e6e6;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   border: 1px solid #cccccc;
   *border: 0;
@@ -2837,7 +2822,6 @@ input[type="button"].btn-block {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   *background-color: #00882d;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 .btn-primary:hover,
@@ -2869,7 +2853,6 @@ input[type="button"].btn-block {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   *background-color: #f89406;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 .btn-warning:hover,
@@ -2901,7 +2884,6 @@ input[type="button"].btn-block {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   *background-color: #bd362f;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 .btn-danger:hover,
@@ -2933,7 +2915,6 @@ input[type="button"].btn-block {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   *background-color: #51a351;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 .btn-success:hover,
@@ -2965,7 +2946,6 @@ input[type="button"].btn-block {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   *background-color: #2f96b4;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 .btn-info:hover,
@@ -2997,7 +2977,6 @@ input[type="button"].btn-block {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   *background-color: #222222;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 .btn-inverse:hover,
@@ -3072,7 +3051,6 @@ input[type="submit"].btn.btn-mini {
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
-
   *zoom: 1;
   font-size: 0;
   vertical-align: middle;
@@ -3248,7 +3226,6 @@ input[type="submit"].btn.btn-mini {
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
-
   *zoom: 1;
 }
 .btn-group-vertical > .btn {
@@ -3945,7 +3922,6 @@ input[type="submit"].btn.btn-mini {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   *background-color: #005500;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 0 rgba(255,255,255,.075);
   -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 0 rgba(255,255,255,.075);
@@ -4179,7 +4155,6 @@ input[type="submit"].btn.btn-mini {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   *background-color: #040404;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 .navbar-inverse .btn-navbar:hover,
@@ -4209,7 +4184,6 @@ input[type="submit"].btn.btn-mini {
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
-
   *zoom: 1;
   text-shadow: 0 1px 0 #ffffff;
 }
@@ -4227,7 +4201,6 @@ input[type="submit"].btn.btn-mini {
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
-
   *zoom: 1;
   margin-left: 0;
   margin-bottom: 0;
@@ -4428,7 +4401,6 @@ input[type="submit"].btn.btn-mini {
   border: 1px solid rgba(0, 0, 0, 0.3);
   *border: 1px solid #999;
   /* IE6-7 */
-
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
@@ -5584,7 +5556,6 @@ table.eqnarray {
   margin-left: auto;
   margin-right: auto;
   /*width: 100%;*/
-
 }
 table.eqnarray td {
   padding-left: 0.2em ;
@@ -5657,7 +5628,6 @@ body {
   *zoom: 1;
   width: 760px;
   /*text-align: justify;*/
-
 }
 #page:before,
 #page:after {
@@ -5730,7 +5700,7 @@ dd {
 }
 .doc-item-title {
   font-size: 1.125em;
-  line-height: 1.3333333333333333em;
+  line-height: 1.33333333em;
   margin-bottom: 0;
 }
 .doc-item .date {
@@ -5782,7 +5752,6 @@ td.n-columns {
     }
   }
   */
-
 }
 /* Left and right floating images */
 div.img-float-left {
@@ -5803,7 +5772,6 @@ span.icode {
   padding: 0;
   .border-radius(3px);
 */
-
   font-family: "Lucida console", Monospace, Monaco, Menlo, Consolas, "Courier New", monospace;
   font-size: 32px;
   color: #333333;
@@ -5822,10 +5790,8 @@ span.icode {
 div.doc-keywords {
   font-size: 0.9em;
   /*.rounded-box ;*/
-
   margin-left: 1em;
-  margin-right: /*@docRightMargin ;*/
-;
+  /*margin-right: @docRightMargin ;*/
 }
 div.bloc-keywords {
   padding: 4px;
@@ -5870,7 +5836,6 @@ div#graph {
 }
 div#archives ul {
   /*padding-left: 1em;*/
-
 }
 pre {
   font-size: 0.790321em;
@@ -5893,10 +5858,9 @@ p + pre {
   border-width: 0 0 0 3px;
   border-color: lighten(@textColor, 40);
 */
-
 }
-div.ocaml-exc div.toplevel-out,
-div.ocaml-exc div.stderr {
+.ocaml-exc .toplevel-out,
+.ocaml-exc .stderr {
   color: #b94a48;
   font-weight: bold;
 }
@@ -5911,7 +5875,6 @@ div.ocaml-exc div.stderr {
 .table-bench {
   font-size: 1em ;
   /* * @decreaseFontSizeFactor ; */
-
 }
 .table-bench td {
   text-align: center ;
@@ -5925,16 +5888,14 @@ div.ocaml-exc div.stderr {
 }
 .ocamldoc-page {
   /*pre { margin-bottom: 4px; font-family: monospace; }*/
-
   /*table.indextable { margin-top: -2em; }*/
-
 }
 .ocamldoc-page img.depgraph {
   border-width: 0px;
 }
 .ocamldoc-page .keyword {
   font-weight: bold ;
-  color: Red;
+  color: #ff0000;
 }
 .ocamldoc-page .keywordsign {
   color: #c04600;
@@ -5946,16 +5907,16 @@ div.ocaml-exc div.stderr {
   font-size: 4;
 }
 .ocamldoc-page .comment {
-  color: Green;
+  color: #008000;
 }
 .ocamldoc-page .constructor {
-  color: Blue;
+  color: #0000ff;
 }
 .ocamldoc-page .type {
   color: #5c6585;
 }
 .ocamldoc-page .string {
-  color: Maroon;
+  color: #800000;
 }
 .ocamldoc-page .warning {
   color: Red ;
@@ -5985,7 +5946,7 @@ div.ocaml-exc div.stderr {
   padding: 5pt 5pt;
 }
 .ocamldoc-page tr {
-  background-color: White;
+  background-color: #ffffff;
 }
 .ocamldoc-page td.typefieldcomment {
   background-color: #FFFFFF ;
@@ -6157,7 +6118,7 @@ div.ocaml-exc div.stderr {
   color: #008800;
 }
 .ocamldoc-page div.vertical-space {
-  height: 35.832363819px;
+  height: 35.83236382px;
 }
 .ocamldoc-page b {
   font-weight: normal ;
@@ -6251,22 +6212,22 @@ div.doc-block div.contents {
 .page-title {
   clear: both ;
   font-size: 1.802em;
-  line-height: 0.832408435072142em;
-  margin-bottom: 0.832408435072142em;
+  line-height: 0.83240844em;
+  margin-bottom: 0.83240844em;
 }
 .page-subtitle {
   clear: both ;
   font-size: 1.266em;
-  line-height: 1.1848341232227488em;
-  margin-bottom: 1.1848341232227488em;
+  line-height: 1.18483412em;
+  margin-bottom: 1.18483412em;
 }
 .chapter {
   margin-bottom: 1.5em;
 }
 div.chapter-title {
   font-size: 1.602em;
-  margin-bottom: 0.9363295880149812em;
-  line-height: 0.9363295880149812em;
+  margin-bottom: 0.93632959em;
+  line-height: 0.93632959em;
   border-color: #333333;
 }
 .section {
@@ -6274,8 +6235,8 @@ div.chapter-title {
 }
 div.section-title {
   font-size: 1.602em;
-  margin-bottom: 0.9363295880149812em;
-  line-height: 0.9363295880149812em;
+  margin-bottom: 0.93632959em;
+  line-height: 0.93632959em;
   border-color: #333333;
 }
 .subsection {
@@ -6283,16 +6244,16 @@ div.section-title {
 }
 .subsection-title {
   font-size: 1.266em;
-  margin-bottom: 0.9363295880149812em;
-  line-height: 0.9363295880149812em;
+  margin-bottom: 0.93632959em;
+  line-height: 0.93632959em;
 }
 .subsubsection {
   margin-bottom: 1.5em;
 }
 .subsubsection-title {
   font-size: 1.125em;
-  margin-bottom: 0.9363295880149812em;
-  line-height: 0.9363295880149812em;
+  margin-bottom: 0.93632959em;
+  line-height: 0.93632959em;
 }
 .author-photo {
   max-height: 120px;
@@ -6360,7 +6321,7 @@ pre.hl {
   -moz-border-radius: 4px;
   border-radius: 4px;
   background-color: #d5ffd5;
-  display: inline ;
+  /* display: inline ;*/
 }
 @media print {
   div.navbar {

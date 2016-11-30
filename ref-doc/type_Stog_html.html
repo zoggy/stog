@@ -4,11 +4,19 @@
 <title>Stog : Stog library reference documentation : Stog_html</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -37,41 +50,41 @@
 
 
 <div class="ocamldoc-page">
-<code class="code"><span class="keyword">sig</span><br/>
-  <span class="keyword">module</span> <span class="constructor">XR</span> = <span class="constructor">Xtmpl_rewrite</span><br/>
-  <span class="keyword">module</span> <span class="constructor">Xml</span> = <span class="constructor">Xtmpl_xml</span><br/>
-  <span class="keyword">val</span> doc_by_href :<br/>
-    ?typ:string <span class="keywordsign">-&gt;</span><br/>
-    ?src_doc:<span class="constructor">Stog_types</span>.doc <span class="keywordsign">-&gt;</span><br/>
-    <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span><br/>
-    <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span><br/>
-    <span class="keywordsign">'</span>a <span class="constructor">XR</span>.env <span class="keywordsign">-&gt;</span><br/>
-    ?loc:<span class="constructor">Xml</span>.loc <span class="keywordsign">-&gt;</span><br/>
-    string <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a * (<span class="constructor">Stog_types</span>.doc * string * string option) option<br/>
-  <span class="keyword">val</span> get_in_env : <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">XR</span>.env <span class="keywordsign">-&gt;</span> <span class="constructor">Xml</span>.name <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a * <span class="constructor">XR</span>.tree list<br/>
-  <span class="keyword">val</span> get_path : <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">XR</span>.env <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a * <span class="constructor">Stog_path</span>.path<br/>
-  <span class="keyword">val</span> escape_html : string <span class="keywordsign">-&gt;</span> string<br/>
-  <span class="keyword">val</span> concat_name : ?sep:string <span class="keywordsign">-&gt;</span> string * string <span class="keywordsign">-&gt;</span> string<br/>
-  <span class="keyword">val</span> url_of_path : <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_path</span>.path <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.t<br/>
-  <span class="keyword">val</span> build_base_rules :<br/>
-    <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span><br/>
-    <span class="constructor">Stog_types</span>.doc_id <span class="keywordsign">-&gt;</span> (<span class="constructor">Xml</span>.name * <span class="constructor">Stog_types</span>.stog <span class="constructor">XR</span>.callback) list<br/>
-  <span class="keyword">val</span> doc_list :<br/>
-    <span class="constructor">Stog_types</span>.doc <span class="keywordsign">-&gt;</span><br/>
-    ?rss:<span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span><br/>
-    ?set:<span class="constructor">Stog_types</span>.<span class="constructor">Doc_set</span>.t <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog <span class="constructor">XR</span>.callback<br/>
-  <span class="keyword">val</span> get_sectionning_tags :<br/>
-    <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.doc <span class="keywordsign">-&gt;</span> <span class="constructor">XR</span>.name list<br/>
-  <span class="keyword">val</span> mk_levels :<br/>
-    string <span class="keywordsign">-&gt;</span><br/>
-    (string * <span class="keywordsign">'</span>a <span class="constructor">Stog_engine</span>.level_fun) list <span class="keywordsign">-&gt;</span><br/>
-    int list <span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t <span class="keywordsign">-&gt;</span><br/>
-    ?levels:(string * int list) list <span class="keywordsign">-&gt;</span><br/>
-    unit <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_engine</span>.level_fun <span class="constructor">Stog_types</span>.<span class="constructor">Int_map</span>.t<br/>
-  <span class="keyword">val</span> make_module :<br/>
-    ?levels:(string * int list) list <span class="keywordsign">-&gt;</span> unit <span class="keywordsign">-&gt;</span> (<span class="keyword">module</span> <span class="constructor">Stog_engine</span>.<span class="constructor">Module</span>)<br/>
-  <span class="keyword">val</span> module_name : string<br/>
-  <span class="keyword">val</span> register_base_rule : <span class="constructor">XR</span>.name <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog <span class="constructor">XR</span>.callback <span class="keywordsign">-&gt;</span> unit<br/>
+<code class="code"><span class="keyword">sig</span>
+  <span class="keyword">module</span> <span class="constructor">XR</span> = <span class="constructor">Xtmpl_rewrite</span>
+  <span class="keyword">module</span> <span class="constructor">Xml</span> = <span class="constructor">Xtmpl_xml</span>
+  <span class="keyword">val</span> doc_by_href :
+    ?typ:string <span class="keywordsign">-&gt;</span>
+    ?src_doc:<span class="constructor">Stog_types</span>.doc <span class="keywordsign">-&gt;</span>
+    <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span>
+    <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span>
+    <span class="keywordsign">'</span>a <span class="constructor">XR</span>.env <span class="keywordsign">-&gt;</span>
+    ?loc:<span class="constructor">Xml</span>.loc <span class="keywordsign">-&gt;</span>
+    string <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a * (<span class="constructor">Stog_types</span>.doc * string * string option) option
+  <span class="keyword">val</span> get_in_env : <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">XR</span>.env <span class="keywordsign">-&gt;</span> <span class="constructor">Xml</span>.name <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a * <span class="constructor">XR</span>.tree list
+  <span class="keyword">val</span> get_path : <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">XR</span>.env <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a * <span class="constructor">Stog_path</span>.path
+  <span class="keyword">val</span> escape_html : string <span class="keywordsign">-&gt;</span> string
+  <span class="keyword">val</span> concat_name : ?sep:string <span class="keywordsign">-&gt;</span> string * string <span class="keywordsign">-&gt;</span> string
+  <span class="keyword">val</span> url_of_path : <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_path</span>.path <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_url</span>.t
+  <span class="keyword">val</span> build_base_rules :
+    <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span>
+    <span class="constructor">Stog_types</span>.doc_id <span class="keywordsign">-&gt;</span> (<span class="constructor">Xml</span>.name * <span class="constructor">Stog_types</span>.stog <span class="constructor">XR</span>.callback) list
+  <span class="keyword">val</span> doc_list :
+    <span class="constructor">Stog_types</span>.doc <span class="keywordsign">-&gt;</span>
+    ?rss:<span class="constructor">Stog_url</span>.t <span class="keywordsign">-&gt;</span>
+    ?set:<span class="constructor">Stog_types</span>.<span class="constructor">Doc_set</span>.t <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog <span class="constructor">XR</span>.callback
+  <span class="keyword">val</span> get_sectionning_tags :
+    <span class="constructor">Stog_types</span>.stog <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.doc <span class="keywordsign">-&gt;</span> <span class="constructor">XR</span>.name list
+  <span class="keyword">val</span> mk_levels :
+    string <span class="keywordsign">-&gt;</span>
+    (string * <span class="keywordsign">'</span>a <span class="constructor">Stog_engine</span>.level_fun) list <span class="keywordsign">-&gt;</span>
+    int list <span class="constructor">Stog_types</span>.<span class="constructor">Str_map</span>.t <span class="keywordsign">-&gt;</span>
+    ?levels:(string * int list) list <span class="keywordsign">-&gt;</span>
+    unit <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_engine</span>.level_fun <span class="constructor">Stog_types</span>.<span class="constructor">Int_map</span>.t
+  <span class="keyword">val</span> make_module :
+    ?levels:(string * int list) list <span class="keywordsign">-&gt;</span> unit <span class="keywordsign">-&gt;</span> (<span class="keyword">module</span> <span class="constructor">Stog_engine</span>.<span class="constructor">Module</span>)
+  <span class="keyword">val</span> module_name : string
+  <span class="keyword">val</span> register_base_rule : <span class="constructor">XR</span>.name <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_types</span>.stog <span class="constructor">XR</span>.callback <span class="keywordsign">-&gt;</span> unit
 <span class="keyword">end</span></code></div>
 
 
@@ -79,7 +92,7 @@
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

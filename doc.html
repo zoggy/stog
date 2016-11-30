@@ -1,14 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Documentation</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +29,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -90,7 +105,7 @@ All text is assumed to be UTF-8.
 </div>
 
 </td></tr></table>
-<div class="section"><div class="section-title" id="ae7d-bb01-f4c0-5907">Presentations</div>
+<div class="section"><div aria-level="1" class="section-title" id="ae7d-bb01-f4c0-5907" role="heading">Presentations</div>
 <ul>
 <li>2013/04/23: <a href="https://zoggy.github.io/stog/slides/2013_04_23_inria.html">Talk about Stog at INRIA</a>.</li>
 </ul>
@@ -168,7 +183,7 @@ All text is assumed to be UTF-8.
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

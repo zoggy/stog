@@ -4,11 +4,19 @@
 <title>Stog : Stog library reference documentation : Stog_error</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -48,21 +61,15 @@ Errors.<br/>
 </div>
 <hr width="100%"/>
 
-<pre><code><span id="TYPEerror"><span class="keyword">type</span> error</span> = </code></pre><table class="typetable">
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTerror.Loc"><span class="constructor">Loc</span></span> <span class="keyword">of</span> <code class="type">Xtmpl_xml.loc * exn</code></code></td>
-
-</tr></table>
-
+<pre><span id="TYPEerror"><span class="keyword">type</span> error</span> </pre>
 
 
 <pre><span id="EXCEPTIONError"><span class="keyword">exception</span> Error</span> <span class="keyword">of</span> <code class="type"><a href="Stog_error.html#TYPEerror">error</a></code></pre>
 
 <pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type"><a href="Stog_error.html#TYPEerror">error</a> -&gt; 'a</code></pre>
 <pre><span id="VALerror_loc"><span class="keyword">val</span> error_loc</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; exn -&gt; 'a</code></pre>
+<pre><span id="VALtemplate_file_not_found"><span class="keyword">val</span> template_file_not_found</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; string -&gt; 'a</code></pre>
+<pre><span id="VALinvalid_date"><span class="keyword">val</span> invalid_date</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; string -&gt; string -&gt; 'a</code></pre>
 <pre><span id="VALstring_of_error"><span class="keyword">val</span> string_of_error</span> : <code class="type">?to_string:(exn -&gt; string) -&gt; <a href="Stog_error.html#TYPEerror">error</a> -&gt; string</code></pre></div>
 
 
@@ -70,7 +77,7 @@ Errors.<br/>
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

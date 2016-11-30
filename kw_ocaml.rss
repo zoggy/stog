@@ -5,7 +5,7 @@
          <link>https://zoggy.github.io/stog</link>
          <description>Static blog and web site generator</description>
          <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
-         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>25 Nov 2015 14:38:43 +0000</lastBuildDate>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>Wed, 30 Nov 2016 12:21:35 +0000</lastBuildDate>
          <generator>Stog</generator>
          <div class="img"><img class="img" src="" width=""/><div class="legend"><url>https://zoggy.github.io/stog/logo.png</url>
            <title>Stog</title><link>https://zoggy.github.io/stog</link>
@@ -20,7 +20,7 @@ can be used to access the content of computed OCaml values, as
 strings.
 &lt;/p&gt;
 </description>
-      <pubDate>16 Jan 2014 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 16 Jan 2014 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/ocaml-printf.html</guid>
     </item>
 <item>
@@ -39,7 +39,7 @@ only the bytecode version of Stog could evaluate OCaml code using the
 internal toplevel.
 &lt;/p&gt;
 </description>
-      <pubDate>21 Nov 2012 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 21 Nov 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/ocaml-sessions.html</guid>
     </item>
 <item>
@@ -53,7 +53,7 @@ function to evaluate code and display the result. This is nice to provide
 verified code examples on your pages.
 &lt;/p&gt;
 </description>
-      <pubDate>11 Mar 2012 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 11 Mar 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html</guid>
     </item>
 

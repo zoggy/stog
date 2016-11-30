@@ -4,11 +4,19 @@
 <title>Stog : Stog library reference documentation : Index of values</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -147,6 +160,8 @@ Compute internals graphs between documents.
 <td/></tr>
 <tr><td><a href="Stog_html.html#VALconcat_name">concat_name</a> [<a href="Stog_html.html">Stog_html</a>]</td>
 <td/></tr>
+<tr><td><a href="Stog_ocaml.html#VALconcat_nl">concat_nl</a> [<a href="Stog_ocaml.html">Stog_ocaml</a>]</td>
+<td/></tr>
 <tr><td><a href="Stog_config.html#VALconfig_dir">config_dir</a> [<a href="Stog_config.html">Stog_config</a>]</td>
 <td><div class="info">
 <code class="code">config_dir dir</code> returns the stog configuration directory in the given directory.
@@ -191,11 +206,6 @@ Same as <code class="code">create_log_fun</code> but also return a function to c
 <td/></tr>
 <tr><td><a href="Stog_tags.html#VALdate_now">date_now</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td/></tr>
-<tr><td><a href="Stog_io.html#VALdate_of_string">date_of_string</a> [<a href="Stog_io.html">Stog_io</a>]</td>
-<td><div class="info">
-Parse a date.
-</div>
-</td></tr>
 <tr><td><a href="Stog_tags.html#VALdate_today">date_today</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_tags.html#VALdefault_sectionning">default_sectionning</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
@@ -244,6 +254,8 @@ Build the final file where the given document will be generated.
 <tr><td><a href="Stog_tags.html#VALdoc_keywords">doc_keywords</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_types.html#VALdoc_list">doc_list</a> [<a href="Stog_types.html">Stog_types</a>]</td>
+<td/></tr>
+<tr><td><a href="Stog_tmpl.html#VALdoc_list">doc_list</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_html.html#VALdoc_list">doc_list</a> [<a href="Stog_html.html">Stog_html</a>]</td>
 <td><div class="info">
@@ -390,6 +402,8 @@ Find all data associated to the given path or below, or an empty list
 <td/></tr>
 <tr><td><a href="Stog_graph.S.html#VALfold_succ">fold_succ</a> [<a href="Stog_graph.S.html">Stog_graph.S</a>]</td>
 <td/></tr>
+<tr><td><a href="Stog_date.html#VALformat">format</a> [<a href="Stog_date.html">Stog_date</a>]</td>
+<td/></tr>
 <tr><td><a href="Stog_intl.html#VALfrench">french</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_init.html#VALfrom_dirs">from_dirs</a> [<a href="Stog_init.html">Stog_init</a>]</td>
@@ -519,6 +533,8 @@ Default URL, modified by command line option
 <td/></tr>
 <tr><td><a href="Stog_path.html#VALinvalid">invalid</a> [<a href="Stog_path.html">Stog_path</a>]</td>
 <td/></tr>
+<tr><td><a href="Stog_error.html#VALinvalid_date">invalid_date</a> [<a href="Stog_error.html">Stog_error</a>]</td>
+<td/></tr>
 <tr><td><a href="Stog_misc.html#VALis_prefix">is_prefix</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td><div class="info">
 <code class="code">is_prefix pattern s</code> returns true if string <code class="code">s</code> begins with <code class="code">pattern</code>.
@@ -575,6 +591,8 @@ Same as <a href="Stog_graph.S.html#VALiter_succ"><code class="code">Stog_graph.S
 <tr><td><a href="Stog_misc.html#VALlist_compare">list_compare</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_misc.html#VALlist_concat">list_concat</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
+<td/></tr>
+<tr><td><a href="Stog_ocaml.html#VALlist_concat_nl">list_concat_nl</a> [<a href="Stog_ocaml.html">Stog_ocaml</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_misc.html#VALlist_remove_doubles">list_remove_doubles</a> [<a href="Stog_misc.html">Stog_misc</a>]</td>
 <td><div class="info">
@@ -679,6 +697,8 @@ Default modules directory.
 <code class="code">nodes_by_pred_order g</code> returns a sorted list of vertices.
 </div>
 </td></tr>
+<tr><td><a href="Stog_date.html#VALnow">now</a> [<a href="Stog_date.html">Stog_date</a>]</td>
+<td/></tr>
 <tr><td align="left"><br/>O</td></tr>
 <tr><td><a href="Stog_tags.html#VALocaml">ocaml</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
 <td/></tr>
@@ -691,11 +711,15 @@ Default modules directory.
 Path to ocamlfind command used for compilation.
 </div>
 </td></tr>
-<tr><td><a href="Stog_url.html#VALof_neturl">of_neturl</a> [<a href="Stog_url.html">Stog_url</a>]</td>
+<tr><td><a href="Stog_date.html#VALof_float">of_float</a> [<a href="Stog_date.html">Stog_date</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_url.html#VALof_string">of_string</a> [<a href="Stog_url.html">Stog_url</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_path.html#VALof_string">of_string</a> [<a href="Stog_path.html">Stog_path</a>]</td>
+<td/></tr>
+<tr><td><a href="Stog_date.html#VALof_string">of_string</a> [<a href="Stog_date.html">Stog_date</a>]</td>
+<td/></tr>
+<tr><td><a href="Stog_date.html#VALof_string_date">of_string_date</a> [<a href="Stog_date.html">Stog_date</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_engine.html#VALopt_in_env">opt_in_env</a> [<a href="Stog_engine.html">Stog_engine</a>]</td>
 <td/></tr>
@@ -841,8 +865,6 @@ Same as <a href="Stog_graph.S.html#VALrecursive_succs"><code class="code">Stog_g
 <code class="code">rem_all g (a, b)</code> removes from graph <code class="code">g</code> all edges from <code class="code">a</code> to <code class="code">b</code>.
 </div>
 </td></tr>
-<tr><td><a href="Stog_url.html#VALremove">remove</a> [<a href="Stog_url.html">Stog_url</a>]</td>
-<td/></tr>
 <tr><td><a href="Stog_tmap.S.html#VALremove">remove</a> [<a href="Stog_tmap.S.html">Stog_tmap.S</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_graph.GMap.html#VALremove">remove</a> [<a href="Stog_graph.GMap.html">Stog_graph.GMap</a>]</td>
@@ -860,6 +882,8 @@ Keep in the stog structure only the documents matching the
   <a href="Stog_types.html#TYPEELTstog.stog_publish_only"><code class="code">Stog_types.stog.stog_publish_only</code></a> filter, if any.
 </div>
 </td></tr>
+<tr><td><a href="Stog_url.html#VALremove_query">remove_query</a> [<a href="Stog_url.html">Stog_url</a>]</td>
+<td/></tr>
 <tr><td><a href="Stog_graph.S.html#VALreverse">reverse</a> [<a href="Stog_graph.S.html">Stog_graph.S</a>]</td>
 <td><div class="info">
 <code class="code">reverse g</code> return a graph where all edges of <code class="code">g</code> are reversed, i.e.
@@ -925,8 +949,6 @@ Use the given language abbreviation (such as "fr") to set the default
 Share directory.
 </div>
 </td></tr>
-<tr><td><a href="Stog_intl.html#VALshort_string_of_date">short_string_of_date</a> [<a href="Stog_intl.html">Stog_intl</a>]</td>
-<td/></tr>
 <tr><td><a href="Stog_graph.S.html#VALshortest_path">shortest_path</a> [<a href="Stog_graph.S.html">Stog_graph.S</a>]</td>
 <td><div class="info">
 <code class="code">shortest_path g cost (a, b)</code> computes the shortest path from <code class="code">a</code> to <code class="code">b</code>
@@ -1020,6 +1042,8 @@ Same as <a href="Stog_graph.S.html#VALpred_roots"><code class="code">Stog_graph.
 </div>
 </td></tr>
 <tr><td align="left"><br/>T</td></tr>
+<tr><td><a href="Stog_error.html#VALtemplate_file_not_found">template_file_not_found</a> [<a href="Stog_error.html">Stog_error</a>]</td>
+<td/></tr>
 <tr><td><a href="Stog_install.html#VALtemplates_dir">templates_dir</a> [<a href="Stog_install.html">Stog_install</a>]</td>
 <td><div class="info">
 Default templates directory.
@@ -1031,7 +1055,7 @@ Default templates directory.
   stog project directory.
 </div>
 </td></tr>
-<tr><td><a href="Stog_url.html#VALto_neturl">to_neturl</a> [<a href="Stog_url.html">Stog_url</a>]</td>
+<tr><td><a href="Stog_date.html#VALto_date_time">to_date_time</a> [<a href="Stog_date.html">Stog_date</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_url.html#VALto_string">to_string</a> [<a href="Stog_url.html">Stog_url</a>]</td>
 <td/></tr>
@@ -1039,11 +1063,11 @@ Default templates directory.
 <td/></tr>
 <tr><td><a href="Stog_path.html#VALto_string">to_string</a> [<a href="Stog_path.html">Stog_path</a>]</td>
 <td/></tr>
+<tr><td><a href="Stog_date.html#VALto_string">to_string</a> [<a href="Stog_date.html">Stog_date</a>]</td>
+<td/></tr>
 <tr><td><a href="Stog_of_latex.html#VALto_xml">to_xml</a> [<a href="Stog_of_latex.html">Stog_of_latex</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_tags.html#VALtoc">toc</a> [<a href="Stog_tags.html">Stog_tags</a>]</td>
-<td/></tr>
-<tr><td><a href="Stog_types.html#VALtoday">today</a> [<a href="Stog_types.html">Stog_types</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_tmpl.html#VALtopic">topic</a> [<a href="Stog_tmpl.html">Stog_tmpl</a>]</td>
 <td/></tr>
@@ -1083,6 +1107,11 @@ Version of stog.
 <td/></tr>
 <tr><td><a href="Stog_msg.html#VALwarnings">warnings</a> [<a href="Stog_msg.html">Stog_msg</a>]</td>
 <td/></tr>
+<tr><td><a href="Stog_date.html#VALweekday">weekday</a> [<a href="Stog_date.html">Stog_date</a>]</td>
+<td><div class="info">
+Return week day from 0 (sunday) to 6 (saturday).
+</div>
+</td></tr>
 <tr><td><a href="Stog_url.html#VALwith_fragment">with_fragment</a> [<a href="Stog_url.html">Stog_url</a>]</td>
 <td/></tr>
 <tr><td><a href="Stog_url.html#VALwith_path">with_path</a> [<a href="Stog_url.html">Stog_url</a>]</td>
@@ -1139,7 +1168,7 @@ Default websocket URL, modified by command line option
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

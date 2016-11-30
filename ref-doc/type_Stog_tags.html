@@ -4,11 +4,19 @@
 <title>Stog : Stog library reference documentation : Stog_tags</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -37,81 +50,81 @@
 
 
 <div class="ocamldoc-page">
-<code class="code"><span class="keyword">sig</span><br/>
-  <span class="keyword">val</span> site_title : string<br/>
-  <span class="keyword">val</span> site_desc : string<br/>
-  <span class="keyword">val</span> site_url : string<br/>
-  <span class="keyword">val</span> site_email : string<br/>
-  <span class="keyword">val</span> stog_dir : string<br/>
-  <span class="keyword">val</span> rss_length : string<br/>
-  <span class="keyword">val</span> languages : string<br/>
-  <span class="keyword">val</span> functions : string<br/>
-  <span class="keyword">val</span> default_style : string<br/>
-  <span class="keyword">val</span> doc : string<br/>
-  <span class="keyword">val</span> doc_body : string<br/>
-  <span class="keyword">val</span> doc_date : string<br/>
-  <span class="keyword">val</span> doc_datetime : string<br/>
-  <span class="keyword">val</span> doc_keywords : string<br/>
-  <span class="keyword">val</span> doc_intro : string<br/>
-  <span class="keyword">val</span> doc_navpath : string<br/>
-  <span class="keyword">val</span> doc_path : string<br/>
-  <span class="keyword">val</span> doc_src : string<br/>
-  <span class="keyword">val</span> doc_title : string<br/>
-  <span class="keyword">val</span> doc_topics : string<br/>
-  <span class="keyword">val</span> doc_type : string<br/>
-  <span class="keyword">val</span> doc_url : string<br/>
-  <span class="keyword">val</span> sep : string<br/>
-  <span class="keyword">val</span> archive_tree : string<br/>
-  <span class="keyword">val</span> as_cdata : string<br/>
-  <span class="keyword">val</span> as_xml : string<br/>
-  <span class="keyword">val</span> block : string<br/>
-  <span class="keyword">val</span> command_line : string<br/>
-  <span class="keyword">val</span> counter : string<br/>
-  <span class="keyword">val</span> date_now : string<br/>
-  <span class="keyword">val</span> date_today : string<br/>
-  <span class="keyword">val</span> dummy_ : string<br/>
-  <span class="keyword">val</span> documents : string<br/>
-  <span class="keyword">val</span> exec : string<br/>
-  <span class="keyword">val</span> ext_a : string<br/>
-  <span class="keyword">val</span> error_ : string<br/>
-  <span class="keyword">val</span> graph : string<br/>
-  <span class="keyword">val</span> hcode : string<br/>
-  <span class="keyword">val</span> path_sep : string<br/>
-  <span class="keyword">val</span> icode : string<br/>
-  <span class="keyword">val</span> if_ : string<br/>
-  <span class="keyword">val</span> image : string<br/>
-  <span class="keyword">val</span> inc : string<br/>
-  <span class="keyword">val</span> include_ : string<br/>
-  <span class="keyword">val</span> keyword : string<br/>
-  <span class="keyword">val</span> langswitch : string<br/>
-  <span class="keyword">val</span> late_cdata : string<br/>
-  <span class="keyword">val</span> late_inc : string<br/>
-  <span class="keyword">val</span> latex : string<br/>
-  <span class="keyword">val</span> latex_body : string<br/>
-  <span class="keyword">val</span> list : string<br/>
-  <span class="keyword">val</span> n_columns : string<br/>
-  <span class="keyword">val</span> next : string<br/>
-  <span class="keyword">val</span> next_path : string<br/>
-  <span class="keyword">val</span> ocaml : string<br/>
-  <span class="keyword">val</span> ocaml_eval : string<br/>
-  <span class="keyword">val</span> ocaml_printf : string<br/>
-  <span class="keyword">val</span> page : string<br/>
-  <span class="keyword">val</span> paragraph : string<br/>
-  <span class="keyword">val</span> post : string<br/>
-  <span class="keyword">val</span> prefix_svg_ids : string<br/>
-  <span class="keyword">val</span> prepare_toc : string<br/>
-  <span class="keyword">val</span> previous : string<br/>
-  <span class="keyword">val</span> previous_path : string<br/>
-  <span class="keyword">val</span> print_date : string<br/>
-  <span class="keyword">val</span> print_datetime : string<br/>
-  <span class="keyword">val</span> search_form : string<br/>
-  <span class="keyword">val</span> section : string<br/>
-  <span class="keyword">val</span> subsection : string<br/>
-  <span class="keyword">val</span> subsubsection : string<br/>
-  <span class="keyword">val</span> toc : string<br/>
-  <span class="keyword">val</span> topic : string<br/>
-  <span class="keyword">val</span> two_columns : string<br/>
-  <span class="keyword">val</span> default_sectionning : string list<br/>
+<code class="code"><span class="keyword">sig</span>
+  <span class="keyword">val</span> site_title : string
+  <span class="keyword">val</span> site_desc : string
+  <span class="keyword">val</span> site_url : string
+  <span class="keyword">val</span> site_email : string
+  <span class="keyword">val</span> stog_dir : string
+  <span class="keyword">val</span> rss_length : string
+  <span class="keyword">val</span> languages : string
+  <span class="keyword">val</span> functions : string
+  <span class="keyword">val</span> default_style : string
+  <span class="keyword">val</span> doc : string
+  <span class="keyword">val</span> doc_body : string
+  <span class="keyword">val</span> doc_date : string
+  <span class="keyword">val</span> doc_datetime : string
+  <span class="keyword">val</span> doc_keywords : string
+  <span class="keyword">val</span> doc_intro : string
+  <span class="keyword">val</span> doc_navpath : string
+  <span class="keyword">val</span> doc_path : string
+  <span class="keyword">val</span> doc_src : string
+  <span class="keyword">val</span> doc_title : string
+  <span class="keyword">val</span> doc_topics : string
+  <span class="keyword">val</span> doc_type : string
+  <span class="keyword">val</span> doc_url : string
+  <span class="keyword">val</span> sep : string
+  <span class="keyword">val</span> archive_tree : string
+  <span class="keyword">val</span> as_cdata : string
+  <span class="keyword">val</span> as_xml : string
+  <span class="keyword">val</span> block : string
+  <span class="keyword">val</span> command_line : string
+  <span class="keyword">val</span> counter : string
+  <span class="keyword">val</span> date_now : string
+  <span class="keyword">val</span> date_today : string
+  <span class="keyword">val</span> dummy_ : string
+  <span class="keyword">val</span> documents : string
+  <span class="keyword">val</span> exec : string
+  <span class="keyword">val</span> ext_a : string
+  <span class="keyword">val</span> error_ : string
+  <span class="keyword">val</span> graph : string
+  <span class="keyword">val</span> hcode : string
+  <span class="keyword">val</span> path_sep : string
+  <span class="keyword">val</span> icode : string
+  <span class="keyword">val</span> if_ : string
+  <span class="keyword">val</span> image : string
+  <span class="keyword">val</span> inc : string
+  <span class="keyword">val</span> include_ : string
+  <span class="keyword">val</span> keyword : string
+  <span class="keyword">val</span> langswitch : string
+  <span class="keyword">val</span> late_cdata : string
+  <span class="keyword">val</span> late_inc : string
+  <span class="keyword">val</span> latex : string
+  <span class="keyword">val</span> latex_body : string
+  <span class="keyword">val</span> list : string
+  <span class="keyword">val</span> n_columns : string
+  <span class="keyword">val</span> next : string
+  <span class="keyword">val</span> next_path : string
+  <span class="keyword">val</span> ocaml : string
+  <span class="keyword">val</span> ocaml_eval : string
+  <span class="keyword">val</span> ocaml_printf : string
+  <span class="keyword">val</span> page : string
+  <span class="keyword">val</span> paragraph : string
+  <span class="keyword">val</span> post : string
+  <span class="keyword">val</span> prefix_svg_ids : string
+  <span class="keyword">val</span> prepare_toc : string
+  <span class="keyword">val</span> previous : string
+  <span class="keyword">val</span> previous_path : string
+  <span class="keyword">val</span> print_date : string
+  <span class="keyword">val</span> print_datetime : string
+  <span class="keyword">val</span> search_form : string
+  <span class="keyword">val</span> section : string
+  <span class="keyword">val</span> subsection : string
+  <span class="keyword">val</span> subsubsection : string
+  <span class="keyword">val</span> toc : string
+  <span class="keyword">val</span> topic : string
+  <span class="keyword">val</span> two_columns : string
+  <span class="keyword">val</span> default_sectionning : string list
 <span class="keyword">end</span></code></div>
 
 
@@ -119,7 +132,7 @@
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

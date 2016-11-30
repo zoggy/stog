@@ -4,11 +4,19 @@
 <title>Stog : Module Blocks</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -44,11 +57,11 @@ levels (see <a href="https://zoggy.github.io/stog/funs.html">Predefined modules 
 
 <ul class="toc"><li class="toc-section"><a href="https://zoggy.github.io/stog/module_blocks.html#init">init</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/module_blocks.html#base">base</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/module_blocks.html#sectionning">sectionning</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/module_blocks.html#gather-ids">gather-ids</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/module_blocks.html#doc">doc</a></li></ul>
 
-<div class="section"><div class="section-title" id="init">init</div>
+<div class="section"><div aria-level="1" class="section-title" id="init" role="heading">init</div>
 <p>This functions initialize section counters. </p>
 </div>
 
-<div class="section"><div class="section-title" id="base">base</div>
+<div class="section"><div aria-level="1" class="section-title" id="base" role="heading">base</div>
 <p>
 This function applies the following rules:
 </p>
@@ -59,11 +72,11 @@ This function applies the following rules:
 <a href="https://zoggy.github.io/stog/funs.html#base">base rules</a>.</p>
 
 
-<div class="subsection"><div class="subsection-title" id="block">block</div>
+<div class="subsection"><div aria-level="2" class="subsection-title" id="block" role="heading">block</div>
 <p>Not documented yet.</p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="counter">counter</div>
+<div class="subsection"><div aria-level="2" class="subsection-title" id="counter" role="heading">counter</div>
 <pre class="code-xml"><span class="hl kwa">&lt;counter</span><span class="hl std"> </span><span class="">counter-name</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">/&gt;</span></pre>
 <p>is reduced to the current value of the counter associated to the given name.</p>
 </div>
@@ -71,7 +84,7 @@ This function applies the following rules:
 
 </div>
 
-<div class="section"><div class="section-title" id="sectionning">sectionning</div>
+<div class="section"><div aria-level="1" class="section-title" id="sectionning" role="heading">sectionning</div>
 <p>
 This function uses the sectionning tags to rewrite the corresponding
 nodes.
@@ -126,7 +139,7 @@ The function also applies the <a href="https://zoggy.github.io/stog/module_block
 
 </div>
 
-<div class="section"><div class="section-title" id="gather-ids">gather-ids</div>
+<div class="section"><div aria-level="1" class="section-title" id="gather-ids" role="heading">gather-ids</div>
 <p>
 This function collects all ids (the values attached to <span class="icode"><span class="hl std">id="..."</span></span> attributes)
 in all documents, so they can be referenced to in upper levels.
@@ -136,7 +149,7 @@ Having twice the same id in a document results in a warning.
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="doc">doc</div>
+<div class="section"><div aria-level="1" class="section-title" id="doc" role="heading">doc</div>
 <p>
 This function applies the following rules:
 <span class="icode"><span class="hl kwa">&lt;doc</span><span class="hl kwa">&gt;</span></span>, <span class="icode"><span class="hl kwa">&lt;post</span><span class="hl kwa">&gt;</span></span>,
@@ -255,7 +268,7 @@ first defined in the article.
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

@@ -1,14 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Running Stog</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +29,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -40,7 +55,7 @@
 <p>
 To compile your web site, use the following command:
 </p>
-<pre><![CDATA[# stog <root-directory>]]></pre>
+<pre># stog &lt;root-directory&gt;</pre>
 <p>Stog will generate the result in <span class="icode"><span class="hl std">./stog-output</span></span>,
 except if you use the <span class="icode"><span class="hl std">-d</span></span> option to specify another
 output directory.
@@ -58,7 +73,7 @@ given. It may be useful to gather blogs or pages to generate one big site. Or no
 Stog can also be used to <a href="https://zoggy.github.io/stog/single-documents.html">compile single documents</a>.
 </p>
 
-<div class="section"><div class="section-title" id="siteurl">Site location</div>
+<div class="section"><div aria-level="1" class="section-title" id="siteurl" role="heading">Site location</div>
 <p>The <span class="icode"><span class="hl std">--site-url</span></span> option is used to override the <span class="icode"><span class="hl std">stog:site-url</span></span>
 field of the main document. It it useful to generate a local site, for example
 </p>
@@ -72,7 +87,7 @@ As a shortcut, the <span class="icode"><span class="hl std">--local</span></span
 <span class="icode"><span class="hl std">file://&lt;absolute path of output directory/&gt;</span></span>.
 </p>
 
-<div class="section"><div class="section-title" id="template-path">Template paths</div>
+<div class="section"><div aria-level="1" class="section-title" id="template-path" role="heading">Template paths</div>
 <p>By default, Stog will look for templates in the following directories, in this
 order: <span class="icode"><span class="hl std">.stog/templates</span></span>, <span class="icode"><span class="hl std">/path/to/stog/share/templates</span></span>.
 </p>
@@ -87,7 +102,7 @@ several times. In the following example:
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="module-path">Module paths</div>
+<div class="section"><div aria-level="1" class="section-title" id="module-path" role="heading">Module paths</div>
 <p>By default, Stog will look for modules in the following directories, in this
 order: <span class="icode"><span class="hl std">.stog/modules</span></span>, <span class="icode"><span class="hl std">/path/to/stog/share/modules</span></span>.
 </p>
@@ -102,7 +117,7 @@ several times. In the following example:
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="def">Additional definitions</div>
+<div class="section"><div aria-level="1" class="section-title" id="def" role="heading">Additional definitions</div>
 <p id="optiondef">
 The <span class="icode"><span class="hl std">--def</span></span> option can be used to define an additional global rule. For example
 </p>
@@ -112,7 +127,7 @@ will make the current working directory accessible using <span class="icode"><sp
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="plugins">Plugins</div>
+<div class="section"><div aria-level="1" class="section-title" id="plugins" role="heading">Plugins</div>
 <p>The <span class="icode"><span class="hl std">--plugin</span></span> option makes <span class="icode"><span class="hl std">stog</span></span> dynamically
 load the given OCaml object file. The loaded plugin can define new functions
 to associate to some tags, or even override some pre-defined functions.
@@ -125,7 +140,7 @@ then be used to get the location and required files to load these packages, in b
 for <span class="icode"><span class="hl std">stog.byte</span></span> or native-code for <span class="icode"><span class="hl std">stog</span></span>.
 </p>
 </div>
-<div class="section"><div class="section-title" id="multilang">Handling languages</div>
+<div class="section"><div aria-level="1" class="section-title" id="multilang" role="heading">Handling languages</div>
 <p>The <span class="icode"><span class="hl std">--lang</span></span> option is used to generate the website
 for one language. By default, the only known languages are "en" and "fr".
 If you use the <span class="icode"><span class="hl std">--lang en</span></span> option, then pages will be generated
@@ -151,7 +166,7 @@ the provided
 -->
 </div>
 
-<div class="section"><div class="section-title" id="caching">Caching</div>
+<div class="section"><div aria-level="1" class="section-title" id="caching" role="heading">Caching</div>
 <p>
 Stog will keep computed documents in directory <code>.stog/cache</code>.
 To prevent stog from using this cache, use the <code>--nocache</code>
@@ -176,7 +191,7 @@ to use non-recursive dependencies in the caching strategy.
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="filter">Filtering published documents</div>
+<div class="section"><div aria-level="1" class="section-title" id="filter" role="heading">Filtering published documents</div>
 <p>
 By default, Stog will not compute documents having definition
 <span class="icode"><span class="hl std">published="false"</span></span> or <span class="icode"><span class="hl std">published="0"</span></span>
@@ -209,7 +224,7 @@ attribute <span class="icode"><span class="hl std">foo</span></span> or if the a
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="makefile">Using with Make</div>
+<div class="section"><div aria-level="1" class="section-title" id="makefile" role="heading">Using with Make</div>
 <p>
 A convenient way to use stog is to create a Makefile with different targets,
 to generate your site for a local test and for online publishing.
@@ -232,7 +247,7 @@ For information you can see the <a href="#pagesource"> source code of the page</
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 To compile your web site, use the following command:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[stog </span><span class="hl kwa">&lt;root-directory</span><span class="hl kwa">&gt;</span><span class="hl std">]]&gt;</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;command</span><span class="hl kwa">&gt;</span><span class="hl std">stog </span><span class="hl kwb">&amp;lt;</span><span class="hl std">root-directory</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/command</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Stog will generate the result in </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">./stog-output</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,
 except if you use the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">-d</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> option to specify another
 output directory.
@@ -415,7 +430,7 @@ Makefile</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

@@ -248,12 +248,21 @@ les valeurs données dans chaque document source.
 <p>
 Le fichier de gabarit <span class="icode"><span class="hl std">.stog/templates/page.tmpl</span></span>:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;html</span><span class="hl std"> </span><span class="">xmlns</span><span class="hl std">=</span><span class="hl str">"http://www.w3.org/1999/xhtml"</span><span class="hl kwa">&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl std">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+</span><span class="hl kwa">&lt;html</span><span class="hl std"> </span><span class="">xmlns</span><span class="hl std">=</span><span class="hl str">"http://www.w3.org/1999/xhtml"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;head</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;meta</span><span class="hl std"> </span><span class="">http-equiv</span><span class="hl std">=</span><span class="hl str">"Content-Type"</span><span class="hl std"> </span><span class="">content</span><span class="hl std">=</span><span class="hl str">"application/xhtml+xml; charset=utf-8"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;title</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;site-title</span><span class="hl kwa">/&gt;</span><span class="hl std"> : </span><span class="hl kwa">&lt;doc-title</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/title</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;link</span><span class="hl std"> </span><span class="">rel</span><span class="hl std">=</span><span class="hl str">"stylesheet"</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">"text/css"</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"&amp;lt;site-url/&amp;gt;/style.css"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/link</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/head</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;script</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">"text/javascript"</span><span class="hl kwa">&gt;</span><span class="hl std">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:</span><span class="hl kwa">&lt;site-url</span><span class="hl kwa">/&gt;</span><span class="hl std"> ";
+    return true;
+}
+</span><span class="hl kwa">&lt;/script</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;body</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"page"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">"menubar.tmpl"</span><span class="hl kwa">/&gt;</span><span class="hl std">
@@ -347,10 +356,10 @@ print 'Hi, %s.' % name
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
   <div class="span12" title="&lt;pre class=&quot;code-python&quot;&gt;name &lt;span class=&quot;hl opt&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;hl kwb&quot;&gt;raw_input&lt;/span&gt;&lt;span class=&quot;hl opt&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;hl str&quot;&gt;&apos;What is your name?&lt;/span&gt;&lt;span class=&quot;hl esc&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;hl str&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;hl opt&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;hl kwa&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;hl str&quot;&gt;&apos;Hi, %s.&apos;&lt;/span&gt; &lt;span class=&quot;hl opt&quot;&gt;%&lt;/span&gt; name&lt;/pre&gt;
+&lt;span class=&quot;hl kwa&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;hl str&quot;&gt;&apos;Hi,&lt;/span&gt; &lt;span class=&quot;hl ipl&quot;&gt;%s&lt;/span&gt;&lt;span class=&quot;hl str&quot;&gt;.&apos;&lt;/span&gt; % name&lt;/pre&gt;
 ">
       <div><pre class="code-python">name <span class="hl opt">=</span> <span class="hl kwb">raw_input</span><span class="hl opt">(</span><span class="hl str">'What is your name?</span><span class="hl esc">\n</span><span class="hl str">'</span><span class="hl opt">)</span>
-<span class="hl kwa">print</span> <span class="hl str">'Hi, %s.'</span> <span class="hl opt">%</span> name</pre>
+<span class="hl kwa">print</span> <span class="hl str">'Hi,</span> <span class="hl ipl">%s</span><span class="hl str">.'</span> % name</pre>
 </div>
   </div>
 </div>
@@ -367,11 +376,11 @@ print 'Hi, %s.' % name
 </div>
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
-  <div class="span12" title="&lt;pre class=&quot;code-ocaml&quot;&gt;&lt;div&gt;# &lt;span class=&quot;hl kwa&quot;&gt;let&lt;/span&gt; f x &lt;span class=&quot;hl opt&quot;&gt;=&lt;/span&gt; x &lt;span class=&quot;hl opt&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;hl num&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;hl opt&quot;&gt;;;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;ocaml-toplevel&quot;&gt;&lt;div class=&quot;toplevel-out&quot;&gt;val f : int -&amp;gt; int = &amp;lt;fun&amp;gt;
-&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;
+  <div class="span12" title="&lt;pre class=&quot;code-ocaml&quot;&gt;&lt;span&gt;# &lt;span class=&quot;hl kwa&quot;&gt;let&lt;/span&gt; f x &lt;span class=&quot;hl opt&quot;&gt;=&lt;/span&gt; x &lt;span class=&quot;hl opt&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;hl num&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;hl opt&quot;&gt;;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;ocaml-toplevel&quot;&gt;&lt;span class=&quot;toplevel-out&quot;&gt;val f : int -&amp;gt; int = &amp;lt;fun&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;
 ">
-      <div><pre class="code-ocaml"><div># <span class="hl kwa">let</span> f x <span class="hl opt">=</span> x <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val f : int -&gt; int = &lt;fun&gt;
-</div></div></pre>
+      <div><pre class="code-ocaml"><span># <span class="hl kwa">let</span> f x <span class="hl opt">=</span> x <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl opt">;;</span></span>
+<span class="ocaml-toplevel"><span class="toplevel-out">val f : int -&gt; int = &lt;fun&gt;</span></span></pre>
 </div>
   </div>
 </div>
@@ -410,14 +419,14 @@ print 'Hi, %s.' % name
 </div>
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
-  <div class="span12" title="&lt;div class=&quot;section&quot;&gt;&lt;div class=&quot;section-title&quot; id=&quot;sec1&quot;&gt;Titre 1&lt;/div&gt;
-&lt;div class=&quot;subsection&quot;&gt;&lt;div class=&quot;subsection-title&quot; id=&quot;ssec1&quot;&gt;Sous-titre 1&lt;/div&gt;
+  <div class="span12" title="&lt;div class=&quot;section&quot;&gt;&lt;div aria-level=&quot;1&quot; class=&quot;section-title&quot; id=&quot;sec1&quot; role=&quot;heading&quot;&gt;Titre 1&lt;/div&gt;
+&lt;div class=&quot;subsection&quot;&gt;&lt;div aria-level=&quot;2&quot; class=&quot;subsection-title&quot; id=&quot;ssec1&quot; role=&quot;heading&quot;&gt;Sous-titre 1&lt;/div&gt;
 &lt;p&gt;bla bla bla&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 ">
-      <div><div class="section"><div class="section-title" id="sec1">Titre 1</div>
-<div class="subsection"><div class="subsection-title" id="ssec1">Sous-titre 1</div>
+      <div><div class="section"><div aria-level="1" class="section-title" id="sec1" role="heading">Titre 1</div>
+<div class="subsection"><div aria-level="2" class="subsection-title" id="ssec1" role="heading">Sous-titre 1</div>
 <p>bla bla bla</p>
 </div>
 </div>
@@ -444,25 +453,11 @@ Post commitum animal triste ...
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
   <div class="span12" title="&lt;p&gt;Lorem ipsum ...&lt;/p&gt;
-
 &lt;p&gt;Post commitum animal triste ...&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;café&lt;/li&gt;
-&lt;li&gt;thé&lt;/li&gt;
-&lt;li&gt;chocolat&lt;/li&gt;
-&lt;/ul&gt;
-">
+&lt;ul&gt;&lt;li&gt;café&lt;/li&gt;&lt;li&gt;thé&lt;/li&gt;&lt;li&gt;chocolat&lt;/li&gt;&lt;/ul&gt;">
       <div><p>Lorem ipsum ...</p>
-
 <p>Post commitum animal triste ...</p>
-
-<ul>
-<li>café</li>
-<li>thé</li>
-<li>chocolat</li>
-</ul>
-</div>
+<ul><li>café</li><li>thé</li><li>chocolat</li></ul></div>
   </div>
 </div>
 </div>

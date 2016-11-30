@@ -4,11 +4,19 @@
 <title>Stog : Stog library reference documentation : Stog_path.Set</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -37,35 +50,35 @@
 
 
 <div class="ocamldoc-page">
-<code class="code"><span class="keyword">sig</span><br/>
-  <span class="keyword">type</span> elt = path<br/>
-  <span class="keyword">type</span> t<br/>
-  <span class="keyword">val</span> empty : t<br/>
-  <span class="keyword">val</span> is_empty : t <span class="keywordsign">-&gt;</span> bool<br/>
-  <span class="keyword">val</span> mem : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> bool<br/>
-  <span class="keyword">val</span> add : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> singleton : elt <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> remove : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> union : t <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> inter : t <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> diff : t <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> compare : t <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> int<br/>
-  <span class="keyword">val</span> equal : t <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> bool<br/>
-  <span class="keyword">val</span> subset : t <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> bool<br/>
-  <span class="keyword">val</span> iter : (elt <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> unit<br/>
-  <span class="keyword">val</span> fold : (elt <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
-  <span class="keyword">val</span> for_all : (elt <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> bool<br/>
-  <span class="keyword">val</span> exists : (elt <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> bool<br/>
-  <span class="keyword">val</span> filter : (elt <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> partition : (elt <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t * t<br/>
-  <span class="keyword">val</span> cardinal : t <span class="keywordsign">-&gt;</span> int<br/>
-  <span class="keyword">val</span> elements : t <span class="keywordsign">-&gt;</span> elt list<br/>
-  <span class="keyword">val</span> min_elt : t <span class="keywordsign">-&gt;</span> elt<br/>
-  <span class="keyword">val</span> max_elt : t <span class="keywordsign">-&gt;</span> elt<br/>
-  <span class="keyword">val</span> choose : t <span class="keywordsign">-&gt;</span> elt<br/>
-  <span class="keyword">val</span> split : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t * bool * t<br/>
-  <span class="keyword">val</span> find : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> elt<br/>
-  <span class="keyword">val</span> of_list : elt list <span class="keywordsign">-&gt;</span> t<br/>
+<code class="code"><span class="keyword">sig</span>
+  <span class="keyword">type</span> elt = path
+  <span class="keyword">type</span> t
+  <span class="keyword">val</span> empty : t
+  <span class="keyword">val</span> is_empty : t <span class="keywordsign">-&gt;</span> bool
+  <span class="keyword">val</span> mem : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> bool
+  <span class="keyword">val</span> add : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> singleton : elt <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> remove : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> union : t <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> inter : t <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> diff : t <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> compare : t <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> int
+  <span class="keyword">val</span> equal : t <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> bool
+  <span class="keyword">val</span> subset : t <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> bool
+  <span class="keyword">val</span> iter : (elt <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> unit
+  <span class="keyword">val</span> fold : (elt <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a
+  <span class="keyword">val</span> for_all : (elt <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> bool
+  <span class="keyword">val</span> exists : (elt <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> bool
+  <span class="keyword">val</span> filter : (elt <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> partition : (elt <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t * t
+  <span class="keyword">val</span> cardinal : t <span class="keywordsign">-&gt;</span> int
+  <span class="keyword">val</span> elements : t <span class="keywordsign">-&gt;</span> elt list
+  <span class="keyword">val</span> min_elt : t <span class="keywordsign">-&gt;</span> elt
+  <span class="keyword">val</span> max_elt : t <span class="keywordsign">-&gt;</span> elt
+  <span class="keyword">val</span> choose : t <span class="keywordsign">-&gt;</span> elt
+  <span class="keyword">val</span> split : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> t * bool * t
+  <span class="keyword">val</span> find : elt <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> elt
+  <span class="keyword">val</span> of_list : elt list <span class="keywordsign">-&gt;</span> t
 <span class="keyword">end</span></code></div>
 
 
@@ -73,7 +86,7 @@
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

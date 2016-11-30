@@ -4,11 +4,19 @@
 <title>Stog : Stog library reference documentation : Stog_tmpl</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -50,8 +63,6 @@ Default templates.<br/>
 
 <pre><span id="TYPEcontents"><span class="keyword">type</span> contents</span> = <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * Xtmpl_rewrite.tree list</code> </pre>
 
-
-<pre><span id="EXCEPTIONTemplate_file_not_found"><span class="keyword">exception</span> Template_file_not_found</span> <span class="keyword">of</span> <code class="type">string Xtmpl_xml.with_loc</code></pre>
 
 <pre><span id="VALget_template_file"><span class="keyword">val</span> get_template_file</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt; ?loc:Xtmpl_xml.loc -&gt; string -&gt; string</code></pre><div class="info ">
 <code class="code">get_template_file stog doc file</code> returns absolute filename of the given
@@ -86,14 +97,15 @@ Default templates.<br/>
 <pre><span id="VALkeyword"><span class="keyword">val</span> keyword</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre>
 <pre><span id="VALtopic"><span class="keyword">val</span> topic</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre>
 <pre><span id="VALrss"><span class="keyword">val</span> rss</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre>
-<pre><span id="VALrss_item"><span class="keyword">val</span> rss_item</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre></div>
+<pre><span id="VALrss_item"><span class="keyword">val</span> rss_item</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre>
+<pre><span id="VALdoc_list"><span class="keyword">val</span> doc_list</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre></div>
 
 
 
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

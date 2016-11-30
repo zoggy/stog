@@ -279,12 +279,21 @@ Templates are regular XML documents, with some XML nodes which will be rewritten
 <p>
 The template file <span class="icode"><span class="hl std">.stog/templates/page.tmpl</span></span>:
 </p>
-<pre class="code-xml"><span class="hl kwa">&lt;html</span><span class="hl std"> </span><span class="">xmlns</span><span class="hl std">=</span><span class="hl str">"http://www.w3.org/1999/xhtml"</span><span class="hl kwa">&gt;</span><span class="hl std">
+<pre class="code-xml"><span class="hl std">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+</span><span class="hl kwa">&lt;html</span><span class="hl std"> </span><span class="">xmlns</span><span class="hl std">=</span><span class="hl str">"http://www.w3.org/1999/xhtml"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;head</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;meta</span><span class="hl std"> </span><span class="">http-equiv</span><span class="hl std">=</span><span class="hl str">"Content-Type"</span><span class="hl std"> </span><span class="">content</span><span class="hl std">=</span><span class="hl str">"application/xhtml+xml; charset=utf-8"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;title</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;site-title</span><span class="hl kwa">/&gt;</span><span class="hl std"> : </span><span class="hl kwa">&lt;doc-title</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/title</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;link</span><span class="hl std"> </span><span class="">rel</span><span class="hl std">=</span><span class="hl str">"stylesheet"</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">"text/css"</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"&amp;lt;site-url/&amp;gt;/style.css"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/link</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/head</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;script</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">"text/javascript"</span><span class="hl kwa">&gt;</span><span class="hl std">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:</span><span class="hl kwa">&lt;site-url</span><span class="hl kwa">/&gt;</span><span class="hl std"> ";
+    return true;
+}
+</span><span class="hl kwa">&lt;/script</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;body</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"page"</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">"menubar.tmpl"</span><span class="hl kwa">/&gt;</span><span class="hl std">
@@ -477,7 +486,7 @@ make this rule appear in the initial environment with the name "foo".
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
   <div class="span11">
-      <div><pre class="code-ocaml"><div><span class="hl kwa">let</span> x <span class="hl opt">=</span> <span class="hl num">1</span><span class="hl opt">;;</span></div></pre></div>
+      <div><pre class="code-ocaml"><span><span class="hl kwa">let</span> x <span class="hl opt">=</span> <span class="hl num">1</span><span class="hl opt">;;</span></span></pre></div>
   </div>
 </div>
 </div>
@@ -494,8 +503,8 @@ let x = 1;;
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
   <div class="span11">
-      <div><pre class="code-ocaml"><div># <span class="hl kwa">let</span> x <span class="hl opt">=</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val x : int = 1
-</div></div></pre></div>
+      <div><pre class="code-ocaml"><span># <span class="hl kwa">let</span> x <span class="hl opt">=</span> <span class="hl num">1</span><span class="hl opt">;;</span></span>
+<span class="ocaml-toplevel"><span class="toplevel-out">val x : int = 1</span></span></pre></div>
   </div>
 </div>
 </div>
@@ -512,11 +521,11 @@ List.map string_of_int "coucou";;
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
   <div class="span11">
-      <div><pre class="code-ocaml"><div># <span class="hl kwd">List</span><span class="hl opt">.</span>map string_of_int <span class="error-loc" title="Error: This expression has type string but an expression was expected of type
-         int list"></span><span class="hl str"><span class="error-loc" title="Error: This expression has type string but an expression was expected of type
-         int list">"coucou"</span></span><span class="hl opt"><span class="error-loc" title="Error: This expression has type string but an expression was expected of type
-         int list"></span>;;</span></div><div class="ocaml-toplevel ocaml-exc"><div class="stderr">Error: This expression has type string but an expression was expected of type
-         int list</div></div></pre></div>
+      <div><pre class="code-ocaml"><span># <span class="hl kwd">List</span>map string_of_int <span class="hl str">"<span class="error-loc" title="Error: This expression has type string but an expression was expected of type
+         int list">coucou"</span></span><span class="hl opt"><span class="error-loc" title="Error: This expression has type string but an expression was expected of type
+         int list">;</span>;</span></span>
+<span class="ocaml-toplevel ocaml-exc"><span class="stderr">Error: This expression has type string but an expression was expected of type
+         int list</span></span></pre></div>
   </div>
 </div>
 </div>
@@ -538,8 +547,12 @@ print_endline s;;
 <div class="row">
   <div class="span1 showeval-arrow">↳</div>
   <div class="span11">
-      <div><pre class="code-ocaml"><div></div><div class="ocaml-toplevel"></div><div></div><div class="ocaml-toplevel"></div><div></div><div class="ocaml-toplevel"></div><div></div><div class="ocaml-toplevel">This OCaml code was evaluated on 2015/10/25 at 14:38.
-</div></pre></div>
+      <div><pre class="code-ocaml"><span></span>
+<span></span>
+<span></span>
+<span></span>
+<span class="ocaml-toplevel">This OCaml code was evaluated on 2016/10/30 at 12:21.
+</span></pre></div>
   </div>
 </div>
 </div>

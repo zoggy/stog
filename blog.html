@@ -1,14 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Stog latest news</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +29,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="active"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -35,14 +50,31 @@
 </div>
 <aside>
 <div class="sidebar">
-<div id="archives">Archives: <ul><li>2015<ul><li><a href="https://zoggy.github.io/stog/2015_11.html">November</a>(1)</li><li><a href="https://zoggy.github.io/stog/2015_07.html">July</a>(1)</li></ul></li><li>2014<ul><li><a href="https://zoggy.github.io/stog/2014_10.html">October</a>(3)</li><li><a href="https://zoggy.github.io/stog/2014_05.html">May</a>(1)</li><li><a href="https://zoggy.github.io/stog/2014_03.html">March</a>(2)</li><li><a href="https://zoggy.github.io/stog/2014_01.html">January</a>(2)</li></ul></li><li>2013<ul><li><a href="https://zoggy.github.io/stog/2013_09.html">September</a>(2)</li><li><a href="https://zoggy.github.io/stog/2013_04.html">April</a>(1)</li><li><a href="https://zoggy.github.io/stog/2013_03.html">March</a>(2)</li><li><a href="https://zoggy.github.io/stog/2013_02.html">February</a>(1)</li><li><a href="https://zoggy.github.io/stog/2013_01.html">January</a>(3)</li></ul></li><li>2012<ul><li><a href="https://zoggy.github.io/stog/2012_12.html">December</a>(1)</li><li><a href="https://zoggy.github.io/stog/2012_11.html">November</a>(3)</li><li><a href="https://zoggy.github.io/stog/2012_08.html">August</a>(2)</li><li><a href="https://zoggy.github.io/stog/2012_06.html">June</a>(1)</li><li><a href="https://zoggy.github.io/stog/2012_03.html">March</a>(3)</li></ul></li></ul></div>
+<div id="archives">Archives: <ul><li>2016<ul><li><a href="https://zoggy.github.io/stog/2016_11.html">November</a>(1)</li></ul></li><li>2015<ul><li><a href="https://zoggy.github.io/stog/2015_11.html">November</a>(1)</li><li><a href="https://zoggy.github.io/stog/2015_07.html">July</a>(1)</li></ul></li><li>2014<ul><li><a href="https://zoggy.github.io/stog/2014_10.html">October</a>(3)</li><li><a href="https://zoggy.github.io/stog/2014_05.html">May</a>(1)</li><li><a href="https://zoggy.github.io/stog/2014_03.html">March</a>(2)</li><li><a href="https://zoggy.github.io/stog/2014_01.html">January</a>(2)</li></ul></li><li>2013<ul><li><a href="https://zoggy.github.io/stog/2013_09.html">September</a>(2)</li><li><a href="https://zoggy.github.io/stog/2013_04.html">April</a>(1)</li><li><a href="https://zoggy.github.io/stog/2013_03.html">March</a>(2)</li><li><a href="https://zoggy.github.io/stog/2013_02.html">February</a>(1)</li><li><a href="https://zoggy.github.io/stog/2013_01.html">January</a>(3)</li></ul></li><li>2012<ul><li><a href="https://zoggy.github.io/stog/2012_12.html">December</a>(1)</li><li><a href="https://zoggy.github.io/stog/2012_11.html">November</a>(3)</li><li><a href="https://zoggy.github.io/stog/2012_08.html">August</a>(2)</li><li><a href="https://zoggy.github.io/stog/2012_06.html">June</a>(1)</li><li><a href="https://zoggy.github.io/stog/2012_03.html">March</a>(3)</li></ul></li></ul></div>
 </div>
 </aside>
 
 
 
 
-<div class="rss-button"><a href="https://zoggy.github.io/stog/index.rss"><img alt="Rss feed" src="rss.png"/></a></div><div class="doc-item" itemprop="blogPosts" itemscope="" itemtype="http://schema.org/BlogPosting">
+<div class="rss-button">
+        <a href="https://zoggy.github.io/stog/index.rss"><img alt="Rss feed" src="rss.png"/></a>
+      </div>
+      <div class="doc-item" itemprop="blogPosts" itemscope="" itemtype="http://schema.org/BlogPosting">
+     <div class="doc-item-title">
+       <link href="https://zoggy.github.io/stog/posts/release-0.17.0.html" itemprop="url"/>
+       <a href="https://zoggy.github.io/stog/posts/release-0.17.0.html">Stog 0.17.0</a>
+     </div>
+     <div class="date">November 30, 2016</div>
+     <div class="doc-intro" itemprop="headline">
+       
+<p>
+Release 0.17.0 of stog is available from the <a href="https://zoggy.github.io/stog/install.html">Installation</a> page.
+</p>
+
+       [<a href="https://zoggy.github.io/stog/posts/release-0.17.0.html">...</a>]
+     </div>
+  </div><div class="doc-item" itemprop="blogPosts" itemscope="" itemtype="http://schema.org/BlogPosting">
      <div class="doc-item-title">
        <link href="https://zoggy.github.io/stog/posts/release-0.16.0.html" itemprop="url"/>
        <a href="https://zoggy.github.io/stog/posts/release-0.16.0.html">Stog 0.16.0</a>
@@ -467,6 +499,7 @@ Stog handles <span class="icode"><span class="hl kwa">&lt;latex</span><span clas
        [<a href="https://zoggy.github.io/stog/posts/latex-in-stog.html">...</a>]
      </div>
   </div>
+    
 
 
 
@@ -487,7 +520,7 @@ For information you can see the <a href="#pagesource"> source code of the page</
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

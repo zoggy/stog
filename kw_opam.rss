@@ -5,7 +5,7 @@
          <link>https://zoggy.github.io/stog</link>
          <description>Static blog and web site generator</description>
          <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
-         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>25 Nov 2015 14:38:43 +0000</lastBuildDate>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>Wed, 30 Nov 2016 12:21:35 +0000</lastBuildDate>
          <generator>Stog</generator>
          <div class="img"><img class="img" src="" width=""/><div class="legend"><url>https://zoggy.github.io/stog/logo.png</url>
            <title>Stog</title><link>https://zoggy.github.io/stog</link>
@@ -21,7 +21,7 @@ The &lt;a href="https://zoggy.github.io/stog/plugins/writing.html"&gt;Stog-writi
 are also available in Opam since yesterday.
 &lt;/p&gt;
 </description>
-      <pubDate>22 Jan 2013 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 22 Jan 2013 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/stog-in-opam.html</guid>
     </item>
 

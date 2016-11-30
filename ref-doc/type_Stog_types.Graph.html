@@ -4,11 +4,19 @@
 <title>Stog : Stog library reference documentation : Stog_types.Graph</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -37,39 +50,39 @@
 
 
 <div class="ocamldoc-page">
-<code class="code"><span class="keyword">sig</span><br/>
-  <span class="keyword">type</span> key = doc_id<br/>
-  <span class="keyword">type</span> edge_data = edge_type<br/>
-  <span class="keyword">type</span> t<br/>
-  <span class="keyword">val</span> create : unit <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> marshal : t <span class="keywordsign">-&gt;</span> string<br/>
-  <span class="keyword">val</span> unmarshal : string <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> succ : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> (key * edge_data) list<br/>
-  <span class="keyword">val</span> pred : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> (key * edge_data) list<br/>
-  <span class="keyword">val</span> add : t <span class="keywordsign">-&gt;</span> key * key * edge_data <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> rem : t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> (edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> rem_all : t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> isolate : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> remove_node : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> pred_roots : ?ignore_deps:edge_data list <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> key list<br/>
-  <span class="keyword">val</span> succ_roots : t <span class="keywordsign">-&gt;</span> key list<br/>
-  <span class="keyword">val</span> recursive_succs : t <span class="keywordsign">-&gt;</span> ?pred:(edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> key list<br/>
-  <span class="keyword">val</span> recursive_preds : t <span class="keywordsign">-&gt;</span> ?pred:(edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> key list<br/>
-  <span class="keyword">val</span> reverse : t <span class="keywordsign">-&gt;</span> t<br/>
-  <span class="keyword">val</span> fold_succ :<br/>
-    t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
-  <span class="keyword">val</span> fold_pred :<br/>
-    t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
-  <span class="keyword">val</span> iter_succ : t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> unit<br/>
-  <span class="keyword">val</span> iter_pred : t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> unit<br/>
-  <span class="keyword">val</span> dot_of_graph :<br/>
-    ?f_edge:(edge_data <span class="keywordsign">-&gt;</span> string * (string * string) list) <span class="keywordsign">-&gt;</span><br/>
-    f_node:(key <span class="keywordsign">-&gt;</span> string * string * (string * string) list) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> string<br/>
-  <span class="keyword">val</span> nodes_by_pred_order : t <span class="keywordsign">-&gt;</span> key list<br/>
-  <span class="keyword">val</span> shortest_path :<br/>
-    t <span class="keywordsign">-&gt;</span><br/>
-    (t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> (float * edge_data) option) <span class="keywordsign">-&gt;</span><br/>
-    key * key <span class="keywordsign">-&gt;</span> (key * edge_data * key) list<br/>
+<code class="code"><span class="keyword">sig</span>
+  <span class="keyword">type</span> key = doc_id
+  <span class="keyword">type</span> edge_data = edge_type
+  <span class="keyword">type</span> t
+  <span class="keyword">val</span> create : unit <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> marshal : t <span class="keywordsign">-&gt;</span> string
+  <span class="keyword">val</span> unmarshal : string <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> succ : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> (key * edge_data) list
+  <span class="keyword">val</span> pred : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> (key * edge_data) list
+  <span class="keyword">val</span> add : t <span class="keywordsign">-&gt;</span> key * key * edge_data <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> rem : t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> (edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> rem_all : t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> isolate : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> remove_node : t <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> pred_roots : ?ignore_deps:edge_data list <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> key list
+  <span class="keyword">val</span> succ_roots : t <span class="keywordsign">-&gt;</span> key list
+  <span class="keyword">val</span> recursive_succs : t <span class="keywordsign">-&gt;</span> ?pred:(edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> key list
+  <span class="keyword">val</span> recursive_preds : t <span class="keywordsign">-&gt;</span> ?pred:(edge_data <span class="keywordsign">-&gt;</span> bool) <span class="keywordsign">-&gt;</span> key <span class="keywordsign">-&gt;</span> key list
+  <span class="keyword">val</span> reverse : t <span class="keywordsign">-&gt;</span> t
+  <span class="keyword">val</span> fold_succ :
+    t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a
+  <span class="keyword">val</span> fold_pred :
+    t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a
+  <span class="keyword">val</span> iter_succ : t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> unit
+  <span class="keyword">val</span> iter_pred : t <span class="keywordsign">-&gt;</span> (key <span class="keywordsign">-&gt;</span> (key * edge_data) list <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> unit
+  <span class="keyword">val</span> dot_of_graph :
+    ?f_edge:(edge_data <span class="keywordsign">-&gt;</span> string * (string * string) list) <span class="keywordsign">-&gt;</span>
+    f_node:(key <span class="keywordsign">-&gt;</span> string * string * (string * string) list) <span class="keywordsign">-&gt;</span> t <span class="keywordsign">-&gt;</span> string
+  <span class="keyword">val</span> nodes_by_pred_order : t <span class="keywordsign">-&gt;</span> key list
+  <span class="keyword">val</span> shortest_path :
+    t <span class="keywordsign">-&gt;</span>
+    (t <span class="keywordsign">-&gt;</span> key * key <span class="keywordsign">-&gt;</span> (float * edge_data) option) <span class="keywordsign">-&gt;</span>
+    key * key <span class="keywordsign">-&gt;</span> (key * edge_data * key) list
 <span class="keyword">end</span></code></div>
 
 
@@ -77,7 +90,7 @@
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

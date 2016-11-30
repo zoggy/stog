@@ -4,11 +4,19 @@
 <title>Stog : ocaml-printf</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="active"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -48,7 +61,7 @@ strings.
 
 
 <ul class="toc"><li class="toc-section"><a href="https://zoggy.github.io/stog/posts/ocaml-printf.html#first">First example</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/posts/ocaml-printf.html#formats">Formatting</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/posts/ocaml-printf.html#xml">Using result as XML</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/posts/ocaml-printf.html#sessions">Sessions</a></li></ul>
-<div class="section"><div class="section-title" id="first">First example</div>
+<div class="section"><div aria-level="1" class="section-title" id="first" role="heading">First example</div>
 <p>
 Let's take a first example. Suppose we evaluated some OCaml code
 with the following rule:
@@ -70,15 +83,16 @@ The value of <code>x</code> is: <ocaml-printf>x</ocaml-printf>
 <pre class="code-xml"><span class="hl std">The value of </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">x</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> is: </span><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">x</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
 ↳ 
-The value of <code>x</code> is: Hello world!
+The value of <code>x</code> is: 
+Hello world!
 
 </div>
 
-<div class="section"><div class="section-title" id="formats">Formatting</div>
+<div class="section"><div aria-level="1" class="section-title" id="formats" role="heading">Formatting</div>
 <p>
 The <span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span> rule builds some OCaml code of the form:
 </p>
-<pre class="code-ocaml"><span class="hl kwd">Printf</span><span class="hl opt">.</span>sprintf <span class="hl str">"&lt;format&gt;"</span> <span class="hl opt">&lt;</span>code<span class="hl opt">&gt;</span></pre>
+<pre class="code-ocaml"><span class="hl kwd">Printf</span>sprintf <span class="hl str">"&lt;format"</span> &lt;code<span class="hl opt"/></pre>
 <p>The <code>&lt;code&gt;</code> is the contents of the <span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span>
 node, and <code>&lt;format&gt;</code> is <code>%s</code> by default.
 Another format can be used by setting the <code>format</code> attribute
@@ -90,7 +104,8 @@ like in the following example:
 <pre class="code-xml"><span class="hl std">1 + 2 = </span><span class="hl kwa">&lt;ocaml-printf</span><span class="hl std"> </span><span class="">format</span><span class="hl std">=</span><span class="hl str">"%d"</span><span class="hl kwa">&gt;</span><span class="hl std">(1+2)</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
 ↳ 
-1 + 2 = 3
+1 + 2 = 
+3
 
 <p>Note that the parentheses around the expression in the <span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span>
 node is mandatory, otherwise the <span class="icode"><span class="hl kwc">Printf</span><span class="hl std">.</span><span class="">sprintf</span><span class="hl std"> </span><span class="hl str">"%d"</span><span class="hl std"> </span><span class="hl num">1</span><span class="hl num">+2</span></span>
@@ -99,32 +114,34 @@ would result in an error.
 <p>
 Of course more compilated format and ocaml expressions can be used:
 </p>
-<pre class="code-ocaml"><div># <span class="hl kwa">let</span> y <span class="hl opt">=</span> <span class="hl num">1</span> <span class="hl kwa">and</span> z <span class="hl opt">=</span> <span class="hl num">21</span><span class="hl opt">.;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val y : int = 1
-val z : float = 21.
-</div></div></pre>
+<pre class="code-ocaml"><span># <span class="hl kwa">let</span> y <span class="hl opt">=</span> <span class="hl num">1</span> <span class="hl kwa">and</span> z <span class="hl opt">=</span> <span class="hl num">21</span><span class="hl opt">;;</span></span>
+<span class="ocaml-toplevel"><span class="toplevel-out">val y : int = 1
+val z : float = 21.</span></span></pre>
 <div class="hide" id="code3p"><![CDATA[
 <ocaml-printf format="The result of %d + %.2f is %.0f.">y z ((float y) +. z)</ocaml-printf>
 ]]></div>
 <pre class="code-xml"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl std"> </span><span class="">format</span><span class="hl std">=</span><span class="hl str">"The result of %d + %.2f is %.0f."</span><span class="hl kwa">&gt;</span><span class="hl std">y z ((float y) +. z)</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
-↳ The result of 1 + 21.00 is 22.
+↳ 
+The result of 1 + 21.00 is 22.
 
 </div>
 
-<div class="section"><div class="section-title" id="xml">Using result as XML</div>
+<div class="section"><div aria-level="1" class="section-title" id="xml" role="heading">Using result as XML</div>
 <p>
 The result of <span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span> is considered as CDATA in the XML document:
 </p>
 <pre class="code-xml"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl std"> </span><span class="hl kwa">&gt;</span><span class="hl std">&lt;![CDATA[("</span><span class="hl kwa">&lt;strong</span><span class="hl kwa">&gt;</span><span class="hl std">" ^ x ^ "</span><span class="hl kwa">&lt;/strong</span><span class="hl kwa">&gt;</span><span class="hl std">")]]&gt;</span><span class="hl kwa">&lt;/ocaml-printf</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span></pre>
 <p>
-is rewritten &lt;strong&gt;Hello world!&lt;/strong&gt;
+is rewritten 
+&lt;strong&gt;Hello world!&lt;/strong&gt;
 </p>
 <p>
 Let's define a list:
 </p>
-<pre class="code-ocaml"><div># <span class="hl kwa">let</span> my_list <span class="hl opt">= [</span> <span class="hl num">101</span> <span class="hl opt">;</span> <span class="hl num">202</span> <span class="hl opt">;</span> <span class="hl num">303</span> <span class="hl opt">;</span> <span class="hl num">404</span> <span class="hl opt">];;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val my_list : int list = [101; 202; 303; 404]
-</div></div></pre>
+<pre class="code-ocaml"><span># <span class="hl kwa">let</span> my_list <span class="hl opt">= [</span> <span class="hl num">101</span> <span class="hl opt">;</span> <span class="hl num">202</span> <span class="hl opt">;</span> <span class="hl num">303</span> <span class="hl opt">;</span> <span class="hl num">404</span> <span class="hl opt">];;</span></span>
+<span class="ocaml-toplevel"><span class="toplevel-out">val my_list : int list = [101; 202; 303; 404]</span></span></pre>
 <p>The <a href="https://zoggy.github.io/stog/module_base.html#as-xml"><span class="icode"><span class="hl kwa">&lt;as-xml</span><span class="hl kwa">&gt;</span></span></a> rule can be used to
 parse the result of <span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span> as XML, using the <code>defer_</code>
 attribute to compute the contents of the node first:
@@ -148,14 +165,14 @@ attribute to compute the contents of the node first:
 <p>This gives the following table:</p>
 <table class="table table-bordered table-striped">
 <tr><th>N</th><th>N^2</th><th>Toplevel</th></tr>
-<tr><td>101</td><td>10201</td><td><pre class="code-ocaml"><div># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">101</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val foo : int = 101
-</div></div></pre>
-         </td></tr><tr><td>202</td><td>40804</td><td><pre class="code-ocaml"><div># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">202</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val foo : int = 202
-</div></div></pre>
-         </td></tr><tr><td>303</td><td>91809</td><td><pre class="code-ocaml"><div># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">303</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val foo : int = 303
-</div></div></pre>
-         </td></tr><tr><td>404</td><td>163216</td><td><pre class="code-ocaml"><div># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">404</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val foo : int = 404
-</div></div></pre>
+<tr><td>101</td><td>10201</td><td><pre class="code-ocaml"><span># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">101</span><span class="hl opt">;;</span></span>
+<span class="ocaml-toplevel"><span class="toplevel-out">val foo : int = 101</span></span></pre>
+         </td></tr><tr><td>202</td><td>40804</td><td><pre class="code-ocaml"><span># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">202</span><span class="hl opt">;;</span></span>
+<span class="ocaml-toplevel"><span class="toplevel-out">val foo : int = 202</span></span></pre>
+         </td></tr><tr><td>303</td><td>91809</td><td><pre class="code-ocaml"><span># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">303</span><span class="hl opt">;;</span></span>
+<span class="ocaml-toplevel"><span class="toplevel-out">val foo : int = 303</span></span></pre>
+         </td></tr><tr><td>404</td><td>163216</td><td><pre class="code-ocaml"><span># <span class="hl kwa">let</span> foo <span class="hl opt">=</span> <span class="hl num">404</span><span class="hl opt">;;</span></span>
+<span class="ocaml-toplevel"><span class="toplevel-out">val foo : int = 404</span></span></pre>
          </td></tr>
 </table>
 
@@ -163,11 +180,12 @@ attribute to compute the contents of the node first:
 As shown above, the parsed XML is then rewritten during the rest of the
 evaluation process.
 The current value of <code>foo</code> is
+
 404.
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="sessions">Sessions</div>
+<div class="section"><div aria-level="1" class="section-title" id="sessions" role="heading">Sessions</div>
 <p>
 The <code>session</code> attribute is honored:
 </p>
@@ -292,7 +310,7 @@ The </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><
 </div>
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

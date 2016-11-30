@@ -4,11 +4,19 @@
 <title>Stog : Stog library reference documentation</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -46,610 +59,618 @@
 <li><a href="index_module_types.html">Index of module types</a></li>
 </ul>
 <br/><center><div class="depgraph"><svg height="700" viewBox="0.0 0.0 700.00 700.00" width="700" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
-<g class="graph" id="graph0" transform="scale(0.3223 0.3223) rotate(0) translate(4 2149)">
+<g class="graph" id="graph0" transform="scale(0.252845 0.252845) rotate(0) translate(4 2764)">
 <title>G</title>
-<polygon fill="white" points="-4,4 -4,-2149 2167.89,-2149 2167.89,4 -4,4" stroke="none"/>
+<polygon fill="white" points="-4,4 -4,-2764 2764.5,-2764 2764.5,4 -4,4" stroke="none"/>
 <!-- Stog_blocks -->
 <g class="node" id="node1"><title>Stog_blocks</title>
 <g id="a_node1"><a xlink:href="Stog_blocks.html" xlink:title="The &quot;blocks&quot; predefined module.">
-<path d="M1565.25,-1859C1565.25,-1859 1372.75,-1859 1372.75,-1859 1366.75,-1859 1360.75,-1853 1360.75,-1847 1360.75,-1847 1360.75,-1819 1360.75,-1819 1360.75,-1813 1366.75,-1807 1372.75,-1807 1372.75,-1807 1565.25,-1807 1565.25,-1807 1571.25,-1807 1577.25,-1813 1577.25,-1819 1577.25,-1819 1577.25,-1847 1577.25,-1847 1577.25,-1853 1571.25,-1859 1565.25,-1859" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1469" y="-1823">Stog_blocks</text>
+<path d="M1564,-2385C1564,-2385 1371,-2385 1371,-2385 1365,-2385 1359,-2379 1359,-2373 1359,-2373 1359,-2345 1359,-2345 1359,-2339 1365,-2333 1371,-2333 1371,-2333 1564,-2333 1564,-2333 1570,-2333 1576,-2339 1576,-2345 1576,-2345 1576,-2373 1576,-2373 1576,-2379 1570,-2385 1564,-2385" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1467.5" y="-2349">Stog_blocks</text>
 </a>
 </g>
 </g>
 <!-- Stog_html -->
 <g class="node" id="node2"><title>Stog_html</title>
 <g id="a_node2"><a xlink:href="Stog_html.html" xlink:title="Base module.">
-<path d="M1653.25,-1642C1653.25,-1642 1492.75,-1642 1492.75,-1642 1486.75,-1642 1480.75,-1636 1480.75,-1630 1480.75,-1630 1480.75,-1602 1480.75,-1602 1480.75,-1596 1486.75,-1590 1492.75,-1590 1492.75,-1590 1653.25,-1590 1653.25,-1590 1659.25,-1590 1665.25,-1596 1665.25,-1602 1665.25,-1602 1665.25,-1630 1665.25,-1630 1665.25,-1636 1659.25,-1642 1653.25,-1642" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1573" y="-1606">Stog_html</text>
+<path d="M1443,-2105C1443,-2105 1282,-2105 1282,-2105 1276,-2105 1270,-2099 1270,-2093 1270,-2093 1270,-2065 1270,-2065 1270,-2059 1276,-2053 1282,-2053 1282,-2053 1443,-2053 1443,-2053 1449,-2053 1455,-2059 1455,-2065 1455,-2065 1455,-2093 1455,-2093 1455,-2099 1449,-2105 1443,-2105" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1362.5" y="-2069">Stog_html</text>
 </a>
 </g>
 </g>
 <!-- Stog_blocks-&gt;Stog_html -->
 <g class="edge" id="edge1"><title>Stog_blocks-&gt;Stog_html</title>
-<path d="M1481.13,-1806.92C1497.37,-1773.35 1526.57,-1712.98 1547.7,-1669.3" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1557.17,-1673.84 1560.78,-1642.26 1538.27,-1664.69 1557.17,-1673.84" stroke="#444444"/>
+<path d="M1458,-2332.84C1441.06,-2287.98 1405.29,-2193.3 1382.66,-2133.39" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1392.48,-2129.66 1372.06,-2105.3 1372.83,-2137.08 1392.48,-2129.66" stroke="#444444"/>
 </g>
 <!-- Stog_cut -->
 <g class="node" id="node6"><title>Stog_cut</title>
 <g id="a_node6"><a xlink:href="Stog_cut.html" xlink:title="Cutting documents into pieces.">
-<path d="M1322.25,-1207C1322.25,-1207 1185.75,-1207 1185.75,-1207 1179.75,-1207 1173.75,-1201 1173.75,-1195 1173.75,-1195 1173.75,-1167 1173.75,-1167 1173.75,-1161 1179.75,-1155 1185.75,-1155 1185.75,-1155 1322.25,-1155 1322.25,-1155 1328.25,-1155 1334.25,-1161 1334.25,-1167 1334.25,-1167 1334.25,-1195 1334.25,-1195 1334.25,-1201 1328.25,-1207 1322.25,-1207" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1254" y="-1171">Stog_cut</text>
+<path d="M1265,-1546C1265,-1546 1128,-1546 1128,-1546 1122,-1546 1116,-1540 1116,-1534 1116,-1534 1116,-1506 1116,-1506 1116,-1500 1122,-1494 1128,-1494 1128,-1494 1265,-1494 1265,-1494 1271,-1494 1277,-1500 1277,-1506 1277,-1506 1277,-1534 1277,-1534 1277,-1540 1271,-1546 1265,-1546" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1196.5" y="-1510">Stog_cut</text>
 </a>
 </g>
 </g>
 <!-- Stog_html-&gt;Stog_cut -->
 <g class="edge" id="edge21"><title>Stog_html-&gt;Stog_cut</title>
-<path d="M1497.87,-1589.87C1426.73,-1561.76 1323.5,-1508.84 1273,-1425 1238.7,-1368.06 1239.34,-1289.5 1244.96,-1237.29" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1255.4,-1238.43 1249.05,-1207.28 1234.59,-1235.59 1255.4,-1238.43" stroke="#444444"/>
-</g>
-<!-- Stog_error -->
-<g class="node" id="node15"><title>Stog_error</title>
-<g id="a_node15"><a xlink:href="Stog_error.html" xlink:title="Errors.">
-<path d="M1928,-1425C1928,-1425 1762,-1425 1762,-1425 1756,-1425 1750,-1419 1750,-1413 1750,-1413 1750,-1385 1750,-1385 1750,-1379 1756,-1373 1762,-1373 1762,-1373 1928,-1373 1928,-1373 1934,-1373 1940,-1379 1940,-1385 1940,-1385 1940,-1413 1940,-1413 1940,-1419 1934,-1425 1928,-1425" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1845" y="-1389">Stog_error</text>
-</a>
-</g>
-</g>
-<!-- Stog_html-&gt;Stog_error -->
-<g class="edge" id="edge22"><title>Stog_html-&gt;Stog_error</title>
-<path d="M1604.73,-1589.92C1649.96,-1554.17 1733.64,-1488.03 1789.32,-1444.01" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1796.02,-1452.1 1813.05,-1425.26 1783,-1435.62 1796.02,-1452.1" stroke="#444444"/>
+<path d="M1364.62,-2052.89C1368.29,-1999.98 1372.75,-1873.71 1342.5,-1774 1319.26,-1697.4 1269.18,-1619.08 1234.19,-1570.28" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1242.6,-1564 1216.34,-1546.1 1225.71,-1576.48 1242.6,-1564" stroke="#444444"/>
 </g>
 <!-- Stog_exec -->
-<g class="node" id="node16"><title>Stog_exec</title>
-<g id="a_node16"><a xlink:href="Stog_exec.html" xlink:title="Functions to execute and display commands in generated pages.">
-<path d="M1764.25,-772C1764.25,-772 1603.75,-772 1603.75,-772 1597.75,-772 1591.75,-766 1591.75,-760 1591.75,-760 1591.75,-732 1591.75,-732 1591.75,-726 1597.75,-720 1603.75,-720 1603.75,-720 1764.25,-720 1764.25,-720 1770.25,-720 1776.25,-726 1776.25,-732 1776.25,-732 1776.25,-760 1776.25,-760 1776.25,-766 1770.25,-772 1764.25,-772" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1684" y="-736">Stog_exec</text>
+<g class="node" id="node17"><title>Stog_exec</title>
+<g id="a_node17"><a xlink:href="Stog_exec.html" xlink:title="Functions to execute and display commands in generated pages.">
+<path d="M600,-1546C600,-1546 439,-1546 439,-1546 433,-1546 427,-1540 427,-1534 427,-1534 427,-1506 427,-1506 427,-1500 433,-1494 439,-1494 439,-1494 600,-1494 600,-1494 606,-1494 612,-1500 612,-1506 612,-1506 612,-1534 612,-1534 612,-1540 606,-1546 600,-1546" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="519.5" y="-1510">Stog_exec</text>
 </a>
 </g>
 </g>
 <!-- Stog_html-&gt;Stog_exec -->
-<g class="edge" id="edge23"><title>Stog_html-&gt;Stog_exec</title>
-<path d="M1589.29,-1589.86C1611.08,-1554.66 1648.73,-1487.91 1664,-1425 1718.79,-1199.22 1701.01,-918.758 1689.97,-801.995" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1700.42,-800.91 1686.94,-772.122 1679.52,-803.027 1700.42,-800.91" stroke="#444444"/>
+<g class="edge" id="edge22"><title>Stog_html-&gt;Stog_exec</title>
+<path d="M1319.63,-2052.96C1244.25,-2008.64 1083.44,-1912.89 951.5,-1826 815.177,-1736.22 659.837,-1624.03 577.649,-1563.86" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="583.815,-1555.37 553.417,-1546.08 571.39,-1572.3 583.815,-1555.37" stroke="#444444"/>
 </g>
 <!-- Stog_info -->
-<g class="node" id="node23"><title>Stog_info</title>
-<g id="a_node23"><a xlink:href="Stog_info.html" xlink:title="Computing information from stog structure (graphs, ...).">
-<path d="M401.5,-1207C401.5,-1207 250.5,-1207 250.5,-1207 244.5,-1207 238.5,-1201 238.5,-1195 238.5,-1195 238.5,-1167 238.5,-1167 238.5,-1161 244.5,-1155 250.5,-1155 250.5,-1155 401.5,-1155 401.5,-1155 407.5,-1155 413.5,-1161 413.5,-1167 413.5,-1167 413.5,-1195 413.5,-1195 413.5,-1201 407.5,-1207 401.5,-1207" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="326" y="-1171">Stog_info</text>
+<g class="node" id="node25"><title>Stog_info</title>
+<g id="a_node25"><a xlink:href="Stog_info.html" xlink:title="Computing information from stog structure (graphs, ...).">
+<path d="M1933.5,-1266C1933.5,-1266 1781.5,-1266 1781.5,-1266 1775.5,-1266 1769.5,-1260 1769.5,-1254 1769.5,-1254 1769.5,-1226 1769.5,-1226 1769.5,-1220 1775.5,-1214 1781.5,-1214 1781.5,-1214 1933.5,-1214 1933.5,-1214 1939.5,-1214 1945.5,-1220 1945.5,-1226 1945.5,-1226 1945.5,-1254 1945.5,-1254 1945.5,-1260 1939.5,-1266 1933.5,-1266" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1857.5" y="-1230">Stog_info</text>
 </a>
 </g>
 </g>
 <!-- Stog_html-&gt;Stog_info -->
-<g class="edge" id="edge24"><title>Stog_html-&gt;Stog_info</title>
-<path d="M1480.53,-1598.57C1335.63,-1571.35 1047.52,-1511.21 814,-1425 658.302,-1367.52 486.93,-1274.77 394.413,-1222.04" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="399.578,-1212.89 368.338,-1207.04 389.108,-1231.1 399.578,-1212.89" stroke="#444444"/>
+<g class="edge" id="edge23"><title>Stog_html-&gt;Stog_info</title>
+<path d="M1367.59,-2052.72C1385.59,-1967.76 1452.19,-1687.08 1582.5,-1494 1640.8,-1407.62 1734.21,-1330.02 1795.72,-1284.2" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1802.24,-1292.44 1820.32,-1266.3 1789.89,-1275.46 1802.24,-1292.44" stroke="#444444"/>
 </g>
 <!-- Stog_intl -->
-<g class="node" id="node24"><title>Stog_intl</title>
-<g id="a_node24"><a xlink:href="Stog_intl.html" xlink:title="Inernationalization">
-<path d="M1643.25,-1425C1643.25,-1425 1502.75,-1425 1502.75,-1425 1496.75,-1425 1490.75,-1419 1490.75,-1413 1490.75,-1413 1490.75,-1385 1490.75,-1385 1490.75,-1379 1496.75,-1373 1502.75,-1373 1502.75,-1373 1643.25,-1373 1643.25,-1373 1649.25,-1373 1655.25,-1379 1655.25,-1385 1655.25,-1385 1655.25,-1413 1655.25,-1413 1655.25,-1419 1649.25,-1425 1643.25,-1425" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1573" y="-1389">Stog_intl</text>
+<g class="node" id="node26"><title>Stog_intl</title>
+<g id="a_node26"><a xlink:href="Stog_intl.html" xlink:title="Inernationalization">
+<path d="M1322,-1826C1322,-1826 1181,-1826 1181,-1826 1175,-1826 1169,-1820 1169,-1814 1169,-1814 1169,-1786 1169,-1786 1169,-1780 1175,-1774 1181,-1774 1181,-1774 1322,-1774 1322,-1774 1328,-1774 1334,-1780 1334,-1786 1334,-1786 1334,-1814 1334,-1814 1334,-1820 1328,-1826 1322,-1826" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1251.5" y="-1790">Stog_intl</text>
 </a>
 </g>
 </g>
 <!-- Stog_html-&gt;Stog_intl -->
-<g class="edge" id="edge25"><title>Stog_html-&gt;Stog_intl</title>
-<path d="M1573,-1589.92C1573,-1557.15 1573,-1498.86 1573,-1455.47" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1583.5,-1455.26 1573,-1425.26 1562.5,-1455.26 1583.5,-1455.26" stroke="#444444"/>
+<g class="edge" id="edge24"><title>Stog_html-&gt;Stog_intl</title>
+<path d="M1352.45,-2052.93C1334.54,-2008.24 1296.74,-1913.9 1272.82,-1854.19" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1282.51,-1850.16 1261.6,-1826.21 1263.02,-1857.97 1282.51,-1850.16" stroke="#444444"/>
 </g>
 <!-- Stog_latex -->
-<g class="node" id="node25"><title>Stog_latex</title>
-<g id="a_node25"><a xlink:href="Stog_latex.html" xlink:title="LaTeX rules.">
-<path d="M1460,-1425C1460,-1425 1294,-1425 1294,-1425 1288,-1425 1282,-1419 1282,-1413 1282,-1413 1282,-1385 1282,-1385 1282,-1379 1288,-1373 1294,-1373 1294,-1373 1460,-1373 1460,-1373 1466,-1373 1472,-1379 1472,-1385 1472,-1385 1472,-1413 1472,-1413 1472,-1419 1466,-1425 1460,-1425" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1377" y="-1389">Stog_latex</text>
+<g class="node" id="node27"><title>Stog_latex</title>
+<g id="a_node27"><a xlink:href="Stog_latex.html" xlink:title="LaTeX rules.">
+<path d="M1138.5,-1826C1138.5,-1826 972.5,-1826 972.5,-1826 966.5,-1826 960.5,-1820 960.5,-1814 960.5,-1814 960.5,-1786 960.5,-1786 960.5,-1780 966.5,-1774 972.5,-1774 972.5,-1774 1138.5,-1774 1138.5,-1774 1144.5,-1774 1150.5,-1780 1150.5,-1786 1150.5,-1786 1150.5,-1814 1150.5,-1814 1150.5,-1820 1144.5,-1826 1138.5,-1826" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1055.5" y="-1790">Stog_latex</text>
 </a>
 </g>
 </g>
 <!-- Stog_html-&gt;Stog_latex -->
-<g class="edge" id="edge26"><title>Stog_html-&gt;Stog_latex</title>
-<path d="M1550.13,-1589.92C1518.43,-1555.14 1460.49,-1491.59 1420.43,-1447.64" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1428,-1440.35 1400.02,-1425.26 1412.48,-1454.5 1428,-1440.35" stroke="#444444"/>
+<g class="edge" id="edge25"><title>Stog_html-&gt;Stog_latex</title>
+<path d="M1334.71,-2052.93C1283.02,-2006.28 1171.38,-1905.56 1106.01,-1846.58" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1112.75,-1838.51 1083.44,-1826.21 1098.68,-1854.11 1112.75,-1838.51" stroke="#444444"/>
 </g>
 <!-- Stog_list -->
-<g class="node" id="node26"><title>Stog_list</title>
-<g id="a_node26"><a xlink:href="Stog_list.html" xlink:title="Producing list of documents.">
-<path d="M972.25,-1425C972.25,-1425 835.75,-1425 835.75,-1425 829.75,-1425 823.75,-1419 823.75,-1413 823.75,-1413 823.75,-1385 823.75,-1385 823.75,-1379 829.75,-1373 835.75,-1373 835.75,-1373 972.25,-1373 972.25,-1373 978.25,-1373 984.25,-1379 984.25,-1385 984.25,-1385 984.25,-1413 984.25,-1413 984.25,-1419 978.25,-1425 972.25,-1425" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="904" y="-1389">Stog_list</text>
+<g class="node" id="node28"><title>Stog_list</title>
+<g id="a_node28"><a xlink:href="Stog_list.html" xlink:title="Producing list of documents.">
+<path d="M1720,-1826C1720,-1826 1583,-1826 1583,-1826 1577,-1826 1571,-1820 1571,-1814 1571,-1814 1571,-1786 1571,-1786 1571,-1780 1577,-1774 1583,-1774 1583,-1774 1720,-1774 1720,-1774 1726,-1774 1732,-1780 1732,-1786 1732,-1786 1732,-1814 1732,-1814 1732,-1820 1726,-1826 1720,-1826" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1651.5" y="-1790">Stog_list</text>
 </a>
 </g>
 </g>
 <!-- Stog_html-&gt;Stog_list -->
-<g class="edge" id="edge27"><title>Stog_html-&gt;Stog_list</title>
-<path d="M1494.95,-1589.92C1375.18,-1551.43 1145.8,-1477.71 1010.75,-1434.31" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1013.59,-1424.19 981.813,-1425.01 1007.16,-1444.18 1013.59,-1424.19" stroke="#444444"/>
-</g>
-<!-- Stog_ocaml -->
-<g class="node" id="node27"><title>Stog_ocaml</title>
-<g id="a_node27"><a xlink:href="Stog_ocaml.html" xlink:title="Functions to eval and display ocaml in generated pages.">
-<path d="M1991.25,-772C1991.25,-772 1806.75,-772 1806.75,-772 1800.75,-772 1794.75,-766 1794.75,-760 1794.75,-760 1794.75,-732 1794.75,-732 1794.75,-726 1800.75,-720 1806.75,-720 1806.75,-720 1991.25,-720 1991.25,-720 1997.25,-720 2003.25,-726 2003.25,-732 2003.25,-732 2003.25,-760 2003.25,-760 2003.25,-766 1997.25,-772 1991.25,-772" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1899" y="-736">Stog_ocaml</text>
-</a>
-</g>
-</g>
-<!-- Stog_html-&gt;Stog_ocaml -->
-<g class="edge" id="edge28"><title>Stog_html-&gt;Stog_ocaml</title>
-<path d="M1590.15,-1589.84C1613.76,-1554.35 1656.48,-1486.97 1684,-1425 1783.2,-1201.6 1857.54,-918.323 1886.15,-801.326" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1896.38,-803.672 1893.2,-772.047 1875.97,-798.757 1896.38,-803.672" stroke="#444444"/>
+<g class="edge" id="edge26"><title>Stog_html-&gt;Stog_list</title>
+<path d="M1388.66,-2052.93C1437.11,-2006.49 1541.49,-1906.45 1603.13,-1847.36" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1610.8,-1854.55 1625.19,-1826.21 1596.27,-1839.39 1610.8,-1854.55" stroke="#444444"/>
 </g>
 <!-- Stog_svg -->
-<g class="node" id="node28"><title>Stog_svg</title>
-<g id="a_node28"><a xlink:href="Stog_svg.html" xlink:title="Utilities for SVG documents.">
-<path d="M2113.25,-1425C2113.25,-1425 1970.75,-1425 1970.75,-1425 1964.75,-1425 1958.75,-1419 1958.75,-1413 1958.75,-1413 1958.75,-1385 1958.75,-1385 1958.75,-1379 1964.75,-1373 1970.75,-1373 1970.75,-1373 2113.25,-1373 2113.25,-1373 2119.25,-1373 2125.25,-1379 2125.25,-1385 2125.25,-1385 2125.25,-1413 2125.25,-1413 2125.25,-1419 2119.25,-1425 2113.25,-1425" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="2042" y="-1389">Stog_svg</text>
+<g class="node" id="node29"><title>Stog_svg</title>
+<g id="a_node29"><a xlink:href="Stog_svg.html" xlink:title="Utilities for SVG documents.">
+<path d="M1905,-1826C1905,-1826 1762,-1826 1762,-1826 1756,-1826 1750,-1820 1750,-1814 1750,-1814 1750,-1786 1750,-1786 1750,-1780 1756,-1774 1762,-1774 1762,-1774 1905,-1774 1905,-1774 1911,-1774 1917,-1780 1917,-1786 1917,-1786 1917,-1814 1917,-1814 1917,-1820 1911,-1826 1905,-1826" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1833.5" y="-1790">Stog_svg</text>
 </a>
 </g>
 </g>
 <!-- Stog_html-&gt;Stog_svg -->
-<g class="edge" id="edge29"><title>Stog_html-&gt;Stog_svg</title>
-<path d="M1627.72,-1589.92C1709.6,-1552.38 1864.55,-1481.35 1960,-1437.59" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1964.37,-1447.14 1987.27,-1425.09 1955.62,-1428.05 1964.37,-1447.14" stroke="#444444"/>
+<g class="edge" id="edge27"><title>Stog_html-&gt;Stog_svg</title>
+<path d="M1405.13,-2052.93C1486.82,-2004.89 1666.05,-1899.48 1764.82,-1841.39" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1770.43,-1850.27 1790.97,-1826.01 1759.79,-1832.17 1770.43,-1850.27" stroke="#444444"/>
 </g>
 <!-- Stog_config -->
 <g class="node" id="node3"><title>Stog_config</title>
 <g id="a_node3"><a xlink:href="Stog_config.html" xlink:title="Reading stog config.">
-<path d="M1999.25,-338C1999.25,-338 1808.75,-338 1808.75,-338 1802.75,-338 1796.75,-332 1796.75,-326 1796.75,-326 1796.75,-298 1796.75,-298 1796.75,-292 1802.75,-286 1808.75,-286 1808.75,-286 1999.25,-286 1999.25,-286 2005.25,-286 2011.25,-292 2011.25,-298 2011.25,-298 2011.25,-326 2011.25,-326 2011.25,-332 2005.25,-338 1999.25,-338" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1904" y="-302">Stog_config</text>
+<path d="M793,-427C793,-427 602,-427 602,-427 596,-427 590,-421 590,-415 590,-415 590,-387 590,-387 590,-381 596,-375 602,-375 602,-375 793,-375 793,-375 799,-375 805,-381 805,-387 805,-387 805,-415 805,-415 805,-421 799,-427 793,-427" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="697.5" y="-391">Stog_config</text>
 </a>
 </g>
 </g>
 <!-- Stog_misc -->
 <g class="node" id="node4"><title>Stog_misc</title>
 <g id="a_node4"><a xlink:href="Stog_misc.html" xlink:title="Utilities.">
-<path d="M1659.25,-120C1659.25,-120 1496.75,-120 1496.75,-120 1490.75,-120 1484.75,-114 1484.75,-108 1484.75,-108 1484.75,-80 1484.75,-80 1484.75,-74 1490.75,-68 1496.75,-68 1496.75,-68 1659.25,-68 1659.25,-68 1665.25,-68 1671.25,-74 1671.25,-80 1671.25,-80 1671.25,-108 1671.25,-108 1671.25,-114 1665.25,-120 1659.25,-120" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1578" y="-84">Stog_misc</text>
+<path d="M1048,-147C1048,-147 885,-147 885,-147 879,-147 873,-141 873,-135 873,-135 873,-107 873,-107 873,-101 879,-95 885,-95 885,-95 1048,-95 1048,-95 1054,-95 1060,-101 1060,-107 1060,-107 1060,-135 1060,-135 1060,-141 1054,-147 1048,-147" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="966.5" y="-111">Stog_misc</text>
 </a>
 </g>
 </g>
 <!-- Stog_config-&gt;Stog_misc -->
 <g class="edge" id="edge2"><title>Stog_config-&gt;Stog_misc</title>
-<path d="M1865.97,-285.799C1810.76,-249.218 1707.74,-180.964 1641.06,-136.784" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1646.6,-127.857 1615.79,-120.04 1635,-145.363 1646.6,-127.857" stroke="#444444"/>
+<path d="M721.846,-374.839C766.845,-328.335 863.669,-228.271 921.099,-168.92" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="928.699,-176.165 942.015,-147.304 913.608,-161.562 928.699,-176.165" stroke="#444444"/>
 </g>
 <!-- Stog_msg -->
 <g class="node" id="node5"><title>Stog_msg</title>
 <g id="a_node5"><a xlink:href="Stog_msg.html" xlink:title="Printing warnings and errors.">
-<path d="M2048.5,-120C2048.5,-120 1895.5,-120 1895.5,-120 1889.5,-120 1883.5,-114 1883.5,-108 1883.5,-108 1883.5,-80 1883.5,-80 1883.5,-74 1889.5,-68 1895.5,-68 1895.5,-68 2048.5,-68 2048.5,-68 2054.5,-68 2060.5,-74 2060.5,-80 2060.5,-80 2060.5,-108 2060.5,-108 2060.5,-114 2054.5,-120 2048.5,-120" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1972" y="-84">Stog_msg</text>
+<path d="M647.5,-147C647.5,-147 493.5,-147 493.5,-147 487.5,-147 481.5,-141 481.5,-135 481.5,-135 481.5,-107 481.5,-107 481.5,-101 487.5,-95 493.5,-95 493.5,-95 647.5,-95 647.5,-95 653.5,-95 659.5,-101 659.5,-107 659.5,-107 659.5,-135 659.5,-135 659.5,-141 653.5,-147 647.5,-147" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="570.5" y="-111">Stog_msg</text>
 </a>
 </g>
 </g>
 <!-- Stog_config-&gt;Stog_msg -->
 <g class="edge" id="edge3"><title>Stog_config-&gt;Stog_msg</title>
-<path d="M1911.93,-285.799C1922.45,-252.389 1941.29,-192.557 1955.07,-148.777" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1965.12,-151.809 1964.12,-120.04 1945.09,-145.503 1965.12,-151.809" stroke="#444444"/>
+<path d="M686.006,-374.839C665.467,-329.881 622.062,-234.868 594.7,-174.973" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="604.076,-170.229 582.06,-147.304 584.975,-178.955 604.076,-170.229" stroke="#444444"/>
 </g>
 <!-- Stog_tags -->
 <g class="node" id="node7"><title>Stog_tags</title>
 <g id="a_node7"><a xlink:href="Stog_tags.html" xlink:title="Predefined tags.">
-<path d="M1485.5,-990C1485.5,-990 1334.5,-990 1334.5,-990 1328.5,-990 1322.5,-984 1322.5,-978 1322.5,-978 1322.5,-950 1322.5,-950 1322.5,-944 1328.5,-938 1334.5,-938 1334.5,-938 1485.5,-938 1485.5,-938 1491.5,-938 1497.5,-944 1497.5,-950 1497.5,-950 1497.5,-978 1497.5,-978 1497.5,-984 1491.5,-990 1485.5,-990" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1410" y="-954">Stog_tags</text>
+<path d="M1305.5,-1266C1305.5,-1266 1153.5,-1266 1153.5,-1266 1147.5,-1266 1141.5,-1260 1141.5,-1254 1141.5,-1254 1141.5,-1226 1141.5,-1226 1141.5,-1220 1147.5,-1214 1153.5,-1214 1153.5,-1214 1305.5,-1214 1305.5,-1214 1311.5,-1214 1317.5,-1220 1317.5,-1226 1317.5,-1226 1317.5,-1254 1317.5,-1254 1317.5,-1260 1311.5,-1266 1305.5,-1266" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1229.5" y="-1230">Stog_tags</text>
 </a>
 </g>
 </g>
 <!-- Stog_cut-&gt;Stog_tags -->
 <g class="edge" id="edge4"><title>Stog_cut-&gt;Stog_tags</title>
-<path d="M1272.2,-1154.92C1297.03,-1120.7 1342.05,-1058.64 1373.87,-1014.79" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1382.55,-1020.7 1391.67,-990.257 1365.56,-1008.37 1382.55,-1020.7" stroke="#444444"/>
+<path d="M1199.49,-1493.84C1204.75,-1449.5 1215.79,-1356.47 1222.92,-1296.47" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1233.39,-1297.33 1226.5,-1266.3 1212.53,-1294.86 1233.39,-1297.33" stroke="#444444"/>
 </g>
 <!-- Stog_types -->
 <g class="node" id="node8"><title>Stog_types</title>
 <g id="a_node8"><a xlink:href="Stog_types.html" xlink:title="Types.">
-<path d="M1085.25,-555C1085.25,-555 912.75,-555 912.75,-555 906.75,-555 900.75,-549 900.75,-543 900.75,-543 900.75,-515 900.75,-515 900.75,-509 906.75,-503 912.75,-503 912.75,-503 1085.25,-503 1085.25,-503 1091.25,-503 1097.25,-509 1097.25,-515 1097.25,-515 1097.25,-543 1097.25,-543 1097.25,-549 1091.25,-555 1085.25,-555" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="999" y="-519">Stog_types</text>
+<path d="M1764,-707C1764,-707 1591,-707 1591,-707 1585,-707 1579,-701 1579,-695 1579,-695 1579,-667 1579,-667 1579,-661 1585,-655 1591,-655 1591,-655 1764,-655 1764,-655 1770,-655 1776,-661 1776,-667 1776,-667 1776,-695 1776,-695 1776,-701 1770,-707 1764,-707" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1677.5" y="-671">Stog_types</text>
 </a>
 </g>
 </g>
 <!-- Stog_cut-&gt;Stog_types -->
 <g class="edge" id="edge5"><title>Stog_cut-&gt;Stog_types</title>
-<path d="M1262.04,-1154.94C1283.85,-1082.08 1337.15,-866.211 1255,-720 1216.59,-651.631 1142.27,-600.74 1083.57,-568.923" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1088.12,-559.456 1056.64,-555.046 1078.5,-578.123 1088.12,-559.456" stroke="#444444"/>
+<path d="M1187.94,-1493.9C1173.08,-1448.89 1143.11,-1351.2 1132.5,-1266 1113.06,-1109.85 1151.36,-1051.97 1255.5,-934 1345.73,-831.782 1487.72,-758.994 1581.71,-718.718" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1585.86,-728.364 1609.52,-707.146 1577.79,-708.975 1585.86,-728.364" stroke="#444444"/>
 </g>
 <!-- Stog_types-&gt;Stog_config -->
-<g class="edge" id="edge51"><title>Stog_types-&gt;Stog_config</title>
-<path d="M1097.57,-504.582C1260.31,-465.921 1585.41,-388.687 1769.25,-345.013" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1771.82,-355.193 1798.58,-338.044 1766.97,-334.762 1771.82,-355.193" stroke="#444444"/>
+<g class="edge" id="edge49"><title>Stog_types-&gt;Stog_config</title>
+<path d="M1589.24,-654.962C1412.13,-604.722 1013.43,-491.622 814.708,-435.249" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="817.468,-425.117 785.741,-427.032 811.737,-445.32 817.468,-425.117" stroke="#444444"/>
+</g>
+<!-- Stog_date -->
+<g class="node" id="node9"><title>Stog_date</title>
+<g id="a_node9"><a xlink:href="Stog_date.html" xlink:title="Stog_date">
+<path d="M2042,-427C2042,-427 1887,-427 1887,-427 1881,-427 1875,-421 1875,-415 1875,-415 1875,-387 1875,-387 1875,-381 1881,-375 1887,-375 1887,-375 2042,-375 2042,-375 2048,-375 2054,-381 2054,-387 2054,-387 2054,-415 2054,-415 2054,-421 2048,-427 2042,-427" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1964.5" y="-391">Stog_date</text>
+</a>
+</g>
+</g>
+<!-- Stog_types-&gt;Stog_date -->
+<g class="edge" id="edge57"><title>Stog_types-&gt;Stog_date</title>
+<path d="M1703.48,-654.839C1751.59,-608.231 1855.25,-507.827 1916.47,-448.525" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1924.13,-455.719 1938.38,-427.304 1909.52,-440.635 1924.13,-455.719" stroke="#444444"/>
 </g>
 <!-- Stog_filter_types -->
-<g class="node" id="node21"><title>Stog_filter_types</title>
-<g id="a_node21"><a xlink:href="Stog_filter_types.html" xlink:title="Representation of document filters.">
-<path d="M284,-338C284,-338 12,-338 12,-338 6,-338 0,-332 0,-326 0,-326 0,-298 0,-298 0,-292 6,-286 12,-286 12,-286 284,-286 284,-286 290,-286 296,-292 296,-298 296,-298 296,-326 296,-326 296,-332 290,-338 284,-338" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="148" y="-302">Stog_filter_types</text>
+<g class="node" id="node22"><title>Stog_filter_types</title>
+<g id="a_node22"><a xlink:href="Stog_filter_types.html" xlink:title="Representation of document filters.">
+<path d="M2748.5,-427C2748.5,-427 2476.5,-427 2476.5,-427 2470.5,-427 2464.5,-421 2464.5,-415 2464.5,-415 2464.5,-387 2464.5,-387 2464.5,-381 2470.5,-375 2476.5,-375 2476.5,-375 2748.5,-375 2748.5,-375 2754.5,-375 2760.5,-381 2760.5,-387 2760.5,-387 2760.5,-415 2760.5,-415 2760.5,-421 2754.5,-427 2748.5,-427" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="2612.5" y="-391">Stog_filter_types</text>
 </a>
 </g>
 </g>
 <!-- Stog_types-&gt;Stog_filter_types -->
-<g class="edge" id="edge58"><title>Stog_types-&gt;Stog_filter_types</title>
-<path d="M900.548,-503.127C746.208,-464.134 447.305,-388.618 276.311,-345.417" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="278.865,-335.232 247.207,-338.064 273.721,-355.593 278.865,-335.232" stroke="#444444"/>
+<g class="edge" id="edge56"><title>Stog_types-&gt;Stog_filter_types</title>
+<path d="M1761.71,-654.962C1930.34,-604.825 2309.51,-492.086 2499.5,-435.597" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="2502.55,-445.646 2528.31,-427.032 2496.56,-425.517 2502.55,-445.646" stroke="#444444"/>
 </g>
 <!-- Stog_graph -->
-<g class="node" id="node22"><title>Stog_graph</title>
-<g id="a_node22"><a xlink:href="Stog_graph.html" xlink:title="Annotated sparse graphs.">
-<path d="M1271.25,-338C1271.25,-338 1092.75,-338 1092.75,-338 1086.75,-338 1080.75,-332 1080.75,-326 1080.75,-326 1080.75,-298 1080.75,-298 1080.75,-292 1086.75,-286 1092.75,-286 1092.75,-286 1271.25,-286 1271.25,-286 1277.25,-286 1283.25,-292 1283.25,-298 1283.25,-298 1283.25,-326 1283.25,-326 1283.25,-332 1277.25,-338 1271.25,-338" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1182" y="-302">Stog_graph</text>
+<g class="node" id="node23"><title>Stog_graph</title>
+<g id="a_node23"><a xlink:href="Stog_graph.html" xlink:title="Annotated sparse graphs.">
+<path d="M1417,-427C1417,-427 1238,-427 1238,-427 1232,-427 1226,-421 1226,-415 1226,-415 1226,-387 1226,-387 1226,-381 1232,-375 1238,-375 1238,-375 1417,-375 1417,-375 1423,-375 1429,-381 1429,-387 1429,-387 1429,-415 1429,-415 1429,-421 1423,-427 1417,-427" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1327.5" y="-391">Stog_graph</text>
 </a>
 </g>
 </g>
 <!-- Stog_types-&gt;Stog_graph -->
-<g class="edge" id="edge57"><title>Stog_types-&gt;Stog_graph</title>
-<path d="M1020.35,-502.916C1049.82,-468.296 1103.54,-405.177 1140.93,-361.251" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1149.05,-367.907 1160.5,-338.257 1133.06,-354.296 1149.05,-367.907" stroke="#444444"/>
+<g class="edge" id="edge55"><title>Stog_types-&gt;Stog_graph</title>
+<path d="M1645.82,-654.839C1586.29,-607.553 1457.04,-504.893 1382.85,-445.962" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1389.13,-437.541 1359.11,-427.104 1376.07,-453.985 1389.13,-437.541" stroke="#444444"/>
 </g>
 <!-- Stog_install -->
-<g class="node" id="node30"><title>Stog_install</title>
-<g id="a_node30"><a xlink:href="Stog_install.html" xlink:title="Information about stog installation.">
-<path d="M1500,-338C1500,-338 1314,-338 1314,-338 1308,-338 1302,-332 1302,-326 1302,-326 1302,-298 1302,-298 1302,-292 1308,-286 1314,-286 1314,-286 1500,-286 1500,-286 1506,-286 1512,-292 1512,-298 1512,-298 1512,-326 1512,-326 1512,-332 1506,-338 1500,-338" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1407" y="-302">Stog_install</text>
+<g class="node" id="node31"><title>Stog_install</title>
+<g id="a_node31"><a xlink:href="Stog_install.html" xlink:title="Information about stog installation.">
+<path d="M1844.5,-427C1844.5,-427 1658.5,-427 1658.5,-427 1652.5,-427 1646.5,-421 1646.5,-415 1646.5,-415 1646.5,-387 1646.5,-387 1646.5,-381 1652.5,-375 1658.5,-375 1658.5,-375 1844.5,-375 1844.5,-375 1850.5,-375 1856.5,-381 1856.5,-387 1856.5,-387 1856.5,-415 1856.5,-415 1856.5,-421 1850.5,-427 1844.5,-427" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1751.5" y="-391">Stog_install</text>
 </a>
 </g>
 </g>
 <!-- Stog_types-&gt;Stog_install -->
-<g class="edge" id="edge52"><title>Stog_types-&gt;Stog_install</title>
-<path d="M1046.6,-502.916C1116.99,-465.826 1249.45,-396.023 1332.69,-352.158" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1337.74,-361.365 1359.39,-338.09 1327.95,-342.787 1337.74,-361.365" stroke="#444444"/>
+<g class="edge" id="edge50"><title>Stog_types-&gt;Stog_install</title>
+<path d="M1684.2,-654.839C1696.05,-610.294 1720.99,-516.607 1736.96,-456.631" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1747.19,-458.996 1744.76,-427.304 1726.9,-453.594 1747.19,-458.996" stroke="#444444"/>
 </g>
 <!-- Stog_path -->
-<g class="node" id="node34"><title>Stog_path</title>
-<g id="a_node34"><a xlink:href="Stog_path.html" xlink:title="Document paths.">
-<path d="M1050.25,-338C1050.25,-338 893.75,-338 893.75,-338 887.75,-338 881.75,-332 881.75,-326 881.75,-326 881.75,-298 881.75,-298 881.75,-292 887.75,-286 893.75,-286 893.75,-286 1050.25,-286 1050.25,-286 1056.25,-286 1062.25,-292 1062.25,-298 1062.25,-298 1062.25,-326 1062.25,-326 1062.25,-332 1056.25,-338 1050.25,-338" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="972" y="-302">Stog_path</text>
+<g class="node" id="node35"><title>Stog_path</title>
+<g id="a_node35"><a xlink:href="Stog_path.html" xlink:title="Document paths.">
+<path d="M1616,-427C1616,-427 1459,-427 1459,-427 1453,-427 1447,-421 1447,-415 1447,-415 1447,-387 1447,-387 1447,-381 1453,-375 1459,-375 1459,-375 1616,-375 1616,-375 1622,-375 1628,-381 1628,-387 1628,-387 1628,-415 1628,-415 1628,-421 1622,-427 1616,-427" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1537.5" y="-391">Stog_path</text>
 </a>
 </g>
 </g>
 <!-- Stog_types-&gt;Stog_path -->
-<g class="edge" id="edge56"><title>Stog_types-&gt;Stog_path</title>
-<path d="M995.85,-502.916C991.725,-470.072 984.379,-411.576 978.926,-368.154" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="989.328,-366.714 975.172,-338.257 968.492,-369.331 989.328,-366.714" stroke="#444444"/>
+<g class="edge" id="edge54"><title>Stog_types-&gt;Stog_path</title>
+<path d="M1664.83,-654.839C1642.08,-609.675 1593.9,-513.996 1563.76,-454.151" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1573.11,-449.376 1550.24,-427.304 1554.36,-458.821 1573.11,-449.376" stroke="#444444"/>
 </g>
 <!-- Stog_tmap -->
-<g class="node" id="node37"><title>Stog_tmap</title>
-<g id="a_node37"><a xlink:href="Stog_tmap.html" xlink:title="Storing data referenced by a unique id.">
-<path d="M493.25,-338C493.25,-338 326.75,-338 326.75,-338 320.75,-338 314.75,-332 314.75,-326 314.75,-326 314.75,-298 314.75,-298 314.75,-292 320.75,-286 326.75,-286 326.75,-286 493.25,-286 493.25,-286 499.25,-286 505.25,-292 505.25,-298 505.25,-298 505.25,-326 505.25,-326 505.25,-332 499.25,-338 493.25,-338" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="410" y="-302">Stog_tmap</text>
+<g class="node" id="node38"><title>Stog_tmap</title>
+<g id="a_node38"><a xlink:href="Stog_tmap.html" xlink:title="Storing data referenced by a unique id.">
+<path d="M2251,-427C2251,-427 2084,-427 2084,-427 2078,-427 2072,-421 2072,-415 2072,-415 2072,-387 2072,-387 2072,-381 2078,-375 2084,-375 2084,-375 2251,-375 2251,-375 2257,-375 2263,-381 2263,-387 2263,-387 2263,-415 2263,-415 2263,-421 2257,-427 2251,-427" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="2167.5" y="-391">Stog_tmap</text>
 </a>
 </g>
 </g>
 <!-- Stog_types-&gt;Stog_tmap -->
-<g class="edge" id="edge55"><title>Stog_types-&gt;Stog_tmap</title>
-<path d="M930.281,-502.916C825.794,-464.775 626.541,-392.043 507.238,-348.494" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="510.517,-338.514 478.735,-338.09 503.316,-358.241 510.517,-338.514" stroke="#444444"/>
+<g class="edge" id="edge53"><title>Stog_types-&gt;Stog_tmap</title>
+<path d="M1721.85,-654.839C1807.11,-606.469 1994.49,-500.157 2097.03,-441.979" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="2102.34,-451.04 2123.25,-427.104 2091.98,-432.775 2102.34,-451.04" stroke="#444444"/>
 </g>
 <!-- Stog_trie -->
-<g class="node" id="node38"><title>Stog_trie</title>
-<g id="a_node38"><a xlink:href="Stog_trie.html" xlink:title="Tries.">
-<path d="M676.25,-338C676.25,-338 535.75,-338 535.75,-338 529.75,-338 523.75,-332 523.75,-326 523.75,-326 523.75,-298 523.75,-298 523.75,-292 529.75,-286 535.75,-286 535.75,-286 676.25,-286 676.25,-286 682.25,-286 688.25,-292 688.25,-298 688.25,-298 688.25,-326 688.25,-326 688.25,-332 682.25,-338 676.25,-338" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="606" y="-302">Stog_trie</text>
+<g class="node" id="node39"><title>Stog_trie</title>
+<g id="a_node39"><a xlink:href="Stog_trie.html" xlink:title="Tries.">
+<path d="M2434,-427C2434,-427 2293,-427 2293,-427 2287,-427 2281,-421 2281,-415 2281,-415 2281,-387 2281,-387 2281,-381 2287,-375 2293,-375 2293,-375 2434,-375 2434,-375 2440,-375 2446,-381 2446,-387 2446,-387 2446,-415 2446,-415 2446,-421 2440,-427 2434,-427" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="2363.5" y="-391">Stog_trie</text>
 </a>
 </g>
 </g>
 <!-- Stog_types-&gt;Stog_trie -->
-<g class="edge" id="edge54"><title>Stog_types-&gt;Stog_trie</title>
-<path d="M953.149,-502.916C885.573,-465.947 758.592,-396.479 678.364,-352.589" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="683.221,-343.277 651.863,-338.09 673.142,-361.7 683.221,-343.277" stroke="#444444"/>
+<g class="edge" id="edge52"><title>Stog_types-&gt;Stog_trie</title>
+<path d="M1739.28,-654.962C1860.89,-605.682 2131.74,-495.92 2273.33,-438.54" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="2277.62,-448.131 2301.48,-427.132 2269.74,-428.668 2277.62,-448.131" stroke="#444444"/>
 </g>
 <!-- Stog_url -->
-<g class="node" id="node39"><title>Stog_url</title>
-<g id="a_node39"><a xlink:href="Stog_url.html" xlink:title="URLs.">
-<path d="M851,-338C851,-338 719,-338 719,-338 713,-338 707,-332 707,-326 707,-326 707,-298 707,-298 707,-292 713,-286 719,-286 719,-286 851,-286 851,-286 857,-286 863,-292 863,-298 863,-298 863,-326 863,-326 863,-332 857,-338 851,-338" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="785" y="-302">Stog_url</text>
+<g class="node" id="node40"><title>Stog_url</title>
+<g id="a_node40"><a xlink:href="Stog_url.html" xlink:title="URLs.">
+<path d="M1195.5,-427C1195.5,-427 1063.5,-427 1063.5,-427 1057.5,-427 1051.5,-421 1051.5,-415 1051.5,-415 1051.5,-387 1051.5,-387 1051.5,-381 1057.5,-375 1063.5,-375 1063.5,-375 1195.5,-375 1195.5,-375 1201.5,-375 1207.5,-381 1207.5,-387 1207.5,-387 1207.5,-415 1207.5,-415 1207.5,-421 1201.5,-427 1195.5,-427" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1129.5" y="-391">Stog_url</text>
 </a>
 </g>
 </g>
 <!-- Stog_types-&gt;Stog_url -->
-<g class="edge" id="edge53"><title>Stog_types-&gt;Stog_url</title>
-<path d="M974.033,-502.916C939.173,-467.893 875.28,-403.702 831.506,-359.723" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="838.745,-352.112 810.139,-338.257 823.861,-366.927 838.745,-352.112" stroke="#444444"/>
+<g class="edge" id="edge51"><title>Stog_types-&gt;Stog_url</title>
+<path d="M1627.9,-654.839C1531.84,-606.108 1319.85,-498.565 1205.75,-440.683" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1210.49,-431.312 1178.99,-427.104 1200.99,-450.04 1210.49,-431.312" stroke="#444444"/>
+</g>
+<!-- Stog_error -->
+<g class="node" id="node10"><title>Stog_error</title>
+<g id="a_node10"><a xlink:href="Stog_error.html" xlink:title="Errors.">
+<path d="M2047.5,-147C2047.5,-147 1881.5,-147 1881.5,-147 1875.5,-147 1869.5,-141 1869.5,-135 1869.5,-135 1869.5,-107 1869.5,-107 1869.5,-101 1875.5,-95 1881.5,-95 1881.5,-95 2047.5,-95 2047.5,-95 2053.5,-95 2059.5,-101 2059.5,-107 2059.5,-107 2059.5,-135 2059.5,-135 2059.5,-141 2053.5,-147 2047.5,-147" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1964.5" y="-111">Stog_error</text>
+</a>
+</g>
+</g>
+<!-- Stog_date-&gt;Stog_error -->
+<g class="edge" id="edge6"><title>Stog_date-&gt;Stog_error</title>
+<path d="M1964.5,-374.839C1964.5,-330.5 1964.5,-237.474 1964.5,-177.466" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1975,-177.304 1964.5,-147.304 1954,-177.304 1975,-177.304" stroke="#444444"/>
 </g>
 <!-- Stog_deps -->
-<g class="node" id="node9"><title>Stog_deps</title>
-<g id="a_node9"><a xlink:href="Stog_deps.html" xlink:title="Stog_deps">
-<path d="M1234.25,-772C1234.25,-772 1073.75,-772 1073.75,-772 1067.75,-772 1061.75,-766 1061.75,-760 1061.75,-760 1061.75,-732 1061.75,-732 1061.75,-726 1067.75,-720 1073.75,-720 1073.75,-720 1234.25,-720 1234.25,-720 1240.25,-720 1246.25,-726 1246.25,-732 1246.25,-732 1246.25,-760 1246.25,-760 1246.25,-766 1240.25,-772 1234.25,-772" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1154" y="-736">Stog_deps</text>
+<g class="node" id="node11"><title>Stog_deps</title>
+<g id="a_node11"><a xlink:href="Stog_deps.html" xlink:title="Stog_deps">
+<path d="M1684,-986C1684,-986 1523,-986 1523,-986 1517,-986 1511,-980 1511,-974 1511,-974 1511,-946 1511,-946 1511,-940 1517,-934 1523,-934 1523,-934 1684,-934 1684,-934 1690,-934 1696,-940 1696,-946 1696,-946 1696,-974 1696,-974 1696,-980 1690,-986 1684,-986" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1603.5" y="-950">Stog_deps</text>
 </a>
 </g>
 </g>
 <!-- Stog_deps-&gt;Stog_types -->
-<g class="edge" id="edge6"><title>Stog_deps-&gt;Stog_types</title>
-<path d="M1135.92,-719.916C1111.25,-685.7 1066.51,-623.645 1034.9,-579.795" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1043.27,-573.451 1017.21,-555.257 1026.23,-585.732 1043.27,-573.451" stroke="#444444"/>
+<g class="edge" id="edge7"><title>Stog_deps-&gt;Stog_types</title>
+<path d="M1610.2,-933.93C1622.05,-889.545 1646.99,-796.195 1662.96,-736.434" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1673.17,-738.907 1670.76,-707.213 1652.88,-733.487 1673.17,-738.907" stroke="#444444"/>
 </g>
 <!-- Stog_dyn -->
-<g class="node" id="node10"><title>Stog_dyn</title>
-<g id="a_node10"><a xlink:href="Stog_dyn.html" xlink:title="Common module for code dynamic loading.">
-<path d="M1766,-338C1766,-338 1618,-338 1618,-338 1612,-338 1606,-332 1606,-326 1606,-326 1606,-298 1606,-298 1606,-292 1612,-286 1618,-286 1618,-286 1766,-286 1766,-286 1772,-286 1778,-292 1778,-298 1778,-298 1778,-326 1778,-326 1778,-332 1772,-338 1766,-338" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1692" y="-302">Stog_dyn</text>
+<g class="node" id="node12"><title>Stog_dyn</title>
+<g id="a_node12"><a xlink:href="Stog_dyn.html" xlink:title="Common module for code dynamic loading.">
+<path d="M983.5,-427C983.5,-427 835.5,-427 835.5,-427 829.5,-427 823.5,-421 823.5,-415 823.5,-415 823.5,-387 823.5,-387 823.5,-381 829.5,-375 835.5,-375 835.5,-375 983.5,-375 983.5,-375 989.5,-375 995.5,-381 995.5,-387 995.5,-387 995.5,-415 995.5,-415 995.5,-421 989.5,-427 983.5,-427" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="909.5" y="-391">Stog_dyn</text>
 </a>
 </g>
 </g>
 <!-- Stog_dyn-&gt;Stog_misc -->
-<g class="edge" id="edge7"><title>Stog_dyn-&gt;Stog_misc</title>
-<path d="M1678.7,-285.799C1660.81,-251.901 1628.56,-190.805 1605.38,-146.87" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1614.5,-141.671 1591.22,-120.04 1595.93,-151.473 1614.5,-141.671" stroke="#444444"/>
+<g class="edge" id="edge8"><title>Stog_dyn-&gt;Stog_misc</title>
+<path d="M914.659,-374.839C923.771,-330.397 942.912,-237.041 955.213,-177.048" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="965.572,-178.802 961.312,-147.304 945,-174.584 965.572,-178.802" stroke="#444444"/>
 </g>
 <!-- Stog_dyn-&gt;Stog_msg -->
-<g class="edge" id="edge8"><title>Stog_dyn-&gt;Stog_msg</title>
-<path d="M1724.67,-285.799C1771.46,-249.706 1858.21,-182.779 1915.53,-138.564" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1922.2,-146.678 1939.54,-120.04 1909.37,-130.051 1922.2,-146.678" stroke="#444444"/>
+<g class="edge" id="edge9"><title>Stog_dyn-&gt;Stog_msg</title>
+<path d="M878.818,-374.839C821.355,-327.716 696.832,-225.6 624.853,-166.573" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="631.212,-158.209 601.357,-147.304 617.896,-174.447 631.212,-158.209" stroke="#444444"/>
 </g>
 <!-- Stog_engine -->
-<g class="node" id="node11"><title>Stog_engine</title>
-<g id="a_node11"><a xlink:href="Stog_engine.html" xlink:title="Rewrite engine.">
-<path d="M1101.25,-1207C1101.25,-1207 906.75,-1207 906.75,-1207 900.75,-1207 894.75,-1201 894.75,-1195 894.75,-1195 894.75,-1167 894.75,-1167 894.75,-1161 900.75,-1155 906.75,-1155 906.75,-1155 1101.25,-1155 1101.25,-1155 1107.25,-1155 1113.25,-1161 1113.25,-1167 1113.25,-1167 1113.25,-1195 1113.25,-1195 1113.25,-1201 1107.25,-1207 1101.25,-1207" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1004" y="-1171">Stog_engine</text>
+<g class="node" id="node13"><title>Stog_engine</title>
+<g id="a_node13"><a xlink:href="Stog_engine.html" xlink:title="Rewrite engine.">
+<path d="M1502,-1546C1502,-1546 1307,-1546 1307,-1546 1301,-1546 1295,-1540 1295,-1534 1295,-1534 1295,-1506 1295,-1506 1295,-1500 1301,-1494 1307,-1494 1307,-1494 1502,-1494 1502,-1494 1508,-1494 1514,-1500 1514,-1506 1514,-1506 1514,-1534 1514,-1534 1514,-1540 1508,-1546 1502,-1546" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1404.5" y="-1510">Stog_engine</text>
 </a>
 </g>
 </g>
 <!-- Stog_engine-&gt;Stog_tags -->
-<g class="edge" id="edge11"><title>Stog_engine-&gt;Stog_tags</title>
-<path d="M1051.37,-1154.92C1121.41,-1117.83 1253.22,-1048.02 1336.06,-1004.16" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1341.02,-1013.41 1362.62,-990.09 1331.19,-994.851 1341.02,-1013.41" stroke="#444444"/>
+<g class="edge" id="edge12"><title>Stog_engine-&gt;Stog_tags</title>
+<path d="M1388.66,-1493.84C1360.04,-1448.37 1299.17,-1351.68 1261.56,-1291.93" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1270.3,-1286.1 1245.43,-1266.3 1252.53,-1297.29 1270.3,-1286.1" stroke="#444444"/>
 </g>
 <!-- Stog_find -->
-<g class="node" id="node12"><title>Stog_find</title>
-<g id="a_node12"><a xlink:href="Stog_find.html" xlink:title="Finding files.">
-<path d="M828.5,-990C828.5,-990 677.5,-990 677.5,-990 671.5,-990 665.5,-984 665.5,-978 665.5,-978 665.5,-950 665.5,-950 665.5,-944 671.5,-938 677.5,-938 677.5,-938 828.5,-938 828.5,-938 834.5,-938 840.5,-944 840.5,-950 840.5,-950 840.5,-978 840.5,-978 840.5,-984 834.5,-990 828.5,-990" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="753" y="-954">Stog_find</text>
+<g class="node" id="node14"><title>Stog_find</title>
+<g id="a_node14"><a xlink:href="Stog_find.html" xlink:title="Finding files.">
+<path d="M1739.5,-1266C1739.5,-1266 1587.5,-1266 1587.5,-1266 1581.5,-1266 1575.5,-1260 1575.5,-1254 1575.5,-1254 1575.5,-1226 1575.5,-1226 1575.5,-1220 1581.5,-1214 1587.5,-1214 1587.5,-1214 1739.5,-1214 1739.5,-1214 1745.5,-1214 1751.5,-1220 1751.5,-1226 1751.5,-1226 1751.5,-1254 1751.5,-1254 1751.5,-1260 1745.5,-1266 1739.5,-1266" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1663.5" y="-1230">Stog_find</text>
 </a>
 </g>
 </g>
 <!-- Stog_engine-&gt;Stog_find -->
-<g class="edge" id="edge9"><title>Stog_engine-&gt;Stog_find</title>
-<path d="M974.716,-1154.92C933.263,-1119.41 856.811,-1053.92 805.431,-1009.91" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="812.1,-1001.8 782.486,-990.257 798.439,-1017.75 812.1,-1001.8" stroke="#444444"/>
+<g class="edge" id="edge10"><title>Stog_engine-&gt;Stog_find</title>
+<path d="M1427.94,-1493.84C1471.17,-1447.44 1564.08,-1347.71 1619.42,-1288.32" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1627.16,-1295.41 1639.93,-1266.3 1611.79,-1281.1 1627.16,-1295.41" stroke="#444444"/>
 </g>
 <!-- Stog_html5 -->
-<g class="node" id="node13"><title>Stog_html5</title>
-<g id="a_node13"><a xlink:href="Stog_html5.html" xlink:title="Handling HTML5.">
-<path d="M1051.25,-990C1051.25,-990 870.75,-990 870.75,-990 864.75,-990 858.75,-984 858.75,-978 858.75,-978 858.75,-950 858.75,-950 858.75,-944 864.75,-938 870.75,-938 870.75,-938 1051.25,-938 1051.25,-938 1057.25,-938 1063.25,-944 1063.25,-950 1063.25,-950 1063.25,-978 1063.25,-978 1063.25,-984 1057.25,-990 1051.25,-990" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="961" y="-954">Stog_html5</text>
+<g class="node" id="node15"><title>Stog_html5</title>
+<g id="a_node15"><a xlink:href="Stog_html5.html" xlink:title="Handling HTML5.">
+<path d="M1458,-986C1458,-986 1277,-986 1277,-986 1271,-986 1265,-980 1265,-974 1265,-974 1265,-946 1265,-946 1265,-940 1271,-934 1277,-934 1277,-934 1458,-934 1458,-934 1464,-934 1470,-940 1470,-946 1470,-946 1470,-974 1470,-974 1470,-980 1464,-986 1458,-986" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1367.5" y="-950">Stog_html5</text>
 </a>
 </g>
 </g>
 <!-- Stog_engine-&gt;Stog_html5 -->
-<g class="edge" id="edge10"><title>Stog_engine-&gt;Stog_html5</title>
-<path d="M998.983,-1154.92C992.398,-1121.99 980.658,-1063.29 971.967,-1019.83" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="982.231,-1017.61 966.051,-990.257 961.639,-1021.73 982.231,-1017.61" stroke="#444444"/>
+<g class="edge" id="edge11"><title>Stog_engine-&gt;Stog_html5</title>
+<path d="M1399.01,-1493.67C1389.48,-1448.3 1370.27,-1350.05 1363.5,-1266 1356.51,-1179.11 1360.16,-1077.86 1363.66,-1016.64" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1374.16,-1016.96 1365.57,-986.359 1353.2,-1015.64 1374.16,-1016.96" stroke="#444444"/>
 </g>
 <!-- Stog_tmpl -->
-<g class="node" id="node14"><title>Stog_tmpl</title>
-<g id="a_node14"><a xlink:href="Stog_tmpl.html" xlink:title="Default templates.">
-<path d="M1254.25,-990C1254.25,-990 1093.75,-990 1093.75,-990 1087.75,-990 1081.75,-984 1081.75,-978 1081.75,-978 1081.75,-950 1081.75,-950 1081.75,-944 1087.75,-938 1093.75,-938 1093.75,-938 1254.25,-938 1254.25,-938 1260.25,-938 1266.25,-944 1266.25,-950 1266.25,-950 1266.25,-978 1266.25,-978 1266.25,-984 1260.25,-990 1254.25,-990" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1174" y="-954">Stog_tmpl</text>
+<g class="node" id="node16"><title>Stog_tmpl</title>
+<g id="a_node16"><a xlink:href="Stog_tmpl.html" xlink:title="Default templates.">
+<path d="M1546,-1266C1546,-1266 1385,-1266 1385,-1266 1379,-1266 1373,-1260 1373,-1254 1373,-1254 1373,-1226 1373,-1226 1373,-1220 1379,-1214 1385,-1214 1385,-1214 1546,-1214 1546,-1214 1552,-1214 1558,-1220 1558,-1226 1558,-1226 1558,-1254 1558,-1254 1558,-1260 1552,-1266 1546,-1266" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1465.5" y="-1230">Stog_tmpl</text>
 </a>
 </g>
 </g>
 <!-- Stog_engine-&gt;Stog_tmpl -->
-<g class="edge" id="edge12"><title>Stog_engine-&gt;Stog_tmpl</title>
-<path d="M1023.83,-1154.92C1051.08,-1120.46 1100.65,-1057.77 1135.36,-1013.87" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1143.66,-1020.3 1154.03,-990.257 1127.19,-1007.28 1143.66,-1020.3" stroke="#444444"/>
+<g class="edge" id="edge13"><title>Stog_engine-&gt;Stog_tmpl</title>
+<path d="M1410.02,-1493.84C1419.8,-1449.29 1440.35,-1355.61 1453.51,-1295.63" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1463.77,-1297.86 1459.95,-1266.3 1443.26,-1293.36 1463.77,-1297.86" stroke="#444444"/>
 </g>
 <!-- Stog_html5-&gt;Stog_types -->
-<g class="edge" id="edge30"><title>Stog_html5-&gt;Stog_types</title>
-<path d="M966.596,-937.829C974.397,-901.45 988.234,-831.959 994,-772 1000.13,-708.243 1000.73,-634.62 1000.22,-585.481" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1010.71,-584.98 999.722,-555.156 989.714,-585.324 1010.71,-584.98" stroke="#444444"/>
+<g class="edge" id="edge28"><title>Stog_html5-&gt;Stog_types</title>
+<path d="M1395.56,-933.93C1447.76,-887.284 1560.48,-786.56 1626.49,-727.576" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1633.91,-735.032 1649.28,-707.213 1619.92,-719.373 1633.91,-735.032" stroke="#444444"/>
 </g>
 <!-- Stog_tmpl-&gt;Stog_deps -->
-<g class="edge" id="edge50"><title>Stog_tmpl-&gt;Stog_deps</title>
-<path d="M1171.67,-937.799C1168.6,-904.714 1163.14,-845.719 1159.1,-802.06" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1169.54,-800.944 1156.32,-772.04 1148.63,-802.881 1169.54,-800.944" stroke="#444444"/>
+<g class="edge" id="edge48"><title>Stog_tmpl-&gt;Stog_deps</title>
+<path d="M1477.99,-1213.84C1500.36,-1168.78 1547.69,-1073.43 1577.41,-1013.56" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1587,-1017.84 1590.94,-986.304 1568.19,-1008.51 1587,-1017.84" stroke="#444444"/>
 </g>
-<!-- Stog_exec-&gt;Stog_types -->
-<g class="edge" id="edge14"><title>Stog_exec-&gt;Stog_types</title>
-<path d="M1604.08,-719.916C1481.19,-681.346 1245.6,-607.399 1107.43,-564.033" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1110.44,-553.973 1078.67,-555.007 1104.15,-574.009 1110.44,-553.973" stroke="#444444"/>
-</g>
-<!-- Stog_highlight -->
-<g class="node" id="node17"><title>Stog_highlight</title>
-<g id="a_node17"><a xlink:href="Stog_highlight.html" xlink:title="Highlighting code.">
-<path d="M1799.25,-555C1799.25,-555 1566.75,-555 1566.75,-555 1560.75,-555 1554.75,-549 1554.75,-543 1554.75,-543 1554.75,-515 1554.75,-515 1554.75,-509 1560.75,-503 1566.75,-503 1566.75,-503 1799.25,-503 1799.25,-503 1805.25,-503 1811.25,-509 1811.25,-515 1811.25,-515 1811.25,-543 1811.25,-543 1811.25,-549 1805.25,-555 1799.25,-555" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1683" y="-519">Stog_highlight</text>
+<!-- Stog_ocaml -->
+<g class="node" id="node18"><title>Stog_ocaml</title>
+<g id="a_node18"><a xlink:href="Stog_ocaml.html" xlink:title="Functions to eval and display ocaml in generated pages.">
+<path d="M341,-986C341,-986 156,-986 156,-986 150,-986 144,-980 144,-974 144,-974 144,-946 144,-946 144,-940 150,-934 156,-934 156,-934 341,-934 341,-934 347,-934 353,-940 353,-946 353,-946 353,-974 353,-974 353,-980 347,-986 341,-986" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="248.5" y="-950">Stog_ocaml</text>
 </a>
 </g>
 </g>
-<!-- Stog_exec-&gt;Stog_highlight -->
-<g class="edge" id="edge13"><title>Stog_exec-&gt;Stog_highlight</title>
-<path d="M1683.88,-719.916C1683.73,-687.153 1683.46,-628.863 1683.26,-585.475" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1693.76,-585.207 1683.12,-555.257 1672.76,-585.305 1693.76,-585.207" stroke="#444444"/>
+<!-- Stog_exec-&gt;Stog_ocaml -->
+<g class="edge" id="edge14"><title>Stog_exec-&gt;Stog_ocaml</title>
+<path d="M502.488,-1493.95C472.695,-1449.4 410.19,-1352.93 367.5,-1266 325.564,-1180.61 287.597,-1076.5 266.334,-1014.65" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="276.242,-1011.17 256.684,-986.118 256.349,-1017.9 276.242,-1011.17" stroke="#444444"/>
 </g>
-<!-- Stog_highlight-&gt;Stog_misc -->
-<g class="edge" id="edge19"><title>Stog_highlight-&gt;Stog_misc</title>
-<path d="M1668.21,-502.919C1648.15,-467.517 1613,-400.246 1597,-338 1580.83,-275.063 1577.22,-200.195 1576.92,-150.355" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1587.42,-150.377 1577.13,-120.304 1566.42,-150.23 1587.42,-150.377" stroke="#444444"/>
+<!-- Stog_ocaml-&gt;Stog_types -->
+<g class="edge" id="edge41"><title>Stog_ocaml-&gt;Stog_types</title>
+<path d="M353.288,-938.688C609.952,-888.935 1269.45,-761.098 1549.09,-706.892" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1551.44,-717.131 1578.89,-701.114 1547.44,-696.515 1551.44,-717.131" stroke="#444444"/>
 </g>
-<!-- Stog_highlight-&gt;Stog_msg -->
-<g class="edge" id="edge20"><title>Stog_highlight-&gt;Stog_msg</title>
-<path d="M1779.56,-502.92C1859.71,-476.439 1968.59,-426.006 2020,-338 2054.63,-278.715 2027.39,-198.857 2001.99,-147.149" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="2011.08,-141.883 1987.72,-120.326 1992.54,-151.743 2011.08,-141.883" stroke="#444444"/>
+<!-- Stog_highlight -->
+<g class="node" id="node24"><title>Stog_highlight</title>
+<g id="a_node24"><a xlink:href="Stog_highlight.html" xlink:title="Highlighting code.">
+<path d="M560,-427C560,-427 327,-427 327,-427 321,-427 315,-421 315,-415 315,-415 315,-387 315,-387 315,-381 321,-375 327,-375 327,-375 560,-375 560,-375 566,-375 572,-381 572,-387 572,-387 572,-415 572,-415 572,-421 566,-427 560,-427" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="443.5" y="-391">Stog_highlight</text>
+</a>
+</g>
+</g>
+<!-- Stog_ocaml-&gt;Stog_highlight -->
+<g class="edge" id="edge39"><title>Stog_ocaml-&gt;Stog_highlight</title>
+<path d="M257.258,-933.985C286.858,-849.435 383.616,-573.053 424.738,-455.592" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="434.653,-459.049 434.655,-427.264 414.832,-452.11 434.653,-459.049" stroke="#444444"/>
+</g>
+<!-- Stog_ocaml_types -->
+<g class="node" id="node34"><title>Stog_ocaml_types</title>
+<g id="a_node34"><a xlink:href="Stog_ocaml_types.html" xlink:title="Types for interfacing stog and ocaml-session.">
+<path d="M303,-707C303,-707 12,-707 12,-707 6,-707 0,-701 0,-695 0,-695 0,-667 0,-667 0,-661 6,-655 12,-655 12,-655 303,-655 303,-655 309,-655 315,-661 315,-667 315,-667 315,-695 315,-695 315,-701 309,-707 303,-707" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="157.5" y="-671">Stog_ocaml_types</text>
+</a>
+</g>
+</g>
+<!-- Stog_ocaml-&gt;Stog_ocaml_types -->
+<g class="edge" id="edge40"><title>Stog_ocaml-&gt;Stog_ocaml_types</title>
+<path d="M240.264,-933.93C225.649,-889.442 194.873,-795.763 175.247,-736.02" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="185.122,-732.438 165.783,-707.213 165.171,-738.992 185.122,-732.438" stroke="#444444"/>
 </g>
 <!-- Stog_filter -->
-<g class="node" id="node18"><title>Stog_filter</title>
-<g id="a_node18"><a xlink:href="Stog_filter.html" xlink:title="Filters.">
-<path d="M597,-990C597,-990 431,-990 431,-990 425,-990 419,-984 419,-978 419,-978 419,-950 419,-950 419,-944 425,-938 431,-938 431,-938 597,-938 597,-938 603,-938 609,-944 609,-950 609,-950 609,-978 609,-978 609,-984 603,-990 597,-990" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="514" y="-954">Stog_filter</text>
+<g class="node" id="node19"><title>Stog_filter</title>
+<g id="a_node19"><a xlink:href="Stog_filter.html" xlink:title="Filters.">
+<path d="M2179.5,-1266C2179.5,-1266 2013.5,-1266 2013.5,-1266 2007.5,-1266 2001.5,-1260 2001.5,-1254 2001.5,-1254 2001.5,-1226 2001.5,-1226 2001.5,-1220 2007.5,-1214 2013.5,-1214 2013.5,-1214 2179.5,-1214 2179.5,-1214 2185.5,-1214 2191.5,-1220 2191.5,-1226 2191.5,-1226 2191.5,-1254 2191.5,-1254 2191.5,-1260 2185.5,-1266 2179.5,-1266" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="2096.5" y="-1230">Stog_filter</text>
 </a>
 </g>
 </g>
 <!-- Stog_filter-&gt;Stog_types -->
 <g class="edge" id="edge16"><title>Stog_filter-&gt;Stog_types</title>
-<path d="M519.358,-937.82C530.716,-889.882 561.375,-784.543 623,-720 694.489,-645.126 801.868,-594.965 883.595,-565.079" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="887.317,-574.9 912.156,-555.069 880.371,-555.082 887.317,-574.9" stroke="#444444"/>
+<path d="M2092.31,-1213.96C2082.14,-1158.98 2052.13,-1025.35 1987.5,-934 1923.05,-842.901 1817.16,-766.772 1747.38,-722.78" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1752.74,-713.75 1721.68,-707 1741.75,-731.646 1752.74,-713.75" stroke="#444444"/>
 </g>
 <!-- Stog_filter_lexer -->
-<g class="node" id="node19"><title>Stog_filter_lexer</title>
-<g id="a_node19"><a xlink:href="Stog_filter_lexer.html" xlink:title="Filter lexer.">
-<path d="M559.25,-772C559.25,-772 292.75,-772 292.75,-772 286.75,-772 280.75,-766 280.75,-760 280.75,-760 280.75,-732 280.75,-732 280.75,-726 286.75,-720 292.75,-720 292.75,-720 559.25,-720 559.25,-720 565.25,-720 571.25,-726 571.25,-732 571.25,-732 571.25,-760 571.25,-760 571.25,-766 565.25,-772 559.25,-772" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="426" y="-736">Stog_filter_lexer</text>
+<g class="node" id="node20"><title>Stog_filter_lexer</title>
+<g id="a_node20"><a xlink:href="Stog_filter_lexer.html" xlink:title="Filter lexer.">
+<path d="M2701,-986C2701,-986 2434,-986 2434,-986 2428,-986 2422,-980 2422,-974 2422,-974 2422,-946 2422,-946 2422,-940 2428,-934 2434,-934 2434,-934 2701,-934 2701,-934 2707,-934 2713,-940 2713,-946 2713,-946 2713,-974 2713,-974 2713,-980 2707,-986 2701,-986" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="2567.5" y="-950">Stog_filter_lexer</text>
 </a>
 </g>
 </g>
 <!-- Stog_filter-&gt;Stog_filter_lexer -->
 <g class="edge" id="edge15"><title>Stog_filter-&gt;Stog_filter_lexer</title>
-<path d="M503.733,-937.799C490.055,-904.226 465.508,-843.974 447.649,-800.139" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="457.244,-795.861 436.202,-772.04 437.797,-803.785 457.244,-795.861" stroke="#444444"/>
+<path d="M2139.13,-1213.84C2220.82,-1165.62 2400.05,-1059.84 2498.82,-1001.54" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="2504.47,-1010.4 2524.97,-986.104 2493.8,-992.31 2504.47,-1010.4" stroke="#444444"/>
 </g>
 <!-- Stog_filter_parser -->
-<g class="node" id="node20"><title>Stog_filter_parser</title>
-<g id="a_node20"><a xlink:href="Stog_filter_parser.html" xlink:title="Stog_filter_parser">
-<path d="M429.25,-555C429.25,-555 144.75,-555 144.75,-555 138.75,-555 132.75,-549 132.75,-543 132.75,-543 132.75,-515 132.75,-515 132.75,-509 138.75,-503 144.75,-503 144.75,-503 429.25,-503 429.25,-503 435.25,-503 441.25,-509 441.25,-515 441.25,-515 441.25,-543 441.25,-543 441.25,-549 435.25,-555 429.25,-555" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="287" y="-519">Stog_filter_parser</text>
+<g class="node" id="node21"><title>Stog_filter_parser</title>
+<g id="a_node21"><a xlink:href="Stog_filter_parser.html" xlink:title="Stog_filter_parser">
+<path d="M2732,-707C2732,-707 2447,-707 2447,-707 2441,-707 2435,-701 2435,-695 2435,-695 2435,-667 2435,-667 2435,-661 2441,-655 2447,-655 2447,-655 2732,-655 2732,-655 2738,-655 2744,-661 2744,-667 2744,-667 2744,-695 2744,-695 2744,-701 2738,-707 2732,-707" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="2589.5" y="-671">Stog_filter_parser</text>
 </a>
 </g>
 </g>
 <!-- Stog_filter_lexer-&gt;Stog_filter_parser -->
 <g class="edge" id="edge17"><title>Stog_filter_lexer-&gt;Stog_filter_parser</title>
-<path d="M409.783,-719.916C387.818,-685.942 348.109,-624.522 319.797,-580.728" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="328.434,-574.749 303.329,-555.257 310.799,-586.151 328.434,-574.749" stroke="#444444"/>
+<path d="M2569.49,-933.93C2573,-889.75 2580.36,-797.058 2585.11,-737.266" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="2595.59,-737.951 2587.5,-707.213 2574.66,-736.288 2595.59,-737.951" stroke="#444444"/>
 </g>
 <!-- Stog_filter_parser-&gt;Stog_filter_types -->
 <g class="edge" id="edge18"><title>Stog_filter_parser-&gt;Stog_filter_types</title>
-<path d="M270.783,-502.916C248.818,-468.942 209.109,-407.522 180.797,-363.728" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="189.434,-357.749 164.329,-338.257 171.799,-369.151 189.434,-357.749" stroke="#444444"/>
+<path d="M2591.58,-654.839C2595.25,-610.5 2602.95,-517.474 2607.91,-457.466" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="2618.4,-458.068 2610.41,-427.304 2597.47,-456.336 2618.4,-458.068" stroke="#444444"/>
+</g>
+<!-- Stog_highlight-&gt;Stog_misc -->
+<g class="edge" id="edge19"><title>Stog_highlight-&gt;Stog_misc</title>
+<path d="M490.835,-374.839C582.222,-326.262 783.548,-219.248 892.684,-161.237" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="897.711,-170.456 919.272,-147.104 887.854,-151.913 897.711,-170.456" stroke="#444444"/>
+</g>
+<!-- Stog_highlight-&gt;Stog_msg -->
+<g class="edge" id="edge20"><title>Stog_highlight-&gt;Stog_msg</title>
+<path d="M454.994,-374.839C475.533,-329.881 518.938,-234.868 546.3,-174.973" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="556.025,-178.955 558.94,-147.304 536.924,-170.229 556.025,-178.955" stroke="#444444"/>
 </g>
 <!-- Stog_info-&gt;Stog_types -->
-<g class="edge" id="edge31"><title>Stog_info-&gt;Stog_types</title>
-<path d="M311.882,-1154.81C271.889,-1079.71 167.251,-854.301 271,-720 343.797,-625.765 682.168,-569.385 870.902,-544.738" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="872.246,-555.151 900.681,-540.95 869.596,-534.319 872.246,-555.151" stroke="#444444"/>
+<g class="edge" id="edge29"><title>Stog_info-&gt;Stog_types</title>
+<path d="M1849.42,-1213.98C1822.12,-1129.53 1732.97,-853.643 1694.94,-735.969" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1704.88,-732.582 1685.66,-707.264 1684.9,-739.04 1704.88,-732.582" stroke="#444444"/>
 </g>
 <!-- Stog_intl-&gt;Stog_types -->
-<g class="edge" id="edge33"><title>Stog_intl-&gt;Stog_types</title>
-<path d="M1578.76,-1372.84C1586.77,-1336.48 1600.85,-1267.02 1606,-1207 1616.9,-1079.92 1579.86,-1041.99 1506,-938 1386.68,-770.015 1180.06,-634.309 1071.08,-570.146" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1076.19,-560.971 1044.96,-555.042 1065.67,-579.15 1076.19,-560.971" stroke="#444444"/>
+<g class="edge" id="edge31"><title>Stog_intl-&gt;Stog_types</title>
+<path d="M1230.89,-1773.71C1197,-1730.31 1130.86,-1637.48 1106.5,-1546 1035.57,-1279.6 1033.43,-1147.77 1207.5,-934 1298.21,-822.603 1451.62,-753.668 1558.4,-716.644" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1562.06,-726.493 1587.19,-707.039 1555.41,-706.573 1562.06,-726.493" stroke="#444444"/>
 </g>
 <!-- Stog_latex-&gt;Stog_engine -->
-<g class="edge" id="edge36"><title>Stog_latex-&gt;Stog_engine</title>
-<path d="M1333.48,-1372.8C1269.54,-1335.77 1149.56,-1266.29 1073.38,-1222.18" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1078.46,-1212.99 1047.24,-1207.04 1067.94,-1231.16 1078.46,-1212.99" stroke="#444444"/>
+<g class="edge" id="edge34"><title>Stog_latex-&gt;Stog_engine</title>
+<path d="M1087.09,-1773.84C1146.45,-1726.55 1275.33,-1623.89 1349.31,-1564.96" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1356.06,-1573.01 1372.98,-1546.1 1342.98,-1556.58 1356.06,-1573.01" stroke="#444444"/>
 </g>
 <!-- Stog_of_latex -->
-<g class="node" id="node32"><title>Stog_of_latex</title>
-<g id="a_node32"><a xlink:href="Stog_of_latex.html" xlink:title="LaTeX to Stog translation.">
-<path d="M1585,-1207C1585,-1207 1365,-1207 1365,-1207 1359,-1207 1353,-1201 1353,-1195 1353,-1195 1353,-1167 1353,-1167 1353,-1161 1359,-1155 1365,-1155 1365,-1155 1585,-1155 1585,-1155 1591,-1155 1597,-1161 1597,-1167 1597,-1167 1597,-1195 1597,-1195 1597,-1201 1591,-1207 1585,-1207" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1475" y="-1171">Stog_of_latex</text>
+<g class="node" id="node33"><title>Stog_of_latex</title>
+<g id="a_node33"><a xlink:href="Stog_of_latex.html" xlink:title="LaTeX to Stog translation.">
+<path d="M1035.5,-1546C1035.5,-1546 815.5,-1546 815.5,-1546 809.5,-1546 803.5,-1540 803.5,-1534 803.5,-1534 803.5,-1506 803.5,-1506 803.5,-1500 809.5,-1494 815.5,-1494 815.5,-1494 1035.5,-1494 1035.5,-1494 1041.5,-1494 1047.5,-1500 1047.5,-1506 1047.5,-1506 1047.5,-1534 1047.5,-1534 1047.5,-1540 1041.5,-1546 1035.5,-1546" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="925.5" y="-1510">Stog_of_latex</text>
 </a>
 </g>
 </g>
 <!-- Stog_latex-&gt;Stog_of_latex -->
-<g class="edge" id="edge37"><title>Stog_latex-&gt;Stog_of_latex</title>
-<path d="M1388.43,-1372.8C1403.74,-1339.06 1431.27,-1278.39 1451.18,-1234.5" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1460.81,-1238.7 1463.64,-1207.04 1441.68,-1230.02 1460.81,-1238.7" stroke="#444444"/>
+<g class="edge" id="edge35"><title>Stog_latex-&gt;Stog_of_latex</title>
+<path d="M1043.73,-1773.84C1022.66,-1728.78 978.076,-1633.43 950.079,-1573.56" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="959.552,-1569.03 937.333,-1546.3 940.53,-1577.93 959.552,-1569.03" stroke="#444444"/>
 </g>
 <!-- Stog_list-&gt;Stog_engine -->
-<g class="edge" id="edge38"><title>Stog_list-&gt;Stog_engine</title>
-<path d="M915.667,-1372.8C931.285,-1339.06 959.375,-1278.39 979.693,-1234.5" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="989.332,-1238.68 992.407,-1207.04 970.275,-1229.85 989.332,-1238.68" stroke="#444444"/>
+<g class="edge" id="edge36"><title>Stog_list-&gt;Stog_engine</title>
+<path d="M1629.14,-1773.84C1588.1,-1727.64 1500.1,-1628.6 1447.24,-1569.11" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1454.76,-1561.76 1426.98,-1546.3 1439.06,-1575.71 1454.76,-1561.76" stroke="#444444"/>
 </g>
 <!-- Stog_list-&gt;Stog_filter -->
-<g class="edge" id="edge39"><title>Stog_list-&gt;Stog_filter</title>
-<path d="M866.894,-1372.87C818.46,-1338.93 732.726,-1274.83 672,-1207 618.563,-1147.31 570.322,-1067.94 541.582,-1016.66" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="550.641,-1011.34 527.022,-990.072 532.222,-1021.43 550.641,-1011.34" stroke="#444444"/>
+<g class="edge" id="edge37"><title>Stog_list-&gt;Stog_filter</title>
+<path d="M1671.49,-1773.94C1739.97,-1688.06 1966,-1404.64 2057.52,-1289.88" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="2065.82,-1296.31 2076.32,-1266.31 2049.4,-1283.22 2065.82,-1296.31" stroke="#444444"/>
 </g>
 <!-- Stog_io -->
-<g class="node" id="node31"><title>Stog_io</title>
-<g id="a_node31"><a xlink:href="Stog_io.html" xlink:title="Building a stog structure from a project tree.">
-<path d="M812.25,-1207C812.25,-1207 693.75,-1207 693.75,-1207 687.75,-1207 681.75,-1201 681.75,-1195 681.75,-1195 681.75,-1167 681.75,-1167 681.75,-1161 687.75,-1155 693.75,-1155 693.75,-1155 812.25,-1155 812.25,-1155 818.25,-1155 824.25,-1161 824.25,-1167 824.25,-1167 824.25,-1195 824.25,-1195 824.25,-1201 818.25,-1207 812.25,-1207" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="753" y="-1171">Stog_io</text>
+<g class="node" id="node32"><title>Stog_io</title>
+<g id="a_node32"><a xlink:href="Stog_io.html" xlink:title="Building a stog structure from a project tree.">
+<path d="M1723,-1546C1723,-1546 1604,-1546 1604,-1546 1598,-1546 1592,-1540 1592,-1534 1592,-1534 1592,-1506 1592,-1506 1592,-1500 1598,-1494 1604,-1494 1604,-1494 1723,-1494 1723,-1494 1729,-1494 1735,-1500 1735,-1506 1735,-1506 1735,-1534 1735,-1534 1735,-1540 1729,-1546 1723,-1546" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1663.5" y="-1510">Stog_io</text>
 </a>
 </g>
 </g>
 <!-- Stog_list-&gt;Stog_io -->
-<g class="edge" id="edge40"><title>Stog_list-&gt;Stog_io</title>
-<path d="M886.383,-1372.8C862.288,-1338.33 818.535,-1275.75 787.725,-1231.67" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="796.299,-1225.61 770.505,-1207.04 779.088,-1237.64 796.299,-1225.61" stroke="#444444"/>
-</g>
-<!-- Stog_ocaml-&gt;Stog_types -->
-<g class="edge" id="edge43"><title>Stog_ocaml-&gt;Stog_types</title>
-<path d="M1794.44,-720.021C1628.62,-680.409 1305.81,-603.295 1126.61,-560.485" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1128.9,-550.235 1097.28,-553.477 1124.02,-570.661 1128.9,-550.235" stroke="#444444"/>
-</g>
-<!-- Stog_ocaml-&gt;Stog_highlight -->
-<g class="edge" id="edge41"><title>Stog_ocaml-&gt;Stog_highlight</title>
-<path d="M1873.8,-719.916C1838.61,-684.893 1774.12,-620.702 1729.94,-576.723" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1737.04,-568.979 1708.37,-555.257 1722.23,-583.862 1737.04,-568.979" stroke="#444444"/>
-</g>
-<!-- Stog_ocaml_types -->
-<g class="node" id="node33"><title>Stog_ocaml_types</title>
-<g id="a_node33"><a xlink:href="Stog_ocaml_types.html" xlink:title="Types for interfacing stog and ocaml-session.">
-<path d="M2132.25,-555C2132.25,-555 1841.75,-555 1841.75,-555 1835.75,-555 1829.75,-549 1829.75,-543 1829.75,-543 1829.75,-515 1829.75,-515 1829.75,-509 1835.75,-503 1841.75,-503 1841.75,-503 2132.25,-503 2132.25,-503 2138.25,-503 2144.25,-509 2144.25,-515 2144.25,-515 2144.25,-543 2144.25,-543 2144.25,-549 2138.25,-555 2132.25,-555" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1987" y="-519">Stog_ocaml_types</text>
-</a>
-</g>
-</g>
-<!-- Stog_ocaml-&gt;Stog_ocaml_types -->
-<g class="edge" id="edge42"><title>Stog_ocaml-&gt;Stog_ocaml_types</title>
-<path d="M1909.27,-719.916C1922.91,-686.588 1947.36,-626.846 1965.21,-583.244" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1975.02,-586.998 1976.66,-555.257 1955.58,-579.044 1975.02,-586.998" stroke="#444444"/>
+<g class="edge" id="edge38"><title>Stog_list-&gt;Stog_io</title>
+<path d="M1652.59,-1773.84C1654.5,-1729.5 1658.52,-1636.47 1661.11,-1576.47" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1671.6,-1576.73 1662.41,-1546.3 1650.62,-1575.82 1671.6,-1576.73" stroke="#444444"/>
 </g>
 <!-- Stog_init -->
-<g class="node" id="node29"><title>Stog_init</title>
-<g id="a_node29"><a xlink:href="Stog_init.html" xlink:title="Initializing stog structures and modules.">
-<path d="M1748.25,-1859C1748.25,-1859 1607.75,-1859 1607.75,-1859 1601.75,-1859 1595.75,-1853 1595.75,-1847 1595.75,-1847 1595.75,-1819 1595.75,-1819 1595.75,-1813 1601.75,-1807 1607.75,-1807 1607.75,-1807 1748.25,-1807 1748.25,-1807 1754.25,-1807 1760.25,-1813 1760.25,-1819 1760.25,-1819 1760.25,-1847 1760.25,-1847 1760.25,-1853 1754.25,-1859 1748.25,-1859" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1678" y="-1823">Stog_init</text>
+<g class="node" id="node30"><title>Stog_init</title>
+<g id="a_node30"><a xlink:href="Stog_init.html" xlink:title="Initializing stog structures and modules.">
+<path d="M1329,-2385C1329,-2385 1188,-2385 1188,-2385 1182,-2385 1176,-2379 1176,-2373 1176,-2373 1176,-2345 1176,-2345 1176,-2339 1182,-2333 1188,-2333 1188,-2333 1329,-2333 1329,-2333 1335,-2333 1341,-2339 1341,-2345 1341,-2345 1341,-2373 1341,-2373 1341,-2379 1335,-2385 1329,-2385" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1258.5" y="-2349">Stog_init</text>
 </a>
 </g>
 </g>
 <!-- Stog_init-&gt;Stog_html -->
-<g class="edge" id="edge32"><title>Stog_init-&gt;Stog_html</title>
-<path d="M1665.75,-1806.92C1649.35,-1773.35 1619.87,-1712.98 1598.54,-1669.3" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1607.93,-1664.61 1585.33,-1642.26 1589.06,-1673.82 1607.93,-1664.61" stroke="#444444"/>
+<g class="edge" id="edge30"><title>Stog_init-&gt;Stog_html</title>
+<path d="M1267.91,-2332.84C1284.65,-2288.09 1319.95,-2193.74 1342.37,-2133.8" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1352.36,-2137.08 1353.03,-2105.3 1332.69,-2129.72 1352.36,-2137.08" stroke="#444444"/>
 </g>
 <!-- Stog_io-&gt;Stog_types -->
-<g class="edge" id="edge35"><title>Stog_io-&gt;Stog_types</title>
-<path d="M736.136,-1154.82C689.715,-1082.1 569.092,-867.492 656,-720 702.477,-641.124 794.782,-592.685 871.938,-564.472" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="875.404,-574.384 900.371,-554.714 868.587,-554.521 875.404,-574.384" stroke="#444444"/>
+<g class="edge" id="edge33"><title>Stog_io-&gt;Stog_types</title>
+<path d="M1712.87,-1493.86C1781.99,-1455.51 1904.74,-1375.2 1954.5,-1266 2046.46,-1064.19 1831.35,-825.922 1728.48,-727.761" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1735.51,-719.96 1706.4,-707.2 1721.19,-735.329 1735.51,-719.96" stroke="#444444"/>
 </g>
 <!-- Stog_io-&gt;Stog_find -->
-<g class="edge" id="edge34"><title>Stog_io-&gt;Stog_find</title>
-<path d="M753,-1154.92C753,-1122.15 753,-1063.86 753,-1020.47" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="763.5,-1020.26 753,-990.257 742.5,-1020.26 763.5,-1020.26" stroke="#444444"/>
+<g class="edge" id="edge32"><title>Stog_io-&gt;Stog_find</title>
+<path d="M1663.5,-1493.84C1663.5,-1449.5 1663.5,-1356.47 1663.5,-1296.47" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1674,-1296.3 1663.5,-1266.3 1653,-1296.3 1674,-1296.3" stroke="#444444"/>
 </g>
 <!-- Stog_of_latex-&gt;Stog_misc -->
-<g class="edge" id="edge44"><title>Stog_of_latex-&gt;Stog_misc</title>
-<path d="M1479.77,-1154.89C1486.51,-1118.62 1498.79,-1049.39 1506,-990 1532.17,-774.446 1527.58,-719.438 1545,-503 1555.16,-376.814 1567.16,-228.683 1573.52,-150.249" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1583.99,-151.055 1575.95,-120.305 1563.06,-149.357 1583.99,-151.055" stroke="#444444"/>
+<g class="edge" id="edge42"><title>Stog_of_latex-&gt;Stog_misc</title>
+<path d="M933.108,-1493.97C956.134,-1415.93 1023.5,-1169.76 1023.5,-961 1023.5,-961 1023.5,-961 1023.5,-680 1023.5,-544.182 1018.82,-510.061 1004.5,-375 997.217,-306.323 984.763,-227.738 976.106,-176.617" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="986.451,-174.82 971,-147.044 965.757,-178.393 986.451,-174.82" stroke="#444444"/>
 </g>
 <!-- Stog_of_latex-&gt;Stog_msg -->
-<g class="edge" id="edge45"><title>Stog_of_latex-&gt;Stog_msg</title>
-<path d="M1529.66,-1154.99C1673.66,-1085.27 2058.84,-872.729 2153,-555 2198.65,-400.974 2080.76,-226.252 2014.09,-143.452" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="2022.16,-136.732 1994.9,-120.386 2006.02,-150.163 2022.16,-136.732" stroke="#444444"/>
+<g class="edge" id="edge43"><title>Stog_of_latex-&gt;Stog_msg</title>
+<path d="M904.391,-1493.83C810.509,-1380.03 430.049,-898.627 305.5,-427 274.775,-310.653 404.227,-213.277 492.98,-161.692" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="498.184,-170.812 519.274,-147.033 487.958,-152.47 498.184,-170.812" stroke="#444444"/>
 </g>
 <!-- Stog_of_latex-&gt;Stog_tags -->
-<g class="edge" id="edge46"><title>Stog_of_latex-&gt;Stog_tags</title>
-<path d="M1467.42,-1154.92C1457.41,-1121.83 1439.54,-1062.71 1426.38,-1019.2" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1436.37,-1015.93 1417.64,-990.257 1416.27,-1022.01 1436.37,-1015.93" stroke="#444444"/>
+<g class="edge" id="edge44"><title>Stog_of_latex-&gt;Stog_tags</title>
+<path d="M953.014,-1493.84C1004.21,-1447.03 1114.75,-1345.94 1179.48,-1286.74" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1186.78,-1294.3 1201.83,-1266.3 1172.6,-1278.8 1186.78,-1294.3" stroke="#444444"/>
 </g>
 <!-- Stog_path-&gt;Stog_misc -->
-<g class="edge" id="edge47"><title>Stog_path-&gt;Stog_misc</title>
-<path d="M1042.4,-285.905C1150.17,-247.495 1356.39,-173.989 1479.12,-130.246" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1482.94,-140.032 1507.67,-120.069 1475.88,-120.251 1482.94,-140.032" stroke="#444444"/>
+<g class="edge" id="edge45"><title>Stog_path-&gt;Stog_misc</title>
+<path d="M1486.07,-374.962C1385.91,-326.197 1164.11,-218.21 1045.29,-160.358" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1049.69,-150.823 1018.12,-147.132 1040.5,-169.705 1049.69,-150.823" stroke="#444444"/>
 </g>
 <!-- Stog_plug -->
-<g class="node" id="node35"><title>Stog_plug</title>
-<g id="a_node35"><a xlink:href="Stog_plug.html" xlink:title="Interface for plugins.">
-<path d="M1548.25,-2077C1548.25,-2077 1389.75,-2077 1389.75,-2077 1383.75,-2077 1377.75,-2071 1377.75,-2065 1377.75,-2065 1377.75,-2037 1377.75,-2037 1377.75,-2031 1383.75,-2025 1389.75,-2025 1389.75,-2025 1548.25,-2025 1548.25,-2025 1554.25,-2025 1560.25,-2031 1560.25,-2037 1560.25,-2037 1560.25,-2065 1560.25,-2065 1560.25,-2071 1554.25,-2077 1548.25,-2077" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1469" y="-2041">Stog_plug</text>
+<g class="node" id="node36"><title>Stog_plug</title>
+<g id="a_node36"><a xlink:href="Stog_plug.html" xlink:title="Interface for plugins.">
+<path d="M1547,-2665C1547,-2665 1388,-2665 1388,-2665 1382,-2665 1376,-2659 1376,-2653 1376,-2653 1376,-2625 1376,-2625 1376,-2619 1382,-2613 1388,-2613 1388,-2613 1547,-2613 1547,-2613 1553,-2613 1559,-2619 1559,-2625 1559,-2625 1559,-2653 1559,-2653 1559,-2659 1553,-2665 1547,-2665" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="1467.5" y="-2629">Stog_plug</text>
 </a>
 </g>
 </g>
 <!-- Stog_plug-&gt;Stog_blocks -->
-<g class="edge" id="edge48"><title>Stog_plug-&gt;Stog_blocks</title>
-<path d="M1469,-2024.8C1469,-1991.71 1469,-1932.72 1469,-1889.06" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="1479.5,-1889.04 1469,-1859.04 1458.5,-1889.04 1479.5,-1889.04" stroke="#444444"/>
+<g class="edge" id="edge46"><title>Stog_plug-&gt;Stog_blocks</title>
+<path d="M1467.5,-2612.84C1467.5,-2568.5 1467.5,-2475.47 1467.5,-2415.47" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1478,-2415.3 1467.5,-2385.3 1457,-2415.3 1478,-2415.3" stroke="#444444"/>
 </g>
 <!-- Stog_server_mode -->
-<g class="node" id="node36"><title>Stog_server_mode</title>
-<g id="a_node36"><a xlink:href="Stog_server_mode.html" xlink:title="Registering a server">
-<path d="M973,-772C973,-772 677,-772 677,-772 671,-772 665,-766 665,-760 665,-760 665,-732 665,-732 665,-726 671,-720 677,-720 677,-720 973,-720 973,-720 979,-720 985,-726 985,-732 985,-732 985,-760 985,-760 985,-766 979,-772 973,-772" fill="lightgrey" stroke="red"/>
-<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="825" y="-736">Stog_server_mode</text>
+<g class="node" id="node37"><title>Stog_server_mode</title>
+<g id="a_node37"><a xlink:href="Stog_server_mode.html" xlink:title="Registering a server">
+<path d="M2347.5,-986C2347.5,-986 2051.5,-986 2051.5,-986 2045.5,-986 2039.5,-980 2039.5,-974 2039.5,-974 2039.5,-946 2039.5,-946 2039.5,-940 2045.5,-934 2051.5,-934 2051.5,-934 2347.5,-934 2347.5,-934 2353.5,-934 2359.5,-940 2359.5,-946 2359.5,-946 2359.5,-974 2359.5,-974 2359.5,-980 2353.5,-986 2347.5,-986" fill="lightgrey" stroke="red"/>
+<text font-family="Times,serif" font-size="40.00" text-anchor="middle" x="2199.5" y="-950">Stog_server_mode</text>
 </a>
 </g>
 </g>
 <!-- Stog_server_mode-&gt;Stog_types -->
-<g class="edge" id="edge49"><title>Stog_server_mode-&gt;Stog_types</title>
-<path d="M845.301,-719.916C873.188,-685.458 923.925,-622.765 959.452,-578.867" fill="none" stroke="#444444"/>
-<polygon fill="#444444" points="967.849,-585.182 978.56,-555.257 951.525,-571.971 967.849,-585.182" stroke="#444444"/>
+<g class="edge" id="edge47"><title>Stog_server_mode-&gt;Stog_types</title>
+<path d="M2152.26,-933.93C2061.04,-885.528 1860.1,-778.898 1751.17,-721.096" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1756.06,-711.801 1724.64,-707.013 1746.22,-730.351 1756.06,-711.801" stroke="#444444"/>
+</g>
+<!-- Stog_url-&gt;Stog_misc -->
+<g class="edge" id="edge58"><title>Stog_url-&gt;Stog_misc</title>
+<path d="M1114.75,-374.839C1088.15,-329.469 1031.65,-233.121 996.599,-173.334" fill="none" stroke="#444444"/>
+<polygon fill="#444444" points="1005.57,-167.873 981.337,-147.304 987.453,-178.495 1005.57,-167.873" stroke="#444444"/>
 </g>
 </g>
 </svg>
@@ -660,7 +681,7 @@
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

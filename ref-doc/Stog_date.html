@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
+<title>Stog : Stog library reference documentation : Stog_date</title>
+<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
+<body>
+<div id="page">
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+
+<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
+
+  <div class="nav-collapse">
+    <ul class="nav">
+    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
+    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
+    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
+    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
+    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
+    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<div id="header">
+  
+  
+  
+  
+</div>
+
+
+
+<div class="ocamldoc-page">
+<div class="navbar"><a class="pre" href="Stog_cut.html" title="Stog_cut">Previous</a>
+ <a class="up" href="index.html" title="Index">Up</a>
+ <a class="post" href="Stog_deps.html" title="Stog_deps">Next</a>
+</div>
+<h1>Module <a href="type_Stog_date.html">Stog_date</a></h1>
+
+<pre><span class="keyword">module</span> Stog_date: <code class="code">sig</code> <a href="Stog_date.html">..</a> <code class="code">end</code></pre><div class="info module top">
+</div>
+<hr width="100%"/>
+
+<pre><span id="TYPEt"><span class="keyword">type</span> t</span> </pre>
+
+
+<pre><span id="VALof_string"><span class="keyword">val</span> of_string</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; string -&gt; <a href="Stog_date.html#TYPEt">t</a></code></pre>
+<pre><span id="VALof_string_date"><span class="keyword">val</span> of_string_date</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; string -&gt; <a href="Stog_date.html#TYPEt">t</a></code></pre>
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="Stog_date.html#TYPEt">t</a> -&gt; string</code></pre>
+<pre><span id="VALnow"><span class="keyword">val</span> now</span> : <code class="type">unit -&gt; <a href="Stog_date.html#TYPEt">t</a></code></pre>
+<pre><span id="VALof_float"><span class="keyword">val</span> of_float</span> : <code class="type">float -&gt; <a href="Stog_date.html#TYPEt">t</a></code></pre>
+<pre><span id="VALto_date_time"><span class="keyword">val</span> to_date_time</span> : <code class="type"><a href="Stog_date.html#TYPEt">t</a> -&gt; Ptime.date * Ptime.time</code></pre>
+<pre><span id="VALweekday"><span class="keyword">val</span> weekday</span> : <code class="type"><a href="Stog_date.html#TYPEt">t</a> -&gt; [ `Fri | `Mon | `Sat | `Sun | `Thu | `Tue | `Wed ]</code></pre><div class="info ">
+Return week day from 0 (sunday) to 6 (saturday).<br/>
+</div>
+
+<pre><span id="VALformat"><span class="keyword">val</span> format</span> : <code class="type"><a href="Stog_date.html#TYPEt">t</a> -&gt; string -&gt; string</code></pre></div>
+
+
+
+
+
+<div id="footer">
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
+</div>
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
+<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
+
+</div> <!-- #page -->
+</body>
+</html>
+

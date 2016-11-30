@@ -5,12 +5,23 @@
          <link>https://zoggy.github.io/stog</link>
          <description>Static blog and web site generator</description>
          <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
-         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>25 Nov 2015 14:38:43 +0000</lastBuildDate>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>Wed, 30 Nov 2016 12:21:35 +0000</lastBuildDate>
          <generator>Stog</generator>
          <div class="img"><img class="img" src="" width=""/><div class="legend"><url>https://zoggy.github.io/stog/logo.png</url>
            <title>Stog</title><link>https://zoggy.github.io/stog</link>
          </div></div>
          <item>
+      <title>Stog 0.17.0</title>
+      <link>https://zoggy.github.io/stog/posts/release-0.17.0.html</link>
+      <description>
+&lt;p&gt;
+Release 0.17.0 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
+&lt;/p&gt;
+</description>
+      <pubDate>Wed, 30 Nov 2016 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.17.0.html</guid>
+    </item>
+<item>
       <title>Stog 0.16.0</title>
       <link>https://zoggy.github.io/stog/posts/release-0.16.0.html</link>
       <description>
@@ -18,7 +29,7 @@
 Release 0.16.0 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>25 Nov 2015 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 25 Nov 2015 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.16.0.html</guid>
     </item>
 <item>
@@ -29,7 +40,7 @@ Release 0.16.0 of stog is available from the &lt;a href="https://zoggy.github.io
 Release 0.15.0 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>07 Jul 2015 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 07 Jul 2015 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.15.0.html</guid>
     </item>
 <item>
@@ -40,7 +51,7 @@ Release 0.15.0 of stog is available from the &lt;a href="https://zoggy.github.io
 Release 0.14.0 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>27 Oct 2014 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 27 Oct 2014 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.14.0.html</guid>
     </item>
 <item>
@@ -51,7 +62,7 @@ Release 0.14.0 of stog is available from the &lt;a href="https://zoggy.github.io
 Release 0.13.0 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>03 Oct 2014 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 03 Oct 2014 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.13.0.html</guid>
     </item>
 <item>
@@ -62,7 +73,7 @@ Release 0.13.0 of stog is available from the &lt;a href="https://zoggy.github.io
 Release 0.12.0 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>16 May 2014 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 16 May 2014 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.12.0.html</guid>
     </item>
 <item>
@@ -73,7 +84,7 @@ Release 0.12.0 of stog is available from the &lt;a href="https://zoggy.github.io
 Release 0.11.1 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>21 Mar 2014 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 21 Mar 2014 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.11.1.html</guid>
     </item>
 <item>
@@ -84,7 +95,7 @@ Release 0.11.1 of stog is available from the &lt;a href="https://zoggy.github.io
 Release 0.11.0 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>20 Mar 2014 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 20 Mar 2014 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.11.0.html</guid>
     </item>
 <item>
@@ -95,7 +106,7 @@ Release 0.11.0 of stog is available from the &lt;a href="https://zoggy.github.io
 Release 0.10.0 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>21 Jan 2014 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 21 Jan 2014 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.10.0.html</guid>
     </item>
 <item>
@@ -108,7 +119,7 @@ can be used to access the content of computed OCaml values, as
 strings.
 &lt;/p&gt;
 </description>
-      <pubDate>16 Jan 2014 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 16 Jan 2014 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/ocaml-printf.html</guid>
     </item>
 <item>
@@ -119,7 +130,7 @@ strings.
 Release 0.9.0 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>24 Sep 2013 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 24 Sep 2013 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.9.0.html</guid>
     </item>
 <item>
@@ -133,7 +144,7 @@ on Tuesday, 23&lt;sup&gt;rd&lt;/sup&gt; of April 2013. The slides are
 available &lt;a href="https://zoggy.github.io/stog/slides/2013_04_23_inria.html"&gt;here&lt;/a&gt;.
 &lt;/p&gt;
 </description>
-      <pubDate>23 Apr 2013 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 23 Apr 2013 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/2013-04-23-stog-at-inria.html</guid>
     </item>
 <item>
@@ -144,7 +155,7 @@ available &lt;a href="https://zoggy.github.io/stog/slides/2013_04_23_inria.html"
 Release 0.8.0 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>19 Mar 2013 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 19 Mar 2013 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.8.0.html</guid>
     </item>
 <item>
@@ -157,7 +168,7 @@ Maxence Guesdon will introduce Stog during a talk at
 on &lt;strong&gt;Tuesday, 23&lt;sup&gt;rd&lt;/sup&gt; of April 2013, at 14h&lt;/strong&gt; in room "Gilles Khan".
 &lt;/p&gt;
 </description>
-      <pubDate>15 Mar 2013 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 15 Mar 2013 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/stog-at-inria.html</guid>
     </item>
 <item>
@@ -168,7 +179,7 @@ on &lt;strong&gt;Tuesday, 23&lt;sup&gt;rd&lt;/sup&gt; of April 2013, at 14h&lt;/
 Release 0.7.0 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>13 Feb 2013 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 13 Feb 2013 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.7.0.html</guid>
     </item>
 <item>
@@ -182,7 +193,7 @@ The &lt;a href="https://zoggy.github.io/stog/plugins/writing.html"&gt;Stog-writi
 are also available in Opam since yesterday.
 &lt;/p&gt;
 </description>
-      <pubDate>22 Jan 2013 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 22 Jan 2013 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/stog-in-opam.html</guid>
     </item>
 <item>
@@ -193,7 +204,7 @@ are also available in Opam since yesterday.
 Release 0.6.1 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>17 Jan 2013 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 17 Jan 2013 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.6.1.html</guid>
     </item>
 <item>
@@ -204,7 +215,7 @@ Release 0.6.1 of stog is available from the &lt;a href="https://zoggy.github.io/
 Release 0.6 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>16 Jan 2013 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 16 Jan 2013 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.6.html</guid>
     </item>
 <item>
@@ -215,7 +226,7 @@ Release 0.6 of stog is available from the &lt;a href="https://zoggy.github.io/st
 Release 0.5 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>18 Dec 2012 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 18 Dec 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.5.html</guid>
     </item>
 <item>
@@ -226,7 +237,7 @@ Release 0.5 of stog is available from the &lt;a href="https://zoggy.github.io/st
 Release 0.4 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>22 Nov 2012 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 22 Nov 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.4.html</guid>
     </item>
 <item>
@@ -245,7 +256,7 @@ only the bytecode version of Stog could evaluate OCaml code using the
 internal toplevel.
 &lt;/p&gt;
 </description>
-      <pubDate>21 Nov 2012 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 21 Nov 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/ocaml-sessions.html</guid>
     </item>
 <item>
@@ -256,7 +267,7 @@ internal toplevel.
 Release 0.3 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>30 Aug 2012 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 30 Aug 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.3.html</guid>
     </item>
 <item>
@@ -267,7 +278,7 @@ Release 0.3 of stog is available from the &lt;a href="https://zoggy.github.io/st
 Release 0.2 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>28 Aug 2012 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 28 Aug 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.2.html</guid>
     </item>
 <item>
@@ -278,7 +289,7 @@ Release 0.2 of stog is available from the &lt;a href="https://zoggy.github.io/st
 Release 0.1 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
 &lt;/p&gt;
 </description>
-      <pubDate>20 Jun 2012 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 20 Jun 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.1.html</guid>
     </item>
 <item>
@@ -288,7 +299,7 @@ Release 0.1 of stog is available from the &lt;a href="https://zoggy.github.io/st
 &lt;p&gt;How to highlight a file inserted with &lt;span class="icode"&gt;&lt;span class="hl kwa"&gt;&amp;lt;include&lt;/span&gt;&lt;span class="hl std"&gt; ...&lt;/span&gt;&lt;span class="hl kwa"&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt; ?
 &lt;/p&gt;
 </description>
-      <pubDate>13 Mar 2012 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 13 Mar 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/including-code-file.html</guid>
     </item>
 <item>
@@ -302,7 +313,7 @@ function to evaluate code and display the result. This is nice to provide
 verified code examples on your pages.
 &lt;/p&gt;
 </description>
-      <pubDate>11 Mar 2012 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 11 Mar 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html</guid>
     </item>
 <item>
@@ -313,7 +324,7 @@ verified code examples on your pages.
 Stog handles &lt;span class="icode"&gt;&lt;span class="hl kwa"&gt;&amp;lt;latex&lt;/span&gt;&lt;span class="hl kwa"&gt;&amp;gt;&lt;/span&gt;&lt;span class="hl std"&gt; ... &lt;/span&gt;&lt;span class="hl kwa"&gt;&amp;lt;/latex&lt;/span&gt;&lt;span class="hl kwa"&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;.
 &lt;/p&gt;
 </description>
-      <pubDate>09 Mar 2012 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 09 Mar 2012 00:00:00 +0000</pubDate>
       <guid isPermaLink="true">https://zoggy.github.io/stog/posts/latex-in-stog.html</guid>
     </item>
 

@@ -1,14 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Start using Stog in 5 minutes</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +29,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -37,7 +52,7 @@
 
 
 
-<div class="section"><div class="section-title" id="firstpage">First page</div>
+<div class="section"><div aria-level="1" class="section-title" id="firstpage" role="heading">First page</div>
 <p>
 Let's create a new directory and add a first HTML page:
 </p>
@@ -54,29 +69,29 @@ to generate the result in the (automatically created) <span class="icode"><span 
 directory:
 </p>
 <pre class="code-sh">$ stog <span class="hl opt">--</span><span class="hl kwb">local</span> mystog
-Warning<span class="hl opt">:</span> Creating non<span class="hl opt">-</span>existent configuration directory <span class="hl str">"mystog/.stog"</span>
+Warning<span class="hl opt">:</span> Creating non-existent configuration directory <span class="hl str">"mystog/.stog"</span>
 <span class="hl num">0</span> error<span class="hl opt">,</span> <span class="hl num">1</span> warning
-$ <span class="hl kwc">ls</span> stog<span class="hl opt">-</span>output
+$ <span class="hl kwc">ls</span> stog-output
 index.html</pre>
 <p>Now browse the <span class="icode"><span class="hl std">stog-output/index.html</span></span> file. Hum,
 it misses some style.
 Let's add a default stylesheet to our source directory and run
 <span class="icode"><span class="hl std">stog</span></span> again:
 </p>
-<pre class="code-sh">$ wget https<span class="hl opt">://</span>raw.githubusercontent.com<span class="hl opt">/</span>zoggy<span class="hl opt">/</span>stog<span class="hl opt">/</span>master<span class="hl opt">/</span>share<span class="hl opt">/</span>templates<span class="hl opt">/</span>page<span class="hl opt">-</span>style.css <span class="hl opt">-</span>O mystog<span class="hl opt">/</span>style.css
+<pre class="code-sh">$ wget https<span class="hl opt">://</span>raw.githubusercontent.com<span class="hl opt">/</span>zoggy<span class="hl opt">/</span>stog<span class="hl opt">/</span>master<span class="hl opt">/</span>share<span class="hl opt">/</span>templates<span class="hl opt">/</span>page-style.css <span class="hl opt">-</span>O mystog<span class="hl opt">/</span>style.css
 $ stog <span class="hl opt">--</span><span class="hl kwb">local</span> mystog</pre>
 <p>Now the page <span class="icode"><span class="hl std">stog-output/index.html</span></span> looks better.
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="twomorepages">Two more pages</div>
+<div class="section"><div aria-level="1" class="section-title" id="twomorepages" role="heading">Two more pages</div>
 <p>
 We start by adding a post, which is a document of type "post",
 as the first node in the file indicates. We create the file
 in a new <span class="icode"><span class="hl std">posts</span></span> directory to keep things clean:
 </p>
 <pre class="code-sh">$ mkdir mystog<span class="hl opt">/</span>posts
-$ <span class="hl kwc">cat</span> <span class="hl opt">&gt;</span> mystog<span class="hl opt">/</span>posts<span class="hl opt">/</span>first<span class="hl opt">-</span>post.html
+$ <span class="hl kwc">cat</span> <span class="hl opt">&gt;</span> mystog<span class="hl opt">/</span>posts<span class="hl opt">/</span>first-post.html
 <span class="hl opt">&lt;</span>post title<span class="hl opt">=</span><span class="hl str">"My first blog post!"</span>
 <span class="hl kwc">date</span><span class="hl opt">=</span><span class="hl str">"2013/11/25"</span>
 <span class="hl opt">&gt;</span>
@@ -93,8 +108,8 @@ Warning<span class="hl opt">:</span> Creating default template <span class="hl k
 Warning<span class="hl opt">:</span> Creating default template <span class="hl kwc">file</span> <span class="hl str">"mystog/.stog/templates/doc-in-list.tmpl"</span>
 Warning<span class="hl opt">:</span> Creating default template <span class="hl kwc">file</span> <span class="hl str">"mystog/.stog/templates/by-month.tmpl"</span>
 <span class="hl num">0</span> error<span class="hl opt">,</span> <span class="hl num">3</span> warnings
-$ tree stog<span class="hl opt">-</span>output
-stog<span class="hl opt">-</span>output
+$ tree stog-output
+stog-output
 |<span class="hl opt">--</span> <span class="hl num">2013</span>_11.html
 |<span class="hl opt">--</span> index.html
 |<span class="hl opt">--</span> posts
@@ -131,7 +146,7 @@ $ wget http<span class="hl opt">://</span>zoggy.github.io<span class="hl opt">/<
 $ stog <span class="hl opt">--</span><span class="hl kwb">local</span> mystog</pre>
 </div>
 
-<div class="section"><div class="section-title" id="ref">Referencing documents</div>
+<div class="section"><div aria-level="1" class="section-title" id="ref" role="heading">Referencing documents</div>
 <p>References from a document (a page, a post, ...) to another are checked by stog.
 Let's add a reference to our blog from the main page. We show the contents
 of <span class="icode"><span class="hl std">mystog/index.html</span></span> after the modification:
@@ -148,7 +163,7 @@ This is reference to </span><span class="hl kwa">&lt;doc</span><span class="hl s
 <pre class="code-sh">$ stog <span class="hl opt">--</span><span class="hl kwb">local</span> mystog</pre>
 <p>Now browse the <span class="icode"><span class="hl std">stog-output/index.html</span></span> file to see the result.</p>
 </div>
-<div class="section"><div class="section-title" id="further">Going further</div>
+<div class="section"><div aria-level="1" class="section-title" id="further" role="heading">Going further</div>
 <p>Now you can read <a href="https://zoggy.github.io/stog/overview.html">how Stog works</a> and
 the <a href="https://zoggy.github.io/stog/funs.html">predefined rewrite rules</a>.
 </p>
@@ -302,7 +317,7 @@ Feel free to have a look to see how something is achieved.
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

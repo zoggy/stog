@@ -4,11 +4,19 @@
 <title>Stog : Stog library reference documentation : Stog_graph.GMap</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -37,20 +50,20 @@
 
 
 <div class="ocamldoc-page">
-<code class="code"><span class="keyword">sig</span><br/>
-  <span class="keyword">type</span> key<br/>
-  <span class="keyword">type</span> <span class="keywordsign">'</span>a t<br/>
-  <span class="keyword">val</span> create : unit <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t<br/>
-  <span class="keyword">val</span> get : <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a<br/>
-  <span class="keyword">val</span> set :<br/>
-    <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t<br/>
-  <span class="keyword">val</span> remove :<br/>
-    <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t<br/>
-  <span class="keyword">val</span> fold :<br/>
-    (<span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b) <span class="keywordsign">-&gt;</span><br/>
-    <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b<br/>
-  <span class="keyword">val</span> iter :<br/>
-    (<span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t <span class="keywordsign">-&gt;</span> unit<br/>
+<code class="code"><span class="keyword">sig</span>
+  <span class="keyword">type</span> key
+  <span class="keyword">type</span> <span class="keywordsign">'</span>a t
+  <span class="keyword">val</span> create : unit <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t
+  <span class="keyword">val</span> get : <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a
+  <span class="keyword">val</span> set :
+    <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t
+  <span class="keyword">val</span> remove :
+    <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t
+  <span class="keyword">val</span> fold :
+    (<span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b) <span class="keywordsign">-&gt;</span>
+    <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>b
+  <span class="keyword">val</span> iter :
+    (<span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.key <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="keywordsign">-&gt;</span> unit) <span class="keywordsign">-&gt;</span> <span class="keywordsign">'</span>a <span class="constructor">Stog_graph</span>.<span class="constructor">GMap</span>.t <span class="keywordsign">-&gt;</span> unit
 <span class="keyword">end</span></code></div>
 
 
@@ -58,7 +71,7 @@
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

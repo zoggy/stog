@@ -4,11 +4,19 @@
 <title>Stog : Stog-rdf</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="active"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -59,19 +72,19 @@ Additional rewrite levels are defined:
 <li>level 220: contain rules to <a href="https://zoggy.github.io/stog/plugins/rdf.html#querying">query the graphs</a>,
   either graphs built during document rewriting or external graphs.</li>
 </ul>
-<div class="section"><div class="section-title" id="download">Download</div>
+<div class="section"><div aria-level="1" class="section-title" id="download" role="heading">Download</div>
 <div class="alert alert-info">
 Stog-rdf is available in <span class="ext-a"><a href="http://opam.ocaml.org/">Opam</a></span>.
 With opam installed, just type the following command to install stog-rdf:
-<pre class="code-sh">opam <span class="hl kwc">install</span> stog<span class="hl opt">-</span>rdf</pre>
+<pre class="code-sh">opam <span class="hl kwc">install</span> stog-rdf</pre>
 </div>
 
 <p>
 Stog-rdf is <span class="ext-a"><a href="https://github.com/zoggy/stog-rdf">hosted on Github</a></span>.
 You can clone the git repository:
 </p>
-<pre class="code-sh">git clone git@github.com<span class="hl opt">:</span>zoggy<span class="hl opt">/</span>stog<span class="hl opt">-</span>rdf.git</pre>
-<div class="subsection"><div class="subsection-title" id="releases">Releases</div>
+<pre class="code-sh">git clone git@github.com<span class="hl opt">:</span>zoggy<span class="hl opt">/</span>stog-rdf.git</pre>
+<div class="subsection"><div aria-level="2" class="subsection-title" id="releases" role="heading">Releases</div>
 <ul>
 <li><a href="stog-rdf-0.16.0.tar.gz">0.16.0</a> [2015/11/25]:
   <ul id="changes0.16.0"><li>Upgrade to Stog 0.16.0 and Xtmpl 0.13.0</li></ul>
@@ -116,32 +129,32 @@ You can clone the git repository:
 </div>
 </div>
 
-<div class="section"><div class="section-title" id="install">Installation and usage</div>
-<div class="subsection"><div class="subsection-title" id="f07b-fa0e-0319-5720">Compiling and installing</div>
-<pre class="code-sh"><span class="hl kwb">cd</span> stog<span class="hl opt">-</span>rdf<span class="hl opt">-</span>XXX
+<div class="section"><div aria-level="1" class="section-title" id="install" role="heading">Installation and usage</div>
+<div class="subsection"><div aria-level="2" class="subsection-title" id="f07b-fa0e-0319-5720" role="heading">Compiling and installing</div>
+<pre class="code-sh"><span class="hl kwb">cd</span> stog-rdf-XXX
 <span class="hl kwc">make</span> all <span class="hl kwc">install</span></pre>
 <p>
 (you must have <span class="ext-a"><a href="http://zoggy.github.io/ocaml-rdf/">OCaml-RDF</a></span> &gt;= 0.8.0 installed).
 This will install the <span class="icode"><span class="hl std">stog-rdf</span></span> package with ocamlfind.
 </p>
 </div>
-<div class="subsection"><div class="subsection-title" id="6d4a-6ffa-eb04-75f1">Usage</div>
+<div class="subsection"><div aria-level="2" class="subsection-title" id="6d4a-6ffa-eb04-75f1" role="heading">Usage</div>
 <p>
 To use:
 </p>
-<pre class="code-sh">stog <span class="hl opt">--</span>package stog<span class="hl opt">-</span>rdf ...</pre>
+<pre class="code-sh">stog <span class="hl opt">--</span>package stog-rdf ...</pre>
 <p>You can also build a custom stog executable, linked with the plugin:
 </p>
-<pre class="code-sh">mk<span class="hl opt">-</span>stog <span class="hl opt">--</span>package stog<span class="hl opt">-</span>rdf <span class="hl opt">-</span>o mystog ...</pre>
+<pre class="code-sh">mk-stog <span class="hl opt">--</span>package stog-rdf <span class="hl opt">-</span>o mystog ...</pre>
 <p>
 If you want to use mysql or postresql backends, do not forget to also link
 the required packages, for example for mysql:
 </p>
-<pre class="code-sh">mk<span class="hl opt">-</span>stog <span class="hl opt">--</span>package stog<span class="hl opt">-</span>rdf<span class="hl opt">,</span>rdf.mysql <span class="hl opt">-</span>o mystog ...</pre>
+<pre class="code-sh">mk-stog <span class="hl opt">--</span>package stog-rdf<span class="hl opt">,</span>rdf.mysql <span class="hl opt">-</span>o mystog ...</pre>
 </div>
 
 </div>
-<div class="section"><div class="section-title" id="definetriples">Defining RDF triples</div>
+<div class="section"><div aria-level="1" class="section-title" id="definetriples" role="heading">Defining RDF triples</div>
 <p>
 Stog-rdf defines a new rewrite rule <span class="icode"><span class="hl std">rdf</span></span> associated to level 200.
 Each <span class="icode"><span class="hl kwa">&lt;rdf</span><span class="hl kwa">&gt;</span></span> node corresponds to a new triple whose subject
@@ -156,7 +169,7 @@ graphs into one graph and dumps this graph into a file.
 The name of this file is set in the <span class="icode"><span class="hl std">.stog/config-rdf</span></span> file
 (default is <span class="icode"><span class="hl std">graph.rdf</span></span>).
 </p>
-<div class="subsection"><div class="subsection-title" id="tripleexamples">Examples</div>
+<div class="subsection"><div aria-level="2" class="subsection-title" id="tripleexamples" role="heading">Examples</div>
 <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">&gt;</span><span class="hl std">
   ...
   </span><span class="hl kwa">&lt;rdf</span><span class="hl std"> </span><span class="">pred</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl std"> </span><span class="">obj</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">/&gt;</span><span class="hl std">
@@ -233,7 +246,7 @@ It is sometimes useful to force the subject to be the current document url even 
 </span></pre>
 </div>
 </div>
-<div class="section"><div class="section-title" id="namespaces">Namespaces</div>
+<div class="section"><div aria-level="1" class="section-title" id="namespaces" role="heading">Namespaces</div>
 <p>
 Namespaces used in RDF triples in the site must be declared in the
 <span class="icode"><span class="hl std">.stog/config-rdf</span></span> file.
@@ -250,7 +263,7 @@ site:</span><span class="hl kwa">&lt;site</span><span class="hl std"> </span><sp
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="sources">Using external graphs</div>
+<div class="section"><div aria-level="1" class="section-title" id="sources" role="heading">Using external graphs</div>
 <p>
 External graphs can be loaded at startup time or with the
 <span class="icode"><span class="hl kwa">&lt;rdf-load</span><span class="hl kwa">&gt;</span></span> rule.
@@ -259,7 +272,7 @@ External graphs can be loaded at startup time or with the
 Once loaded, these graphs can be used in Sparql queries, using
 <span class="icode"><span class="hl std">FROM</span></span> or <span class="icode"><span class="hl std">FROM NAMED</span></span> clauses.
 </p>
-<div class="subsection"><div class="subsection-title" id="startupgraphs">Loading graphs at startup</div>
+<div class="subsection"><div aria-level="2" class="subsection-title" id="startupgraphs" role="heading">Loading graphs at startup</div>
 <p>
 Graphs to load at startup are given in the <span class="icode"><span class="hl std">sources</span></span> parameter
 of the <span class="icode"><span class="hl std">.stog/config-rdf</span></span> file. For each graph, we indicate
@@ -301,7 +314,7 @@ Setting the "format" option to "rdf/xml" indicates that the file is in RDF/XML f
 </p>
 </div>
 
-<div class="subsection"><div class="subsection-title" id="rdfload">Loading graphs with rdf-load</div>
+<div class="subsection"><div aria-level="2" class="subsection-title" id="rdfload" role="heading">Loading graphs with rdf-load</div>
 <p>
 A graph can be loaded when the XML node <span class="icode"><span class="hl kwa">&lt;rdf-load</span><span class="hl kwa">&gt;</span></span>
 is encountered. This rule is registered in level 202.
@@ -341,7 +354,7 @@ describing the triples to load in the graph. For example:
 </div>
 </div>
 
-<div class="section"><div class="section-title" id="querying">Querying graphs</div>
+<div class="section"><div aria-level="1" class="section-title" id="querying" role="heading">Querying graphs</div>
 <p>
 The <span class="icode"><span class="hl kwa">&lt;rdf-select</span><span class="hl kwa">&gt;</span></span> rule, registered in level 220, allows to
 execute <span class="ext-a"><a href="http://www.w3.org/TR/sparql11-query">Sparql 1.1</a></span> queries,
@@ -411,7 +424,7 @@ using <span class="icode"><span class="hl kwa">&lt;url_rdf</span><span class="hl
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="tips">Tips</div>
+<div class="section"><div aria-level="1" class="section-title" id="tips" role="heading">Tips</div>
 <p>
 To make definition of triples even easier, one can define rules in the
 document header, for example:
@@ -441,7 +454,7 @@ This will add a triple
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

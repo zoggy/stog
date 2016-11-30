@@ -1,14 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
 <title>Stog : Developing plugins</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +29,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -47,7 +62,7 @@ A plugin can register new base rules and new modules.
 </p>
 
 <ul class="toc"><li class="toc-section"><a href="https://zoggy.github.io/stog/writing_plugins.html#baserules">Registering base rules</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/writing_plugins.html#modules">Registering modules</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/writing_plugins.html#compiling">Compilation</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/writing_plugins.html#using">Using</a></li></ul>
-<div class="section"><div class="section-title" id="baserules">Registering base rules</div>
+<div class="section"><div aria-level="1" class="section-title" id="baserules" role="heading">Registering base rules</div>
 <p>
 A plugin can add rewrite rules to the rules of function
 <a href="https://zoggy.github.io/stog/module_base.html#base">base</a> of module <a href="https://zoggy.github.io/stog/module_base.html">Base</a>.
@@ -88,7 +103,7 @@ Have a look at the <a href="https://zoggy.github.io/stog/ref-doc/">Stog library 
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="modules">Registering modules</div>
+<div class="section"><div aria-level="1" class="section-title" id="modules" role="heading">Registering modules</div>
 <p>
 A plugin can also register a complete module, with named functions
 associated to levels. These levels can also be specified in
@@ -100,7 +115,7 @@ the <code>.stog/config</code> file as explained
 </p>
 </div>
 
-<div class="section"><div class="section-title" id="compiling">Compilation</div>
+<div class="section"><div aria-level="1" class="section-title" id="compiling" role="heading">Compilation</div>
 <div id="codecompilation">
 <p>
 The plugin is simply compiled with
@@ -114,7 +129,7 @@ for native code or
 </div>
 </div>
 
-<div class="section"><div class="section-title" id="using">Using</div>
+<div class="section"><div aria-level="1" class="section-title" id="using" role="heading">Using</div>
 <div id="usingcode">
 <p>
 The plugin is used by specifying it on the <span class="icode"><span class="hl std">stog</span></span> command line:
@@ -277,7 +292,7 @@ The Cache module to provide is very simple; have a look at the
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

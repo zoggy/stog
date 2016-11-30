@@ -4,11 +4,19 @@
 <title>Stog : OCaml sessions</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
+<script type="text/javascript">
+function submitSearch(){
+    var q = document.getElementById('q');
+    q.value =q.value + " site:https://zoggy.github.io/stog ";
+    return true;
+}
+</script>
 <body>
 <div id="page">
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
+
 <!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
 
   <div class="nav-collapse">
@@ -19,8 +27,13 @@
     <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
     <li class="active"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
     <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-  </ul>
-  <div class="nav pull-right">  </div>
+    </ul>
+    <div class="nav pull-right">
+       <form action="https://qwant.com/" frameborder="0" method="GET" onsubmit="submitSearch();" style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;">
+         <input id="q" name="q" placeHolder="Search" style="width: 100px;" type="text"/>
+         <input style="font-size: 0.8em" type="submit" value="🔎"/>
+       </form>
+    </div>
   </div>
 
 </div>
@@ -81,19 +94,20 @@ of  <span class="icode"><span class="hl std">&lt;ocaml-eval&gt;</span></span>.
 <p>Here is an example.</p>
 <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">let x = 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span></pre>
 <p>will give</p>
-<pre class="code-ocaml"><div># <span class="hl kwa">let</span> x <span class="hl opt">=</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val x : int = 1
-</div></div></pre>
+<pre class="code-ocaml"><span># <span class="hl kwa">let</span> x <span class="hl opt">=</span> <span class="hl num">1</span><span class="hl opt">;;</span></span>
+<span class="ocaml-toplevel"><span class="toplevel-out">val x : int = 1</span></span></pre>
 <p>Then, let's evaluate another piece of code, in the same ("default") session:
 </p>
 <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">let y = x + 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span></pre>
 will give
-<pre class="code-ocaml"><div># <span class="hl kwa">let</span> y <span class="hl opt">=</span> x <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel"><div class="toplevel-out">val y : int = 2
-</div></div></pre>
+<pre class="code-ocaml"><span># <span class="hl kwa">let</span> y <span class="hl opt">=</span> x <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl opt">;;</span></span>
+<span class="ocaml-toplevel"><span class="toplevel-out">val y : int = 2</span></span></pre>
 <p>Now, let's evaluate the same code in another session, "session2":</p>
 <pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">error-exc</span><span class="hl std">=</span><span class="hl str">"false"</span><span class="hl std"> </span><span class="">session</span><span class="hl std">=</span><span class="hl str">"session2"</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">
 let y = x + 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span></pre>
 <p>will result in</p>
-<pre class="code-ocaml"><div># <span class="hl kwa">let</span> y <span class="hl opt">=</span> <span class="error-loc" title="Error: Unbound value x">x</span> <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl opt">;;</span></div><div class="ocaml-toplevel ocaml-exc"><div class="stderr">Error: Unbound value x</div></div></pre>
+<pre class="code-ocaml"><span># <span class="hl kwa">let</span> y <span class="hl opt">=</span> <span class="error-loc" title="Error: Unbound value x">x</span> <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl opt">;;</span></span>
+<span class="ocaml-toplevel ocaml-exc"><span class="stderr">Error: Unbound value x</span></span></pre>
 
 
 
@@ -170,7 +184,7 @@ let y = x + 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl
 </div>
 
 <div id="footer">
-<div class="generatedon">Generated on November 25, 2015 at 14h38</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h21</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
