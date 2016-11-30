@@ -123,6 +123,45 @@ LaTeX in your pages.</li>
 <ul>
 
 
+<li><a href="stog-0.17.0.tar.gz">0.17.0</a>
+<span class="date">[November 30, 2016]</span>
+<ul id="changes-0.17.0">
+<li>use <span class="ext-a"><a href="http://erratique.ch/software/uutf">Uutf</a></span> 1.0.0
+  and <span class="ext-a"><a href="https://zoggy.github.io/xtmpl/posts/release-0.16.0.html">Xtmpl 0.16.0</a></span>,</li>
+<li><a href="https://zoggy.github.io/stog/plugins/markdown.html">Markdown plugin</a> now uses
+  <span class="ext-a"><a href="https://github.com/ocaml/omd/">Omd</a></span>, except if a
+  <span class="icode"><span class="hl std">command</span></span> attribute is specified in <span class="icode"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span></span> node,</li>
+<li>use <span class="ext-a"><a href="https://github.com/mirage/ocaml-uri">ocaml-uri</a></span>
+instead of <ml>Neturl</ml>,</li>
+<li>use <span class="ext-a"><a href="http://erratique.ch/software/ptime">Ptime</a></span>
+instead of <ml>Netdate</ml>,</li>
+<li>change of %-format usable in <a href="https://zoggy.github.io/stog/module_base.html#datetimeformat">datetime
+format</a>,</li>
+<li><a href="https://zoggy.github.io/stog/stog-documents.html#date"><span class="icode"><span class="hl std">date</span></span></a> attribute for
+documents is now used to specify only dates;
+to specify datetime, <a href="https://zoggy.github.io/stog/stog-documents.html#datetime"><span class="icode"><span class="hl std">datetime</span></span></a>
+attribute for documents must now be used,</li>
+<li>fix: adapt to new behaviour of <ml>input_value</ml> in ocaml 4.03.0,</li>
+<li>sectionning rules now generate <span class="icode"><span class="hl std">role="heading"</span></span> and <span class="icode"><span class="hl std">aria-level="..."</span></span>,</li>
+<li><a href="https://zoggy.github.io/stog/rules/ocaml-eval.html"><span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span></span></a> and
+<a href="https://zoggy.github.io/stog/rules/exec.html"><span class="icode"><span class="hl kwa">&lt;exec</span><span class="hl kwa">&gt;</span></span></a> use <span class="icode"><span class="hl kwa">&lt;span</span><span class="hl kwa">&gt;</span></span>
+instead of <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl kwa">&gt;</span></span> in <span class="icode"><span class="hl kwa">&lt;pre</span><span class="hl kwa">&gt;</span></span> nodes, to
+be HTML-correct (default styles are modified in consequence),</li>
+<li><a href="https://zoggy.github.io/stog/module_base.html#documents"><span class="icode"><span class="hl kwa">&lt;docs</span><span class="hl kwa">&gt;</span></span></a> now uses a
+template; default is <code>doc-list.tmpl</code> but another one can be
+specified with <span class="icode"><span class="hl std">list-tmpl="..."</span></span> attribute.
+In this template, <span class="icode"><span class="hl kwa">&lt;alt-link</span><span class="hl kwa">/&gt;</span></span> is the url of the link
+to (tyically) the RSS feed, and <span class="icode"><span class="hl kwa">&lt;items</span><span class="hl kwa">/&gt;</span></span> is the tree of
+listed documents,</li>
+<li>sitemap plugin: fix date format (by Leo Wzukw),</li>
+<li>fix: handling of default <code>page.tmpl</code> (by avysk),</li>
+<li>fix: call <ml>tail</ml> in BSD-friendly way (by avysk),</li>
+<li>fix: hardcoded temp directory for latex (by avysk).</li>
+</ul>
+</li>
+
+
+
 <li><a href="stog-0.16.0.tar.gz">0.16.0</a>
 <span class="date">[November 25, 2015]</span>
 <ul id="changes-0.16.0">
@@ -632,6 +671,7 @@ LaTeX in your pages.</span><span class="hl kwa">&lt;/li</span><span class="hl kw
 
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Or pick one of the releases:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.17.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.16.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.15.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.14.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
@@ -685,7 +725,7 @@ and (eventually) </span><span class="hl kwa">&lt;icode</span><span class="hl kwa
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 30, 2016 at 12h25</div>
+<div class="generatedon">Generated on November 30, 2016 at 12h27</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
