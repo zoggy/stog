@@ -11,6 +11,8 @@ bug-reports: "https://github.com/zoggy/stog/issues"
 
 tags: ["publication" "xml" "documentation" "blog" "web" "website"]
 
+version: "0.17.0"
+
 build: [
   ["./configure" "--prefix" prefix]
   [make "all"]

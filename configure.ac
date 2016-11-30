@@ -30,6 +30,7 @@
 # check for one particular file of the sources
 AC_INIT(master.Makefile.in)
 
+# DO NOT FORGET TO UPDATE VERSION IN opam FILE
 VERSION=0.17.0
 PACKAGE=stog
 
