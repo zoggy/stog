@@ -158,7 +158,8 @@ let diff_cut =
     Stog_types.Str_set.empty
     [ "pre" ; "ul" ; "p" ; "svg"]
   in
-  fun (_,tag) _ _ -> Stog_types.Str_set.mem (String.lowercase tag) set
+  fun (_,tag) _ _ ->
+    Stog_types.Str_set.mem (String.lowercase_ascii tag) set
 
 let send_patch active_cons old_stog stog doc_id =
   let old_doc = Stog_types.doc old_stog doc_id in

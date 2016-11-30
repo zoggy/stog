@@ -69,7 +69,7 @@ let sha256 s =
   Cryptokit.(
     let h = Hash.sha256 () in
     let t = Hexa.encode () in
-    String.lowercase (transform_string t (hash_string h s))
+    String.lowercase_ascii (transform_string t (hash_string h s))
   )
 
 let respond_page page =
@@ -86,7 +86,7 @@ let handle_login_post cfg gs req body =
       prerr_endline (Printf.sprintf "account found: %s\npasswd=%s" account.login account.passwd);
       let pwd = sha256 form.F.password in
       prerr_endline (Printf.sprintf "sha256(pwd)=%s" pwd);
-      if pwd = String.lowercase account.passwd then
+      if pwd = String.lowercase_ascii account.passwd then
         account
       else
         raise Not_found

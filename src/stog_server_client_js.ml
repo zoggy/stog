@@ -60,7 +60,7 @@ let skip_node http_url node =
   match Dom.nodeType node with
     Dom.Element e ->
       (
-       match String.lowercase (Js.to_string (e##tagName)) with
+       match String.lowercase_ascii (Js.to_string (e##tagName)) with
          "div" ->
            (
             let skip =
