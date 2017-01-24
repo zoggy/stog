@@ -76,8 +76,10 @@ let higlo_classes =
 
 let highlight ?lang ?opts code =
   match lang, opts with
-    None, Some opts -> external_highlight ~opts code
-  | None, None -> [XR.cdata code]
+    None, Some opts
+  | Some "", Some opts -> external_highlight ~opts code
+  | None, None
+  | Some "", None -> [XR.cdata code]
   | Some lang, Some opts ->
       let opts = opts^" --syntax="^lang in
       external_highlight ~opts code
