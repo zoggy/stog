@@ -954,7 +954,7 @@ let _ =
       check_ocamlfind_package conf ~fail: false ~min_version: [2;5] "lwt.preemptive";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "xmldiff.js";
-      check_ocamlfind_package conf ~fail: false ~min_version: [2;6] "websocket";
+      check_ocamlfind_package conf ~fail: false ~min_version: [2;8] "websocket";
       check_ocamlfind_package conf ~fail: false ~min_version: [0;5;0] "ojs";
       check_ocamlfind_package conf ~fail: false ~min_version: [3;0] "ppx_deriving_yojson";
       check_ocamlfind_package conf ~fail: false ~min_version: [1;1;8] "yojson";

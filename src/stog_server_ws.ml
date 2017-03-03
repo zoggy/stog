@@ -129,7 +129,9 @@ let handle_messages read_stog current_state active_cons base_path stream push =
     (fun _ -> Lwt_stream.iter_s f stream)
     (fun _ -> Lwt.return_unit)
 
-let handle_con read_stog current_state active_cons base_path _id req recv push =
+let handle_con read_stog current_state active_cons base_path client =
+  let recv () = Websocket_lwt.Connected_client.recv client in
+  let push = Websocket_lwt.Connected_client.send client in
   prerr_endline "new connection";
   let stream = Websocket_lwt.mk_frame_stream recv in
   active_cons := (stream, push) :: !active_cons ;

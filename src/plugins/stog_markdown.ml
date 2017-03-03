@@ -87,12 +87,36 @@ let run_command command ?loc args input =
       ""
 
 let cs ~lang code =
-  let xmls = Stog_highlight.highlight ~lang code in
+  let lang = match lang with "" -> None | _ -> Some lang in
+  let xmls = Stog_highlight.highlight ?lang code in
   XR.to_string xmls
+
+let rec override elt =
+  let open Omd_representation in
+  let module X = Xtmpl_rewrite in
+  match elt with
+    Html (name, atts, subs)
+  | Html_block (name, atts, subs) ->
+      let b = Buffer.create 256 in
+      let p fmt = Printf.bprintf b fmt in
+      let atts = List.map
+        (function
+           (a,None) -> (Xtmpl_xml.name_of_string a, [X.cdata ""])
+         | (a,Some s) -> (Xtmpl_xml.name_of_string a, X.from_string s))
+         atts
+      in
+      let atts = X.atts_of_list atts in
+      p "<%s %s>" name
+        (Xtmpl_xml.string_of_atts (X.atts_to_string ~xml_atts:true atts));
+      Buffer.add_string b
+        (Omd.to_html ~override ~pindent:false ~nl2br:false ~cs subs);
+      p "</%s" name;
+      Some (Buffer.contents b)
+  | _ -> None
 
 let use_omd ?loc args input =
   let md = Omd.of_string input in
-  let html = Omd.to_html ~pindent:false ~nl2br:false ~cs md in
+  let html = Omd.to_html ~override ~pindent:false ~nl2br:false ~cs md in
   html
 
 let fun_markdown stog env ?loc args subs =

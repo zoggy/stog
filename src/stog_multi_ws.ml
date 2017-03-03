@@ -37,8 +37,11 @@ open Stog_multi_gs
 
 let (>>=) = Lwt.bind
 
-let handle_con gs base_path _id req recv push =
+let handle_con gs base_path client =
   prerr_endline "new connection";
+  let recv () = Websocket_lwt.Connected_client.recv client in
+  let push = Websocket_lwt.Connected_client.send client in
+  let req = Websocket_lwt.Connected_client.http_request client in
   let stream = Websocket_lwt.mk_frame_stream recv in
   let uri = Cohttp.Request.uri req in
   let path = Stog_misc.split_string (Uri.path uri) ['/'] in

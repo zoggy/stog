@@ -1,4 +1,7 @@
 Next release:
+* move to websocket 2.8
+
+Release 0.17.0:
 * move to Uutf 1.0.0, Xtmpl 0.16.0
 * Markdown plugin now uses Omd, except if a command attribute is specified
   in <markdown> node
