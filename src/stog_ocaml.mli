@@ -33,6 +33,9 @@ val stog_ocaml_session : string ref
 
 val close_sessions : unit -> unit
 
+val eval_ocaml_phrase : ?session_name:string -> ?directory:string ->
+  string -> Stog_ocaml_types.result
+
 val fun_eval : Stog_types.stog Xtmpl_rewrite.callback
 val fun_printf : Stog_types.stog Xtmpl_rewrite.callback
 
