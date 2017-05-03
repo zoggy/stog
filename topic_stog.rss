@@ -5,12 +5,23 @@
          <link>https://zoggy.github.io/stog</link>
          <description>Static blog and web site generator</description>
          <managingEditor>zoggy 'AT' bat8 'DOT' org</managingEditor>
-         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>Wed, 30 Nov 2016 12:46:10 +0000</lastBuildDate>
+         <pubDate>12 Mar 2014 15:09:19 +0000</pubDate><lastBuildDate>Wed, 03 May 2017 08:57:42 +0000</lastBuildDate>
          <generator>Stog</generator>
          <div class="img"><img class="img" src="" width=""/><div class="legend"><url>https://zoggy.github.io/stog/logo.png</url>
            <title>Stog</title><link>https://zoggy.github.io/stog</link>
          </div></div>
          <item>
+      <title>Stog 0.17.1</title>
+      <link>https://zoggy.github.io/stog/posts/release-0.17.1.html</link>
+      <description>
+&lt;p&gt;
+Release 0.17.1 of stog is available from the &lt;a href="https://zoggy.github.io/stog/install.html"&gt;Installation&lt;/a&gt; page.
+&lt;/p&gt;
+</description>
+      <pubDate>Wed, 03 May 2017 00:00:00 +0000</pubDate>
+      <guid isPermaLink="true">https://zoggy.github.io/stog/posts/release-0.17.1.html</guid>
+    </item>
+<item>
       <title>Stog 0.17.0</title>
       <link>https://zoggy.github.io/stog/posts/release-0.17.0.html</link>
       <description>

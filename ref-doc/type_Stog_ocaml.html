@@ -58,6 +58,9 @@ function submitSearch(){
 <code class="code"><span class="keyword">sig</span>
   <span class="keyword">val</span> stog_ocaml_session : string <span class="constructor">Pervasives</span>.ref
   <span class="keyword">val</span> close_sessions : unit <span class="keywordsign">-&gt;</span> unit
+  <span class="keyword">val</span> eval_ocaml_phrase :
+    ?session_name:string <span class="keywordsign">-&gt;</span>
+    ?directory:string <span class="keywordsign">-&gt;</span> string <span class="keywordsign">-&gt;</span> <span class="constructor">Stog_ocaml_types</span>.result
   <span class="keyword">val</span> fun_eval : <span class="constructor">Stog_types</span>.stog <span class="constructor">Xtmpl_rewrite</span>.callback
   <span class="keyword">val</span> fun_printf : <span class="constructor">Stog_types</span>.stog <span class="constructor">Xtmpl_rewrite</span>.callback
   <span class="keyword">val</span> concat_nl :
@@ -72,7 +75,7 @@ function submitSearch(){
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 30, 2016 at 12h46</div>
+<div class="generatedon">Generated on May 3, 2017 at 8h57</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->

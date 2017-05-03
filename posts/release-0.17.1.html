@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog 0.1</title>
+<title>Stog : Stog 0.17.1</title>
 <link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <script type="text/javascript">
@@ -49,22 +49,24 @@ function submitSearch(){
   
   
   <div class="doc-navbar">
-      <div class="navleft"><a href="https://zoggy.github.io/stog/posts/including-code-file.html">Including a code file (deferring evaluation)</a></div>
-      <div class="navright"><a href="https://zoggy.github.io/stog/posts/release-0.2.html">Stog 0.2</a></div>
+      <div class="navleft"><a href="https://zoggy.github.io/stog/posts/release-0.17.0.html">Stog 0.17.0</a></div>
+      
     </div>
-  <div class="page-title">Stog 0.1</div>
+  <div class="page-title">Stog 0.17.1</div>
 </div>
 
-<div class="date">June 20, 2012</div>
+<div class="date">May 3, 2017</div>
 
 
 <p>
-Release 0.1 of stog is available from the <a href="https://zoggy.github.io/stog/install.html">Installation</a> page.
+Release 0.17.1 of stog is available from the <a href="https://zoggy.github.io/stog/install.html">Installation</a> page.
 </p>
 
-<p id="changes">
-Initial release.
-</p>
+<p>Changes:</p>
+<ul id="changes">
+<li>move to websocket &gt;= 2.8,</li>
+<li>export <span class="icode"><span class="hl kwc">Stog_ocaml</span><span class="hl std">.</span><span class="">eval_ocaml_phrase</span></span>.</li>
+</ul>
 
 
 
@@ -75,20 +77,23 @@ Initial release.
 For information you can see the <a href="#pagesource"> source code of the page</a>.
 </p>
 <div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Stog 0.1"</span><span class="hl std">
-</span><span class="">date</span><span class="hl std">=</span><span class="hl str">"2012/06/20"</span><span class="hl std">
+  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Stog 0.17.1"</span><span class="hl std">
+</span><span class="">date</span><span class="hl std">=</span><span class="hl str">"2017/05/03"</span><span class="hl std">
 </span><span class="">topics</span><span class="hl std">=</span><span class="hl str">"stog"</span><span class="hl std">
 </span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">"release"</span><span class="hl std">
 </span><span class="">published</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
 </span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-Release 0.1 of stog is available from the </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"/install"</span><span class="hl kwa">/&gt;</span><span class="hl std"> page.
+Release 0.17.1 of stog is available from the </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"/install"</span><span class="hl kwa">/&gt;</span><span class="hl std"> page.
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"changes"</span><span class="hl kwa">&gt;</span><span class="hl std">
-Initial release.
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span></pre>
+</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Changes:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"changes"</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">move to websocket </span><span class="hl kwb">&amp;gt;</span><span class="hl std">= 2.8,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">export </span><span class="hl kwa">&lt;ml</span><span class="hl kwa">&gt;</span><span class="hl std">Stog_ocaml.eval_ocaml_phrase</span><span class="hl kwa">&lt;/ml</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span></pre>
 </div>
 
 <div id="footer">

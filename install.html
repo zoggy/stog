@@ -66,7 +66,7 @@ The easiest way to install is to use  <span class="ext-a"><a href="http://opam.o
 Install Opam, then, as a regular user, fetch and install an OCaml version and install Stog.
 The whole can be done with the following opam commands:
 </p>
-<pre class="code-sh">$ opam init <span class="hl opt">--</span>comp<span class="hl opt">=</span><span class="hl num">4.02.1</span> <span class="hl slc"># or 4.02.2</span>
+<pre class="code-sh">$ opam init <span class="hl opt">--</span>comp<span class="hl opt">=</span><span class="hl num">4.03.0</span>
 $ opam update
 $ opam <span class="hl kwc">install</span> stog</pre>
 </div>
@@ -93,14 +93,14 @@ the preview server:
 <ul>
 <li><span class="ext-a"><a href="http://ocsigen.org/js_of_ocaml">Js_of_ocaml &gt;= 2.6</a></span>,</li>
 <li><span class="ext-a"><a href="http://zoggy.github.io/xmldiff/">Xmldiff &gt;= 0.5.0</a></span>.</li>
-<li><span class="ext-a"><a href="https://github.com/vbmithr/ocaml-websocket">OCaml-Websocket &gt;= 2.6</a></span>,</li>
+<li><span class="ext-a"><a href="https://github.com/vbmithr/ocaml-websocket">OCaml-Websocket &gt;= 2.8</a></span>,</li>
 <li><span class="ext-a"><a href="https://forge.ocamlcore.org/projects/cryptokit/">Cryptokit &gt;= 1.11</a></span>,</li>
-<li><span class="ext-a"><a href="https://zoggy.github.com/ojs-base">Ojs-base &gt;= 0.5.0</a></span>,</li>
-<li><span class="ext-a"><a href="https://github.com/whitequark/ppx_deriving_yojson/">Ppx-deriving-yojson &gt;= 3.0</a></span>.</li>
+<li><span class="ext-a"><a href="https://zoggy.github.com/ojs-base">Ojs-base &gt;= 0.5.0</a></span>.</li>
+<!--&lt;li&gt;&lt;ext-a href="https://github.com/whitequark/ppx_deriving_yojson/"&gt;Ppx-deriving-yojson &gt;= 3.0&lt;/ext-a&gt;.&lt;/li&gt;-->
 </ul>
 <p>
 To force the compilation of the stog server, you can use this commande line:
-<pre class="code-sh">$ opam <span class="hl kwc">install</span> lwt js_of_ocaml sha xmldiff websocket ojs-base ppx_deriving_yojson stog</pre>
+<pre class="code-sh">$ opam <span class="hl kwc">install</span> js_of_ocaml cryptokit xmldiff websocket ojs-base stog</pre>
 </p>
 <p>
 You will need to have the following tools installed to use
@@ -123,6 +123,16 @@ LaTeX in your pages.</li>
 <ul>
 
 
+<li><a href="stog-0.17.1.tar.gz">0.17.1</a>
+<span class="date">[May 3, 2017]</span>
+<ul id="changes-0.17.1">
+<li>move to websocket &gt;= 2.8,</li>
+<li>export <span class="icode"><span class="hl kwc">Stog_ocaml</span><span class="hl std">.</span><span class="">eval_ocaml_phrase</span></span>.</li>
+</ul>
+</li>
+
+
+
 <li><a href="stog-0.17.0.tar.gz">0.17.0</a>
 <span class="date">[November 30, 2016]</span>
 <ul id="changes-0.17.0">
@@ -132,16 +142,16 @@ LaTeX in your pages.</li>
   <span class="ext-a"><a href="https://github.com/ocaml/omd/">Omd</a></span>, except if a
   <span class="icode"><span class="hl std">command</span></span> attribute is specified in <span class="icode"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span></span> node,</li>
 <li>use <span class="ext-a"><a href="https://github.com/mirage/ocaml-uri">ocaml-uri</a></span>
-instead of <ml>Neturl</ml>,</li>
+instead of <span class="icode"><span class="hl kwc">Neturl</span></span>,</li>
 <li>use <span class="ext-a"><a href="http://erratique.ch/software/ptime">Ptime</a></span>
-instead of <ml>Netdate</ml>,</li>
+instead of <span class="icode"><span class="hl kwc">Netdate</span></span>,</li>
 <li>change of %-format usable in <a href="https://zoggy.github.io/stog/module_base.html#datetimeformat">datetime
 format</a>,</li>
 <li><a href="https://zoggy.github.io/stog/stog-documents.html#date"><span class="icode"><span class="hl std">date</span></span></a> attribute for
 documents is now used to specify only dates;
 to specify datetime, <a href="https://zoggy.github.io/stog/stog-documents.html#datetime"><span class="icode"><span class="hl std">datetime</span></span></a>
 attribute for documents must now be used,</li>
-<li>fix: adapt to new behaviour of <ml>input_value</ml> in ocaml 4.03.0,</li>
+<li>fix: adapt to new behaviour of <span class="icode"><span class="">input_value</span></span> in ocaml 4.03.0,</li>
 <li>sectionning rules now generate <span class="icode"><span class="hl std">role="heading"</span></span> and <span class="icode"><span class="hl std">aria-level="..."</span></span>,</li>
 <li><a href="https://zoggy.github.io/stog/rules/ocaml-eval.html"><span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span></span></a> and
 <a href="https://zoggy.github.io/stog/rules/exec.html"><span class="icode"><span class="hl kwa">&lt;exec</span><span class="hl kwa">&gt;</span></span></a> use <span class="icode"><span class="hl kwa">&lt;span</span><span class="hl kwa">&gt;</span></span>
@@ -155,7 +165,7 @@ to (tyically) the RSS feed, and <span class="icode"><span class="hl kwa">&lt;ite
 listed documents,</li>
 <li>sitemap plugin: fix date format (by Leo Wzukw),</li>
 <li>fix: handling of default <code>page.tmpl</code> (by avysk),</li>
-<li>fix: call <ml>tail</ml> in BSD-friendly way (by avysk),</li>
+<li>fix: call <span class="icode"><span class="">tail</span></span> in BSD-friendly way (by avysk),</li>
 <li>fix: hardcoded temp directory for latex (by avysk).</li>
 </ul>
 </li>
@@ -613,7 +623,7 @@ Install Opam, then, as a regular user, fetch and install an OCaml version and in
 The whole can be done with the following opam commands:
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
-$ opam init --comp=4.02.1 # or 4.02.2
+$ opam init --comp=4.03.0
 $ opam update
 $ opam install stog
 </span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -641,15 +651,15 @@ the preview server:
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://ocsigen.org/js_of_ocaml"</span><span class="hl kwa">&gt;</span><span class="hl std">Js_of_ocaml &gt;= 2.6</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://zoggy.github.io/xmldiff/"</span><span class="hl kwa">&gt;</span><span class="hl std">Xmldiff &gt;= 0.5.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://github.com/vbmithr/ocaml-websocket"</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml-Websocket &gt;= 2.6</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://github.com/vbmithr/ocaml-websocket"</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml-Websocket &gt;= 2.8</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://forge.ocamlcore.org/projects/cryptokit/"</span><span class="hl kwa">&gt;</span><span class="hl std">Cryptokit &gt;= 1.11</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://zoggy.github.com/ojs-base"</span><span class="hl kwa">&gt;</span><span class="hl std">Ojs-base &gt;= 0.5.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://github.com/whitequark/ppx_deriving_yojson/"</span><span class="hl kwa">&gt;</span><span class="hl std">Ppx-deriving-yojson &gt;= 3.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://zoggy.github.com/ojs-base"</span><span class="hl kwa">&gt;</span><span class="hl std">Ojs-base &gt;= 0.5.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl com">&lt;!--&lt;li&gt;&lt;ext-a href="https://github.com/whitequark/ppx_deriving_yojson/"&gt;Ppx-deriving-yojson &gt;= 3.0&lt;/ext-a&gt;.&lt;/li&gt;--&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
 To force the compilation of the stog server, you can use this commande line:
 </span><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
-$ opam install lwt js_of_ocaml sha xmldiff websocket ojs-base ppx_deriving_yojson stog
+$ opam install js_of_ocaml cryptokit xmldiff websocket ojs-base stog
 </span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
@@ -671,6 +681,7 @@ LaTeX in your pages.</span><span class="hl kwa">&lt;/li</span><span class="hl kw
 
 </span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Or pick one of the releases:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
+</span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.17.1"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.17.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.16.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
 </span><span class="hl kwa">&lt;release</span><span class="hl std"> </span><span class="">version</span><span class="hl std">=</span><span class="hl str">"0.15.0"</span><span class="hl kwa">/&gt;</span><span class="hl std">
@@ -725,7 +736,7 @@ and (eventually) </span><span class="hl kwa">&lt;icode</span><span class="hl kwa
 
 
 <div id="footer">
-<div class="generatedon">Generated on November 30, 2016 at 12h46</div>
+<div class="generatedon">Generated on May 3, 2017 at 8h57</div>
 </div>
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
 <!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
