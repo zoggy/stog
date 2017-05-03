@@ -2,6 +2,9 @@
 <code class="code"><span class="keyword">sig</span>
 &#160;&#160;<span class="keyword">val</span>&#160;stog_ocaml_session&#160;:&#160;string&#160;<span class="constructor">Pervasives</span>.ref
 &#160;&#160;<span class="keyword">val</span>&#160;close_sessions&#160;:&#160;unit&#160;<span class="keywordsign">-&gt;</span>&#160;unit
+&#160;&#160;<span class="keyword">val</span>&#160;eval_ocaml_phrase&#160;:
+&#160;&#160;&#160;&#160;?session_name:string&#160;<span class="keywordsign">-&gt;</span>
+&#160;&#160;&#160;&#160;?directory:string&#160;<span class="keywordsign">-&gt;</span>&#160;string&#160;<span class="keywordsign">-&gt;</span>&#160;<span class="constructor">Stog_ocaml_types</span>.result
 &#160;&#160;<span class="keyword">val</span>&#160;fun_eval&#160;:&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="constructor">Xtmpl_rewrite</span>.callback
 &#160;&#160;<span class="keyword">val</span>&#160;fun_printf&#160;:&#160;<span class="constructor">Stog_types</span>.stog&#160;<span class="constructor">Xtmpl_rewrite</span>.callback
 &#160;&#160;<span class="keyword">val</span>&#160;concat_nl&#160;:

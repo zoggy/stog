@@ -20,7 +20,7 @@ Install Opam, then, as a regular user, fetch and install an OCaml version and in
 The whole can be done with the following opam commands:
 </p>
 <command-line>
-$ opam init --comp=4.02.1 # or 4.02.2
+$ opam init --comp=4.03.0
 $ opam update
 $ opam install stog
 </command-line>
@@ -48,15 +48,15 @@ the preview server:
 <ul>
 <li><ext-a href="http://ocsigen.org/js_of_ocaml">Js_of_ocaml >= 2.6</ext-a>,</li>
 <li><ext-a href="http://zoggy.github.io/xmldiff/">Xmldiff >= 0.5.0</ext-a>.</li>
-<li><ext-a href="https://github.com/vbmithr/ocaml-websocket">OCaml-Websocket >= 2.6</ext-a>,</li>
+<li><ext-a href="https://github.com/vbmithr/ocaml-websocket">OCaml-Websocket >= 2.8</ext-a>,</li>
 <li><ext-a href="https://forge.ocamlcore.org/projects/cryptokit/">Cryptokit >= 1.11</ext-a>,</li>
-<li><ext-a href="https://zoggy.github.com/ojs-base">Ojs-base >= 0.5.0</ext-a>,</li>
-<li><ext-a href="https://github.com/whitequark/ppx_deriving_yojson/">Ppx-deriving-yojson >= 3.0</ext-a>.</li>
+<li><ext-a href="https://zoggy.github.com/ojs-base">Ojs-base >= 0.5.0</ext-a>.</li>
+<!--<li><ext-a href="https://github.com/whitequark/ppx_deriving_yojson/">Ppx-deriving-yojson >= 3.0</ext-a>.</li>-->
 </ul>
 <p>
 To force the compilation of the stog server, you can use this commande line:
 <command-line>
-$ opam install lwt js_of_ocaml sha xmldiff websocket ojs-base ppx_deriving_yojson stog
+$ opam install js_of_ocaml cryptokit xmldiff websocket ojs-base stog
 </command-line>
 </p>
 <p>
@@ -78,6 +78,7 @@ LaTeX in your pages.</li>
 
 <p>Or pick one of the releases:</p>
 <ul>
+<release version="0.17.1"/>
 <release version="0.17.0"/>
 <release version="0.16.0"/>
 <release version="0.15.0"/>
