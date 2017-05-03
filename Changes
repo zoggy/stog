@@ -1,5 +1,5 @@
 Next release:
-* move to websocket 2.8
+* move to websocket >= 2.8
 * export Stog_ocaml.eval_ocaml_phrase
 
 Release 0.17.0:

@@ -31,7 +31,7 @@
 AC_INIT(master.Makefile.in)
 
 # DO NOT FORGET TO UPDATE VERSION IN opam FILE
-VERSION=0.17.0
+VERSION=0.17.1
 PACKAGE=stog
 
 # The root directory where we will compile
