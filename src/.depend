@@ -190,9 +190,9 @@ stog_ocaml.cmo : stog_types.cmi stog_ocaml_types.cmi stog_msg.cmi \
 stog_ocaml.cmx : stog_types.cmx stog_ocaml_types.cmx stog_msg.cmx \
     stog_misc.cmx stog_highlight.cmx stog_ocaml.cmi
 stog_ocaml.cmi : stog_types.cmi
-stog_ocaml_session.cmo : stog_ocaml_types.cmi stog_misc.cmi errors.cmi \
+stog_ocaml_session.cmo : stog_ocaml_types.cmi stog_misc.cmi \
     stog_ocaml_session.cmi
-stog_ocaml_session.cmx : stog_ocaml_types.cmx stog_misc.cmx errors.cmi \
+stog_ocaml_session.cmx : stog_ocaml_types.cmx stog_misc.cmx \
     stog_ocaml_session.cmi
 stog_ocaml_session.cmi :
 stog_ocaml_types.cmo : stog_ocaml_types.cmi
