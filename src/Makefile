@@ -311,10 +311,10 @@ stog_ocaml_session.cmo: stog_ocaml_session.ml
 	$(OCAMLFIND) ocamlc$(PBYTE) -package $(OCAML_SESSION_PACKAGES) $(COMPFLAGS) -c $<
 
 $(LATEX2STOG): $(LIB) latex2stog.cmx
-	$(OCAMLFIND) ocamlopt$(P) -o $@ -package $(PACKAGES) -linkall -linkpkg $^
+	$(OCAMLFIND) ocamlopt$(P) -o $@ -package $(PACKAGES) -linkpkg $^
 
 $(LATEX2STOG_BYTE): $(LIB_BYTE) latex2stog.cmo
-	$(OCAMLFIND) ocamlc$(P) -o $@ -package $(PACKAGES) -linkall -linkpkg $^
+	$(OCAMLFIND) ocamlc$(P) -o $@ -package $(PACKAGES) -linkpkg $^
 
 default-styles:
 	lessc ../doc/less/default-page.less | cleancss -o ../share/templates/page-style.css
