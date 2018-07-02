@@ -1,2 +1,4 @@
+Development has moved to https://framagit.org/zoggy/stog
+
 Stog is a static blog and website generator, like Jekyll but in OCaml.
 More information on http://zoggy.github.com/stog
