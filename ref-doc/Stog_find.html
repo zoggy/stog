@@ -1,190 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog library reference documentation : Stog_find</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  
-  
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-
-
-<div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_filter_types.html" title="Stog_filter_types">Previous</a>
- <a class="up" href="index.html" title="Index">Up</a>
- <a class="post" href="Stog_graph.html" title="Stog_graph">Next</a>
-</div>
-<h1>Module <a href="type_Stog_find.html">Stog_find</a></h1>
-
-<pre><span class="keyword">module</span> Stog_find: <code class="code">sig</code> <a href="Stog_find.html">..</a> <code class="code">end</code></pre><div class="info module top">
-Finding files.<br/>
-<b>Author(s):</b> Didier Remy<br/>
-<b>Version:</b> 0.1<br/>
-</div>
-<hr width="100%"/>
-
-<pre><code><span id="TYPEfilter"><span class="keyword">type</span> filter</span> = </code></pre><table class="typetable">
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTfilter.Maxdepth"><span class="constructor">Maxdepth</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTfilter.Type"><span class="constructor">Type</span></span> <span class="keyword">of</span> <code class="type">Unix.file_kind</code></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTfilter.Follow"><span class="constructor">Follow</span></span></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTfilter.Regexp"><span class="constructor">Regexp</span></span> <span class="keyword">of</span> <code class="type">Str.regexp</code></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTfilter.Atime"><span class="constructor">Atime</span></span> <span class="keyword">of</span> <code class="type"><a href="Stog_find.html#TYPEinterval">interval</a></code></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTfilter.Predicate"><span class="constructor">Predicate</span></span> <span class="keyword">of</span> <code class="type">(string -&gt; bool)</code></code></td>
-
-</tr></table>
-
-
-
-<pre><code><span id="TYPEinterval"><span class="keyword">type</span> interval</span> = </code></pre><table class="typetable">
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTinterval.Le"><span class="constructor">Le</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTinterval.Eq"><span class="constructor">Eq</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTinterval.Ge"><span class="constructor">Ge</span></span> <span class="keyword">of</span> <code class="type">int</code></code></td>
-
-</tr></table>
-
-
-
-<pre><code><span id="TYPEmode"><span class="keyword">type</span> mode</span> = </code></pre><table class="typetable">
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTmode.Ignore"><span class="constructor">Ignore</span></span></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTmode.Stderr"><span class="constructor">Stderr</span></span></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTmode.Failure"><span class="constructor">Failure</span></span></code></td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-<code><span class="keyword">|</span></code></td>
-<td align="left" valign="top">
-<code><span id="TYPEELTmode.Custom"><span class="constructor">Custom</span></span> <span class="keyword">of</span> <code class="type">(Unix.error * string * string -&gt; unit)</code></code></td>
-
-</tr></table>
-
-
-
-<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="Stog_find.html#TYPEmode">mode</a> -&gt;<br/>       string list -&gt; <a href="Stog_find.html#TYPEfilter">filter</a> list -&gt; (string -&gt; unit) -&gt; unit</code></pre>
-<pre><span id="VALfind_list"><span class="keyword">val</span> find_list</span> : <code class="type"><a href="Stog_find.html#TYPEmode">mode</a> -&gt; string list -&gt; <a href="Stog_find.html#TYPEfilter">filter</a> list -&gt; string list</code></pre></div>
-
-
-
-
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
+</p>
 </div> <!-- #page -->
 </body>
 </html>
-

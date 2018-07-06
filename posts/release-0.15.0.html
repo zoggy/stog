@@ -1,143 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog 0.15.0</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="&lt;navbar-doc/&gt;"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  <div class="doc-navbar">
-      <div class="navleft"><a href="https://zoggy.github.io/stog/posts/2014-10-27-video.html">A demo video</a></div>
-      <div class="navright"><a href="https://zoggy.github.io/stog/posts/release-0.16.0.html">Stog 0.16.0</a></div>
-    </div>
-  <div class="page-title">Stog 0.15.0</div>
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-<div class="date">July 7, 2015</div>
-
-
-<p>
-Release 0.15.0 of stog is available from the <a href="https://zoggy.github.io/stog/install.html">Installation</a> page.
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
 </p>
-
-<p>Changes:</p>
-<ul id="changes">
-<li>require <span class="ext-a"><a href="https://zoggy.github.io/xtmpl/posts/xtmpl-0.12.html">Xtmpl</a></span> &gt;= 0.12
- and <span class="ext-a"><a href="https://github.com/vbmithr/ocaml-websocket">OCaml-Websocket</a></span> &gt;= 2.1,
-</li>
-<li><code>--host</code> and <code>--port</code> options are replaced by
-  <code>--http</code>, <code>--ws</code>, <code>--public-http</code>
-  and <code>--public-ws</code>, which accept urls as values. The <code>--public-...</code>
-  options are used when the stog server is behing a proxy,</li>
-<li>New plugins: <a href="https://zoggy.github.io/stog/plugins/sitemap.html">Stog-sitemap</a>, <a href="https://zoggy.github.io/stog/plugins/nocaml.html">Stog-nocaml</a>
-   and <a href="https://zoggy.github.io/stog/plugins/extern.html">Stog-extern</a>,</li>
-<li><a href="https://zoggy.github.io/stog/posts/ocaml-sessions.html"><code>stog-ocaml-session</code></a>
-  now handles the <code>-ppx</code>, <code>-safe-string</code> and
-  <code>-unsafe-string</code> options,</li>
-<li><span class="icode"><span class="hl kwa">&lt;doc-intro</span><span class="hl kwa">&gt;</span></span> does not include "next" link with image; it is now
-  in the default <code>doc-in-list</code> template,</li>
-<li>use <span class="ext-a"><a href="https://zoggy.github.io/ocf">Ocf</a></span> (0.3.0) instead of
-  <span class="ext-a"><a href="http://config-file.forge.ocamlcore.org/">Config-file</a></span>; as a
-  consequence, previous <a href="https://zoggy.github.io/stog/overview.html#config-file">configuration files</a>
-  must be translated to JSON syntax,</li>
-<li>new tool <a href="https://zoggy.github.io/stog/stog-tmpl.html">Stog-tmpl</a> to generate web site skeletons,</li>
-<li>new multiserver, with online editor.</li>
-</ul>
-
-
-
-
-
-
-<p class="doccode alert alert-info">
-For information you can see the <a href="#pagesource"> source code of the page</a>.
-</p>
-<div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Stog 0.15.0"</span><span class="hl std">
-</span><span class="">date</span><span class="hl std">=</span><span class="hl str">"2015/07/07"</span><span class="hl std">
-</span><span class="">topics</span><span class="hl std">=</span><span class="hl str">"stog"</span><span class="hl std">
-</span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">"release"</span><span class="hl std">
-</span><span class="">published</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
-</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-Release 0.15.0 of stog is available from the </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"/install"</span><span class="hl kwa">/&gt;</span><span class="hl std"> page.
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Changes:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"changes"</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">require </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://zoggy.github.io/xtmpl/posts/xtmpl-0.12.html"</span><span class="hl kwa">&gt;</span><span class="hl std">Xtmpl</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> </span><span class="hl kwb">&amp;gt;</span><span class="hl std">= 0.12
- and </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://github.com/vbmithr/ocaml-websocket"</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml-Websocket</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> </span><span class="hl kwb">&amp;gt;</span><span class="hl std">= 2.1,
-</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--host</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> and </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--port</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> options are replaced by
-  </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--http</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--ws</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--public-http</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">
-  and </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--public-ws</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">, which accept urls as values. The </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--public-...</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">
-  options are used when the stog server is behing a proxy,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">New plugins: </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"plugins/sitemap"</span><span class="hl kwa">/&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"plugins/nocaml"</span><span class="hl kwa">/&gt;</span><span class="hl std">
-   and </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"plugins/extern"</span><span class="hl kwa">/&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"posts/ocaml-sessions"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">stog-ocaml-session</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">
-  now handles the </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">-ppx</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">-safe-string</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> and
-  </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">-unsafe-string</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> options,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">doc-intro</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std"> does not include "next" link with image; it is now
-  in the default </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">doc-in-list</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> template,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">use </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://zoggy.github.io/ocf"</span><span class="hl kwa">&gt;</span><span class="hl std">Ocf</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> (0.3.0) instead of
-  </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://config-file.forge.ocamlcore.org/"</span><span class="hl kwa">&gt;</span><span class="hl std">Config-file</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">; as a
-  consequence, previous </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"overview#config-file"</span><span class="hl kwa">&gt;</span><span class="hl std">configuration files</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">
-  must be translated to JSON syntax,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">new tool </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"stog-tmpl"</span><span class="hl kwa">/&gt;</span><span class="hl std"> to generate web site skeletons,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">new multiserver, with online editor.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span></pre>
-</div>
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
 </div> <!-- #page -->
 </body>
 </html>

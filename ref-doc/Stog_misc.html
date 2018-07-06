@@ -1,210 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog library reference documentation : Stog_misc</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  
-  
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-
-
-<div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_list.html" title="Stog_list">Previous</a>
- <a class="up" href="index.html" title="Index">Up</a>
- <a class="post" href="Stog_msg.html" title="Stog_msg">Next</a>
-</div>
-<h1>Module <a href="type_Stog_misc.html">Stog_misc</a></h1>
-
-<pre><span class="keyword">module</span> Stog_misc: <code class="code">sig</code> <a href="Stog_misc.html">..</a> <code class="code">end</code></pre><div class="info module top">
-Utilities.<br/>
-</div>
-<hr width="100%"/>
-
-<pre><span id="VALsafe_main"><span class="keyword">val</span> safe_main</span> : <code class="type">(unit -&gt; unit) -&gt; unit</code></pre><div class="info ">
-<code class="code">safe_main f</code> calls <code class="code">f ()</code> but handles <code class="code">Sys_error</code> and <code class="code">Failure</code>
-   exceptions by exiting with error code 1.<br/>
-<b>Author(s):</b> Maxence Guesdon<br/>
-<b>Version:</b> 1.0<br/>
-</div>
-
-<pre><span id="VALstring_of_file"><span class="keyword">val</span> string_of_file</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
-<code class="code">string_of_file filename</code> returns the content of <code class="code">filename</code>
-   in the form of one string.<br/>
-<b>Author(s):</b> Maxence Guesdon<br/>
-<b>Version:</b> 1.1<br/>
-<b>Raises</b> <code>Sys_error</code> if the file could not be opened.<br/>
-</div>
-
-<pre><span id="VALfile_of_string"><span class="keyword">val</span> file_of_string</span> : <code class="type">file:string -&gt; string -&gt; unit</code></pre><div class="info ">
-<code class="code">file_of_string ~file str</code> creates a file named
-   <code class="code">filename</code> whose content is <code class="code">str</code>.<br/>
-<b>Author(s):</b> Fabrice Lefessant<br/>
-<b>Version:</b> 1.1<br/>
-<b>Raises</b> <code>Sys_error</code> if the file could not be opened.<br/>
-</div>
-
-<pre><span id="VALcreate_log_fun"><span class="keyword">val</span> create_log_fun</span> : <code class="type">?prefix:string -&gt;<br/>       ?print:(string -&gt; unit) -&gt;<br/>       string -&gt; ?loc:string -&gt; ?level:int -&gt; (unit -&gt; string) -&gt; unit</code></pre><div class="info ">
-Creating a log function.
-  <code class="code">create_log_fun env_var</code> get the log level (an integer) from the given
-  environment variable, and returns a function to print messages.
-  This function takes a level (default is 1) and a function returning
-  the message do print. The function is called only if the log level is
-  higher than or equal to the given level.
-  The <code class="code">loc</code> parameter of the returned function can be used to indicate
-  an additional string to print before the log message.
-  If the environment variable is empty or does not contain an integer,
-  then the log level is set to 0.<br/>
-</div>
-<div class="param_info"><code class="code">prefix</code> : can be used to indicate a string prefixing every message</div>
-<div class="param_info"><code class="code">print</code> : can be given to the function build the log function, to
-  indicate an alternative way to display the message; default is to call
-  <code class="code">prerr_endline</code>.</div>
-
-<pre><span id="VALcreate_log_fun_with_set"><span class="keyword">val</span> create_log_fun_with_set</span> : <code class="type">?prefix:string -&gt;<br/>       ?print:(string -&gt; unit) -&gt;<br/>       string -&gt;<br/>       (?loc:string -&gt; ?level:int -&gt; (unit -&gt; string) -&gt; unit) * (int -&gt; unit)</code></pre><div class="info ">
-Same as <code class="code">create_log_fun</code> but also return a function to change
-       the log level.<br/>
-</div>
-
-<pre><span id="VALsplit_string"><span class="keyword">val</span> split_string</span> : <code class="type">?keep_empty:bool -&gt; string -&gt; char list -&gt; string list</code></pre><div class="info ">
-Separate the given string according to the given list of characters.<br/>
-<b>Author(s):</b> Maxence Guesdon<br/>
-<b>Version:</b> 1.2<br/>
-</div>
-<div class="param_info"><code class="code">keep_empty</code> : is <code class="code">false</code> by default. If set to <code class="code">true</code>,
-   the empty strings between separators are kept.</div>
-
-<pre><span id="VALstrip_string"><span class="keyword">val</span> strip_string</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
-<code class="code">strip_string s</code> removes all leading and trailing spaces from the given string.<br/>
-<b>Author(s):</b> Maxence Guesdon<br/>
-<b>Version:</b> 1.0<br/>
-</div>
-
-<pre><span id="VALstrip_blank_lines"><span class="keyword">val</span> strip_blank_lines</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
-<code class="code">strip_blank_lines s</code> works as <a href="Stog_misc.html#VALstrip_string"><code class="code">Stog_misc.strip_string</code></a>, but only strips
-    full blank lines, without touching spaces or tabulations.<br/>
-</div>
-
-<pre><span id="VALlowercase"><span class="keyword">val</span> lowercase</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
-<code class="code">lowercase s</code> lowers the case of the given string, including accentuated characters.<br/>
-<b>Author(s):</b> Maxence Guesdon<br/>
-<b>Version:</b> 1.0<br/>
-</div>
-
-<pre><span id="VALlist_chop"><span class="keyword">val</span> list_chop</span> : <code class="type">int -&gt; 'h list -&gt; 'h list</code></pre><div class="info ">
-<code class="code">list_chop n l</code> returns the <code class="code">n</code> first documents of list <code class="code">l</code> or the whole
-   list if <code class="code">n &gt;= List.length l</code>.<br/>
-<b>Author(s):</b> Maxence Guesdon<br/>
-<b>Version:</b> 1.0<br/>
-</div>
-
-<pre><span id="VALmkdir"><span class="keyword">val</span> mkdir</span> : <code class="type">string -&gt; unit</code></pre>
-<pre><span id="VALis_prefix"><span class="keyword">val</span> is_prefix</span> : <code class="type">string -&gt; string -&gt; bool</code></pre><div class="info ">
-<code class="code">is_prefix pattern s</code> returns true if string <code class="code">s</code> begins with <code class="code">pattern</code>.<br/>
-<b>Author(s):</b> Maxence Guesdon<br/>
-<b>Version:</b> 1.0<br/>
-</div>
-
-<pre><span id="VALlist_remove_doubles"><span class="keyword">val</span> list_remove_doubles</span> : <code class="type">?pred:('k -&gt; 'k -&gt; bool) -&gt; 'k list -&gt; 'k list</code></pre><div class="info ">
-<code class="code">list_remove_doubles ?pred l</code> remove doubles in the given list <code class="code">l</code>, according
-   to the optional equality function <code class="code">pred</code>. Default equality function is <code class="code">(=)</code>.<br/>
-<b>Author(s):</b> Maxence Guesdon<br/>
-<b>Version:</b> 1.0<br/>
-</div>
-
-<pre><span id="VALmd5"><span class="keyword">val</span> md5</span> : <code class="type">string -&gt; string</code></pre>
-<pre><span id="VALcount_char"><span class="keyword">val</span> count_char</span> : <code class="type">string -&gt; char -&gt; int</code></pre>
-<pre><span id="VALencode_string"><span class="keyword">val</span> encode_string</span> : <code class="type">string -&gt; string</code></pre>
-<pre><span id="VALmap_opt"><span class="keyword">val</span> map_opt</span> : <code class="type">('a -&gt; 'b) -&gt; 'a option -&gt; 'b option</code></pre>
-<pre><span id="VALlist_concat"><span class="keyword">val</span> list_concat</span> : <code class="type">?sep:'a -&gt; 'a list -&gt; 'a list</code></pre>
-<pre><span id="VALdot_to_svg"><span class="keyword">val</span> dot_to_svg</span> : <code class="type">string -&gt; string</code></pre>
-<pre><span id="VALlist_compare"><span class="keyword">val</span> list_compare</span> : <code class="type">('a -&gt; 'a -&gt; int) -&gt; 'a list -&gt; 'a list -&gt; int</code></pre>
-<pre><span id="VALfilename_extension"><span class="keyword">val</span> filename_extension</span> : <code class="type">string -&gt; string</code></pre><div class="info ">
-<code class="code">filename_extension filename</code> returns extension of <code class="code">filename</code>
-  or <code class="code">""</code> if there is no extension.<br/>
-</div>
-
-<pre><span id="VALsafe_mkdir"><span class="keyword">val</span> safe_mkdir</span> : <code class="type">string -&gt; unit</code></pre>
-<pre><span id="VALopt_of_string"><span class="keyword">val</span> opt_of_string</span> : <code class="type">string -&gt; string option</code></pre><div class="info ">
-<code class="code">opt_of_string s</code> returns <code class="code">None</code> if the string if empty
-   (length is 0) or <code class="code">Some s</code>.<br/>
-<b>Version:</b> 1.0<br/>
-</div>
-
-<pre><span id="VALstring_of_opt"><span class="keyword">val</span> string_of_opt</span> : <code class="type">string option -&gt; string</code></pre><div class="info ">
-<code class="code">string_of_opt s_opt</code> returns the empty string if
-   <code class="code">s_opt = None</code> or <code class="code">s</code> if <code class="code">s_opt = Some s</code>.<br/>
-<b>Version:</b> 1.0<br/>
-</div>
-
-<pre><span id="VALfile_mtime"><span class="keyword">val</span> file_mtime</span> : <code class="type">string -&gt; float option</code></pre><div class="info ">
-Return mdification time of the given file, or None if
-  the file does not exist.<br/>
-</div>
-
-<pre><span id="VALpath_under"><span class="keyword">val</span> path_under</span> : <code class="type">parent:string -&gt; string -&gt; string</code></pre><div class="info ">
-<code class="code">path_under ~parent file</code> returns the path to <code class="code">file</code> from <code class="code">parent</code>.<br/>
-<b>Raises</b> <code>Failure</code> if <code class="code">parent</code> is not a prefix of <code class="code">file</code>.<br/>
-</div>
-
-<pre><span id="VALstring_of_time"><span class="keyword">val</span> string_of_time</span> : <code class="type">float -&gt; string</code></pre></div>
-
-
-
-
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
+</p>
 </div> <!-- #page -->
 </body>
 </html>
-

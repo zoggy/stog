@@ -1,199 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : OCaml sessions</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="&lt;navbar-doc/&gt;"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  <div class="doc-navbar">
-      <div class="navleft"><a href="https://zoggy.github.io/stog/posts/release-0.3.html">Stog 0.3</a></div>
-      <div class="navright"><a href="https://zoggy.github.io/stog/posts/release-0.4.html">Stog 0.4</a></div>
-    </div>
-  <div class="page-title">OCaml sessions</div>
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-<div class="date">November 21, 2012</div>
-
-
-<p>
-A <a href="https://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html">previous post</a>
-introduced the <span class="icode"><span class="hl std">&lt;ocaml-eval&gt;</span></span> function to
-evaluate ocaml code, enventually displaying the result in a toplevel way, etc.
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
 </p>
-<p>
-OCaml code was evaluated in the Stog process, which required Stog to
-embed the OCaml toplevel, only available as bytecode. As a consequence,
-only the bytecode version of Stog could evaluate OCaml code using the
-internal toplevel.
-</p>
-
-<p>
-Since release 0.4 of Stog, the evaluation of OCaml has been moved
-to an external program, <span class="icode"><span class="hl std">ocaml-ocaml-session</span></span>.
-This program is launched by Stog when OCaml code has to be evaluated.
-Stog and this program communicate OCaml values through a pipe
-(see <a href="../ref-doc/Stog_ocaml_types.html">Stog_ocaml_types</a> module
-for details).
-</p>
-<p>Of course, an instance of <span class="icode"><span class="hl std">stog-ocaml-session</span></span> is
-not launched each time an OCaml phrase has be to evaluated.
-Instead, Stog keeps a list of "ocaml sessions", each session corresponding
-to a <span class="icode"><span class="hl std">stog-ocaml-session</span></span> process.
-</p>
-<p>That allows two cool things:</p>
-<ul>
-<li>the <span class="icode"><span class="hl std">&lt;ocaml-eval&gt;</span></span> function is available in native code
-  version of Stog,</li>
-<li>more than one session can be used when evaluating the code to show in
-the generated pages. For example, there can be one ocaml session per
-blog post, to prevent namespace pollution from one post to another.
-</li>
-</ul>
-<p>The default ocaml session is called "default". The session name to
-use to evaluate OCaml code can be specified using the "session" attribute
-of  <span class="icode"><span class="hl std">&lt;ocaml-eval&gt;</span></span>.
-</p>
-<p>Here is an example.</p>
-<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">let x = 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span></pre>
-<p>will give</p>
-<pre class="code-ocaml"><span># <span class="hl kwa">let</span> x <span class="hl opt">=</span> <span class="hl num">1</span><span class="hl opt">;;</span></span>
-<span class="ocaml-toplevel"><span class="toplevel-out">val x : int = 1</span></span></pre>
-<p>Then, let's evaluate another piece of code, in the same ("default") session:
-</p>
-<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">let y = x + 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span></pre>
-will give
-<pre class="code-ocaml"><span># <span class="hl kwa">let</span> y <span class="hl opt">=</span> x <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl opt">;;</span></span>
-<span class="ocaml-toplevel"><span class="toplevel-out">val y : int = 2</span></span></pre>
-<p>Now, let's evaluate the same code in another session, "session2":</p>
-<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">error-exc</span><span class="hl std">=</span><span class="hl str">"false"</span><span class="hl std"> </span><span class="">session</span><span class="hl std">=</span><span class="hl str">"session2"</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">
-let y = x + 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span></pre>
-<p>will result in</p>
-<pre class="code-ocaml"><span># <span class="hl kwa">let</span> y <span class="hl opt">=</span> <span class="error-loc" title="Error: Unbound value x">x</span> <span class="hl opt">+</span> <span class="hl num">1</span><span class="hl opt">;;</span></span>
-<span class="ocaml-toplevel ocaml-exc"><span class="stderr">Error: Unbound value x</span></span></pre>
-
-
-
-
-
-
-
-<p class="doccode alert alert-info">
-For information you can see the <a href="#pagesource"> source code of the page</a>.
-</p>
-<div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"OCaml sessions"</span><span class="hl std">
-</span><span class="">date</span><span class="hl std">=</span><span class="hl str">"2012/11/21"</span><span class="hl std">
-</span><span class="">topics</span><span class="hl std">=</span><span class="hl str">"stog"</span><span class="hl std">
-</span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">"ocaml, evaluation, code"</span><span class="hl std">
-</span><span class="">published</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-A </span><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"displaying-evaluated-ocaml-code"</span><span class="hl kwa">&gt;</span><span class="hl std">previous post</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span><span class="hl std">
-introduced the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">ocaml-eval</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> function to
-evaluate ocaml code, enventually displaying the result in a toplevel way, etc.
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-OCaml code was evaluated in the Stog process, which required Stog to
-embed the OCaml toplevel, only available as bytecode. As a consequence,
-only the bytecode version of Stog could evaluate OCaml code using the
-internal toplevel.
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-Since release 0.4 of Stog, the evaluation of OCaml has been moved
-to an external program, </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-ocaml-session</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
-This program is launched by Stog when OCaml code has to be evaluated.
-Stog and this program communicate OCaml values through a pipe
-(see </span><span class="hl kwa">&lt;a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"../ref-doc/Stog_ocaml_types.html"</span><span class="hl kwa">&gt;</span><span class="hl std">Stog_ocaml_types</span><span class="hl kwa">&lt;/a</span><span class="hl kwa">&gt;</span><span class="hl std"> module
-for details).
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Of course, an instance of </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog-ocaml-session</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> is
-not launched each time an OCaml phrase has be to evaluated.
-Instead, Stog keeps a list of "ocaml sessions", each session corresponding
-to a </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">stog-ocaml-session</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> process.
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">That allows two cool things:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">the </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">ocaml-eval</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> function is available in native code
-  version of Stog,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">more than one session can be used when evaluating the code to show in
-the generated pages. For example, there can be one ocaml session per
-blog post, to prevent namespace pollution from one post to another.
-</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">The default ocaml session is called "default". The session name to
-use to evaluate OCaml code can be specified using the "session" attribute
-of  </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">ocaml-eval</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Here is an example.</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">let x = 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">will give</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">let x = 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Then, let's evaluate another piece of code, in the same ("default") session:
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">let y = x + 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
-will give
-</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">let y = x + 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Now, let's evaluate the same code in another session, "session2":</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"xml"</span><span class="hl std">
-</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
-             </span><span class="">error-exc</span><span class="hl std">=</span><span class="hl str">"false"</span><span class="hl std">
-             </span><span class="">session</span><span class="hl std">=</span><span class="hl str">"session2"</span><span class="hl kwa">&gt;</span><span class="hl std">
-let y = x + 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">will result in</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">error-exc</span><span class="hl std">=</span><span class="hl str">"false"</span><span class="hl std"> </span><span class="">session</span><span class="hl std">=</span><span class="hl str">"session2"</span><span class="hl kwa">&gt;</span><span class="hl std">let y = x + 1;;</span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
-
-</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span></pre>
-</div>
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
 </div> <!-- #page -->
 </body>
 </html>

@@ -1,175 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog 0.10.0</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="&lt;navbar-doc/&gt;"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  <div class="doc-navbar">
-      <div class="navleft"><a href="https://zoggy.github.io/stog/posts/ocaml-printf.html">ocaml-printf</a></div>
-      <div class="navright"><a href="https://zoggy.github.io/stog/posts/release-0.11.0.html">Stog 0.11.0</a></div>
-    </div>
-  <div class="page-title">Stog 0.10.0</div>
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-<div class="date">January 21, 2014</div>
-
-
-<p>
-Release 0.10.0 of stog is available from the <a href="https://zoggy.github.io/stog/install.html">Installation</a> page.
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
 </p>
-
-<p>Changes include:</p>
-<ul id="changes">
-<li>Fix caching system,</li>
-<li>Use <span class="icode"><span class="hl std">||</span></span> instead of deprecated <span class="icode"><span class="hl kwb">or</span></span>.</li>
-<li>Change architecture of <a href="https://zoggy.github.io/stog/engine.html">engine</a>, introducing modules and fold-like
-  rewrite rules (following Xtmpl library),
-</li>
-<li>Do not use the <span class="icode"><span class="hl std">main_</span></span> tag, but rather <span class="icode"><span class="hl std">dummy_</span></span>,</li>
-<li><span class="icode"><span class="hl kwa">&lt;inc</span><span class="hl kwa">&gt;</span></span> is now deprecated and replaced by
-  <a href="https://zoggy.github.io/stog/module_base.html#late-inc"><span class="icode"><span class="hl kwa">&lt;late-inc</span><span class="hl kwa">&gt;</span></span></a>,
-</li>
-<li><a href="https://zoggy.github.io/stog/module_base.html#include"><span class="icode"><span class="hl kwa">&lt;include</span><span class="hl kwa">&gt;</span></span></a> and
-  <a href="https://zoggy.github.io/stog/module_base.html#late-inc"><span class="icode"><span class="hl kwa">&lt;late-inc</span><span class="hl kwa">&gt;</span></span></a> both
-  handle <code>depend</code>, <code>file</code>, <code>href</code>,
-  <code>id</code>, <code>raw</code> and <code>subs-only</code> attributes,
-</li>
-<li>New rule <a href="https://zoggy.github.io/stog/module_base.html#cut"><span class="icode"><span class="hl kwa">&lt;cut-doc</span><span class="hl kwa">&gt;</span></span></a>
-  to split a document into pieces according to some nodes (equivalent
-  of Hevea's <span class="ext-a"><a href="http://para.inria.fr/~maranget/hevea/doc/cutname.html#hacha">Hacha</a></span>),
-</li>
-<li>Rules defined in documents now can use all attributes (parameters), with
-  default values for the ones specified in rule definition,
-</li>
-<li>New option <a href="https://zoggy.github.io/stog/running.html#optionlocal"><code>--local</code></a>,</li>
-<li>New base rule <a href="https://zoggy.github.io/stog/module_base.html#doc-datetime"><span class="icode"><span class="hl kwa">&lt;doc-datetime</span><span class="hl kwa">&gt;</span></span></a>,</li>
-<li>New plugins: <a href="https://zoggy.github.io/stog/plugins/asy.html">Stog-asy</a>, <a href="https://zoggy.github.io/stog/plugins/dot.html">Stog-dot</a> and <a href="https://zoggy.github.io/stog/plugins/multi-doc.html">Stog-multi-doc</a>,</li>
-<li>New <code>show-without-ids</code> attribute for
-   <a href="https://zoggy.github.io/stog/module_base.html#toc"><span class="icode"><span class="hl kwa">&lt;prepare-toc</span><span class="hl kwa">&gt;</span></span></a>
-   to handle sections without id,</li>
-<li>New rules <a href="https://zoggy.github.io/stog/posts/ocaml-printf.html"><span class="icode"><span class="hl kwa">&lt;ocaml-printf</span><span class="hl kwa">&gt;</span></span></a>,
-    <a href="https://zoggy.github.io/stog/module_base.html#as-xml"><span class="icode"><span class="hl kwa">&lt;as-xml</span><span class="hl kwa">&gt;</span></span></a>, and
-    <a href="https://zoggy.github.io/stog/module_base.html#prefix-svg-ids"><span class="icode"><span class="hl kwa">&lt;prefix-svg-ids</span><span class="hl kwa">&gt;</span></span></a>,
-</li>
-<li><a href="https://zoggy.github.io/stog/module_base.html#latex"><span class="icode"><span class="hl kwa">&lt;latex</span><span class="hl kwa">&gt;</span></span></a> rule now uses
-  <code>latex-packages</code> Stog environment variable
-  if no <code>package</code> attribute is given,
-</li>
-<li>New <a href="https://zoggy.github.io/stog/latex2stog.html">LaTeX to Stog</a> translator, not finished yet.</li>
-</ul>
-
-
-
-
-
-
-<p class="doccode alert alert-info">
-For information you can see the <a href="#pagesource"> source code of the page</a>.
-</p>
-<div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Stog 0.10.0"</span><span class="hl std">
-</span><span class="">date</span><span class="hl std">=</span><span class="hl str">"2014/01/21"</span><span class="hl std">
-</span><span class="">topics</span><span class="hl std">=</span><span class="hl str">"stog"</span><span class="hl std">
-</span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">"release"</span><span class="hl std">
-</span><span class="">published</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
-</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-Release 0.10.0 of stog is available from the </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"/install"</span><span class="hl kwa">/&gt;</span><span class="hl std"> page.
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Changes include:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"changes"</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Fix caching system,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Use </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"ocaml"</span><span class="hl kwa">&gt;</span><span class="hl std">||</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> instead of deprecated </span><span class="hl kwa">&lt;icode</span><span class="hl std"> </span><span class="">lang</span><span class="hl std">=</span><span class="hl str">"ocaml"</span><span class="hl kwa">&gt;</span><span class="hl std">or</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Change architecture of </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"engine"</span><span class="hl kwa">&gt;</span><span class="hl std">engine</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">, introducing modules and fold-like
-  rewrite rules (following Xtmpl library),
-</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Do not use the </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">main_</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> tag, but rather </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">dummy_</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">inc</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std"> is now deprecated and replaced by
-  </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#late-inc"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">late-inc</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">,
-</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#include"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">include</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> and
-  </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#late-inc"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">late-inc</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> both
-  handle </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">depend</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">file</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">href</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">,
-  </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">id</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">raw</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> and </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">subs-only</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> attributes,
-</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">New rule </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#cut"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">cut-doc</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">
-  to split a document into pieces according to some nodes (equivalent
-  of Hevea's </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://para.inria.fr/~maranget/hevea/doc/cutname.html#hacha"</span><span class="hl kwa">&gt;</span><span class="hl std">Hacha</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">),
-</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Rules defined in documents now can use all attributes (parameters), with
-  default values for the ones specified in rule definition,
-</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">New option </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"running#optionlocal"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">--local</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">New base rule </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#doc-datetime"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">doc-datetime</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">New plugins: </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"asy"</span><span class="hl kwa">/&gt;</span><span class="hl std">, </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"dot"</span><span class="hl kwa">/&gt;</span><span class="hl std"> and </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"multi-doc"</span><span class="hl kwa">/&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">New </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">show-without-ids</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute for
-   </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#toc"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">prepare-toc</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">
-   to handle sections without id,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">New rules </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"posts/ocaml-printf"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-printf</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">,
-    </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#as-xml"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">as-xml</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">, and
-    </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#prefix-svg-ids"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">prefix-svg-ids</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">,
-</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#latex"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">latex</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> rule now uses
-  </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">latex-packages</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> Stog environment variable
-  if no </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">package</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute is given,
-</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">New </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"latex2stog"</span><span class="hl kwa">&gt;</span><span class="hl std">LaTeX to Stog</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> translator, not finished yet.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span></pre>
-</div>
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
 </div> <!-- #page -->
 </body>
 </html>

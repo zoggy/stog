@@ -1,195 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog-multi-doc</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="&lt;navbar-doc/&gt;"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  <a href="https://zoggy.github.io/stog/plugins.html">Plugins</a>
-  
-  <div class="page-title">Stog-multi-doc</div>
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-
-
-
-<p>
-This plugin allows the
-<span id="desc">definition of several documents into one XML file</span>.
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
 </p>
-
-<p>Usage:</p>
-<pre class="code-sh">$ stog <span class="hl opt">--</span>package stog.multi-doc ...</pre>
-
-<ul class="toc"><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/multi-doc.html#example">Example</a></li><li class="toc-section"><a href="https://zoggy.github.io/stog/plugins/multi-doc.html#with-contents">Using &lt;with-contents/&gt;</a></li></ul>
-<div class="section"><div aria-level="1" class="section-title" id="example" role="heading">Example</div>
-<p>
-Suppose we have the following XML document in the
-file <code>smallposts.html</code> at the root of a Stog directory:
-</p>
-<pre class="code-xml"><span class="hl kwa">&lt;multi</span><span class="hl std"> </span><span class="">sets</span><span class="hl std">=</span><span class="hl str">"smallposts"</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;smallpost</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"post1"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"First post"</span><span class="hl std"> </span><span class="">date</span><span class="hl std">=</span><span class="hl str">"2014/01/21"</span><span class="hl kwa">&gt;</span><span class="hl std">
-    The first post ...
-  </span><span class="hl kwa">&lt;/smallpost</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;smallpost</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"post2"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Second post"</span><span class="hl std"> </span><span class="">date</span><span class="hl std">=</span><span class="hl str">"2014/01/22"</span><span class="hl kwa">&gt;</span><span class="hl std">
-    The second post ...
-  </span><span class="hl kwa">&lt;/smallpost</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;contents</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">"page"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"My small posts"</span><span class="hl kwa">&gt;</span><span class="hl std">
-    This is the body of the document "/smallpost".
-    We can list our small posts here:
-    </span><span class="hl kwa">&lt;documents</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">"smallpost"</span><span class="hl std"> </span><span class="">set</span><span class="hl std">=</span><span class="hl str">"smallposts"</span><span class="hl kwa">/&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/multi</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span></pre>
-<p>
-The <code>muti</code> node at the root of the document indicates that
-several documents are defined. The whole document is first read as any
-other document: it can have attributes specified for the <code>multi</code>
-node, and the body is the contents under this node.
-</p>
-<p>The multi-doc plugin adds a level -10 to cut the documents of type
-"multi". To do so, each root node of the body is read as if it was
-in its own file. Here we declare two documents of type "smallpost",
-with titles, dates and bodies. The <span class="icode"><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span></span> node contains
-the body of the document "/smallposts". The two other documents are named
-"/smallposts/post1" and "/smallposts/post2", from the path of the
-document and their respective ids, using a default separator "/".
-The <span class="icode"><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span></span> node must have a <code>type</code> attribute.
-</p>
-<p>
-All documents share the definitions appearing in the original "multi" document,
-here <span class="icode"><span class="hl std">sets="smallposts"</span></span>.
-</p>
-</div>
-
-<div class="section"><div aria-level="1" class="section-title" id="naming" role="heading"> </div>
-<p>The paths of the created documents are forged from the path of the
-"multi" document, the <code>id</code> attribute of each "sub" document
-and a separator. The default separator is "/" but it can specified
-with the <code>path-sep</code> attribute:
-</p>
-<pre class="code-xml"><span class="hl kwa">&lt;multi</span><span class="hl std"> </span><span class="">path-sep</span><span class="hl std">=</span><span class="hl str">"-"</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;smallpost</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"post1"</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/smallpost</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;smallpost</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"post2"</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/smallpost</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;contents</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">"..."</span><span class="hl kwa">&gt;</span><span class="hl std">...</span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/multi</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span></pre>
-<p>With the code above, the two "smallpost" documents will have paths
-"/smallposts-post1" and "/smallposts-post2". They can be refered to
-for example with <span class="icode"><span class="hl kwa">&lt;doc</span><span class="hl kwa">&gt;</span></span> rule:
-</p>
-<pre class="code-xml"><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"/smallposts-post1"</span><span class="hl kwa">/&gt;</span></pre>
-
-</div>
-
-<div class="section"><div aria-level="1" class="section-title" id="with-contents" role="heading">Using &lt;with-contents/&gt;</div>
-<p>
-As any other document, one can use the <span class="icode"><span class="hl std">with-contents="true"</span></span> attribute
-to indicate that the body of the document is included in a <span class="icode"><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span></span> node.
-Here is an example using <span class="icode"><span class="hl std">with-contents="true"</span></span> for the multi document,
-for the rest of the definition of this documents and for one of the "smallpost" documents:
-</p>
-<pre class="code-xml"><span class="hl kwa">&lt;multi</span><span class="hl std"> </span><span class="">sets</span><span class="hl std">=</span><span class="hl str">"smallposts"</span><span class="hl std">
-  </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
-</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl com">&lt;!-- definition of a rule, shared by all documents --&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;st</span><span class="hl std"> </span><span class="">foo</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;strong</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/strong</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/st</span><span class="hl kwa">&gt;</span><span class="hl std">
-  </span><span class="hl com">&lt;!-- body of the "multi" document --&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
-    </span><span class="hl kwa">&lt;smallpost</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"post1"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"First post"</span><span class="hl std"> </span><span class="">date</span><span class="hl std">=</span><span class="hl str">"2014/01/21"</span><span class="hl kwa">&gt;</span><span class="hl std">
-      The first post, with path = "</span><span class="hl kwa">&lt;doc-path</span><span class="hl kwa">/&gt;</span><span class="hl std">".
-    </span><span class="hl kwa">&lt;/smallpost</span><span class="hl kwa">&gt;</span><span class="hl std">
-
-    </span><span class="hl com">&lt;!-- this document defines a new rule &lt;name&gt;, using with-contents="true"
-      and a &lt;contents&gt; node. The new rule is available in this "smallpost"
-      document only.
-    --&gt;</span><span class="hl std">
-    </span><span class="hl kwa">&lt;smallpost</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"post2"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Second post"</span><span class="hl std"> </span><span class="">date</span><span class="hl std">=</span><span class="hl str">"2014/01/22"</span><span class="hl std">
-      </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">
-      </span><span class="hl kwa">&lt;name</span><span class="hl std"> </span><span class="">foo</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl kwa">&gt;</span><span class="hl std">Name: </span><span class="hl kwa">&lt;st</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">"1"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;contents</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/st</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/name</span><span class="hl kwa">&gt;</span><span class="hl std">
-      </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
-        The second post, with path = "</span><span class="hl kwa">&lt;doc-path</span><span class="hl kwa">/&gt;</span><span class="hl std">".
-        </span><span class="hl kwa">&lt;name</span><span class="hl kwa">&gt;</span><span class="hl std">James Bond</span><span class="hl kwa">&lt;/name</span><span class="hl kwa">&gt;</span><span class="hl std">
-      </span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std">
-    </span><span class="hl kwa">&lt;/smallpost</span><span class="hl kwa">&gt;</span><span class="hl std">
-
-  </span><span class="hl com">&lt;!-- The body of the final document with path "smallposts".
-    We use again with-contents="true" do define a new rule
-    &lt;hello&gt; for this document only.
-  --&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;contents</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">"page"</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"My small posts"</span><span class="hl std">
-    </span><span class="">with-contents</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">&gt;</span><span class="hl std">
-    </span><span class="hl kwa">&lt;hello</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl kwa">&gt;</span><span class="hl std">Hello </span><span class="hl kwa">&lt;if</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;dummy_</span><span class="hl kwa">&gt;</span><span class="hl std">world</span><span class="hl kwa">&lt;/dummy_</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;name</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/if</span><span class="hl kwa">&gt;</span><span class="hl std"> !</span><span class="hl kwa">&lt;/hello</span><span class="hl kwa">&gt;</span><span class="hl std">
-    </span><span class="hl kwa">&lt;contents</span><span class="hl kwa">&gt;</span><span class="hl std">
-      </span><span class="hl kwa">&lt;hello</span><span class="hl std"> </span><span class="">name</span><span class="hl std">=</span><span class="hl str">"dear reader"</span><span class="hl kwa">/&gt;</span><span class="hl std">
-      This is the body of the document "</span><span class="hl kwa">&lt;doc-path</span><span class="hl kwa">/&gt;</span><span class="hl std">".
-      We can list our small posts here:
-      </span><span class="hl kwa">&lt;documents</span><span class="hl std"> </span><span class="">type</span><span class="hl std">=</span><span class="hl str">"smallpost"</span><span class="hl std"> </span><span class="">set</span><span class="hl std">=</span><span class="hl str">"smallposts"</span><span class="hl kwa">/&gt;</span><span class="hl std">
-    </span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std"> </span><span class="hl com">&lt;!-- contents of the body of the "main" document" --&gt;</span><span class="hl std">
-  </span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std"> </span><span class="hl com">&lt;!-- contents of the "main" document --&gt;</span><span class="hl std">
- </span><span class="hl kwa">&lt;/contents</span><span class="hl kwa">&gt;</span><span class="hl std"> </span><span class="hl com">&lt;!-- contents of the multi document --&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/multi</span><span class="hl kwa">&gt;</span></pre>
-<p>
-The result is visible <a href="https://zoggy.github.io/stog/smallposts.html">here</a>.
-</p>
-</div>
-
-
-
-
-
-
-
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
 </div> <!-- #page -->
 </body>
 </html>
-

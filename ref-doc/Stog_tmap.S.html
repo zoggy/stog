@@ -1,105 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog library reference documentation : Stog_tmap.S</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  
-  
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-
-
-<div class="ocamldoc-page">
-<div class="navbar"> <a class="up" href="Stog_tmap.html" title="Stog_tmap">Up</a>
- </div>
-<h1>Module type <a href="type_Stog_tmap.S.html">Stog_tmap.S</a></h1>
-
-<pre><span class="keyword">module type</span> S = <code class="code">sig</code> <a href="Stog_tmap.S.html">..</a> <code class="code">end</code></pre><div class="info modtype top">
-Storing data referenced by a unique id.
-Uses maps to store the information,
-<div class="vertical-space"> </div>
-
-   Map of documents with automatic id creation and phantom type
-   for keys.<br/>
-<b>Author(s):</b> Maxence Guesdon<br/>
-<b>Version:</b> 0.1<br/>
-</div>
-<hr width="100%"/>
-
-<pre><span id="TYPEkey"><span class="keyword">type</span> <code class="type">'a</code> key</span> </pre>
-
-
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">('key, 'a)</code> t</span> </pre>
-
-
-<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">'a -&gt; ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a></code></pre>
-<pre><span id="VALcompare_key"><span class="keyword">val</span> compare_key</span> : <code class="type">'a <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; int</code></pre>
-<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; 'key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a</code></pre>
-<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt;<br/>       'a -&gt; 'key <a href="Stog_tmap.S.html#TYPEkey">key</a> * ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a></code></pre>
-<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a -&gt; 'b -&gt; 'b) -&gt;<br/>       ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; 'b -&gt; 'b</code></pre>
-<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; ('a -&gt; bool) -&gt; 'key <a href="Stog_tmap.S.html#TYPEkey">key</a></code></pre>
-<pre><span id="VALint"><span class="keyword">val</span> int</span> : <code class="type">'key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; int</code></pre>
-<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a -&gt; unit) -&gt; ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; unit</code></pre>
-<pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; 'key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a></code></pre>
-<pre><span id="VALmodify"><span class="keyword">val</span> modify</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt;<br/>       'key <a href="Stog_tmap.S.html#TYPEkey">key</a> -&gt; 'a -&gt; ('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a></code></pre>
-<pre><span id="VALcard"><span class="keyword">val</span> card</span> : <code class="type">('key, 'a) <a href="Stog_tmap.S.html#TYPEt">t</a> -&gt; int</code></pre></div>
-
-
-
-
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
+</p>
 </div> <!-- #page -->
 </body>
 </html>
-

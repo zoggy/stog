@@ -1,104 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog library reference documentation : Stog_trie.S</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  
-  
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-
-
-<div class="ocamldoc-page">
-<div class="navbar"> <a class="up" href="Stog_trie.html" title="Stog_trie">Up</a>
- </div>
-<h1>Module type <a href="type_Stog_trie.S.html">Stog_trie.S</a></h1>
-
-<pre><span class="keyword">module type</span> S = <code class="code">sig</code> <a href="Stog_trie.S.html">..</a> <code class="code">end</code></pre><div class="info modtype top">
-Signature of the module created by the <a href="Stog_trie.Make.html"><code class="code">Stog_trie.Make</code></a> functor.<br/>
-</div>
-<hr width="100%"/>
-
-<pre><span id="TYPEsymbol"><span class="keyword">type</span> symbol</span> </pre>
-
-
-<pre><span id="TYPEpath"><span class="keyword">type</span> path</span> = <code class="type"><a href="Stog_trie.S.html#TYPEsymbol">symbol</a> list</code> </pre>
-
-
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
-
-
-<pre><span id="EXCEPTIONAlready_present"><span class="keyword">exception</span> Already_present</span> <span class="keyword">of</span> <code class="type"><a href="Stog_trie.S.html#TYPEpath">path</a></code></pre>
-
-<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="Stog_trie.S.html#TYPEt">t</a></code></pre>
-<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type">?fail:bool -&gt; <a href="Stog_trie.S.html#TYPEpath">path</a> -&gt; 'a -&gt; 'a <a href="Stog_trie.S.html#TYPEt">t</a> -&gt; 'a <a href="Stog_trie.S.html#TYPEt">t</a></code></pre><div class="info ">
-<b>Raises</b> <code>Already_present</code> if the added path already exist in the trie
-      and <code class="code">fail</code> is <code class="code">true</code> (it is <code class="code">false</code> by default.<br/>
-</div>
-
-<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="Stog_trie.S.html#TYPEpath">path</a> -&gt; 'a <a href="Stog_trie.S.html#TYPEt">t</a> -&gt; 'a list</code></pre><div class="info ">
-Find all data associated to the given path or below, or an empty list
-         if such a path does not exist.<br/>
-</div>
-
-<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type">(<a href="Stog_trie.S.html#TYPEsymbol">symbol</a> -&gt; string) -&gt; 'a <a href="Stog_trie.S.html#TYPEt">t</a> -&gt; string</code></pre></div>
-
-
-
-
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
+</p>
 </div> <!-- #page -->
 </body>
 </html>
-

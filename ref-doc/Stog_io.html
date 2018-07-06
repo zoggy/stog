@@ -1,105 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog library reference documentation : Stog_io</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  
-  
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-
-
-<div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_intl.html" title="Stog_intl">Previous</a>
- <a class="up" href="index.html" title="Index">Up</a>
- <a class="post" href="Stog_latex.html" title="Stog_latex">Next</a>
-</div>
-<h1>Module <a href="type_Stog_io.html">Stog_io</a></h1>
-
-<pre><span class="keyword">module</span> Stog_io: <code class="code">sig</code> <a href="Stog_io.html">..</a> <code class="code">end</code></pre><div class="info module top">
-Building a stog structure from a project tree.<br/>
-</div>
-<hr width="100%"/>
-
-<pre><span id="VALbool_of_string"><span class="keyword">val</span> bool_of_string</span> : <code class="type">string -&gt; bool</code></pre><div class="info ">
-<code class="code">bool_of_string "0" = false</code> and <code class="code">bool_of_string "false" = false</code>.
-  <code class="code">bool_of_string</code> returns <code class="code">true</code> for any other value.<br/>
-</div>
-
-<pre><span id="VALread_modules"><span class="keyword">val</span> read_modules</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><div class="info ">
-<code class="code">read_modules stog</code> read all modules found in directories of the
-  list <code class="code">stog.stog_mod_dirs</code> and return the modified stog structure.<br/>
-</div>
-
-<pre><span id="VALdoc_of_file"><span class="keyword">val</span> doc_of_file</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; string -&gt; <a href="Stog_types.html#TYPEdoc">Stog_types.doc</a></code></pre><div class="info ">
-Read an document from the given absolute filename. The file
-     must be "under" the directory in <code class="code">stog_dir</code> of the <code class="code">stog</code> parameter.<br/>
-</div>
-
-<pre><span id="VALread_stog"><span class="keyword">val</span> read_stog</span> : <code class="type">string -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><div class="info ">
-Build a <a href="Stog_types.html#TYPEstog"><code class="code">Stog_types.stog</code></a> structure from the given directory.<br/>
-</div>
-
-<pre><span id="VALfill_doc_from_atts_and_subs"><span class="keyword">val</span> fill_doc_from_atts_and_subs</span> : <code class="type"><a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       Xtmpl_rewrite.attributes -&gt; <a href="Stog_types.html#TYPEbody">Stog_types.body</a> -&gt; <a href="Stog_types.html#TYPEdoc">Stog_types.doc</a></code></pre><div class="info ">
-</div>
-</div>
-
-
-
-
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
+</p>
 </div> <!-- #page -->
 </body>
 </html>
-

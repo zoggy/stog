@@ -1,184 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : &lt;ocaml-eval&gt; -  evaluate OCaml code</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  
-  <div class="page-title">&lt;ocaml-eval&gt; -  evaluate OCaml code</div>
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-
-
-
-<div class="section"><div aria-level="1" class="section-title" id="synopsis" role="heading">Synopsis</div>
-<pre class="code-xml"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> </span><span class="">directory</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std"> </span><span class="">in-xml-block</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">error-exc</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
-      </span><span class="">highlight-locs</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">print-locs</span><span class="hl std">=</span><span class="hl str">"false|true"</span><span class="hl std">
-      </span><span class="">session</span><span class="hl std">=</span><span class="hl str">""</span><span class="hl std">
-      </span><span class="">show-code</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">show-stdout</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">toplevel</span><span class="hl std">=</span><span class="hl str">"false"</span><span class="hl std">
-</span><span class="hl kwa">&gt;</span><span class="hl std"> command </span><span class="hl kwa">&lt;/ocaml-eval</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span></pre>
-</div>
-<div class="section"><div aria-level="1" class="section-title" id="descr" role="heading">Description</div>
-
-<p>
-Evaluate the given OCaml code and return its output.
-See examples in <a href="https://zoggy.github.io/stog/posts/displaying-evaluated-ocaml-code.html">Displaying evaluated OCaml code</a>
-and <a href="https://zoggy.github.io/stog/posts/ocaml-sessions.html">OCaml sessions</a>.
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
 </p>
-<dl class="rule-options">
-
-<dt class="rule-option">directory</dt>
-<dl>
-If given, the session is executed in this directory,
-else the session is executed in the current working directory.
-Note that if the session already exists, its directory is not changed so
-you only have to specify the directory once, for the first use of
-a session with <span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span></span>.
-</dl>
-
-
-
-<dt class="rule-option">id</dt>
-<dl>
-If given and <code>in-xml-block</code> is true, the given id is given to
-the root XML element of the result.
-</dl>
-
-
-
-<dt class="rule-option">in-xml-block<span> [="true"]</span></dt>
-<dl>
-Embed code and result in XML elements, except if set to <code>false</code>
-</dl>
-
-
-
-<dt class="rule-option">error-exc<span> [="true"]</span></dt>
-<dl>
-By default, an error in evaluation of the given code will raise
-an error. Setting this option to <code>false</code> will result
-is having the error message in the result of the rule. This is useful
-to provide examples of errors in a documentation.
-</dl>
-
-
-
-<dt class="rule-option">highlight-locs<span> [="true"]</span></dt>
-<dl>
-Warning and error locations are shown using classes. Set this option
-to <code>false</code> to prevent adding such classes.
-</dl>
-
-
-
-<dt class="rule-option">print-locs<span> [="not highlight-locs"]</span></dt>
-<dl>
-Specify whether to print warning and error locations or not.
-If <code>highlight-locs</code> is <code>true</code>, then default
-value of <code>print-locs</code> is <code>false</code>, else it
-is <code>true</code>.
-</dl>
-
-
-
-<dt class="rule-option">session</dt>
-<dl>
-Specify the name of the OCaml session to use to evaluate the given code.
-If no name is specified, the default session is used. Else, if the
-given session does not exist yet, it is created, eventually using the
-given <code>directory</code> option. This allows to evaluate OCaml
-code in different contexts, to prevent poluting a session's environment.
-</dl>
-
-
-
-<dt class="rule-option">show-code<span> [="true"]</span></dt>
-<dl>
-Set to <code>false</code> not to have the original code in the result of
-the rule.
-</dl>
-
-
-
-<dt class="rule-option">show-stdout<span> [="same as toplevel"]</span></dt>
-<dl>
-Default is <code>true</code> if the <code>toplevel</code> option is
-<code>true</code>, else <code>false</code>.
-Set to <code>false</code> not to have the output of the code
-in the result of the rule. Note that stderr is only kept in case
-of error in toplevel mode.
-</dl>
-
-
-
-<dt class="rule-option">toplevel<span> [="false"]</span></dt>
-<dl>
-Set to <code>true</code> to enable toplevel-like output for the rule.
-This includes a prompt before the code and the result of evaluation
-(types, values, ...).
-</dl>
-
-
-</dl>
-
-</div>
-
-
-
-
-
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
 </div> <!-- #page -->
 </body>
 </html>

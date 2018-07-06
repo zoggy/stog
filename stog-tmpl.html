@@ -3,167 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog-tmpl</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  
-  <div class="page-title">Stog-tmpl</div>
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-
-
-
-<p><code>stog-tmpl</code> is a command-line utility to generate
-website skeletons.
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
 </p>
-<pre class="code-sh">Usage<span class="hl opt">:</span> stog-tmpl <span class="hl opt">[</span>options<span class="hl opt">]</span>
-where options are<span class="hl opt">:</span>
-  <span class="hl opt">--</span>templates  print stog templates directory and <span class="hl kwb">exit</span>
-  <span class="hl opt">--</span>modules  print stog modules directory and <span class="hl kwb">exit</span>
-  <span class="hl opt">-</span>d <span class="hl opt">&lt;</span>dir<span class="hl opt">&gt;</span> output to <span class="hl opt">&lt;</span>dir<span class="hl opt">&gt;</span> instead of current directory
-  <span class="hl opt">-</span>t <span class="hl opt">&lt;</span>s<span class="hl opt">&gt;</span> <span class="hl kwb">set</span> template to use<span class="hl opt">;</span> default is <span class="hl str">"software"</span>
-  <span class="hl opt">-</span>l  list available templates and <span class="hl kwb">exit</span>
-  <span class="hl opt">--</span>site-title <span class="hl opt">&lt;</span>s<span class="hl opt">&gt;</span> <span class="hl kwb">set</span> site title
-  <span class="hl opt">--</span>sw-name <span class="hl opt">&lt;</span>name<span class="hl opt">&gt;</span> <span class="hl kwb">set</span> name of the software <span class="hl kwa">in</span> the generated files
-  <span class="hl opt">-</span><span class="hl kwb">help</span>  Display this list of options
-  <span class="hl opt">--</span><span class="hl kwb">help</span>  Display this list of options</pre>
-<p>In the example below, we create a skeleton for the website of a software.
-The web site title will be "Foobar", and the software name is "foobar":
-</p>
-<pre class="code-sh">mkdir tmp
-stog-tmpl \
-  <span class="hl opt">-</span>d tmp <span class="hl slc"># output to tmp instead of current directory \</span>
-  <span class="hl opt">-</span>t software <span class="hl slc"># use the software template (which is the default) \</span>
-  <span class="hl opt">--</span>site-title Foobar <span class="hl slc"># set website title \</span>
-  <span class="hl opt">--</span>sw-name foobar <span class="hl slc"># set software name</span></pre>
-<p>
-This result in the following tree of files:
-</p>
-<pre class="code-txt"><span class="hl std">stog-tmpl-tree
-|-- about.html
-|-- blog.html
-|-- doc.html
-|-- download.html
-|-- extlink.png
-|-- index.html
-|-- Makefile
-|-- next.png
-|-- posts
-|   |-- first-post.html
-|   `-- release-0.1.0.html
-|-- rss.png
-`-- style.css
-</span></pre>
-<p>
-The generated <code>Makefile</code> defines various targets, including:
-</p>
-<dl>
-<dt><code>site</code></dt>
-<dd>compile the site</dd>
-<dt><code>test</code></dt>
-<dd>compile the site in test mode, i.e. using the destination directory as base url</dd>
-<dt><code>server</code></dt>
-<dd>run a local server on <code>http://localhost:8080/preview/index.html</code>
-to get a live preview of the website while you edit the source files.</dd>
-</dl>
-
-
-
-
-
-<p class="doccode alert alert-info">
-For information you can see the <a href="#pagesource"> source code of the page</a>.
-</p>
-<div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Stog-tmpl"</span><span class="hl std">
-</span><span class="">navbar-doc</span><span class="hl std">=</span><span class="hl str">"active"</span><span class="hl std">
-</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">stog-tmpl</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> is a command-line utility to generate
-website skeletons.
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;command-line</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">"1"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">"./stog-tmpl-usage.txt"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">In the example below, we create a skeleton for the website of a software.
-The web site title will be "Foobar", and the software name is "foobar":
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
-mkdir tmp
-stog-tmpl \
-  -d tmp # output to tmp instead of current directory \
-  -t software # use the software template (which is the default) \
-  --site-title Foobar # set website title \
-  --sw-name foobar # set software name
-</span><span class="hl kwa">&lt;/command-line</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-This result in the following tree of files:
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;hcode</span><span class="hl std"> </span><span class="">defer_</span><span class="hl std">=</span><span class="hl str">"1"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;include</span><span class="hl std"> </span><span class="">file</span><span class="hl std">=</span><span class="hl str">"./stog-tmpl-tree.txt"</span><span class="hl std"> </span><span class="">raw</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl kwa">/&gt;</span><span class="hl kwa">&lt;/hcode</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-The generated </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">Makefile</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> defines various targets, including:
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dl</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dt</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">site</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/dt</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dd</span><span class="hl kwa">&gt;</span><span class="hl std">compile the site</span><span class="hl kwa">&lt;/dd</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dt</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">test</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/dt</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dd</span><span class="hl kwa">&gt;</span><span class="hl std">compile the site in test mode, i.e. using the destination directory as base url</span><span class="hl kwa">&lt;/dd</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dt</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">server</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/dt</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;dd</span><span class="hl kwa">&gt;</span><span class="hl std">run a local server on </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">http://localhost:8080/preview/index.html</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std">
-to get a live preview of the website while you edit the source files.</span><span class="hl kwa">&lt;/dd</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/dl</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/page</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span></pre>
-</div>
-
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
 </div> <!-- #page -->
 </body>
 </html>

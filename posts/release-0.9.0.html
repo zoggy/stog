@@ -1,142 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog 0.9.0</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="&lt;navbar-doc/&gt;"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  <div class="doc-navbar">
-      <div class="navleft"><a href="https://zoggy.github.io/stog/posts/2013-04-23-stog-at-inria.html">Talk about Stog at INRIA</a></div>
-      <div class="navright"><a href="https://zoggy.github.io/stog/posts/stog-rdf-0.9.0.html">Stog-rdf 0.9.0</a></div>
-    </div>
-  <div class="page-title">Stog 0.9.0</div>
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-<div class="date">September 24, 2013</div>
-
-
-<p>
-Release 0.9.0 of stog is available from the <a href="https://zoggy.github.io/stog/install.html">Installation</a> page.
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
 </p>
-
-<ul id="changes">
-<li>New option follow-symlinks in <span class="icode"><span class="hl std">.stog/config</span></span> to follow symlinks
-  or not when building the file and directory source tree,</li>
-<li>For documents with doctype=html, prevent self-closing of tags, except
-    <span class="ext-a"><a href="http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-documents">HTML5 void documents</a></span>,</li>
-<li>New <a href="https://zoggy.github.io/stog/odoc.html">ocamldoc generator</a> (<span class="icode"><span class="hl std">odoc_stog.cm{o,xs}</span></span>)
-    to embed ocamldoc-generated documentation into sites generated with stog,</li>
-<li><span class="icode"><span class="hl std">&lt;doc-*&gt;</span></span> predefined functions handle a
-    <span class="icode"><span class="hl std">doc-hid="hid of document"</span></span> attribute, to access information about
-    another document rather than the current one,</li>
-<li>Fix <a href="https://zoggy.github.io/stog/module_base.html#ocaml-eval">ocaml-eval</a>: use return of <span class="icode"><span class="hl std">Toploop.execute_phrase</span></span>
-    to consider catched exceptions as errors if <span class="icode"><span class="hl std">error-exc="true"</span></span>,</li>
-<li>Fix: allow list of CDATA in ocaml code,</li>
-<li>New <a href="https://zoggy.github.io/stog/running.html#optiondef"><span class="icode"><span class="hl std">--def</span></span> command-line option</a>
-    to define a global rule on command line,</li>
-<li>New <a href="https://zoggy.github.io/stog/module_base.html#doc-navpath">doc-navpath</a> rule, to create a navigation bar,</li>
-<li>Fix Malformed_URL bug when generating with a site-url having an empty path,</li>
-<li><a href="https://zoggy.github.io/stog/module_base.html#hcode">hcode</a> and <a href="https://zoggy.github.io/stog/module_base.html#icode">icode</a> now keep id attribute
-    in <span class="icode"><span class="hl kwa">&lt;pre</span><span class="hl kwa">&gt;</span></span> or <span class="icode"><span class="hl kwa">&lt;span</span><span class="hl kwa">&gt;</span></span> resulting document,</li>
-<li><a href="https://zoggy.github.io/stog/module_base.html#late-inc">Module Base</a> handles id attribute to redefine the id of the included node,</li>
-<li>New <span class="icode"><span class="hl std">filter</span></span> attribute for the <a href="https://zoggy.github.io/stog/module_base.html#documents">documents</a> rule,</li>
-<li><a href="https://zoggy.github.io/stog/module_base.html#documents">documents</a> handles ','- or ';'-separated list of document types.</li>
-</ul>
-
-
-
-
-
-
-<p class="doccode alert alert-info">
-For information you can see the <a href="#pagesource"> source code of the page</a>.
-</p>
-<div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Stog 0.9.0"</span><span class="hl std">
-</span><span class="">date</span><span class="hl std">=</span><span class="hl str">"2013/09/24"</span><span class="hl std">
-</span><span class="">topics</span><span class="hl std">=</span><span class="hl str">"stog"</span><span class="hl std">
-</span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">"release"</span><span class="hl std">
-</span><span class="">published</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
-</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-Release 0.9.0 of stog is available from the </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"/install"</span><span class="hl kwa">/&gt;</span><span class="hl std"> page.
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"changes"</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">New option follow-symlinks in </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">.stog/config</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> to follow symlinks
-  or not when building the file and directory source tree,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">For documents with doctype=html, prevent self-closing of tags, except
-    </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-documents"</span><span class="hl kwa">&gt;</span><span class="hl std">HTML5 void documents</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">New </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"odoc"</span><span class="hl kwa">&gt;</span><span class="hl std">ocamldoc generator</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> (</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">odoc_stog.cm{o,xs}</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">)
-    to embed ocamldoc-generated documentation into sites generated with stog,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">doc-*</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> predefined functions handle a
-    </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">doc-hid="hid of document"</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute, to access information about
-    another document rather than the current one,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Fix </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#ocaml-eval"</span><span class="hl kwa">/&gt;</span><span class="hl std">: use return of </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">Toploop.execute_phrase</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">
-    to consider catched exceptions as errors if </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">error-exc="true"</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Fix: allow list of CDATA in ocaml code,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">New </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"running#optiondef"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--def</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> command-line option</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">
-    to define a global rule on command line,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">New </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#doc-navpath"</span><span class="hl kwa">/&gt;</span><span class="hl std"> rule, to create a navigation bar,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">Fix Malformed_URL bug when generating with a site-url having an empty path,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#hcode"</span><span class="hl kwa">/&gt;</span><span class="hl std"> and </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#icode"</span><span class="hl kwa">/&gt;</span><span class="hl std"> now keep id attribute
-    in </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">pre</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> or </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">span</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> resulting document,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#late-inc"</span><span class="hl kwa">/&gt;</span><span class="hl std"> handles id attribute to redefine the id of the included node,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">New </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">filter</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute for the </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#documents"</span><span class="hl kwa">/&gt;</span><span class="hl std"> rule,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#documents"</span><span class="hl kwa">/&gt;</span><span class="hl std"> handles ','- or ';'-separated list of document types.</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span></pre>
-</div>
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
 </div> <!-- #page -->
 </body>
 </html>

@@ -1,208 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog library reference documentation : Stog_types.Graph</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  
-  
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-
-
-<div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_types.Int_set.html" title="Stog_types.Int_set">Previous</a>
- <a class="up" href="Stog_types.html" title="Stog_types">Up</a>
- <a class="post" href="Stog_types.Depset.html" title="Stog_types.Depset">Next</a>
-</div>
-<h1>Module <a href="type_Stog_types.Graph.html">Stog_types.Graph</a></h1>
-
-<pre><span class="keyword">module</span> Graph: <code class="type"><a href="Stog_graph.S.html">Stog_graph.S</a></code><code class="type">  with type key = doc_id and type edge_data = edge_type</code></pre><hr width="100%"/>
-
-<pre><span id="TYPEkey"><span class="keyword">type</span> key</span> </pre>
-<div class="info ">
-The type of vertices<br/>
-</div>
-
-
-<pre><span id="TYPEedge_data"><span class="keyword">type</span> edge_data</span> </pre>
-<div class="info ">
-The type of edge annotations<br/>
-</div>
-
-
-<pre><span id="TYPEt"><span class="keyword">type</span> t</span> </pre>
-<div class="info ">
-A graph<br/>
-</div>
-
-
-<pre><span id="VALcreate"><span class="keyword">val</span> create</span> : <code class="type">unit -&gt; <a href="Stog_graph.S.html#TYPEt">t</a></code></pre><div class="info ">
-Creating an empty graph.<br/>
-</div>
-
-<pre><span id="VALmarshal"><span class="keyword">val</span> marshal</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt; string</code></pre><div class="info ">
-Marshal the given graph.<br/>
-</div>
-
-<pre><span id="VALunmarshal"><span class="keyword">val</span> unmarshal</span> : <code class="type">string -&gt; <a href="Stog_graph.S.html#TYPEt">t</a></code></pre><div class="info ">
-Unmarshal.<br/>
-</div>
-
-<pre><span id="VALsucc"><span class="keyword">val</span> succ</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>       <a href="Stog_graph.S.html#TYPEkey">key</a> -&gt; (<a href="Stog_graph.S.html#TYPEkey">key</a> * <a href="Stog_graph.S.html#TYPEedge_data">edge_data</a>) list</code></pre><div class="info ">
-<code class="code">succ g a</code> returns the successors of a vertice as a list of pairs
-         <code class="code">(successor, edge annotation)</code>. A vertice <code class="code">b</code> can appear more than once in the
-         list if there are edges with different annotations between <code class="code">a</code> and <code class="code">b</code>.
-         If the vertice does not exist in the graph, the empty list is returned.<br/>
-</div>
-
-<pre><span id="VALpred"><span class="keyword">val</span> pred</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>       <a href="Stog_graph.S.html#TYPEkey">key</a> -&gt; (<a href="Stog_graph.S.html#TYPEkey">key</a> * <a href="Stog_graph.S.html#TYPEedge_data">edge_data</a>) list</code></pre><div class="info ">
-Same as <a href="Stog_graph.S.html#VALsucc"><code class="code">Stog_graph.S.succ</code></a> but returns the predecessors.<br/>
-</div>
-
-<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>       <a href="Stog_graph.S.html#TYPEkey">key</a> * <a href="Stog_graph.S.html#TYPEkey">key</a> * <a href="Stog_graph.S.html#TYPEedge_data">edge_data</a> -&gt;<br/>       <a href="Stog_graph.S.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">add g (a, b, data)</code> adds to the graph <code class="code">g</code> an edge from <code class="code">a</code> to <code class="code">b</code>
-         annotated with <code class="code">data</code>. The edge data comparison function is used
-         to know whether the same edge with the same annotation already exists. If so,
-         no new edge is added.<br/>
-</div>
-
-<pre><span id="VALrem"><span class="keyword">val</span> rem</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>       <a href="Stog_graph.S.html#TYPEkey">key</a> * <a href="Stog_graph.S.html#TYPEkey">key</a> -&gt;<br/>       (<a href="Stog_graph.S.html#TYPEedge_data">edge_data</a> -&gt; bool) -&gt; <a href="Stog_graph.S.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">rem g (a, b) pred</code> removes from graph <code class="code">g</code> the edges from <code class="code">a</code> to <code class="code">b</code>
-         whose annotations satisfy the given predicate <code class="code">pred</code>.<br/>
-</div>
-
-<pre><span id="VALrem_all"><span class="keyword">val</span> rem_all</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt; <a href="Stog_graph.S.html#TYPEkey">key</a> * <a href="Stog_graph.S.html#TYPEkey">key</a> -&gt; <a href="Stog_graph.S.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">rem_all g (a, b)</code> removes from graph <code class="code">g</code> all edges from <code class="code">a</code> to <code class="code">b</code>.<br/>
-</div>
-
-<pre><span id="VALisolate"><span class="keyword">val</span> isolate</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt; <a href="Stog_graph.S.html#TYPEkey">key</a> -&gt; <a href="Stog_graph.S.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">isolate g a</code> removes all edges from and to vertice <code class="code">a</code>.<br/>
-</div>
-
-<pre><span id="VALremove_node"><span class="keyword">val</span> remove_node</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt; <a href="Stog_graph.S.html#TYPEkey">key</a> -&gt; <a href="Stog_graph.S.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">remove_node g a</code> removes the vertice <code class="code">a</code> from the graph <code class="code">g</code>.<br/>
-</div>
-
-<pre><span id="VALpred_roots"><span class="keyword">val</span> pred_roots</span> : <code class="type">?ignore_deps:<a href="Stog_graph.S.html#TYPEedge_data">edge_data</a> list -&gt;<br/>       <a href="Stog_graph.S.html#TYPEt">t</a> -&gt; <a href="Stog_graph.S.html#TYPEkey">key</a> list</code></pre><div class="info ">
-<code class="code">pred_roots g</code> returns the list of vertices having no predecessor in the graph.<br/>
-</div>
-
-<pre><span id="VALsucc_roots"><span class="keyword">val</span> succ_roots</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt; <a href="Stog_graph.S.html#TYPEkey">key</a> list</code></pre><div class="info ">
-Same as <a href="Stog_graph.S.html#VALpred_roots"><code class="code">Stog_graph.S.pred_roots</code></a> but for vertices with no successor.<br/>
-</div>
-
-<pre><span id="VALrecursive_succs"><span class="keyword">val</span> recursive_succs</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>       ?pred:(<a href="Stog_graph.S.html#TYPEedge_data">edge_data</a> -&gt; bool) -&gt;<br/>       <a href="Stog_graph.S.html#TYPEkey">key</a> -&gt; <a href="Stog_graph.S.html#TYPEkey">key</a> list</code></pre><div class="info ">
-<code class="code">recursive_succs t key</code> returns the list of all nodes "under" the given
-        one; the given predicate can be used to follow only some edges.<br/>
-</div>
-
-<pre><span id="VALrecursive_preds"><span class="keyword">val</span> recursive_preds</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>       ?pred:(<a href="Stog_graph.S.html#TYPEedge_data">edge_data</a> -&gt; bool) -&gt;<br/>       <a href="Stog_graph.S.html#TYPEkey">key</a> -&gt; <a href="Stog_graph.S.html#TYPEkey">key</a> list</code></pre><div class="info ">
-Same as <a href="Stog_graph.S.html#VALrecursive_succs"><code class="code">Stog_graph.S.recursive_succs</code></a> but for predecessors.<br/>
-</div>
-
-<pre><span id="VALreverse"><span class="keyword">val</span> reverse</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt; <a href="Stog_graph.S.html#TYPEt">t</a></code></pre><div class="info ">
-<code class="code">reverse g</code> return a graph where all edges of <code class="code">g</code> are reversed, i.e. each
-         edge from <code class="code">a</code> to <code class="code">b</code> is replaced by an edge from <code class="code">b</code> to <code class="code">a</code>, keeping the
-         associated edge annotations.<br/>
-</div>
-
-<pre><span id="VALfold_succ"><span class="keyword">val</span> fold_succ</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>       (<a href="Stog_graph.S.html#TYPEkey">key</a> -&gt;<br/>        (<a href="Stog_graph.S.html#TYPEkey">key</a> * <a href="Stog_graph.S.html#TYPEedge_data">edge_data</a>) list -&gt; 'a -&gt; 'a) -&gt;<br/>       'a -&gt; 'a</code></pre>
-<pre><span id="VALfold_pred"><span class="keyword">val</span> fold_pred</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>       (<a href="Stog_graph.S.html#TYPEkey">key</a> -&gt;<br/>        (<a href="Stog_graph.S.html#TYPEkey">key</a> * <a href="Stog_graph.S.html#TYPEedge_data">edge_data</a>) list -&gt; 'a -&gt; 'a) -&gt;<br/>       'a -&gt; 'a</code></pre>
-<pre><span id="VALiter_succ"><span class="keyword">val</span> iter_succ</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>       (<a href="Stog_graph.S.html#TYPEkey">key</a> -&gt; (<a href="Stog_graph.S.html#TYPEkey">key</a> * <a href="Stog_graph.S.html#TYPEedge_data">edge_data</a>) list -&gt; unit) -&gt;<br/>       unit</code></pre><div class="info ">
-<code class="code">iter_succ g f</code> calls f on each vertice and its successors as returned
-         by <a href="Stog_graph.S.html#VALsucc"><code class="code">Stog_graph.S.succ</code></a>.<br/>
-</div>
-
-<pre><span id="VALiter_pred"><span class="keyword">val</span> iter_pred</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>       (<a href="Stog_graph.S.html#TYPEkey">key</a> -&gt; (<a href="Stog_graph.S.html#TYPEkey">key</a> * <a href="Stog_graph.S.html#TYPEedge_data">edge_data</a>) list -&gt; unit) -&gt;<br/>       unit</code></pre><div class="info ">
-Same as <a href="Stog_graph.S.html#VALiter_succ"><code class="code">Stog_graph.S.iter_succ</code></a> but with predecessors of each vertice.<br/>
-</div>
-
-<pre><span id="VALdot_of_graph"><span class="keyword">val</span> dot_of_graph</span> : <code class="type">?f_edge:(<a href="Stog_graph.S.html#TYPEedge_data">edge_data</a> -&gt; string * (string * string) list) -&gt;<br/>       f_node:(<a href="Stog_graph.S.html#TYPEkey">key</a> -&gt; string * string * (string * string) list) -&gt;<br/>       <a href="Stog_graph.S.html#TYPEt">t</a> -&gt; string</code></pre><div class="info ">
-<code class="code">dot_of_graph ~f_node g</code> returns the graphviz code to represent the
-         given graph.<br/>
-</div>
-<div class="param_info"><code class="code">f_edge</code> : can be specified to indicate a label and attribute from
-         an edge annotation.</div>
-<div class="param_info"><code class="code">f_node</code> : is used to, from a vertice, return a unique id, a label
-         and attribute of a vertice.</div>
-
-<pre><span id="VALnodes_by_pred_order"><span class="keyword">val</span> nodes_by_pred_order</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt; <a href="Stog_graph.S.html#TYPEkey">key</a> list</code></pre><div class="info ">
-<code class="code">nodes_by_pred_order g</code> returns a sorted list of vertices. Vertices with
-           no predecessor are first in the list. If an edge exists from <code class="code">a</code> to <code class="code">b</code>,
-           then <code class="code">a</code> will be before <code class="code">b</code> in the list. Vertices beloning to a cycle
-           will not appear in the list.<br/>
-</div>
-
-<pre><span id="VALshortest_path"><span class="keyword">val</span> shortest_path</span> : <code class="type"><a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>       (<a href="Stog_graph.S.html#TYPEt">t</a> -&gt;<br/>        <a href="Stog_graph.S.html#TYPEkey">key</a> * <a href="Stog_graph.S.html#TYPEkey">key</a> -&gt;<br/>        (float * <a href="Stog_graph.S.html#TYPEedge_data">edge_data</a>) option) -&gt;<br/>       <a href="Stog_graph.S.html#TYPEkey">key</a> * <a href="Stog_graph.S.html#TYPEkey">key</a> -&gt;<br/>       (<a href="Stog_graph.S.html#TYPEkey">key</a> * <a href="Stog_graph.S.html#TYPEedge_data">edge_data</a> * <a href="Stog_graph.S.html#TYPEkey">key</a>) list</code></pre><div class="info ">
-<code class="code">shortest_path g cost (a, b)</code> computes the shortest path from <code class="code">a</code> to <code class="code">b</code>
-         according to the <code class="code">cost</code> function. This function must return a
-         stricly positive value and the edge edge annotation used to get
-         this value (it may be possible to have different costs to go from
-         <code class="code">x</code> to <code class="code">y</code> if there are various edges from <code class="code">x</code> to <code class="code">y</code>). The <code class="code">cost g x y</code>
-         function must return <code class="code">None</code> if there is no edge from <code class="code">x</code> to <code class="code">y</code>.
-<div class="vertical-space"> </div>
-
-         The algorithm used is described here:
-           <a href="http://tide4javascript.com/?s=Dijkstra">Djikstra</a>.<br/>
-</div>
-</div>
-
-
-
-
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
+</p>
 </div> <!-- #page -->
 </body>
 </html>
-

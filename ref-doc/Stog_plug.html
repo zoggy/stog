@@ -1,131 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog library reference documentation : Stog_plug</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  
-  
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-
-
-<div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_path.html" title="Stog_path">Previous</a>
- <a class="up" href="index.html" title="Index">Up</a>
- <a class="post" href="Stog_server_mode.html" title="Stog_server_mode">Next</a>
-</div>
-<h1>Module <a href="type_Stog_plug.html">Stog_plug</a></h1>
-
-<pre><span class="keyword">module</span> Stog_plug: <code class="code">sig</code> <a href="Stog_plug.html">..</a> <code class="code">end</code></pre><div class="info module top">
-Interface for plugins.
-<div class="vertical-space"> </div>
-
-  Even if all modules are accessible from dynamically loaded code,
-  this <a href="Stog_plug.html"><code class="code">Stog_plug</code></a> module should remain compatible from one release to
-  another.<br/>
-</div>
-<hr width="100%"/>
-
-<pre><span class="keyword">module</span> <a href="Stog_plug.XR.html">XR</a>: <code class="type">Xtmpl_rewrite</code></pre>
-<pre><span class="keyword">module</span> <a href="Stog_plug.Xml.html">Xml</a>: <code class="type">Xtmpl_xml</code></pre>
-<pre><span id="VALplugin_config_file"><span class="keyword">val</span> plugin_config_file</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; string -&gt; string</code></pre><div class="info ">
-<code class="code">plugin_config_file stog plugin_name</code> returns the configuration file
-  for this plugin name, for consistency purpose.<br/>
-</div>
-
-<pre><span id="VALregister_lang"><span class="keyword">val</span> register_lang</span> : <code class="type"><a href="Stog_intl.html#TYPElang_abbrev">Stog_intl.lang_abbrev</a> -&gt; <a href="Stog_intl.html#TYPElang_data">Stog_intl.lang_data</a> -&gt; unit</code></pre>
-<pre><span id="VALregister_html_base_rule"><span class="keyword">val</span> register_html_base_rule</span> : <code class="type">Xml.name -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> XR.callback -&gt; unit</code></pre><div class="info ">
-<code class="code">register_html_base_rule name f</code> registers a new function associated
-     to <code class="code">name</code> in the set of base rules of the "html" predefined module.<br/>
-</div>
-
-<pre><span id="VALdoc_by_href"><span class="keyword">val</span> doc_by_href</span> : <code class="type">?typ:string -&gt;<br/>       ?src_doc:<a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       'a -&gt;<br/>       'a XR.env -&gt;<br/>       ?loc:Xml.loc -&gt;<br/>       string -&gt; 'a * (<a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> * string * string option) option</code></pre><div class="info ">
-<code class="code">doc_by_href ?typ ?src_doc stog env href</code> returns the document, path and
-  optional if matching the given href string, of the form <code class="code">path[#id]</code>.
-  Return None if the document could not be found, of the id could not be found,
-  and an error is issued.<br/>
-</div>
-<div class="param_info"><code class="code">src_doc</code> : can be used to specify the source document, to improve
-  the error message.</div>
-
-<pre><span id="VALmk_block_node"><span class="keyword">val</span> mk_block_node</span> : <code class="type">id:string -&gt;<br/>       ?label:XR.tree list -&gt;<br/>       ?clas:string -&gt;<br/>       title:XR.tree list -&gt;<br/>       ?counter:string -&gt;<br/>       short_fmt:XR.tree list -&gt; long_fmt:XR.tree list -&gt; XR.tree list -&gt; XR.tree</code></pre><div class="info ">
-<code class="code">mk_block_node ...</code> creates a <code class="code">&lt;block ...</code> with the given information.<br/>
-</div>
-<br/>
-<div class="section-title" id="2_Outputtingmessage">Outputting message.</div><br/>
-
-<pre><span id="VALverbose"><span class="keyword">val</span> verbose</span> : <code class="type">?info:string -&gt; ?level:int -&gt; string -&gt; unit</code></pre>
-<pre><span id="VALset_print_verbose"><span class="keyword">val</span> set_print_verbose</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre>
-<pre><span id="VALwarning"><span class="keyword">val</span> warning</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; ?info:string -&gt; string -&gt; unit</code></pre>
-<pre><span id="VALset_print_warning"><span class="keyword">val</span> set_print_warning</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre>
-<pre><span id="VALerror"><span class="keyword">val</span> error</span> : <code class="type">?loc:Xtmpl_xml.loc -&gt; ?info:string -&gt; ?fatal:int -&gt; string -&gt; unit</code></pre>
-<pre><span id="VALset_print_error"><span class="keyword">val</span> set_print_error</span> : <code class="type">(string -&gt; unit) -&gt; unit</code></pre><br/>
-<div class="section-title" id="2_Dependencies">Dependencies</div><br/>
-
-<pre><span id="TYPEdependency"><span class="keyword">type</span> dependency</span> = <code class="type"><a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> <a href="Stog_types.html#TYPEdependency">Stog_types.dependency</a></code> </pre>
-
-
-<pre><span id="VALadd_dep"><span class="keyword">val</span> add_dep</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt; <a href="Stog_plug.html#TYPEdependency">dependency</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a></code></pre><div class="info ">
-For a given document, add a dependency on a file or another document.<br/>
-</div>
-</div>
-
-
-
-
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
+</p>
 </div> <!-- #page -->
 </body>
 </html>
-

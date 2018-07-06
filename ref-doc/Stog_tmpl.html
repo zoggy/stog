@@ -1,121 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog library reference documentation : Stog_tmpl</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="&lt;navbar-blog/&gt;"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  
-  
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-
-
-<div class="ocamldoc-page">
-<div class="navbar"><a class="pre" href="Stog_tmap.html" title="Stog_tmap">Previous</a>
- <a class="up" href="index.html" title="Index">Up</a>
- <a class="post" href="Stog_trie.html" title="Stog_trie">Next</a>
-</div>
-<h1>Module <a href="type_Stog_tmpl.html">Stog_tmpl</a></h1>
-
-<pre><span class="keyword">module</span> Stog_tmpl: <code class="code">sig</code> <a href="Stog_tmpl.html">..</a> <code class="code">end</code></pre><div class="info module top">
-Default templates.<br/>
-</div>
-<hr width="100%"/>
-
-<pre><span id="TYPEcontents"><span class="keyword">type</span> contents</span> = <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * Xtmpl_rewrite.tree list</code> </pre>
-
-
-<pre><span id="VALget_template_file"><span class="keyword">val</span> get_template_file</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt; <a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt; ?loc:Xtmpl_xml.loc -&gt; string -&gt; string</code></pre><div class="info ">
-<code class="code">get_template_file stog doc file</code> returns absolute filename of the given
-  template filename.
-  If <code class="code">file</code> is relative and implicit then the file is looked up the
-  stog include directories.
-  If <code class="code">file</code> is relative and not implicit (i.e. it starts with . or ..), it
-  is concatenated to the document source file directory.
-  Else (the filename is absolute), it is returned as is.<br/>
-<b>Raises</b> <code>Template_file_not_found</code> if no include directory contains the
-  given file (when the file is relative an implicit).<br/>
-</div>
-
-<pre><span id="VALread_template_file"><span class="keyword">val</span> read_template_file</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       <a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       ?depend:bool -&gt;<br/>       ?raw:bool -&gt;<br/>       ?loc:Xtmpl_xml.loc -&gt; string -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * Xtmpl_rewrite.tree list</code></pre><div class="info ">
-<code class="code">read_template_file stog doc file</code> returns the content of the given
-  template filename, after calling <a href="Stog_tmpl.html#VALget_template_file"><code class="code">Stog_tmpl.get_template_file</code></a> to get the final
-  filename.<br/>
-<b>Raises</b> <code>Template_file_not_found</code> (see <a href="Stog_tmpl.html#VALget_template_file"><code class="code">Stog_tmpl.get_template_file</code></a>)<br/>
-</div>
-<div class="param_info"><code class="code">depend</code> : indicate whether to add a dependency from the document
-  on the file. Default is <code class="code">true</code>.</div>
-<div class="param_info"><code class="code">raw</code> : indicate whether to read the template as XML (<code class="code">false</code>) or
-  as CData (<code class="code">true</code>). Default is <code class="code">false</code>.</div>
-
-<pre><span id="VALget_template"><span class="keyword">val</span> get_template</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       ?doc:<a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       <a href="Stog_tmpl.html#TYPEcontents">contents</a> -&gt; string -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * Xtmpl_rewrite.tree list</code></pre>
-<pre><span id="VALget_template_doc"><span class="keyword">val</span> get_template_doc</span> : <code class="type"><a href="Stog_types.html#TYPEstog">Stog_types.stog</a> -&gt;<br/>       ?doc:<a href="Stog_types.html#TYPEdoc">Stog_types.doc</a> -&gt;<br/>       <a href="Stog_tmpl.html#TYPEcontents">contents</a> -&gt;<br/>       string -&gt; <a href="Stog_types.html#TYPEstog">Stog_types.stog</a> * Xtmpl_rewrite.tree Xtmpl_xml.doc</code></pre>
-<pre><span id="VALpage"><span class="keyword">val</span> page</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre>
-<pre><span id="VALby_keyword"><span class="keyword">val</span> by_keyword</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre>
-<pre><span id="VALby_topic"><span class="keyword">val</span> by_topic</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre>
-<pre><span id="VALby_month"><span class="keyword">val</span> by_month</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre>
-<pre><span id="VALdoc_in_list"><span class="keyword">val</span> doc_in_list</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre>
-<pre><span id="VALkeyword"><span class="keyword">val</span> keyword</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre>
-<pre><span id="VALtopic"><span class="keyword">val</span> topic</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre>
-<pre><span id="VALrss"><span class="keyword">val</span> rss</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre>
-<pre><span id="VALrss_item"><span class="keyword">val</span> rss_item</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre>
-<pre><span id="VALdoc_list"><span class="keyword">val</span> doc_list</span> : <code class="type"><a href="Stog_tmpl.html#TYPEcontents">contents</a></code></pre></div>
-
-
-
-
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
+</p>
 </div> <!-- #page -->
 </body>
 </html>
-

@@ -1,165 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog 0.17.0</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="&lt;navbar-doc/&gt;"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  <div class="doc-navbar">
-      <div class="navleft"><a href="https://zoggy.github.io/stog/posts/release-0.16.0.html">Stog 0.16.0</a></div>
-      <div class="navright"><a href="https://zoggy.github.io/stog/posts/release-0.17.1.html">Stog 0.17.1</a></div>
-    </div>
-  <div class="page-title">Stog 0.17.0</div>
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-<div class="date">November 30, 2016</div>
-
-
-<p>
-Release 0.17.0 of stog is available from the <a href="https://zoggy.github.io/stog/install.html">Installation</a> page.
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
 </p>
-
-<p>Changes:</p>
-<ul id="changes">
-<li>use <span class="ext-a"><a href="http://erratique.ch/software/uutf">Uutf</a></span> 1.0.0
-  and <span class="ext-a"><a href="https://zoggy.github.io/xtmpl/posts/release-0.16.0.html">Xtmpl 0.16.0</a></span>,</li>
-<li><a href="https://zoggy.github.io/stog/plugins/markdown.html">Markdown plugin</a> now uses
-  <span class="ext-a"><a href="https://github.com/ocaml/omd/">Omd</a></span>, except if a
-  <span class="icode"><span class="hl std">command</span></span> attribute is specified in <span class="icode"><span class="hl kwa">&lt;markdown</span><span class="hl kwa">&gt;</span></span> node,</li>
-<li>use <span class="ext-a"><a href="https://github.com/mirage/ocaml-uri">ocaml-uri</a></span>
-instead of <span class="icode"><span class="hl kwc">Neturl</span></span>,</li>
-<li>use <span class="ext-a"><a href="http://erratique.ch/software/ptime">Ptime</a></span>
-instead of <span class="icode"><span class="hl kwc">Netdate</span></span>,</li>
-<li>change of %-format usable in <a href="https://zoggy.github.io/stog/module_base.html#datetimeformat">datetime
-format</a>,</li>
-<li><a href="https://zoggy.github.io/stog/stog-documents.html#date"><span class="icode"><span class="hl std">date</span></span></a> attribute for
-documents is now used to specify only dates;
-to specify datetime, <a href="https://zoggy.github.io/stog/stog-documents.html#datetime"><span class="icode"><span class="hl std">datetime</span></span></a>
-attribute for documents must now be used,</li>
-<li>fix: adapt to new behaviour of <span class="icode"><span class="">input_value</span></span> in ocaml 4.03.0,</li>
-<li>sectionning rules now generate <span class="icode"><span class="hl std">role="heading"</span></span> and <span class="icode"><span class="hl std">aria-level="..."</span></span>,</li>
-<li><a href="https://zoggy.github.io/stog/rules/ocaml-eval.html"><span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span></span></a> and
-<a href="https://zoggy.github.io/stog/rules/exec.html"><span class="icode"><span class="hl kwa">&lt;exec</span><span class="hl kwa">&gt;</span></span></a> use <span class="icode"><span class="hl kwa">&lt;span</span><span class="hl kwa">&gt;</span></span>
-instead of <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl kwa">&gt;</span></span> in <span class="icode"><span class="hl kwa">&lt;pre</span><span class="hl kwa">&gt;</span></span> nodes, to
-be HTML-correct (default styles are modified in consequence),</li>
-<li><a href="https://zoggy.github.io/stog/module_base.html#documents"><span class="icode"><span class="hl kwa">&lt;docs</span><span class="hl kwa">&gt;</span></span></a> now uses a
-template; default is <code>doc-list.tmpl</code> but another one can be
-specified with <span class="icode"><span class="hl std">list-tmpl="..."</span></span> attribute.
-In this template, <span class="icode"><span class="hl kwa">&lt;alt-link</span><span class="hl kwa">/&gt;</span></span> is the url of the link
-to (tyically) the RSS feed, and <span class="icode"><span class="hl kwa">&lt;items</span><span class="hl kwa">/&gt;</span></span> is the tree of
-listed documents,</li>
-<li>sitemap plugin: fix date format (by Leo Wzukw),</li>
-<li>fix: handling of default <code>page.tmpl</code> (by avysk),</li>
-<li>fix: call <span class="icode"><span class="">tail</span></span> in BSD-friendly way (by avysk),</li>
-<li>fix: hardcoded temp directory for latex (by avysk).</li>
-</ul>
-
-
-
-
-
-
-<p class="doccode alert alert-info">
-For information you can see the <a href="#pagesource"> source code of the page</a>.
-</p>
-<div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Stog 0.17.0"</span><span class="hl std">
-</span><span class="">date</span><span class="hl std">=</span><span class="hl str">"2016/11/30"</span><span class="hl std">
-</span><span class="">topics</span><span class="hl std">=</span><span class="hl str">"stog"</span><span class="hl std">
-</span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">"release"</span><span class="hl std">
-</span><span class="">published</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
-</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-Release 0.17.0 of stog is available from the </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"/install"</span><span class="hl kwa">/&gt;</span><span class="hl std"> page.
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Changes:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"changes"</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">use </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://erratique.ch/software/uutf"</span><span class="hl kwa">&gt;</span><span class="hl std">Uutf</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std"> 1.0.0
-  and </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://zoggy.github.io/xtmpl/posts/release-0.16.0.html"</span><span class="hl kwa">&gt;</span><span class="hl std">Xtmpl 0.16.0</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"plugins/markdown"</span><span class="hl kwa">&gt;</span><span class="hl std">Markdown plugin</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> now uses
-  </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://github.com/ocaml/omd/"</span><span class="hl kwa">&gt;</span><span class="hl std">Omd</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">, except if a
-  </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">command</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute is specified in </span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">markdown</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl std"> node,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">use </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"https://github.com/mirage/ocaml-uri"</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-uri</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">
-instead of </span><span class="hl kwa">&lt;ml</span><span class="hl kwa">&gt;</span><span class="hl std">Neturl</span><span class="hl kwa">&lt;/ml</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">use </span><span class="hl kwa">&lt;ext-a</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"http://erratique.ch/software/ptime"</span><span class="hl kwa">&gt;</span><span class="hl std">Ptime</span><span class="hl kwa">&lt;/ext-a</span><span class="hl kwa">&gt;</span><span class="hl std">
-instead of </span><span class="hl kwa">&lt;ml</span><span class="hl kwa">&gt;</span><span class="hl std">Netdate</span><span class="hl kwa">&lt;/ml</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">change of %-format usable in </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#datetimeformat"</span><span class="hl kwa">&gt;</span><span class="hl std">datetime
-format</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"stog-documents#date"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">date</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute for
-documents is now used to specify only dates;
-to specify datetime, </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"stog-documents#datetime"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">datetime</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">
-attribute for documents must now be used,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">fix: adapt to new behaviour of </span><span class="hl kwa">&lt;ml</span><span class="hl kwa">&gt;</span><span class="hl std">input_value</span><span class="hl kwa">&lt;/ml</span><span class="hl kwa">&gt;</span><span class="hl std"> in ocaml 4.03.0,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">sectionning rules now generate </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">role="heading"</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> and </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">aria-level="..."</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"ocaml-eval"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">ocaml-eval</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> and
-</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"exec"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">exec</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> use </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">span</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">
-instead of </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">div</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> in </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">pre</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> nodes, to
-be HTML-correct (default styles are modified in consequence),</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"module_base#documents"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;rule</span><span class="hl kwa">&gt;</span><span class="hl std">docs</span><span class="hl kwa">&lt;/rule</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std"> now uses a
-template; default is </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">doc-list.tmpl</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> but another one can be
-specified with </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">list-tmpl="..."</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> attribute.
-In this template, </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">alt-link/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> is the url of the link
-to (tyically) the RSS feed, and </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">items/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> is the tree of
-listed documents,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">sitemap plugin: fix date format (by Leo Wzukw),</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">fix: handling of default </span><span class="hl kwa">&lt;code</span><span class="hl kwa">&gt;</span><span class="hl std">page.tmpl</span><span class="hl kwa">&lt;/code</span><span class="hl kwa">&gt;</span><span class="hl std"> (by avysk),</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">fix: call </span><span class="hl kwa">&lt;ml</span><span class="hl kwa">&gt;</span><span class="hl std">tail</span><span class="hl kwa">&lt;/ml</span><span class="hl kwa">&gt;</span><span class="hl std"> in BSD-friendly way (by avysk),</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">fix: hardcoded temp directory for latex (by avysk).</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span></pre>
-</div>
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
 </div> <!-- #page -->
 </body>
 </html>

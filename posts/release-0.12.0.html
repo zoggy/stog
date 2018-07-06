@@ -1,141 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="application/xhtml+xml; charset=utf-8" http-equiv="Content-Type"/>
-<title>Stog : Stog 0.12.0</title>
-<link href="https://zoggy.github.io/stog/style.css" rel="stylesheet" type="text/css"/>
+<title>Stog : Stog</title>
+<link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<script type="text/javascript">
-function submitSearch(){
-    var q = document.getElementById('q');
-    q.value =q.value + " site:https://zoggy.github.io/stog ";
-    return true;
-}
-</script>
 <body>
 <div id="page">
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-
-<!--&lt;image float="right" src="&lt;site-url/&gt;/stog-logo.svg" width="30"/&gt;-->
-
-  <div class="nav-collapse">
-    <ul class="nav">
-    <li class="&lt;navbar-home/&gt;"><a href="https://zoggy.github.io/stog/index.html">Stog</a></li>
-    <li class="&lt;navbar-install/&gt;"><a href="https://zoggy.github.io/stog/install.html">Installation</a></li>
-    <li class="&lt;navbar-doc/&gt;"><a href="https://zoggy.github.io/stog/doc.html">Documentation</a></li>
-    <li class="&lt;navbar-plugins/&gt;"><a href="https://zoggy.github.io/stog/plugins.html">Plugins</a></li>
-    <li class="active"><a href="https://zoggy.github.io/stog/blog.html">Blog</a></li>
-    <li class="&lt;navbar-about/&gt;"><a href="https://zoggy.github.io/stog/about.html">?</a></li>
-    </ul>
-<!--
-    &lt;div class="nav pull-right"&gt;
-       &lt;form action="https://qwant.com/" method="GET"
-         onsubmit="submitSearch();"
-         style="overflow:hidden;margin:0;margin-top:5px;padding:0;height:28px;display:flex;"
-         frameborder="0"&gt;
-         &lt;input style="width: 100px;" type="text" id="q" placeHolder="Search" name="q"/&gt;
-         &lt;input style="font-size: 0.8em" type="submit" value="🔎"/&gt;
-       &lt;/form&gt;
-    &lt;/div&gt;
--->
-  </div>
-
-</div>
-</div>
-</div>
-
 <div id="header">
-  
-  
-  <div class="doc-navbar">
-      <div class="navleft"><a href="https://zoggy.github.io/stog/posts/release-0.11.1.html">Stog 0.11.1</a></div>
-      <div class="navright"><a href="https://zoggy.github.io/stog/posts/release-0.13.0.html">Stog 0.13.0</a></div>
-    </div>
-  <div class="page-title">Stog 0.12.0</div>
+
+
+
+  <div class="page-title">Stog</div>
 </div>
-
-<div class="date">May 16, 2014</div>
-
-
-<p>
-Release 0.12.0 of stog is available from the <a href="https://zoggy.github.io/stog/install.html">Installation</a> page.
+<p>Stog has moved to
+<a href="https://www.good-eris.net/stog"><code>https://www.good-eris.net/stog</code></a>
 </p>
-
-<p>Changes:</p>
-<ul id="changes">
-<li>[fix] missing include in <span class="icode"><span class="hl std">mk-stog-ocaml-session</span></span>,</li>
-<li>install default templates for pages and styles,</li>
-<li><a href="https://zoggy.github.io/stog/running.html#module-path"><span class="icode"><span class="hl std">--mods</span></span></a>
-  adds a directory where to look for modules,</li>
-<li>handling a file or a list of files instead of a directory for
-  <a href="https://zoggy.github.io/stog/single-documents.html">compiling single documents</a>,</li>
-<li><a href="https://zoggy.github.io/stog/running.html#template-path">--tmpl</a>
-  now adds a directory to look for templates,</li>
-<li>OCaml toplevel output now highlights code corresponding to
-  warnings and errors; use <span class="icode"><span class="hl std">highlight-locs="false"</span></span> in <span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span>
-  to disable; when enabled, use <span class="icode"><span class="hl std">print-locs="true"</span></span> in <span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl std"> ...</span><span class="hl kwa">&gt;</span></span>
-  to force printing also the warning and error locations.
-  To highlight the code, <span class="icode"><span class="hl kwa">&lt;span</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"warning-loc"</span><span class="hl kwa">&gt;</span></span>
-   and <span class="icode"><span class="hl kwa">&lt;span</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"error-loc"</span><span class="hl kwa">&gt;</span></span> nodes are added,</li>
-<li>use more HTML blocks in output of <span class="icode"><span class="hl kwa">&lt;ocaml-eval</span><span class="hl kwa">&gt;</span></span>:
-  <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"stderr"</span><span class="hl kwa">/&gt;</span></span>,
-  <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"stdout"</span><span class="hl kwa">/&gt;</span></span>,
-  <span class="icode"><span class="hl kwa">&lt;div</span><span class="hl std"> </span><span class="">class</span><span class="hl std">=</span><span class="hl str">"toplevel-out"</span><span class="hl kwa">/&gt;</span></span>.
-</li>
-</ul>
-
-
-
-
-
-
-<p class="doccode alert alert-info">
-For information you can see the <a href="#pagesource"> source code of the page</a>.
-</p>
-<div id="pagesource">
-  <pre class="code-xml"><span class="hl kwa">&lt;post</span><span class="hl std"> </span><span class="">title</span><span class="hl std">=</span><span class="hl str">"Stog 0.12.0"</span><span class="hl std">
-</span><span class="">date</span><span class="hl std">=</span><span class="hl str">"2014/05/16"</span><span class="hl std">
-</span><span class="">topics</span><span class="hl std">=</span><span class="hl str">"stog"</span><span class="hl std">
-</span><span class="">keywords</span><span class="hl std">=</span><span class="hl str">"release"</span><span class="hl std">
-</span><span class="">published</span><span class="hl std">=</span><span class="hl str">"true"</span><span class="hl std">
-</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">
-Release 0.12.0 of stog is available from the </span><span class="hl kwa">&lt;page</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"/install"</span><span class="hl kwa">/&gt;</span><span class="hl std"> page.
-</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;sep_</span><span class="hl kwa">/&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;p</span><span class="hl kwa">&gt;</span><span class="hl std">Changes:</span><span class="hl kwa">&lt;/p</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;ul</span><span class="hl std"> </span><span class="">id</span><span class="hl std">=</span><span class="hl str">"changes"</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">[fix] missing include in </span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">mk-stog-ocaml-session</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">install default templates for pages and styles,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"running#module-path"</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;icode</span><span class="hl kwa">&gt;</span><span class="hl std">--mods</span><span class="hl kwa">&lt;/icode</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">
-  adds a directory where to look for modules,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">handling a file or a list of files instead of a directory for
-  </span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"single-documents"</span><span class="hl kwa">&gt;</span><span class="hl std">compiling single documents</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl kwa">&lt;doc</span><span class="hl std"> </span><span class="">href</span><span class="hl std">=</span><span class="hl str">"running#template-path"</span><span class="hl kwa">&gt;</span><span class="hl std">--tmpl</span><span class="hl kwa">&lt;/doc</span><span class="hl kwa">&gt;</span><span class="hl std">
-  now adds a directory to look for templates,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">OCaml toplevel output now highlights code corresponding to
-  warnings and errors; use </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">highlight-locs="false"</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> in </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">ocaml-eval ...</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">
-  to disable; when enabled, use </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl std">print-locs="true"</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> in </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">ocaml-eval ...</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">
-  to force printing also the warning and error locations.
-  To highlight the code, </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">span class="warning-loc"</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">
-   and </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">span class="error-loc"</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std"> nodes are added,</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;li</span><span class="hl kwa">&gt;</span><span class="hl std">use more HTML blocks in output of </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">ocaml-eval</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">:
-  </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">div class="stderr"/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">,
-  </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">div class="stdout"/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">,
-  </span><span class="hl kwa">&lt;ixml</span><span class="hl kwa">&gt;</span><span class="hl kwb">&amp;lt;</span><span class="hl std">div class="toplevel-out"/</span><span class="hl kwb">&amp;gt;</span><span class="hl kwa">&lt;/ixml</span><span class="hl kwa">&gt;</span><span class="hl std">.
-</span><span class="hl kwa">&lt;/li</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/ul</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span><span class="hl kwa">&lt;/post</span><span class="hl kwa">&gt;</span><span class="hl std">
-</span></pre>
-</div>
-
-<div id="footer">
-<div class="generatedon">Generated on May 3, 2017 at 19h02</div>
-</div>
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/jquery.js"&gt;_&lt;/script&gt;-->
-<!--&lt;script type="text/javascript" src="&lt;site-url/&gt;/bootstrap-collapse.js"&gt;_&lt;/script&gt;-->
-
 </div> <!-- #page -->
 </body>
 </html>
